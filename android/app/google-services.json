@@ -1,0 +1,131 @@
+{
+  "project_info": {
+    "project_number": "577637183424",
+    "firebase_url": "https://wurknet.firebaseio.com",
+    "project_id": "wurknet",
+    "storage_bucket": "wurknet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577637183424:android:ec1af71124db0b01bbe225",
+        "android_client_info": {
+          "package_name": "com.worknetwork.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577637183424-mes7tqh5uks9u9muf29lu9qunpsfbjsb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.worknetwork.mobile",
+            "certificate_hash": "7068f1fd9e92fb58620086078533f4c132e4027a"
+          }
+        },
+        {
+          "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJFr3Ctn3p1-HvbwJnbbnnDp_sJs0Nnzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wurknet.mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577637183424:android:5926929df1a78a98bbe225",
+        "android_client_info": {
+          "package_name": "com.wurknet.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577637183424-0gibl28umqf2aos4p1i07pn2r53ihd93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "7068f1fd9e92fb58620086078533f4c132e4027a"
+          }
+        },
+        {
+          "client_id": "577637183424-umcafn12ms83jbcsbn6g9a15sl51su6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "d597419a2f674f203e9c1b8fcde8dd7e8d2b8885"
+          }
+        },
+        {
+          "client_id": "577637183424-umam6q5rpd5c0hh5ah9p3me991rt5b4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "577637183424-2ngvk3mfo05f57lk6r2j354jvaauiem8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "df889a3039300ebf184947cd30fa34cfdbe11495"
+          }
+        },
+        {
+          "client_id": "577637183424-cel7vn5qobie54a5dsmpufrsis54bm8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "dad3353493dac7245e32fad07446871d762716d9"
+          }
+        },
+        {
+          "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJFr3Ctn3p1-HvbwJnbbnnDp_sJs0Nnzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wurknet.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

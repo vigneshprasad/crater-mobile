@@ -1,0 +1,39 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'meets_api_service.dart';
+
+// **************************************************************************
+// ChopperGenerator
+// **************************************************************************
+
+// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
+class _$MeetsApiService extends MeetsApiService {
+  _$MeetsApiService([ChopperClient client]) {
+    if (client == null) return;
+    this.client = client;
+  }
+
+  @override
+  final definitionType = MeetsApiService;
+
+  @override
+  Future<Response<dynamic>> getMeetings() {
+    final $url = '/resources/meetings/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postMeetingPreferences() {
+    final $url = '/resources/meeting-preferences/';
+    final $request = Request('POST', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> patchMeetingPreferences(int id) {
+    final $url = '/resources/meeting-preferences/$id/';
+    final $request = Request('PATCH', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+}

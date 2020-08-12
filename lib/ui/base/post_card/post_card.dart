@@ -1,0 +1,220 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:metadata_fetch/metadata_fetch.dart';
+import 'package:url_launcher/url_launcher.dart' show launch;
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/models/post/post_model.dart';
+import 'package:worknetwork/ui/base/base_text/base_text.dart';
+import 'package:worknetwork/ui/base/base_text/base_text_expand.dart';
+import 'package:worknetwork/ui/base/post_card/post_card_actions.dart';
+import 'package:worknetwork/utils/parse_urls.dart';
+import 'package:http/http.dart' as http;
+
+typedef PostDeleteFunc = void Function(int id);
+
+class PostCard extends StatelessWidget {
+  final PostModel post;
+  final PostDeleteFunc onPostDelete;
+
+  const PostCard({
+    Key key,
+    @required this.post,
+    @required this.onPostDelete,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final links = ParseUrls.getLinksList(post.message);
+    return Card(
+      elevation: 0.5,
+      color: Colors.grey[50],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          getPostHeader(context),
+          getPostContent(context),
+          if (links.isNotEmpty) getPostLinkMeta(context, links[0]),
+          const Divider(
+            indent: AppInsets.xl,
+            endIndent: AppInsets.xl,
+          ),
+          getPostActions(context),
+        ],
+      ),
+    );
+  }
+
+  Widget getPostHeader(BuildContext context) {
+    final headingStyle = Theme.of(context).textTheme.subtitle2;
+    final subHeadStyle =
+        Theme.of(context).textTheme.caption.apply(color: Colors.grey);
+    final postCreatedTime = DateTime.parse(post.created);
+    final createdFormater = DateFormat('MMM dd yyyy h:mm a');
+    return Padding(
+      padding: const EdgeInsets.all(AppInsets.xl),
+      child: Row(
+        children: <Widget>[
+          CircleAvatar(
+            backgroundImage: NetworkImage(post.creatorPhoto),
+          ),
+          const SizedBox(width: AppPadding.med),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              BaseText(
+                text: post.creatorName,
+                style: headingStyle,
+              ),
+              const SizedBox(height: 2),
+              BaseText(
+                text: createdFormater.format(postCreatedTime),
+                style: subHeadStyle,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getPostContent(BuildContext context) {
+    const basePadding = AppInsets.xl;
+    final contentStyle = Theme.of(context).textTheme.bodyText2;
+    return Padding(
+      padding: const EdgeInsets.only(
+          left: basePadding, bottom: basePadding, right: basePadding),
+      child: BaseTextExpand(
+        post.message,
+        style: contentStyle,
+      ),
+    );
+  }
+
+  Widget getPostLinkMeta(BuildContext context, String link) {
+    return FutureBuilder<http.Response>(
+      future: http.get(link),
+      builder: (context, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            left: AppInsets.med,
+            right: AppInsets.med,
+          ),
+          child: Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            elevation: 2,
+            color: Colors.white,
+            child: InkWell(
+              highlightColor: Colors.grey[200],
+              onTap: () {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  launch(link);
+                }
+              },
+              child: renderMetaData(snapshot, context),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget renderMetaData(
+      AsyncSnapshot<http.Response> snapshot, BuildContext context) {
+    if (snapshot.connectionState == ConnectionState.done) {
+      final headingStyle = Theme.of(context).textTheme.subtitle2;
+      final bodyStyle = Theme.of(context).textTheme.bodyText2;
+      final document = responseToDocument(snapshot.data);
+      final data = MetadataParser.parse(document);
+      const radius = Radius.circular(8);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: 120,
+            decoration: BoxDecoration(
+              borderRadius:
+                  const BorderRadius.only(topLeft: radius, topRight: radius),
+              image: DecorationImage(
+                image: NetworkImage(data.image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppInsets.xl, vertical: AppInsets.l),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: data.title,
+                    style: headingStyle,
+                  ),
+                  const TextSpan(text: '\n'),
+                  TextSpan(
+                    text: data.description,
+                    style: bodyStyle,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {}
+    return Container(
+      width: double.infinity,
+      height: 120,
+      color: Colors.grey[200],
+    );
+  }
+
+  Widget getPostActions(BuildContext context) {
+    final textTheme = Theme.of(context)
+        .textTheme
+        .button
+        .copyWith(color: Colors.grey[400], fontSize: 16);
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppInsets.med, vertical: AppInsets.sm),
+      child: Row(
+        children: <Widget>[
+          PostCardActions(
+            icon: Icon(
+              WorkNetIcons.like,
+              color: Colors.grey[500],
+            ),
+            label: Text(
+              post.likes.toString(),
+              style: textTheme,
+            ),
+            onPress: () {},
+          ),
+          PostCardActions(
+            icon: Icon(
+              WorkNetIcons.comment,
+              color: Colors.grey[500],
+            ),
+            label: Text(
+              post.comments.toString(),
+              style: textTheme,
+            ),
+            onPress: () {},
+          ),
+          const Spacer(),
+          PostCardActions(
+            icon: Icon(
+              WorkNetIcons.delete,
+              color: Colors.grey[500],
+            ),
+            onPress: () => onPostDelete(post.pk),
+          )
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,21 @@
+{
+    "input_label_email": "E-mail address",
+    "input_password": "Password",
+    "read_more": "Read more",
+    "home_tab:community": "Community",
+    "home_tab:meets": "Meets",
+    "home_tab:inbox": "Inbox",
+    "home_tab:articles": "Articles",
+    "home_tab:videos": "Videos",
+    "community:title": "Community",
+    "community:subtitle": "Share new ideas, thoughts & experiences with your community",
+    "create_post:label": "Share something interesting",
+    "articles:title": "Articles",
+    "articles:subtitle": "Read handpicked articles from around the web",
+    "videos:title": "Videos",
+    "videos:subtitle": "Learn from the experiences of other members",
+    "meeting:title": "Meetings",
+    "meeting:subtitle": "Get matched for a 1:1 video meeting with relevant people",
+    "meeting:register_title": "Register for Meet",
+    "inbox:title": "Inbox"
+}
