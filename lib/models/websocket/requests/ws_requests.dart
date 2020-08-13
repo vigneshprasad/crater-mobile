@@ -6,10 +6,13 @@ part 'ws_requests.g.dart';
 enum WSRequestType {
   @JsonValue("get_all_users")
   getAllUsers,
+
   @JsonValue("set_user_chat")
   setUserChat,
+
   @JsonValue("send_user_message_to_user")
   sendMessageToUser,
+
   @JsonValue("user_is_typing")
   userIsTyping
 }
@@ -116,6 +119,6 @@ class WSSendMessageToUserRequest extends WSRequest {
   }) : super(message, type);
 
   factory WSSendMessageToUserRequest.fromJson(Map<String, dynamic> json) =>
-      _$WSSendMessageToUserFromJson(json);
-  Map<String, dynamic> toJson() => _$WSSendMessageToUserToJson(this);
+      _$WSSendMessageToUserRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$WSSendMessageToUserRequestToJson(this);
 }

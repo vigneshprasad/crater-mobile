@@ -8,6 +8,8 @@ import 'package:worknetwork/blocs/notification/repo/notification_repo.dart';
 import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
 import 'package:worknetwork/models/websocket/response/ws_response.dart';
 
+import '../../../models/chat/chat_model.dart';
+
 part 'notification_event.dart';
 part 'notification_state.dart';
 
@@ -24,7 +26,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         webSocketRepository.streamController.stream.listen((snapShot) {
       final json = jsonDecode(snapShot.toString()) as Map<String, dynamic>;
       final WSResponseType type = WSResponse.getEnumFromJson(json["type"]);
-      if (type == WSResponseType) {}
+      if (type == WSResponseType.getUserNotification) {
+        print("this happened ${json}");
+        final response = WSGetUserNotificatioResponse.fromJson(json);
+        add(UserNotificationLoaded(response: response));
+      }
     });
   }
 
@@ -38,6 +44,23 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Stream<NotificationState> mapEventToState(
     NotificationEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    if (event is OpenNotificationHiveStarted) {
+      _notificationRepository.getNotificationsFromBox();
+    }
+    // Loaded Evetns
+    if (event is UserNotificationLoaded) {
+      yield* _mapNotificationToState(event);
+    }
+  }
+
+  Stream<NotificationState> _mapNotificationToState(
+      UserNotificationLoaded event) async* {
+    final notification = MessageNotification.fromResponse(event.response);
+    final allNotifications =
+        await _notificationRepository.setNotificationToBox(notification);
+    yield MessageNotificationLoaded(
+      notification: notification,
+      messageNotifcations: allNotifications,
+    );
   }
 }

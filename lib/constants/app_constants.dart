@@ -8,4 +8,6 @@ class AppConstants {
 class AppImageAssets {
   static const defaultAvatar =
       AssetImage("assets/images/img_default_avatar.png");
+  static const searchUserempty =
+      AssetImage("assets/images/img_no_user_search.png");
 }

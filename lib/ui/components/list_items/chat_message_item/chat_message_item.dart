@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 
@@ -17,6 +20,7 @@ class ChatMessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat.jm();
     final bool isSender = user.pk == message.senderId;
     const radius = Radius.circular(12.0);
     const senderBorderRadius = BorderRadius.only(
@@ -27,6 +31,11 @@ class ChatMessageItem extends StatelessWidget {
           fontSize: 14,
           color: isSender ? Colors.white : Colors.grey[800],
         );
+    final imageWidth = MediaQuery.of(context).size.width * 0.5;
+    final timeStampStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(fontSize: 10, color: Colors.grey);
     return Padding(
       padding: const EdgeInsets.symmetric(
           vertical: AppInsets.med, horizontal: AppInsets.xl),
@@ -35,17 +44,51 @@ class ChatMessageItem extends StatelessWidget {
           Container(
             alignment: isSender ? Alignment.topRight : Alignment.topLeft,
             child: Material(
-              color: isSender ? AppTheme.blueAccent : Colors.grey[300],
+              elevation: 1,
+              color: isSender ? AppTheme.blueAccent : Colors.grey[200],
               borderRadius:
                   isSender ? senderBorderRadius : recieverBorderRadius,
               child: InkWell(
                 onTap: () {},
                 splashColor: AppTheme.blueAccent.withOpacity(0.4),
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                borderRadius:
+                    isSender ? senderBorderRadius : recieverBorderRadius,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                      vertical: AppInsets.l, horizontal: AppInsets.xl),
-                  child: Text(message.message, style: testStyle),
+                      vertical: AppInsets.l, horizontal: AppInsets.l),
+                  child: Column(
+                    children: [
+                      if (message.message.isNotEmpty)
+                        Text(message.message, style: testStyle),
+                      if (message.file != null)
+                        CachedNetworkImage(
+                          placeholder: (context, url) => Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            width: imageWidth,
+                            height: 140,
+                            child: Center(
+                              child: LottieBuilder.asset(
+                                "assets/lottie/loading_dots.json",
+                                height: 64,
+                              ),
+                            ),
+                          ),
+                          imageUrl: message.file,
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: imageWidth,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -56,6 +99,10 @@ class ChatMessageItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Text(
+                    dateFormat.format(DateTime.parse(message.created)),
+                    style: timeStampStyle,
+                  ),
                   Icon(
                     WorkNetIcons.doublecheck,
                     size: 20,

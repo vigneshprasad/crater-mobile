@@ -43,3 +43,25 @@ class SendMessageToUser extends ChatEvent {
   @override
   List<Object> get props => [message];
 }
+
+class ChatMessageLoaded extends ChatEvent {
+  final ChatMessage message;
+
+  const ChatMessageLoaded({
+    this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ChatNotificationLoaded extends ChatEvent {
+  final MessageNotification notification;
+
+  const ChatNotificationLoaded({
+    this.notification,
+  });
+
+  @override
+  List<Object> get props => [notification];
+}

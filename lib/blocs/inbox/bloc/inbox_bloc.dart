@@ -26,15 +26,9 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
       final json = jsonDecode(snapShot.toString()) as Map<String, dynamic>;
       final WSResponseType type = WSResponse.getEnumFromJson(json["type"]);
 
-      switch (type) {
-        case WSResponseType.loadAllUsers:
-          add(InboxGetAllUsersLoaded(
-              response: WSGetAllUsersResponse.fromJson(json)));
-          break;
-        default:
-          // ignore: avoid_print
-          print(json);
-          break;
+      if (type == WSResponseType.loadAllUsers) {
+        add(InboxGetAllUsersLoaded(
+            response: WSGetAllUsersResponse.fromJson(json)));
       }
     });
   }

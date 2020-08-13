@@ -10,10 +10,14 @@ import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
 import 'package:worknetwork/models/chat/chat_model.dart';
 import 'package:worknetwork/models/websocket/response/ws_response.dart';
 
+import '../../../models/websocket/response/ws_response.dart';
+import '../../notification/bloc/notification_bloc.dart';
+
 part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
+  final String recieverId;
   final NotificationBloc notificationBloc;
   final WebSocketRepository webSocketRepository;
   ChatRepository _chatRepository;
@@ -21,11 +25,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   StreamSubscription _notificationBlocStreamSub;
 
   ChatBloc({
+    @required this.recieverId,
     @required this.webSocketRepository,
     @required this.notificationBloc,
   }) : super(const ChatInitial()) {
     // Listen to websocket bloc
     _chatRepository = ChatRepository(webSocketRepository.channel);
+
     _chatSocketSub ??=
         webSocketRepository.streamController.stream.listen((snapShot) {
       final json = jsonDecode(snapShot.toString()) as Map<String, dynamic>;
@@ -34,11 +40,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (type == WSResponseType.loadChatMessages) {
         final response = WSGetChatMessagesResponse.fromJson(json);
         add(SetChatLoaded(response: response));
+      } else if (type == WSResponseType.getUserMessage) {
+        final message = ChatMessage.fromJson(json);
+        add(ChatMessageLoaded(message: message));
       }
     });
 
     // Listen Notifcation Bloc for messages
-    _notificationBlocStreamSub ??= notificationBloc?.listen((event) {});
+    _notificationBlocStreamSub ??= notificationBloc?.listen((state) {
+      if (state is MessageNotificationLoaded) {
+        final notification = state.notification;
+        if (notification.senderId == recieverId) {
+          _chatRepository.channel.sink
+              .add(jsonEncode({"type": "user_read_user_messages"}));
+          // add(ChatNotificationLoaded(notification: notification));
+        }
+      }
+    });
   }
 
   @override
@@ -53,7 +71,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatEvent event,
   ) async* {
     if (event is SetChatWithUser) {
-      _chatRepository.setChatWithUser(event.recieverId);
+      yield* _mapIntialDatafromHive(event);
     } else if (event is SendMessageToUser) {
       _chatRepository.sendMessageToUser(event.message);
     } else if (event is SendUserIsTyping) {
@@ -63,16 +81,66 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     // WS Response Events
     if (event is SetChatLoaded) {
       yield* _mapChatLoadedToState(event);
+    } else if (event is ChatMessageLoaded) {
+      yield* _mapChatMessagetoState(event);
+    } else if (event is ChatNotificationLoaded) {
+      yield* _mapNotificationToState(event);
     }
   }
 
+  Stream<ChatState> _mapIntialDatafromHive(SetChatWithUser event) async* {
+    final data = await _chatRepository.getInitialState(event.recieverId);
+    if (data != null && data.isInBox) {
+      yield SetChatInitalFromPersist(
+        messages: data.messages,
+        recieverUser: data.recieverUser,
+        page: data.page,
+        pages: data.pages,
+      );
+    } else {
+      yield const ChatInitial();
+    }
+
+    _chatRepository.setChatWithUser(event.recieverId);
+  }
+
   Stream<ChatState> _mapChatLoadedToState(SetChatLoaded event) async* {
-    final response = event.response;
+    final UserChatBox newState = await _chatRepository.updateChatBox(
+      event.response.userData,
+      event.response.results,
+      event.response.page,
+      event.response.pages,
+    );
     yield SetChatUpdated(
-      messages: response.results,
-      page: response.page,
-      pages: response.pages,
-      recieverUser: response.userData,
+      messages: newState.messages,
+      page: newState.page,
+      pages: newState.pages,
+      recieverUser: newState.recieverUser,
+    );
+  }
+
+  Stream<ChatState> _mapChatMessagetoState(ChatMessageLoaded event) async* {
+    yield ChatMessagePersist(message: event.message);
+    final UserChatBox box =
+        await _chatRepository.addMessageToBox(event.message, recieverId);
+    yield SetChatUpdated(
+      recieverUser: box.recieverUser,
+      pages: box.page,
+      page: box.page,
+      messages: box.messages,
+    );
+  }
+
+  Stream<ChatState> _mapNotificationToState(
+      ChatNotificationLoaded event) async* {
+    yield ChatNotificationPersist(notification: event.notification);
+    final UserChatBox box = await _chatRepository.addMessageToBox(
+        event.notification.latestMessage, recieverId);
+    yield SetChatUpdated(
+      recieverUser: box.recieverUser,
+      pages: box.page,
+      page: box.page,
+      messages: box.messages,
     );
   }
 }

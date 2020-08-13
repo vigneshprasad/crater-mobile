@@ -16,6 +16,7 @@ class InboxTab extends StatefulWidget {
 class _InboxTabState extends State<InboxTab> {
   WebSocketRepository _socketRepository;
   InboxBloc _inboxBloc;
+  List<ChatUser> _users = [];
 
   @override
   void initState() {
@@ -36,11 +37,17 @@ class _InboxTabState extends State<InboxTab> {
     return BlocProvider.value(
       value: _inboxBloc,
       child: BlocConsumer<InboxBloc, InboxState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AllUsersLoaded) {
+            setState(() {
+              _users = [...state.users];
+            });
+          }
+        },
         builder: (context, state) {
           return HomeTabLayout(
             titleKey: "inbox:title",
-            body: _buildAllUsersList(state.users),
+            body: _buildAllUsersList(_users),
           );
         },
       ),

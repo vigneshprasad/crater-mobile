@@ -17,5 +17,8 @@
     "meeting:title": "Meetings",
     "meeting:subtitle": "Get matched for a 1:1 video meeting with relevant people",
     "meeting:register_title": "Register for Meet",
-    "inbox:title": "Inbox"
+    "inbox:title": "Inbox",
+    "chat_search:title": "New Message",
+    "chat_search:input_prefix": "To:",
+    "chat_search:input_prefix_text": "Search for user..."
 }

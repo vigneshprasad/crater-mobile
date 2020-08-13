@@ -79,6 +79,7 @@ const _$WSRequestTypeEnumMap = {
   WSRequestType.getAllUsers: 'get_all_users',
   WSRequestType.setUserChat: 'set_user_chat',
   WSRequestType.sendMessageToUser: 'send_user_message_to_user',
+  WSRequestType.userIsTyping: 'user_is_typing',
 };
 
 SetChatRequestOptions _$SetChatRequestOptionsFromJson(
@@ -113,7 +114,7 @@ Map<String, dynamic> _$WSSetChatUserRequestToJson(
       'type': _$WSRequestTypeEnumMap[instance.type],
     };
 
-WSSendMessageToUserRequest _$WSSendMessageToUserFromJson(
+WSSendMessageToUserRequest _$WSSendMessageToUserRequestFromJson(
     Map<String, dynamic> json) {
   return WSSendMessageToUserRequest(
     type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type']),
@@ -121,7 +122,7 @@ WSSendMessageToUserRequest _$WSSendMessageToUserFromJson(
   );
 }
 
-Map<String, dynamic> _$WSSendMessageToUserToJson(
+Map<String, dynamic> _$WSSendMessageToUserRequestToJson(
         WSSendMessageToUserRequest instance) =>
     <String, dynamic>{
       'message': instance.message,

@@ -67,6 +67,8 @@ const _$WSResponseTypeEnumMap = {
   WSResponseType.loadAllUsers: 'all_users',
   WSResponseType.loadChatMessages: 'get_user_messages',
   WSResponseType.getUserNotification: 'user_notification',
+  WSResponseType.getUserMessage: 'user_message',
+  WSResponseType.getSearchAllUsers: 'search_all_users',
   WSResponseType.unknowType: 'unknown_type',
 };
 
@@ -107,9 +109,9 @@ Map<String, dynamic> _$WSGetChatMessagesResponseToJson(
       'tag_line': instance.tagLine,
     };
 
-WSGetUserNotification _$WSGetUserNotificationFromJson(
+WSGetUserNotificatioResponse _$WSGetUserNotificatioResponseFromJson(
     Map<String, dynamic> json) {
-  return WSGetUserNotification(
+  return WSGetUserNotificatioResponse(
     type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
         unknownValue: WSResponseType.unknowType),
     pk: json['pk'] as String,
@@ -130,8 +132,8 @@ WSGetUserNotification _$WSGetUserNotificationFromJson(
   );
 }
 
-Map<String, dynamic> _$WSGetUserNotificationToJson(
-        WSGetUserNotification instance) =>
+Map<String, dynamic> _$WSGetUserNotificatioResponseToJson(
+        WSGetUserNotificatioResponse instance) =>
     <String, dynamic>{
       'type': _$WSResponseTypeEnumMap[instance.type],
       'created': instance.created,
@@ -147,4 +149,44 @@ Map<String, dynamic> _$WSGetUserNotificationToJson(
       'receiver_id': instance.recieverId,
       'sender_id': instance.senderId,
       'unread_count': instance.unreadCount,
+    };
+
+WSGetUserMessageResponse _$WSGetUserMessageResponseFromJson(
+    Map<String, dynamic> json) {
+  return WSGetUserMessageResponse(
+    type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
+        unknownValue: WSResponseType.unknowType),
+    message: json['message'] as String,
+    file: json['file'] as String,
+    filename: json['filename'] as String,
+    fileFormat: json['fileFormat'] as String,
+    sender: json['sender'] as String,
+    receiver: json['receiver'] as String,
+    pk: json['pk'] as int,
+    photo: json['photo'] as String,
+    created: json['created'] as String,
+    isRead: json['is_read'] as bool,
+    senderId: json['sender_id'] as String,
+    receiverId: json['receiver_id'] as String,
+    isSupport: json['is_support'] as bool,
+  );
+}
+
+Map<String, dynamic> _$WSGetUserMessageResponseToJson(
+        WSGetUserMessageResponse instance) =>
+    <String, dynamic>{
+      'type': _$WSResponseTypeEnumMap[instance.type],
+      'message': instance.message,
+      'file': instance.file,
+      'filename': instance.filename,
+      'fileFormat': instance.fileFormat,
+      'sender': instance.sender,
+      'receiver': instance.receiver,
+      'pk': instance.pk,
+      'photo': instance.photo,
+      'created': instance.created,
+      'is_read': instance.isRead,
+      'sender_id': instance.senderId,
+      'receiver_id': instance.receiverId,
+      'is_support': instance.isSupport,
     };

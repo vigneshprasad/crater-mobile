@@ -6,10 +6,12 @@ import 'package:worknetwork/routes.dart';
 
 class UserListItem extends StatelessWidget {
   final ChatUser user;
+  final bool withFavorite;
 
   const UserListItem({
     Key key,
     @required this.user,
+    this.withFavorite = true,
   }) : super(key: key);
 
   @override
@@ -62,11 +64,14 @@ class UserListItem extends StatelessWidget {
   }
 
   Widget _buildListActions() {
-    final icon = user.isStarred ? Icons.star : Icons.star_border;
-    return IconButton(
-      onPressed: () {},
-      icon: Icon(icon),
-      color: Colors.yellow[800],
-    );
+    if (withFavorite) {
+      final icon = user.isStarred ? Icons.star : Icons.star_border;
+      return IconButton(
+        onPressed: () {},
+        icon: Icon(icon),
+        color: Colors.yellow[800],
+      );
+    }
+    return null;
   }
 }

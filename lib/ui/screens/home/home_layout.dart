@@ -70,6 +70,15 @@ class _HomeLayoutState extends State<HomeLayout> {
         child: const Icon(WorkNetIcons.newPost),
       );
     }
+    if (_currentIndex == 2) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.chatSearch);
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(WorkNetIcons.message),
+      );
+    }
     return null;
   }
 }

@@ -14,6 +14,12 @@ enum WSResponseType {
   @JsonValue("user_notification")
   getUserNotification,
 
+  @JsonValue("user_message")
+  getUserMessage,
+
+  @JsonValue("search_all_users")
+  getSearchAllUsers,
+
   @JsonValue("unknown_type")
   unknowType,
 }
@@ -88,7 +94,7 @@ class WSGetChatMessagesResponse extends WSResponse {
 }
 
 @JsonSerializable()
-class WSGetUserNotification extends WSResponse {
+class WSGetUserNotificatioResponse extends WSResponse {
   final String created;
   final String name;
   final String photo;
@@ -120,7 +126,7 @@ class WSGetUserNotification extends WSResponse {
   @JsonKey(name: "unread_count")
   final int unreadCount;
 
-  WSGetUserNotification({
+  WSGetUserNotificatioResponse({
     WSResponseType type = WSResponseType.getUserNotification,
     this.pk,
     this.created,
@@ -136,4 +142,54 @@ class WSGetUserNotification extends WSResponse {
     this.senderId,
     this.unreadCount,
   }) : super(type);
+
+  factory WSGetUserNotificatioResponse.fromJson(Map<String, dynamic> json) =>
+      _$WSGetUserNotificatioResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$WSGetUserNotificatioResponseToJson(this);
+}
+
+@JsonSerializable()
+class WSGetUserMessageResponse extends WSResponse {
+  final String message;
+  final String file;
+  final String filename;
+  final String fileFormat;
+  final String sender;
+  final String receiver;
+  final int pk;
+  final String photo;
+  final String created;
+
+  @JsonKey(name: "is_read")
+  final bool isRead;
+
+  @JsonKey(name: "sender_id")
+  final String senderId;
+
+  @JsonKey(name: "receiver_id")
+  final String receiverId;
+
+  @JsonKey(name: "is_support")
+  final bool isSupport;
+
+  WSGetUserMessageResponse({
+    WSResponseType type = WSResponseType.getUserMessage,
+    this.message,
+    this.file,
+    this.filename,
+    this.fileFormat,
+    this.sender,
+    this.receiver,
+    this.pk,
+    this.photo,
+    this.created,
+    this.isRead,
+    this.senderId,
+    this.receiverId,
+    this.isSupport,
+  }) : super(type);
+
+  factory WSGetUserMessageResponse.fromJson(Map<String, dynamic> json) =>
+      _$WSGetUserMessageResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$WSGetUserMessageResponseToJson(this);
 }

@@ -33,8 +33,10 @@ class RootProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            lazy: false,
             create: (context) =>
-                NotificationBloc(webSocketRepository: webSocketRepository),
+                NotificationBloc(webSocketRepository: webSocketRepository)
+                  ..add(const OpenNotificationHiveStarted()),
           ),
         ],
         child: child,

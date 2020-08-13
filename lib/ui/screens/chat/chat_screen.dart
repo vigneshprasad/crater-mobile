@@ -4,6 +4,7 @@ import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
 import 'package:worknetwork/blocs/chat/bloc/chat_bloc.dart';
 import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
 import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
+import 'package:worknetwork/models/chat/chat_model.dart';
 import 'package:worknetwork/ui/components/chat_input_bar/chat_input_bar.dart';
 import 'package:worknetwork/ui/components/list_items/chat_message_item/chat_message_item.dart';
 import 'package:worknetwork/ui/screens/chat/chat_layout.dart';
@@ -24,14 +25,17 @@ class _ChatScreenState extends State<ChatScreen> {
   NotificationBloc _notificationBloc;
   ChatBloc _chatBloc;
   WebSocketRepository _webSocketRepository;
-  TextEditingController _chatInputController = TextEditingController();
+  final TextEditingController _chatInputController = TextEditingController();
   String message;
+  List<ChatMessage> _messages;
+  ChatUser _chatUser;
 
   @override
   void initState() {
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _webSocketRepository = RepositoryProvider.of<WebSocketRepository>(context);
     _chatBloc = ChatBloc(
+      recieverId: widget.recieverId,
       webSocketRepository: _webSocketRepository,
       notificationBloc: _notificationBloc,
     )..add(SetChatWithUser(recieverId: widget.recieverId));
@@ -41,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    _chatInputController?.dispose();
     _chatBloc.close();
     super.dispose();
   }
@@ -52,11 +57,15 @@ class _ChatScreenState extends State<ChatScreen> {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) {
           return BlocConsumer<ChatBloc, ChatState>(
-            listener: (context, chatState) {},
+            listener: (context, chatState) {
+              if (chatState is SetChatUpdated) {
+                setState(() {
+                  _messages = [...chatState.messages];
+                  _chatUser = chatState.recieverUser;
+                });
+              }
+            },
             builder: (context, chatState) {
-              final _chatUser = chatState.recieverUser;
-              final _messages = chatState.messages;
-
               if (_chatUser != null) {
                 return ChatLayout(
                     user: _chatUser,
@@ -92,6 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _onSubmitMessage() {
     if (message.isNotEmpty) {
       _chatBloc.add(SendMessageToUser(message: message));
+      _chatInputController.clear();
     }
   }
 }
