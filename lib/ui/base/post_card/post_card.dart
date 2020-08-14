@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart' show launch;
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/models/post/post_model.dart';
@@ -27,8 +30,8 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final links = ParseUrls.getLinksList(post.message);
     return Card(
-      elevation: 0.5,
-      color: Colors.grey[50],
+      elevation: 1,
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -55,9 +58,25 @@ class PostCard extends StatelessWidget {
       padding: const EdgeInsets.all(AppInsets.xl),
       child: Row(
         children: <Widget>[
-          CircleAvatar(
-            backgroundImage: NetworkImage(post.creatorPhoto),
-          ),
+          if (post.creatorPhoto != null)
+            CachedNetworkImage(
+              imageUrl: post.creatorPhoto,
+              placeholder: (context, url) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor,
+                ),
+                width: 44,
+                height: 44,
+              ),
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                backgroundImage: imageProvider,
+              ),
+            ),
+          if (post.creatorPhoto == null)
+            const CircleAvatar(
+              backgroundImage: AppImageAssets.defaultAvatar,
+            ),
           const SizedBox(width: AppPadding.med),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,11 +120,11 @@ class PostCard extends StatelessWidget {
             right: AppInsets.med,
           ),
           child: Card(
+            elevation: 1,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
-            elevation: 2,
-            color: Colors.white,
+            color: Colors.grey[100],
             child: InkWell(
               highlightColor: Colors.grey[200],
               onTap: () {
@@ -124,29 +143,47 @@ class PostCard extends StatelessWidget {
   Widget renderMetaData(
       AsyncSnapshot<http.Response> snapshot, BuildContext context) {
     if (snapshot.connectionState == ConnectionState.done) {
-      final headingStyle = Theme.of(context).textTheme.subtitle2;
-      final bodyStyle = Theme.of(context).textTheme.bodyText2;
+      final headingStyle = Theme.of(context)
+          .textTheme
+          .subtitle2
+          .copyWith(color: Colors.grey[800]);
+      final bodyStyle = Theme.of(context)
+          .textTheme
+          .bodyText2
+          .copyWith(color: Colors.grey[600]);
       final document = responseToDocument(snapshot.data);
       final data = MetadataParser.parse(document);
       const radius = Radius.circular(8);
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.only(topLeft: radius, topRight: radius),
-              image: DecorationImage(
-                image: NetworkImage(data.image),
-                fit: BoxFit.cover,
-              ),
+          if (data.image != null)
+            CachedNetworkImage(
+              imageUrl: data.image,
+              placeholder: (context, url) {
+                return Lottie.asset(
+                  "assets/lottie/loading_dots.json",
+                  height: 64,
+                );
+              },
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  width: double.infinity,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: radius, topRight: radius),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
             ),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl, vertical: AppInsets.l),
+                horizontal: AppInsets.xl, vertical: AppInsets.xl),
             child: RichText(
               text: TextSpan(
                 children: [
@@ -154,7 +191,7 @@ class PostCard extends StatelessWidget {
                     text: data.title,
                     style: headingStyle,
                   ),
-                  const TextSpan(text: '\n'),
+                  const TextSpan(text: '\n\n'),
                   TextSpan(
                     text: data.description,
                     style: bodyStyle,

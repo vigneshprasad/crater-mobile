@@ -32,7 +32,7 @@ mixin AppTheme {
           color: Colors.black87,
         ),
       ),
-      canvasColor: Colors.white,
+      canvasColor: Colors.grey[50],
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textSelectionHandleColor: primaryColor,
       cursorColor: primaryColor);

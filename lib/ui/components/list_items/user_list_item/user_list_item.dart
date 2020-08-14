@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/models/chat/chat_model.dart';
 import 'package:worknetwork/routes.dart';
+import 'package:worknetwork/ui/base/base_badge/base_badge.dart';
 
 class UserListItem extends StatelessWidget {
   final ChatUser user;
@@ -52,8 +53,11 @@ class UserListItem extends StatelessWidget {
       return CachedNetworkImage(
         imageUrl: user.photo,
         imageBuilder: (context, imageProvider) {
-          return CircleAvatar(
-            backgroundImage: imageProvider,
+          return BaseBadge(
+            count: user.unreadCount ?? 0,
+            child: CircleAvatar(
+              backgroundImage: imageProvider,
+            ),
           );
         },
       );

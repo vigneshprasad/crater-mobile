@@ -23,4 +23,5 @@ Future<void> initHive() async {
   // Open Boxes
   await Hive.openBox<MessageNotification>(AppHiveBoxes.notificationBox);
   await Hive.openBox<UserChatBox>(AppHiveBoxes.userChatbox);
+  await Hive.openBox<ChatMessageAdapter>(AppHiveBoxes.chatMessagesBox);
 }

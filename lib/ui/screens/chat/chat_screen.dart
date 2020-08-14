@@ -38,7 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
       recieverId: widget.recieverId,
       webSocketRepository: _webSocketRepository,
       notificationBloc: _notificationBloc,
-    )..add(SetChatWithUser(recieverId: widget.recieverId));
+    )
+      ..add(SetChatWithUser(recieverId: widget.recieverId))
+      ..add(ChatReadMessages());
     _chatInputController.addListener(_onChatInputChanged);
     super.initState();
   }

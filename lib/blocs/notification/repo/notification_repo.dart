@@ -21,7 +21,7 @@ class NotificationRepository {
   Future<List<MessageNotification>> setNotificationToBox(
       MessageNotification notification) async {
     messageNotificationsBox ??= await box;
-    await messageNotificationsBox.put(notification.messageId, notification);
+    await messageNotificationsBox.put(notification.pk, notification);
     return messageNotificationsBox.values.toList();
   }
 

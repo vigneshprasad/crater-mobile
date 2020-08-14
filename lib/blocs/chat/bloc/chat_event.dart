@@ -55,6 +55,11 @@ class ChatMessageLoaded extends ChatEvent {
   List<Object> get props => [message];
 }
 
+class ChatReadMessages extends ChatEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class ChatNotificationLoaded extends ChatEvent {
   final MessageNotification notification;
 

@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worknetwork/blocs/article/bloc/article_bloc.dart';
 import 'package:worknetwork/blocs/masterclass/bloc/masterclass_bloc.dart';
 import 'package:worknetwork/blocs/meeting/bloc/meeting_bloc.dart';
+import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
 import 'package:worknetwork/blocs/post/bloc/post_bloc.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/ui/base/base_badge/base_badge.dart';
 import 'package:worknetwork/ui/screens/home/home_layout.dart';
 import 'package:worknetwork/ui/screens/home/tabs/articles_tab.dart';
 import 'package:worknetwork/ui/screens/home/tabs/community_tab.dart';
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ArticleBloc _articleBloc = ArticleBloc();
   final MasterclassBloc _masterclassBloc = MasterclassBloc();
   final MeetingBloc _meetingBloc = MeetingBloc()..add(MeetingGetStarted());
+  int _unreadCount = 0;
 
   final List<Widget> _screens = [
     CommunityTab(),
@@ -83,7 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(meetsLabel),
       ),
       BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.inbox),
+        icon: BlocListener<NotificationBloc, NotificationState>(
+          listener: (context, state) {
+            if (state is MessageNotificationLoaded) {
+              setState(() {
+                final int count = state.messageNotifcations.fold(
+                    0,
+                    (previousValue, element) =>
+                        previousValue += element.unreadCount);
+                _unreadCount = count;
+              });
+            }
+          },
+          child: BaseBadge(
+            count: _unreadCount,
+            child: const Icon(WorkNetIcons.inbox),
+          ),
+        ),
         title: Text(inboxLabel),
       ),
       BottomNavigationBarItem(

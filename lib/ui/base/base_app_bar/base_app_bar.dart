@@ -39,7 +39,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           width: width,
           child: Material(
             elevation: elevation ?? 0,
-            color: color ?? Colors.white,
+            color: color ?? Colors.transparent,
             child: Row(
               children: <Widget>[
                 if (hasDrawer)

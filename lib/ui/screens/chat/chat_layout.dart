@@ -36,6 +36,7 @@ class _ChatLayoutState extends State<ChatLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
+        color: Colors.white,
         elevation: 1,
         title: _buildLabel(context, 1.0),
       ),

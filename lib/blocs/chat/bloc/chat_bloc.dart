@@ -51,8 +51,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (state is MessageNotificationLoaded) {
         final notification = state.notification;
         if (notification.senderId == recieverId) {
-          _chatRepository.channel.sink
-              .add(jsonEncode({"type": "user_read_user_messages"}));
+          add(ChatReadMessages());
+
           // add(ChatNotificationLoaded(notification: notification));
         }
       }
@@ -76,6 +76,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _chatRepository.sendMessageToUser(event.message);
     } else if (event is SendUserIsTyping) {
       _chatRepository.senduserIsTyping();
+    } else if (event is ChatReadMessages) {
+      _chatRepository.channel.sink
+          .add(jsonEncode({"type": "user_read_user_messages"}));
     }
 
     // WS Response Events

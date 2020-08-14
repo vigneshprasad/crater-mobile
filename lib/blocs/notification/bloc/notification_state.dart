@@ -11,9 +11,16 @@ class NotificationInitial extends NotificationState {
   const NotificationInitial() : super(messageNotifcations: const []);
 }
 
-class MessageNotificationLoaded extends NotificationState {
+class MessageNotificationPersisted extends NotificationState {
   final MessageNotification notification;
 
+  const MessageNotificationPersisted({
+    this.notification,
+  });
+}
+
+class MessageNotificationLoaded extends NotificationState {
+  final MessageNotification notification;
   const MessageNotificationLoaded({
     List<MessageNotification> messageNotifcations,
     this.notification,

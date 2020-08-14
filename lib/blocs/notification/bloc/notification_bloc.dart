@@ -27,8 +27,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       final json = jsonDecode(snapShot.toString()) as Map<String, dynamic>;
       final WSResponseType type = WSResponse.getEnumFromJson(json["type"]);
       if (type == WSResponseType.getUserNotification) {
-        print("this happened ${json}");
         final response = WSGetUserNotificatioResponse.fromJson(json);
+        // print(json);
         add(UserNotificationLoaded(response: response));
       }
     });
@@ -56,6 +56,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Stream<NotificationState> _mapNotificationToState(
       UserNotificationLoaded event) async* {
     final notification = MessageNotification.fromResponse(event.response);
+    yield MessageNotificationPersisted(notification: notification);
     final allNotifications =
         await _notificationRepository.setNotificationToBox(notification);
     yield MessageNotificationLoaded(
