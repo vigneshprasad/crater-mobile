@@ -17,11 +17,11 @@ Future<void> initHive() async {
   Hive.registerAdapter(CommentAdapter());
   Hive.registerAdapter(ChatMessageAdapter());
   Hive.registerAdapter(MessageNotificationAdapter());
-  Hive.registerAdapter(UserChatBoxAdapter());
+  Hive.registerAdapter(UserChatMessagesDataAdapter());
   Hive.registerAdapter(ChatUserAdapter());
 
   // Open Boxes
   await Hive.openBox<MessageNotification>(AppHiveBoxes.notificationBox);
-  await Hive.openBox<UserChatBox>(AppHiveBoxes.userChatbox);
-  await Hive.openBox<ChatMessageAdapter>(AppHiveBoxes.chatMessagesBox);
+  await Hive.openBox<UserChatMessagesData>(AppHiveBoxes.chatMessagesDataBox);
+  await Hive.openBox<ChatUser>(AppHiveBoxes.chatUsersBox);
 }

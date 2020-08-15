@@ -23,6 +23,23 @@ class InboxInitial extends InboxState {
   List<Object> get props => [users, page, pages];
 }
 
+class PersistChatUsers extends InboxState {
+  const PersistChatUsers({
+    List<ChatUser> users,
+  }) : super(users: users);
+
+  @override
+  List<Object> get props => [users];
+}
+
+class UpdatedUserData extends InboxState {
+  final MessageNotification notification;
+  const UpdatedUserData({this.notification});
+
+  @override
+  List<Object> get props => [notification];
+}
+
 class AllUsersLoaded extends InboxState {
   const AllUsersLoaded({
     List<ChatUser> users,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:worknetwork/app.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/utils/init_hive.dart';
+import 'package:worknetwork/utils/one_signal_manager/one_signal_manager.dart';
 import 'package:worknetwork/utils/root_provider.dart';
 import 'package:worknetwork/utils/simple_bloc_observer.dart';
 
@@ -18,7 +19,7 @@ Future<void> main() async {
     RootProvider(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: statusbarTheme,
-        child: App(),
+        child: OneSignalManager(child: App()),
       ),
     ),
   );

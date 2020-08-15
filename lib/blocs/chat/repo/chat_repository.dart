@@ -8,7 +8,7 @@ import 'package:worknetwork/models/websocket/requests/ws_requests.dart';
 
 class ChatRepository {
   final WebSocketChannel channel;
-  Box<UserChatBox> userChatBox;
+  Box<UserChatMessagesData> userChatBox;
 
   ChatRepository(this.channel);
 
@@ -36,20 +36,22 @@ class ChatRepository {
     channel.sink.add(request);
   }
 
-  Future<UserChatBox> getInitialState(String recieverId) async {
-    userChatBox ??= Hive.box<UserChatBox>(AppHiveBoxes.userChatbox);
+  Future<UserChatMessagesData> getInitialState(String recieverId) async {
+    userChatBox ??=
+        Hive.box<UserChatMessagesData>(AppHiveBoxes.chatMessagesDataBox);
     final chatData = userChatBox.get("recieverId");
     return chatData;
   }
 
-  Future<UserChatBox> updateChatBox(
+  Future<UserChatMessagesData> updateChatState(
     ChatUser recieverUser,
     List<ChatMessage> messages,
     int page,
     int pages,
   ) async {
-    userChatBox ??= Hive.box<UserChatBox>(AppHiveBoxes.userChatbox);
-    final data = UserChatBox(
+    userChatBox ??=
+        Hive.box<UserChatMessagesData>(AppHiveBoxes.chatMessagesDataBox);
+    final data = UserChatMessagesData(
       messages: messages,
       recieverUser: recieverUser,
       page: page,
@@ -59,14 +61,24 @@ class ChatRepository {
     return userChatBox.get(recieverUser.pk);
   }
 
-  Future<UserChatBox> addMessageToBox(
+  Future<UserChatMessagesData> addMessageToBox(
       ChatMessage message, String recieverId) async {
-    userChatBox ??= Hive.box<UserChatBox>(AppHiveBoxes.userChatbox);
+    userChatBox ??=
+        Hive.box<UserChatMessagesData>(AppHiveBoxes.chatMessagesDataBox);
     var data = userChatBox.get(recieverId);
     final messages = data.messages;
     messages.insert(0, message);
     data = data.copyWith(messages: messages);
     await userChatBox.put(recieverId, data);
     return userChatBox.get(recieverId);
+  }
+
+  Future<void> clearUnreadCountPersist(String receiverId) async {
+    final box = Hive.box<ChatUser>(AppHiveBoxes.chatUsersBox);
+    final user = box.get(receiverId);
+    if (user != null) {
+      final updated = user.copyWith(unreadCount: 0);
+      box.put(receiverId, updated);
+    }
   }
 }

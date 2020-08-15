@@ -52,8 +52,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final GoogleSignInAuthentication authUser =
           await _authRepositry.signInWithGoogle();
       yield LoginState.loading();
+      final oneSignalSub = await _authRepositry.getOneSignalSubsciptionState();
+      final osId = oneSignalSub.subscriptionStatus.userId;
       final response =
-          await _authRepositry.authWithGoogle(authUser.accessToken);
+          await _authRepositry.authWithGoogle(authUser.accessToken, osId);
       _authBloc.add(AuthLoggedIn(
         token: response.token,
         user: response.user,
@@ -70,8 +72,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) async* {
     yield LoginState.loading();
     try {
-      final response =
-          await _authRepositry.loginEmail(email: email, password: password);
+      final oneSignalSub = await _authRepositry.getOneSignalSubsciptionState();
+      final osId = oneSignalSub.subscriptionStatus.userId;
+      final response = await _authRepositry.loginEmail(
+        email: email,
+        password: password,
+        osId: osId,
+      );
       _authBloc.add(AuthLoggedIn(
         token: response.token,
         user: response.user,

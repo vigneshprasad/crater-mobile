@@ -108,12 +108,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Stream<ChatState> _mapChatLoadedToState(SetChatLoaded event) async* {
-    final UserChatBox newState = await _chatRepository.updateChatBox(
+    final UserChatMessagesData newState = await _chatRepository.updateChatState(
       event.response.userData,
       event.response.results,
       event.response.page,
       event.response.pages,
     );
+    await _chatRepository.clearUnreadCountPersist(event.response.userData.pk);
     yield SetChatUpdated(
       messages: newState.messages,
       page: newState.page,
@@ -124,7 +125,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Stream<ChatState> _mapChatMessagetoState(ChatMessageLoaded event) async* {
     yield ChatMessagePersist(message: event.message);
-    final UserChatBox box =
+    final UserChatMessagesData box =
         await _chatRepository.addMessageToBox(event.message, recieverId);
     yield SetChatUpdated(
       recieverUser: box.recieverUser,
@@ -137,7 +138,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> _mapNotificationToState(
       ChatNotificationLoaded event) async* {
     yield ChatNotificationPersist(notification: event.notification);
-    final UserChatBox box = await _chatRepository.addMessageToBox(
+    final UserChatMessagesData box = await _chatRepository.addMessageToBox(
         event.notification.latestMessage, recieverId);
     yield SetChatUpdated(
       recieverUser: box.recieverUser,

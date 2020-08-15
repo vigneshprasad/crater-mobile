@@ -229,7 +229,7 @@ class MessageNotification extends HiveObject {
 }
 
 @HiveType(typeId: 8)
-class UserChatBox extends HiveObject {
+class UserChatMessagesData extends HiveObject {
   @HiveField(0)
   final ChatUser recieverUser;
 
@@ -242,20 +242,20 @@ class UserChatBox extends HiveObject {
   @HiveField(3)
   final int pages;
 
-  UserChatBox({
+  UserChatMessagesData({
     this.recieverUser,
     this.messages,
     this.page,
     this.pages,
   });
 
-  UserChatBox copyWith({
+  UserChatMessagesData copyWith({
     ChatUser recieverUser,
     List<ChatMessage> messages,
     int page,
     int pages,
   }) {
-    return UserChatBox(
+    return UserChatMessagesData(
       recieverUser: recieverUser ?? this.recieverUser,
       messages: messages ?? this.messages,
       page: page ?? this.page,

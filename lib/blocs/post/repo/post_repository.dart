@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:worknetwork/api/post/post_api_service.dart';
 import 'package:worknetwork/models/post/post_model.dart';
 
 class PostRepository {
   final PostApiService _postApiService = PostApiService.create();
+  Box<PostModel> postsBox;
 
   Future<GetPostListResponse> getPosts() async {
     final response = await _postApiService.getPostList();

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/blocs/inbox/repo/inbox_repository.dart';
+import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
 import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
 import 'package:worknetwork/models/chat/chat_model.dart';
 import 'package:worknetwork/models/websocket/response/ws_response.dart';
@@ -15,11 +16,16 @@ part 'inbox_state.dart';
 
 class InboxBloc extends Bloc<InboxEvent, InboxState> {
   final WebSocketRepository webSocketRepository;
+  final NotificationBloc notificationBloc;
   InboxRepository _inboxRepository;
   StreamSubscription _inboxSocketSub;
+  StreamSubscription _notificationBlocStreamSub;
 
   // Connect to stream listener
-  InboxBloc({@required this.webSocketRepository}) : super(InboxInitial()) {
+  InboxBloc({
+    @required this.webSocketRepository,
+    @required this.notificationBloc,
+  }) : super(InboxInitial()) {
     _inboxRepository = InboxRepository(webSocketRepository.channel);
     _inboxSocketSub ??=
         webSocketRepository.streamController.stream.listen((snapShot) {
@@ -30,12 +36,19 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
         add(InboxGetAllUsersLoaded(
             response: WSGetAllUsersResponse.fromJson(json)));
       }
+
+      _notificationBlocStreamSub ??= notificationBloc.listen((state) {
+        if (state is MessageNotificationLoaded) {
+          add(ChatUserNotificationLoaded(notification: state.notification));
+        }
+      });
     });
   }
 
   @override
-  Future<void> close() async {
-    await _inboxSocketSub.cancel();
+  Future<void> close() {
+    _notificationBlocStreamSub?.cancel();
+    _inboxSocketSub.cancel();
     return super.close();
   }
 
@@ -50,15 +63,31 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
     // Socket Stream onResponse Events
     if (event is InboxGetAllUsersLoaded) {
       yield* _mapAllUserstoState(event);
+    } else if (event is ChatUserNotificationLoaded) {
+      yield* _mapNotificationToState(event);
     }
   }
 
   Stream<InboxState> _mapAllUserstoState(InboxGetAllUsersLoaded event) async* {
-    final resposne = event.response;
+    final response = event.response;
+    yield PersistChatUsers(users: event.response.results);
+    final users =
+        await _inboxRepository.persistChatUsers(event.response.results);
     yield AllUsersLoaded(
-      page: resposne.page,
-      pages: resposne.pages,
-      users: resposne.results,
+      page: response.page,
+      pages: response.pages,
+      users: users,
+    );
+  }
+
+  Stream<InboxState> _mapNotificationToState(
+      ChatUserNotificationLoaded event) async* {
+    final users = await _inboxRepository.updateChatUserData(event.notification);
+    yield UpdatedUserData(notification: event.notification);
+    yield AllUsersLoaded(
+      page: state.page,
+      pages: state.pages,
+      users: users,
     );
   }
 }

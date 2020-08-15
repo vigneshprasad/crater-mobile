@@ -15,6 +15,16 @@ class InboxGetAllUsers extends InboxEvent {
   List<Object> get props => [request];
 }
 
+class ChatUserNotificationLoaded extends InboxEvent {
+  final MessageNotification notification;
+
+  const ChatUserNotificationLoaded({this.notification});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [notification];
+}
+
 class InboxGetAllUsersLoaded extends InboxEvent {
   final WSGetAllUsersResponse response;
 

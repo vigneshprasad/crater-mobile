@@ -22,10 +22,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final TextEditingController _chatInputController = TextEditingController();
   NotificationBloc _notificationBloc;
   ChatBloc _chatBloc;
   WebSocketRepository _webSocketRepository;
-  final TextEditingController _chatInputController = TextEditingController();
   String message;
   List<ChatMessage> _messages;
   ChatUser _chatUser;

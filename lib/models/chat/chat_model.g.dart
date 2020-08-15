@@ -198,17 +198,17 @@ class MessageNotificationAdapter extends TypeAdapter<MessageNotification> {
           typeId == other.typeId;
 }
 
-class UserChatBoxAdapter extends TypeAdapter<UserChatBox> {
+class UserChatMessagesDataAdapter extends TypeAdapter<UserChatMessagesData> {
   @override
   final int typeId = 8;
 
   @override
-  UserChatBox read(BinaryReader reader) {
+  UserChatMessagesData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserChatBox(
+    return UserChatMessagesData(
       recieverUser: fields[0] as ChatUser,
       messages: (fields[1] as List)?.cast<ChatMessage>(),
       page: fields[2] as int,
@@ -217,7 +217,7 @@ class UserChatBoxAdapter extends TypeAdapter<UserChatBox> {
   }
 
   @override
-  void write(BinaryWriter writer, UserChatBox obj) {
+  void write(BinaryWriter writer, UserChatMessagesData obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -236,7 +236,7 @@ class UserChatBoxAdapter extends TypeAdapter<UserChatBox> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserChatBoxAdapter &&
+      other is UserChatMessagesDataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

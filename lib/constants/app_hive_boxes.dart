@@ -1,7 +1,7 @@
 class AppHiveBoxes {
-  static const userBox = "userBox";
-  static const postBox = "postBox";
-  static const chatMessagesBox = "chatMessageBox";
-  static const notificationBox = "notificationBox";
-  static const userChatbox = "userChatBox";
+  static const userBox = "user";
+  static const postBox = "post";
+  static const notificationBox = "notifications";
+  static const chatMessagesDataBox = "chatMessagesData";
+  static const chatUsersBox = "chatUsers";
 }

@@ -9,12 +9,14 @@ import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 class HomeLayout extends StatefulWidget {
   final List<BottomNavigationBarItem> navItems;
   final List<Widget> screens;
+  final Function(int) onTabTapped;
 
-  const HomeLayout({
-    Key key,
-    @required this.navItems,
-    @required this.screens,
-  }) : super(key: key);
+  const HomeLayout(
+      {Key key,
+      @required this.navItems,
+      @required this.screens,
+      this.onTabTapped})
+      : super(key: key);
 
   @override
   _HomeLayoutState createState() => _HomeLayoutState();
@@ -53,6 +55,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     setState(() {
       _currentIndex = tabIndex;
     });
+    widget.onTabTapped != null ?? widget.onTabTapped(tabIndex);
   }
 
   Widget getFloatingActionButton(BuildContext context) {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worknetwork/constants/app_hive_boxes.dart';
 import 'package:worknetwork/constants/shared_pref_keys.dart';
@@ -27,13 +28,20 @@ class AuthRepository {
   //   return;
   // }
 
+  Future<OSPermissionSubscriptionState> getOneSignalSubsciptionState() async {
+    final status = await OneSignal.shared.getPermissionSubscriptionState();
+    return status;
+  }
+
   Future<AuthEmailResponse> loginEmail({
     @required String email,
     @required String password,
+    @required String osId,
   }) async {
     final response = await _authApiService.loginWithEmail({
-      'email': email,
-      'password': password,
+      "email": email,
+      "password": password,
+      "os_id": osId,
     });
     switch (response.statusCode) {
       case 200:
@@ -42,7 +50,7 @@ class AuthRepository {
       case 400:
         throw Exception(response.body);
       default:
-        throw Exception('Something went wrong');
+        throw Exception("Something went wrong");
     }
   }
 
@@ -56,8 +64,9 @@ class AuthRepository {
     return googleAuth;
   }
 
-  Future<AuthEmailResponse> authWithGoogle(String accessToken) async {
-    final body = {'access_token': accessToken, 'role': 'user'};
+  Future<AuthEmailResponse> authWithGoogle(
+      String accessToken, String osId) async {
+    final body = {"access_token": accessToken, "role": "user", "os_id": osId};
     final response = await _authApiService.authWithGoogle(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
