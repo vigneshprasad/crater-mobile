@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 
 enum AuthProvider { google, facebook, linkedin }
@@ -13,20 +14,44 @@ class SocialAuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
+    Widget _child;
+    Color _buttonColor;
 
     if (provider == AuthProvider.google) {
-      child = SvgPicture.asset(
-        'assets/svg/google.svg',
-        width: 24,
+      _child = SvgPicture.asset(
+        AppSvgAssets.googleColored,
+        height: 24,
       );
+      _buttonColor = Colors.white70;
+    }
+
+    if (provider == AuthProvider.linkedin) {
+      _child = SvgPicture.asset(
+        AppSvgAssets.linkedinFilled,
+        height: 24,
+      );
+
+      _buttonColor = AppTheme.linkedInColor;
+    }
+
+    if (provider == AuthProvider.facebook) {
+      _child = SvgPicture.asset(
+        AppSvgAssets.facebook,
+        color: Colors.white,
+        height: 24,
+      );
+
+      _buttonColor = AppTheme.facebookColor;
     }
 
     return RaisedButton(
-        color: Colors.white70,
-        padding: const EdgeInsets.all(AppInsets.xl),
+        color: _buttonColor,
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.l,
+          horizontal: AppInsets.xl,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         onPressed: onPressed,
-        child: child);
+        child: _child);
   }
 }

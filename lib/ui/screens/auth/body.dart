@@ -28,11 +28,11 @@ class SignupBodyTemplate extends StatelessWidget {
                           const AssetImage('assets/images/sign_up_heading.png'),
                       height: imageHeight,
                     ),
-                    Positioned(
-                      left: MediaQuery.of(context).size.width * 0.45,
-                      top: MediaQuery.of(context).size.height * 0.2,
-                      child: _buildPlayButton(),
-                    )
+                    // Positioned(
+                    //   left: MediaQuery.of(context).size.width * 0.45,
+                    //   top: MediaQuery.of(context).size.height * 0.2,
+                    //   child: _buildPlayButton(),
+                    // )
                   ],
                 ),
                 const SizedBox(height: 16),

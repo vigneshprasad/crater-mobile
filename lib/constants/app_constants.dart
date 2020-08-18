@@ -12,3 +12,9 @@ class AppImageAssets {
   static const searchUserempty =
       AssetImage("assets/images/img_no_user_search.png");
 }
+
+class AppSvgAssets {
+  static const googleColored = "assets/svg/google.svg";
+  static const linkedinFilled = "assets/svg/linkedin-fill.svg";
+  static const facebook = "assets/svg/facebook.svg";
+}

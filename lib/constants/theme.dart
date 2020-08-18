@@ -8,6 +8,8 @@ mixin AppTheme {
   static final TextTheme primaryTextTheme = Typography.material2018().black;
   static final MaterialColor primarySwatch = createMaterialColor(primaryColor);
   static const Color blueAccent = Color(0xFF7AB9DE);
+  static const Color linkedInColor = Color(0xFF0073b3);
+  static const Color facebookColor = Color(0xFF405695);
 
   static const Color primaryLightStatusBar = Color(0x0D000000);
   static final ThemeData lightTheme = ThemeData(

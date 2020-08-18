@@ -54,7 +54,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   SignupBodyTemplate(
                     content: Column(
                       children: <Widget>[
-                        socialAuthRow(context),
+                        _socialAuthRow(context),
                         const SizedBox(
                           height: AppPadding.l,
                         ),
@@ -78,7 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Row socialAuthRow(BuildContext ctx) {
+  Row _socialAuthRow(BuildContext ctx) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
