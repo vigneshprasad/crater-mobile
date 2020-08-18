@@ -51,6 +51,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   lottie: ^0.5.1
   onesignal_flutter: ^2.6.0
+  chewie: ^0.9.10
 
 dev_dependencies:
   flutter_test:

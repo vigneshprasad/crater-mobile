@@ -30,6 +30,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   @override
+  void dispose() {
+    _loginBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _loginBloc,
@@ -43,6 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
           body: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               return Stack(
+                fit: StackFit.expand,
                 children: <Widget>[
                   SignupBodyTemplate(
                     content: Column(
@@ -54,6 +61,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         LoginForm()
                       ],
                     ),
+                    onTapPlayButton: _onTapPlayButton,
                   ),
                   if (state.isSubmitting)
                     Container(
@@ -98,9 +106,5 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _loginBloc.close();
-    super.dispose();
-  }
+  void _onTapPlayButton() {}
 }
