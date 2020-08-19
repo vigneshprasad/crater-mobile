@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/blocs/chat/bloc/chat_bloc.dart';
 import 'package:worknetwork/blocs/chat/repo/chat_repository.dart';
 import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
 import 'package:worknetwork/models/chat/chat_model.dart';

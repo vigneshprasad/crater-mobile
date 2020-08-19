@@ -4,4 +4,9 @@ class AppHiveBoxes {
   static const notificationBox = "notifications";
   static const chatMessagesDataBox = "chatMessagesData";
   static const chatUsersBox = "chatUsers";
+  static const userModelBox = "USER_MODEL_BOX";
+}
+
+class AppHiveTypeIds {
+  static const user = 20;
 }

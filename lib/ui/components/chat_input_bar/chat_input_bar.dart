@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
 
-import 'package:worknetwork/models/user/user_model.dart';
+import '../../../constants/theme.dart';
+import '../../../constants/work_net_icons_icons.dart';
+import '../../../features/auth/domain/entity/user_entity.dart';
 
 class ChatInputBar extends StatelessWidget {
   final User user;

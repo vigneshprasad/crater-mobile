@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
-import 'package:worknetwork/blocs/post/bloc/post_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
-import 'package:worknetwork/ui/base/image_thumb/image_thumb.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
-import 'package:worknetwork/utils/get_multipartfiles.dart';
+
+import '../../../blocs/post/bloc/post_bloc.dart';
+import '../../../constants/theme.dart';
+import '../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../utils/app_localizations.dart';
+import '../../../utils/get_multipartfiles.dart';
+import '../../base/base_app_bar/base_app_bar.dart';
+import '../../base/image_thumb/image_thumb.dart';
 
 class CreatePost extends StatefulWidget {
   final PostBloc postBloc;

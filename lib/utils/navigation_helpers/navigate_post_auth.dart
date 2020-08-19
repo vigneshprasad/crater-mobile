@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/models/user/user_model.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/routes.dart';
 
 void navigatePostAuth(NavigatorState navigator, User user) {

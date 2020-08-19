@@ -52,6 +52,9 @@ dependencies:
   lottie: ^0.5.1
   onesignal_flutter: ^2.6.0
   chewie: ^0.9.10
+  dartz: ^0.9.1
+  flutter_linkedin: ^1.0.2
+  kiwi: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +64,7 @@ dev_dependencies:
   json_serializable: ^3.3.0
   chopper_generator: ^3.0.4
   hive_generator: ^0.7.1
+  kiwi_generator: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

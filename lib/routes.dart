@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/blocs/post/bloc/post_bloc.dart';
-import 'package:worknetwork/ui/modals/create_post/create_post.dart';
-import 'package:worknetwork/ui/screens/auth/auth_screen.dart';
-import 'package:worknetwork/ui/screens/chat/chat_screen.dart';
-import 'package:worknetwork/ui/screens/chat_search/chat_search_screen.dart';
-import 'package:worknetwork/ui/screens/home/home_screen.dart';
-import 'package:worknetwork/ui/screens/setup/setup_screen.dart';
-import 'package:worknetwork/ui/screens/splash/splash_screen.dart';
+
+import 'blocs/post/bloc/post_bloc.dart';
+import 'features/auth/presentation/screens/auth/auth_screen.dart';
+import 'features/auth/presentation/screens/splash/splash_screen.dart';
+import 'ui/modals/create_post/create_post.dart';
+import 'ui/screens/chat/chat_screen.dart';
+import 'ui/screens/chat_search/chat_search_screen.dart';
+import 'ui/screens/home/home_screen.dart';
+import 'ui/screens/setup/setup_screen.dart';
 
 class Routes {
   static const initial = "/";

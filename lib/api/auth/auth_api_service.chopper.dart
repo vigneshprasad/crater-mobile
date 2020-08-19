@@ -31,4 +31,12 @@ class _$AuthApiService extends AuthApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> authWithLinkedin(Map<String, dynamic> body) {
+    final $url = '/user/auth/social/linkedin/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

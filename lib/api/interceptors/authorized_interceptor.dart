@@ -2,14 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:chopper/chopper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/constants/shared_pref_keys.dart';
+import 'package:kiwi/kiwi.dart';
+
+import '../../features/auth/data/datasources/auth_local_datasource.dart';
 
 class AuthorizedInterceptor extends RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.get(SharedPrefKeys.authToken);
+    final user =
+        KiwiContainer().resolve<AuthLocalDataSource>().getUserFromCache();
+    final token = user.token;
     if (token != null) {
       final authHeader = {HttpHeaders.authorizationHeader: 'JWT $token'};
       final requestWithAuth =

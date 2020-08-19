@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 enum AuthProvider { google, facebook, linkedin }
 
 class SocialAuthButton extends StatelessWidget {
-  final AuthProvider provider;
+  final SocialAuthProviders provider;
   final VoidCallback onPressed;
 
   const SocialAuthButton({Key key, @required this.provider, this.onPressed})
@@ -17,7 +18,7 @@ class SocialAuthButton extends StatelessWidget {
     Widget _child;
     Color _buttonColor;
 
-    if (provider == AuthProvider.google) {
+    if (provider == SocialAuthProviders.google) {
       _child = SvgPicture.asset(
         AppSvgAssets.googleColored,
         height: 24,
@@ -25,7 +26,7 @@ class SocialAuthButton extends StatelessWidget {
       _buttonColor = Colors.white70;
     }
 
-    if (provider == AuthProvider.linkedin) {
+    if (provider == SocialAuthProviders.linkedin) {
       _child = SvgPicture.asset(
         AppSvgAssets.linkedinFilled,
         height: 24,
@@ -34,7 +35,7 @@ class SocialAuthButton extends StatelessWidget {
       _buttonColor = AppTheme.linkedInColor;
     }
 
-    if (provider == AuthProvider.facebook) {
+    if (provider == SocialAuthProviders.facebook) {
       _child = SvgPicture.asset(
         AppSvgAssets.facebook,
         color: Colors.white,

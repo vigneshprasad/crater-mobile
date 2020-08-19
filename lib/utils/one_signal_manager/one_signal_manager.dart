@@ -41,8 +41,6 @@ class _OneSignalManagerState extends State<OneSignalManager> {
     OneSignal.shared.setSubscriptionObserver(_onSubscriptionChangeHandler);
     OneSignal.shared
         .setNotificationReceivedHandler(_handleNotificationReceived);
-    final user = await OneSignal.shared.getPermissionSubscriptionState();
-    print(user.subscriptionStatus.userId);
   }
 
   // will be called whenever the subscription changes
@@ -51,7 +49,5 @@ class _OneSignalManagerState extends State<OneSignalManager> {
 
   // will be called whenever the notifcation is recieved
   // Returns  => [OSNotification] notification
-  void _handleNotificationReceived(OSNotification notification) {
-    print(notification.payload.title);
-  }
+  void _handleNotificationReceived(OSNotification notification) {}
 }

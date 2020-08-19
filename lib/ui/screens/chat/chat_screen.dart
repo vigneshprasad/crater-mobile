@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
 import 'package:worknetwork/blocs/chat/bloc/chat_bloc.dart';
 import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
 import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/models/chat/chat_model.dart';
 import 'package:worknetwork/ui/components/chat_input_bar/chat_input_bar.dart';
 import 'package:worknetwork/ui/components/list_items/chat_message_item/chat_message_item.dart';

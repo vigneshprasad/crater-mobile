@@ -4,8 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
-import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
+
+import '../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../repo/websocket_repository.dart';
 
 part 'websocket_event.dart';
 part 'websocket_state.dart';

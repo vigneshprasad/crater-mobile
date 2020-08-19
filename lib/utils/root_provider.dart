@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
 
-import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
-import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
-import 'package:worknetwork/blocs/websocket/bloc/websocket_bloc.dart';
-import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
+import '../blocs/notification/bloc/notification_bloc.dart';
+import '../blocs/websocket/bloc/websocket_bloc.dart';
+import '../blocs/websocket/repo/websocket_repository.dart';
+import '../features/auth/presentation/bloc/auth_bloc.dart';
 
 class RootProvider extends StatelessWidget {
   final Widget child;
-  final AuthBloc _authBloc = AuthBloc()..add(AuthStarted());
+  final AuthBloc _authBloc = KiwiContainer().resolve<AuthBloc>();
   final WebSocketRepository webSocketRepository = WebSocketRepository();
 
   RootProvider({

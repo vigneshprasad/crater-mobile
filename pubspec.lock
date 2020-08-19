@@ -225,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+  dartz:
+    dependency: "direct main"
+    description:
+      name: dartz
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.1"
   equatable:
     dependency: "direct main"
     description:
@@ -279,6 +286,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
+  flutter_linkedin:
+    dependency: "direct main"
+    description:
+      name: flutter_linkedin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -308,6 +322,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webview_plugin:
+    dependency: transitive
+    description:
+      name: flutter_webview_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.11"
   glob:
     dependency: transitive
     description:
@@ -441,6 +462,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  kiwi:
+    dependency: "direct main"
+    description:
+      name: kiwi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  kiwi_generator:
+    dependency: "direct dev"
+    description:
+      name: kiwi_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   lint:
     dependency: "direct main"
     description:
