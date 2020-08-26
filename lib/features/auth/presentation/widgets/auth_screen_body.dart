@@ -6,56 +6,32 @@ class AuthScreenBody extends StatelessWidget {
 
   const AuthScreenBody({
     Key key,
-    this.content,
+    @required this.content,
     this.onTapPlayButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final imageHeight = MediaQuery.of(context).size.height * 0.4;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    Image(
-                      image:
-                          const AssetImage('assets/images/sign_up_heading.png'),
-                      height: imageHeight,
-                    ),
-                    // Positioned(
-                    //   left: MediaQuery.of(context).size.width * 0.45,
-                    //   top: MediaQuery.of(context).size.height * 0.2,
-                    //   child: _buildPlayButton(),
-                    // )
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  child: content,
-                )
-              ],
-            ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image(
+            image: const AssetImage('assets/images/sign_up_heading.png'),
+            height: imageHeight,
           ),
-        ),
-        Container(
-          color: Colors.grey[200],
-          height: 48,
-          child: Center(
-            child: Text("Singup for app"),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            child: content,
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 
+  // ignore: unused_element
   Widget _buildPlayButton() {
     return Material(
       color: Colors.white.withOpacity(0.9),

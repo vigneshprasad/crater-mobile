@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/user_entity.dart';
 import '../repository/auth_repository.dart';
 
-class UCGoogleAuth extends UseCase<User, GoogleAuthParams> {
+class UCGoogleAuth extends AsyncUseCase<User, GoogleAuthParams> {
   final AuthRepository repository;
 
   UCGoogleAuth({

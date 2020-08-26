@@ -1,11 +1,12 @@
+import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 
 import 'blocs/post/bloc/post_bloc.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
+import 'features/chat/presentation/screens/chat_screen.dart';
 import 'ui/modals/create_post/create_post.dart';
-import 'ui/screens/chat/chat_screen.dart';
-import 'ui/screens/chat_search/chat_search_screen.dart';
+import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
 
@@ -15,8 +16,8 @@ class Routes {
   static const home = "/home";
   static const setup = "/setup";
   static const createPost = "/create-post";
-  static const chatUser = "chat/user";
-  static const chatSearch = "chat/search";
+  static const chatUser = "/chat/user";
+  static const chatSearch = "/chat/search";
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -59,3 +60,18 @@ class Routes {
     }
   }
 }
+
+@MaterialAutoRouter(
+  generateNavigationHelperExtension: true,
+  routes: <AutoRoute>[
+    MaterialRoute(page: SplashScreen, initial: true),
+    MaterialRoute(page: HomeScreen, path: "/home"),
+    MaterialRoute(page: AuthScreen, path: "/auth"),
+    MaterialRoute(page: SetupScreen, path: "/setup"),
+    MaterialRoute(
+        page: CreatePost, path: "/create-post", fullscreenDialog: true),
+    MaterialRoute(page: ChatScreen, path: "/chat/user"),
+    MaterialRoute(page: ChatSearchScreen, path: "/chat/search")
+  ],
+)
+class $Router {}

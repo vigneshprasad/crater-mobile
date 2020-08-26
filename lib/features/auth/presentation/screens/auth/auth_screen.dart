@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -21,7 +23,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   AuthBloc _authBloc;
-  NavigatorState _navigator;
+  ExtendedNavigatorState _navigator;
 
   @override
   void initState() {
@@ -32,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
       redirectUri: AppConstants.linkedinRedirect,
     );
     _authBloc = BlocProvider.of<AuthBloc>(context);
-    _navigator = Navigator.of(context);
+    _navigator = ExtendedNavigator.root;
     super.initState();
   }
 
@@ -61,7 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     children: <Widget>[
                       _socialAuthRow(context),
                       const SizedBox(
-                        height: AppPadding.l,
+                        height: 44,
                       ),
                       LoginForm()
                     ],

@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/domain/entity/user_entity.dart';
-import '../../../../models/chat/chat_model.dart';
+import '../../../../features/chat/domain/entity/chat_message_entity.dart';
 
 class ChatMessageItem extends StatelessWidget {
   final User user;

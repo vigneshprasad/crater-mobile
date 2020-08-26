@@ -1,17 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/models/chat/chat_model.dart';
-import 'package:worknetwork/routes.dart';
-import 'package:worknetwork/ui/base/base_badge/base_badge.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../features/chat_inbox/domain/entity/chat_user_entity.dart';
+import '../../../../routes.gr.dart';
+import '../../../base/base_badge/base_badge.dart';
 
 class UserListItem extends StatelessWidget {
   final ChatUser user;
   final bool withFavorite;
+  final VoidCallback onStarPressed;
+  final GlobalKey<NavigatorState> _navigatorKey =
+      KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
-  const UserListItem({
+  UserListItem({
     Key key,
     @required this.user,
+    this.onStarPressed,
     this.withFavorite = true,
   }) : super(key: key);
 
@@ -20,8 +27,10 @@ class UserListItem extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Material(
       child: InkWell(
-        onTap: () => Navigator.of(context)
-            .pushNamed(Routes.chatUser, arguments: user.pk),
+        onTap: () => _navigatorKey.currentState.pushNamed(
+          Routes.chatScreen,
+          arguments: ChatScreenArguments(recieverId: user.pk),
+        ),
         child: ListTile(
           dense: true,
           leading: _buildAvatarImage(),
@@ -38,14 +47,17 @@ class UserListItem extends StatelessWidget {
   }
 
   Widget getLastMessageString(ChatMessage message, TextStyle style) {
-    final bool userIsCreator = user.pk == message.receiverId;
-    final String senderName = userIsCreator ? "You" : message.sender;
-    return Text(
-      "$senderName: ${message.message}",
-      style: style.copyWith(color: Colors.grey[500]),
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
-    );
+    if (message != null) {
+      final bool userIsCreator = user.pk == message.receiverId;
+      final String senderName = userIsCreator ? "You" : message.sender;
+      return Text(
+        "$senderName: ${message.message}",
+        style: style.copyWith(color: Colors.grey[500]),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      );
+    }
+    return const Text("");
   }
 
   Widget _buildAvatarImage() {
@@ -71,7 +83,7 @@ class UserListItem extends StatelessWidget {
     if (withFavorite) {
       final icon = user.isStarred ? Icons.star : Icons.star_border;
       return IconButton(
-        onPressed: () {},
+        onPressed: onStarPressed,
         icon: Icon(icon),
         color: Colors.yellow[800],
       );

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../../domain/entity/user_entity.dart';

@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/user_entity.dart';
 import '../repository/auth_repository.dart';
 
-class UCAuthLinkedIn implements UseCase<User, LinkedAuthParams> {
+class UCAuthLinkedIn implements AsyncUseCase<User, LinkedAuthParams> {
   final AuthRepository repository;
 
   UCAuthLinkedIn({

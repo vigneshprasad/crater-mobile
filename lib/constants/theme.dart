@@ -65,4 +65,5 @@ mixin AppInsets {
 
 mixin AppBorderRadius {
   static const textInput = 12.0;
+  static const largeButton = 24.0;
 }

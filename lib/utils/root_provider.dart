@@ -1,47 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 
-import '../blocs/notification/bloc/notification_bloc.dart';
-import '../blocs/websocket/bloc/websocket_bloc.dart';
-import '../blocs/websocket/repo/websocket_repository.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 
-class RootProvider extends StatelessWidget {
+class RootProvider extends StatefulWidget {
   final Widget child;
-  final AuthBloc _authBloc = KiwiContainer().resolve<AuthBloc>();
-  final WebSocketRepository webSocketRepository = WebSocketRepository();
 
-  RootProvider({
+  const RootProvider({
     Key key,
     @required this.child,
   }) : super(key: key);
 
   @override
+  _RootProviderState createState() => _RootProviderState();
+}
+
+class _RootProviderState extends State<RootProvider> {
+  AuthBloc _authBloc;
+  WebsocketBloc _websocketBloc;
+
+  @override
+  void initState() {
+    _authBloc = KiwiContainer().resolve<AuthBloc>();
+    _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _authBloc.close();
+    _websocketBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [RepositoryProvider.value(value: webSocketRepository)],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider.value(
-            value: _authBloc,
-          ),
-          BlocProvider(
-            lazy: false,
-            create: (context) => WebsocketBloc(
-              authBloc: _authBloc,
-              webSocketRepository: webSocketRepository,
-            ),
-          ),
-          BlocProvider(
-            lazy: false,
-            create: (context) =>
-                NotificationBloc(webSocketRepository: webSocketRepository)
-                  ..add(const OpenNotificationHiveStarted()),
-          ),
-        ],
-        child: child,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: _authBloc,
+        ),
+        BlocProvider.value(
+          value: _websocketBloc,
+        ),
+        // BlocProvider(
+        //   lazy: false,
+        //   create: (context) =>
+        //       NotificationBloc(webSocketRepository: webSocketRepository)
+        //         ..add(const OpenNotificationHiveStarted()),
+        // ),
+      ],
+      child: widget.child,
     );
   }
 }

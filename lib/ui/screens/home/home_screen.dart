@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/blocs/article/bloc/article_bloc.dart';
-import 'package:worknetwork/blocs/masterclass/bloc/masterclass_bloc.dart';
-import 'package:worknetwork/blocs/meeting/bloc/meeting_bloc.dart';
-import 'package:worknetwork/blocs/post/bloc/post_bloc.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/ui/screens/home/home_layout.dart';
-import 'package:worknetwork/ui/screens/home/tabs/articles_tab.dart';
-import 'package:worknetwork/ui/screens/home/tabs/community_tab.dart';
-import 'package:worknetwork/ui/screens/home/tabs/meets_tab.dart';
-import 'package:worknetwork/ui/screens/home/tabs/inbox_tab.dart';
-import 'package:worknetwork/ui/screens/home/tabs/videos_tab.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:kiwi/kiwi.dart';
+
+import '../../../blocs/article/bloc/article_bloc.dart';
+import '../../../blocs/masterclass/bloc/masterclass_bloc.dart';
+import '../../../blocs/meeting/bloc/meeting_bloc.dart';
+import '../../../blocs/post/bloc/post_bloc.dart';
+import '../../../constants/work_net_icons_icons.dart';
+import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
+import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
+import '../../../utils/app_localizations.dart';
+import 'home_layout.dart';
+import 'tabs/articles_tab.dart';
+import 'tabs/community_tab.dart';
+import 'tabs/meets_tab.dart';
+import 'tabs/videos_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -23,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ArticleBloc _articleBloc = ArticleBloc();
   final MasterclassBloc _masterclassBloc = MasterclassBloc();
   final MeetingBloc _meetingBloc = MeetingBloc()..add(MeetingGetStarted());
+  final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
 
   final List<Widget> _screens = [
     CommunityTab(),
@@ -57,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider.value(
           value: _meetingBloc,
         ),
+        BlocProvider.value(
+          value: _chatInboxBloc,
+        )
       ],
       child: HomeLayout(
         navItems: getNavItems(context),

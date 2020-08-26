@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/access_token.dart';
 import '../repository/social_auth_repository.dart';
 
@@ -15,7 +15,7 @@ enum SocialAuthProviders {
 }
 
 class UCGetSocialAuthToken
-    implements UseCase<AccessToken, SocialAuthTokenParams> {
+    implements AsyncUseCase<AccessToken, SocialAuthTokenParams> {
   final SocialAuthRepository repository;
 
   UCGetSocialAuthToken({

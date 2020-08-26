@@ -84,7 +84,7 @@ class UserModel extends User {
   @JsonKey(name: 'is_approved')
   final bool isApproved;
 
-  const UserModel({
+  UserModel({
     this.token,
     this.pk,
     this.photo,

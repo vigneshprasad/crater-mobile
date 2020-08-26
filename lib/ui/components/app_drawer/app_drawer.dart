@@ -9,12 +9,12 @@ class AppDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppTheme.blueAccent,
             ),
             child: Container(
               width: double.infinity,
-              child: Text('Drawer header'),
+              child: const Text('Drawer header'),
             ),
           ),
         ],

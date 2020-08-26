@@ -34,6 +34,7 @@ class _LoginFormState extends State<LoginForm> {
         } else {
           isEnabled = !state.isSubmitting;
         }
+        const buttonSpacer = 64.00;
         return Form(
           child: Column(
             children: <Widget>[
@@ -60,10 +61,16 @@ class _LoginFormState extends State<LoginForm> {
                   return !state.isPasswordValid ? 'Invalid Password' : null;
                 },
               ),
-              FlatButton(
-                onPressed: _onLoginEmailPressed,
-                child: const Text('Login'),
-              )
+              const SizedBox(
+                height: buttonSpacer,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: BaseLargeButton(
+                  onPressed: _onLoginEmailPressed,
+                  text: "login",
+                ),
+              ),
             ],
           ),
         );

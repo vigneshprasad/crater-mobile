@@ -1,11 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/di/injector.dart';
+import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/utils/root_provider.dart';
 
 import '../../constants/theme.dart';
-import '../../routes.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/one_signal_manager/one_signal_manager.dart';
 
@@ -19,9 +21,12 @@ class _RootAppState extends State<RootApp> {
       statusBarColor: AppTheme.primaryLightStatusBar,
       statusBarBrightness: Brightness.dark);
 
+  GlobalKey<NavigatorState> _navigatorKey;
+
   @override
   void initState() {
     Di.setup();
+    _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
     super.initState();
   }
 
@@ -50,10 +55,18 @@ class _RootAppState extends State<RootApp> {
               // from the list (English, in this case).
               return supportedLocales.first;
             },
-            onGenerateRoute: Routes.onGenerateRoute,
-            initialRoute: '/',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
+            builder: ExtendedNavigator.builder(
+              router: Router(),
+              initialRoute: "/",
+              navigatorKey: _navigatorKey,
+              builder: (context, child) {
+                return Theme(
+                  data: AppTheme.lightTheme,
+                  child: child,
+                );
+              },
+            ),
           ),
         ),
       ),

@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/routes.dart';
-import 'package:worknetwork/ui/base/logo/logo.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
+
+import '../../../../../routes.gr.dart';
+import '../../../../../ui/base/logo/logo.dart';
+import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
+import '../../bloc/auth_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -34,9 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void listenAuthState(BuildContext context, AuthState state) {
-    final NavigatorState _navigator = Navigator.of(context);
+    final ExtendedNavigatorState _navigator = ExtendedNavigator.of(context);
     if (state is AuthStateFailure) {
-      _navigator.pushReplacementNamed(Routes.auth);
+      _navigator.popAndPush(Routes.authScreen);
     }
 
     if (state is AuthStateSuccess) {

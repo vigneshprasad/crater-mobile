@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
-class User extends Equatable {
+class User extends HiveObject {
   final String token;
 
   final String pk;
@@ -41,7 +41,7 @@ class User extends Equatable {
 
   final bool isApproved;
 
-  const User({
+  User({
     this.token,
     this.pk,
     this.photo,
@@ -63,28 +63,4 @@ class User extends Equatable {
     this.unreadNotifications,
     this.isApproved,
   });
-
-  @override
-  List<Object> get props => [
-        token,
-        pk,
-        photo,
-        email,
-        emailVerified,
-        name,
-        city,
-        reason,
-        phoneNumber,
-        phoneNumberVerified,
-        role,
-        hasProfile,
-        hasBankDetails,
-        hasServices,
-        hasActiveSubscription,
-        activeSubscriptionMembership,
-        panCard,
-        panCardSize,
-        unreadNotifications,
-        isApproved,
-      ];
 }

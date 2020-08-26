@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/user_entity.dart';
 import '../repository/auth_repository.dart';
 
-class UCGetPersistedUser implements UseCase<User, NoParams> {
+class UCGetPersistedUser implements AsyncUseCase<User, NoParams> {
   final AuthRepository repository;
 
   UCGetPersistedUser({

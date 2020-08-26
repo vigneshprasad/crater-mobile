@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
@@ -10,6 +9,15 @@ abstract class Failure extends Equatable {
 class ServerFailure extends Failure {}
 
 class CacheFailure extends Failure {}
+
+class WebsocketServerFailure extends Failure {
+  final dynamic message;
+  WebsocketServerFailure([this.message]);
+}
+
+class WebsocketLocalFailure extends Failure {}
+
+class WebsocketCloseFailure extends Failure {}
 
 // Auth Failures
 class UnknowSocialProvider extends Failure {}

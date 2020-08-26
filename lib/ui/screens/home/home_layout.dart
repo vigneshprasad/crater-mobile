@@ -1,10 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/blocs/post/bloc/post_bloc.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/routes.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
-import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
+
+import '../../../blocs/post/bloc/post_bloc.dart';
+import '../../../constants/work_net_icons_icons.dart';
+import '../../../routes.gr.dart';
+import '../../base/base_app_bar/base_app_bar.dart';
+import '../../components/app_drawer/app_drawer.dart';
 
 class HomeLayout extends StatefulWidget {
   final List<BottomNavigationBarItem> navItems;
@@ -63,8 +65,8 @@ class _HomeLayoutState extends State<HomeLayout> {
       return FloatingActionButton(
         onPressed: () {
           final _postbloc = BlocProvider.of<PostBloc>(context);
-          Navigator.of(context)
-              .pushNamed(Routes.createPost, arguments: _postbloc);
+          ExtendedNavigator.of(context).push(Routes.createPost,
+              arguments: CreatePostArguments(postBloc: _postbloc));
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.newPost),
@@ -73,7 +75,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     if (_currentIndex == 2) {
       return FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.chatSearch);
+          Navigator.of(context).pushNamed(Routes.chatSearchScreen);
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.message),

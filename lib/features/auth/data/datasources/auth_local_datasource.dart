@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
 
+import '../../../../constants/app_hive_boxes.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/user_model.dart';
 

@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/routes.dart';
 
-void navigatePostAuth(NavigatorState navigator, User user) {
+import '../../routes.gr.dart';
+
+void navigatePostAuth(ExtendedNavigatorState navigator, User user) {
   if (user.hasProfile == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'basic_profile');
+    navigator.popAndPush(Routes.setupScreen, arguments: 'basic_profile');
   } else if (user.hasServices == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'services');
+    navigator.popAndPush(Routes.setupScreen, arguments: 'services');
   } else if (user.phoneNumberVerified == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'phone');
+    navigator.popAndPush(Routes.setupScreen, arguments: 'phone');
   } else {
-    navigator.pushReplacementNamed(Routes.home);
+    navigator.popAndPush(Routes.homeScreen);
   }
 }
