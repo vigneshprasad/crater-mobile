@@ -160,3 +160,22 @@ class _$VideoInjector extends VideoInjector {
         (c) => UCGetVideoItem(repository: c<VideoRepository>()));
   }
 }
+
+class _$PointsInjector extends PointsInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory(
+        (c) => PointsBloc(getPoints: c<UCGetSelfUserPoints>()));
+    container.registerSingleton<PointsRepository>((c) => PointsRepositoryImpl(
+        localDatasource: c<PointsLocalDatasource>(),
+        remoteDatasource: c<PointsRemoteDatasource>(),
+        networkInfo: c<NetworkInfo>()));
+    container.registerSingleton<PointsLocalDatasource>((c) =>
+        PointsLocalDatasourceImpl(
+            authLocalDataSource: c<AuthLocalDataSource>()));
+    container.registerSingleton<PointsRemoteDatasource>(
+        (c) => PointsRemoteDatasourceImpl(apiService: c<PointsApiService>()));
+    container.registerSingleton(
+        (c) => UCGetSelfUserPoints(repository: c<PointsRepository>()));
+  }
+}

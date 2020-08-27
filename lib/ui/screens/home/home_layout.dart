@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/features/points/presentation/widgets/points_badge.dart';
 
 import '../../../blocs/post/bloc/post_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
@@ -32,6 +33,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     return Scaffold(
       appBar: BaseAppBar(
         actions: <Widget>[
+          PointsBadge(),
           IconButton(
             color: Colors.black87,
             icon: const Icon(WorkNetIcons.notification),
@@ -69,7 +71,7 @@ class _HomeLayoutState extends State<HomeLayout> {
               arguments: CreatePostArguments(postBloc: _postbloc));
         },
         backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(WorkNetIcons.newPost),
+        child: const Icon(WorkNetIcons.newpost),
       );
     }
     if (_currentIndex == 2) {

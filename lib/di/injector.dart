@@ -2,6 +2,13 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/api/points/points_api_service.dart';
+import 'package:worknetwork/features/points/data/datasources/points_local_datasource.dart';
+import 'package:worknetwork/features/points/data/datasources/points_remote_datasource.dart';
+import 'package:worknetwork/features/points/data/repository/points_repository_impl.dart';
+import 'package:worknetwork/features/points/domain/repository/points_repository.dart';
+import 'package:worknetwork/features/points/domain/usecases/get_self_user_points.dart';
+import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
 import 'package:worknetwork/features/videos/domain/usecase/get_video_item_usecase.dart';
 import 'package:worknetwork/features/videos/presentation/bloc/video/video_bloc.dart';
 import 'package:worknetwork/features/videos/presentation/bloc/video_player/video_player_bloc.dart';
@@ -135,6 +142,15 @@ abstract class VideoInjector {
   void configure();
 }
 
+abstract class PointsInjector {
+  @Register.factory(PointsBloc)
+  @Register.singleton(PointsRepository, from: PointsRepositoryImpl)
+  @Register.singleton(PointsLocalDatasource, from: PointsLocalDatasourceImpl)
+  @Register.singleton(PointsRemoteDatasource, from: PointsRemoteDatasourceImpl)
+  @Register.singleton(UCGetSelfUserPoints)
+  void configure();
+}
+
 class Di {
   static void setup() {
     final container = KiwiContainer();
@@ -145,6 +161,7 @@ class Di {
     final chatInboxInjector = _$ChatInboxInjector();
     final chatInjector = _$ChatInjector();
     final videoInjector = _$VideoInjector();
+    final pointsInjector = _$PointsInjector();
 
     /// [Core]
     ///
@@ -169,9 +186,13 @@ class Di {
     // Videos
     videoInjector.configure();
 
+    // Points
+    pointsInjector.configure();
+
     // Api Services
     container.registerInstance(AuthApiService.create());
     container.registerInstance(MasterClassApiService.create());
+    container.registerInstance(PointsApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

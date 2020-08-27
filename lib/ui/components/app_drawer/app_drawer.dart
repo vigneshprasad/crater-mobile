@@ -1,24 +1,157 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/ui/components/list_items/drawer_item/drawer_menu_item.dart';
+
+enum DrawerItemKeys { notificationSettings, logout, account }
+
+class DrawerItem extends Equatable {
+  final IconData icon;
+  final DrawerItemKeys key;
+  final String label;
+
+  const DrawerItem({
+    @required this.icon,
+    @required this.key,
+    @required this.label,
+  });
+
+  @override
+  List<Object> get props => [icon, key, label];
+}
 
 class AppDrawer extends StatelessWidget {
+  final List<DrawerItem> _items = const [
+    DrawerItem(
+      icon: WorkNetIcons.notification,
+      label: "drawer_item:notfication",
+      key: DrawerItemKeys.notificationSettings,
+    ),
+    DrawerItem(
+        icon: WorkNetIcons.account,
+        label: "drawer_item:acoount",
+        key: DrawerItemKeys.account),
+    DrawerItem(
+      icon: WorkNetIcons.logout,
+      label: "drawer_item:logout",
+      key: DrawerItemKeys.logout,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: AppTheme.blueAccent,
-            ),
-            child: Container(
-              width: double.infinity,
-              child: const Text('Drawer header'),
-            ),
-          ),
-        ],
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthStateSuccess) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: DrawerHeader(
+                    margin: const EdgeInsets.all(0),
+                    decoration: const BoxDecoration(
+                      color: AppTheme.blueAccent,
+                      image: DecorationImage(
+                          image: AppImageAssets.drawerBg, fit: BoxFit.cover),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildInfoSection(context, state),
+                      ],
+                    ),
+                  ),
+                ),
+                _buildMenuItems(_items),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
+  }
+
+  Widget _buildInfoSection(BuildContext context, AuthStateSuccess state) {
+    final nameStyle = Theme.of(context).textTheme.headline5.copyWith(
+          fontSize: 16,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        );
+    final emailStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+          fontSize: 13,
+          color: Colors.white.withOpacity(0.7),
+        );
+    return Row(
+      children: [
+        _buildImageAvatar(state),
+        const SizedBox(width: AppInsets.med),
+        LimitedBox(
+          maxWidth: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                state.user.name,
+                style: nameStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                state.user.email,
+                style: emailStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImageAvatar(AuthStateSuccess state) {
+    if (state.user.photo != null) {
+      return CachedNetworkImage(
+        imageUrl: state.user.photo,
+        imageBuilder: (context, imageProvider) {
+          return CircleAvatar(
+            backgroundImage: imageProvider,
+            radius: 24,
+          );
+        },
+      );
+    } else {
+      return const CircleAvatar(
+        backgroundImage: AppImageAssets.defaultAvatar,
+        radius: 24,
+      );
+    }
+  }
+
+  Widget _buildMenuItems(List<DrawerItem> items) {
+    return Expanded(
+      child: ListView.separated(
+        padding: const EdgeInsets.only(top: AppInsets.med),
+        itemCount: items.length,
+        itemBuilder: (context, index) => DrawerMenuItem(
+          item: items[index],
+          onPressItem: _onPressItem,
+        ),
+        separatorBuilder: (context, index) => const Divider(),
+      ),
+    );
+  }
+
+  void _onPressItem(DrawerItem item) {
+    print(item);
   }
 }

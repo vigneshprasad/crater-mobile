@@ -9,7 +9,7 @@ class StatusBarColor {
       FlutterStatusbarcolor.setStatusBarColor(Colors.grey[900]);
       FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     } else {
-      FlutterStatusbarcolor.setStatusBarColor(Colors.grey[200]);
+      FlutterStatusbarcolor.setStatusBarColor(Colors.black.withOpacity(0.08));
       FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
     }
   }
