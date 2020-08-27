@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/videos/presentation/screens/video_player_screen.dart';
 
 import 'blocs/post/bloc/post_bloc.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -71,7 +72,8 @@ class Routes {
     MaterialRoute(
         page: CreatePost, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),
-    MaterialRoute(page: ChatSearchScreen, path: "/chat/search")
+    MaterialRoute(page: ChatSearchScreen, path: "/chat/search"),
+    MaterialRoute(page: VideoPlayerScreen, path: "/video-player")
   ],
 )
 class $Router {}

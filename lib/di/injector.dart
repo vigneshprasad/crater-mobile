@@ -1,10 +1,13 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
-import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_search/chat_search_bloc.dart';
+import 'package:worknetwork/features/videos/domain/usecase/get_video_item_usecase.dart';
+import 'package:worknetwork/features/videos/presentation/bloc/video/video_bloc.dart';
+import 'package:worknetwork/features/videos/presentation/bloc/video_player/video_player_bloc.dart';
 
 import '../api/auth/auth_api_service.dart';
+import '../api/masterclass/masterclass_api_service.dart';
 import '../constants/app_constants.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -14,6 +17,7 @@ import '../core/features/websocket/domain/usecase/add_message_to_sink.dart';
 import '../core/features/websocket/domain/usecase/get_websocket_state.dart';
 import '../core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import '../core/network_info/network_info.dart';
 import '../features/auth/data/datasources/auth_local_datasource.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/repository/auth_repository_impl.dart';
@@ -41,12 +45,23 @@ import '../features/chat_inbox/domain/usecase/get_all_chat_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/received_all_chat_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/received_star_user_changed_usecase.dart';
 import '../features/chat_inbox/domain/usecase/send_star_chat_user_usecase.dart';
+import '../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 import '../features/social_auth/data/repository/social_auth_repository_impl.dart';
 import '../features/social_auth/domain/repository/social_auth_repository.dart';
 import '../features/social_auth/domain/usecase/get_social_auth_token.dart';
+import '../features/videos/data/datasources/video_remote_datasource.dart';
+import '../features/videos/data/datasources/videos_local_datasource.dart';
+import '../features/videos/data/repository/video_repository_impl.dart';
+import '../features/videos/domain/repository/video_repository.dart';
+import '../features/videos/domain/usecase/get_videos_list_usecase.dart';
 
 part 'injector.g.dart';
+
+abstract class CoreInjector {
+  @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
+  void configure();
+}
 
 abstract class WebSocketInjector {
   @Register.singleton(WebsocketBloc)
@@ -63,7 +78,7 @@ abstract class WebSocketInjector {
 
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
-  @Register.singleton(AuthApiService, from: AuthApiServiceImpl)
+  // @Register.singleton(AuthApiService, from: AuthApiServiceImpl)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -84,7 +99,6 @@ abstract class SocialAuthInjector {
 
 abstract class ChatInboxInjector {
   @Register.factory(ChatInboxBloc)
-  @Register.factory(ChatSearchBloc)
   @Register.singleton(ChatInboxRepository, from: ChatInboxRepositoryImpl)
   @Register.singleton(ChatInboxLocalDataSource,
       from: ChatInboxLocalDataSourceImpl)
@@ -110,18 +124,32 @@ abstract class ChatInjector {
   void configure();
 }
 
+abstract class VideoInjector {
+  @Register.factory(VideoBloc)
+  @Register.factory(VideoPlayerBloc)
+  @Register.singleton(VideoRepository, from: VideoRepositoryImpl)
+  @Register.singleton(VideoLocalDataSource, from: VideoLocalDataSourceImpl)
+  @Register.singleton(VideoRemoteDatasource, from: VideoRemoteDatasourceImpl)
+  @Register.singleton(UCGetVideosListPage)
+  @Register.singleton(UCGetVideoItem)
+  void configure();
+}
+
 class Di {
   static void setup() {
     final container = KiwiContainer();
+    final coreInjector = _$CoreInjector();
     final authInjector = _$AuthInjector();
     final socialAuthInjector = _$SocialAuthInjector();
     final websocketInjector = _$WebSocketInjector();
     final chatInboxInjector = _$ChatInboxInjector();
     final chatInjector = _$ChatInjector();
+    final videoInjector = _$VideoInjector();
 
     /// [Core]
     ///
     /// Weboscket
+    coreInjector.configure();
     websocketInjector.configure();
 
     /// [Features]
@@ -138,7 +166,15 @@ class Di {
     // Chat
     chatInjector.configure();
 
+    // Videos
+    videoInjector.configure();
+
+    // Api Services
+    container.registerInstance(AuthApiService.create());
+    container.registerInstance(MasterClassApiService.create());
+
     // Externals
+    container.registerInstance(DataConnectionChecker());
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));

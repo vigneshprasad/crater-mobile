@@ -13,36 +13,47 @@ mixin AppTheme {
 
   static const Color primaryLightStatusBar = Color(0x0D000000);
   static final ThemeData lightTheme = ThemeData(
-      brightness: Brightness.light,
-      primaryColor: primaryColor,
-      primarySwatch: primarySwatch,
-      fontFamily: 'Aeonik',
-      textTheme: primaryTextTheme,
-      dividerTheme: DividerThemeData(
-        space: AppInsets.xs,
-        color: Colors.grey[400],
-      ),
-      buttonTheme: const ButtonThemeData(
-        buttonColor: primaryColor,
-        textTheme: ButtonTextTheme.primary,
-      ),
-      appBarTheme: AppBarTheme(
-        textTheme: primaryTextTheme,
-        color: Colors.white,
-        brightness: Brightness.light,
-        actionsIconTheme: const IconThemeData(
-          color: Colors.black87,
-        ),
-      ),
-      canvasColor: Colors.grey[50],
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      textSelectionHandleColor: primaryColor,
-      cursorColor: primaryColor);
-
-  static final ThemeData darkTheme = ThemeData(
-    primarySwatch: createMaterialColor(primaryColor),
+    brightness: Brightness.light,
+    primaryColor: primaryColor,
+    primarySwatch: primarySwatch,
     fontFamily: 'Aeonik',
+    textTheme: primaryTextTheme,
+    dividerTheme: DividerThemeData(
+      space: AppInsets.xs,
+      color: Colors.grey[400],
+    ),
+    buttonTheme: const ButtonThemeData(
+      buttonColor: primaryColor,
+      textTheme: ButtonTextTheme.primary,
+    ),
+    appBarTheme: AppBarTheme(
+      textTheme: primaryTextTheme,
+      color: Colors.white,
+      brightness: Brightness.light,
+      actionsIconTheme: const IconThemeData(
+        color: Colors.black87,
+      ),
+    ),
+    canvasColor: Colors.grey[50],
     visualDensity: VisualDensity.adaptivePlatformDensity,
+    textSelectionHandleColor: primaryColor,
+    cursorColor: primaryColor,
+  );
+
+  static final ThemeData darkTheme = ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: Colors.grey[850],
+    canvasColor: Colors.grey[800],
+    brightness: Brightness.dark,
+    primaryColor: Colors.white,
+    accentColor: primaryColor,
+    appBarTheme: AppBarTheme(
+      textTheme: primaryTextTheme,
+      color: Colors.white,
+      brightness: Brightness.light,
+      actionsIconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
+    ),
   );
 }
 

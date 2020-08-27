@@ -1,10 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
+import '../../../chat_inbox/data/models/chat_user_model.dart';
 import '../../domain/entity/user_chat_entity.dart';
 import 'chat_message_model.dart';
-import '../../../chat_inbox/data/models/chat_user_model.dart';
 
 part 'user_chat_model.g.dart';
 

@@ -53,9 +53,12 @@ dependencies:
   lottie: ^0.5.1
   onesignal_flutter: ^2.6.0
   chewie: ^0.9.10
+  video_player: ^0.10.12
   dartz: ^0.9.1
   flutter_linkedin: ^1.0.2
   kiwi: ^2.0.0
+  data_connection_checker: ^0.3.4
+  flutter_statusbarcolor: ^0.2.3
 
 dev_dependencies:
   flutter_test:

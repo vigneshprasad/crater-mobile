@@ -1,35 +1,8 @@
 import 'package:chopper/chopper.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
 import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/models/masterclass/masterclass_model.dart';
 
-part 'masterclass_api_service.g.dart';
 part 'masterclass_api_service.chopper.dart';
-
-@JsonSerializable()
-class MasterClassGetResponse {
-  final int count;
-
-  @JsonKey(nullable: true)
-  final String next;
-
-  @JsonKey(nullable: true)
-  final String previous;
-
-  final List<MasterClass> results;
-
-  MasterClassGetResponse({
-    this.count,
-    this.next,
-    this.previous,
-    this.results,
-  });
-
-  factory MasterClassGetResponse.fromJson(Map<String, dynamic> json) =>
-      _$MasterClassGetResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$MasterClassGetResponseToJson(this);
-}
 
 @ChopperApi(baseUrl: '/resources/masterclasses/')
 abstract class MasterClassApiService extends ChopperService {
@@ -45,5 +18,8 @@ abstract class MasterClassApiService extends ChopperService {
   }
 
   @Get(path: '')
-  Future<Response> getVideosList();
+  Future<Response> getVideosList({@Query() int page});
+
+  @Get(path: '{id}/')
+  Future<Response> getVideoItem({@Path() int id});
 }

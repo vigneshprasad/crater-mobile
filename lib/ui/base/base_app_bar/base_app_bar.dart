@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 
@@ -27,44 +26,38 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final hasback = Navigator.of(context).canPop();
     final hasDrawer = Scaffold.of(context).hasDrawer;
     final double width = MediaQuery.of(context).size.width;
-    final statusbarTheme = SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: AppTheme.primaryLightStatusBar,
-        statusBarBrightness: Brightness.dark);
     final titleWidth = MediaQuery.of(context).size.width * 0.6;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: statusbarTheme,
-      child: SafeArea(
-        child: SizedBox(
-          height: AppTheme.appBarHeight.height,
-          width: width,
-          child: Material(
-            elevation: elevation ?? 0,
-            color: color ?? Colors.transparent,
-            child: Row(
-              children: <Widget>[
-                if (hasDrawer)
-                  getDrawerButton(context)
-                else if (hasback)
-                  getBackButton(context)
-                else
-                  const SizedBox(
-                    width: AppPadding.l,
+    return SafeArea(
+      child: SizedBox(
+        height: AppTheme.appBarHeight.height,
+        width: width,
+        child: Material(
+          elevation: elevation ?? 0,
+          color: color ?? Colors.transparent,
+          child: Row(
+            children: <Widget>[
+              if (hasDrawer)
+                getDrawerButton(context)
+              else if (hasback)
+                getBackButton(context)
+              else
+                const SizedBox(
+                  width: AppPadding.l,
+                ),
+              if (title != null)
+                SizedBox(
+                  width: titleWidth,
+                  child: title,
+                ),
+              if (title == null) const Spacer(),
+              if (actions != null && actions.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    children: actions,
                   ),
-                if (title != null)
-                  SizedBox(
-                    width: titleWidth,
-                    child: title,
-                  ),
-                if (title == null) const Spacer(),
-                if (actions != null && actions.isNotEmpty)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      children: actions,
-                    ),
-                  ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
@@ -86,7 +79,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final IconData icon = useCloseButton ? Icons.close : Icons.arrow_back;
     return IconButton(
       icon: Icon(icon),
-      color: Colors.black87,
+      color: Theme.of(context).appBarTheme.actionsIconTheme.color,
       onPressed: () => Navigator.of(context).pop(),
     );
   }

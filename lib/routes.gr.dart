@@ -14,6 +14,7 @@ import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/modals/create_post/create_post.dart';
 import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const String createPost = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
+  static const String videoPlayerScreen = '/video-player';
   static const all = <String>{
     splashScreen,
     homeScreen,
@@ -34,6 +36,7 @@ class Routes {
     createPost,
     chatScreen,
     chatSearchScreen,
+    videoPlayerScreen,
   };
 }
 
@@ -48,6 +51,7 @@ class Router extends RouterBase {
     RouteDef(Routes.createPost, page: CreatePost),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
+    RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -111,6 +115,16 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    VideoPlayerScreen: (data) {
+      final args = data.getArgs<VideoPlayerScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => VideoPlayerScreen(
+          videoId: args.videoId,
+          key: args.key,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -154,6 +168,15 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushChatSearchScreen() =>
       push<dynamic>(Routes.chatSearchScreen);
+
+  Future<dynamic> pushVideoPlayerScreen({
+    @required int videoId,
+    Key key,
+  }) =>
+      push<dynamic>(
+        Routes.videoPlayerScreen,
+        arguments: VideoPlayerScreenArguments(videoId: videoId, key: key),
+      );
 }
 
 /// ************************************************************************
@@ -179,4 +202,11 @@ class ChatScreenArguments {
   final Key key;
   final String recieverId;
   ChatScreenArguments({this.key, @required this.recieverId});
+}
+
+/// VideoPlayerScreen arguments holder class
+class VideoPlayerScreenArguments {
+  final int videoId;
+  final Key key;
+  VideoPlayerScreenArguments({@required this.videoId, this.key});
 }

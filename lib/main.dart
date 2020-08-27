@@ -9,6 +9,5 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   await initHive();
-
   runApp(RootApp());
 }

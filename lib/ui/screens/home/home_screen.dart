@@ -3,18 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../blocs/article/bloc/article_bloc.dart';
-import '../../../blocs/masterclass/bloc/masterclass_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
 import '../../../blocs/post/bloc/post_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
+import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
+import '../../../features/videos/presentation/widgets/videos_tab.dart';
 import '../../../utils/app_localizations.dart';
 import 'home_layout.dart';
 import 'tabs/articles_tab.dart';
 import 'tabs/community_tab.dart';
 import 'tabs/meets_tab.dart';
-import 'tabs/videos_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final PostBloc _postBloc = PostBloc();
   final ArticleBloc _articleBloc = ArticleBloc();
-  final MasterclassBloc _masterclassBloc = MasterclassBloc();
+  final VideoBloc _videoBloc = KiwiContainer().resolve();
   final MeetingBloc _meetingBloc = MeetingBloc()..add(MeetingGetStarted());
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
 
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _postBloc.close();
     _articleBloc.close();
-    _masterclassBloc.close();
+    _videoBloc.close();
     _meetingBloc.close();
     super.dispose();
   }
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           value: _articleBloc,
         ),
         BlocProvider.value(
-          value: _masterclassBloc,
+          value: _videoBloc,
         ),
         BlocProvider.value(
           value: _meetingBloc,

@@ -6,6 +6,14 @@ part of 'injector.dart';
 // KiwiInjectorGenerator
 // **************************************************************************
 
+class _$CoreInjector extends CoreInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton<NetworkInfo>(
+        (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
+  }
+}
+
 class _$WebSocketInjector extends WebSocketInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
@@ -41,7 +49,6 @@ class _$AuthInjector extends AuthInjector {
         authGoogle: c<UCGoogleAuth>(),
         loginEmail: c<UCLoginEmail>(),
         socialAuthToken: c<UCGetSocialAuthToken>()));
-    container.registerSingleton<AuthApiService>((c) => AuthApiServiceImpl());
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>()));
     container.registerSingleton<AuthRemoteDataSource>(
@@ -80,9 +87,6 @@ class _$ChatInboxInjector extends ChatInboxInjector {
         recievedAllChatUsers: c<UCRecievedAllChatUsers>(),
         starChatUser: c<UCSendStarChatUser>(),
         starUserChanged: c<UCReceivedStarUserChanged>()));
-    container.registerFactory((c) => ChatSearchBloc(
-        websocketBloc: c<WebsocketBloc>(),
-        getAllChatUsers: c<UCGetAllChatUsers>()));
     container.registerSingleton<ChatInboxRepository>((c) =>
         ChatInboxRepositoryImpl(
             localDataSource: c<ChatInboxLocalDataSource>(),
@@ -131,5 +135,28 @@ class _$ChatInjector extends ChatInjector {
         (c) => UCSendUserIsTyping(repository: c<ChatRepository>()));
     container.registerSingleton(
         (c) => UCPersistReceivedMessage(repository: c<ChatRepository>()));
+  }
+}
+
+class _$VideoInjector extends VideoInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container
+        .registerFactory((c) => VideoBloc(getVideos: c<UCGetVideosListPage>()));
+    container.registerFactory((c) => VideoPlayerBloc(
+        getVideoItem: c<UCGetVideoItem>(),
+        getVideosList: c<UCGetVideosListPage>()));
+    container.registerSingleton<VideoRepository>((c) => VideoRepositoryImpl(
+        networkInfo: c<NetworkInfo>(),
+        localDataSource: c<VideoLocalDataSource>(),
+        remoteDatasource: c<VideoRemoteDatasource>()));
+    container.registerSingleton<VideoLocalDataSource>(
+        (c) => VideoLocalDataSourceImpl());
+    container.registerSingleton<VideoRemoteDatasource>((c) =>
+        VideoRemoteDatasourceImpl(apiService: c<MasterClassApiService>()));
+    container.registerSingleton(
+        (c) => UCGetVideosListPage(repository: c<VideoRepository>()));
+    container.registerSingleton(
+        (c) => UCGetVideoItem(repository: c<VideoRepository>()));
   }
 }

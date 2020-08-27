@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/models/chat/chat_model.dart';
+
+import '../../../../constants/theme.dart';
+import '../../../chat_inbox/domain/entity/chat_user_entity.dart';
 
 class ChatHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;

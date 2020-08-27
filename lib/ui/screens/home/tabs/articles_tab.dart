@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/blocs/article/bloc/article_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/models/article/article_model.dart';
-import 'package:worknetwork/ui/base/base_icon_button/base_icon_button.dart';
-import 'package:worknetwork/ui/base/tab_header/tab_header.dart';
-import 'package:worknetwork/ui/components/article_card/article_card.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../../blocs/article/bloc/article_bloc.dart';
+import '../../../../constants/theme.dart';
+import '../../../../constants/work_net_icons_icons.dart';
+import '../../../../models/article/article_model.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../base/base_icon_button/base_icon_button.dart';
+import '../../../base/tab_header/tab_header.dart';
+import '../../../components/article_card/article_card.dart';
 
 class ArticlesTab extends StatefulWidget {
   @override
@@ -15,11 +16,14 @@ class ArticlesTab extends StatefulWidget {
 }
 
 class _ArticlesTabState extends State<ArticlesTab> {
+  ArticleBloc _articleBloc;
   List<Article> _articles = [];
   bool _loading = false;
 
   @override
   void initState() {
+    _articleBloc = BlocProvider.of<ArticleBloc>(context)
+      ..add(ArticleGetStarted());
     super.initState();
   }
 

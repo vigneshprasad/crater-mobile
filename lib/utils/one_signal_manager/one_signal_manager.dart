@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/models/chat/chat_model.dart';
+import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
 
 import '../../routes.gr.dart';
 
@@ -59,7 +59,7 @@ class _OneSignalManagerState extends State<OneSignalManager> {
     final json = result.notification.payload.additionalData;
 
     if (objTyp == "message") {
-      final message = ChatMessage.fromJson(json);
+      final message = ChatMessageModel.fromJson(json);
       final _navigatorKey =
           KiwiContainer().resolve<GlobalKey<NavigatorState>>();
       _navigatorKey.currentState.pushNamed(Routes.chatScreen,
