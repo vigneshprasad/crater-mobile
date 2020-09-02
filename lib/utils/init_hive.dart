@@ -6,6 +6,7 @@ import '../features/auth/data/models/user_model.dart';
 import '../features/chat/data/models/chat_message_model.dart';
 import '../features/chat/data/models/user_chat_model.dart';
 import '../features/chat_inbox/data/models/chat_user_model.dart';
+import '../features/notification/data/models/notification_model.dart';
 import '../features/points/data/models/points_model.dart';
 import '../features/videos/data/models/video_model.dart';
 import '../models/comment/comment_model.dart';
@@ -25,6 +26,7 @@ Future<void> initHive() async {
   Hive.registerAdapter(UserChatModelAdapter());
   Hive.registerAdapter(VideoModelAdapter());
   Hive.registerAdapter(PointsModelAdapter());
+  Hive.registerAdapter(NotificationModelAdapter());
 
   // Open Boxes
 
@@ -34,4 +36,5 @@ Future<void> initHive() async {
   await Hive.openBox<UserChatModel>(AppHiveBoxes.userChatBox);
   await Hive.openBox<VideoModel>(AppHiveBoxes.videoBox);
   await Hive.openBox<PointsModel>(AppHiveBoxes.pointsBox);
+  await Hive.openBox<NotificationModel>(AppHiveBoxes.notificationsBox);
 }

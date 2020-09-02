@@ -9,7 +9,7 @@ class TabHeader extends StatelessWidget {
   const TabHeader({
     Key key,
     @required this.heading,
-    @required this.subHeading,
+    this.subHeading,
     this.action,
   }) : super(key: key);
 
@@ -35,7 +35,7 @@ class TabHeader extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.w700),
                   ),
                 const SizedBox(height: AppPadding.tiny),
-                if (subHeading.isNotEmpty)
+                if (subHeading != null)
                   Text(
                     subHeading,
                     style: Theme.of(context)

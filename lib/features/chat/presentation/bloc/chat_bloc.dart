@@ -4,17 +4,17 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/chat/data/models/responses.dart';
-import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
-import 'package:worknetwork/features/chat/domain/usecases/persist_received_message.dart';
-import 'package:worknetwork/features/chat/domain/usecases/received_set_chat_with_user.dart';
-import 'package:worknetwork/features/chat/domain/usecases/send_user_typing.dart';
-import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 
 import '../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+import '../../../chat_inbox/domain/entity/chat_user_entity.dart';
+import '../../data/models/responses.dart';
+import '../../domain/entity/chat_message_entity.dart';
+import '../../domain/usecases/persist_received_message.dart';
+import '../../domain/usecases/received_set_chat_with_user.dart';
 import '../../domain/usecases/send_message_to_user_usecase.dart';
+import '../../domain/usecases/send_user_typing.dart';
 import '../../domain/usecases/set_chat_with_user_usecase.dart';
 
 part 'chat_event.dart';
@@ -117,7 +117,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (userState) => state.copyWith(
         recieverId: userState.recieverId,
         receiverUser: userState.receiverUser,
-        messages: userState.messages,
+        messages: userState.messages.toList(),
         page: userState.page,
         pages: userState.pages,
         unreadCount: userState.unreadCount,
@@ -139,7 +139,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (userState) => state.copyWith(
           recieverId: userState.recieverId,
           receiverUser: userState.receiverUser,
-          messages: userState.messages,
+          messages: userState.messages.toList(),
           page: userState.page,
           pages: userState.pages,
           unreadCount: userState.unreadCount),
@@ -162,27 +162,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         await sendMessage(SendChatParams(message: event.message));
     yield sendOrFail.fold(
       (failure) => state.copyWith(error: failure),
-      (r) => state,
+      (r) =>
+          // ignore: avoid_redundant_argument_values
+          state.copyWith(error: null),
     );
   }
 
   Stream<ChatState> _mapReceivedMessageToState(
       ReceivedChatMessageResponse event) async* {
+    yield state.copyWith(loading: true);
     final cachedOrFailed = await persistReceivedMessage(ReceivedMessageParams(
       message: event.message,
       chatKey: event.chatKey,
     ));
-
     yield cachedOrFailed.fold(
-      (failure) => state.copyWith(error: failure),
+      (failure) => state.copyWith(error: failure, loading: false),
       (message) {
-        final messages = state.messages;
+        final messages = [message, ...state.messages];
         return ChatMessagePersisted(
           recieverId: state.recieverId,
           receiverUser: state.receiverUser,
           page: state.page,
           pages: state.pages,
-          messages: [message, ...messages],
+          messages: messages,
           unreadCount: state.unreadCount,
           error: state.error,
         );

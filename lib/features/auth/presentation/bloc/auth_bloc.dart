@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -20,6 +20,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final PushNotifications pushNotifications;
   final UCGetPersistedUser persistedUser;
   final UCAuthLinkedIn authLinkedIn;
   final UCGoogleAuth authGoogle;
@@ -27,12 +28,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCGetSocialAuthToken socialAuthToken;
 
   AuthBloc({
+    @required this.pushNotifications,
     @required this.persistedUser,
     @required this.authLinkedIn,
     @required this.authGoogle,
     @required this.loginEmail,
     @required this.socialAuthToken,
-  })  : assert(persistedUser != null),
+  })  : assert(pushNotifications != null),
+        assert(persistedUser != null),
         assert(authLinkedIn != null),
         assert(authGoogle != null),
         assert(loginEmail != null),
@@ -56,14 +59,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // Helper
-
-  Future<String> getOnseSignalOsId() async {
-    final onesignalSub =
-        await OneSignal.shared.getPermissionSubscriptionState();
-    return onesignalSub.subscriptionStatus.userId;
-  }
-
   Stream<AuthState> _mapAuthStartedToState(AuthStarted event) async* {
     final userOrError = await persistedUser(NoParams());
     yield userOrError.fold(
@@ -84,7 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapSocialAuthToState(AuthSocialPressed event) async* {
     final provider = event.provider;
-    final osId = await getOnseSignalOsId();
+    final osId = await pushNotifications.getSubscribtionsToken();
     final tokenOrFailure = await socialAuthToken(
       SocialAuthTokenParams(provider: provider),
     );
@@ -118,7 +113,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoginEmailToState(AuthLoginEmailPressed event) async* {
     if (state.isFormValid) {
       yield state.loading();
-      final osId = await getOnseSignalOsId();
+      final osId = await pushNotifications.getSubscribtionsToken();
       final userOrFailure = await loginEmail(EmailLoginParams(
         email: event.email,
         password: event.password,

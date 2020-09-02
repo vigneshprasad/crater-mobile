@@ -37,19 +37,24 @@ class _HomeLayoutState extends State<HomeLayout> {
           IconButton(
             color: Colors.black87,
             icon: const Icon(WorkNetIcons.notification),
-            onPressed: () {},
+            onPressed: _openNotificationsScreen,
           )
         ],
       ),
       drawer: AppDrawer(),
       body: widget.screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: onTabTapped,
-        selectedFontSize: 12,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.black38,
-        items: widget.navItems,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.white,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: onTabTapped,
+          unselectedItemColor: Colors.grey[400],
+          selectedFontSize: 12,
+          selectedItemColor: Theme.of(context).primaryColor,
+          items: widget.navItems,
+        ),
       ),
       floatingActionButton: getFloatingActionButton(context),
     );
@@ -84,5 +89,9 @@ class _HomeLayoutState extends State<HomeLayout> {
       );
     }
     return null;
+  }
+
+  void _openNotificationsScreen() {
+    ExtendedNavigator.of(context).push(Routes.notificationsScreen);
   }
 }

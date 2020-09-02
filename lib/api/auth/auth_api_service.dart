@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
-import 'package:worknetwork/constants/app_constants.dart';
+
+import '../../constants/app_constants.dart';
 
 part 'auth_api_service.chopper.dart';
 

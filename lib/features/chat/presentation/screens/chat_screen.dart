@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/chat/presentation/widgets/chat_layout.dart';
-import 'package:worknetwork/ui/components/chat_input_bar/chat_input_bar.dart';
-import 'package:worknetwork/ui/components/list_items/chat_message_item/chat_message_item.dart';
 
+import '../../../../ui/components/chat_input_bar/chat_input_bar.dart';
+import '../../../../ui/components/list_items/chat_message_item/chat_message_item.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/chat_bloc.dart';
+import '../widgets/chat_layout.dart';
 
 class ChatScreen extends StatefulWidget {
   final String recieverId;
@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
               if (chatState is ChatWebSocketReady) {
                 _chatBloc
                     .add(SetChatWithUserStarted(recieverId: widget.recieverId));
-              } else if (chatState is ChatMessagePersisted) {}
+              }
             },
             builder: (context, chatState) {
               if (chatState.receiverUser != null) {

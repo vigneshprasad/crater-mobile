@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 
@@ -77,8 +78,9 @@ class _ChatLayoutState extends State<ChatLayout> {
   Widget _buildLabel(BuildContext context, double opacity) {
     if (widget.user != null) {
       final formatDate = DateFormat("h:mm a");
-      final image =
-          widget.user.photo.isNotEmpty ? NetworkImage(widget.user.photo) : null;
+      final image = widget.user.photo != null
+          ? NetworkImage(widget.user.photo)
+          : AppImageAssets.defaultAvatar as ImageProvider;
       final name = widget.user.name.isNotEmpty ? widget.user.name : "";
       // ignore: unused_local_variable
       final lastSeen = widget.user.lastSeen != null

@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/status_bar_color/status_bar_color.dart';
-import 'package:worknetwork/di/injector.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/utils/root_provider.dart';
 
 import '../../constants/theme.dart';
 import '../../utils/app_localizations.dart';
-import '../../utils/one_signal_manager/one_signal_manager.dart';
 
 class RootApp extends StatefulWidget {
   @override
@@ -21,16 +21,24 @@ class _RootAppState extends State<RootApp> {
 
   @override
   void initState() {
-    Di.setup();
     _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+    KiwiContainer().resolve<PushNotifications>().initSdk();
     StatusBarColor.setTheme(ThemeType.light);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RootProvider(
-      child: OneSignalManager(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        // For Android.
+        // Use [light] for white status bar and [dark] for black status bar.
+        statusBarIconBrightness: Brightness.dark,
+        // For iOS.
+        // Use [dark] for white status bar and [light] for black status bar.
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: RootProvider(
         child: MaterialApp(
           title: 'WorkNetwork',
           localizationsDelegates: const [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/notification/presentation/bloc/notification_bloc.dart';
 
 import '../../../blocs/article/bloc/article_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
@@ -37,6 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    BlocProvider.of<NotificationBloc>(context)
+        .add(const GetNotificationsRequestStarted(page: 1, pageSize: 10));
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _postBloc.close();
     _articleBloc.close();
@@ -63,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         BlocProvider.value(
           value: _chatInboxBloc,
-        )
+        ),
       ],
       child: HomeLayout(
         navItems: getNavItems(context),

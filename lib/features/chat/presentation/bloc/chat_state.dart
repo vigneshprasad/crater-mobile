@@ -1,6 +1,7 @@
 part of 'chat_bloc.dart';
 
 class ChatState extends Equatable {
+  final bool loading;
   final String recieverId;
   final ChatUser receiverUser;
   final int page;
@@ -10,6 +11,7 @@ class ChatState extends Equatable {
   final dynamic error;
 
   const ChatState({
+    this.loading,
     this.recieverId,
     this.receiverUser,
     this.page,
@@ -21,6 +23,7 @@ class ChatState extends Equatable {
 
   @override
   List<Object> get props => [
+        loading,
         recieverId,
         receiverUser,
         page,
@@ -30,6 +33,7 @@ class ChatState extends Equatable {
       ];
 
   ChatState copyWith({
+    bool loading,
     String recieverId,
     ChatUser receiverUser,
     int page,
@@ -39,6 +43,7 @@ class ChatState extends Equatable {
     dynamic error,
   }) {
     return ChatState(
+      loading: loading ?? this.loading,
       recieverId: recieverId ?? this.recieverId,
       receiverUser: receiverUser ?? this.receiverUser,
       page: page ?? this.page,
@@ -53,6 +58,7 @@ class ChatState extends Equatable {
 class ChatInitial extends ChatState {
   const ChatInitial()
       : super(
+            loading: false,
             recieverId: "",
             page: 1,
             pages: 1,
@@ -64,6 +70,7 @@ class ChatInitial extends ChatState {
 class ChatWebSocketReady extends ChatState {
   const ChatWebSocketReady()
       : super(
+          loading: false,
           recieverId: "",
           page: 1,
           pages: 1,
@@ -83,6 +90,7 @@ class ChatMessagePersisted extends ChatState {
     @required int unreadCount,
     @required dynamic error,
   }) : super(
+          loading: false,
           recieverId: recieverId,
           receiverUser: receiverUser,
           page: page,

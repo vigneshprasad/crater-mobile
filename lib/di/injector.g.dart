@@ -11,6 +11,8 @@ class _$CoreInjector extends CoreInjector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton<NetworkInfo>(
         (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
+    container
+        .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
   }
 }
 
@@ -44,6 +46,7 @@ class _$AuthInjector extends AuthInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => AuthBloc(
+        pushNotifications: c<PushNotifications>(),
         persistedUser: c<UCGetPersistedUser>(),
         authLinkedIn: c<UCAuthLinkedIn>(),
         authGoogle: c<UCGoogleAuth>(),
@@ -87,6 +90,9 @@ class _$ChatInboxInjector extends ChatInboxInjector {
         recievedAllChatUsers: c<UCRecievedAllChatUsers>(),
         starChatUser: c<UCSendStarChatUser>(),
         starUserChanged: c<UCReceivedStarUserChanged>()));
+    container.registerFactory((c) => ChatSearchBloc(
+        websocketBloc: c<WebsocketBloc>(),
+        getAllChatUsers: c<UCSearchAllUsers>()));
     container.registerSingleton<ChatInboxRepository>((c) =>
         ChatInboxRepositoryImpl(
             localDataSource: c<ChatInboxLocalDataSource>(),
@@ -98,6 +104,8 @@ class _$ChatInboxInjector extends ChatInboxInjector {
             webSocketRepository: c<WebSocketRepository>()));
     container.registerSingleton(
         (c) => UCGetAllChatUsers(repository: c<ChatInboxRepository>()));
+    container.registerSingleton(
+        (c) => UCSearchAllUsers(repository: c<ChatInboxRepository>()));
     container.registerSingleton(
         (c) => UCRecievedAllChatUsers(repository: c<ChatInboxRepository>()));
     container.registerSingleton(
@@ -177,5 +185,25 @@ class _$PointsInjector extends PointsInjector {
         (c) => PointsRemoteDatasourceImpl(apiService: c<PointsApiService>()));
     container.registerSingleton(
         (c) => UCGetSelfUserPoints(repository: c<PointsRepository>()));
+  }
+}
+
+class _$NotificationInjector extends NotificationInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) =>
+        NotificationBloc(getNotifications: c<UCGetNotificationPageRequest>()));
+    container.registerSingleton<NotificationRepository>((c) =>
+        NotificationRepositoryImpl(
+            localDatasource: c<NotificationLocalDatasource>(),
+            remotDatasource: c<NotificationRemotDatasource>(),
+            networkInfo: c<NetworkInfo>()));
+    container.registerSingleton<NotificationLocalDatasource>(
+        (c) => NotificationLocalDatasourceImpl());
+    container.registerSingleton<NotificationRemotDatasource>((c) =>
+        NotificationRemotDatasourceImpl(
+            apiService: c<NotificationApiService>()));
+    container.registerSingleton((c) =>
+        UCGetNotificationPageRequest(repository: c<NotificationRepository>()));
   }
 }

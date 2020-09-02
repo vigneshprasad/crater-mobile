@@ -79,4 +79,20 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> sendSearchAllChatUsers(
+      String search, String filter, int page, String latestMesssages) async {
+    try {
+      await remoteDataSource.sendGetAllUsersRequest(
+        search,
+        filter,
+        page,
+        latestMesssages,
+      );
+      return const Right(null);
+    } on WebsocketServerException {
+      return Left(WebsocketServerFailure());
+    }
+  }
 }

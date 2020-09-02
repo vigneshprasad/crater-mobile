@@ -37,7 +37,7 @@ class PostCard extends StatelessWidget {
         children: <Widget>[
           getPostHeader(context),
           getPostContent(context),
-          if (links.isNotEmpty) getPostLinkMeta(context, links[0]),
+          // if (links.isNotEmpty) getPostLinkMeta(context, links[0]),
           const Divider(
             indent: AppInsets.xl,
             endIndent: AppInsets.xl,

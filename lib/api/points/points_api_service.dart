@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
-import 'package:http/http.dart' hide Response, Request;
-import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
-import 'package:worknetwork/constants/app_constants.dart';
+
+import '../../constants/app_constants.dart';
+import '../interceptors/authorized_interceptor.dart';
 
 part 'points_api_service.chopper.dart';
 

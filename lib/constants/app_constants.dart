@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  static const apiBaseUrl = "https://back.worknetwork.in/v1";
-  static const websocketBaseUrl = "wss://back.worknetwork.in/ws/connector";
-  static const oneSignalAppId = "07ed4c08-3698-4fdd-80c5-2de973b851ef";
+  static const apiBaseUrl = "https://back-pre.1worknetwork.com/v1";
+  static const websocketBaseUrl =
+      "wss://back-pre.1worknetwork.com/ws/connector";
+  static const oneSignalAppId = "1e6689ee-cb44-4c39-8339-4ce7ddd513fc";
   static const linkedinClientId = "816zzmaw07e4v3";
   static const linkedinSecret = "upmxGw6xmBM7CHVa";
   static const linkedinRedirect = "http://localhost:3000/connect/linkedin";

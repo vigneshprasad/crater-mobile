@@ -9,14 +9,14 @@ import '../../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../../../data/models/responses.dart';
 import '../../../domain/entity/chat_user_entity.dart';
-import '../../../domain/usecase/get_all_chat_users_usecase.dart';
+import '../../../domain/usecase/search_all_users_usecase.dart';
 
 part 'chat_search_event.dart';
 part 'chat_search_state.dart';
 
 class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
   final WebsocketBloc websocketBloc;
-  final UCGetAllChatUsers getAllChatUsers;
+  final UCSearchAllUsers getAllChatUsers;
   StreamSubscription _websocketBlocSub;
   StreamSubscription _socketStreamSub;
 
@@ -84,10 +84,9 @@ class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
 
   Stream<ChatSearchState> _mapSendSearchRequestToState(
       SendSearchUsersRequestStarted event) async* {
-    final cacheOrError = await getAllChatUsers(GetAllUsersParams(
+    final cacheOrError = await getAllChatUsers(SearchAllUsersParams(
       search: event.search,
       page: event.page,
-      latestMessage: "all",
     ));
 
     yield cacheOrError.fold(
@@ -97,7 +96,7 @@ class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
         error: null,
         page: state.page,
         pages: state.page,
-        results: results,
+        results: state.results,
       ),
     );
   }

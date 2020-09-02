@@ -25,4 +25,10 @@ abstract class ChatInboxRepository {
     @required bool isStarred,
     @required String user,
   });
+  Future<Either<Failure, void>> sendSearchAllChatUsers(
+    String search,
+    String filter,
+    int page,
+    String latestMesssages,
+  );
 }

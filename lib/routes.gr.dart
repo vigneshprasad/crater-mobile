@@ -14,6 +14,7 @@ import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/modals/create_post/create_post.dart';
 import 'ui/screens/home/home_screen.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
   static const String videoPlayerScreen = '/video-player';
+  static const String notificationsScreen = '/notifications';
   static const all = <String>{
     splashScreen,
     homeScreen,
@@ -37,6 +39,7 @@ class Routes {
     chatScreen,
     chatSearchScreen,
     videoPlayerScreen,
+    notificationsScreen,
   };
 }
 
@@ -52,6 +55,7 @@ class Router extends RouterBase {
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
     RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
+    RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -125,6 +129,12 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    NotificationsScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NotificationsScreen(),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -177,6 +187,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.videoPlayerScreen,
         arguments: VideoPlayerScreenArguments(videoId: videoId, key: key),
       );
+
+  Future<dynamic> pushNotificationsScreen() =>
+      push<dynamic>(Routes.notificationsScreen);
 }
 
 /// ************************************************************************

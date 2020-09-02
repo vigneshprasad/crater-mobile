@@ -10,9 +10,13 @@ mixin AppTheme {
   static const Color blueAccent = Color(0xFF7AB9DE);
   static const Color linkedInColor = Color(0xFF0073b3);
   static const Color facebookColor = Color(0xFF405695);
+  static const TextStyle appBarTitle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
 
   static const Color primaryLightStatusBar = Color(0x0D000000);
-  static final ThemeData lightTheme = ThemeData(
+  static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: primaryColor,
     primarySwatch: primarySwatch,
@@ -27,14 +31,18 @@ mixin AppTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     appBarTheme: AppBarTheme(
+      iconTheme: IconThemeData(
+        color: Colors.grey[800],
+      ),
       textTheme: primaryTextTheme,
-      color: Colors.white,
+      color: Colors.grey[800],
       brightness: Brightness.light,
-      actionsIconTheme: const IconThemeData(
-        color: Colors.black87,
+      actionsIconTheme: IconThemeData(
+        color: Colors.grey[800],
       ),
     ),
-    canvasColor: Colors.grey[50],
+    canvasColor: Colors.grey[100],
+    backgroundColor: Colors.grey[100],
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textSelectionHandleColor: primaryColor,
     cursorColor: primaryColor,

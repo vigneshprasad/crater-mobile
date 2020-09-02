@@ -2,7 +2,17 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/api/notifications/notifications_api_service.dart';
 import 'package:worknetwork/api/points/points_api_service.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/chat_inbox/domain/usecase/search_all_users_usecase.dart';
+import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_search/chat_search_bloc.dart';
+import 'package:worknetwork/features/notification/data/datasources/notfication_local_datasource.dart';
+import 'package:worknetwork/features/notification/data/datasources/notification_remote_datasource.dart';
+import 'package:worknetwork/features/notification/data/repository/notification_repository_impl.dart';
+import 'package:worknetwork/features/notification/domain/repository/notfication_repository.dart';
+import 'package:worknetwork/features/notification/domain/usecases/get_notifications_page_usecase.dart';
+import 'package:worknetwork/features/notification/presentation/bloc/notification_bloc.dart';
 import 'package:worknetwork/features/points/data/datasources/points_local_datasource.dart';
 import 'package:worknetwork/features/points/data/datasources/points_remote_datasource.dart';
 import 'package:worknetwork/features/points/data/repository/points_repository_impl.dart';
@@ -67,6 +77,7 @@ part 'injector.g.dart';
 
 abstract class CoreInjector {
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
+  @Register.singleton(PushNotifications, from: PushNotificationsImpl)
   void configure();
 }
 
@@ -106,12 +117,14 @@ abstract class SocialAuthInjector {
 
 abstract class ChatInboxInjector {
   @Register.factory(ChatInboxBloc)
+  @Register.factory(ChatSearchBloc)
   @Register.singleton(ChatInboxRepository, from: ChatInboxRepositoryImpl)
   @Register.singleton(ChatInboxLocalDataSource,
       from: ChatInboxLocalDataSourceImpl)
   @Register.singleton(ChatInboxRemoteDataSource,
       from: ChatInboxRemoteDataSourceImpl)
   @Register.singleton(UCGetAllChatUsers)
+  @Register.singleton(UCSearchAllUsers)
   @Register.singleton(UCRecievedAllChatUsers)
   @Register.singleton(UCSendStarChatUser)
   @Register.singleton(UCReceivedStarUserChanged)
@@ -151,6 +164,17 @@ abstract class PointsInjector {
   void configure();
 }
 
+abstract class NotificationInjector {
+  @Register.factory(NotificationBloc)
+  @Register.singleton(NotificationRepository, from: NotificationRepositoryImpl)
+  @Register.singleton(NotificationLocalDatasource,
+      from: NotificationLocalDatasourceImpl)
+  @Register.singleton(NotificationRemotDatasource,
+      from: NotificationRemotDatasourceImpl)
+  @Register.singleton(UCGetNotificationPageRequest)
+  void configure();
+}
+
 class Di {
   static void setup() {
     final container = KiwiContainer();
@@ -162,6 +186,7 @@ class Di {
     final chatInjector = _$ChatInjector();
     final videoInjector = _$VideoInjector();
     final pointsInjector = _$PointsInjector();
+    final notficationInjector = _$NotificationInjector();
 
     /// [Core]
     ///
@@ -189,10 +214,14 @@ class Di {
     // Points
     pointsInjector.configure();
 
+    // Notifications
+    notficationInjector.configure();
+
     // Api Services
     container.registerInstance(AuthApiService.create());
     container.registerInstance(MasterClassApiService.create());
     container.registerInstance(PointsApiService.create());
+    container.registerInstance(NotificationApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

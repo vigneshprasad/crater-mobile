@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -42,6 +44,17 @@ class _AuthScreenState extends State<AuthScreen> {
   void dispose() {
     _navigator?.dispose();
     super.dispose();
+  }
+
+  Future<void> _showOsId() async {
+    final odId = await KiwiContainer()
+        .resolve<PushNotifications>()
+        .getSubscribtionsToken();
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(odId),
+            ));
   }
 
   @override

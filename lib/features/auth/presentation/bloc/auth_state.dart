@@ -96,6 +96,7 @@ class AuthStateSuccess extends AuthState {
 class AuthStateFailure extends AuthState {
   const AuthStateFailure()
       : super(
+          isSubmitting: false,
           isEmailValid: true,
           isPasswordValid: true,
           isAuth: false,

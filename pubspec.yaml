@@ -51,7 +51,7 @@ dependencies:
   web_socket_channel: ^1.1.0
   cached_network_image: ^2.2.0+1
   lottie: ^0.5.1
-  onesignal_flutter: ^2.6.0
+  onesignal_flutter: ^2.6.1
   chewie: ^0.9.10
   video_player: ^0.10.12
   dartz: ^0.9.1

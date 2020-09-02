@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/videos/presentation/screens/video_player_screen.dart';
 
 import 'blocs/post/bloc/post_bloc.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
-import 'ui/modals/create_post/create_post.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/notification/presentation/screens/notifications_screen.dart';
+import 'features/videos/presentation/screens/video_player_screen.dart';
+import 'ui/modals/create_post/create_post.dart';
 import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
 
@@ -73,7 +74,8 @@ class Routes {
         page: CreatePost, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),
     MaterialRoute(page: ChatSearchScreen, path: "/chat/search"),
-    MaterialRoute(page: VideoPlayerScreen, path: "/video-player")
+    MaterialRoute(page: VideoPlayerScreen, path: "/video-player"),
+    MaterialRoute(page: NotificationsScreen, path: "/notifications")
   ],
 )
 class $Router {}
