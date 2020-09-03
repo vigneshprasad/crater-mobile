@@ -39,7 +39,22 @@ class _$PostApiService extends PostApiService {
 
   @override
   Future<Response<dynamic>> deletePost(int id) {
-    final $url = '/community/posts/$id/';
+    final $url = '/community/$id/';
+    final $request = Request('DELETE', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> createLike(Map<String, dynamic> body) {
+    final $url = '/community/likes/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> deleteLike(int id) {
+    final $url = '/community/likes/$id/';
     final $request = Request('DELETE', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }

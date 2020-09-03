@@ -30,3 +30,27 @@ class DeletePostRequestStarted extends CommunityEvent {
   @override
   List<Object> get props => [postId];
 }
+
+class CreateLikePostRequest extends CommunityEvent {
+  final int postId;
+  final String userId;
+
+  const CreateLikePostRequest({
+    this.postId,
+    this.userId,
+  });
+
+  @override
+  List<Object> get props => [postId, userId];
+}
+
+class DeleteLikePostRequest extends CommunityEvent {
+  final int postId;
+
+  const DeleteLikePostRequest({
+    this.postId,
+  });
+
+  @override
+  List<Object> get props => [postId];
+}

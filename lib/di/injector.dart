@@ -12,6 +12,8 @@ import 'package:worknetwork/features/community/data/datasources/community_local_
 import 'package:worknetwork/features/community/data/datasources/community_remote_datasource.dart';
 import 'package:worknetwork/features/community/data/repository/community_repository_impl.dart';
 import 'package:worknetwork/features/community/domain/repository/community_repository.dart';
+import 'package:worknetwork/features/community/domain/usecase/create_like_post_usecase.dart';
+import 'package:worknetwork/features/community/domain/usecase/delete_like_post_usecase.dart';
 import 'package:worknetwork/features/community/domain/usecase/delete_post_usecase.dart';
 import 'package:worknetwork/features/community/domain/usecase/get_posts_page_usecase.dart';
 import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
@@ -131,6 +133,8 @@ abstract class CommunityInjector {
       from: CommunityRemoteDatasourceImpl)
   @Register.singleton(UCGetPostsPage)
   @Register.singleton(UCDeletePost)
+  @Register.singleton(UCCreateLikePost)
+  @Register.singleton(UCDeleteLikePost)
   void configure();
 }
 

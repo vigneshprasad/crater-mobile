@@ -1,16 +1,20 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/community/data/models/api_models.dart';
 
 import '../../../../api/post/post_api_service.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
+import '../../domain/entity/like_entity.dart';
 import '../../domain/entity/post_entity.dart';
+import '../models/api_models.dart';
+import '../models/like_model.dart';
 
 abstract class CommunityRemoteDatasource {
   Future<PageApiResponse<Post>> getPostsPageFromRemote(int pageSize, int page);
   Future<void> deletePost(int postId);
+  Future<Like> createLikeForPostRemote(int postId, String userId);
+  Future<Like> deleteLikeForPostRemote(int postId);
 }
 
 class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
@@ -44,6 +48,32 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
   Future<void> deletePost(int postId) async {
     final response = await apiService.deletePost(postId);
     if (response.statusCode != 204) {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Like> createLikeForPostRemote(int postId, String userId) async {
+    final body = {
+      "post": postId.toString(),
+      "user": userId,
+    };
+    final response = await apiService.createLike(body);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return LikeModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Like> deleteLikeForPostRemote(int postId) async {
+    final response = await apiService.deleteLike(postId);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return LikeModel.fromJson(json);
+    } else {
       throw ServerException(response.error);
     }
   }

@@ -17,8 +17,8 @@ import 'ui/screens/setup/setup_screen.dart';
     MaterialRoute(page: HomeScreen, path: "/home"),
     MaterialRoute(page: AuthScreen, path: "/auth"),
     MaterialRoute(page: SetupScreen, path: "/setup"),
-    MaterialRoute(
-        page: CreatePost, path: "/create-post", fullscreenDialog: true),
+    // MaterialRoute(
+    //     page: CreatePost, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),
     MaterialRoute(page: ChatSearchScreen, path: "/chat/search"),
     MaterialRoute(page: VideoPlayerScreen, path: "/video-player"),

@@ -81,3 +81,25 @@ class CommunityPostDeletedSuccess extends CommunityState {
         postId,
       ];
 }
+
+class CommunityCreateLikeReceivedSuccess extends CommunityState {
+  final Like like;
+
+  const CommunityCreateLikeReceivedSuccess({
+    @required this.like,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}
+
+class CommunityDeleteLikeReceivedSuccess extends CommunityState {
+  final Like like;
+
+  const CommunityDeleteLikeReceivedSuccess({
+    @required this.like,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}

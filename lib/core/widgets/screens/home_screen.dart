@@ -6,7 +6,6 @@ import 'package:worknetwork/features/community/presentation/bloc/community_bloc.
 
 import '../../../blocs/article/bloc/article_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
-import '../../../blocs/post/bloc/post_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
@@ -25,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final PostBloc _postBloc = PostBloc();
   final CommunityBloc _communityBloc = KiwiContainer().resolve();
   final ArticleBloc _articleBloc = ArticleBloc();
   final VideoBloc _videoBloc = KiwiContainer().resolve();
@@ -44,9 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: _postBloc,
-        ),
         BlocProvider.value(
           value: _communityBloc,
         ),
@@ -107,9 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (index == 0) {
       return FloatingActionButton(
         onPressed: () {
-          final _postbloc = BlocProvider.of<PostBloc>(context);
-          ExtendedNavigator.of(context).push(Routes.createPost,
-              arguments: CreatePostArguments(postBloc: _postbloc));
+          // final _postbloc = BlocProvider.of<PostBloc>(context);
+          // ExtendedNavigator.of(context).push(Routes.createPost,
+          //     arguments: CreatePostArguments(postBloc: _postbloc));
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.newpost),

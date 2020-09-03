@@ -5,24 +5,25 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart' show launch;
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
+import '../../../features/auth/domain/entity/user_entity.dart';
+import '../../../features/community/domain/entity/post_entity.dart';
 import '../../../utils/parse_urls.dart';
 import '../base_text/base_text.dart';
 import '../base_text/base_text_expand.dart';
 import 'post_card_actions.dart';
 
 typedef PostItemFunc = void Function(int id);
+typedef PostLikeItemFunc = void Function(int id, bool myLike);
 
 class PostCard extends StatelessWidget {
   final User user;
   final Post post;
   final PostItemFunc onPostDelete;
-  final PostItemFunc onLikePost;
+  final PostLikeItemFunc onLikePost;
 
   const PostCard({
     Key key,
@@ -225,13 +226,16 @@ class PostCard extends StatelessWidget {
           PostCardActions(
             icon: Icon(
               WorkNetIcons.like,
-              color: Colors.grey[500],
+              color: post.myLike ? AppTheme.blueAccent : Colors.grey[500],
             ),
             label: Text(
               post.likes.toString(),
               style: textTheme,
             ),
-            onPress: () {},
+            onPress: () => onLikePost(
+              post.pk,
+              post.myLike,
+            ),
           ),
           PostCardActions(
             icon: Icon(

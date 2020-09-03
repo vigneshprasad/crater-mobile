@@ -41,6 +41,46 @@ class Post extends HiveObject {
     this.comments,
     this.latestComments,
   });
+
+  Post copyWith({
+    int pk,
+    String message,
+    int group,
+    String groupName,
+    List<String> filesUrls,
+    List<FileData> filesData,
+    String creator,
+    String creatorName,
+    bool isCreatorApproved,
+    String creatorPhoto,
+    String created,
+    int likes,
+    bool myLike,
+    bool isFollowed,
+    bool isReported,
+    int comments,
+    List<Comment> latestComments,
+  }) {
+    return Post(
+      pk: pk ?? this.pk,
+      message: message ?? this.message,
+      group: group ?? this.group,
+      groupName: groupName ?? this.groupName,
+      filesUrls: filesUrls ?? this.filesUrls,
+      filesData: filesData ?? this.filesData,
+      creator: creator ?? this.creator,
+      creatorName: creatorName ?? this.creatorName,
+      isCreatorApproved: isCreatorApproved ?? this.isCreatorApproved,
+      creatorPhoto: creatorPhoto ?? this.creatorPhoto,
+      created: created ?? this.created,
+      likes: likes ?? this.likes,
+      myLike: myLike ?? this.myLike,
+      isFollowed: isFollowed ?? this.isFollowed,
+      isReported: isReported ?? this.isReported,
+      comments: comments ?? this.comments,
+      latestComments: latestComments ?? this.latestComments,
+    );
+  }
 }
 
 class FileData extends Equatable {

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/community/domain/entity/like_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -55,6 +56,36 @@ class CommunityRepositoryImpl implements CommunityRepository {
       try {
         remoteDatasource.deletePost(postId);
         return Right(postId);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    }
+    return Left(ServerFailure());
+  }
+
+  @override
+  Future<Either<Failure, Like>> createLikeForPost(
+      int postId, String userId) async {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final response =
+            await remoteDatasource.createLikeForPostRemote(postId, userId);
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    }
+    return Left(ServerFailure());
+  }
+
+  @override
+  Future<Either<Failure, Like>> deleteLikeForPost(int postId) async {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final response = await remoteDatasource.deleteLikeForPostRemote(postId);
+        return Right(response);
       } on ServerException {
         return Left(ServerFailure());
       }

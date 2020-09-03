@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/layouts/home_tab_layout.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
 import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
@@ -47,13 +48,7 @@ class _CommunityTabState extends State<CommunityTab> {
         AppLocalizations.of(context).translate("community:subtitle");
 
     return BlocConsumer<CommunityBloc, CommunityState>(
-      listener: (context, state) {
-        if (state is CommunityGetPageResponseReceived) {
-          _updatePostsList(state);
-        } else if (state is CommunityPostDeletedSuccess) {
-          _deletePostFromList(state);
-        }
-      },
+      listener: _blocListener,
       builder: (context, state) {
         return HomeTabLayout(
           heading: title,
@@ -75,6 +70,13 @@ class _CommunityTabState extends State<CommunityTab> {
                       post: _posts[index],
                       onPostDelete: _onDeletePost,
                       user: user,
+                      onLikePost: (postId, myLike) {
+                        if (myLike) {
+                          _sendDeleteLikeRequest(postId);
+                        } else {
+                          _sendCreateLikeRequest(postId, authState.user);
+                        }
+                      },
                     ),
                   );
                 } else {
@@ -86,6 +88,18 @@ class _CommunityTabState extends State<CommunityTab> {
         );
       },
     );
+  }
+
+  void _blocListener(BuildContext context, CommunityState state) {
+    if (state is CommunityGetPageResponseReceived) {
+      _updatePostsList(state);
+    } else if (state is CommunityPostDeletedSuccess) {
+      _deletePostFromList(state);
+    } else if (state is CommunityCreateLikeReceivedSuccess) {
+      _updatePostLikeCreated(state);
+    } else if (state is CommunityDeleteLikeReceivedSuccess) {
+      _updatePostLikeDeleted(state);
+    }
   }
 
   Future<void> _onRefreshList() async {
@@ -113,6 +127,60 @@ class _CommunityTabState extends State<CommunityTab> {
       _count = state.count;
       _fromCache = state.fromCache;
     });
+  }
+
+  void _deletePostFromList(CommunityPostDeletedSuccess state) {
+    final updated =
+        _posts.where((element) => element.pk != state.postId).toList();
+    setState(() {
+      _posts = updated;
+    });
+  }
+
+  void _updatePostLikeCreated(CommunityCreateLikeReceivedSuccess state) {
+    final updated = _posts.map((post) {
+      final like = state.like;
+      if (post.pk == like.post) {
+        post = post.copyWith(
+          likes: like.likeCount,
+          myLike: true,
+        );
+      }
+      return post;
+    }).toList();
+    setState(() {
+      _posts = updated;
+    });
+  }
+
+  void _updatePostLikeDeleted(CommunityDeleteLikeReceivedSuccess state) {
+    final updated = _posts.map((post) {
+      final like = state.like;
+      if (post.pk == like.post) {
+        post = post.copyWith(
+          likes: like.likeCount,
+          myLike: false,
+        );
+      }
+      return post;
+    }).toList();
+    setState(() {
+      _posts = updated;
+    });
+  }
+
+  // Scroll Listener for Pagination
+  void _listScrollListener() {
+    // reached End of scroll
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      if (_currentPage < _pages) {
+        _bloc.add(GetCommunityPageRequestStarted(
+          page: _currentPage + 1,
+          pageSize: _pageSize,
+        ));
+      }
+    }
   }
 
   void _onDeletePost(int postId) {
@@ -148,27 +216,14 @@ class _CommunityTabState extends State<CommunityTab> {
     );
   }
 
-  void _deletePostFromList(CommunityPostDeletedSuccess state) {
-    final updated =
-        _posts.where((element) => element.pk != state.postId).toList();
-    setState(() {
-      _posts = updated;
-    });
+  void _sendCreateLikeRequest(int id, User user) {
+    _bloc.add(CreateLikePostRequest(
+      postId: id,
+      userId: user.pk,
+    ));
   }
 
-  void _listScrollListener() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
-      if (_currentPage < _pages) {
-        _bloc.add(GetCommunityPageRequestStarted(
-          page: _currentPage + 1,
-          pageSize: _pageSize,
-        ));
-      }
-    }
-    if (_controller.offset <= _controller.position.minScrollExtent &&
-        !_controller.position.outOfRange) {
-      setState(() {});
-    }
+  void _sendDeleteLikeRequest(int postId) {
+    _bloc.add(DeleteLikePostRequest(postId: postId));
   }
 }

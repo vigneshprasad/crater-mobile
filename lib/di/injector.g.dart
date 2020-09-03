@@ -85,7 +85,10 @@ class _$CommunityInjector extends CommunityInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => CommunityBloc(
-        getPostsPage: c<UCGetPostsPage>(), deletePost: c<UCDeletePost>()));
+        getPostsPage: c<UCGetPostsPage>(),
+        deletePost: c<UCDeletePost>(),
+        createLikePost: c<UCCreateLikePost>(),
+        deleteLikePost: c<UCDeleteLikePost>()));
     container.registerSingleton<CommunityRepository>((c) =>
         CommunityRepositoryImpl(
             remoteDatasource: c<CommunityRemoteDatasource>(),
@@ -99,6 +102,10 @@ class _$CommunityInjector extends CommunityInjector {
         .registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()));
     container.registerSingleton(
         (c) => UCDeletePost(repository: c<CommunityRepository>()));
+    container.registerSingleton(
+        (c) => UCCreateLikePost(repository: c<CommunityRepository>()));
+    container.registerSingleton(
+        (c) => UCDeleteLikePost(repository: c<CommunityRepository>()));
   }
 }
 
