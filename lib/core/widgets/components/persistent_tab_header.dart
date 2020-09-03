@@ -21,7 +21,7 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final elevation = shrinkOffset / maxExtent > 0.4
-        ? kElevationToShadow[2]
+        ? kElevationToShadow[1]
         : kElevationToShadow[0];
     return SafeArea(
       child: LayoutBuilder(
@@ -88,7 +88,9 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
                 alignment: Alignment.topRight,
                 child: BaseAppBar(
                   title: Opacity(
-                    opacity: shrinkOffset / maxExtent,
+                    opacity: shrinkOffset / maxExtent > 0.5
+                        ? 1
+                        : shrinkOffset / maxExtent,
                     child: Text(heading, style: AppTheme.appBarTitle),
                   ),
                   actions: appBarActions,

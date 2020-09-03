@@ -50,41 +50,39 @@ class _CommunityTabState extends State<CommunityTab> {
     return BlocConsumer<CommunityBloc, CommunityState>(
       listener: _blocListener,
       builder: (context, state) {
-        return HomeTabLayout(
-          heading: title,
-          subheading: subtitle,
-          list: RefreshIndicator(
-            onRefresh: _onRefreshList,
-            child: BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, authState) {
-                if (authState is AuthStateSuccess) {
-                  final user = authState.user;
-                  return ListView.builder(
-                    controller: _controller,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppInsets.l,
-                      horizontal: AppInsets.med,
-                    ),
-                    itemCount: _posts.length,
-                    itemBuilder: (context, index) => PostCard(
-                      post: _posts[index],
-                      onPostDelete: _onDeletePost,
-                      user: user,
-                      onLikePost: (postId, myLike) {
-                        if (myLike) {
-                          _sendDeleteLikeRequest(postId);
-                        } else {
-                          _sendCreateLikeRequest(postId, authState.user);
-                        }
-                      },
-                    ),
+        return BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            if (authState is AuthStateSuccess) {
+              final user = authState.user;
+              return HomeTabLayout(
+                heading: title,
+                subheading: subtitle,
+                onRefresh: _onRefreshList,
+                itemCount: _posts.length,
+                listController: _controller,
+                listPadding: const EdgeInsets.symmetric(
+                  horizontal: AppInsets.med,
+                  vertical: AppInsets.l,
+                ),
+                itemBuilder: (context, index) {
+                  return PostCard(
+                    post: _posts[index],
+                    onPostDelete: _onDeletePost,
+                    user: user,
+                    onLikePost: (postId, myLike) {
+                      if (myLike) {
+                        _sendDeleteLikeRequest(postId);
+                      } else {
+                        _sendCreateLikeRequest(postId, authState.user);
+                      }
+                    },
                   );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ),
+                },
+              );
+            } else {
+              return Container();
+            }
+          },
         );
       },
     );
