@@ -81,6 +81,27 @@ class _$SocialAuthInjector extends SocialAuthInjector {
   }
 }
 
+class _$CommunityInjector extends CommunityInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => CommunityBloc(
+        getPostsPage: c<UCGetPostsPage>(), deletePost: c<UCDeletePost>()));
+    container.registerSingleton<CommunityRepository>((c) =>
+        CommunityRepositoryImpl(
+            remoteDatasource: c<CommunityRemoteDatasource>(),
+            localDatasource: c<CommunityLocalDatasource>(),
+            networkInfo: c<NetworkInfo>()));
+    container.registerSingleton<CommunityLocalDatasource>(
+        (c) => CommunityLocalDatasourceImpl());
+    container.registerSingleton<CommunityRemoteDatasource>(
+        (c) => CommunityRemoteDatasourceImpl(apiService: c<PostApiService>()));
+    container
+        .registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()));
+    container.registerSingleton(
+        (c) => UCDeletePost(repository: c<CommunityRepository>()));
+  }
+}
+
 class _$ChatInboxInjector extends ChatInboxInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();

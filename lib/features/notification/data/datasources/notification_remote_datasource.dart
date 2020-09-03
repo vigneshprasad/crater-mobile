@@ -29,8 +29,6 @@ class NotificationRemotDatasourceImpl implements NotificationRemotDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = GetAllNotificationsPageResponse.fromJson(json);
-      print(pageSize);
-      print(model.results.length);
       return PageApiResponse(
         count: model.count,
         pageSize: pageSize,

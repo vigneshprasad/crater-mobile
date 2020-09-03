@@ -48,7 +48,10 @@ abstract class PostApiService extends ChopperService {
   }
 
   @Get(path: '')
-  Future<Response> getPostList();
+  Future<Response> getPostList(
+    @Query("page_size") int pageSize,
+    @Query() int page,
+  );
 
   @Post(path: '')
   @Multipart()

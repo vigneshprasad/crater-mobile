@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/routes.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 
 class App extends StatelessWidget {
@@ -26,7 +25,6 @@ class App extends StatelessWidget {
         // from the list (English, in this case).
         return supportedLocales.first;
       },
-      onGenerateRoute: Routes.onGenerateRoute,
       initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,

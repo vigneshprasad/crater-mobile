@@ -6,21 +6,22 @@ import '../features/auth/data/models/user_model.dart';
 import '../features/chat/data/models/chat_message_model.dart';
 import '../features/chat/data/models/user_chat_model.dart';
 import '../features/chat_inbox/data/models/chat_user_model.dart';
+import '../features/community/data/models/post_model.dart';
 import '../features/notification/data/models/notification_model.dart';
 import '../features/points/data/models/points_model.dart';
 import '../features/videos/data/models/video_model.dart';
 import '../models/comment/comment_model.dart';
-import '../models/post/post_model.dart';
 
 Future<void> initHive() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
 
   // Register Adapters
-  Hive.registerAdapter(PostModelAdapter());
+  // Hive.registerAdapter(PostModelAdapter());
   Hive.registerAdapter(CommentAdapter());
 
   Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(PostModelAdapter());
   Hive.registerAdapter(ChatUserModelAdapter());
   Hive.registerAdapter(ChatMessageModelAdapter());
   Hive.registerAdapter(UserChatModelAdapter());
@@ -31,6 +32,7 @@ Future<void> initHive() async {
   // Open Boxes
 
   await Hive.openBox<UserModel>(AppHiveBoxes.userModelBox);
+  await Hive.openBox<PostModel>(AppHiveBoxes.postsBox);
   await Hive.openBox<ChatUserModel>(AppHiveBoxes.chatUserBox);
   await Hive.openBox<ChatMessageModel>(AppHiveBoxes.chatMessageBox);
   await Hive.openBox<UserChatModel>(AppHiveBoxes.userChatBox);

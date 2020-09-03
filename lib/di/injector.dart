@@ -4,9 +4,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/api/notifications/notifications_api_service.dart';
 import 'package:worknetwork/api/points/points_api_service.dart';
+import 'package:worknetwork/api/post/post_api_service.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/features/chat_inbox/domain/usecase/search_all_users_usecase.dart';
 import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_search/chat_search_bloc.dart';
+import 'package:worknetwork/features/community/data/datasources/community_local_datasource.dart';
+import 'package:worknetwork/features/community/data/datasources/community_remote_datasource.dart';
+import 'package:worknetwork/features/community/data/repository/community_repository_impl.dart';
+import 'package:worknetwork/features/community/domain/repository/community_repository.dart';
+import 'package:worknetwork/features/community/domain/usecase/delete_post_usecase.dart';
+import 'package:worknetwork/features/community/domain/usecase/get_posts_page_usecase.dart';
+import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
 import 'package:worknetwork/features/notification/data/datasources/notfication_local_datasource.dart';
 import 'package:worknetwork/features/notification/data/datasources/notification_remote_datasource.dart';
 import 'package:worknetwork/features/notification/data/repository/notification_repository_impl.dart';
@@ -96,7 +104,6 @@ abstract class WebSocketInjector {
 
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
-  // @Register.singleton(AuthApiService, from: AuthApiServiceImpl)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -112,6 +119,18 @@ abstract class SocialAuthInjector {
   @Register.singleton(SocialAuthRepository, from: SocialAuthRepositoryImpl)
   @Register.singleton(SocialAuthRemoteDataSource,
       from: SocialAuthRemoteDataSourceImpl)
+  void configure();
+}
+
+abstract class CommunityInjector {
+  @Register.factory(CommunityBloc)
+  @Register.singleton(CommunityRepository, from: CommunityRepositoryImpl)
+  @Register.singleton(CommunityLocalDatasource,
+      from: CommunityLocalDatasourceImpl)
+  @Register.singleton(CommunityRemoteDatasource,
+      from: CommunityRemoteDatasourceImpl)
+  @Register.singleton(UCGetPostsPage)
+  @Register.singleton(UCDeletePost)
   void configure();
 }
 
@@ -187,6 +206,7 @@ class Di {
     final videoInjector = _$VideoInjector();
     final pointsInjector = _$PointsInjector();
     final notficationInjector = _$NotificationInjector();
+    final communityInjector = _$CommunityInjector();
 
     /// [Core]
     ///
@@ -201,6 +221,9 @@ class Di {
 
     // Social Auth
     socialAuthInjector.configure();
+
+    // Community
+    communityInjector.configure();
 
     // Chat Inbox
     chatInboxInjector.configure();
@@ -222,6 +245,7 @@ class Di {
     container.registerInstance(MasterClassApiService.create());
     container.registerInstance(PointsApiService.create());
     container.registerInstance(NotificationApiService.create());
+    container.registerInstance(PostApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

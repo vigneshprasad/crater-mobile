@@ -10,7 +10,7 @@ class PostRepository {
   Box<PostModel> postsBox;
 
   Future<GetPostListResponse> getPosts() async {
-    final response = await _postApiService.getPostList();
+    final response = await _postApiService.getPostList(5, 1);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return GetPostListResponse.fromJson(json);

@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
 
 import '../../../blocs/article/bloc/article_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
@@ -8,14 +10,14 @@ import '../../../blocs/post/bloc/post_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
-import '../../../features/notification/presentation/bloc/notification_bloc.dart';
+import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
 import '../../../features/videos/presentation/widgets/videos_tab.dart';
+import '../../../routes.gr.dart';
+import '../../../ui/screens/home/tabs/articles_tab.dart';
+import '../../../ui/screens/home/tabs/meets_tab.dart';
 import '../../../utils/app_localizations.dart';
-import 'home_layout.dart';
-import 'tabs/articles_tab.dart';
-import 'tabs/community_tab.dart';
-import 'tabs/meets_tab.dart';
+import '../layouts/home_screen_layout.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PostBloc _postBloc = PostBloc();
+  final CommunityBloc _communityBloc = KiwiContainer().resolve();
   final ArticleBloc _articleBloc = ArticleBloc();
   final VideoBloc _videoBloc = KiwiContainer().resolve();
   final MeetingBloc _meetingBloc = MeetingBloc()..add(MeetingGetStarted());
@@ -38,27 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
-  void initState() {
-    BlocProvider.of<NotificationBloc>(context)
-        .add(const GetNotificationsRequestStarted(page: 1, pageSize: 10));
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _postBloc.close();
-    _articleBloc.close();
-    _videoBloc.close();
-    _meetingBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
           value: _postBloc,
+        ),
+        BlocProvider.value(
+          value: _communityBloc,
         ),
         BlocProvider.value(
           value: _articleBloc,
@@ -73,9 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
           value: _chatInboxBloc,
         ),
       ],
-      child: HomeLayout(
+      child: HomeScreenLayout(
         navItems: getNavItems(context),
         screens: _screens,
+        getFabButton: getFloatingActionButton,
       ),
     );
   }
@@ -110,5 +101,29 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(videosLabel),
       ),
     ];
+  }
+
+  Widget getFloatingActionButton(int index) {
+    if (index == 0) {
+      return FloatingActionButton(
+        onPressed: () {
+          final _postbloc = BlocProvider.of<PostBloc>(context);
+          ExtendedNavigator.of(context).push(Routes.createPost,
+              arguments: CreatePostArguments(postBloc: _postbloc));
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(WorkNetIcons.newpost),
+      );
+    }
+    if (index == 2) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.chatSearchScreen);
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(WorkNetIcons.message),
+      );
+    }
+    return null;
   }
 }

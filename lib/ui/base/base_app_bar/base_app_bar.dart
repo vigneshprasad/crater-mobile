@@ -26,7 +26,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final hasback = Navigator.of(context).canPop();
     final hasDrawer = Scaffold.of(context).hasDrawer;
     final double width = MediaQuery.of(context).size.width;
-    final titleWidth = MediaQuery.of(context).size.width * 0.6;
+    final titleWidth = MediaQuery.of(context).size.width * 0.4;
     return SafeArea(
       child: SizedBox(
         height: AppTheme.appBarHeight.height,
@@ -51,12 +51,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               if (title == null) const Spacer(),
               if (actions != null && actions.isNotEmpty)
-                Align(
-                  alignment: Alignment.centerRight,
+                Flexible(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: actions,
                   ),
-                ),
+                )
             ],
           ),
         ),

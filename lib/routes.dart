@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route_annotations.dart';
-import 'package:flutter/material.dart';
 
-import 'blocs/post/bloc/post_bloc.dart';
+import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -9,59 +8,7 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/modals/create_post/create_post.dart';
-import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
-
-class Routes {
-  static const initial = "/";
-  static const auth = "/auth";
-  static const home = "/home";
-  static const setup = "/setup";
-  static const createPost = "/create-post";
-  static const chatUser = "/chat/user";
-  static const chatSearch = "/chat/search";
-
-  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    final args = settings.arguments;
-    switch (settings.name) {
-      case initial:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
-      case auth:
-        return MaterialPageRoute(builder: (_) => AuthScreen());
-      case home:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
-      case createPost:
-        return MaterialPageRoute(
-          builder: (_) => CreatePost(
-            postBloc: args as PostBloc,
-          ),
-          fullscreenDialog: true,
-        );
-      case setup:
-        return MaterialPageRoute(
-            builder: (_) => SetupScreen(
-                  initialTab: args as String,
-                ));
-      case chatUser:
-        return MaterialPageRoute(
-            builder: (_) => ChatScreen(
-                  recieverId: args as String,
-                ));
-      case chatSearch:
-        return MaterialPageRoute(
-          builder: (_) => ChatSearchScreen(),
-        );
-      default:
-        return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(
-              child: Text('No Route found'),
-            ),
-          ),
-        );
-    }
-  }
-}
 
 @MaterialAutoRouter(
   generateNavigationHelperExtension: true,

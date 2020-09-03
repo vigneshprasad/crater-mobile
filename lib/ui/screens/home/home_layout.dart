@@ -14,12 +14,12 @@ class HomeLayout extends StatefulWidget {
   final List<Widget> screens;
   final Function(int) onTabTapped;
 
-  const HomeLayout(
-      {Key key,
-      @required this.navItems,
-      @required this.screens,
-      this.onTabTapped})
-      : super(key: key);
+  const HomeLayout({
+    Key key,
+    @required this.navItems,
+    @required this.screens,
+    this.onTabTapped,
+  }) : super(key: key);
 
   @override
   _HomeLayoutState createState() => _HomeLayoutState();

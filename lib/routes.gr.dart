@@ -10,6 +10,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'blocs/post/bloc/post_bloc.dart';
+import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -17,7 +18,6 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/modals/create_post/create_post.dart';
-import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
 
 class Routes {

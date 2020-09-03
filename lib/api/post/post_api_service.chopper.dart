@@ -17,9 +17,10 @@ class _$PostApiService extends PostApiService {
   final definitionType = PostApiService;
 
   @override
-  Future<Response<dynamic>> getPostList() {
+  Future<Response<dynamic>> getPostList(int pageSize, int page) {
     final $url = '/community/posts/';
-    final $request = Request('GET', $url, client.baseUrl);
+    final $params = <String, dynamic>{'page_size': pageSize, 'page': page};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 

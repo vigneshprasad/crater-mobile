@@ -7,7 +7,6 @@ import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/models/post/post_model.dart';
 import 'package:worknetwork/ui/base/base_icon_button/base_icon_button.dart';
-import 'package:worknetwork/ui/base/post_card/post_card.dart';
 import 'package:worknetwork/ui/base/tab_header/tab_header.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 
@@ -91,10 +90,7 @@ class _CommunityTabState extends State<CommunityTab> {
               itemCount: state.posts.length,
               itemBuilder: (BuildContext ctx, int index) {
                 final post = _posts[index];
-                return PostCard(
-                  post: post,
-                  onPostDelete: _onPostDelete,
-                );
+                return ListTile();
               },
             ),
           );

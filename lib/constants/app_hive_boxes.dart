@@ -10,6 +10,7 @@ class AppHiveBoxes {
   static const videoBox = "VIDEO_MODEL_BOX";
   static const pointsBox = "POINTS_MODEL_BOX";
   static const notificationsBox = "NOTIFICATION_MODEL_BOX";
+  static const postsBox = "POST_MODEL_BOX";
 }
 
 class AppHiveTypeIds {
@@ -21,4 +22,6 @@ class AppHiveTypeIds {
   static const videoTag = 25;
   static const points = 26;
   static const notifications = 27;
+  static const post = 28;
+  static const comment = 29;
 }
