@@ -12,7 +12,7 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
   PersistentTabHeader({
     @required this.expandedHeight,
     @required this.heading,
-    @required this.subHeading,
+    this.subHeading,
     this.color,
     this.appBarActions,
   });

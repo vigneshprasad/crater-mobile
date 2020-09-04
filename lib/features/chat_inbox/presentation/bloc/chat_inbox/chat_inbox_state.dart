@@ -1,64 +1,71 @@
 part of 'chat_inbox_bloc.dart';
 
-@immutable
-class ChatInboxState extends Equatable {
-  final String filter;
-  final int page;
-  final int pages;
-  final List<ChatUser> users;
-  final dynamic errors;
+abstract class ChatInboxState extends Equatable {
+  final dynamic error;
   final bool loading;
 
   const ChatInboxState({
-    @required this.filter,
-    @required this.page,
-    @required this.pages,
-    @required this.users,
-    @required this.errors,
+    @required this.error,
     @required this.loading,
   });
 
   @override
-  List<Object> get props => [filter, page, pages, users, errors, loading];
-
-  ChatInboxState copyWith({
-    String filter,
-    int page,
-    int pages,
-    List<ChatUser> users,
-    dynamic errors,
-    bool loading,
-  }) {
-    return ChatInboxState(
-        filter: filter ?? this.filter,
-        page: page ?? this.page,
-        pages: pages ?? this.pages,
-        users: users ?? this.users,
-        errors: errors ?? this.errors,
-        loading: loading ?? this.loading);
-  }
+  List<Object> get props => [error, loading];
 }
 
 class ChatInboxInitial extends ChatInboxState {
   const ChatInboxInitial()
       : super(
-          filter: "all",
-          page: 1,
-          pages: 1,
-          users: const [],
           loading: false,
-          errors: null,
+          error: null,
         );
 }
 
 class ChatInboxError extends ChatInboxState {
-  const ChatInboxError()
+  const ChatInboxError({@required dynamic error})
       : super(
-          filter: "all",
-          page: 1,
-          pages: 1,
-          users: const [],
           loading: false,
-          errors: true,
+          error: error,
         );
+}
+
+class ChatInboxUsersResponseReceived extends ChatInboxState {
+  final List<ChatUser> users;
+  final int page;
+  final int pages;
+  final bool fromCache;
+
+  const ChatInboxUsersResponseReceived({
+    @required this.users,
+    @required this.page,
+    @required this.pages,
+    @required this.fromCache,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [
+        error,
+        loading,
+        page,
+        pages,
+        fromCache,
+        users,
+      ];
+}
+
+class ChatInboxStarChangeReceived extends ChatInboxState {
+  final ChatUser user;
+
+  const ChatInboxStarChangeReceived({
+    this.user,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [error, loading, user];
 }

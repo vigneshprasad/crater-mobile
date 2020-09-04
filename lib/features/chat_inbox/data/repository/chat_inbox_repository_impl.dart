@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/page_socket_response/page_socket_response.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../../domain/repository/chat_inbox_repository.dart';
 import '../datasources/chat_inbox_local_datasource.dart';
@@ -18,7 +19,7 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
   });
 
   @override
-  Future<Either<Failure, List<ChatUser>>> getAllChatUsers(
+  Future<Either<Failure, PageSocketResponse<ChatUser>>> getAllChatUsers(
     String search,
     String filter,
     int page,
@@ -31,24 +32,25 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
         page,
         latestMesssages,
       );
-      return Right(localDataSource.getChatUsersFromCache(search));
+      final cached = localDataSource.getChatUsersFromCache(search);
+      return Right(PageSocketResponse<ChatUser>(
+        fromCache: true,
+        page: 1,
+        pages: 1,
+        results: cached,
+      ));
     } on WebsocketServerException {
       return Left(WebsocketServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<ChatUser>>> receivedAllChatUsers(
-    int page,
-    int pages,
-    List<ChatUser> users,
-    dynamic errors,
-  ) async {
+  Future<Either<Failure, void>> persistChatUsers(List<ChatUser> users) async {
     try {
       await localDataSource.persistChatUsers(users);
-      return Right(localDataSource.getChatUsersFromCache(null));
-    } on WebsocketServerException {
-      return Left(WebsocketServerFailure());
+      return const Right(null);
+    } on CacheException {
+      return Left(CacheFailure());
     }
   }
 

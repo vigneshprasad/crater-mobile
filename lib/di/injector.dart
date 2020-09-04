@@ -2,10 +2,6 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/community/domain/usecase/create_comment_post_usercase.dart';
-import 'package:worknetwork/features/community/domain/usecase/get_comments_page_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/get_post_usecase.dart';
-import 'package:worknetwork/features/community/presentation/bloc/post/post_bloc.dart';
 
 import '../api/auth/auth_api_service.dart';
 import '../api/masterclass/masterclass_api_service.dart';
@@ -47,7 +43,7 @@ import '../features/chat_inbox/data/datasources/chat_inbox_remote_datasource.dar
 import '../features/chat_inbox/data/repository/chat_inbox_repository_impl.dart';
 import '../features/chat_inbox/domain/repository/chat_inbox_repository.dart';
 import '../features/chat_inbox/domain/usecase/get_all_chat_users_usecase.dart';
-import '../features/chat_inbox/domain/usecase/received_all_chat_users_usecase.dart';
+import '../features/chat_inbox/domain/usecase/persist_chat_users.dart';
 import '../features/chat_inbox/domain/usecase/received_star_user_changed_usecase.dart';
 import '../features/chat_inbox/domain/usecase/search_all_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/send_star_chat_user_usecase.dart';
@@ -57,11 +53,15 @@ import '../features/community/data/datasources/community_local_datasource.dart';
 import '../features/community/data/datasources/community_remote_datasource.dart';
 import '../features/community/data/repository/community_repository_impl.dart';
 import '../features/community/domain/repository/community_repository.dart';
+import '../features/community/domain/usecase/create_comment_post_usercase.dart';
 import '../features/community/domain/usecase/create_like_post_usecase.dart';
 import '../features/community/domain/usecase/delete_like_post_usecase.dart';
 import '../features/community/domain/usecase/delete_post_usecase.dart';
+import '../features/community/domain/usecase/get_comments_page_usecase.dart';
+import '../features/community/domain/usecase/get_post_usecase.dart';
 import '../features/community/domain/usecase/get_posts_page_usecase.dart';
 import '../features/community/presentation/bloc/community/community_bloc.dart';
+import '../features/community/presentation/bloc/post/post_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
 import '../features/notification/data/datasources/notification_remote_datasource.dart';
 import '../features/notification/data/repository/notification_repository_impl.dart';
@@ -156,9 +156,9 @@ abstract class ChatInboxInjector {
       from: ChatInboxRemoteDataSourceImpl)
   @Register.singleton(UCGetAllChatUsers)
   @Register.singleton(UCSearchAllUsers)
-  @Register.singleton(UCRecievedAllChatUsers)
   @Register.singleton(UCSendStarChatUser)
   @Register.singleton(UCReceivedStarUserChanged)
+  @Register.singleton(UCPersistChatUsers)
   void configure();
 }
 

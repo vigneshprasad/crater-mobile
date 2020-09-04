@@ -3,17 +3,16 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/layouts/home_tab_layout.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
-import 'package:worknetwork/features/community/presentation/bloc/community/community_bloc.dart';
-import 'package:worknetwork/features/community/presentation/screens/comments_modal.dart';
-import 'package:worknetwork/ui/base/post_card/post_card.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../constants/theme.dart';
+import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/post_card/post_card.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../auth/domain/entity/user_entity.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../domain/entity/post_entity.dart';
+import '../bloc/community/community_bloc.dart';
 
 class CommunityTab extends StatefulWidget {
   @override
@@ -62,27 +61,35 @@ class _CommunityTabState extends State<CommunityTab> {
                 heading: title,
                 subheading: subtitle,
                 onRefresh: _onRefreshList,
-                itemCount: _posts.length,
                 listController: _controller,
-                listPadding: const EdgeInsets.symmetric(
-                  horizontal: AppInsets.med,
-                  vertical: AppInsets.l,
-                ),
-                itemBuilder: (context, index) {
-                  return PostCard(
-                    post: _posts[index],
-                    onPostDelete: _onDeletePost,
-                    user: user,
-                    onLikePost: (postId, myLike) {
-                      if (myLike) {
-                        _sendDeleteLikeRequest(postId);
-                      } else {
-                        _sendCreateLikeRequest(postId, authState.user);
-                      }
-                    },
-                    onCommentPost: _onCommentPostPressed,
-                  );
-                },
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppInsets.med,
+                      vertical: AppInsets.l,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return PostCard(
+                            post: _posts[index],
+                            onPostDelete: _onDeletePost,
+                            user: user,
+                            onLikePost: (postId, myLike) {
+                              if (myLike) {
+                                _sendDeleteLikeRequest(postId);
+                              } else {
+                                _sendCreateLikeRequest(postId, authState.user);
+                              }
+                            },
+                            onCommentPost: _onCommentPostPressed,
+                          );
+                        },
+                        childCount: _posts.length,
+                      ),
+                    ),
+                  ),
+                ],
               );
             } else {
               return Container();
@@ -110,13 +117,13 @@ class _CommunityTabState extends State<CommunityTab> {
       _pages = 1;
       _currentPage = 1;
       _posts = [];
-      _bloc.add(
-        GetCommunityPageRequestStarted(
-          page: _currentPage,
-          pageSize: _pageSize,
-        ),
-      );
     });
+    _bloc.add(
+      GetCommunityPageRequestStarted(
+        page: _currentPage,
+        pageSize: _pageSize,
+      ),
+    );
     return _refreshCompleter.future;
   }
 

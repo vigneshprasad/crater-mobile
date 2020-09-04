@@ -38,6 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void dispose() {
+    _communityBloc.close();
+    _articleBloc.close();
+    _videoBloc.close();
+    _meetingBloc.close();
+    _chatInboxBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [

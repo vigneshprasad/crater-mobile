@@ -124,7 +124,7 @@ class _$ChatInboxInjector extends ChatInboxInjector {
     container.registerFactory((c) => ChatInboxBloc(
         websocketBloc: c<WebsocketBloc>(),
         getAllChatUsers: c<UCGetAllChatUsers>(),
-        recievedAllChatUsers: c<UCRecievedAllChatUsers>(),
+        persistChatUsers: c<UCPersistChatUsers>(),
         starChatUser: c<UCSendStarChatUser>(),
         starUserChanged: c<UCReceivedStarUserChanged>()));
     container.registerFactory((c) => ChatSearchBloc(
@@ -144,11 +144,11 @@ class _$ChatInboxInjector extends ChatInboxInjector {
     container.registerSingleton(
         (c) => UCSearchAllUsers(repository: c<ChatInboxRepository>()));
     container.registerSingleton(
-        (c) => UCRecievedAllChatUsers(repository: c<ChatInboxRepository>()));
-    container.registerSingleton(
         (c) => UCSendStarChatUser(repository: c<ChatInboxRepository>()));
     container.registerSingleton(
         (c) => UCReceivedStarUserChanged(repository: c<ChatInboxRepository>()));
+    container
+        .registerSingleton((c) => UCPersistChatUsers(c<ChatInboxRepository>()));
   }
 }
 

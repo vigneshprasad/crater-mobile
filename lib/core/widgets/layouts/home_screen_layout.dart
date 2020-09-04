@@ -26,7 +26,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.screens[0],
+      body: widget.screens[_currentIndex],
       drawer: AppDrawer(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(

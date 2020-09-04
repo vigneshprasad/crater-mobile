@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/post_card/post_card.dart';
 import '../../../../ui/components/chat_input_bar/chat_input_bar.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/comment_entity.dart';
 import '../../domain/entity/post_entity.dart';
 import '../bloc/post/post_bloc.dart';

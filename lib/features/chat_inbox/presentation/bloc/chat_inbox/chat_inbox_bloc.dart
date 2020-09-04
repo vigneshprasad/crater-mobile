@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 
 import '../../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../../../data/models/responses.dart';
+import '../../../domain/entity/chat_user_entity.dart';
 import '../../../domain/usecase/get_all_chat_users_usecase.dart';
-import '../../../domain/usecase/received_all_chat_users_usecase.dart';
+import '../../../domain/usecase/persist_chat_users.dart';
 import '../../../domain/usecase/received_star_user_changed_usecase.dart';
 import '../../../domain/usecase/send_star_chat_user_usecase.dart';
 
@@ -20,7 +20,7 @@ part 'chat_inbox_state.dart';
 class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
   final WebsocketBloc websocketBloc;
   final UCGetAllChatUsers getAllChatUsers;
-  final UCRecievedAllChatUsers recievedAllChatUsers;
+  final UCPersistChatUsers persistChatUsers;
   final UCSendStarChatUser starChatUser;
   final UCReceivedStarUserChanged starUserChanged;
   StreamSubscription _websocketBlocSub;
@@ -29,7 +29,7 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
   ChatInboxBloc({
     @required this.websocketBloc,
     @required this.getAllChatUsers,
-    @required this.recievedAllChatUsers,
+    @required this.persistChatUsers,
     @required this.starChatUser,
     @required this.starUserChanged,
   }) : super(const ChatInboxInitial()) {
@@ -97,48 +97,37 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
     ));
 
     yield usersOrError.fold(
-      (failure) => const ChatInboxError(),
-      (users) {
-        return state.copyWith(
-          users: users,
-          loading: true,
-        );
-      },
+      (failure) => ChatInboxError(error: failure),
+      (fromCache) => ChatInboxUsersResponseReceived(
+        users: const [],
+        page: fromCache.page,
+        pages: fromCache.pages,
+        fromCache: true,
+      ),
     );
   }
 
   Stream<ChatInboxState> _mapReceivedChatUsersToState(
       AllChatUsersReceived event) async* {
-    final usersOrError = await recievedAllChatUsers(RecievedAllUsersParams(
-        errors: event.response.errors,
-        page: event.response.page,
-        pages: event.response.pages,
-        users: event.response.results));
+    final usersOrError = await persistChatUsers(PersistChatUsersParaams(
+      users: event.response.results,
+    ));
 
     yield usersOrError.fold(
-      (failure) => const ChatInboxError(),
-      (users) {
-        return state.copyWith(
-          users: users,
-          errors: event.response.errors,
-          page: event.response.page,
-          pages: event.response.pages,
-          loading: false,
-        );
-      },
+      (failure) => ChatInboxError(error: failure),
+      (users) => ChatInboxUsersResponseReceived(
+        fromCache: false,
+        page: event.response.page,
+        pages: event.response.pages,
+        users: event.response.results,
+      ),
     );
   }
 
   Stream<ChatInboxState> _mapStarUserRequestToState(
       StarUserRequestStarted event) async* {
-    yield state.copyWith(loading: true);
-    final requestOrError = await starChatUser(
+    await starChatUser(
         SendStarChatUserParams(user: event.user, isStarred: event.isStarred));
-
-    yield requestOrError.fold(
-      (failure) => const ChatInboxError(),
-      (r) => state.copyWith(loading: false),
-    );
   }
 
   Stream<ChatInboxState> _mapReceivedStarUserChangeToState(
@@ -146,17 +135,8 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
     final userOrError = await starUserChanged(
         ReceivedStarUserParams(isStarred: event.isStarred, user: event.user));
     yield userOrError.fold(
-      (failure) => state.copyWith(errors: failure),
-      (user) {
-        var users = state.users;
-        users = users.map((item) {
-          if (item.pk == user.pk) {
-            item = user;
-          }
-          return item;
-        }).toList();
-        return state.copyWith(users: users);
-      },
+      (failure) => ChatInboxError(error: failure),
+      (user) => ChatInboxStarChangeReceived(user: user),
     );
   }
 }

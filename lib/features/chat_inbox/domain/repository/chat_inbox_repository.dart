@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/page_socket_response/page_socket_response.dart';
 import '../entity/chat_user_entity.dart';
 
 abstract class ChatInboxRepository {
@@ -9,13 +10,8 @@ abstract class ChatInboxRepository {
     @required String user,
     @required bool isStarred,
   });
-  Future<Either<Failure, List<ChatUser>>> receivedAllChatUsers(
-    int page,
-    int pages,
-    List<ChatUser> users,
-    dynamic errors,
-  );
-  Future<Either<Failure, List<ChatUser>>> getAllChatUsers(
+  Future<Either<Failure, void>> persistChatUsers(List<ChatUser> users);
+  Future<Either<Failure, PageSocketResponse<ChatUser>>> getAllChatUsers(
     String search,
     String filter,
     int page,

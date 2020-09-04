@@ -14,20 +14,18 @@ class HomeTabLayout extends StatelessWidget {
   final String heading;
   final String subheading;
   final RefreshCallback onRefresh;
-  final IndexedWidgetBuilder itemBuilder;
-  final int itemCount;
   final ScrollController listController;
   final EdgeInsetsGeometry listPadding;
+  final List<Widget> slivers;
 
   const HomeTabLayout({
     Key key,
     this.listController,
     this.listPadding,
+    this.subheading,
     @required this.heading,
-    @required this.subheading,
     @required this.onRefresh,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    @required this.slivers,
   }) : super(key: key);
 
   @override
@@ -75,15 +73,7 @@ class HomeTabLayout extends StatelessWidget {
                       context,
                     ),
                   ),
-                  SliverPadding(
-                    padding: listPadding ?? const EdgeInsets.all(0),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        itemBuilder,
-                        childCount: itemCount,
-                      ),
-                    ),
-                  ),
+                  ...slivers,
                 ],
               ),
             );
