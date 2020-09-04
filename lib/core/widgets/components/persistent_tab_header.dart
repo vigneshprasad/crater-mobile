@@ -48,7 +48,7 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
                         vertical: AppInsets.xl,
                         horizontal: AppInsets.xl,
                       ),
-                      child: FittedBox(
+                      child: SizedBox.expand(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -62,7 +62,7 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
                                     .headline5
                                     .copyWith(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 28,
+                                      fontSize: 24,
                                     ),
                               ),
                             const SizedBox(height: AppPadding.tiny),
