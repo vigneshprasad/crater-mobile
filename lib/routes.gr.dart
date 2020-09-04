@@ -14,6 +14,7 @@ import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
@@ -27,6 +28,7 @@ class Routes {
   static const String chatSearchScreen = '/chat/search';
   static const String videoPlayerScreen = '/video-player';
   static const String notificationsScreen = '/notifications';
+  static const String postScreen = '/post';
   static const all = <String>{
     splashScreen,
     homeScreen,
@@ -36,6 +38,7 @@ class Routes {
     chatSearchScreen,
     videoPlayerScreen,
     notificationsScreen,
+    postScreen,
   };
 }
 
@@ -51,6 +54,7 @@ class Router extends RouterBase {
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
     RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
     RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
+    RouteDef(Routes.postScreen, page: PostScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -117,6 +121,16 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    PostScreen: (data) {
+      final args = data.getArgs<PostScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PostScreen(
+          key: args.key,
+          postId: args.postId,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -163,6 +177,15 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushNotificationsScreen() =>
       push<dynamic>(Routes.notificationsScreen);
+
+  Future<dynamic> pushPostScreen({
+    Key key,
+    @required int postId,
+  }) =>
+      push<dynamic>(
+        Routes.postScreen,
+        arguments: PostScreenArguments(key: key, postId: postId),
+      );
 }
 
 /// ************************************************************************
@@ -188,4 +211,11 @@ class VideoPlayerScreenArguments {
   final int videoId;
   final Key key;
   VideoPlayerScreenArguments({@required this.videoId, this.key});
+}
+
+/// PostScreen arguments holder class
+class PostScreenArguments {
+  final Key key;
+  final int postId;
+  PostScreenArguments({this.key, @required this.postId});
 }

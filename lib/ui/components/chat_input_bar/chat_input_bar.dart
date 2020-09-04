@@ -8,12 +8,14 @@ class ChatInputBar extends StatelessWidget {
   final User user;
   final TextEditingController controller;
   final VoidCallback onSubmitPress;
+  final String placeholder;
 
   const ChatInputBar({
     Key key,
     this.user,
     this.controller,
     this.onSubmitPress,
+    this.placeholder,
   }) : super(key: key);
 
   @override
@@ -37,7 +39,7 @@ class ChatInputBar extends StatelessWidget {
               decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: AppInsets.xl),
-                hintText: "Send message",
+                hintText: placeholder,
                 filled: true,
                 fillColor: Colors.grey[200],
                 enabledBorder: OutlineInputBorder(

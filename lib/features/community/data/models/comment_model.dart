@@ -31,7 +31,10 @@ class CommentModel extends Comment {
   final String creatorPhoto;
 
   @HiveField(5)
-  final String created;
+  final DateTime created;
+
+  @HiveField(6)
+  final int postId;
 
   CommentModel({
     this.pk,
@@ -40,6 +43,7 @@ class CommentModel extends Comment {
     this.creatorName,
     this.creatorPhoto,
     this.created,
+    this.postId,
   }) : super(
           pk: pk,
           message: message,
@@ -52,4 +56,24 @@ class CommentModel extends Comment {
   factory CommentModel.fromJson(Map<String, dynamic> json) =>
       _$CommentModelFromJson(json);
   Map<String, dynamic> toJson() => _$CommentModelToJson(this);
+
+  CommentModel copyWith({
+    int pk,
+    String message,
+    String creatorId,
+    String creatorName,
+    String creatorPhoto,
+    DateTime created,
+    int postId,
+  }) {
+    return CommentModel(
+      pk: pk ?? this.pk,
+      message: message ?? this.message,
+      creatorId: creatorId ?? this.creatorId,
+      creatorName: creatorName ?? this.creatorName,
+      creatorPhoto: creatorPhoto ?? this.creatorPhoto,
+      created: created ?? this.created,
+      postId: postId ?? this.postId,
+    );
+  }
 }

@@ -70,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onSubmitPress: _onSubmitMessage,
                       controller: _chatInputController,
                       user: authState.user,
+                      placeholder: "Send message",
                     ));
               } else {
                 return Container();

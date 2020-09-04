@@ -89,6 +89,10 @@ class _$CommunityInjector extends CommunityInjector {
         deletePost: c<UCDeletePost>(),
         createLikePost: c<UCCreateLikePost>(),
         deleteLikePost: c<UCDeleteLikePost>()));
+    container.registerFactory((c) => PostBloc(
+        getPost: c<UCGetPost>(),
+        getCommentsPage: c<UCGetCommentsPage>(),
+        createComment: c<UCCreateCommentPost>()));
     container.registerSingleton<CommunityRepository>((c) =>
         CommunityRepositoryImpl(
             remoteDatasource: c<CommunityRemoteDatasource>(),
@@ -100,12 +104,17 @@ class _$CommunityInjector extends CommunityInjector {
         (c) => CommunityRemoteDatasourceImpl(apiService: c<PostApiService>()));
     container
         .registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()));
+    container.registerSingleton((c) => UCGetPost(c<CommunityRepository>()));
     container.registerSingleton(
         (c) => UCDeletePost(repository: c<CommunityRepository>()));
     container.registerSingleton(
         (c) => UCCreateLikePost(repository: c<CommunityRepository>()));
     container.registerSingleton(
         (c) => UCDeleteLikePost(repository: c<CommunityRepository>()));
+    container
+        .registerSingleton((c) => UCGetCommentsPage(c<CommunityRepository>()));
+    container.registerSingleton(
+        (c) => UCCreateCommentPost(c<CommunityRepository>()));
   }
 }
 

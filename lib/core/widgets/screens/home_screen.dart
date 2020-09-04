@@ -1,14 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
 
 import '../../../blocs/article/bloc/article_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
+import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
 import '../../../features/videos/presentation/widgets/videos_tab.dart';

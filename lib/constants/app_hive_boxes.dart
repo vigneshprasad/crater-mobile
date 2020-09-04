@@ -11,6 +11,7 @@ class AppHiveBoxes {
   static const pointsBox = "POINTS_MODEL_BOX";
   static const notificationsBox = "NOTIFICATION_MODEL_BOX";
   static const postsBox = "POST_MODEL_BOX";
+  static const commentsBox = "COMMENT_MODEL_BOX";
 }
 
 class AppHiveTypeIds {

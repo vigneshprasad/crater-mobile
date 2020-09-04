@@ -4,6 +4,9 @@ import 'package:worknetwork/features/community/domain/entity/like_entity.dart';
 
 part 'like_model.g.dart';
 
+// ignore_for_file: annotate_overrides
+// ignore_for_file: overridden_fields
+
 @JsonSerializable()
 class LikeModel extends Like {
   @JsonKey(name: "like_count")

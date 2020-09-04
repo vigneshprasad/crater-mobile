@@ -24,13 +24,17 @@ class PostCard extends StatelessWidget {
   final Post post;
   final PostItemFunc onPostDelete;
   final PostLikeItemFunc onLikePost;
+  final PostItemFunc onCommentPost;
+  final bool showActions;
 
   const PostCard({
     Key key,
+    this.showActions = true,
+    this.onPostDelete,
+    this.onLikePost,
+    this.onCommentPost,
+    this.user,
     @required this.post,
-    @required this.onPostDelete,
-    @required this.user,
-    @required this.onLikePost,
   }) : super(key: key);
 
   @override
@@ -49,7 +53,7 @@ class PostCard extends StatelessWidget {
             indent: AppInsets.xl,
             endIndent: AppInsets.xl,
           ),
-          getPostActions(context),
+          if (showActions) getPostActions(context),
         ],
       ),
     );
@@ -223,33 +227,35 @@ class PostCard extends StatelessWidget {
           horizontal: AppInsets.med, vertical: AppInsets.sm),
       child: Row(
         children: <Widget>[
-          PostCardActions(
-            icon: Icon(
-              WorkNetIcons.like,
-              color: post.myLike ? AppTheme.blueAccent : Colors.grey[500],
+          if (onLikePost != null)
+            PostCardActions(
+              icon: Icon(
+                WorkNetIcons.like,
+                color: post.myLike ? AppTheme.blueAccent : Colors.grey[500],
+              ),
+              label: Text(
+                post.likes.toString(),
+                style: textTheme,
+              ),
+              onPress: () => onLikePost(
+                post.pk,
+                post.myLike,
+              ),
             ),
-            label: Text(
-              post.likes.toString(),
-              style: textTheme,
+          if (onCommentPost != null)
+            PostCardActions(
+              icon: Icon(
+                WorkNetIcons.comment,
+                color: Colors.grey[500],
+              ),
+              label: Text(
+                post.comments.toString(),
+                style: textTheme,
+              ),
+              onPress: () => onCommentPost(post.pk),
             ),
-            onPress: () => onLikePost(
-              post.pk,
-              post.myLike,
-            ),
-          ),
-          PostCardActions(
-            icon: Icon(
-              WorkNetIcons.comment,
-              color: Colors.grey[500],
-            ),
-            label: Text(
-              post.comments.toString(),
-              style: textTheme,
-            ),
-            onPress: () {},
-          ),
           const Spacer(),
-          if (user.pk == post.creator)
+          if (user.pk == post.creator && onPostDelete != null)
             PostCardActions(
               icon: Icon(
                 WorkNetIcons.delete,

@@ -1,56 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:worknetwork/features/community/presentation/widgets/comments_form.dart';
 
-import 'package:worknetwork/blocs/meeting/bloc/meeting_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/models/meeting/meeting_model.dart';
-import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
-import 'package:worknetwork/ui/base/tab_header/tab_header.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+class CommentsModal extends ModalRoute<void> {
+  final int postId;
 
-part 'register_form.dart';
-
-class RegisterMeetOverlay extends ModalRoute<void> {
-  final MeetingBloc meetingBloc;
-
-  RegisterMeetOverlay({
-    @required this.meetingBloc,
+  CommentsModal({
+    @required this.postId,
   });
-
-  @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
-
-  @override
-  bool get opaque => false;
-
-  @override
-  bool get barrierDismissible => true;
 
   @override
   Color get barrierColor => Colors.black.withOpacity(0.6);
 
   @override
+  bool get barrierDismissible => true;
+
+  @override
   String get barrierLabel => null;
 
   @override
-  bool get maintainState => true;
-
-  @override
-  Widget buildPage(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
-    // This makes sure that text and other content follows the material style
-    return BlocProvider.value(
-      value: meetingBloc,
-      child: Material(
-        type: MaterialType.transparency,
-        // make sure that the overlay content is not cut off
-        child: SafeArea(
-          child: _buildOverlayContent(context),
-        ),
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return Material(
+      type: MaterialType.transparency,
+      child: SafeArea(
+        child: _buildOverlayContent(context),
       ),
     );
   }
@@ -80,7 +53,11 @@ class RegisterMeetOverlay extends ModalRoute<void> {
                   ),
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate([RegisterForm()]),
+                  delegate: SliverChildListDelegate([
+                    CommentsForm(
+                      postId: postId,
+                    )
+                  ]),
                 ),
               ],
             ),
@@ -93,7 +70,6 @@ class RegisterMeetOverlay extends ModalRoute<void> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    // You can add your own animations for the overlay content
     const begin = Offset(0.0, 1.0);
     final end = Offset.zero;
     final tween = Tween(begin: begin, end: end);
@@ -106,6 +82,15 @@ class RegisterMeetOverlay extends ModalRoute<void> {
       ),
     );
   }
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  bool get opaque => false;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 200);
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

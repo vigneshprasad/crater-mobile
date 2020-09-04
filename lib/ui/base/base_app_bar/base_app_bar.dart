@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
@@ -80,7 +81,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return IconButton(
       icon: Icon(icon),
       color: Theme.of(context).appBarTheme.actionsIconTheme.color,
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => ExtendedNavigator.of(context).pop(),
     );
   }
 }

@@ -25,6 +25,13 @@ class _$PostApiService extends PostApiService {
   }
 
   @override
+  Future<Response<dynamic>> getPost(int id) {
+    final $url = '/community/posts/$id/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> createPost(
       String message, List<MultipartFile> files) {
     final $url = '/community/posts/';
@@ -56,6 +63,27 @@ class _$PostApiService extends PostApiService {
   Future<Response<dynamic>> deleteLike(int id) {
     final $url = '/community/likes/$id/';
     final $request = Request('DELETE', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getCommentsPage(
+      int id, int pageSize, int page, int offset) {
+    final $url = '/community/comments/$id/post/';
+    final $params = <String, dynamic>{
+      'page_size': pageSize,
+      'page': page,
+      'offset': offset
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> createCommentForPost(Map<String, dynamic> body) {
+    final $url = '/community/comments/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

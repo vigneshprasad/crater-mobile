@@ -6,7 +6,7 @@ class Comment extends HiveObject {
   final String creatorId;
   final String creatorName;
   final String creatorPhoto;
-  final String created;
+  final DateTime created;
 
   Comment({
     this.pk,

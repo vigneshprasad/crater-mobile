@@ -2,39 +2,16 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/api/notifications/notifications_api_service.dart';
-import 'package:worknetwork/api/points/points_api_service.dart';
-import 'package:worknetwork/api/post/post_api_service.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
-import 'package:worknetwork/features/chat_inbox/domain/usecase/search_all_users_usecase.dart';
-import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_search/chat_search_bloc.dart';
-import 'package:worknetwork/features/community/data/datasources/community_local_datasource.dart';
-import 'package:worknetwork/features/community/data/datasources/community_remote_datasource.dart';
-import 'package:worknetwork/features/community/data/repository/community_repository_impl.dart';
-import 'package:worknetwork/features/community/domain/repository/community_repository.dart';
-import 'package:worknetwork/features/community/domain/usecase/create_like_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/delete_like_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/delete_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/get_posts_page_usecase.dart';
-import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
-import 'package:worknetwork/features/notification/data/datasources/notfication_local_datasource.dart';
-import 'package:worknetwork/features/notification/data/datasources/notification_remote_datasource.dart';
-import 'package:worknetwork/features/notification/data/repository/notification_repository_impl.dart';
-import 'package:worknetwork/features/notification/domain/repository/notfication_repository.dart';
-import 'package:worknetwork/features/notification/domain/usecases/get_notifications_page_usecase.dart';
-import 'package:worknetwork/features/notification/presentation/bloc/notification_bloc.dart';
-import 'package:worknetwork/features/points/data/datasources/points_local_datasource.dart';
-import 'package:worknetwork/features/points/data/datasources/points_remote_datasource.dart';
-import 'package:worknetwork/features/points/data/repository/points_repository_impl.dart';
-import 'package:worknetwork/features/points/domain/repository/points_repository.dart';
-import 'package:worknetwork/features/points/domain/usecases/get_self_user_points.dart';
-import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
-import 'package:worknetwork/features/videos/domain/usecase/get_video_item_usecase.dart';
-import 'package:worknetwork/features/videos/presentation/bloc/video/video_bloc.dart';
-import 'package:worknetwork/features/videos/presentation/bloc/video_player/video_player_bloc.dart';
+import 'package:worknetwork/features/community/domain/usecase/create_comment_post_usercase.dart';
+import 'package:worknetwork/features/community/domain/usecase/get_comments_page_usecase.dart';
+import 'package:worknetwork/features/community/domain/usecase/get_post_usecase.dart';
+import 'package:worknetwork/features/community/presentation/bloc/post/post_bloc.dart';
 
 import '../api/auth/auth_api_service.dart';
 import '../api/masterclass/masterclass_api_service.dart';
+import '../api/notifications/notifications_api_service.dart';
+import '../api/points/points_api_service.dart';
+import '../api/post/post_api_service.dart';
 import '../constants/app_constants.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -45,6 +22,7 @@ import '../core/features/websocket/domain/usecase/get_websocket_state.dart';
 import '../core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../core/network_info/network_info.dart';
+import '../core/push_notfications/push_notifications.dart';
 import '../features/auth/data/datasources/auth_local_datasource.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/repository/auth_repository_impl.dart';
@@ -71,8 +49,31 @@ import '../features/chat_inbox/domain/repository/chat_inbox_repository.dart';
 import '../features/chat_inbox/domain/usecase/get_all_chat_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/received_all_chat_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/received_star_user_changed_usecase.dart';
+import '../features/chat_inbox/domain/usecase/search_all_users_usecase.dart';
 import '../features/chat_inbox/domain/usecase/send_star_chat_user_usecase.dart';
 import '../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
+import '../features/chat_inbox/presentation/bloc/chat_search/chat_search_bloc.dart';
+import '../features/community/data/datasources/community_local_datasource.dart';
+import '../features/community/data/datasources/community_remote_datasource.dart';
+import '../features/community/data/repository/community_repository_impl.dart';
+import '../features/community/domain/repository/community_repository.dart';
+import '../features/community/domain/usecase/create_like_post_usecase.dart';
+import '../features/community/domain/usecase/delete_like_post_usecase.dart';
+import '../features/community/domain/usecase/delete_post_usecase.dart';
+import '../features/community/domain/usecase/get_posts_page_usecase.dart';
+import '../features/community/presentation/bloc/community/community_bloc.dart';
+import '../features/notification/data/datasources/notfication_local_datasource.dart';
+import '../features/notification/data/datasources/notification_remote_datasource.dart';
+import '../features/notification/data/repository/notification_repository_impl.dart';
+import '../features/notification/domain/repository/notfication_repository.dart';
+import '../features/notification/domain/usecases/get_notifications_page_usecase.dart';
+import '../features/notification/presentation/bloc/notification_bloc.dart';
+import '../features/points/data/datasources/points_local_datasource.dart';
+import '../features/points/data/datasources/points_remote_datasource.dart';
+import '../features/points/data/repository/points_repository_impl.dart';
+import '../features/points/domain/repository/points_repository.dart';
+import '../features/points/domain/usecases/get_self_user_points.dart';
+import '../features/points/presentation/bloc/points_bloc.dart';
 import '../features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 import '../features/social_auth/data/repository/social_auth_repository_impl.dart';
 import '../features/social_auth/domain/repository/social_auth_repository.dart';
@@ -81,7 +82,10 @@ import '../features/videos/data/datasources/video_remote_datasource.dart';
 import '../features/videos/data/datasources/videos_local_datasource.dart';
 import '../features/videos/data/repository/video_repository_impl.dart';
 import '../features/videos/domain/repository/video_repository.dart';
+import '../features/videos/domain/usecase/get_video_item_usecase.dart';
 import '../features/videos/domain/usecase/get_videos_list_usecase.dart';
+import '../features/videos/presentation/bloc/video/video_bloc.dart';
+import '../features/videos/presentation/bloc/video_player/video_player_bloc.dart';
 
 part 'injector.g.dart';
 
@@ -126,15 +130,19 @@ abstract class SocialAuthInjector {
 
 abstract class CommunityInjector {
   @Register.factory(CommunityBloc)
+  @Register.factory(PostBloc)
   @Register.singleton(CommunityRepository, from: CommunityRepositoryImpl)
   @Register.singleton(CommunityLocalDatasource,
       from: CommunityLocalDatasourceImpl)
   @Register.singleton(CommunityRemoteDatasource,
       from: CommunityRemoteDatasourceImpl)
   @Register.singleton(UCGetPostsPage)
+  @Register.singleton(UCGetPost)
   @Register.singleton(UCDeletePost)
   @Register.singleton(UCCreateLikePost)
   @Register.singleton(UCDeleteLikePost)
+  @Register.singleton(UCGetCommentsPage)
+  @Register.singleton(UCCreateCommentPost)
   void configure();
 }
 

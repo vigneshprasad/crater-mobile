@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worknetwork/constants/theme.dart';
@@ -7,9 +8,12 @@ import 'package:worknetwork/core/widgets/layouts/home_tab_layout.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
-import 'package:worknetwork/features/community/presentation/bloc/community_bloc.dart';
+import 'package:worknetwork/features/community/presentation/bloc/community/community_bloc.dart';
+import 'package:worknetwork/features/community/presentation/screens/comments_modal.dart';
 import 'package:worknetwork/ui/base/post_card/post_card.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../../routes.gr.dart';
 
 class CommunityTab extends StatefulWidget {
   @override
@@ -76,6 +80,7 @@ class _CommunityTabState extends State<CommunityTab> {
                         _sendCreateLikeRequest(postId, authState.user);
                       }
                     },
+                    onCommentPost: _onCommentPostPressed,
                   );
                 },
               );
@@ -179,6 +184,15 @@ class _CommunityTabState extends State<CommunityTab> {
         ));
       }
     }
+  }
+
+  void _onCommentPostPressed(int postId) {
+    // Navigator.of(context).push(CommentsModal(postId: postId));
+    ExtendedNavigator.of(context)
+        .push(Routes.postScreen, arguments: PostScreenArguments(postId: postId))
+        .then((value) {
+      _onRefreshList();
+    });
   }
 
   void _onDeletePost(int postId) {

@@ -26,6 +26,9 @@ abstract class PostApiService extends ChopperService {
     @Query() int page,
   );
 
+  @Get(path: 'posts/{id}/')
+  Future<Response> getPost(@Path() int id);
+
   @Post(path: 'posts/')
   @Multipart()
   Future<Response> createPost(@Part() String message,
@@ -39,4 +42,11 @@ abstract class PostApiService extends ChopperService {
 
   @Delete(path: 'likes/{id}/')
   Future<Response> deleteLike(@Path() int id);
+
+  @Get(path: 'comments/{id}/post/')
+  Future<Response> getCommentsPage(@Path() int id,
+      @Query("page_size") int pageSize, @Query() int page, @Query() int offset);
+
+  @Post(path: 'comments/')
+  Future<Response> createCommentForPost(@Body() Map<String, dynamic> body);
 }
