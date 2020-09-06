@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
-import 'package:worknetwork/features/videos/domain/usecase/get_videos_list_usecase.dart';
+
+import '../../../domain/entity/video_entity.dart';
+import '../../../domain/usecase/get_videos_list_usecase.dart';
 
 part 'video_event.dart';
 part 'video_state.dart';
@@ -27,20 +28,18 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
 
   Stream<VideoState> _mapGetVideosRequestToState(
       GetVideosListRequestStarted event) async* {
-    yield state.copyWith(loading: true);
-    final resultOrError =
-        await getVideos(GetVideosPageParams(page: event.page));
+    yield const VideoRequestLoading();
+    final resultOrError = await getVideos(GetVideosPageParams(
+      page: event.page,
+      pageSize: event.pageSize,
+    ));
     yield resultOrError.fold(
-      (failure) => state.copyWith(error: failure, loading: false),
-      (response) => state.copyWith(
-        videos: response.results,
-        pages: response.pages,
-        count: response.count,
-        // ignore: avoid_redundant_argument_values
-        error: null,
+      (failure) => VideoRequestError(error: failure),
+      (response) => VideoPageResponseLoaded(
         currentPage: response.currentPage,
+        pages: response.pages,
         fromCache: response.fromCache,
-        loading: false,
+        videos: response.results,
       ),
     );
   }

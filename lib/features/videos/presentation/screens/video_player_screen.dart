@@ -30,6 +30,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   VideoPlayerController _videoPlayerController;
   ChewieController _controller;
   List<Video> _playlist = [];
+  final int _pageSize = 10;
 
   @override
   void initState() {
@@ -38,7 +39,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         GetFeatureVideoStarted(id: widget.videoId),
       )
       ..add(
-        GetVideosPlaylistStarted(excludeItemId: widget.videoId, page: 1),
+        GetVideosPlaylistStarted(
+          excludeItemId: widget.videoId,
+          page: 1,
+          pageSize: _pageSize,
+        ),
       );
     StatusBarColor.setTheme(ThemeType.dark);
     super.initState();
@@ -133,14 +138,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void _onPressPlayListItem(Video item) {
     _controller.pause();
     _bloc.add(GetFeatureVideoStarted(id: item.pk));
-    _bloc.add(GetVideosPlaylistStarted(excludeItemId: item.pk, page: 1));
+    _bloc.add(GetVideosPlaylistStarted(
+      excludeItemId: item.pk,
+      page: 1,
+      pageSize: _pageSize,
+    ));
   }
 
   Widget _buildVideoPlaceholder() {
     return Center(
       child: LottieBuilder.asset(
         AppLottieAssets.imageLoading,
-        width: 24,
+        width: 48,
       ),
     );
   }

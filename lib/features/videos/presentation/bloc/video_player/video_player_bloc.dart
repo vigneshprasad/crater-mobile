@@ -51,8 +51,10 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   Stream<VideoPlayerState> _mapGetVidesPlaylist(
       GetVideosPlaylistStarted event) async* {
     yield state.copyWith(loadingList: true);
-    final playlistOrError =
-        await getVideosList(GetVideosPageParams(page: event.page));
+    final playlistOrError = await getVideosList(GetVideosPageParams(
+      page: event.page,
+      pageSize: event.pageSize,
+    ));
 
     yield playlistOrError.fold(
       (failure) => state.copyWith(

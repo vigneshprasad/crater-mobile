@@ -20,9 +20,11 @@ class GetFeatureVideoStarted extends VideoPlayerEvent {
 class GetVideosPlaylistStarted extends VideoPlayerEvent {
   final int excludeItemId;
   final int page;
+  final int pageSize;
 
   const GetVideosPlaylistStarted({
     @required this.excludeItemId,
     @required this.page,
+    @required this.pageSize,
   });
 }

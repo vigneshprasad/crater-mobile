@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/layouts/home_tab_layout.dart';
+import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
 import 'package:worknetwork/features/videos/presentation/bloc/video/video_bloc.dart';
 
-import '../../../../constants/theme.dart';
-import '../../../../constants/work_net_icons_icons.dart';
-import '../../../../ui/base/base_icon_button/base_icon_button.dart';
-import '../../../../ui/base/tab_header/tab_header.dart';
 import '../../../../ui/components/cards/masterclass_card/masterclass_card.dart';
 import '../../../../utils/app_localizations.dart';
 
@@ -15,11 +16,24 @@ class VideoTab extends StatefulWidget {
 }
 
 class _VideoTabState extends State<VideoTab> {
-  var _currentPage = 1;
+  bool _fromCache;
+  int _currentPage;
+  int _pages;
+  List<Video> _videos;
+  Completer<void> _completer;
+  VideoBloc _bloc;
+  final _pageSize = 10;
+
   @override
   void initState() {
-    BlocProvider.of<VideoBloc>(context)
-        .add(GetVideosListRequestStarted(page: _currentPage));
+    _fromCache = false;
+    _currentPage = 1;
+    _videos = [];
+    _pages = 1;
+    _completer = Completer<void>();
+    _bloc = BlocProvider.of<VideoBloc>(context)
+      ..add(
+          GetVideosListRequestStarted(page: _currentPage, pageSize: _pageSize));
     super.initState();
   }
 
@@ -28,33 +42,55 @@ class _VideoTabState extends State<VideoTab> {
     final String title = AppLocalizations.of(context).translate("videos:title");
     final String subtitle =
         AppLocalizations.of(context).translate("videos:subtitle");
-    return BlocBuilder<VideoBloc, VideoState>(
+    // return BlocBuilder<VideoBloc, VideoState>(
+    //   builder: (context, state) {
+    //     return Column(
+    //       children: <Widget>[
+    //         Padding(
+    //           padding: const EdgeInsets.only(
+    //             left: AppInsets.xl,
+    //             right: AppInsets.med,
+    //           ),
+    //           child: TabHeader(
+    //             heading: title,
+    //             subHeading: subtitle,
+    //             action: BaseIconButton(
+    //               icon: const Icon(WorkNetIcons.filters),
+    //               onPressed: () {
+    //                 showModalBottomSheet(
+    //                   context: context,
+    //                   builder: (context) => Container(
+    //                     color: Colors.white,
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //           ),
+    //         ),
+    //         Expanded(
+    //           child: _buildVideoList(context, state),
+    //         )
+    //       ],
+    //     );
+    //   },
+    // );
+    return BlocConsumer<VideoBloc, VideoState>(
+      listener: _blocListener,
       builder: (context, state) {
-        return Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                left: AppInsets.xl,
-                right: AppInsets.med,
-              ),
-              child: TabHeader(
-                heading: title,
-                subHeading: subtitle,
-                action: BaseIconButton(
-                  icon: const Icon(WorkNetIcons.filters),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => Container(
-                        color: Colors.white,
-                      ),
-                    );
-                  },
+        return HomeTabLayout(
+          onRefresh: _onRefreshList,
+          heading: title,
+          subheading: subtitle,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppInsets.med, vertical: AppInsets.l),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  _buildVideoListItem,
+                  childCount: _videos.length,
                 ),
               ),
-            ),
-            Expanded(
-              child: _buildVideoList(context, state),
             )
           ],
         );
@@ -62,16 +98,31 @@ class _VideoTabState extends State<VideoTab> {
     );
   }
 
-  Widget _buildVideoList(BuildContext context, VideoState state) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.med, horizontal: AppInsets.med),
-      itemCount: state.videos.length,
-      itemBuilder: (context, index) {
-        return MasterclassCard(
-          item: state.videos[index],
-        );
-      },
-    );
+  void _blocListener(BuildContext context, VideoState state) {
+    if (state is VideoPageResponseLoaded) {
+      _completer?.complete();
+      _completer = Completer<void>();
+      setState(() {
+        _currentPage = state.currentPage;
+        _fromCache = state.fromCache;
+        _pages = state.pages;
+        _videos = [..._videos, ...state.videos];
+      });
+    }
+  }
+
+  Widget _buildVideoListItem(BuildContext context, int index) {
+    final video = _videos[index];
+    return MasterclassCard(item: video);
+  }
+
+  Future<void> _onRefreshList() {
+    setState(() {
+      _currentPage = 1;
+      _videos = [];
+    });
+    _bloc.add(
+        GetVideosListRequestStarted(page: _currentPage, pageSize: _pageSize));
+    return _completer.future;
   }
 }

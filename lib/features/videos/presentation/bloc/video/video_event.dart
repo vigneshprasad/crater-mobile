@@ -9,11 +9,13 @@ abstract class VideoEvent extends Equatable {
 
 class GetVideosListRequestStarted extends VideoEvent {
   final int page;
+  final int pageSize;
 
   const GetVideosListRequestStarted({
     @required this.page,
+    @required this.pageSize,
   });
 
   @override
-  List<Object> get props => [page];
+  List<Object> get props => [page, pageSize];
 }

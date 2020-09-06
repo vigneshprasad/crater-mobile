@@ -25,9 +25,11 @@ class UCGetVideosListPage
 
 class GetVideosPageParams extends Equatable {
   final int page;
+  final int pageSize;
 
   const GetVideosPageParams({
-    this.page = 1,
+    @required this.page,
+    @required this.pageSize,
   });
 
   @override
