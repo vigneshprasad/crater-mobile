@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/models/article/article_model.dart';
+
+import '../../../constants/theme.dart';
+import '../../../features/article/domain/entity/article_entity.dart';
 
 class ArticleCard extends StatelessWidget {
   final Article article;

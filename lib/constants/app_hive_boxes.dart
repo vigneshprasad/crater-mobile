@@ -12,6 +12,7 @@ class AppHiveBoxes {
   static const notificationsBox = "NOTIFICATION_MODEL_BOX";
   static const postsBox = "POST_MODEL_BOX";
   static const commentsBox = "COMMENT_MODEL_BOX";
+  static const articlesBox = "ARTICLE_MODEL_BOX";
 }
 
 class AppHiveTypeIds {
@@ -25,4 +26,5 @@ class AppHiveTypeIds {
   static const notifications = 27;
   static const post = 28;
   static const comment = 29;
+  static const article = 30;
 }

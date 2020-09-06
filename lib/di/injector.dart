@@ -2,6 +2,13 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/api/articles/articles_api_service.dart';
+import 'package:worknetwork/features/article/data/datasources/article_local_datasource.dart';
+import 'package:worknetwork/features/article/data/datasources/article_remote_datasource.dart';
+import 'package:worknetwork/features/article/data/repository/article_repository_impl.dart';
+import 'package:worknetwork/features/article/domain/repository/article_repository.dart';
+import 'package:worknetwork/features/article/domain/usecase/get_articles_page_usecase.dart';
+import 'package:worknetwork/features/article/presentation/bloc/article_bloc.dart';
 
 import '../api/auth/auth_api_service.dart';
 import '../api/masterclass/masterclass_api_service.dart';
@@ -175,6 +182,16 @@ abstract class ChatInjector {
   void configure();
 }
 
+abstract class ArticleInjector {
+  @Register.factory(ArticleBloc)
+  @Register.singleton(ArticleRepository, from: ArticleRepositoryImpl)
+  @Register.singleton(ArticleRemoteDatasource,
+      from: ArticleRemoteDatasourceImpl)
+  @Register.singleton(ArticleLocalDatasource, from: ArticleLocalDatasourceImpl)
+  @Register.singleton(UCGetArticlesPage)
+  void configure();
+}
+
 abstract class VideoInjector {
   @Register.factory(VideoBloc)
   @Register.factory(VideoPlayerBloc)
@@ -215,6 +232,7 @@ class Di {
     final websocketInjector = _$WebSocketInjector();
     final chatInboxInjector = _$ChatInboxInjector();
     final chatInjector = _$ChatInjector();
+    final articleInjector = _$ArticleInjector();
     final videoInjector = _$VideoInjector();
     final pointsInjector = _$PointsInjector();
     final notficationInjector = _$NotificationInjector();
@@ -243,6 +261,9 @@ class Di {
     // Chat
     chatInjector.configure();
 
+    // Article
+    articleInjector.configure();
+
     // Videos
     videoInjector.configure();
 
@@ -258,6 +279,7 @@ class Di {
     container.registerInstance(PointsApiService.create());
     container.registerInstance(NotificationApiService.create());
     container.registerInstance(PostApiService.create());
+    container.registerInstance(ArticlesApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

@@ -6,30 +6,30 @@ part of 'article_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ArticleAdapter extends TypeAdapter<Article> {
+class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
   @override
-  final int typeId = 4;
+  final int typeId = 30;
 
   @override
-  Article read(BinaryReader reader) {
+  ArticleModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Article(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String,
-      fields[4] as String,
-      fields[5] as String,
-      fields[6] as String,
-      fields[7] as String,
+    return ArticleModel(
+      pk: fields[0] as int,
+      created: fields[1] as String,
+      picture: fields[2] as String,
+      tag: fields[3] as String,
+      text: fields[4] as String,
+      title: fields[5] as String,
+      websiteTag: fields[6] as String,
+      websiteUrl: fields[7] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Article obj) {
+  void write(BinaryWriter writer, ArticleModel obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -56,7 +56,7 @@ class ArticleAdapter extends TypeAdapter<Article> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ArticleAdapter &&
+      other is ArticleModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -65,20 +65,21 @@ class ArticleAdapter extends TypeAdapter<Article> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Article _$ArticleFromJson(Map<String, dynamic> json) {
-  return Article(
-    json['pk'] as int,
-    json['created'] as String,
-    json['picture'] as String,
-    json['tag'] as String,
-    json['text'] as String,
-    json['title'] as String,
-    json['website_tag'] as String,
-    json['website_url'] as String,
+ArticleModel _$ArticleModelFromJson(Map<String, dynamic> json) {
+  return ArticleModel(
+    pk: json['pk'] as int,
+    created: json['created'] as String,
+    picture: json['picture'] as String,
+    tag: json['tag'] as String,
+    text: json['text'] as String,
+    title: json['title'] as String,
+    websiteTag: json['website_tag'] as String,
+    websiteUrl: json['website_url'] as String,
   );
 }
 
-Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
+Map<String, dynamic> _$ArticleModelToJson(ArticleModel instance) =>
+    <String, dynamic>{
       'pk': instance.pk,
       'created': instance.created,
       'picture': instance.picture,

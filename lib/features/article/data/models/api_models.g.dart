@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'articles_api_service.dart';
+part of 'api_models.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetArticlesListResponse _$GetArticlesListResponseFromJson(
+ArticlesPageApiResponse _$ArticlesPageApiResponseFromJson(
     Map<String, dynamic> json) {
-  return GetArticlesListResponse(
+  return ArticlesPageApiResponse(
     count: json['count'] as int,
     currentPage: json['current_page'] as int,
     next: json['next'] as String,
@@ -16,13 +16,13 @@ GetArticlesListResponse _$GetArticlesListResponseFromJson(
     previous: json['previous'] as String,
     results: (json['results'] as List)
         ?.map((e) =>
-            e == null ? null : Article.fromJson(e as Map<String, dynamic>))
+            e == null ? null : ArticleModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$GetArticlesListResponseToJson(
-        GetArticlesListResponse instance) =>
+Map<String, dynamic> _$ArticlesPageApiResponseToJson(
+        ArticlesPageApiResponse instance) =>
     <String, dynamic>{
       'count': instance.count,
       'current_page': instance.currentPage,

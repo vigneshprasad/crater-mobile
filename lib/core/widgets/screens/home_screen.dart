@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
-import '../../../blocs/article/bloc/article_bloc.dart';
 import '../../../blocs/meeting/bloc/meeting_bloc.dart';
 import '../../../constants/work_net_icons_icons.dart';
+import '../../../features/article/presentation/bloc/article_bloc.dart';
+import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
@@ -12,7 +13,6 @@ import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
 import '../../../features/videos/presentation/widgets/videos_tab.dart';
 import '../../../routes.gr.dart';
-import '../../../ui/screens/home/tabs/articles_tab.dart';
 import '../../../ui/screens/home/tabs/meets_tab.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CommunityBloc _communityBloc = KiwiContainer().resolve();
-  final ArticleBloc _articleBloc = ArticleBloc();
+  final ArticleBloc _articleBloc = KiwiContainer().resolve();
   final VideoBloc _videoBloc = KiwiContainer().resolve();
   final MeetingBloc _meetingBloc = MeetingBloc()..add(MeetingGetStarted());
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
