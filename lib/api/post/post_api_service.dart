@@ -34,7 +34,7 @@ abstract class PostApiService extends ChopperService {
   Future<Response> createPost(@Part() String message,
       @PartFile('files_formdata') List<MultipartFile> files);
 
-  @Delete(path: '{id}/')
+  @Delete(path: 'posts/{id}/')
   Future<Response> deletePost(@Path() int id);
 
   @Post(path: 'likes/')

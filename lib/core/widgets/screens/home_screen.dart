@@ -111,8 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ExtendedNavigator.of(context)
               .push(Routes.createPostScreen)
               .then((value) {
-            final post = value as Post;
-            _communityBloc.add(NewPostCreated(post: post));
+            if (value != null) {
+              final post = value as Post;
+              _communityBloc.add(NewPostCreated(post: post));
+            }
           });
         },
         backgroundColor: Theme.of(context).primaryColor,

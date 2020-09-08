@@ -46,7 +46,7 @@ class _$PostApiService extends PostApiService {
 
   @override
   Future<Response<dynamic>> deletePost(int id) {
-    final $url = '/community/$id/';
+    final $url = '/community/posts/$id/';
     final $request = Request('DELETE', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
