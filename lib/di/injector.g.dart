@@ -224,6 +224,21 @@ class _$VideoInjector extends VideoInjector {
   }
 }
 
+class _$MeetingInjector extends MeetingInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory(
+        (c) => MeetingBloc(getMeetingConfig: c<UCGetMeetingConfig>()));
+    container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
+        remoteDatasource: c<MeetingRemoteDatasource>(),
+        networkInfo: c<NetworkInfo>()));
+    container.registerSingleton<MeetingRemoteDatasource>(
+        (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()));
+    container
+        .registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()));
+  }
+}
+
 class _$PointsInjector extends PointsInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();

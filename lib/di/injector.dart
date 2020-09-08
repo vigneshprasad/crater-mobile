@@ -2,16 +2,11 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/api/articles/articles_api_service.dart';
-import 'package:worknetwork/features/article/data/datasources/article_local_datasource.dart';
-import 'package:worknetwork/features/article/data/datasources/article_remote_datasource.dart';
-import 'package:worknetwork/features/article/data/repository/article_repository_impl.dart';
-import 'package:worknetwork/features/article/domain/repository/article_repository.dart';
-import 'package:worknetwork/features/article/domain/usecase/get_articles_page_usecase.dart';
-import 'package:worknetwork/features/article/presentation/bloc/article_bloc.dart';
 
+import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
 import '../api/masterclass/masterclass_api_service.dart';
+import '../api/meets/meets_api_service.dart';
 import '../api/notifications/notifications_api_service.dart';
 import '../api/points/points_api_service.dart';
 import '../api/post/post_api_service.dart';
@@ -26,6 +21,12 @@ import '../core/features/websocket/domain/usecase/websocket_connect_usecase.dart
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../core/network_info/network_info.dart';
 import '../core/push_notfications/push_notifications.dart';
+import '../features/article/data/datasources/article_local_datasource.dart';
+import '../features/article/data/datasources/article_remote_datasource.dart';
+import '../features/article/data/repository/article_repository_impl.dart';
+import '../features/article/domain/repository/article_repository.dart';
+import '../features/article/domain/usecase/get_articles_page_usecase.dart';
+import '../features/article/presentation/bloc/article_bloc.dart';
 import '../features/auth/data/datasources/auth_local_datasource.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/repository/auth_repository_impl.dart';
@@ -69,6 +70,11 @@ import '../features/community/domain/usecase/get_post_usecase.dart';
 import '../features/community/domain/usecase/get_posts_page_usecase.dart';
 import '../features/community/presentation/bloc/community/community_bloc.dart';
 import '../features/community/presentation/bloc/post/post_bloc.dart';
+import '../features/meeting/data/datasources/meetings_remote_datasource.dart';
+import '../features/meeting/data/repository/meeting_respository_impl.dart';
+import '../features/meeting/domain/repository/meeting_repository.dart';
+import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
+import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
 import '../features/notification/data/datasources/notification_remote_datasource.dart';
 import '../features/notification/data/repository/notification_repository_impl.dart';
@@ -203,6 +209,15 @@ abstract class VideoInjector {
   void configure();
 }
 
+abstract class MeetingInjector {
+  @Register.factory(MeetingBloc)
+  @Register.singleton(MeetingRepository, from: MeetingRepositoryImpl)
+  @Register.singleton(MeetingRemoteDatasource,
+      from: MeetingRemoteDatasourceImpl)
+  @Register.singleton(UCGetMeetingConfig)
+  void configure();
+}
+
 abstract class PointsInjector {
   @Register.factory(PointsBloc)
   @Register.singleton(PointsRepository, from: PointsRepositoryImpl)
@@ -237,6 +252,7 @@ class Di {
     final pointsInjector = _$PointsInjector();
     final notficationInjector = _$NotificationInjector();
     final communityInjector = _$CommunityInjector();
+    final meetingInjector = _$MeetingInjector();
 
     /// [Core]
     ///
@@ -267,6 +283,9 @@ class Di {
     // Videos
     videoInjector.configure();
 
+    // Meeting
+    meetingInjector.configure();
+
     // Points
     pointsInjector.configure();
 
@@ -280,6 +299,7 @@ class Di {
     container.registerInstance(NotificationApiService.create());
     container.registerInstance(PostApiService.create());
     container.registerInstance(ArticlesApiService.create());
+    container.registerInstance(MeetsApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

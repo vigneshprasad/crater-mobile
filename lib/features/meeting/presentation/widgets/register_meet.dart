@@ -1,23 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-
-import 'package:worknetwork/blocs/meeting/bloc/meeting_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/models/meeting/meeting_model.dart';
-import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
-import 'package:worknetwork/ui/base/tab_header/tab_header.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 part 'register_form.dart';
 
 class RegisterMeetOverlay extends ModalRoute<void> {
-  final MeetingBloc meetingBloc;
-
-  RegisterMeetOverlay({
-    @required this.meetingBloc,
-  });
-
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
 
@@ -43,14 +28,11 @@ class RegisterMeetOverlay extends ModalRoute<void> {
     Animation<double> secondaryAnimation,
   ) {
     // This makes sure that text and other content follows the material style
-    return BlocProvider.value(
-      value: meetingBloc,
-      child: Material(
-        type: MaterialType.transparency,
-        // make sure that the overlay content is not cut off
-        child: SafeArea(
-          child: _buildOverlayContent(context),
-        ),
+    return Material(
+      type: MaterialType.transparency,
+      // make sure that the overlay content is not cut off
+      child: SafeArea(
+        child: _buildOverlayContent(context),
       ),
     );
   }
