@@ -109,6 +109,10 @@ class _CommunityTabState extends State<CommunityTab> {
       _updatePostLikeCreated(state);
     } else if (state is CommunityDeleteLikeReceivedSuccess) {
       _updatePostLikeDeleted(state);
+    } else if (state is CommunityNewPostLoaded) {
+      setState(() {
+        _posts = [state.post, ..._posts];
+      });
     }
   }
 

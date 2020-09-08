@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:worknetwork/features/community/data/models/comment_model.dart';
 import 'package:worknetwork/features/community/data/models/post_model.dart';
 
@@ -17,6 +19,7 @@ abstract class CommunityRemoteDatasource {
   Future<PageApiResponse<Post>> getPostsPageFromRemote(int pageSize, int page);
   Future<Post> getPostFromRemote(int postId);
   Future<void> deletePost(int postId);
+  Future<Post> createPost(String message, List<File> images);
   Future<Like> createLikeForPostRemote(int postId, String userId);
   Future<Like> deleteLikeForPostRemote(int postId);
   Future<PageApiResponse<Comment>> getCommentsPageFromRemote(
@@ -67,6 +70,21 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
   Future<void> deletePost(int postId) async {
     final response = await apiService.deletePost(postId);
     if (response.statusCode != 204) {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Post> createPost(String message, List<File> images) async {
+    final multiPartFiles = await Future.wait(images.map((file) async {
+      final item = await MultipartFile.fromPath("files_formdata", file.path);
+      return item;
+    }));
+    final response = await apiService.createPost(message, multiPartFiles);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return PostModel.fromJson(json);
+    } else {
       throw ServerException(response.error);
     }
   }

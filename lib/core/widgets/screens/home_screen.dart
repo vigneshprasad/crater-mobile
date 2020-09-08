@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
 
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/article/presentation/bloc/article_bloc.dart';
@@ -106,9 +108,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (index == 0) {
       return FloatingActionButton(
         onPressed: () {
-          // final _postbloc = BlocProvider.of<PostBloc>(context);
-          // ExtendedNavigator.of(context).push(Routes.createPost,
-          //     arguments: CreatePostArguments(postBloc: _postbloc));
+          ExtendedNavigator.of(context)
+              .push(Routes.createPostScreen)
+              .then((value) {
+            final post = value as Post;
+            _communityBloc.add(NewPostCreated(post: post));
+          });
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.newpost),

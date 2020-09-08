@@ -14,6 +14,7 @@ import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const String homeScreen = '/home';
   static const String authScreen = '/auth';
   static const String setupScreen = '/setup';
+  static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
   static const String videoPlayerScreen = '/video-player';
@@ -34,6 +36,7 @@ class Routes {
     homeScreen,
     authScreen,
     setupScreen,
+    createPostScreen,
     chatScreen,
     chatSearchScreen,
     videoPlayerScreen,
@@ -50,6 +53,7 @@ class Router extends RouterBase {
     RouteDef(Routes.homeScreen, page: HomeScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
     RouteDef(Routes.setupScreen, page: SetupScreen),
+    RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
     RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
@@ -87,6 +91,13 @@ class Router extends RouterBase {
           initialTab: args.initialTab,
         ),
         settings: data,
+      );
+    },
+    CreatePostScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => CreatePostScreen(),
+        settings: data,
+        fullscreenDialog: true,
       );
     },
     ChatScreen: (data) {
@@ -153,6 +164,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.setupScreen,
         arguments: SetupScreenArguments(key: key, initialTab: initialTab),
       );
+
+  Future<dynamic> pushCreatePostScreen() =>
+      push<dynamic>(Routes.createPostScreen);
 
   Future<dynamic> pushChatScreen({
     Key key,

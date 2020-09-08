@@ -63,12 +63,14 @@ import '../features/community/data/repository/community_repository_impl.dart';
 import '../features/community/domain/repository/community_repository.dart';
 import '../features/community/domain/usecase/create_comment_post_usercase.dart';
 import '../features/community/domain/usecase/create_like_post_usecase.dart';
+import '../features/community/domain/usecase/create_post_usecase.dart';
 import '../features/community/domain/usecase/delete_like_post_usecase.dart';
 import '../features/community/domain/usecase/delete_post_usecase.dart';
 import '../features/community/domain/usecase/get_comments_page_usecase.dart';
 import '../features/community/domain/usecase/get_post_usecase.dart';
 import '../features/community/domain/usecase/get_posts_page_usecase.dart';
 import '../features/community/presentation/bloc/community/community_bloc.dart';
+import '../features/community/presentation/bloc/create_post/create_post_bloc.dart';
 import '../features/community/presentation/bloc/post/post_bloc.dart';
 import '../features/meeting/data/datasources/meetings_remote_datasource.dart';
 import '../features/meeting/data/repository/meeting_respository_impl.dart';
@@ -144,6 +146,7 @@ abstract class SocialAuthInjector {
 abstract class CommunityInjector {
   @Register.factory(CommunityBloc)
   @Register.factory(PostBloc)
+  @Register.factory(CreatePostBloc)
   @Register.singleton(CommunityRepository, from: CommunityRepositoryImpl)
   @Register.singleton(CommunityLocalDatasource,
       from: CommunityLocalDatasourceImpl)
@@ -151,6 +154,7 @@ abstract class CommunityInjector {
       from: CommunityRemoteDatasourceImpl)
   @Register.singleton(UCGetPostsPage)
   @Register.singleton(UCGetPost)
+  @Register.singleton(UCCreatePost)
   @Register.singleton(UCDeletePost)
   @Register.singleton(UCCreateLikePost)
   @Register.singleton(UCDeleteLikePost)

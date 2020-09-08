@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/community/domain/entity/like_entity.dart';
 
-import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
-import 'package:worknetwork/features/community/domain/usecase/create_like_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/delete_like_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/delete_post_usecase.dart';
-import 'package:worknetwork/features/community/domain/usecase/get_posts_page_usecase.dart';
+import '../../../domain/entity/like_entity.dart';
+import '../../../domain/entity/post_entity.dart';
+import '../../../domain/usecase/create_like_post_usecase.dart';
+import '../../../domain/usecase/delete_like_post_usecase.dart';
+import '../../../domain/usecase/delete_post_usecase.dart';
+import '../../../domain/usecase/get_posts_page_usecase.dart';
 
 part 'community_event.dart';
 part 'community_state.dart';
@@ -39,6 +39,8 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
       yield* _mapCreateLikePostToState(event);
     } else if (event is DeleteLikePostRequest) {
       yield* _mapDeleteLikePostToState(event);
+    } else if (event is NewPostCreated) {
+      yield CommunityNewPostLoaded(post: event.post);
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/features/community/domain/entity/comment_entity.dart';
@@ -68,6 +70,17 @@ class CommunityRepositoryImpl implements CommunityRepository {
       } on CacheException {
         return Left(CacheFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Post>> createPost(
+      String message, List<File> images) async {
+    try {
+      final response = await remoteDatasource.createPost(message, images);
+      return Right(response);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 

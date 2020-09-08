@@ -103,3 +103,21 @@ class CommunityDeleteLikeReceivedSuccess extends CommunityState {
           error: null,
         );
 }
+
+class CommunityNewPostLoaded extends CommunityState {
+  final Post post;
+
+  const CommunityNewPostLoaded({
+    @required this.post,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [
+        error,
+        loading,
+        post,
+      ];
+}

@@ -93,6 +93,8 @@ class _$CommunityInjector extends CommunityInjector {
         getPost: c<UCGetPost>(),
         getCommentsPage: c<UCGetCommentsPage>(),
         createComment: c<UCCreateCommentPost>()));
+    container
+        .registerFactory((c) => CreatePostBloc(createPost: c<UCCreatePost>()));
     container.registerSingleton<CommunityRepository>((c) =>
         CommunityRepositoryImpl(
             remoteDatasource: c<CommunityRemoteDatasource>(),
@@ -105,6 +107,7 @@ class _$CommunityInjector extends CommunityInjector {
     container
         .registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()));
     container.registerSingleton((c) => UCGetPost(c<CommunityRepository>()));
+    container.registerSingleton((c) => UCCreatePost(c<CommunityRepository>()));
     container.registerSingleton(
         (c) => UCDeletePost(repository: c<CommunityRepository>()));
     container.registerSingleton(
