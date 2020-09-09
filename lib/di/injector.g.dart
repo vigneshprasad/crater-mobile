@@ -14,6 +14,7 @@ class _$CoreInjector extends CoreInjector {
     container
         .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
     container.registerSingleton<DeepLinkManager>((c) => DeepLinkManagerImpl());
+    container.registerSingleton<LocalStorage>((c) => LocalStorageImpl());
   }
 }
 
