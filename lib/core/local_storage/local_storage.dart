@@ -14,22 +14,15 @@ import '../../features/points/data/models/points_model.dart';
 import '../../features/videos/data/models/video_model.dart';
 
 abstract class LocalStorage {
+  void registerAdapters();
+  Future<void> initSdk();
   Future<void> initStorage();
   Future<void> deleteStorage();
 }
 
 class LocalStorageImpl implements LocalStorage {
   @override
-  Future<void> deleteStorage() {
-    // TODO: implement deleteStorage
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> initStorage() async {
-    final appDocumentDir = await getApplicationDocumentsDirectory();
-    Hive.init(appDocumentDir.path);
-
+  void registerAdapters() {
     // Register Adapters
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(PostModelAdapter());
@@ -42,7 +35,16 @@ class LocalStorageImpl implements LocalStorage {
     Hive.registerAdapter(PointsModelAdapter());
     Hive.registerAdapter(NotificationModelAdapter());
     Hive.registerAdapter(ArticleModelAdapter());
+  }
 
+  @override
+  Future<void> initSdk() async {
+    final appDocumentDir = await getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDir.path);
+  }
+
+  @override
+  Future<void> initStorage() async {
     // Open Boxes
     await Hive.openBox<UserModel>(AppHiveBoxes.userModelBox);
     await Hive.openBox<PostModel>(AppHiveBoxes.postsBox);
@@ -54,5 +56,19 @@ class LocalStorageImpl implements LocalStorage {
     await Hive.openBox<VideoModel>(AppHiveBoxes.videoBox);
     await Hive.openBox<PointsModel>(AppHiveBoxes.pointsBox);
     await Hive.openBox<NotificationModel>(AppHiveBoxes.notificationsBox);
+  }
+
+  @override
+  Future<void> deleteStorage() async {
+    await Hive.box<UserModel>(AppHiveBoxes.userModelBox).clear();
+    await Hive.box<PostModel>(AppHiveBoxes.postsBox).clear();
+    await Hive.box<CommentModel>(AppHiveBoxes.commentsBox).clear();
+    await Hive.box<ChatUserModel>(AppHiveBoxes.chatUserBox).clear();
+    await Hive.box<ArticleModel>(AppHiveBoxes.articlesBox).clear();
+    await Hive.box<ChatMessageModel>(AppHiveBoxes.chatMessageBox).clear();
+    await Hive.box<UserChatModel>(AppHiveBoxes.userChatBox).clear();
+    await Hive.box<VideoModel>(AppHiveBoxes.videoBox).clear();
+    await Hive.box<PointsModel>(AppHiveBoxes.pointsBox).clear();
+    await Hive.box<NotificationModel>(AppHiveBoxes.notificationsBox).clear();
   }
 }

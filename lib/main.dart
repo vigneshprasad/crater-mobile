@@ -11,6 +11,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   Di.setup();
+  await KiwiContainer().resolve<LocalStorage>().initSdk();
+  KiwiContainer().resolve<LocalStorage>().registerAdapters();
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   runApp(RootApp());
 }

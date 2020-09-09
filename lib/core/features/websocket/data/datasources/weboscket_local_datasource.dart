@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:web_socket_channel/status.dart' as status;
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
@@ -26,7 +25,8 @@ class WebsocketLocalDataSourceImpl implements WebSocketLocalDataSource {
   @override
   Future<void> closeConnection() async {
     try {
-      await channel.sink.close(status.normalClosure);
+      await streamcontroller.close();
+      await channel.sink.close();
     } catch (error) {
       throw WebSocketCloseException();
     }

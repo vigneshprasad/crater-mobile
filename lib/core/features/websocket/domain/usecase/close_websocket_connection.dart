@@ -13,7 +13,6 @@ class UCWebSocketClose implements AsyncUseCase<void, NoParams> {
 
   @override
   Future<Either<Failure, void>> call(NoParams params) {
-    // TODO: implement call
-    throw UnimplementedError();
+    return repository.closeWebSocketConnection();
   }
 }

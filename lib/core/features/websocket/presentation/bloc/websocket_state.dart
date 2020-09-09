@@ -36,3 +36,12 @@ class WebSocketDisconnected extends WebsocketState {
   @override
   List<Object> get props => [error];
 }
+
+class WebSocketError extends WebsocketState {
+  final dynamic error;
+
+  const WebSocketError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

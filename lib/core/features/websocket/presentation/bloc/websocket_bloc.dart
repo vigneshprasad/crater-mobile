@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:worknetwork/core/features/websocket/domain/usecase/add_message_to_sink.dart';
+import 'package:worknetwork/core/features/websocket/domain/usecase/close_websocket_connection.dart';
 import 'package:worknetwork/core/features/websocket/domain/usecase/get_websocket_state.dart';
 import 'package:worknetwork/core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
 import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
@@ -18,6 +19,7 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   final UCWebSocketGetConnection connectionState;
   final UCWebsocketConnect connect;
   final UCWebSocketAddToSink addToSink;
+  final UCWebSocketClose socketClose;
   final AuthBloc authBloc;
   StreamSubscription _authBlocSub;
 
@@ -26,6 +28,7 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
     @required this.connect,
     @required this.addToSink,
     @required this.authBloc,
+    @required this.socketClose,
   }) : super(WebsocketInitial()) {
     _authBlocSub ??= authBloc.listen((authState) {
       if (authState is AuthStateSuccess) {
@@ -46,6 +49,8 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   ) async* {
     if (event is WebSocketInitConnect) {
       yield* _mapWebSocketeConnectToState(event);
+    } else if (event is WebSocketCloseStarted) {
+      yield* _mapWebSocketCloseToState(event);
     }
   }
 
@@ -59,6 +64,15 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
         channel: connection.channel,
         controller: connection.streamController,
       ),
+    );
+  }
+
+  Stream<WebsocketState> _mapWebSocketCloseToState(
+      WebSocketCloseStarted event) async* {
+    final closeOrFail = await socketClose(NoParams());
+    yield closeOrFail.fold(
+      (failure) => WebSocketError(failure),
+      (r) => const WebSocketDisconnected(),
     );
   }
 }

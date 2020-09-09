@@ -1,12 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
 
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/components/list_items/drawer_item/drawer_menu_item.dart';
 
 enum DrawerItemKeys { notificationSettings, logout, account }
@@ -144,14 +149,30 @@ class AppDrawer extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, index) => DrawerMenuItem(
           item: items[index],
-          onPressItem: _onPressItem,
+          onPressItem: (item) {
+            _onPressItem(item, context);
+          },
         ),
         separatorBuilder: (context, index) => const Divider(),
       ),
     );
   }
 
-  void _onPressItem(DrawerItem item) {
-    print(item);
+  void _onPressItem(DrawerItem item, BuildContext context) {
+    switch (item.key) {
+      case DrawerItemKeys.logout:
+        _handleLogout(context);
+        break;
+      default:
+        break;
+    }
+  }
+
+  Future<void> _handleLogout(BuildContext context) async {
+    BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
+    await KiwiContainer().resolve<LocalStorage>().deleteStorage();
+    await KiwiContainer().resolve<LocalStorage>().initStorage();
+    ExtendedNavigator.of(context)
+        .pushAndRemoveUntil(Routes.authScreen, (route) => false);
   }
 }

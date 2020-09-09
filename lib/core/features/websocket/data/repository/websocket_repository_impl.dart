@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
@@ -32,6 +33,7 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
         try {
           localDataSource.channel ??=
               await remoteDataSource.connectToWebsocketBackend(user.token);
+          localDataSource.streamcontroller ??= StreamController.broadcast();
           localDataSource.streamcontroller
               .addStream(localDataSource.channel.stream);
           return Right(WebSocketConnection(

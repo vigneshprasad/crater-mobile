@@ -25,7 +25,8 @@ class _$WebSocketInjector extends WebSocketInjector {
         connectionState: c<UCWebSocketGetConnection>(),
         connect: c<UCWebsocketConnect>(),
         addToSink: c<UCWebSocketAddToSink>(),
-        authBloc: c<AuthBloc>()));
+        authBloc: c<AuthBloc>(),
+        socketClose: c<UCWebSocketClose>()));
     container.registerSingleton<WebSocketRepository>((c) =>
         WebsocketRepositoryImpl(
             localDataSource: c<WebSocketLocalDataSource>(),
@@ -41,6 +42,8 @@ class _$WebSocketInjector extends WebSocketInjector {
         (c) => UCWebSocketGetConnection(repository: c<WebSocketRepository>()));
     container.registerSingleton(
         (c) => UCWebSocketAddToSink(repository: c<WebSocketRepository>()));
+    container.registerSingleton(
+        (c) => UCWebSocketClose(repository: c<WebSocketRepository>()));
   }
 }
 

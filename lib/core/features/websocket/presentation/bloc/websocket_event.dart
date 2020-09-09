@@ -14,3 +14,7 @@ class WebSocketInitConnect extends WebsocketEvent {
 class WebSocketInitIfAuth extends WebsocketEvent {
   const WebSocketInitIfAuth();
 }
+
+class WebSocketCloseStarted extends WebsocketEvent {
+  const WebSocketCloseStarted();
+}

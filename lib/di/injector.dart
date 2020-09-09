@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
+import 'package:worknetwork/core/features/websocket/domain/usecase/close_websocket_connection.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 
 import '../api/articles/articles_api_service.dart';
@@ -124,6 +125,7 @@ abstract class WebSocketInjector {
   @Register.singleton(UCWebsocketConnect)
   @Register.singleton(UCWebSocketGetConnection)
   @Register.singleton(UCWebSocketAddToSink)
+  @Register.singleton(UCWebSocketClose)
   void configure();
 }
 
