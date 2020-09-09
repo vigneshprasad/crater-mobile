@@ -43,12 +43,6 @@ class _AuthScreenState extends State<AuthScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _navigator?.dispose();
-    super.dispose();
-  }
-
   Future<void> _showOsId() async {
     final odId = await KiwiContainer()
         .resolve<PushNotifications>()
