@@ -32,8 +32,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await remoteDataSource.authWithGoogle(token, osId);
       localDataSource.setUserToCache(response);
       return Right(response);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 
@@ -44,8 +44,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await remoteDataSource.authWithLinkedIn(token, osId);
       localDataSource.setUserToCache(response);
       return Right(response);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 
@@ -57,8 +57,8 @@ class AuthRepositoryImpl implements AuthRepository {
           await remoteDataSource.loginWithEmail(email, password, osId);
       localDataSource.setUserToCache(response);
       return Right(response);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 

@@ -36,7 +36,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
     } else {
-      throw ServerException(response.body);
+      throw ServerException(response.error);
     }
   }
 
@@ -49,7 +49,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
     } else {
-      throw ServerException(response.body);
+      throw ServerException(response.error);
     }
   }
 
@@ -67,7 +67,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
     } else {
-      throw ServerException(response.body);
+      throw ServerException(response.error);
     }
   }
 }

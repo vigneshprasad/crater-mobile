@@ -72,6 +72,7 @@ class AuthState extends Equatable {
 class AuthStateInitial extends AuthState {
   const AuthStateInitial()
       : super(
+          user: null,
           isAuth: false,
           isEmailValid: true,
           isPasswordValid: true,
@@ -96,10 +97,45 @@ class AuthStateSuccess extends AuthState {
 class AuthStateFailure extends AuthState {
   const AuthStateFailure()
       : super(
+          user: null,
           isSubmitting: false,
           isEmailValid: true,
           isPasswordValid: true,
           isAuth: false,
           isFailure: true,
         );
+
+  @override
+  List<Object> get props => [
+        user,
+        isAuth,
+        isEmailValid,
+        isPasswordValid,
+        isSubmitting,
+        isFailure,
+      ];
+}
+
+class AuthRequestFailure extends AuthState {
+  final dynamic error;
+
+  const AuthRequestFailure({@required this.error})
+      : super(
+          user: null,
+          isSubmitting: false,
+          isEmailValid: true,
+          isPasswordValid: true,
+          isAuth: false,
+          isFailure: true,
+        );
+
+  @override
+  List<Object> get props => [
+        user,
+        isAuth,
+        isEmailValid,
+        isPasswordValid,
+        isSubmitting,
+        isFailure,
+      ];
 }

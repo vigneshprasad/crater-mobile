@@ -86,7 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     yield* tokenOrFailure.fold(
       (failure) async* {
-        yield const AuthStateFailure();
+        yield AuthRequestFailure(error: failure);
       },
       (token) => _mapSocialAuthBackendCallToState(() {
         if (provider == SocialAuthProviders.google) {
@@ -105,7 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     final respose = await callback();
     yield respose.fold(
-      (failure) => const AuthStateFailure(),
+      (failure) => AuthRequestFailure(error: failure),
       (user) => AuthStateSuccess(user: user),
     );
   }
@@ -121,7 +121,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ));
 
       yield userOrFailure.fold(
-        (failure) => const AuthStateFailure(),
+        (failure) => AuthRequestFailure(error: failure),
         (user) => AuthStateSuccess(user: user),
       );
     }

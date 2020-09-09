@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/error/failures.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
@@ -63,6 +66,8 @@ class _AuthScreenState extends State<AuthScreen> {
       listener: (context, state) {
         if (state is AuthStateSuccess) {
           navigatePostAuth(_navigator, state.user);
+        } else if (state is AuthRequestFailure) {
+          _handleRequestError(state);
         }
       },
       child: Scaffold(
@@ -95,6 +100,34 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       ),
     );
+  }
+
+  void _handleRequestError(AuthRequestFailure state) {
+    final failure = state.error as ServerFailure;
+    if (failure.message != null) {
+      final json = jsonDecode(failure.message.toString());
+      showDialog(
+        context: context,
+        builder: (context) {
+          final title =
+              AppLocalizations.of(context).translate("auth:login_fail_title");
+          final dismiss =
+              AppLocalizations.of(context).translate("dismiss").toUpperCase();
+          return AlertDialog(
+            title: Text(title),
+            content: Text(json["non_field_errors"][0] as String),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  ExtendedNavigator.of(context).pop();
+                },
+                child: Text(dismiss),
+              )
+            ],
+          );
+        },
+      );
+    }
   }
 
   Row _socialAuthRow(BuildContext ctx) {
