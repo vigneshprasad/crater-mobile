@@ -4,29 +4,26 @@ import '../../../constants/work_net_icons_icons.dart';
 import '../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../utils/app_localizations.dart';
 
-class HomeScreenLayout extends StatefulWidget {
+class HomeScreenLayout extends StatelessWidget {
   final List<BottomNavigationBarItem> navItems;
   final List<Widget> screens;
   final Widget Function(int) getFabButton;
+  final void Function(int) onTabTapped;
+  final int currentTabIndex;
 
   const HomeScreenLayout({
     Key key,
     @required this.navItems,
     @required this.screens,
     @required this.getFabButton,
+    @required this.onTabTapped,
+    @required this.currentTabIndex,
   }) : super(key: key);
-
-  @override
-  _HomeScreenLayoutState createState() => _HomeScreenLayoutState();
-}
-
-class _HomeScreenLayoutState extends State<HomeScreenLayout> {
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.screens[_currentIndex],
+      body: screens[currentTabIndex],
       drawer: AppDrawer(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
@@ -34,14 +31,14 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         ),
         child: BottomNavigationBar(
           items: _getNavItems(context),
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped,
+          currentIndex: currentTabIndex,
+          onTap: onTabTapped,
           unselectedItemColor: Colors.grey[400],
           selectedFontSize: 12,
           selectedItemColor: Theme.of(context).primaryColor,
         ),
       ),
-      floatingActionButton: widget.getFabButton(_currentIndex),
+      floatingActionButton: getFabButton(currentTabIndex),
     );
   }
 
@@ -75,11 +72,5 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         title: Text(videosLabel),
       ),
     ];
-  }
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 }

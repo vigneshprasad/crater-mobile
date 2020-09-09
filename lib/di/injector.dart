@@ -2,6 +2,7 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -107,6 +108,7 @@ part 'injector.g.dart';
 abstract class CoreInjector {
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
+  @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   void configure();
 }
 

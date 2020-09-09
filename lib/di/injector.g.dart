@@ -13,6 +13,7 @@ class _$CoreInjector extends CoreInjector {
         (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
     container
         .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
+    container.registerSingleton<DeepLinkManager>((c) => DeepLinkManagerImpl());
   }
 }
 

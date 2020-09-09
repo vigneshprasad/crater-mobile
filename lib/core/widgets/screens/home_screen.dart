@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
@@ -20,6 +21,12 @@ import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int tabIndex;
+
+  const HomeScreen({
+    @PathParam("tab") this.tabIndex,
+  });
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -29,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ArticleBloc _articleBloc = KiwiContainer().resolve();
   final VideoBloc _videoBloc = KiwiContainer().resolve();
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
+  int _currentTab = 0;
 
   final List<Widget> _screens = [
     CommunityTab(),
@@ -37,6 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
     ArticlesTab(),
     VideoTab()
   ];
+
+  @override
+  void initState() {
+    if (widget.tabIndex != null) {
+      setState(() {
+        _currentTab = widget.tabIndex;
+      });
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -68,6 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
         navItems: getNavItems(context),
         screens: _screens,
         getFabButton: getFloatingActionButton,
+        onTabTapped: _onTabTapped,
+        currentTabIndex: _currentTab,
       ),
     );
   }
@@ -131,5 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
     return null;
+  }
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentTab = index;
+    });
   }
 }

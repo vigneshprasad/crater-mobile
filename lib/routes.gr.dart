@@ -22,7 +22,8 @@ import 'ui/screens/setup/setup_screen.dart';
 
 class Routes {
   static const String splashScreen = '/';
-  static const String homeScreen = '/home';
+  static const String _homeScreen = '/home/:tab?';
+  static String homeScreen({dynamic tab = ''}) => '/home/$tab';
   static const String authScreen = '/auth';
   static const String setupScreen = '/setup';
   static const String createPostScreen = '/create-post';
@@ -33,7 +34,7 @@ class Routes {
   static const String postScreen = '/post';
   static const all = <String>{
     splashScreen,
-    homeScreen,
+    _homeScreen,
     authScreen,
     setupScreen,
     createPostScreen,
@@ -50,7 +51,7 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.splashScreen, page: SplashScreen),
-    RouteDef(Routes.homeScreen, page: HomeScreen),
+    RouteDef(Routes._homeScreen, page: HomeScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
     RouteDef(Routes.setupScreen, page: SetupScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
@@ -71,7 +72,8 @@ class Router extends RouterBase {
     },
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeScreen(),
+        builder: (context) =>
+            HomeScreen(tabIndex: data.pathParams['tab'].intValue),
         settings: data,
       );
     },
@@ -151,8 +153,6 @@ class Router extends RouterBase {
 
 extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
-
-  Future<dynamic> pushHomeScreen() => push<dynamic>(Routes.homeScreen);
 
   Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
 

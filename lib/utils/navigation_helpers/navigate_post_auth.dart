@@ -11,6 +11,6 @@ void navigatePostAuth(ExtendedNavigatorState navigator, User user) {
   } else if (user.phoneNumberVerified == null) {
     navigator.popAndPush(Routes.setupScreen, arguments: 'phone');
   } else {
-    navigator.popAndPush(Routes.homeScreen);
+    navigator.popAndPush(Routes.homeScreen(tab: 0));
   }
 }

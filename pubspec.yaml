@@ -59,6 +59,7 @@ dependencies:
   kiwi: ^2.0.0
   data_connection_checker: ^0.3.4
   flutter_statusbarcolor: ^0.2.3
+  firebase_dynamic_links: ^0.6.0
 
 dev_dependencies:
   flutter_test:

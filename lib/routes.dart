@@ -15,7 +15,7 @@ import 'ui/screens/setup/setup_screen.dart';
   generateNavigationHelperExtension: true,
   routes: <AutoRoute>[
     MaterialRoute(page: SplashScreen, initial: true),
-    MaterialRoute(page: HomeScreen, path: "/home"),
+    MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
     MaterialRoute(page: AuthScreen, path: "/auth"),
     MaterialRoute(page: SetupScreen, path: "/setup"),
     MaterialRoute(

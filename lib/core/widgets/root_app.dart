@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/status_bar_color/status_bar_color.dart';
 import 'package:worknetwork/routes.gr.dart';
@@ -24,6 +26,7 @@ class _RootAppState extends State<RootApp> {
     _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
     KiwiContainer().resolve<PushNotifications>().initSdk();
     StatusBarColor.setTheme(ThemeType.light);
+    KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
     super.initState();
   }
 
