@@ -117,6 +117,7 @@ class PostModel extends Post {
   Map<String, dynamic> toJson() => _$PostModelToJson(this);
 }
 
+@HiveType(typeId: AppHiveTypeIds.fileData)
 @JsonSerializable()
 class FileDataModel extends FileData {
   final String file;

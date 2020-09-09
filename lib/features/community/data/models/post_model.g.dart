@@ -8,7 +8,7 @@ part of 'post_model.dart';
 
 class PostModelAdapter extends TypeAdapter<PostModel> {
   @override
-  final int typeId = 28;
+  final int typeId = 9;
 
   @override
   PostModel read(BinaryReader reader) {
@@ -84,6 +84,35 @@ class PostModelAdapter extends TypeAdapter<PostModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PostModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class FileDataModelAdapter extends TypeAdapter<FileDataModel> {
+  @override
+  final int typeId = 12;
+
+  @override
+  FileDataModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FileDataModel();
+  }
+
+  @override
+  void write(BinaryWriter writer, FileDataModel obj) {
+    writer..writeByte(0);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FileDataModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -8,7 +8,7 @@ part of 'comment_model.dart';
 
 class CommentModelAdapter extends TypeAdapter<CommentModel> {
   @override
-  final int typeId = 29;
+  final int typeId = 10;
 
   @override
   CommentModel read(BinaryReader reader) {

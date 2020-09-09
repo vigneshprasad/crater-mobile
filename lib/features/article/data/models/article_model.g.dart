@@ -8,7 +8,7 @@ part of 'article_model.dart';
 
 class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
   @override
-  final int typeId = 30;
+  final int typeId = 11;
 
   @override
   ArticleModel read(BinaryReader reader) {

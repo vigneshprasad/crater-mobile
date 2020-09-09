@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:worknetwork/features/article/data/models/article_model.dart';
 
 import '../constants/app_hive_boxes.dart';
+import '../features/article/data/models/article_model.dart';
 import '../features/auth/data/models/user_model.dart';
 import '../features/chat/data/models/chat_message_model.dart';
 import '../features/chat/data/models/user_chat_model.dart';
@@ -18,11 +18,10 @@ Future<void> initHive() async {
   Hive.init(appDocumentDir.path);
 
   // Register Adapters
-  // Hive.registerAdapter(PostModelAdapter());
-
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(PostModelAdapter());
   Hive.registerAdapter(CommentModelAdapter());
+  Hive.registerAdapter(FileDataModelAdapter());
   Hive.registerAdapter(ChatUserModelAdapter());
   Hive.registerAdapter(ChatMessageModelAdapter());
   Hive.registerAdapter(UserChatModelAdapter());

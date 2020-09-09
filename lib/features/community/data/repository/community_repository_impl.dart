@@ -33,7 +33,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
       try {
         final response =
             await remoteDatasource.getPostsPageFromRemote(pageSize, page);
-        // await localDatasource.persistPostsToCache(response.results);
+        await localDatasource.persistPostsToCache(response.results);
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());

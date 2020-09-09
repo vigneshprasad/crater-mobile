@@ -8,7 +8,7 @@ part of 'user_chat_model.dart';
 
 class UserChatModelAdapter extends TypeAdapter<UserChatModel> {
   @override
-  final int typeId = 21;
+  final int typeId = 2;
 
   @override
   UserChatModel read(BinaryReader reader) {

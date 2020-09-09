@@ -8,7 +8,7 @@ part of 'points_model.dart';
 
 class PointsModelAdapter extends TypeAdapter<PointsModel> {
   @override
-  final int typeId = 26;
+  final int typeId = 7;
 
   @override
   PointsModel read(BinaryReader reader) {

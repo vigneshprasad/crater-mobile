@@ -8,7 +8,7 @@ part of 'video_tag_model.dart';
 
 class VideoTagModelAdapter extends TypeAdapter<VideoTagModel> {
   @override
-  final int typeId = 25;
+  final int typeId = 6;
 
   @override
   VideoTagModel read(BinaryReader reader) {

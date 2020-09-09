@@ -1,7 +1,4 @@
 class AppHiveBoxes {
-  static const userBox = "user";
-  static const postBox = "post";
-
   // Clean
   static const userModelBox = "USER_MODEL_BOX";
   static const userChatBox = "USER_CHAT_MODEL_BOX";
@@ -16,15 +13,16 @@ class AppHiveBoxes {
 }
 
 class AppHiveTypeIds {
-  static const user = 20;
-  static const userChat = 21;
-  static const chatMessage = 22;
-  static const chatUser = 23;
-  static const video = 24;
-  static const videoTag = 25;
-  static const points = 26;
-  static const notifications = 27;
-  static const post = 28;
-  static const comment = 29;
-  static const article = 30;
+  static const user = 1;
+  static const userChat = 2;
+  static const chatMessage = 3;
+  static const chatUser = 4;
+  static const video = 5;
+  static const videoTag = 6;
+  static const points = 7;
+  static const notifications = 8;
+  static const post = 9;
+  static const comment = 10;
+  static const article = 11;
+  static const fileData = 12;
 }
