@@ -1,6 +1,7 @@
 {
     "input_label_email": "E-mail address",
     "input_password": "Password",
+    "input_label_name": "Name",
     "read_more": "Read more",
     "auth:login_fail_title": "Login Failed",
     "home_tab:community": "Community",
@@ -28,6 +29,7 @@
     "drawer_item:acoount": "Account",
     "drawer_item:logout": "Sign out",
     "delete": "delete",
-    "dismiss": "dismiss"
+    "dismiss": "dismiss",
+    "next": "next"
     
 }

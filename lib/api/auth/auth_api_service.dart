@@ -25,6 +25,9 @@ abstract class AuthApiService extends ChopperService {
     @Body() Map<String, dynamic> body,
   );
 
+  @Post(path: 'registration/')
+  Future<Response> registerWithEmail(@Body() Map<String, dynamic> body);
+
   @Post(path: 'social/google/')
   Future<Response> authWithGoogle(@Body() Map<String, dynamic> body);
 

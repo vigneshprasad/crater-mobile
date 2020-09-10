@@ -56,11 +56,12 @@ class _$AuthInjector extends AuthInjector {
         authLinkedIn: c<UCAuthLinkedIn>(),
         authGoogle: c<UCGoogleAuth>(),
         loginEmail: c<UCLoginEmail>(),
-        socialAuthToken: c<UCGetSocialAuthToken>()));
+        socialAuthToken: c<UCGetSocialAuthToken>(),
+        registerEmail: c<UCRegisterEmail>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>()));
-    container.registerSingleton<AuthRemoteDataSource>(
-        (c) => AuthRemoteDataSourceImpl(c<AuthApiService>()));
+    container.registerSingleton<AuthRemoteDataSource>((c) =>
+        AuthRemoteDataSourceImpl(c<AuthApiService>(), c<UserApiService>()));
     container.registerSingleton<AuthLocalDataSource>(
         (c) => AuthLocalDataSourceImpl());
     container.registerSingleton(
@@ -71,6 +72,24 @@ class _$AuthInjector extends AuthInjector {
         (c) => UCLoginEmail(repository: c<AuthRepository>()));
     container.registerSingleton(
         (c) => UCAuthLinkedIn(repository: c<AuthRepository>()));
+    container.registerSingleton((c) => UCRegisterEmail(c<AuthRepository>()));
+    container
+        .registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()));
+  }
+}
+
+class _$SignupInjector extends SignupInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => ObjectivesBloc(
+        getUserObjectives: c<UCGetUserObjectives>(),
+        patchUser: c<UCPatchUser>()));
+    container.registerSingleton<SignupRepository>(
+        (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
+    container.registerSingleton<SignupRemoteDatasource>(
+        (c) => SignupRemoteDatasourceImpl(c<TagsApiService>()));
+    container
+        .registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()));
   }
 }
 

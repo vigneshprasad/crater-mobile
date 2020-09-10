@@ -17,6 +17,8 @@ class BaseLargeButton extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.button.copyWith(
           color: Colors.white,
         );
+    final fillColor =
+        onPressed == null ? Colors.grey : Theme.of(context).primaryColor;
     return SizedBox(
       width: buttonWidth,
       height: buttonHeight,
@@ -24,7 +26,7 @@ class BaseLargeButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
         ),
-        fillColor: Theme.of(context).primaryColor,
+        fillColor: fillColor,
         onPressed: onPressed,
         child: Text(
           text.toUpperCase(),

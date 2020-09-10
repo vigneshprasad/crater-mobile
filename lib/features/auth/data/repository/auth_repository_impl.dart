@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -64,9 +65,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, User>> registerwithEmail(
-      String email, String password, String osId) {
-    // TODO: implement registerwithEmail
-    throw UnimplementedError();
+      String name, String email, String password, String osId) async {
+    try {
+      final response =
+          await remoteDataSource.registerWithEmail(name, email, password, osId);
+      localDataSource.setUserToCache(response);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
   }
 
   @override
@@ -76,6 +83,18 @@ class AuthRepositoryImpl implements AuthRepository {
       return Future.value(Right(user));
     } on CacheException {
       return Future.value(Left(CacheFailure()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> patchUser(User user) async {
+    try {
+      final response =
+          await remoteDataSource.patchUserModelRemote(user as UserModel);
+      localDataSource.setUserToCache(response as UserModel);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 }

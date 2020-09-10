@@ -32,7 +32,9 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   }) : super(WebsocketInitial()) {
     _authBlocSub ??= authBloc.listen((authState) {
       if (authState is AuthStateSuccess) {
-        add(const WebSocketInitConnect());
+        if (state is! WebSocketConnected) {
+          add(const WebSocketInitConnect());
+        }
       }
     });
   }

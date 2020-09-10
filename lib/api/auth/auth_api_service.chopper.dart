@@ -25,6 +25,14 @@ class _$AuthApiService extends AuthApiService {
   }
 
   @override
+  Future<Response<dynamic>> registerWithEmail(Map<String, dynamic> body) {
+    final $url = '/user/auth/registration/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> authWithGoogle(Map<String, dynamic> body) {
     final $url = '/user/auth/social/google/';
     final $body = body;

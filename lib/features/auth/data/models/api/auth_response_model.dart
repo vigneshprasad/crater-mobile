@@ -39,5 +39,6 @@ class AuthResponseModel {
         panCardSize: user.panCardSize,
         unreadNotifications: user.unreadNotifications,
         isApproved: user.isApproved,
+        objectives: user.objectives,
       );
 }

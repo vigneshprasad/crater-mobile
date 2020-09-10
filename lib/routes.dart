@@ -8,6 +8,8 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
+import 'features/signup/presentation/screens/objectives_screen.dart';
+import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
 
@@ -16,6 +18,8 @@ import 'ui/screens/setup/setup_screen.dart';
   routes: <AutoRoute>[
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
+    MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
+    MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
     MaterialRoute(page: AuthScreen, path: "/auth"),
     MaterialRoute(page: SetupScreen, path: "/setup"),
     MaterialRoute(

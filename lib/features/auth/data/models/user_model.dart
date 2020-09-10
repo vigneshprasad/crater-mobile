@@ -84,6 +84,13 @@ class UserModel extends User {
   @JsonKey(name: 'is_approved')
   final bool isApproved;
 
+  @HiveField(20)
+  final List<int> objectives;
+
+  @HiveField(21)
+  @JsonKey(name: "linkedin_url")
+  String linkedinUrl;
+
   UserModel({
     this.token,
     this.pk,
@@ -105,6 +112,8 @@ class UserModel extends User {
     this.panCardSize,
     this.unreadNotifications,
     this.isApproved,
+    this.objectives,
+    this.linkedinUrl,
   }) : super(
           token: token,
           pk: pk,
@@ -126,6 +135,8 @@ class UserModel extends User {
           panCardSize: panCardSize,
           unreadNotifications: unreadNotifications,
           isApproved: isApproved,
+          objectives: objectives,
+          linkedinUrl: linkedinUrl,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

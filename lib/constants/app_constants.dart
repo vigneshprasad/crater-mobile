@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  static const apiBaseUrl = "https://back-pre.1worknetwork.com/v1";
-  static const websocketBaseUrl =
-      "wss://back-pre.1worknetwork.com/ws/connector";
+  static const apiBaseUrl = "http://192.168.0.102:8000/v1";
+  static const websocketBaseUrl = "ws://192.168.0.102:8000/ws/connector";
   static const oneSignalAppId = "1e6689ee-cb44-4c39-8339-4ce7ddd513fc";
   static const linkedinClientId = "816zzmaw07e4v3";
   static const linkedinSecret = "upmxGw6xmBM7CHVa";

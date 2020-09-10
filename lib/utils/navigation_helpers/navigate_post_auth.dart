@@ -1,13 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 import '../../routes.gr.dart';
 
 void navigatePostAuth(ExtendedNavigatorState navigator, User user) {
-  if (user.hasProfile == null) {
-    navigator.popAndPush(Routes.setupScreen, arguments: 'basic_profile');
-  } else if (user.hasServices == null) {
-    navigator.popAndPush(Routes.setupScreen, arguments: 'services');
+  final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+  if (user.objectives.isEmpty) {
+    _navigator.currentState.popAndPushNamed(Routes.objectivesScreen);
+  } else if (user.linkedinUrl == null) {
+    _navigator.currentState.popAndPushNamed(Routes.profileSetupScreen);
   } else if (user.phoneNumberVerified == null) {
     navigator.popAndPush(Routes.setupScreen, arguments: 'phone');
   } else {

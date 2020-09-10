@@ -17,6 +17,8 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
+import 'features/signup/presentation/screens/objectives_screen.dart';
+import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
 
@@ -24,6 +26,8 @@ class Routes {
   static const String splashScreen = '/';
   static const String _homeScreen = '/home/:tab?';
   static String homeScreen({dynamic tab = ''}) => '/home/$tab';
+  static const String objectivesScreen = '/objectives';
+  static const String profileSetupScreen = '/profile-setup';
   static const String authScreen = '/auth';
   static const String setupScreen = '/setup';
   static const String createPostScreen = '/create-post';
@@ -35,6 +39,8 @@ class Routes {
   static const all = <String>{
     splashScreen,
     _homeScreen,
+    objectivesScreen,
+    profileSetupScreen,
     authScreen,
     setupScreen,
     createPostScreen,
@@ -52,6 +58,8 @@ class Router extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.splashScreen, page: SplashScreen),
     RouteDef(Routes._homeScreen, page: HomeScreen),
+    RouteDef(Routes.objectivesScreen, page: ObjectivesScreen),
+    RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
     RouteDef(Routes.setupScreen, page: SetupScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
@@ -74,6 +82,18 @@ class Router extends RouterBase {
       return MaterialPageRoute<dynamic>(
         builder: (context) =>
             HomeScreen(tabIndex: data.pathParams['tab'].intValue),
+        settings: data,
+      );
+    },
+    ObjectivesScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ObjectivesScreen(),
+        settings: data,
+      );
+    },
+    ProfileSetupScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileSetupScreen(),
         settings: data,
       );
     },
@@ -153,6 +173,12 @@ class Router extends RouterBase {
 
 extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
+
+  Future<dynamic> pushObjectivesScreen() =>
+      push<dynamic>(Routes.objectivesScreen);
+
+  Future<dynamic> pushProfileSetupScreen() =>
+      push<dynamic>(Routes.profileSetupScreen);
 
   Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
 

@@ -37,13 +37,15 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       panCardSize: fields[17] as dynamic,
       unreadNotifications: fields[18] as int,
       isApproved: fields[19] as bool,
+      objectives: (fields[20] as List)?.cast<int>(),
+      linkedinUrl: fields[21] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.token)
       ..writeByte(1)
@@ -83,7 +85,11 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(18)
       ..write(obj.unreadNotifications)
       ..writeByte(19)
-      ..write(obj.isApproved);
+      ..write(obj.isApproved)
+      ..writeByte(20)
+      ..write(obj.objectives)
+      ..writeByte(21)
+      ..write(obj.linkedinUrl);
   }
 
   @override
@@ -124,6 +130,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     panCardSize: json['pan_card_size'],
     unreadNotifications: json['unread_notifications'] as int,
     isApproved: json['is_approved'] as bool,
+    objectives: (json['objectives'] as List)?.map((e) => e as int)?.toList(),
+    linkedinUrl: json['linkedin_url'] as String,
   );
 }
 
@@ -148,4 +156,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'pan_card_size': instance.panCardSize,
       'unread_notifications': instance.unreadNotifications,
       'is_approved': instance.isApproved,
+      'objectives': instance.objectives,
+      'linkedin_url': instance.linkedinUrl,
     };

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/domain/usecase/register_email_usecase.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -26,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCGoogleAuth authGoogle;
   final UCLoginEmail loginEmail;
   final UCGetSocialAuthToken socialAuthToken;
+  final UCRegisterEmail registerEmail;
 
   AuthBloc({
     @required this.pushNotifications,
@@ -34,12 +36,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.authGoogle,
     @required this.loginEmail,
     @required this.socialAuthToken,
+    @required this.registerEmail,
   })  : assert(pushNotifications != null),
         assert(persistedUser != null),
         assert(authLinkedIn != null),
         assert(authGoogle != null),
         assert(loginEmail != null),
         assert(socialAuthToken != null),
+        assert(registerEmail != null),
         super(const AuthStateInitial());
 
   @override
@@ -56,6 +60,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapSocialAuthToState(event);
     } else if (event is AuthLoginEmailPressed) {
       yield* _mapLoginEmailToState(event);
+    } else if (event is AuthRegisterEmailPressed) {
+      yield* _mapRegisterEmailToState(event);
+    } else if (event is AuthUserUpdateRecieved) {
+      yield AuthStateSuccess(user: event.user);
     }
   }
 
@@ -121,6 +129,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ));
 
       yield userOrFailure.fold(
+        (failure) => AuthRequestFailure(error: failure),
+        (user) => AuthStateSuccess(user: user),
+      );
+    }
+  }
+
+  Stream<AuthState> _mapRegisterEmailToState(
+      AuthRegisterEmailPressed event) async* {
+    if (state.isFormValid) {
+      yield state.loading();
+      final osId = await pushNotifications.getSubscribtionsToken();
+      final registerOrFailure = await registerEmail(RegisterEmailParams(
+        email: event.email,
+        password: event.password,
+        name: event.name,
+        osId: osId,
+      ));
+
+      yield registerOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
         (user) => AuthStateSuccess(user: user),
       );

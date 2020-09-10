@@ -7,6 +7,7 @@ import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/presentation/widgets/signup_form.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -77,7 +78,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(
                         height: 44,
                       ),
-                      LoginForm()
+                      // LoginForm()
+                      SignupForm()
                     ],
                   ),
                   // onTapPlayButton: _onTapPlayButton,

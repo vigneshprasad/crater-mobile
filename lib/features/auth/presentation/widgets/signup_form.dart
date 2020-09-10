@@ -1,13 +1,21 @@
-part of '../screens/auth/auth_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
-class LoginForm extends StatefulWidget {
+class SignupForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   AuthBloc _authBloc;
 
@@ -23,6 +31,7 @@ class _LoginFormState extends State<LoginForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -32,6 +41,8 @@ class _LoginFormState extends State<LoginForm> {
         AppLocalizations.of(context).translate("input_label_email");
     final String password =
         AppLocalizations.of(context).translate("input_password");
+    final String name =
+        AppLocalizations.of(context).translate("input_label_name");
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
@@ -43,8 +54,21 @@ class _LoginFormState extends State<LoginForm> {
         }
         const buttonSpacer = 64.00;
         return Form(
+          key: _formKey,
           child: Column(
-            children: <Widget>[
+            children: [
+              BaseFormInput(
+                enabled: isEnabled,
+                controller: _nameController,
+                label: name,
+                autovalidate: false,
+                validator: (value) {
+                  return value.isEmpty ? 'Name is Required' : null;
+                },
+              ),
+              const SizedBox(
+                height: AppPadding.med,
+              ),
               BaseFormInput(
                 enabled: isEnabled,
                 controller: _emailController,
@@ -74,8 +98,8 @@ class _LoginFormState extends State<LoginForm> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: BaseLargeButton(
-                  onPressed: _onLoginEmailPressed,
-                  text: "login",
+                  onPressed: _onRegisterEmailPressed,
+                  text: "register",
                 ),
               ),
             ],
@@ -86,23 +110,21 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onLoginEmailChanged() {
-    _authBloc.add(
-      AuthEmailChanged(email: _emailController.text),
-    );
+    _authBloc.add(AuthEmailChanged(email: _emailController.text));
   }
 
   void _onLoginPasswordChanged() {
-    _authBloc.add(
-      AuthPaswordChanged(password: _passwordController.text),
-    );
+    _authBloc.add(AuthPaswordChanged(password: _passwordController.text));
   }
 
-  void _onLoginEmailPressed() {
-    _authBloc.add(
-      AuthLoginEmailPressed(
+  void _onRegisterEmailPressed() {
+    final isValid = _formKey.currentState.validate();
+    if (isValid) {
+      _authBloc.add(AuthRegisterEmailPressed(
+        name: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
-      ),
-    );
+      ));
+    }
   }
 }

@@ -2,9 +2,8 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
-import 'package:worknetwork/core/features/websocket/domain/usecase/close_websocket_connection.dart';
-import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/api/user/user_api_service.dart';
+import 'package:worknetwork/features/auth/domain/usecase/patch_user_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -13,15 +12,19 @@ import '../api/meets/meets_api_service.dart';
 import '../api/notifications/notifications_api_service.dart';
 import '../api/points/points_api_service.dart';
 import '../api/post/post_api_service.dart';
+import '../api/tags/tags_api_service.dart';
 import '../constants/app_constants.dart';
+import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
 import '../core/features/websocket/data/repository/websocket_repository_impl.dart';
 import '../core/features/websocket/domain/repository/websocket_repository.dart';
 import '../core/features/websocket/domain/usecase/add_message_to_sink.dart';
+import '../core/features/websocket/domain/usecase/close_websocket_connection.dart';
 import '../core/features/websocket/domain/usecase/get_websocket_state.dart';
 import '../core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import '../core/local_storage/local_storage.dart';
 import '../core/network_info/network_info.dart';
 import '../core/push_notfications/push_notifications.dart';
 import '../features/article/data/datasources/article_local_datasource.dart';
@@ -38,6 +41,7 @@ import '../features/auth/domain/usecase/get_persisted_user_usercase.dart';
 import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
 import '../features/auth/domain/usecase/login_email_usercase.dart';
+import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/chat/data/datasources/chat_local_datasource.dart';
 import '../features/chat/data/datasources/chat_remote_datasource.dart';
@@ -92,6 +96,11 @@ import '../features/points/data/repository/points_repository_impl.dart';
 import '../features/points/domain/repository/points_repository.dart';
 import '../features/points/domain/usecases/get_self_user_points.dart';
 import '../features/points/presentation/bloc/points_bloc.dart';
+import '../features/signup/data/datasources/signup_remote_datasource.dart';
+import '../features/signup/data/repository/signup_repository_impl.dart';
+import '../features/signup/domain/repository/signup_repository.dart';
+import '../features/signup/domain/usecase/get_user_objectives.dart';
+import '../features/signup/presentation/bloc/objectives/objectives_bloc.dart';
 import '../features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 import '../features/social_auth/data/repository/social_auth_repository_impl.dart';
 import '../features/social_auth/domain/repository/social_auth_repository.dart';
@@ -138,6 +147,16 @@ abstract class AuthInjector {
   @Register.singleton(UCGoogleAuth)
   @Register.singleton(UCLoginEmail)
   @Register.singleton(UCAuthLinkedIn)
+  @Register.singleton(UCRegisterEmail)
+  @Register.singleton(UCPatchUser)
+  void configure();
+}
+
+abstract class SignupInjector {
+  @Register.factory(ObjectivesBloc)
+  @Register.singleton(SignupRepository, from: SignupRepositoryImpl)
+  @Register.singleton(SignupRemoteDatasource, from: SignupRemoteDatasourceImpl)
+  @Register.singleton(UCGetUserObjectives)
   void configure();
 }
 
@@ -253,6 +272,7 @@ class Di {
     final container = KiwiContainer();
     final coreInjector = _$CoreInjector();
     final authInjector = _$AuthInjector();
+    final signupInjector = _$SignupInjector();
     final socialAuthInjector = _$SocialAuthInjector();
     final websocketInjector = _$WebSocketInjector();
     final chatInboxInjector = _$ChatInboxInjector();
@@ -274,6 +294,9 @@ class Di {
     ///
     // Auth
     authInjector.configure();
+
+    //Signup
+    signupInjector.configure();
 
     // Social Auth
     socialAuthInjector.configure();
@@ -304,12 +327,14 @@ class Di {
 
     // Api Services
     container.registerInstance(AuthApiService.create());
+    container.registerInstance(UserApiService.create());
     container.registerInstance(MasterClassApiService.create());
     container.registerInstance(PointsApiService.create());
     container.registerInstance(NotificationApiService.create());
     container.registerInstance(PostApiService.create());
     container.registerInstance(ArticlesApiService.create());
     container.registerInstance(MeetsApiService.create());
+    container.registerInstance(TagsApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

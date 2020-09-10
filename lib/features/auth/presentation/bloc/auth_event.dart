@@ -35,6 +35,21 @@ class AuthLoginEmailPressed extends AuthEvent {
   List<Object> get props => [email, password];
 }
 
+class AuthRegisterEmailPressed extends AuthEvent {
+  final String name;
+  final String email;
+  final String password;
+
+  const AuthRegisterEmailPressed({
+    @required this.name,
+    @required this.email,
+    @required this.password,
+  });
+
+  @override
+  List<Object> get props => [name, email, password];
+}
+
 class AuthEmailChanged extends AuthEvent {
   final String email;
 
@@ -66,4 +81,15 @@ class AuthSocialPressed extends AuthEvent {
 
   @override
   List<Object> get props => [provider];
+}
+
+class AuthUserUpdateRecieved extends AuthEvent {
+  final User user;
+
+  const AuthUserUpdateRecieved({
+    @required this.user,
+  });
+
+  @override
+  List<Object> get props => [user];
 }
