@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:worknetwork/api/user/user_api_service.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 
 import '../../../../api/auth/auth_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -34,6 +36,16 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<User> patchUserModelRemote(UserModel user);
+
+  /// Calls the Get User Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<User> getUserFromRemote();
+
+  /// Calls the Post User Profile Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserProfile> postUserProfileRemote(Map<String, dynamic> body);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -117,6 +129,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<User> getUserFromRemote() async {
+    final response = await userApiService.getUser();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserProfile> postUserProfileRemote(Map<String, dynamic> body) async {
+    final response = await userApiService.postUserProfile(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserProfileModel.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

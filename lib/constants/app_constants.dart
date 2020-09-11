@@ -12,6 +12,60 @@ class AppConstants {
     'email',
     'https://www.googleapis.com/auth/userinfo.profile',
   ];
+  static const defaultAvatar = {
+    "a":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/A.png',
+    "b":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/B.png',
+    "c":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/C.png',
+    "d":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/D.png',
+    "e":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/E.png',
+    "f":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/F.png',
+    "g":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/G.png',
+    "h":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/H.png',
+    "i":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/I.png',
+    "j":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/J.png',
+    "k":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/K.png',
+    "l":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/L.png',
+    "m":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/M.png',
+    "n":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/N.png',
+    "o":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/O.png',
+    "p":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/P.png',
+    "q":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/Q.png',
+    "r":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/R.png',
+    "s":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/S.png',
+    "t":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/T.png',
+    "u":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/U.png',
+    "v":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/V.png',
+    "w":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/W.png',
+    "x":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/X.png',
+    "y":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/Y.png',
+    "z":
+        'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/Z.png',
+  };
 }
 
 class AppImageAssets {

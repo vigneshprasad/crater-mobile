@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:worknetwork/features/signup/presentation/screens/phone_verification_screen.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -20,6 +21,7 @@ import 'ui/screens/setup/setup_screen.dart';
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
     MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
+    MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth"),
     MaterialRoute(page: SetupScreen, path: "/setup"),
     MaterialRoute(

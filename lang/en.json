@@ -30,6 +30,7 @@
     "drawer_item:logout": "Sign out",
     "delete": "delete",
     "dismiss": "dismiss",
-    "next": "next"
-    
+    "next": "next",
+    "linkedin:placeholder": "linkedin.com/in/JohnSmith8",
+    "tags:placeholder": "Choose two tags"
 }

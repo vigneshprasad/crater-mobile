@@ -142,4 +142,56 @@ class UserModel extends User {
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
+  UserModel copyWith({
+    String token,
+    String pk,
+    String photo,
+    String email,
+    bool emailVerified,
+    String name,
+    int city,
+    String reason,
+    String phoneNumber,
+    bool phoneNumberVerified,
+    String role,
+    bool hasProfile,
+    bool hasBankDetails,
+    bool hasServices,
+    bool hasActiveSubscription,
+    String activeSubscriptionMembership,
+    dynamic panCard,
+    dynamic panCardSize,
+    int unreadNotifications,
+    bool isApproved,
+    List<int> objectives,
+    String linkedinUrl,
+  }) {
+    return UserModel(
+      token: token ?? this.token,
+      pk: pk ?? this.pk,
+      photo: photo ?? this.photo,
+      email: email ?? this.email,
+      emailVerified: emailVerified ?? this.emailVerified,
+      name: name ?? this.name,
+      city: city ?? this.city,
+      reason: reason ?? this.reason,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      phoneNumberVerified: phoneNumberVerified ?? this.phoneNumberVerified,
+      role: role ?? this.role,
+      hasProfile: hasProfile ?? this.hasProfile,
+      hasBankDetails: hasBankDetails ?? this.hasBankDetails,
+      hasServices: hasServices ?? this.hasServices,
+      hasActiveSubscription:
+          hasActiveSubscription ?? this.hasActiveSubscription,
+      activeSubscriptionMembership:
+          activeSubscriptionMembership ?? this.activeSubscriptionMembership,
+      panCard: panCard ?? this.panCard,
+      panCardSize: panCardSize ?? this.panCardSize,
+      unreadNotifications: unreadNotifications ?? this.unreadNotifications,
+      isApproved: isApproved ?? this.isApproved,
+      objectives: objectives ?? this.objectives,
+      linkedinUrl: linkedinUrl ?? this.linkedinUrl,
+    );
+  }
 }

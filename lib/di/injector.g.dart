@@ -31,7 +31,8 @@ class _$WebSocketInjector extends WebSocketInjector {
         WebsocketRepositoryImpl(
             localDataSource: c<WebSocketLocalDataSource>(),
             remoteDataSource: c<WebSocketRemoteDataSource>(),
-            authRepository: c<AuthRepository>()));
+            authRepository: c<AuthRepository>(),
+            authLocalDataSource: c<AuthLocalDataSource>()));
     container.registerSingleton<WebSocketRemoteDataSource>(
         (c) => WebSocketRemoteDataSourceImpl());
     container.registerSingleton<WebSocketLocalDataSource>(
@@ -51,21 +52,23 @@ class _$AuthInjector extends AuthInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => AuthBloc(
+        getUser: c<UCGetUser>(),
         pushNotifications: c<PushNotifications>(),
-        persistedUser: c<UCGetPersistedUser>(),
+        getAuthentication: c<UCGetAuthentication>(),
         authLinkedIn: c<UCAuthLinkedIn>(),
         authGoogle: c<UCGoogleAuth>(),
         loginEmail: c<UCLoginEmail>(),
         socialAuthToken: c<UCGetSocialAuthToken>(),
         registerEmail: c<UCRegisterEmail>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
-        c<AuthRemoteDataSource>(), c<AuthLocalDataSource>()));
+        c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
     container.registerSingleton<AuthRemoteDataSource>((c) =>
         AuthRemoteDataSourceImpl(c<AuthApiService>(), c<UserApiService>()));
     container.registerSingleton<AuthLocalDataSource>(
         (c) => AuthLocalDataSourceImpl());
+    container.registerSingleton((c) => UCGetUser(c<AuthRepository>()));
     container.registerSingleton(
-        (c) => UCGetPersistedUser(repository: c<AuthRepository>()));
+        (c) => UCGetAuthentication(repository: c<AuthRepository>()));
     container.registerSingleton(
         (c) => UCGoogleAuth(repository: c<AuthRepository>()));
     container.registerSingleton(
@@ -75,6 +78,7 @@ class _$AuthInjector extends AuthInjector {
     container.registerSingleton((c) => UCRegisterEmail(c<AuthRepository>()));
     container
         .registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()));
+    container.registerSingleton((c) => UCPostUserProfile(c<AuthRepository>()));
   }
 }
 
@@ -84,12 +88,16 @@ class _$SignupInjector extends SignupInjector {
     container.registerFactory((c) => ObjectivesBloc(
         getUserObjectives: c<UCGetUserObjectives>(),
         patchUser: c<UCPatchUser>()));
+    container.registerFactory((c) => ProfileSetupBloc(
+        getUserTags: c<UCGetUserTags>(),
+        postUserProfile: c<UCPostUserProfile>()));
     container.registerSingleton<SignupRepository>(
         (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
     container.registerSingleton<SignupRemoteDatasource>(
         (c) => SignupRemoteDatasourceImpl(c<TagsApiService>()));
     container
         .registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()));
+    container.registerSingleton((c) => UCGetUserTags(c<SignupRepository>()));
   }
 }
 

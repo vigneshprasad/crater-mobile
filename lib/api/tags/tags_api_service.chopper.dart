@@ -22,4 +22,11 @@ class _$TagsApiService extends TagsApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getUserTags() {
+    final $url = '/tags/user/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

@@ -18,6 +18,7 @@ import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
+import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 import 'ui/screens/setup/setup_screen.dart';
@@ -28,6 +29,7 @@ class Routes {
   static String homeScreen({dynamic tab = ''}) => '/home/$tab';
   static const String objectivesScreen = '/objectives';
   static const String profileSetupScreen = '/profile-setup';
+  static const String phoneVerificationScreen = '/phone-verify';
   static const String authScreen = '/auth';
   static const String setupScreen = '/setup';
   static const String createPostScreen = '/create-post';
@@ -41,6 +43,7 @@ class Routes {
     _homeScreen,
     objectivesScreen,
     profileSetupScreen,
+    phoneVerificationScreen,
     authScreen,
     setupScreen,
     createPostScreen,
@@ -60,6 +63,7 @@ class Router extends RouterBase {
     RouteDef(Routes._homeScreen, page: HomeScreen),
     RouteDef(Routes.objectivesScreen, page: ObjectivesScreen),
     RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
+    RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
     RouteDef(Routes.setupScreen, page: SetupScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
@@ -94,6 +98,12 @@ class Router extends RouterBase {
     ProfileSetupScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ProfileSetupScreen(),
+        settings: data,
+      );
+    },
+    PhoneVerificationScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PhoneVerificationScreen(),
         settings: data,
       );
     },
@@ -179,6 +189,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushProfileSetupScreen() =>
       push<dynamic>(Routes.profileSetupScreen);
+
+  Future<dynamic> pushPhoneVerificationScreen() =>
+      push<dynamic>(Routes.phoneVerificationScreen);
 
   Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
 

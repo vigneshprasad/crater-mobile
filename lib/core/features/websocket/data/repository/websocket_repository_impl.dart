@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:worknetwork/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../error/failures.dart';
@@ -15,36 +16,33 @@ import '../datasources/weboscket_remote_datasource.dart';
 class WebsocketRepositoryImpl implements WebSocketRepository {
   final WebSocketLocalDataSource localDataSource;
   final WebSocketRemoteDataSource remoteDataSource;
+  final AuthLocalDataSource authLocalDataSource;
   final AuthRepository authRepository;
 
   WebsocketRepositoryImpl({
     @required this.localDataSource,
     @required this.remoteDataSource,
     @required this.authRepository,
+    @required this.authLocalDataSource,
   });
 
   @override
   Future<Either<Failure, WebSocketConnection>>
       connectToWebsocketBackend() async {
-    final userOrError = await authRepository.getPersistedUser();
-    return userOrError.fold(
-      (failure) => throw WebsocketServerFailure("User not in storage"),
-      (user) async {
-        try {
-          localDataSource.channel ??=
-              await remoteDataSource.connectToWebsocketBackend(user.token);
-          localDataSource.streamcontroller ??= StreamController.broadcast();
-          localDataSource.streamcontroller
-              .addStream(localDataSource.channel.stream);
-          return Right(WebSocketConnection(
-            channel: localDataSource.channel,
-            streamController: localDataSource.streamcontroller,
-          ));
-        } on WebsocketServerException {
-          return Left(WebsocketServerFailure());
-        }
-      },
-    );
+    final user = authLocalDataSource.getUserFromCache();
+    try {
+      localDataSource.channel ??=
+          await remoteDataSource.connectToWebsocketBackend(user.token);
+      localDataSource.streamcontroller ??= StreamController.broadcast();
+      localDataSource.streamcontroller
+          .addStream(localDataSource.channel.stream);
+      return Right(WebSocketConnection(
+        channel: localDataSource.channel,
+        streamController: localDataSource.streamcontroller,
+      ));
+    } on WebsocketServerException {
+      return Left(WebsocketServerFailure());
+    }
   }
 
   @override

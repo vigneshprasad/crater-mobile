@@ -11,6 +11,8 @@ abstract class AuthLocalDataSource {
   UserModel getUserFromCache();
 
   Future<void> setUserToCache(UserModel user);
+
+  Future<void> updateUserToCache(UserModel user);
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -31,5 +33,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> setUserToCache(UserModel user) async {
     await box.put(rootUserKey, user);
+  }
+
+  @override
+  Future<void> updateUserToCache(UserModel user) async {
+    final cached = box.get(rootUserKey);
+    final updated = user.copyWith(token: cached.token);
+    await box.put(rootUserKey, updated);
   }
 }

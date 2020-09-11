@@ -2,8 +2,6 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/api/user/user_api_service.dart';
-import 'package:worknetwork/features/auth/domain/usecase/patch_user_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -13,6 +11,7 @@ import '../api/notifications/notifications_api_service.dart';
 import '../api/points/points_api_service.dart';
 import '../api/post/post_api_service.dart';
 import '../api/tags/tags_api_service.dart';
+import '../api/user/user_api_service.dart';
 import '../constants/app_constants.dart';
 import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
@@ -37,10 +36,13 @@ import '../features/auth/data/datasources/auth_local_datasource.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/repository/auth_repository_impl.dart';
 import '../features/auth/domain/repository/auth_repository.dart';
-import '../features/auth/domain/usecase/get_persisted_user_usercase.dart';
+import '../features/auth/domain/usecase/get_authentication_usecase.dart';
+import '../features/auth/domain/usecase/get_user_usecase.dart';
 import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
 import '../features/auth/domain/usecase/login_email_usercase.dart';
+import '../features/auth/domain/usecase/patch_user_usecase.dart';
+import '../features/auth/domain/usecase/post_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/chat/data/datasources/chat_local_datasource.dart';
@@ -100,7 +102,9 @@ import '../features/signup/data/datasources/signup_remote_datasource.dart';
 import '../features/signup/data/repository/signup_repository_impl.dart';
 import '../features/signup/domain/repository/signup_repository.dart';
 import '../features/signup/domain/usecase/get_user_objectives.dart';
+import '../features/signup/domain/usecase/get_user_tags_usecase.dart';
 import '../features/signup/presentation/bloc/objectives/objectives_bloc.dart';
+import '../features/signup/presentation/bloc/profile_setup/profile_setup_bloc.dart';
 import '../features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 import '../features/social_auth/data/repository/social_auth_repository_impl.dart';
 import '../features/social_auth/domain/repository/social_auth_repository.dart';
@@ -143,20 +147,24 @@ abstract class AuthInjector {
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
-  @Register.singleton(UCGetPersistedUser)
+  @Register.singleton(UCGetUser)
+  @Register.singleton(UCGetAuthentication)
   @Register.singleton(UCGoogleAuth)
   @Register.singleton(UCLoginEmail)
   @Register.singleton(UCAuthLinkedIn)
   @Register.singleton(UCRegisterEmail)
   @Register.singleton(UCPatchUser)
+  @Register.singleton(UCPostUserProfile)
   void configure();
 }
 
 abstract class SignupInjector {
   @Register.factory(ObjectivesBloc)
+  @Register.factory(ProfileSetupBloc)
   @Register.singleton(SignupRepository, from: SignupRepositoryImpl)
   @Register.singleton(SignupRemoteDatasource, from: SignupRemoteDatasourceImpl)
   @Register.singleton(UCGetUserObjectives)
+  @Register.singleton(UCGetUserTags)
   void configure();
 }
 

@@ -11,9 +11,9 @@ void navigatePostAuth(ExtendedNavigatorState navigator, User user) {
     _navigator.currentState.popAndPushNamed(Routes.objectivesScreen);
   } else if (user.linkedinUrl == null) {
     _navigator.currentState.popAndPushNamed(Routes.profileSetupScreen);
-  } else if (user.phoneNumberVerified == null) {
-    navigator.popAndPush(Routes.setupScreen, arguments: 'phone');
+  } else if (user.phoneNumberVerified == false) {
+    _navigator.currentState.popAndPushNamed(Routes.phoneVerificationScreen);
   } else {
-    navigator.popAndPush(Routes.homeScreen(tab: 0));
+    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
   }
 }

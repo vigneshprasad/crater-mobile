@@ -17,10 +17,32 @@ class _$UserApiService extends UserApiService {
   final definitionType = UserApiService;
 
   @override
+  Future<Response<dynamic>> getUser() {
+    final $url = '/user/auth/user/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> patchUser(Map<String, dynamic> body) {
     final $url = '/user/auth/user/';
     final $body = body;
     final $request = Request('PATCH', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getUserProfile() {
+    final $url = '/user/auth/profile/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postUserProfile(Map<String, dynamic> body) {
+    final $url = '/user/auth/profile/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

@@ -5,6 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/domain/usecase/get_authentication_usecase.dart';
+import 'package:worknetwork/features/auth/domain/usecase/get_user_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/register_email_usecase.dart';
 
 import '../../../../core/error/failures.dart';
@@ -12,7 +14,6 @@ import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../../domain/entity/user_entity.dart';
-import '../../domain/usecase/get_persisted_user_usercase.dart';
 import '../../domain/usecase/google_auth_usecase.dart';
 import '../../domain/usecase/linked_auth_usecase.dart';
 import '../../domain/usecase/login_email_usercase.dart';
@@ -21,8 +22,9 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final UCGetUser getUser;
   final PushNotifications pushNotifications;
-  final UCGetPersistedUser persistedUser;
+  final UCGetAuthentication getAuthentication;
   final UCAuthLinkedIn authLinkedIn;
   final UCGoogleAuth authGoogle;
   final UCLoginEmail loginEmail;
@@ -30,15 +32,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCRegisterEmail registerEmail;
 
   AuthBloc({
+    @required this.getUser,
     @required this.pushNotifications,
-    @required this.persistedUser,
+    @required this.getAuthentication,
     @required this.authLinkedIn,
     @required this.authGoogle,
     @required this.loginEmail,
     @required this.socialAuthToken,
     @required this.registerEmail,
-  })  : assert(pushNotifications != null),
-        assert(persistedUser != null),
+  })  : assert(getUser != null),
+        assert(pushNotifications != null),
+        assert(getAuthentication != null),
         assert(authLinkedIn != null),
         assert(authGoogle != null),
         assert(loginEmail != null),
@@ -68,10 +72,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapAuthStartedToState(AuthStarted event) async* {
-    final userOrError = await persistedUser(NoParams());
-    yield userOrError.fold(
-      (failure) => const AuthStateFailure(),
-      (user) => AuthStateSuccess(user: user),
+    final userOrError = await getAuthentication(NoParams());
+    yield* userOrError.fold(
+      (failure) async* {
+        yield const AuthStateFailure();
+      },
+      (isAuth) async* {
+        if (isAuth) {
+          final userOrError = await getUser(NoParams());
+          yield userOrError.fold(
+            (l) => const AuthStateFailure(),
+            (user) => AuthStateSuccess(user: user),
+          );
+        } else {
+          yield const AuthStateFailure();
+        }
+      },
     );
   }
 

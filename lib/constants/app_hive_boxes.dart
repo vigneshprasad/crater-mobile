@@ -25,4 +25,5 @@ class AppHiveTypeIds {
   static const comment = 10;
   static const article = 11;
   static const fileData = 12;
+  static const userProfile = 13;
 }

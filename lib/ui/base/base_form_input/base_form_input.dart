@@ -9,6 +9,7 @@ class BaseFormInput extends StatelessWidget {
   final bool autovalidate;
   final bool autocorrect;
   final bool enabled;
+  final bool autoFocus;
   final FormFieldValidator<String> validator;
 
   const BaseFormInput({
@@ -19,6 +20,7 @@ class BaseFormInput extends StatelessWidget {
     this.controller,
     this.autovalidate = true,
     this.autocorrect = false,
+    this.autoFocus = false,
     this.validator,
     this.enabled = true,
   }) : super(key: key);
@@ -33,9 +35,13 @@ class BaseFormInput extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
+      autofocus: autoFocus,
       style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppBorderRadius.textInput),
+            ),
             borderSide: BorderSide(
               color: Colors.transparent,
             ),

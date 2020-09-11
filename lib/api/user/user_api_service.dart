@@ -21,6 +21,15 @@ abstract class UserApiService extends ChopperService {
     return _$UserApiService(client);
   }
 
-  @Patch(path: 'user/')
+  @Get(path: "user/")
+  Future<Response> getUser();
+
+  @Patch(path: "user/")
   Future<Response> patchUser(@Body() Map<String, dynamic> body);
+
+  @Get(path: "profile/")
+  Future<Response> getUserProfile();
+
+  @Post(path: "profile/")
+  Future<Response> postUserProfile(@Body() Map<String, dynamic> body);
 }
