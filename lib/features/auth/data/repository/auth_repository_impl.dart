@@ -115,6 +115,7 @@ class AuthRepositoryImpl implements AuthRepository {
     } else {
       try {
         final response = localDataSource.getUserFromCache();
+        await localDataSource.updateUserToCache(response);
         return Right(response);
       } on CacheException catch (error) {
         return Left(CacheFailure(error.message));

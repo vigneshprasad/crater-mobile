@@ -91,13 +91,19 @@ class _$SignupInjector extends SignupInjector {
     container.registerFactory((c) => ProfileSetupBloc(
         getUserTags: c<UCGetUserTags>(),
         postUserProfile: c<UCPostUserProfile>()));
+    container.registerFactory((c) => PhoneVerifyBloc(
+        postNewPhoneNumber: c<UCPostNewPhoneNumber>(),
+        postSmsCode: c<UCPostSmsCode>()));
     container.registerSingleton<SignupRepository>(
         (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
-    container.registerSingleton<SignupRemoteDatasource>(
-        (c) => SignupRemoteDatasourceImpl(c<TagsApiService>()));
+    container.registerSingleton<SignupRemoteDatasource>((c) =>
+        SignupRemoteDatasourceImpl(c<TagsApiService>(), c<UserApiService>()));
     container
         .registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()));
     container.registerSingleton((c) => UCGetUserTags(c<SignupRepository>()));
+    container
+        .registerSingleton((c) => UCPostNewPhoneNumber(c<SignupRepository>()));
+    container.registerSingleton((c) => UCPostSmsCode(c<SignupRepository>()));
   }
 }
 

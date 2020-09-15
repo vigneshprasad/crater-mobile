@@ -57,7 +57,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         final user = authState.user;
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             );
         final heading =
             "Thanks, ${user.name}.\nHow do we introduce you to others?";

@@ -48,7 +48,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
             "${user.name}, who would you like us to introduce you to?";
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             );
         return BlocProvider.value(
           value: _bloc,

@@ -32,4 +32,10 @@ abstract class UserApiService extends ChopperService {
 
   @Post(path: "profile/")
   Future<Response> postUserProfile(@Body() Map<String, dynamic> body);
+
+  @Post(path: "verify/new_phone_number/")
+  Future<Response> postNewPhoneNumber(@Body() Map<String, dynamic> body);
+
+  @Post(path: "verify/check_sms_code/")
+  Future<Response> postSmsCode(@Body() Map<String, dynamic> body);
 }

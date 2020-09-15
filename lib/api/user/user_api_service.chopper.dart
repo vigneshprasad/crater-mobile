@@ -45,4 +45,20 @@ class _$UserApiService extends UserApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postNewPhoneNumber(Map<String, dynamic> body) {
+    final $url = '/user/auth/verify/new_phone_number/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postSmsCode(Map<String, dynamic> body) {
+    final $url = '/user/auth/verify/check_sms_code/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

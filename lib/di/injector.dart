@@ -2,6 +2,8 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/signup/domain/usecase/post_new_phone_number_usecase.dart';
+import 'package:worknetwork/features/signup/domain/usecase/post_sms_code_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -104,6 +106,7 @@ import '../features/signup/domain/repository/signup_repository.dart';
 import '../features/signup/domain/usecase/get_user_objectives.dart';
 import '../features/signup/domain/usecase/get_user_tags_usecase.dart';
 import '../features/signup/presentation/bloc/objectives/objectives_bloc.dart';
+import '../features/signup/presentation/bloc/phone_verify/phone_verify_bloc.dart';
 import '../features/signup/presentation/bloc/profile_setup/profile_setup_bloc.dart';
 import '../features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 import '../features/social_auth/data/repository/social_auth_repository_impl.dart';
@@ -161,10 +164,13 @@ abstract class AuthInjector {
 abstract class SignupInjector {
   @Register.factory(ObjectivesBloc)
   @Register.factory(ProfileSetupBloc)
+  @Register.factory(PhoneVerifyBloc)
   @Register.singleton(SignupRepository, from: SignupRepositoryImpl)
   @Register.singleton(SignupRemoteDatasource, from: SignupRemoteDatasourceImpl)
   @Register.singleton(UCGetUserObjectives)
   @Register.singleton(UCGetUserTags)
+  @Register.singleton(UCPostNewPhoneNumber)
+  @Register.singleton(UCPostSmsCode)
   void configure();
 }
 

@@ -60,6 +60,10 @@ dependencies:
   data_connection_checker: ^0.3.4
   flutter_statusbarcolor: ^0.2.3
   firebase_dynamic_links: ^0.6.0
+  phone_number: ^0.6.2+4
+  libphonenumber: ^1.0.1
+  pin_code_fields: ^5.0.1
+  fluttertoast: ^7.1.1
 
 dev_dependencies:
   flutter_test:

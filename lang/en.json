@@ -32,5 +32,8 @@
     "dismiss": "dismiss",
     "next": "next",
     "linkedin:placeholder": "linkedin.com/in/JohnSmith8",
-    "tags:placeholder": "Choose two tags"
+    "tags:placeholder": "Choose two tags",
+    "phone_verify:send_otp": "Send OTP",
+    "phone_verify:enter_otp": "Enter OTP",
+    "verify": "Verify"
 }
