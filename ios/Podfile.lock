@@ -4,6 +4,34 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - Firebase/CoreOnly (6.26.0):
+    - FirebaseCore (= 6.7.2)
+  - Firebase/DynamicLinks (6.26.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 4.0.8)
+  - firebase_core (0.5.0):
+    - Firebase/CoreOnly (~> 6.26.0)
+    - Flutter
+  - firebase_dynamic_links (0.6.0):
+    - Firebase/CoreOnly (~> 6.26.0)
+    - Firebase/DynamicLinks (~> 6.26.0)
+    - firebase_core
+    - Flutter
+  - FirebaseAnalyticsInterop (1.5.0)
+  - FirebaseCore (6.7.2):
+    - FirebaseCoreDiagnostics (~> 1.3)
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+  - FirebaseCoreDiagnostics (1.6.0):
+    - GoogleDataTransport (~> 7.2)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/Logger (~> 6.7)
+    - nanopb (~> 1.30906.0)
+  - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseDynamicLinks (4.0.8):
+    - FirebaseAnalyticsInterop (~> 1.3)
+    - FirebaseCore (~> 6.2)
   - Flutter (1.0.0)
   - flutter_custom_tabs (0.0.1):
     - Flutter
@@ -11,16 +39,25 @@ PODS:
     - Flutter
   - flutter_webview_plugin (0.0.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
+  - GoogleDataTransport (7.3.0):
+    - nanopb (~> 1.30906.0)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleUtilities/Environment (6.7.2):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (6.7.2):
+    - GoogleUtilities/Environment
   - GTMAppAuth (1.0.0):
     - AppAuth/Core (~> 1.0)
     - GTMSessionFetcher (~> 1.1)
@@ -31,17 +68,32 @@ PODS:
     - GTMSessionFetcher/Core (= 1.4.0)
   - image_picker (0.0.1):
     - Flutter
+  - libphonenumber (0.0.1):
+    - Flutter
+    - libPhoneNumber-iOS
+  - libPhoneNumber-iOS (0.9.15)
+  - nanopb (1.30906.0):
+    - nanopb/decode (= 1.30906.0)
+    - nanopb/encode (= 1.30906.0)
+  - nanopb/decode (1.30906.0)
+  - nanopb/encode (1.30906.0)
   - OneSignal (2.15.2)
   - onesignal_flutter (2.6.1):
     - Flutter
     - OneSignal (= 2.15.2)
   - path_provider (0.0.1):
     - Flutter
+  - phone_number (0.6.2):
+    - Flutter
+    - PhoneNumberKit/PhoneNumberKitCore (~> 3.2.0)
+  - PhoneNumberKit/PhoneNumberKitCore (3.2.0)
+  - PromisesObjC (1.2.10)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
+  - Toast (4.0.0)
   - url_launcher (0.0.1):
     - Flutter
   - video_player (0.0.1):
@@ -50,15 +102,20 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
   - flutter_statusbarcolor (from `.symlinks/plugins/flutter_statusbarcolor/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - OneSignal (< 3.0, >= 2.9.4)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - phone_number (from `.symlinks/plugins/phone_number/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
@@ -68,13 +125,30 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - Firebase
+    - FirebaseAnalyticsInterop
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreDiagnosticsInterop
+    - FirebaseDynamicLinks
     - FMDB
+    - GoogleDataTransport
     - GoogleSignIn
+    - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - libPhoneNumber-iOS
+    - nanopb
     - OneSignal
+    - PhoneNumberKit
+    - PromisesObjC
+    - Toast
 
 EXTERNAL SOURCES:
+  firebase_core:
+    :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_dynamic_links:
+    :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   Flutter:
     :path: Flutter
   flutter_custom_tabs:
@@ -83,14 +157,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_statusbarcolor/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  libphonenumber:
+    :path: ".symlinks/plugins/libphonenumber/ios"
   onesignal_flutter:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  phone_number:
+    :path: ".symlinks/plugins/phone_number/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
@@ -104,21 +184,39 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
+  firebase_core: 3134fe79d257d430f163b558caf52a10a87efe8a
+  firebase_dynamic_links: ca1f5d7e2661f0fdee16e4db0c01d97fb31eae45
+  FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
+  FirebaseCore: f42e5e5f382cdcf6b617ed737bf6c871a6947b17
+  FirebaseCoreDiagnostics: 7415bfb3883b3500c5a95c42b6ba66baae78f600
+  FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseDynamicLinks: 417dc6dbb6013233c77558290d73296f429656a6
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_custom_tabs: 9f7596dc1593f2e0d0562ce888dde6447751e97c
   flutter_statusbarcolor: 8afb1071ed8c58be929f1e32b36c629771fd2259
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
+  GoogleDataTransport: e85fb700c9b027079ce182c3d08e12e0f9618bb4
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
+  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
+  nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   OneSignal: 9531e385388565f4d31797ddadbe0fcc786430ec
   onesignal_flutter: b4412973eac419ccce07363e43e0d6057c583a96
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  phone_number: b545f5b7d9711bec0f020c7df43ae5a82119f4ad
+  PhoneNumberKit: df411d46177d1492da84e10b6c093846dd861452
+  PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
