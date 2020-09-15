@@ -52,57 +52,55 @@ class _SignupFormState extends State<SignupForm> {
         } else {
           isEnabled = !state.isSubmitting;
         }
-        const buttonSpacer = 64.00;
         return Form(
           key: _formKey,
-          child: Column(
-            children: [
-              BaseFormInput(
-                enabled: isEnabled,
-                controller: _nameController,
-                label: name,
-                autovalidate: false,
-                validator: (value) {
-                  return value.isEmpty ? 'Name is Required' : null;
-                },
-              ),
-              const SizedBox(
-                height: AppPadding.med,
-              ),
-              BaseFormInput(
-                enabled: isEnabled,
-                controller: _emailController,
-                label: email,
-                validator: (text) {
-                  if (text.isEmpty) return null;
-                  if (state.isEmailValid == null) return null;
-                  return !state.isEmailValid ? 'Invalid Email' : null;
-                },
-              ),
-              const SizedBox(
-                height: AppPadding.med,
-              ),
-              BaseFormInput(
-                controller: _passwordController,
-                enabled: isEnabled,
-                label: password,
-                obscureText: true,
-                validator: (text) {
-                  if (text.isEmpty) return null;
-                  return !state.isPasswordValid ? 'Invalid Password' : null;
-                },
-              ),
-              const SizedBox(
-                height: buttonSpacer,
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BaseLargeButton(
+          child: Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BaseFormInput(
+                  enabled: isEnabled,
+                  controller: _nameController,
+                  label: name,
+                  autovalidate: false,
+                  validator: (value) {
+                    return value.isEmpty ? 'Name is Required' : null;
+                  },
+                ),
+                const SizedBox(
+                  height: AppPadding.med,
+                ),
+                BaseFormInput(
+                  enabled: isEnabled,
+                  controller: _emailController,
+                  label: email,
+                  validator: (text) {
+                    if (text.isEmpty) return null;
+                    if (state.isEmailValid == null) return null;
+                    return !state.isEmailValid ? 'Invalid Email' : null;
+                  },
+                ),
+                const SizedBox(
+                  height: AppPadding.med,
+                ),
+                BaseFormInput(
+                  controller: _passwordController,
+                  enabled: isEnabled,
+                  label: password,
+                  obscureText: true,
+                  validator: (text) {
+                    if (text.isEmpty) return null;
+                    return !state.isPasswordValid ? 'Invalid Password' : null;
+                  },
+                ),
+                const Spacer(),
+                BaseLargeButton(
                   onPressed: _onRegisterEmailPressed,
                   text: "register",
                 ),
-              ),
-            ],
+                const SizedBox(height: AppInsets.xxl),
+              ],
+            ),
           ),
         );
       },

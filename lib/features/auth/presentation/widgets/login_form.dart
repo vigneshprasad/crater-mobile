@@ -41,44 +41,39 @@ class _LoginFormState extends State<LoginForm> {
         } else {
           isEnabled = !state.isSubmitting;
         }
-        const buttonSpacer = 64.00;
         return Form(
-          child: Column(
-            children: <Widget>[
-              BaseFormInput(
-                enabled: isEnabled,
-                controller: _emailController,
-                label: email,
-                validator: (text) {
-                  if (text.isEmpty) return null;
-                  if (state.isEmailValid == null) return null;
-                  return !state.isEmailValid ? 'Invalid Email' : null;
-                },
-              ),
-              const SizedBox(
-                height: AppPadding.med,
-              ),
-              BaseFormInput(
-                controller: _passwordController,
-                enabled: isEnabled,
-                label: password,
-                obscureText: true,
-                validator: (text) {
-                  if (text.isEmpty) return null;
-                  return !state.isPasswordValid ? 'Invalid Password' : null;
-                },
-              ),
-              const SizedBox(
-                height: buttonSpacer,
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BaseLargeButton(
+          child: Expanded(
+            child: Column(
+              children: <Widget>[
+                BaseFormInput(
+                  enabled: isEnabled,
+                  controller: _emailController,
+                  label: email,
+                  validator: (text) {
+                    if (text.isEmpty) return null;
+                    if (state.isEmailValid == null) return null;
+                    return !state.isEmailValid ? 'Invalid Email' : null;
+                  },
+                ),
+                const SizedBox(height: AppPadding.med),
+                BaseFormInput(
+                  controller: _passwordController,
+                  enabled: isEnabled,
+                  label: password,
+                  obscureText: true,
+                  validator: (text) {
+                    if (text.isEmpty) return null;
+                    return !state.isPasswordValid ? 'Invalid Password' : null;
+                  },
+                ),
+                const Spacer(),
+                BaseLargeButton(
                   onPressed: _onLoginEmailPressed,
                   text: "login",
                 ),
-              ),
-            ],
+                const SizedBox(height: AppInsets.xxl),
+              ],
+            ),
           ),
         );
       },

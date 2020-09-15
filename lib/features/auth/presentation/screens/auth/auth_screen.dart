@@ -1,23 +1,24 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
-import 'package:worknetwork/features/auth/presentation/widgets/signup_form.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/push_notfications/push_notifications.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../ui/base/social_auth_button/social_auth_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../../bloc/auth_bloc.dart';
+import '../../widgets/signup_form.dart';
 
 part '../../widgets/auth_screen_body.dart';
 part '../../widgets/login_form.dart';
@@ -30,6 +31,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   AuthBloc _authBloc;
   ExtendedNavigatorState _navigator;
+  int _formIndex = 0;
 
   @override
   void initState() {
@@ -75,13 +77,20 @@ class _AuthScreenState extends State<AuthScreen> {
                   content: Column(
                     children: <Widget>[
                       _socialAuthRow(context),
-                      const SizedBox(
-                        height: 44,
-                      ),
+                      const SizedBox(height: 32),
                       // LoginForm()
-                      SignupForm()
+                      Expanded(
+                        child: IndexedStack(
+                          index: _formIndex,
+                          children: [
+                            SignupForm(),
+                            LoginForm(),
+                          ],
+                        ),
+                      )
                     ],
                   ),
+                  footer: _buildFooter(context),
                   // onTapPlayButton: _onTapPlayButton,
                 ),
                 if (state.isSubmitting != null && state.isSubmitting)
@@ -154,6 +163,47 @@ class _AuthScreenState extends State<AuthScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[...socialbuttonList],
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    final bodyTextKey =
+        _formIndex == 0 ? "auth:signin_text" : "auth:signup_text";
+    final clickTextKey = _formIndex == 0 ? "auth:signin" : "auth:signup";
+    final bodyStyle = Theme.of(context).textTheme.bodyText2;
+    final clickStyle = bodyStyle.copyWith(
+      color: Theme.of(context).primaryColor,
+    );
+    final bodyText = AppLocalizations.of(context).translate(bodyTextKey);
+    final clickText = AppLocalizations.of(context).translate(clickTextKey);
+    return Container(
+      height: AppTheme.appBarHeight.height,
+      color: Colors.grey[200],
+      child: Center(
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(text: bodyText, style: bodyStyle),
+              TextSpan(
+                text: " $clickText",
+                style: clickStyle,
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    if (_formIndex == 0) {
+                      setState(() {
+                        _formIndex = 1;
+                      });
+                    } else {
+                      setState(() {
+                        _formIndex = 0;
+                      });
+                    }
+                  },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

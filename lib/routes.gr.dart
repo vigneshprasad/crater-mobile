@@ -21,7 +21,6 @@ import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
-import 'ui/screens/setup/setup_screen.dart';
 
 class Routes {
   static const String splashScreen = '/';
@@ -31,7 +30,6 @@ class Routes {
   static const String profileSetupScreen = '/profile-setup';
   static const String phoneVerificationScreen = '/phone-verify';
   static const String authScreen = '/auth';
-  static const String setupScreen = '/setup';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
@@ -45,7 +43,6 @@ class Routes {
     profileSetupScreen,
     phoneVerificationScreen,
     authScreen,
-    setupScreen,
     createPostScreen,
     chatScreen,
     chatSearchScreen,
@@ -65,7 +62,6 @@ class Router extends RouterBase {
     RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
-    RouteDef(Routes.setupScreen, page: SetupScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
@@ -110,18 +106,6 @@ class Router extends RouterBase {
     AuthScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => AuthScreen(),
-        settings: data,
-      );
-    },
-    SetupScreen: (data) {
-      final args = data.getArgs<SetupScreenArguments>(
-        orElse: () => SetupScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => SetupScreen(
-          key: args.key,
-          initialTab: args.initialTab,
-        ),
         settings: data,
       );
     },
@@ -195,15 +179,6 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
 
-  Future<dynamic> pushSetupScreen({
-    Key key,
-    String initialTab,
-  }) =>
-      push<dynamic>(
-        Routes.setupScreen,
-        arguments: SetupScreenArguments(key: key, initialTab: initialTab),
-      );
-
   Future<dynamic> pushCreatePostScreen() =>
       push<dynamic>(Routes.createPostScreen);
 
@@ -244,13 +219,6 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
-
-/// SetupScreen arguments holder class
-class SetupScreenArguments {
-  final Key key;
-  final String initialTab;
-  SetupScreenArguments({this.key, this.initialTab});
-}
 
 /// ChatScreen arguments holder class
 class ChatScreenArguments {

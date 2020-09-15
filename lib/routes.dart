@@ -12,7 +12,6 @@ import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
-import 'ui/screens/setup/setup_screen.dart';
 
 @MaterialAutoRouter(
   generateNavigationHelperExtension: true,
@@ -23,7 +22,6 @@ import 'ui/screens/setup/setup_screen.dart';
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth"),
-    MaterialRoute(page: SetupScreen, path: "/setup"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),
