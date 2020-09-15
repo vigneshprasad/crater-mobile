@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
 import 'package:worknetwork/features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 
 import '../../../../core/error/failures.dart';
@@ -35,7 +36,7 @@ class SocialAuthRepositoryImpl implements SocialAuthRepository {
     try {
       final token = await callback();
       return Right(token);
-    } on Exception {
+    } on ServerException {
       return Left(ServerFailure());
     }
   }
