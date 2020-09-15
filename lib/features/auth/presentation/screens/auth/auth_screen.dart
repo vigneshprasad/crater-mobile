@@ -30,7 +30,6 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   AuthBloc _authBloc;
-  ExtendedNavigatorState _navigator;
   int _formIndex = 0;
 
   @override
@@ -42,19 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
       redirectUri: AppConstants.linkedinRedirect,
     );
     _authBloc = BlocProvider.of<AuthBloc>(context);
-    _navigator = ExtendedNavigator.root;
     super.initState();
-  }
-
-  Future<void> _showOsId() async {
-    final odId = await KiwiContainer()
-        .resolve<PushNotifications>()
-        .getSubscribtionsToken();
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(odId),
-            ));
   }
 
   @override
@@ -62,7 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSuccess) {
-          navigatePostAuth(_navigator, state.user);
+          navigatePostAuth(state.user);
         } else if (state is AuthRequestFailure) {
           _handleRequestError(state);
         }

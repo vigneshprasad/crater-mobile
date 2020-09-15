@@ -1,11 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 import '../../routes.gr.dart';
 
-void navigatePostAuth(ExtendedNavigatorState navigator, User user) {
+void navigatePostAuth(User user) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   if (user.objectives.isEmpty) {
     _navigator.currentState.popAndPushNamed(Routes.objectivesScreen);

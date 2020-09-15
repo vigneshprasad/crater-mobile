@@ -40,5 +40,6 @@ class AuthResponseModel {
         unreadNotifications: user.unreadNotifications,
         isApproved: user.isApproved,
         objectives: user.objectives,
+        linkedinUrl: user.linkedinUrl,
       );
 }

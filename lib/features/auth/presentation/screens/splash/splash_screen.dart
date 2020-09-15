@@ -36,13 +36,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void listenAuthState(BuildContext context, AuthState state) {
-    final ExtendedNavigatorState _navigator = ExtendedNavigator.of(context);
     if (state is AuthStateFailure) {
-      _navigator.popAndPush(Routes.authScreen);
+      ExtendedNavigator.of(context).popAndPush(Routes.authScreen);
     }
 
     if (state is AuthStateSuccess) {
-      navigatePostAuth(_navigator, state.user);
+      navigatePostAuth(state.user);
     }
   }
 }
