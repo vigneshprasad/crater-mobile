@@ -221,6 +221,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     final isValidTags = _validateTags();
     if (isValidLinkedIn && isValidTags) {
       _bloc.add(PostProfileRequestStarted(
+        photoUrl: _photoUrl,
         linkedinUrl: _linkedInController.text,
         name: _name,
         userTags: _selectedTags.map((e) => e.pk).toList(),
