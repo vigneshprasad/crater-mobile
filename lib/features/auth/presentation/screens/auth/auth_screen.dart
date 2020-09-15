@@ -79,15 +79,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       _socialAuthRow(context),
                       const SizedBox(height: 32),
                       // LoginForm()
-                      Expanded(
-                        child: IndexedStack(
-                          index: _formIndex,
-                          children: [
-                            SignupForm(),
-                            LoginForm(),
-                          ],
-                        ),
-                      )
+                      if (_formIndex == 0) SignupForm() else LoginForm()
                     ],
                   ),
                   footer: _buildFooter(context),
