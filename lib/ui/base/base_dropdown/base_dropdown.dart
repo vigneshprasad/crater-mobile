@@ -8,11 +8,13 @@ class BaseDropdown<T> extends StatefulWidget {
   final T value;
   final LabelGetterFunc<T> labelGetter;
   final ValueChanged<T> onChanged;
+  final String placeholder;
 
   const BaseDropdown({
     Key key,
     this.value,
     this.onChanged,
+    this.placeholder,
     @required this.labelGetter,
     @required this.listItems,
   }) : super(key: key);
@@ -41,7 +43,9 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
+      height: 44,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
@@ -50,7 +54,15 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
         child: ButtonTheme(
           padding: const EdgeInsets.only(left: AppInsets.l, right: AppInsets.l),
           alignedDropdown: true,
-          child: DropdownButton<T>(
+          child: DropdownButtonFormField<T>(
+            hint: widget.placeholder != null
+                ? Text(
+                    widget.placeholder,
+                    style: textStyle.copyWith(color: Colors.grey[500]),
+                  )
+                : null,
+            style: textStyle,
+            decoration: const InputDecoration(enabledBorder: InputBorder.none),
             isExpanded: true,
             value: widget.value,
             onChanged: widget.onChanged,

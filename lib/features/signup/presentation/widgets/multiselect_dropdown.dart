@@ -16,7 +16,7 @@ class MultiSelectDropdown<T> extends StatefulWidget {
   const MultiSelectDropdown({
     Key key,
     this.maxLength,
-    this.label,
+    @required this.label,
     this.error,
     this.validate,
     @required this.items,
@@ -53,7 +53,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(fontSize: 15, color: Colors.grey[600]);
+        .copyWith(fontSize: 15, color: Colors.grey[500]);
     final errorStyle = Theme.of(context)
         .textTheme
         .bodyText2
@@ -89,7 +89,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: AppInsets.med),
+                padding: const EdgeInsets.only(left: AppInsets.xl),
                 child: Text(
                   widget.label,
                   style: labelStyle,

@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/register_meet.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -11,6 +12,7 @@ import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
+import 'register_meet.dart';
 
 class MeetingTab extends StatefulWidget {
   @override
@@ -21,6 +23,8 @@ class _MeetingTabState extends State<MeetingTab> {
   MeetingConfig _meetingConfig;
   UserMeetingPreference _preference;
   MeetingBloc _bloc;
+  List<MeetingInterest> _interests;
+  List<MeetingObjective> _objectives;
   Completer<void> _completer;
 
   @override
@@ -88,18 +92,23 @@ class _MeetingTabState extends State<MeetingTab> {
   }
 
   void _onPressRegisterMeets() {
-    Navigator.of(context).push(RegisterMeetOverlay());
+    Navigator.of(context).push(RegisterMeetOverlay(
+      meeting: _meetingConfig,
+      preference: _preference,
+      objectives: _objectives,
+      interests: _interests,
+    ));
   }
 
   void _blockListener(BuildContext context, state) {
     if (state is GetMeetingConfigLoaded) {
       _completer.complete();
       _completer = Completer<void>();
-      print(state.preferences.pk);
-      print(state.meeting.isRegistrationOpen);
       setState(() {
         _meetingConfig = state.meeting;
         _preference = state.preferences;
+        _interests = state.interests;
+        _objectives = state.objectives;
       });
     }
   }

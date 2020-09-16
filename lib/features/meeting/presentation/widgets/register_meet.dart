@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/multiselect_dropdown.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_dropdown/base_dropdown.dart';
+import '../../../../ui/base/base_form_field/base_form_field.dart';
+import '../../domain/entity/meeting_config_entity.dart';
+import '../../domain/entity/meeting_interest_entity.dart';
+import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/user_meeting_preference_entity.dart';
+import 'time_slot_picker.dart';
 
 part 'register_form.dart';
 
 class RegisterMeetOverlay extends ModalRoute<void> {
+  final MeetingConfig meeting;
+  final UserMeetingPreference preference;
+  final List<MeetingObjective> objectives;
+  final List<MeetingInterest> interests;
+
+  RegisterMeetOverlay({
+    @required this.meeting,
+    @required this.preference,
+    @required this.objectives,
+    @required this.interests,
+  });
+
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
 
@@ -62,7 +90,14 @@ class RegisterMeetOverlay extends ModalRoute<void> {
                   ),
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate([RegisterForm()]),
+                  delegate: SliverChildListDelegate([
+                    RegisterForm(
+                      meeting: meeting,
+                      preference: preference,
+                      interests: interests,
+                      objectives: objectives,
+                    ),
+                  ]),
                 ),
               ],
             ),
