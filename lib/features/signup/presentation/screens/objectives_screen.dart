@@ -122,7 +122,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
       final updatedUser =
           _authBloc.state.user.copyWith(objectives: state.user.objectives);
       _authBloc.add(AuthUserUpdateRecieved(user: updatedUser));
-      ExtendedNavigator.of(context).push(Routes.profileSetupScreen);
+      ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
     }
   }
 

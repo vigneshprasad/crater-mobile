@@ -150,7 +150,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         _tags = state.tags;
       });
     } else if (state is PostUserProfileRequestLoaded) {
-      ExtendedNavigator.of(context).push(Routes.phoneVerificationScreen);
+      ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
     }
   }
 
