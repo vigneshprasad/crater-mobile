@@ -11,6 +11,8 @@ class BaseFormInput extends StatelessWidget {
   final bool enabled;
   final bool autoFocus;
   final FormFieldValidator<String> validator;
+  final int maxLines;
+  final int minLines;
 
   const BaseFormInput({
     Key key,
@@ -23,6 +25,8 @@ class BaseFormInput extends StatelessWidget {
     this.autoFocus = false,
     this.validator,
     this.enabled = true,
+    this.maxLines,
+    this.minLines,
   }) : super(key: key);
 
   @override
@@ -34,6 +38,8 @@ class BaseFormInput extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      maxLines: maxLines,
+      minLines: minLines,
       validator: validator,
       autofocus: autoFocus,
       style: const TextStyle(fontSize: 15),
@@ -53,6 +59,10 @@ class BaseFormInput extends StatelessWidget {
           ),
           filled: true,
           hintText: label,
+          hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+                fontSize: 15,
+                color: Colors.grey,
+              ),
           labelStyle: const TextStyle(fontSize: 16),
           contentPadding: const EdgeInsets.symmetric(
             vertical: AppInsets.med,

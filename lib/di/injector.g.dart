@@ -53,6 +53,7 @@ class _$AuthInjector extends AuthInjector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => AuthBloc(
         getUser: c<UCGetUser>(),
+        getUserProfile: c<UCGetUserProfile>(),
         pushNotifications: c<PushNotifications>(),
         getAuthentication: c<UCGetAuthentication>(),
         authLinkedIn: c<UCAuthLinkedIn>(),
@@ -79,6 +80,7 @@ class _$AuthInjector extends AuthInjector {
     container
         .registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()));
     container.registerSingleton((c) => UCPostUserProfile(c<AuthRepository>()));
+    container.registerSingleton((c) => UCGetUserProfile(c<AuthRepository>()));
   }
 }
 

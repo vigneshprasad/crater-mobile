@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -128,9 +129,32 @@ class AuthRepositoryImpl implements AuthRepository {
       Map<String, dynamic> body) async {
     try {
       final response = await remoteDataSource.postUserProfileRemote(body);
+      await localDataSource.setUserProfileToCache(response as UserProfileModel);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserProfile>> getUserProfile() async {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final response = await remoteDataSource.getUserProfileFromRemote();
+        await localDataSource
+            .setUserProfileToCache(response as UserProfileModel);
+        return Right(response);
+      } on ServerException catch (error) {
+        return Left(ServerFailure(error.message));
+      }
+    } else {
+      try {
+        final cached = localDataSource.getUserProfileFromCache();
+        return Right(cached);
+      } on CacheException catch (error) {
+        return Left(CacheFailure(error.message));
+      }
     }
   }
 }

@@ -73,6 +73,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buildMeetingForm(BuildContext context, AuthState state) {
     final user = state.user;
+    final profile = state.profile;
     final linkedinLabel =
         AppLocalizations.of(context).translate("linkedin:placeholder");
     return Form(
@@ -141,7 +142,18 @@ class _RegisterFormState extends State<RegisterForm> {
                   validator: (value) =>
                       value.isEmpty ? "This field is required" : null,
                 ),
-              )
+              ),
+            if (profile != null && profile.introduction == null)
+              BaseFormField(
+                label: "Your Introductions",
+                child: BaseFormInput(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
+                  minLines: 4,
+                  label: "How would you like to be introduced?",
+                ),
+              ),
+            const SizedBox(height: 72)
           ],
         ),
       ),

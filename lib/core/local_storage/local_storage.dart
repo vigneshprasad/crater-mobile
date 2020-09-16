@@ -1,9 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:worknetwork/features/auth/data/models/user_tag_model.dart';
 
 import '../../constants/app_hive_boxes.dart';
 import '../../features/article/data/models/article_model.dart';
 import '../../features/auth/data/models/user_model.dart';
+import '../../features/auth/data/models/user_profile_model.dart';
 import '../../features/chat/data/models/chat_message_model.dart';
 import '../../features/chat/data/models/user_chat_model.dart';
 import '../../features/chat_inbox/data/models/chat_user_model.dart';
@@ -25,6 +27,8 @@ class LocalStorageImpl implements LocalStorage {
   void registerAdapters() {
     // Register Adapters
     Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(UserProfileModelAdapter());
+    Hive.registerAdapter(UserTagModelAdapter());
     Hive.registerAdapter(PostModelAdapter());
     Hive.registerAdapter(CommentModelAdapter());
     Hive.registerAdapter(FileDataModelAdapter());
@@ -47,6 +51,7 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> initStorage() async {
     // Open Boxes
     await Hive.openBox<UserModel>(AppHiveBoxes.userModelBox);
+    await Hive.openBox<UserProfileModel>(AppHiveBoxes.userProfileModelBox);
     await Hive.openBox<PostModel>(AppHiveBoxes.postsBox);
     await Hive.openBox<CommentModel>(AppHiveBoxes.commentsBox);
     await Hive.openBox<ChatUserModel>(AppHiveBoxes.chatUserBox);
@@ -61,6 +66,7 @@ class LocalStorageImpl implements LocalStorage {
   @override
   Future<void> deleteStorage() async {
     await Hive.box<UserModel>(AppHiveBoxes.userModelBox).clear();
+    await Hive.box<UserProfileModel>(AppHiveBoxes.userProfileModelBox).clear();
     await Hive.box<PostModel>(AppHiveBoxes.postsBox).clear();
     await Hive.box<CommentModel>(AppHiveBoxes.commentsBox).clear();
     await Hive.box<ChatUserModel>(AppHiveBoxes.chatUserBox).clear();

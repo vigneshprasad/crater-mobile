@@ -5,7 +5,9 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_authentication_usecase.dart';
+import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_user_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/register_email_usecase.dart';
 
@@ -23,6 +25,7 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCGetUser getUser;
+  final UCGetUserProfile getUserProfile;
   final PushNotifications pushNotifications;
   final UCGetAuthentication getAuthentication;
   final UCAuthLinkedIn authLinkedIn;
@@ -33,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({
     @required this.getUser,
+    @required this.getUserProfile,
     @required this.pushNotifications,
     @required this.getAuthentication,
     @required this.authLinkedIn,
@@ -41,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.socialAuthToken,
     @required this.registerEmail,
   })  : assert(getUser != null),
+        assert(getUserProfile != null),
         assert(pushNotifications != null),
         assert(getAuthentication != null),
         assert(authLinkedIn != null),
@@ -67,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (event is AuthRegisterEmailPressed) {
       yield* _mapRegisterEmailToState(event);
     } else if (event is AuthUserUpdateRecieved) {
-      yield AuthStateSuccess(user: event.user);
+      yield AuthStateSuccess(user: event.user, profile: state.profile);
     }
   }
 
@@ -80,9 +85,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (isAuth) async* {
         if (isAuth) {
           final userOrError = await getUser(NoParams());
-          yield userOrError.fold(
-            (l) => const AuthStateFailure(),
-            (user) => AuthStateSuccess(user: user),
+          yield* userOrError.fold(
+            (userFailure) async* {
+              yield const AuthStateFailure();
+            },
+            (user) async* {
+              final profileOrError = await getUserProfile(NoParams());
+              yield profileOrError.fold(
+                (profileFailure) => const AuthStateFailure(),
+                (profile) => AuthStateSuccess(user: user, profile: profile),
+              );
+            },
           );
         } else {
           yield const AuthStateFailure();
@@ -130,7 +143,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final respose = await callback();
     yield respose.fold(
       (failure) => AuthRequestFailure(error: failure),
-      (user) => AuthStateSuccess(user: user),
+      (user) => AuthStateSuccess(
+        user: user,
+        profile: state.profile,
+      ),
     );
   }
 
@@ -146,7 +162,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
-        (user) => AuthStateSuccess(user: user),
+        (user) => AuthStateSuccess(
+          user: user,
+          profile: state.profile,
+        ),
       );
     }
   }
@@ -165,7 +184,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield registerOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
-        (user) => AuthStateSuccess(user: user),
+        (user) => AuthStateSuccess(
+          user: user,
+          profile: state.profile,
+        ),
       );
     }
   }

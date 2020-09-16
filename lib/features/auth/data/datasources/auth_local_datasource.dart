@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
 import '../../../../core/error/exceptions.dart';
@@ -10,35 +11,55 @@ abstract class AuthLocalDataSource {
   /// Throws [CacheException] no cached data;
   UserModel getUserFromCache();
 
+  UserProfileModel getUserProfileFromCache();
+
   Future<void> setUserToCache(UserModel user);
 
   Future<void> updateUserToCache(UserModel user);
+
+  Future<void> setUserProfileToCache(UserProfileModel profile);
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  final Box<UserModel> box = Hive.box(AppHiveBoxes.userModelBox);
+  final Box<UserModel> userBox = Hive.box(AppHiveBoxes.userModelBox);
+  final Box<UserProfileModel> profileBox =
+      Hive.box(AppHiveBoxes.userProfileModelBox);
 
   static const rootUserKey = "ROOT_USER_KEY";
+  static const rootUserProfileKey = "ROOT_USER_PROFILE_KEY";
 
   AuthLocalDataSourceImpl();
 
   @override
   UserModel getUserFromCache() {
-    if (box.isEmpty) throw CacheException();
-    final user = box.get(rootUserKey);
+    if (userBox.isEmpty) throw CacheException();
+    final user = userBox.get(rootUserKey);
     if (user == null) throw CacheException();
     return user;
   }
 
   @override
   Future<void> setUserToCache(UserModel user) async {
-    await box.put(rootUserKey, user);
+    await userBox.put(rootUserKey, user);
   }
 
   @override
   Future<void> updateUserToCache(UserModel user) async {
-    final cached = box.get(rootUserKey);
+    final cached = userBox.get(rootUserKey);
     final updated = user.copyWith(token: cached.token);
-    await box.put(rootUserKey, updated);
+    await userBox.put(rootUserKey, updated);
+  }
+
+  @override
+  UserProfileModel getUserProfileFromCache() {
+    if (profileBox.isEmpty) throw CacheException();
+    final profile = profileBox.get(rootUserProfileKey);
+    if (profile == null) throw CacheException();
+    return profile;
+  }
+
+  @override
+  Future<void> setUserProfileToCache(UserProfileModel profile) async {
+    await profileBox.put(rootUserProfileKey, profile);
   }
 }

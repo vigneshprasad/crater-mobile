@@ -47,7 +47,7 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
     return Container(
       height: 44,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
       ),
       child: DropdownButtonHideUnderline(

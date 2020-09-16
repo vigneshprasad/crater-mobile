@@ -2,6 +2,7 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
 import 'package:worknetwork/features/signup/domain/usecase/post_new_phone_number_usecase.dart';
 import 'package:worknetwork/features/signup/domain/usecase/post_sms_code_usecase.dart';
 
@@ -158,6 +159,7 @@ abstract class AuthInjector {
   @Register.singleton(UCRegisterEmail)
   @Register.singleton(UCPatchUser)
   @Register.singleton(UCPostUserProfile)
+  @Register.singleton(UCGetUserProfile)
   void configure();
 }
 

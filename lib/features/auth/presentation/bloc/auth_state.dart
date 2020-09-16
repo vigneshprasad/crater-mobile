@@ -3,6 +3,7 @@ part of 'auth_bloc.dart';
 @immutable
 class AuthState extends Equatable {
   final User user;
+  final UserProfile profile;
   final bool isAuth;
   final bool isEmailValid;
   final bool isPasswordValid;
@@ -13,6 +14,7 @@ class AuthState extends Equatable {
 
   const AuthState({
     this.user,
+    this.profile,
     this.isAuth,
     this.isEmailValid,
     this.isPasswordValid,
@@ -23,6 +25,7 @@ class AuthState extends Equatable {
   @override
   List<Object> get props => [
         user,
+        profile,
         isAuth,
         isEmailValid,
         isPasswordValid,
@@ -52,6 +55,7 @@ class AuthState extends Equatable {
 
   AuthState copyWith({
     User user,
+    UserProfile profile,
     bool isAuth,
     bool isEmailValid,
     bool isPasswordValid,
@@ -60,6 +64,7 @@ class AuthState extends Equatable {
   }) {
     return AuthState(
       user: user ?? this.user,
+      profile: profile ?? this.profile,
       isAuth: isAuth ?? this.isAuth,
       isEmailValid: isEmailValid ?? this.isEmailValid,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
@@ -73,6 +78,7 @@ class AuthStateInitial extends AuthState {
   const AuthStateInitial()
       : super(
           user: null,
+          profile: null,
           isAuth: false,
           isEmailValid: true,
           isPasswordValid: true,
@@ -84,8 +90,10 @@ class AuthStateInitial extends AuthState {
 class AuthStateSuccess extends AuthState {
   const AuthStateSuccess({
     @required User user,
+    @required UserProfile profile,
   }) : super(
           user: user,
+          profile: profile,
           isAuth: false,
           isEmailValid: true,
           isPasswordValid: true,
@@ -98,6 +106,7 @@ class AuthStateFailure extends AuthState {
   const AuthStateFailure()
       : super(
           user: null,
+          profile: null,
           isSubmitting: false,
           isEmailValid: true,
           isPasswordValid: true,
@@ -108,6 +117,7 @@ class AuthStateFailure extends AuthState {
   @override
   List<Object> get props => [
         user,
+        profile,
         isAuth,
         isEmailValid,
         isPasswordValid,

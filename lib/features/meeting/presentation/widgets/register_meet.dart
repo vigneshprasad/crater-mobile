@@ -56,10 +56,10 @@ class RegisterMeetOverlay extends ModalRoute<void> {
     Animation<double> secondaryAnimation,
   ) {
     // This makes sure that text and other content follows the material style
-    return Material(
-      type: MaterialType.transparency,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
       // make sure that the overlay content is not cut off
-      child: SafeArea(
+      body: SafeArea(
         child: _buildOverlayContent(context),
       ),
     );
@@ -75,34 +75,59 @@ class RegisterMeetOverlay extends ModalRoute<void> {
         }
         return false;
       },
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.8,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return Container(
-            color: Colors.white,
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: <Widget>[
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _SliverAppBarDelegate(
-                    onPressedClose: () => _navigator.pop(),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    RegisterForm(
-                      meeting: meeting,
-                      preference: preference,
-                      interests: interests,
-                      objectives: objectives,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          DraggableScrollableSheet(
+            initialChildSize: 0.8,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Container(
+                color: Colors.white,
+                child: CustomScrollView(
+                  controller: scrollController,
+                  slivers: <Widget>[
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: _SliverAppBarDelegate(
+                        onPressedClose: () => _navigator.pop(),
+                      ),
                     ),
-                  ]),
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        RegisterForm(
+                          meeting: meeting,
+                          preference: preference,
+                          interests: interests,
+                          objectives: objectives,
+                        ),
+                      ]),
+                    ),
+                  ],
                 ),
-              ],
+              );
+            },
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: kElevationToShadow[2],
+              ),
+              child: FlatButton(
+                onPressed: () {},
+                textColor: Colors.white,
+                color: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                child: const Text("Register"),
+              ),
             ),
-          );
-        },
+          )
+        ],
       ),
     );
   }

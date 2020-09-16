@@ -46,6 +46,11 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<UserProfile> postUserProfileRemote(Map<String, dynamic> body);
+
+  /// Calls the GET User Profile Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserProfile> getUserProfileFromRemote();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -148,6 +153,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserProfile> postUserProfileRemote(Map<String, dynamic> body) async {
     final response = await userApiService.postUserProfile(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserProfileModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserProfile> getUserProfileFromRemote() async {
+    final response = await userApiService.getUserProfile();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserProfileModel.fromJson(json);

@@ -17,4 +17,5 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> getUser();
   Future<Either<Failure, UserProfile>> postUserProfile(
       Map<String, dynamic> body);
+  Future<Either<Failure, UserProfile>> getUserProfile();
 }

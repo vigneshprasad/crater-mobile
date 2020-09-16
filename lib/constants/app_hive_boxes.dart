@@ -1,6 +1,7 @@
 class AppHiveBoxes {
   // Clean
   static const userModelBox = "USER_MODEL_BOX";
+  static const userProfileModelBox = "USER_PROFILE_MODEL_BOX";
   static const userChatBox = "USER_CHAT_MODEL_BOX";
   static const chatMessageBox = "CHAT_MESSAGE_MODEL_BOX";
   static const chatUserBox = "CHAT_USER_MODEL_BOX";
@@ -26,4 +27,5 @@ class AppHiveTypeIds {
   static const article = 11;
   static const fileData = 12;
   static const userProfile = 13;
+  static const userTag = 14;
 }
