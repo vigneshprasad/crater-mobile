@@ -5,7 +5,7 @@ import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network_info/network_info.dart';
 import '../../domain/entity/meeting_config_entity.dart';
-import '../../domain/entity/time_slot_entity.dart';
+import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
 import '../../domain/usecase/get_meetings_config_usecase.dart';
 import '../datasources/meetings_remote_datasource.dart';
@@ -28,6 +28,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
         final response = await remoteDatasource.getMeetingConfigFromRemote();
         return Right(MeetingConfigResponse(
           meeting: MeetingConfig(
+            pk: response.pk,
             availableTimeSlots: response.availableTimeSlots,
             title: response.title,
             weekStartDate: response.weekStartDate,
@@ -44,6 +45,24 @@ class MeetingRepositoryImpl implements MeetingRepository {
       }
     } else {
       return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
+    List<int> interests,
+    int meeting,
+    int numberOfMeetings,
+    String objective,
+    List<int> timeSlots,
+  ) async {
+    try {
+      final response =
+          await remoteDatasource.postUserMeetingPreferencesToRemote(
+              interests, meeting, numberOfMeetings, objective, timeSlots);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 }

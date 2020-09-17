@@ -4,17 +4,21 @@ import 'package:intl/intl.dart';
 
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
+import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
 
-typedef TimeSlotSelectedCallback = void Function(List<TimeSlot> slots);
+typedef TimeSlotTappedCallback = void Function(TimeSlot slot);
+typedef TimeSelectedChangeCallback = void Function(List<TimeSlot> slots);
 
 class TimeSlotPicker extends StatefulWidget {
+  final List<TimeSlot> value;
   final Map<String, List<TimeSlot>> slots;
-  final TimeSlotSelectedCallback onChange;
+  final TimeSlotTappedCallback onSlotTapped;
 
   const TimeSlotPicker({
     Key key,
+    this.value,
     @required this.slots,
-    @required this.onChange,
+    @required this.onSlotTapped,
   }) : super(key: key);
 
   @override
@@ -25,14 +29,12 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
   int _activePage;
   PageController _pageController;
   List<_TimeSlotItem> _dateSlots;
-  List<TimeSlot> _selectedSlots;
 
   @override
   void initState() {
     _activePage = 0;
     _pageController = PageController(initialPage: _activePage);
     _dateSlots = _parseDateTimeSlots(widget.slots);
-    _selectedSlots = [];
     super.initState();
   }
 
@@ -88,20 +90,9 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
                 .map(
                   (timeSlot) => _TimeSlot(
                     slot: timeSlot,
-                    selected: _selectedSlots.contains(timeSlot),
+                    selected: widget.value.contains(timeSlot),
                     onTap: () {
-                      if (_selectedSlots.contains(timeSlot)) {
-                        setState(() {
-                          _selectedSlots = (_selectedSlots..remove(timeSlot));
-                        });
-                      } else {
-                        setState(() {
-                          _selectedSlots = (_selectedSlots..add(timeSlot));
-                        });
-                      }
-                      if (widget.onChange != null) {
-                        widget.onChange(_selectedSlots);
-                      }
+                      widget.onSlotTapped(timeSlot);
                     },
                   ),
                 )
@@ -129,6 +120,50 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
       },
     ).toList();
   }
+}
+
+class TimeSlotFormField extends FormField<List<TimeSlot>> {
+  final Map<String, List<TimeSlot>> slots;
+  final TimeSelectedChangeCallback onChange;
+
+  TimeSlotFormField({
+    List<TimeSlot> initialValue = const [],
+    FormFieldSetter<List<TimeSlot>> onSaved,
+    FormFieldValidator<List<TimeSlot>> validator,
+    bool autovalidate = false,
+    @required this.slots,
+    @required this.onChange,
+  }) : super(
+            initialValue: initialValue,
+            onSaved: onSaved,
+            validator: validator,
+            autovalidate: autovalidate,
+            builder: (FormFieldState<List<TimeSlot>> state) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TimeSlotPicker(
+                    value: state.value,
+                    slots: slots,
+                    onSlotTapped: (slot) {
+                      final updated = [...state.value];
+                      if (state.value.contains(slot)) {
+                        updated.remove(slot);
+                      } else {
+                        updated.add(slot);
+                      }
+                      state.didChange(updated);
+                      onChange(state.value);
+                    },
+                  ),
+                  if (state.hasError)
+                    BaseErrorText(
+                      text: state.errorText,
+                    )
+                ],
+              );
+            });
 }
 
 class _TimeSlotTab extends StatelessWidget {
@@ -209,7 +244,7 @@ class _TimeSlot extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.med, bottom: AppInsets.xl),
       child: Material(
-        color: selected ? Theme.of(context).primaryColor : Colors.grey[200],
+        color: selected ? Theme.of(context).primaryColor : Colors.grey[100],
         borderRadius: borderRadius,
         child: InkWell(
           borderRadius: borderRadius,

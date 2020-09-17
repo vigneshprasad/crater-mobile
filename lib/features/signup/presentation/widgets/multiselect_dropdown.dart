@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
 
 typedef LabelGetterFunc<T> = String Function(T item);
 typedef OnChangeItems<T> = void Function(List<T> items);
 
 class MultiSelectDropdown<T> extends StatefulWidget {
-  final String error;
   final List<T> items;
   final LabelGetterFunc<T> labelGetter;
   final OnChangeItems<T> onChangeItems;
   final int maxLength;
-  final bool validate;
+  final bool error;
   final String label;
+  final List<T> initialValue;
 
   const MultiSelectDropdown({
     Key key,
     this.maxLength,
+    this.error = false,
+    this.initialValue = const [],
     @required this.label,
-    this.error,
-    this.validate,
     @required this.items,
     @required this.labelGetter,
     @required this.onChangeItems,
@@ -34,7 +36,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
 
   @override
   void initState() {
-    _selectedItems = [];
+    _selectedItems = widget.initialValue;
     _items = _buildItems(widget.items);
     super.initState();
   }
@@ -54,14 +56,13 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
         .textTheme
         .bodyText2
         .copyWith(fontSize: 15, color: Colors.grey[500]);
-    final errorStyle = Theme.of(context)
-        .textTheme
-        .bodyText2
-        .copyWith(fontSize: 13, color: Colors.red[700]);
+    final border = widget.error
+        ? Border.all(width: 2, color: Theme.of(context).errorColor)
+        : null;
     return Container(
       height: kMinInteractiveDimension,
       decoration: BoxDecoration(
-        border: _getBorder(),
+        border: border,
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
       ),
@@ -115,28 +116,9 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                   .toList(),
             ),
           ),
-          if (widget.error != null && widget.validate && _selectedItems.isEmpty)
-            Positioned(
-              left: AppInsets.xl,
-              bottom: -20,
-              child: Text(
-                widget.error,
-                style: errorStyle,
-              ),
-            )
         ],
       ),
     );
-  }
-
-  Border _getBorder() {
-    if (widget.error != null && widget.validate && _selectedItems.isEmpty) {
-      return Border.all(
-        color: Colors.red[700],
-      );
-    } else {
-      return null;
-    }
   }
 
   void _onDeleteChip(T item) {
@@ -173,4 +155,50 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
     }
     super.didUpdateWidget(oldWidget);
   }
+}
+
+class MultiSelectDropdownFormField<T> extends FormField<List<T>> {
+  final List<T> items;
+  final LabelGetterFunc<T> labelGetter;
+  final OnChangeItems<T> onChangeItems;
+  final int maxLength;
+  final String label;
+
+  MultiSelectDropdownFormField({
+    List<T> initialValue = const [],
+    FormFieldSetter<List<T>> onSaved,
+    FormFieldValidator<List<T>> validator,
+    bool autovalidate = false,
+    this.items,
+    this.labelGetter,
+    this.onChangeItems,
+    this.maxLength,
+    this.label,
+  }) : super(
+            initialValue: initialValue,
+            onSaved: onSaved,
+            validator: validator,
+            autovalidate: autovalidate,
+            builder: (state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MultiSelectDropdown<T>(
+                    initialValue: initialValue,
+                    error: state.hasError,
+                    items: items,
+                    labelGetter: labelGetter,
+                    label: label,
+                    maxLength: maxLength,
+                    onChangeItems: (items) {
+                      state.didChange(items);
+                      onChangeItems(items);
+                    },
+                  ),
+                  if (state.hasError) const SizedBox(height: AppInsets.med),
+                  if (state.hasError) BaseErrorText(text: state.errorText)
+                ],
+              );
+            });
 }

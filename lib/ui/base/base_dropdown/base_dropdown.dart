@@ -9,12 +9,14 @@ class BaseDropdown<T> extends StatefulWidget {
   final LabelGetterFunc<T> labelGetter;
   final ValueChanged<T> onChanged;
   final String placeholder;
+  final FormFieldValidator<T> validator;
 
   const BaseDropdown({
     Key key,
     this.value,
     this.onChanged,
     this.placeholder,
+    this.validator,
     @required this.labelGetter,
     @required this.listItems,
   }) : super(key: key);
@@ -44,31 +46,45 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
-    return Container(
-      height: 44,
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: ButtonTheme(
-          padding: const EdgeInsets.only(left: AppInsets.l, right: AppInsets.l),
-          alignedDropdown: true,
-          child: DropdownButtonFormField<T>(
-            hint: widget.placeholder != null
-                ? Text(
-                    widget.placeholder,
-                    style: textStyle.copyWith(color: Colors.grey[500]),
-                  )
-                : null,
-            style: textStyle,
-            decoration: const InputDecoration(enabledBorder: InputBorder.none),
-            isExpanded: true,
-            value: widget.value,
-            onChanged: widget.onChanged,
-            items: _dropdownMenuItems,
+    final borderRadius = BorderRadius.circular(AppBorderRadius.textInput);
+    return ButtonTheme(
+      padding: const EdgeInsets.only(left: AppInsets.l, right: AppInsets.l),
+      alignedDropdown: true,
+      child: DropdownButtonFormField<T>(
+        hint: widget.placeholder != null
+            ? Text(
+                widget.placeholder,
+                style: textStyle.copyWith(color: Colors.grey[500]),
+              )
+            : null,
+        style: textStyle,
+        decoration: InputDecoration(
+          isCollapsed: true,
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: AppInsets.l, horizontal: AppInsets.sm),
+          isDense: true,
+          filled: true,
+          fillColor: Colors.grey[100],
+          enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(
+              width: 2,
+              color: Colors.transparent,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: BorderSide(
+              width: 2,
+              color: Theme.of(context).errorColor,
+            ),
           ),
         ),
+        isExpanded: true,
+        value: widget.value,
+        onChanged: widget.onChanged,
+        items: _dropdownMenuItems,
+        validator: widget.validator,
       ),
     );
   }

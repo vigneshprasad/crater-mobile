@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
+import 'package:worknetwork/features/meeting/presentation/widgets/meeting_preferences_card.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -53,6 +54,8 @@ class _MeetingTabState extends State<MeetingTab> {
                 _meetingConfig.isRegistrationOpen &&
                 _preference.pk == null)
               _buildEmptyState(_meetingConfig)
+            else if (_meetingConfig != null && _preference.pk != null)
+              _buildPreferencesCard(context)
           ],
         );
       },
@@ -91,6 +94,21 @@ class _MeetingTabState extends State<MeetingTab> {
     );
   }
 
+  Widget _buildPreferencesCard(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: AppInsets.med),
+      sliver: SliverToBoxAdapter(
+        child: MeetingPreferencesCard(
+          preference: _preference,
+          meetingConfig: _meetingConfig,
+          objectives: _objectives,
+          interests: _interests,
+          onTapCard: _onPressRegisterMeets,
+        ),
+      ),
+    );
+  }
+
   void _onPressRegisterMeets() {
     Navigator.of(context).push(RegisterMeetOverlay(
       meeting: _meetingConfig,
@@ -109,6 +127,10 @@ class _MeetingTabState extends State<MeetingTab> {
         _preference = state.preferences;
         _interests = state.interests;
         _objectives = state.objectives;
+      });
+    } else if (state is PostMeetingPreferencesLoaded) {
+      setState(() {
+        _preference = state.preferences;
       });
     }
   }

@@ -19,10 +19,55 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  int _num_meetings;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  int _numMeetings;
   MeetingObjective _objective;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingInterest> _selectedInterests = [];
+  String _introduction;
+  String _linkedinUrl;
+  MeetingBloc _bloc;
+
+  @override
+  void initState() {
+    _bloc = BlocProvider.of<MeetingBloc>(context);
+    if (widget.preference.pk != null) {
+      _intitalizeFormValues();
+    }
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(RegisterForm oldWidget) {
+    if (widget.preference.pk != null &&
+        widget.preference != oldWidget.preference) {
+      _intitalizeFormValues();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _intitalizeFormValues() {
+    setState(() {
+      _numMeetings = widget.preference.numberOfMeetings;
+      _objective = widget.objectives
+          .firstWhere((element) => element.key == widget.preference.objective);
+      _selectedSlots = widget.meeting.availableTimeSlots.entries.fold([],
+          (previousValue, element) {
+        for (final timeslot in element.value) {
+          if (widget.preference.timeSlots.contains(timeslot.pk)) {
+            previousValue.add(timeslot);
+          }
+        }
+        return previousValue;
+      });
+      _selectedInterests = widget.interests.fold([], (previousValue, element) {
+        if (widget.preference.interests.contains(element.pk)) {
+          previousValue.add(element);
+        }
+        return previousValue;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +99,15 @@ class _RegisterFormState extends State<RegisterForm> {
     final dateFormat = DateFormat("dd MMMM");
     final subheadText =
         "Choose preferences for the week of ${dateFormat.format(startDate)}";
+    final headerText = widget.preference.pk == null
+        ? "Register for meeting\n"
+        : "Update meeting preferences\n";
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
-            text: "Register for meeting\n",
+            text: headerText,
             style: headingStyle,
           ),
           TextSpan(
@@ -77,6 +125,7 @@ class _RegisterFormState extends State<RegisterForm> {
     final linkedinLabel =
         AppLocalizations.of(context).translate("linkedin:placeholder");
     return Form(
+      key: _formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
         child: Column(
@@ -88,17 +137,26 @@ class _RegisterFormState extends State<RegisterForm> {
                 listItems: const [1, 2],
                 labelGetter: (item) => item.toString(),
                 placeholder: "Indicate your preference",
-                value: _num_meetings,
+                value: _numMeetings,
+                validator: (value) =>
+                    value == null ? "Please select number of meetings" : null,
                 onChanged: (value) {
                   setState(() {
-                    _num_meetings = value;
+                    _numMeetings = value;
                   });
                 },
               ),
             ),
             BaseFormField(
               label: "Available times?",
-              child: TimeSlotPicker(
+              child: TimeSlotFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please select one time slot";
+                  }
+                  return null;
+                },
+                initialValue: _selectedSlots,
                 slots: widget.meeting.availableTimeSlots,
                 onChange: (slots) {
                   setState(() {
@@ -114,6 +172,12 @@ class _RegisterFormState extends State<RegisterForm> {
                 listItems: widget.objectives,
                 labelGetter: (item) => item.label,
                 placeholder: "Select Objective",
+                validator: (value) {
+                  if (value == null) {
+                    return "Please select one objective";
+                  }
+                  return null;
+                },
                 onChanged: (value) {
                   setState(() {
                     _objective = value;
@@ -123,10 +187,17 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
             BaseFormField(
               label: "Your Preferences",
-              child: MultiSelectDropdown<MeetingInterest>(
+              child: MultiSelectDropdownFormField<MeetingInterest>(
                 items: widget.interests,
                 labelGetter: (item) => item.name,
                 label: "I am keen to network with",
+                initialValue: _selectedInterests,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please select an interest";
+                  }
+                  return null;
+                },
                 onChangeItems: (items) {
                   setState(() {
                     _selectedInterests = items;
@@ -141,16 +212,29 @@ class _RegisterFormState extends State<RegisterForm> {
                   label: linkedinLabel,
                   validator: (value) =>
                       value.isEmpty ? "This field is required" : null,
+                  onChanged: (value) {
+                    setState(() {
+                      _linkedinUrl = value;
+                    });
+                  },
                 ),
               ),
             if (profile != null && profile.introduction == null)
               BaseFormField(
                 label: "Your Introductions",
                 child: BaseFormInput(
+                  autovalidate: false,
                   keyboardType: TextInputType.multiline,
                   maxLines: 4,
                   minLines: 4,
+                  validator: (value) =>
+                      value.isEmpty ? "Please provide an introduction" : null,
                   label: "How would you like to be introduced?",
+                  onChanged: (value) {
+                    setState(() {
+                      _introduction = value;
+                    });
+                  },
                 ),
               ),
             const SizedBox(height: 72)
@@ -158,5 +242,18 @@ class _RegisterFormState extends State<RegisterForm> {
         ),
       ),
     );
+  }
+
+  void submit() {
+    final isValid = _formKey.currentState.validate();
+    if (isValid) {
+      _bloc.add(PostMeetingPreferencesStarted(
+        meeting: widget.meeting.pk,
+        interests: _selectedInterests.map((e) => e.pk).toList(),
+        numberOfMeetings: _numMeetings,
+        timeSlots: _selectedSlots.map((e) => e.pk).toList(),
+        objective: _objective.key,
+      ));
+    }
   }
 }

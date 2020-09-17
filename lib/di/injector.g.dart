@@ -270,8 +270,9 @@ class _$VideoInjector extends VideoInjector {
 class _$MeetingInjector extends MeetingInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory(
-        (c) => MeetingBloc(getMeetingConfig: c<UCGetMeetingConfig>()));
+    container.registerFactory((c) => MeetingBloc(
+        getMeetingConfig: c<UCGetMeetingConfig>(),
+        postMeetingPreferences: c<UCPostMeetingPreferences>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
@@ -279,6 +280,8 @@ class _$MeetingInjector extends MeetingInjector {
         (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()));
     container
         .registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
   }
 }
 

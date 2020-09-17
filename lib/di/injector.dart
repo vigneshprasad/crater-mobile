@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 import 'package:worknetwork/features/signup/domain/usecase/post_new_phone_number_usecase.dart';
 import 'package:worknetwork/features/signup/domain/usecase/post_sms_code_usecase.dart';
 
@@ -260,6 +261,7 @@ abstract class MeetingInjector {
   @Register.singleton(MeetingRemoteDatasource,
       from: MeetingRemoteDatasourceImpl)
   @Register.singleton(UCGetMeetingConfig)
+  @Register.singleton(UCPostMeetingPreferences)
   void configure();
 }
 

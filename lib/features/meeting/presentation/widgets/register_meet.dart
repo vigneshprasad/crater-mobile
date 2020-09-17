@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
+import 'package:worknetwork/features/meeting/presentation/bloc/meeting_bloc.dart';
 import 'package:worknetwork/features/signup/presentation/widgets/multiselect_dropdown.dart';
 import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
@@ -23,6 +24,8 @@ class RegisterMeetOverlay extends ModalRoute<void> {
   final UserMeetingPreference preference;
   final List<MeetingObjective> objectives;
   final List<MeetingInterest> interests;
+  final GlobalKey<_RegisterFormState> _formKey =
+      GlobalKey<_RegisterFormState>();
 
   RegisterMeetOverlay({
     @required this.meeting,
@@ -67,6 +70,7 @@ class RegisterMeetOverlay extends ModalRoute<void> {
 
   Widget _buildOverlayContent(BuildContext context) {
     final NavigatorState _navigator = Navigator.of(context);
+    final buttonLabel = preference.pk == null ? "Register" : "Update";
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (notification) {
         if (notification.extent <= 0.25 && _navigator.canPop()) {
@@ -95,6 +99,7 @@ class RegisterMeetOverlay extends ModalRoute<void> {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         RegisterForm(
+                          key: _formKey,
                           meeting: meeting,
                           preference: preference,
                           interests: interests,
@@ -117,13 +122,15 @@ class RegisterMeetOverlay extends ModalRoute<void> {
                 boxShadow: kElevationToShadow[2],
               ),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  _formKey.currentState.submit();
+                },
                 textColor: Colors.white,
                 color: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
-                child: const Text("Register"),
+                child: Text(buttonLabel),
               ),
             ),
           )
@@ -137,7 +144,7 @@ class RegisterMeetOverlay extends ModalRoute<void> {
       Animation<double> secondaryAnimation, Widget child) {
     // You can add your own animations for the overlay content
     const begin = Offset(0.0, 1.0);
-    final end = Offset.zero;
+    const end = Offset.zero;
     final tween = Tween(begin: begin, end: end);
     final offsetAnimation = animation.drive(tween);
     return FadeTransition(

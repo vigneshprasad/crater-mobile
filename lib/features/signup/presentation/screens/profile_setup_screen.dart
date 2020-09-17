@@ -27,8 +27,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   String _photoUrl;
   List<UserTag> _tags;
   List<UserTag> _selectedTags;
-  String _tagError;
-  bool _validate = false;
   String _name;
 
   @override
@@ -182,29 +180,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   Widget _buildTagPicker(BuildContext context, User user) {
     final label = AppLocalizations.of(context).translate("tags:placeholder");
-    return MultiSelectDropdown<UserTag>(
+    return MultiSelectDropdownFormField<UserTag>(
       items: _tags,
       labelGetter: (item) => item.name,
       maxLength: 2,
       onChangeItems: _onChangeSelectedTags,
-      validate: _validate,
       label: label,
-      error: _tagError,
     );
-  }
-
-  bool _validateTags() {
-    if (_selectedTags.isEmpty) {
-      setState(() {
-        _tagError = "Please selected a tag";
-      });
-      return false;
-    } else {
-      setState(() {
-        _tagError = null;
-      });
-      return true;
-    }
   }
 
   void _onChangeSelectedTags(List<UserTag> selected) {
@@ -214,12 +196,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   void _onPressedSubmit() {
-    setState(() {
-      _validate = true;
-    });
-    final isValidLinkedIn = _formKey.currentState.validate();
-    final isValidTags = _validateTags();
-    if (isValidLinkedIn && isValidTags) {
+    final isValid = _formKey.currentState.validate();
+    if (isValid) {
       _bloc.add(PostProfileRequestStarted(
         photoUrl: _photoUrl,
         linkedinUrl: _linkedInController.text,

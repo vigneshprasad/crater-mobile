@@ -60,3 +60,21 @@ class GetMeetingConfigLoaded extends MeetingState {
         objectives,
       ];
 }
+
+class PostMeetingPreferencesLoaded extends MeetingState {
+  final UserMeetingPreference preferences;
+
+  const PostMeetingPreferencesLoaded({
+    @required this.preferences,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [
+        loading,
+        error,
+        preferences,
+      ];
+}
