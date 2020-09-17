@@ -86,6 +86,7 @@ class _SignupFormState extends State<SignupForm> {
                 BaseFormInput(
                   controller: _passwordController,
                   enabled: isEnabled,
+                  maxLines: 1,
                   label: password,
                   obscureText: true,
                   validator: (text) {

@@ -92,7 +92,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             (user) async* {
               final profileOrError = await getUserProfile(NoParams());
               yield profileOrError.fold(
-                (profileFailure) => const AuthStateFailure(),
+                (profileFailure) => AuthStateSuccess(user: user, profile: null),
                 (profile) => AuthStateSuccess(user: user, profile: profile),
               );
             },

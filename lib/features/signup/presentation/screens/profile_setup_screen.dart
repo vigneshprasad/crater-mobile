@@ -22,7 +22,7 @@ class ProfileSetupScreen extends StatefulWidget {
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _linkedInController = TextEditingController();
+  final TextEditingController _linkedInController = TextEditingController();
   ProfileSetupBloc _bloc;
   String _photoUrl;
   List<UserTag> _tags;

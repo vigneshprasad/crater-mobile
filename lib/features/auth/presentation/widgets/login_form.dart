@@ -61,6 +61,7 @@ class _LoginFormState extends State<LoginForm> {
                   enabled: isEnabled,
                   label: password,
                   obscureText: true,
+                  maxLines: 1,
                   validator: (text) {
                     if (text.isEmpty) return null;
                     return !state.isPasswordValid ? 'Invalid Password' : null;
