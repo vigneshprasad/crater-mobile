@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/domain/usecase/facebook_auth_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_authentication_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_user_usecase.dart';
@@ -30,6 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCGetAuthentication getAuthentication;
   final UCAuthLinkedIn authLinkedIn;
   final UCGoogleAuth authGoogle;
+  final UCFacebookAuth authFacebook;
   final UCLoginEmail loginEmail;
   final UCGetSocialAuthToken socialAuthToken;
   final UCRegisterEmail registerEmail;
@@ -41,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.getAuthentication,
     @required this.authLinkedIn,
     @required this.authGoogle,
+    @required this.authFacebook,
     @required this.loginEmail,
     @required this.socialAuthToken,
     @required this.registerEmail,
@@ -50,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         assert(getAuthentication != null),
         assert(authLinkedIn != null),
         assert(authGoogle != null),
+        assert(authFacebook != null),
         assert(loginEmail != null),
         assert(socialAuthToken != null),
         assert(registerEmail != null),
@@ -130,6 +134,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           return authGoogle(GoogleAuthParams(osId: osId, token: token.token));
         } else if (provider == SocialAuthProviders.linkedin) {
           return authLinkedIn(LinkedAuthParams(osId: osId, token: token.token));
+        } else if (provider == SocialAuthProviders.facebook) {
+          return authFacebook(
+              FacebookAuthParams(osId: osId, token: token.token));
         }
         return Future.value(Left(ServerFailure()));
       }),

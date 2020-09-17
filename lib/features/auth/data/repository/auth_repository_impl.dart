@@ -26,9 +26,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> authWithFacebook(String token, String osId) {
-    // TODO: implement authWithFacebook
-    throw UnimplementedError();
+  Future<Either<Failure, User>> authWithFacebook(
+      String token, String osId) async {
+    try {
+      final response = await remoteDataSource.authWithFacebook(token, osId);
+      localDataSource.setUserToCache(response);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
   }
 
   @override

@@ -1,7 +1,9 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/auth/domain/usecase/facebook_auth_usecase.dart';
 import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
 import 'package:worknetwork/features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
 import 'package:worknetwork/features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
@@ -156,6 +158,7 @@ abstract class AuthInjector {
   @Register.singleton(UCGetUser)
   @Register.singleton(UCGetAuthentication)
   @Register.singleton(UCGoogleAuth)
+  @Register.singleton(UCFacebookAuth)
   @Register.singleton(UCLoginEmail)
   @Register.singleton(UCAuthLinkedIn)
   @Register.singleton(UCRegisterEmail)
@@ -361,6 +364,7 @@ class Di {
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
+    container.registerInstance(FacebookLogin());
     container.registerInstance(GlobalKey<NavigatorState>());
   }
 }

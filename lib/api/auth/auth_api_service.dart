@@ -31,6 +31,9 @@ abstract class AuthApiService extends ChopperService {
   @Post(path: 'social/google/')
   Future<Response> authWithGoogle(@Body() Map<String, dynamic> body);
 
+  @Post(path: 'social/facebook/')
+  Future<Response> authWithFacebook(@Body() Map<String, dynamic> body);
+
   @Post(path: 'social/linkedin/')
   Future<Response> authWithLinkedin(@Body() Map<String, dynamic> body);
 }

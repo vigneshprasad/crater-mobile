@@ -32,6 +32,11 @@ abstract class AuthRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> authWithLinkedIn(String token, String osId);
 
+  /// Calls the Facebook Auth Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserModel> authWithFacebook(String token, String osId);
+
   /// Calls the Patch User Endpoint on backend.
   ///
   /// Throws a [ServerException] for all error codes.
@@ -63,6 +68,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> authWithGoogle(String token, String osId) async {
     final body = {"access_token": token, "role": "user", "os_id": osId};
     final response = await apiService.authWithGoogle(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final model = AuthResponseModel.fromJson(json);
+      return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserModel> authWithFacebook(String token, String osId) async {
+    final body = {"access_token": token, "role": "user", "os_id": osId};
+    final response = await apiService.authWithFacebook(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);
