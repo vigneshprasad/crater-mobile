@@ -24,5 +24,6 @@ abstract class MeetsApiService extends ChopperService {
   Future<Response> postMeetingPreferences(@Body() Map<String, dynamic> body);
 
   @Patch(path: 'meeting-preferences/{id}/')
-  Future<Response> patchMeetingPreferences(@Path() int id);
+  Future<Response> patchMeetingPreferences(
+      @Path() int id, @Body() Map<String, dynamic> body);
 }

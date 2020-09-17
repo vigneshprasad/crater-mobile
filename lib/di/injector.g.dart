@@ -272,7 +272,8 @@ class _$MeetingInjector extends MeetingInjector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MeetingBloc(
         getMeetingConfig: c<UCGetMeetingConfig>(),
-        postMeetingPreferences: c<UCPostMeetingPreferences>()));
+        postMeetingPreferences: c<UCPostMeetingPreferences>(),
+        patchMeetingPreferences: c<UCPatchMeetingPreferences>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
@@ -282,6 +283,8 @@ class _$MeetingInjector extends MeetingInjector {
         .registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()));
     container.registerSingleton(
         (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCPatchMeetingPreferences(c<MeetingRepository>()));
   }
 }
 

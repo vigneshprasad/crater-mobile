@@ -65,4 +65,29 @@ class MeetingRepositoryImpl implements MeetingRepository {
       return Left(ServerFailure(error.message));
     }
   }
+
+  @override
+  Future<Either<Failure, UserMeetingPreference>> patchUserMeetingPreferences(
+    int meetingPref,
+    List<int> interests,
+    int meeting,
+    int numberOfMeetings,
+    String objective,
+    List<int> timeSlots,
+  ) async {
+    try {
+      final response =
+          await remoteDatasource.patchUserMeetingPreferencesToRemote(
+        meetingPref,
+        interests,
+        meeting,
+        numberOfMeetings,
+        objective,
+        timeSlots,
+      );
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
 }

@@ -1,20 +1,22 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-import 'package:worknetwork/features/meeting/presentation/bloc/meeting_bloc.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/multiselect_dropdown.dart';
-import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_dropdown/base_dropdown.dart';
 import '../../../../ui/base/base_form_field/base_form_field.dart';
+import '../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../signup/presentation/widgets/multiselect_dropdown.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
+import '../bloc/meeting_bloc.dart';
 import 'time_slot_picker.dart';
 
 part 'register_form.dart';

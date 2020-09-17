@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../domain/entity/meeting_config_entity.dart';
@@ -18,12 +19,15 @@ part 'meeting_state.dart';
 class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
   final UCGetMeetingConfig getMeetingConfig;
   final UCPostMeetingPreferences postMeetingPreferences;
+  final UCPatchMeetingPreferences patchMeetingPreferences;
 
   MeetingBloc({
     @required this.getMeetingConfig,
     @required this.postMeetingPreferences,
+    @required this.patchMeetingPreferences,
   })  : assert(getMeetingConfig != null),
         assert(postMeetingPreferences != null),
+        assert(patchMeetingPreferences != null),
         super(const MeetingInitial());
 
   @override
@@ -34,6 +38,8 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       yield* _mapGetMeetingConfigToState(event);
     } else if (event is PostMeetingPreferencesStarted) {
       yield* _mapPostMeetingPreferencesToState(event);
+    } else if (event is PatchMeetingPreferencesStarted) {
+      yield* _mapPatchMeetingPreferencesToState(event);
     }
   }
 
@@ -65,6 +71,24 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     ));
 
     yield postOrError.fold(
+      (failure) => MeetingRequestError(error: failure),
+      (prefs) => PostMeetingPreferencesLoaded(preferences: prefs),
+    );
+  }
+
+  Stream<MeetingState> _mapPatchMeetingPreferencesToState(
+      PatchMeetingPreferencesStarted event) async* {
+    yield const MeetingGetRequestLoading();
+    final patchOrError = await patchMeetingPreferences(PatchMeetingPrefParams(
+      meetingPref: event.meetingPref,
+      interests: event.interests,
+      objective: event.objective,
+      numberOfMeetings: event.numberOfMeetings,
+      timeSlots: event.timeSlots,
+      meeting: event.meeting,
+    ));
+
+    yield patchOrError.fold(
       (failure) => MeetingRequestError(error: failure),
       (prefs) => PostMeetingPreferencesLoaded(preferences: prefs),
     );

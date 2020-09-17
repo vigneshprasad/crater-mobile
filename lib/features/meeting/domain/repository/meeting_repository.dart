@@ -13,4 +13,12 @@ abstract class MeetingRepository {
     String objective,
     List<int> timeSlots,
   );
+  Future<Either<Failure, UserMeetingPreference>> patchUserMeetingPreferences(
+    int meetingPref,
+    List<int> interests,
+    int meeting,
+    int numberOfMeetings,
+    String objective,
+    List<int> timeSlots,
+  );
 }

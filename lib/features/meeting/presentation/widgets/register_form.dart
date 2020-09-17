@@ -246,14 +246,28 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void submit() {
     final isValid = _formKey.currentState.validate();
+    final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+    print(_selectedSlots.map((e) => e.pk).toList());
     if (isValid) {
-      _bloc.add(PostMeetingPreferencesStarted(
-        meeting: widget.meeting.pk,
-        interests: _selectedInterests.map((e) => e.pk).toList(),
-        numberOfMeetings: _numMeetings,
-        timeSlots: _selectedSlots.map((e) => e.pk).toList(),
-        objective: _objective.key,
-      ));
+      if (widget.preference.pk == null) {
+        _bloc.add(PostMeetingPreferencesStarted(
+          meeting: widget.meeting.pk,
+          interests: _selectedInterests.map((e) => e.pk).toList(),
+          numberOfMeetings: _numMeetings,
+          timeSlots: _selectedSlots.map((e) => e.pk).toList(),
+          objective: _objective.key,
+        ));
+      } else {
+        _bloc.add(PatchMeetingPreferencesStarted(
+          meetingPref: widget.preference.pk,
+          meeting: widget.meeting.pk,
+          interests: _selectedInterests.map((e) => e.pk).toList(),
+          numberOfMeetings: _numMeetings,
+          timeSlots: _selectedSlots.map((e) => e.pk).toList(),
+          objective: _objective.key,
+        ));
+      }
+      _navigator.currentState.pop();
     }
   }
 }

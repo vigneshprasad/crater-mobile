@@ -35,3 +35,31 @@ class PostMeetingPreferencesStarted extends MeetingEvent {
         timeSlots,
       ];
 }
+
+class PatchMeetingPreferencesStarted extends MeetingEvent {
+  final int meetingPref;
+  final List<int> interests;
+  final int meeting;
+  final int numberOfMeetings;
+  final String objective;
+  final List<int> timeSlots;
+
+  const PatchMeetingPreferencesStarted({
+    @required this.meetingPref,
+    @required this.interests,
+    @required this.meeting,
+    @required this.numberOfMeetings,
+    @required this.objective,
+    @required this.timeSlots,
+  });
+
+  @override
+  List<Object> get props => [
+        meetingPref,
+        interests,
+        meeting,
+        numberOfMeetings,
+        objective,
+        timeSlots,
+      ];
+}

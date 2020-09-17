@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/meeting_preferences_card.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/meeting_config_entity.dart';
+import '../../domain/entity/meeting_interest_entity.dart';
+import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
+import 'meeting_preferences_card.dart';
 import 'register_meet.dart';
 
 class MeetingTab extends StatefulWidget {
@@ -129,6 +129,12 @@ class _MeetingTabState extends State<MeetingTab> {
         _objectives = state.objectives;
       });
     } else if (state is PostMeetingPreferencesLoaded) {
+      Scaffold.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Meeting Preferences updated"),
+          duration: Duration(seconds: 2),
+        ),
+      );
       setState(() {
         _preference = state.preferences;
       });
