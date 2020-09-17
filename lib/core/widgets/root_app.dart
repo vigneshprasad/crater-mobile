@@ -1,17 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
-import 'package:worknetwork/core/status_bar_color/status_bar_color.dart';
-import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/utils/root_provider.dart';
 
 import '../../constants/theme.dart';
+import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
+import '../../utils/root_provider.dart';
+import '../features/deep_link_manager/deep_link_manager.dart';
+import '../push_notfications/push_notifications.dart';
+import '../status_bar_color/status_bar_color.dart';
 
 class RootApp extends StatefulWidget {
   @override
@@ -39,7 +38,7 @@ class _RootAppState extends State<RootApp> {
         statusBarIconBrightness: Brightness.dark,
         // For iOS.
         // Use [dark] for white status bar and [light] for black status bar.
-        statusBarBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
       ),
       child: RootProvider(
         child: MaterialApp(

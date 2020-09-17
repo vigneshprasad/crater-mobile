@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -24,9 +26,21 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   });
 
   @override
-  Future<AccessToken> getAppleAccessToken() {
-    // TODO: implement getAppleAccessToken
-    throw UnimplementedError();
+  Future<AccessToken> getAppleAccessToken() async {
+    try {
+      final creds = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+          webAuthenticationOptions: WebAuthenticationOptions(
+            clientId: AppConstants.appleClientId,
+            redirectUri: Uri.parse(AppConstants.appleRedirectUri),
+          ));
+      return AccessToken(creds.authorizationCode);
+    } catch (error) {
+      throw ServerException(error);
+    }
   }
 
   @override
@@ -35,7 +49,6 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
     try {
       await facebookLogin.logOut();
       final result = await facebookLogin.logIn(["email"]);
-      print(result.accessToken.permissions);
       final token = result.accessToken.token;
       return AccessToken(token);
     } catch (error) {

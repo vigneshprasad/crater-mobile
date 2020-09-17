@@ -12,6 +12,10 @@ class AppConstants {
     'email',
     'https://www.googleapis.com/auth/userinfo.profile',
   ];
+
+  static const appleClientId = "com.worknetwork.mobile.service";
+  static const appleRedirectUri = "$apiBaseUrl/connect/apple";
+
   static const defaultAvatar = {
     "a":
         'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/A.png',
@@ -80,6 +84,7 @@ class AppSvgAssets {
   static const googleColored = "assets/svg/google.svg";
   static const linkedinFilled = "assets/svg/linkedin-fill.svg";
   static const facebook = "assets/svg/facebook.svg";
+  static const apple = "assets/svg/apple-logo.svg";
 }
 
 class AppLottieAssets {

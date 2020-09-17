@@ -17,11 +17,12 @@ class SocialAuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget _child;
     Color _buttonColor;
+    const _iconSize = 20.0;
 
     if (provider == SocialAuthProviders.google) {
       _child = SvgPicture.asset(
         AppSvgAssets.googleColored,
-        height: 24,
+        height: _iconSize,
       );
       _buttonColor = Colors.white70;
     }
@@ -29,7 +30,7 @@ class SocialAuthButton extends StatelessWidget {
     if (provider == SocialAuthProviders.linkedin) {
       _child = SvgPicture.asset(
         AppSvgAssets.linkedinFilled,
-        height: 24,
+        height: _iconSize,
       );
 
       _buttonColor = AppTheme.linkedInColor;
@@ -39,20 +40,32 @@ class SocialAuthButton extends StatelessWidget {
       _child = SvgPicture.asset(
         AppSvgAssets.facebook,
         color: Colors.white,
-        height: 24,
+        height: _iconSize,
       );
 
       _buttonColor = AppTheme.facebookColor;
     }
 
-    return RaisedButton(
-        color: _buttonColor,
-        padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.l,
-          horizontal: AppInsets.xl,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        onPressed: onPressed,
-        child: _child);
+    if (provider == SocialAuthProviders.apple) {
+      _child = SvgPicture.asset(
+        AppSvgAssets.apple,
+        color: Colors.white,
+        height: _iconSize,
+      );
+      _buttonColor = Colors.grey[900];
+    }
+
+    return RawMaterialButton(
+      constraints: const BoxConstraints(
+        minWidth: 72,
+      ),
+      fillColor: _buttonColor,
+      padding: const EdgeInsets.symmetric(
+        vertical: AppInsets.l,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      onPressed: onPressed,
+      child: _child,
+    );
   }
 }

@@ -1,16 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
-import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/error/failures.dart';
-import '../../../../../core/push_notfications/push_notifications.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../ui/base/social_auth_button/social_auth_button.dart';
@@ -121,23 +120,24 @@ class _AuthScreenState extends State<AuthScreen> {
       SocialAuthProviders.linkedin,
     ];
 
-    final List<Widget> socialbuttonList = socialAuthProvider.fold(
-      [],
-      (previousValue, element) {
-        final items = [
-          SocialAuthButton(
+    if (Platform.isIOS) {
+      socialAuthProvider.add(SocialAuthProviders.apple);
+    }
+
+    final List<Widget> socialbuttonList = socialAuthProvider.map(
+      (element) {
+        final isLast =
+            socialAuthProvider.indexOf(element) == socialAuthProvider.length;
+        return Padding(
+          padding: EdgeInsets.only(right: isLast ? 0 : AppInsets.med),
+          child: SocialAuthButton(
             provider: element,
             onPressed: () =>
                 _authBloc.add(AuthSocialPressed(provider: element)),
           ),
-          if (element.index != socialAuthProvider.length - 1)
-            const SizedBox(
-              width: AppPadding.med,
-            ),
-        ];
-        return [...previousValue, ...items];
+        );
       },
-    );
+    ).toList();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
