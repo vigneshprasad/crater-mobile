@@ -1,27 +1,8 @@
 import 'package:chopper/chopper.dart';
-import 'package:json_annotation/json_annotation.dart' hide JsonConverter;
-import 'package:worknetwork/constants/app_constants.dart';
 
-import 'package:worknetwork/models/user/user_model.dart';
+import '../../constants/app_constants.dart';
 
 part 'auth_api_service.chopper.dart';
-part 'auth_api_service.g.dart';
-
-@JsonSerializable()
-class AuthEmailResponse {
-  User user;
-  String token;
-
-  AuthEmailResponse({
-    this.user,
-    this.token,
-  });
-
-  factory AuthEmailResponse.fromJson(Map<String, dynamic> json) =>
-      _$AuthEmailResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AuthEmailResponseToJson(this);
-}
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class AuthApiService extends ChopperService {
@@ -36,7 +17,6 @@ abstract class AuthApiService extends ChopperService {
         HttpLoggingInterceptor(),
       ],
     );
-
     return _$AuthApiService(client);
   }
 
@@ -45,6 +25,15 @@ abstract class AuthApiService extends ChopperService {
     @Body() Map<String, dynamic> body,
   );
 
+  @Post(path: 'registration/')
+  Future<Response> registerWithEmail(@Body() Map<String, dynamic> body);
+
   @Post(path: 'social/google/')
   Future<Response> authWithGoogle(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'social/facebook/')
+  Future<Response> authWithFacebook(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'social/linkedin/')
+  Future<Response> authWithLinkedin(@Body() Map<String, dynamic> body);
 }

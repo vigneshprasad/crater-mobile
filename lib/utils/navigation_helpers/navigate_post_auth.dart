@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/models/user/user_model.dart';
-import 'package:worknetwork/routes.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
-void navigatePostAuth(NavigatorState navigator, User user) {
-  if (user.hasProfile == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'basic_profile');
-  } else if (user.hasServices == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'services');
-  } else if (user.phoneNumberVerified == null) {
-    navigator.pushReplacementNamed(Routes.setup, arguments: 'phone');
+import '../../routes.gr.dart';
+
+void navigatePostAuth(User user) {
+  final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+  if (user.objectives.isEmpty) {
+    _navigator.currentState.popAndPushNamed(Routes.objectivesScreen);
+  } else if (user.linkedinUrl == null) {
+    _navigator.currentState.popAndPushNamed(Routes.profileSetupScreen);
+  } else if (user.phoneNumberVerified == false) {
+    _navigator.currentState.popAndPushNamed(Routes.phoneVerificationScreen);
   } else {
-    navigator.pushReplacementNamed(Routes.home);
+    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
   }
 }

@@ -9,7 +9,11 @@ class BaseFormInput extends StatelessWidget {
   final bool autovalidate;
   final bool autocorrect;
   final bool enabled;
+  final bool autoFocus;
   final FormFieldValidator<String> validator;
+  final int maxLines;
+  final int minLines;
+  final ValueChanged<String> onChanged;
 
   const BaseFormInput({
     Key key,
@@ -19,12 +23,19 @@ class BaseFormInput extends StatelessWidget {
     this.controller,
     this.autovalidate = true,
     this.autocorrect = false,
+    this.autoFocus = false,
     this.validator,
     this.enabled = true,
+    this.maxLines,
+    this.minLines,
+    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const borderRadius = BorderRadius.all(
+      Radius.circular(AppBorderRadius.textInput),
+    );
     return TextFormField(
       enabled: enabled,
       autovalidate: autovalidate,
@@ -32,21 +43,35 @@ class BaseFormInput extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      maxLines: maxLines,
+      minLines: minLines,
       validator: validator,
+      autofocus: autoFocus,
+      onChanged: onChanged,
       style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
+            borderRadius: borderRadius,
             borderSide: BorderSide(
               color: Colors.transparent,
             ),
           ),
           border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(AppBorderRadius.textInput),
+            borderRadius: borderRadius,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: BorderSide(
+              width: 2,
+              color: Theme.of(context).errorColor,
             ),
           ),
           filled: true,
           hintText: label,
+          hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+                fontSize: 15,
+                color: Colors.grey,
+              ),
           labelStyle: const TextStyle(fontSize: 16),
           contentPadding: const EdgeInsets.symmetric(
             vertical: AppInsets.med,

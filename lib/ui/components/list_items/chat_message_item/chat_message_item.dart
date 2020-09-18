@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
 
-import 'package:worknetwork/models/chat/chat_model.dart';
-import 'package:worknetwork/models/user/user_model.dart';
+import '../../../../constants/theme.dart';
+import '../../../../constants/work_net_icons_icons.dart';
+import '../../../../features/auth/domain/entity/user_entity.dart';
+import '../../../../features/chat/domain/entity/chat_message_entity.dart';
 
 class ChatMessageItem extends StatelessWidget {
   final User user;

@@ -17,9 +17,10 @@ class _$ArticlesApiService extends ArticlesApiService {
   final definitionType = ArticlesApiService;
 
   @override
-  Future<Response<dynamic>> getArticlesList() {
+  Future<Response<dynamic>> getArticlesPage(int page, int pageSize) {
     final $url = '/resources/articles/';
-    final $request = Request('GET', $url, client.baseUrl);
+    final $params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 }

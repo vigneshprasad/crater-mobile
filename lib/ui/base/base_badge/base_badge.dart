@@ -14,21 +14,25 @@ class BaseBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final countStyle = Theme.of(context)
-        .textTheme
-        .bodyText1
-        .copyWith(fontSize: 10, color: Colors.white);
+    final countStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+        fontSize: 10, color: Colors.white, fontWeight: FontWeight.w700);
     return Stack(
+      fit: StackFit.passthrough,
+      overflow: Overflow.visible,
       children: [
         child,
         if (count > 0)
           Positioned(
-            right: 0,
-            bottom: 0,
+            right: -6,
+            bottom: -6,
             child: Container(
-              width: 16,
-              height: 16,
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2.0,
+                ),
                 shape: BoxShape.circle,
                 color: Theme.of(context).primaryColor,
               ),

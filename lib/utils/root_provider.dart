@@ -1,46 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import 'package:worknetwork/features/meeting/presentation/bloc/meeting_bloc.dart';
+import 'package:worknetwork/features/notification/presentation/bloc/notification_bloc.dart';
 
-import 'package:worknetwork/blocs/auth/bloc/auth_bloc.dart';
-import 'package:worknetwork/blocs/notification/bloc/notification_bloc.dart';
-import 'package:worknetwork/blocs/websocket/bloc/websocket_bloc.dart';
-import 'package:worknetwork/blocs/websocket/repo/websocket_repository.dart';
+import '../features/auth/presentation/bloc/auth_bloc.dart';
 
-class RootProvider extends StatelessWidget {
+class RootProvider extends StatefulWidget {
   final Widget child;
-  final AuthBloc _authBloc = AuthBloc()..add(AuthStarted());
-  final WebSocketRepository webSocketRepository = WebSocketRepository();
 
-  RootProvider({
+  const RootProvider({
     Key key,
     @required this.child,
   }) : super(key: key);
 
   @override
+  _RootProviderState createState() => _RootProviderState();
+}
+
+class _RootProviderState extends State<RootProvider> {
+  AuthBloc _authBloc;
+  WebsocketBloc _websocketBloc;
+  NotificationBloc _notificationBloc;
+  MeetingBloc _meetingBloc;
+
+  @override
+  void initState() {
+    _authBloc = KiwiContainer().resolve<AuthBloc>();
+    _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
+    _notificationBloc = KiwiContainer().resolve<NotificationBloc>();
+    _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _authBloc.close();
+    _websocketBloc.close();
+    _notificationBloc.close();
+    _meetingBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [RepositoryProvider.value(value: webSocketRepository)],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider.value(
-            value: _authBloc,
-          ),
-          BlocProvider(
-            lazy: false,
-            create: (context) => WebsocketBloc(
-              authBloc: _authBloc,
-              webSocketRepository: webSocketRepository,
-            ),
-          ),
-          BlocProvider(
-            lazy: false,
-            create: (context) =>
-                NotificationBloc(webSocketRepository: webSocketRepository)
-                  ..add(const OpenNotificationHiveStarted()),
-          ),
-        ],
-        child: child,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: _authBloc,
+        ),
+        BlocProvider.value(
+          value: _websocketBloc,
+        ),
+        BlocProvider.value(
+          value: _meetingBloc,
+        ),
+        BlocProvider.value(
+          value: _notificationBloc,
+        )
+      ],
+      child: widget.child,
     );
   }
 }

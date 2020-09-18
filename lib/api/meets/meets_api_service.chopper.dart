@@ -24,16 +24,19 @@ class _$MeetsApiService extends MeetsApiService {
   }
 
   @override
-  Future<Response<dynamic>> postMeetingPreferences() {
+  Future<Response<dynamic>> postMeetingPreferences(Map<String, dynamic> body) {
     final $url = '/resources/meeting-preferences/';
-    final $request = Request('POST', $url, client.baseUrl);
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
-  Future<Response<dynamic>> patchMeetingPreferences(int id) {
+  Future<Response<dynamic>> patchMeetingPreferences(
+      int id, Map<String, dynamic> body) {
     final $url = '/resources/meeting-preferences/$id/';
-    final $request = Request('PATCH', $url, client.baseUrl);
+    final $body = body;
+    final $request = Request('PATCH', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

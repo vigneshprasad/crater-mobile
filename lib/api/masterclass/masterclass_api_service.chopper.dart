@@ -17,8 +17,16 @@ class _$MasterClassApiService extends MasterClassApiService {
   final definitionType = MasterClassApiService;
 
   @override
-  Future<Response<dynamic>> getVideosList() {
+  Future<Response<dynamic>> getVideosList({int page}) {
     final $url = '/resources/masterclasses/';
+    final $params = <String, dynamic>{'page': page};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getVideoItem({int id}) {
+    final $url = '/resources/masterclasses/$id/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
