@@ -4,14 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/status_bar_color/status_bar_color.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
-import 'package:worknetwork/features/videos/presentation/bloc/video_player/video_player_bloc.dart';
-import 'package:worknetwork/features/videos/presentation/widgets/video_player_list_item.dart';
-import 'package:worknetwork/features/videos/presentation/widgets/video_screen_layout.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../../../core/status_bar_color/status_bar_color.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../domain/entity/video_entity.dart';
+import '../bloc/video_player/video_player_bloc.dart';
+import '../widgets/video_player_list_item.dart';
+import '../widgets/video_screen_layout.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final int videoId;

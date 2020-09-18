@@ -7,7 +7,6 @@ import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../../ui/components/cards/masterclass_card/masterclass_card.dart';
-import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/video_entity.dart';
 import '../bloc/video/video_bloc.dart';
 

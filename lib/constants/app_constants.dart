@@ -80,6 +80,8 @@ class AppImageAssets {
   static const drawerBg = AssetImage("assets/images/img_drawer_image.png");
   static const articleDefault =
       AssetImage("assets/images/img_article_placeholder.png");
+  static const videoPlaceholder =
+      AssetImage("assets/images/ic_video_placeholder.png");
 }
 
 class AppSvgAssets {

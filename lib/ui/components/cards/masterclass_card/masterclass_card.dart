@@ -25,15 +25,17 @@ class MasterclassCard extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.grey[200],
         onTap: () {
-          ExtendedNavigator.of(context).push(
-            Routes.videoPlayerScreen,
-            arguments: VideoPlayerScreenArguments(videoId: item.pk),
-          );
+          if (item.thumbnail != null) {
+            ExtendedNavigator.of(context).push(
+              Routes.videoPlayerScreen,
+              arguments: VideoPlayerScreenArguments(videoId: item.pk),
+            );
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildVideoThumbnail(),
+            _buildVideoThumbnail(context),
             _buildVideoInfo(context),
           ],
         ),
@@ -41,19 +43,20 @@ class MasterclassCard extends StatelessWidget {
     );
   }
 
-  Widget _buildVideoThumbnail() {
+  Widget _buildVideoThumbnail(BuildContext context) {
     final ImageProvider<dynamic> image = item.thumbnail == null
-        ? AppImageAssets.searchUserempty
+        ? AppImageAssets.videoPlaceholder
         : CachedNetworkImageProvider(item.thumbnail) as ImageProvider;
     return Container(
       width: double.infinity,
       height: 180,
       decoration: BoxDecoration(
-        color: Colors.grey[500],
-        image: DecorationImage(image: image, fit: BoxFit.cover),
+        color: Theme.of(context).primaryColor,
+        image: DecorationImage(
+            image: image, fit: item.thumbnail == null ? null : BoxFit.cover),
       ),
       child: Center(
-        child: _buildPlayIcon(),
+        child: item.thumbnail != null ? _buildPlayIcon() : null,
       ),
     );
   }
