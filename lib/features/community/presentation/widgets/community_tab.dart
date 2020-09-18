@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -14,9 +15,18 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/post_entity.dart';
 import '../bloc/community/community_bloc.dart';
 
-class CommunityTab extends StatefulWidget {
+class CommunityTab extends HomeScreenTab {
   @override
   _CommunityTabState createState() => _CommunityTabState();
+
+  @override
+  double get expandedHeight => 116;
+
+  @override
+  String get headingKey => "community:title";
+
+  @override
+  String get subheadingKey => "community:subtitle";
 }
 
 class _CommunityTabState extends State<CommunityTab> {
@@ -45,11 +55,6 @@ class _CommunityTabState extends State<CommunityTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String title =
-        AppLocalizations.of(context).translate("community:title");
-    final String subtitle =
-        AppLocalizations.of(context).translate("community:subtitle");
-
     return BlocConsumer<CommunityBloc, CommunityState>(
       listener: _blocListener,
       builder: (context, state) {
@@ -58,8 +63,6 @@ class _CommunityTabState extends State<CommunityTab> {
             if (authState is AuthStateSuccess) {
               final user = authState.user;
               return HomeTabLayout(
-                heading: title,
-                subheading: subtitle,
                 onRefresh: _onRefreshList,
                 listController: _controller,
                 slivers: [

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
-class PersistentTabHeader extends SliverPersistentHeaderDelegate {
+class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final Color color;
   final String heading;
   final String subHeading;
   final List<Widget> appBarActions;
 
-  PersistentTabHeader({
+  HomeTabPersistentHeader({
     @required this.expandedHeight,
-    @required this.heading,
-    this.subHeading,
     this.color,
+    this.heading,
+    this.subHeading,
     this.appBarActions,
   });
 
@@ -88,7 +89,7 @@ class PersistentTabHeader extends SliverPersistentHeaderDelegate {
                 alignment: Alignment.topRight,
                 child: BaseAppBar(
                   title: Opacity(
-                    opacity: shrinkOffset / maxExtent > 0.5
+                    opacity: shrinkOffset / maxExtent > 0.4
                         ? 1
                         : shrinkOffset / maxExtent,
                     child: Text(heading, style: AppTheme.appBarTitle),

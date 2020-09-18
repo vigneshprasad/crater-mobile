@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../utils/app_localizations.dart';
+import '../screens/models/home_screen_tab_model.dart';
+import 'home_screen_body_layout.dart';
 
 class HomeScreenLayout extends StatelessWidget {
   final List<BottomNavigationBarItem> navItems;
-  final List<Widget> screens;
+  final List<HomeScreenTab> screens;
   final Widget Function(int) getFabButton;
   final void Function(int) onTabTapped;
   final int currentTabIndex;
@@ -22,8 +24,18 @@ class HomeScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screen = screens[currentTabIndex];
+    final String title =
+        AppLocalizations.of(context).translate(screen.headingKey);
+    final String subtitle =
+        AppLocalizations.of(context).translate(screen.subheadingKey);
     return Scaffold(
-      body: screens[currentTabIndex],
+      body: HomeScreenBodyLayout(
+        heading: title,
+        subheading: subtitle,
+        body: screen,
+        expandedHeight: screen.expandedHeight,
+      ),
       drawer: AppDrawer(),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(

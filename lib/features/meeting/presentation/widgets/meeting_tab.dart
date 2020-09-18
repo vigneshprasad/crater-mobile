@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../constants/theme.dart';
@@ -16,9 +17,18 @@ import '../bloc/meeting_bloc.dart';
 import 'meeting_preferences_card.dart';
 import 'register_meet.dart';
 
-class MeetingTab extends StatefulWidget {
+class MeetingTab extends HomeScreenTab {
   @override
   _MeetingTabState createState() => _MeetingTabState();
+
+  @override
+  double get expandedHeight => 116;
+
+  @override
+  String get headingKey => "meeting:title";
+
+  @override
+  String get subheadingKey => "meeting:subtitle";
 }
 
 class _MeetingTabState extends State<MeetingTab> {
@@ -39,16 +49,10 @@ class _MeetingTabState extends State<MeetingTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String title =
-        AppLocalizations.of(context).translate("meeting:title");
-    final String subtitle =
-        AppLocalizations.of(context).translate("meeting:subtitle");
     return BlocConsumer<MeetingBloc, MeetingState>(
       listener: _blockListener,
       builder: (context, state) {
         return HomeTabLayout(
-          heading: title,
-          subheading: subtitle,
           onRefresh: _onRefreshTab,
           slivers: [
             if (_meetingConfig != null &&

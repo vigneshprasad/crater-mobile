@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -9,9 +10,18 @@ import '../../../../ui/components/list_items/user_list_item/user_list_item.dart'
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_inbox/chat_inbox_bloc.dart';
 
-class InboxTab extends StatefulWidget {
+class InboxTab extends HomeScreenTab {
   @override
   _InboxTabState createState() => _InboxTabState();
+
+  @override
+  double get expandedHeight => 96;
+
+  @override
+  String get headingKey => "inbox:title";
+
+  @override
+  String get subheadingKey => null;
 }
 
 class _InboxTabState extends State<InboxTab> {
@@ -36,14 +46,12 @@ class _InboxTabState extends State<InboxTab> {
 
   @override
   Widget build(BuildContext context) {
-    final heading = AppLocalizations.of(context).translate("inbox:title");
     return BlocProvider.value(
       value: _inboxBloc,
       child: BlocConsumer<ChatInboxBloc, ChatInboxState>(
         listener: _blocListener,
         builder: (context, state) {
           return HomeTabLayout(
-            heading: heading,
             onRefresh: _onRefreshList,
             slivers: [
               SliverList(

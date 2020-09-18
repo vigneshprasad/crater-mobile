@@ -2,17 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/layouts/home_tab_layout.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
-import 'package:worknetwork/features/videos/presentation/bloc/video/video_bloc.dart';
 
+import '../../../../constants/theme.dart';
+import '../../../../core/widgets/layouts/home_tab_layout.dart';
+import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../../ui/components/cards/masterclass_card/masterclass_card.dart';
 import '../../../../utils/app_localizations.dart';
+import '../../domain/entity/video_entity.dart';
+import '../bloc/video/video_bloc.dart';
 
-class VideoTab extends StatefulWidget {
+class VideoTab extends HomeScreenTab {
   @override
   _VideoTabState createState() => _VideoTabState();
+
+  @override
+  double get expandedHeight => 116;
+
+  @override
+  String get headingKey => "videos:title";
+
+  @override
+  String get subheadingKey => "videos:subtitle";
 }
 
 class _VideoTabState extends State<VideoTab> {
@@ -39,48 +49,11 @@ class _VideoTabState extends State<VideoTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String title = AppLocalizations.of(context).translate("videos:title");
-    final String subtitle =
-        AppLocalizations.of(context).translate("videos:subtitle");
-    // return BlocBuilder<VideoBloc, VideoState>(
-    //   builder: (context, state) {
-    //     return Column(
-    //       children: <Widget>[
-    //         Padding(
-    //           padding: const EdgeInsets.only(
-    //             left: AppInsets.xl,
-    //             right: AppInsets.med,
-    //           ),
-    //           child: TabHeader(
-    //             heading: title,
-    //             subHeading: subtitle,
-    //             action: BaseIconButton(
-    //               icon: const Icon(WorkNetIcons.filters),
-    //               onPressed: () {
-    //                 showModalBottomSheet(
-    //                   context: context,
-    //                   builder: (context) => Container(
-    //                     color: Colors.white,
-    //                   ),
-    //                 );
-    //               },
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: _buildVideoList(context, state),
-    //         )
-    //       ],
-    //     );
-    //   },
-    // );
     return BlocConsumer<VideoBloc, VideoState>(
       listener: _blocListener,
       builder: (context, state) {
         return HomeTabLayout(
           onRefresh: _onRefreshList,
-          heading: title,
-          subheading: subtitle,
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.symmetric(
