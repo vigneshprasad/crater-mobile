@@ -48,10 +48,10 @@
               "client_type": 3
             },
             {
-              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
+              "client_id": "577637183424-9mrdl7fhgpoedvkbhh8bfg53jihkv75c.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.wurknet.mobile"
+                "bundle_id": "com.worknetwork.mobile"
               }
             }
           ]
@@ -66,6 +66,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "577637183424-frutcif7v9i5l7mt028la259eif4c25u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "55b164c32eb8460a3759fa2d837987a1f572cf29"
+          }
+        },
         {
           "client_id": "577637183424-0gibl28umqf2aos4p1i07pn2r53ihd93.apps.googleusercontent.com",
           "client_type": 1,
@@ -124,10 +132,10 @@
               "client_type": 3
             },
             {
-              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
+              "client_id": "577637183424-9mrdl7fhgpoedvkbhh8bfg53jihkv75c.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.wurknet.mobile"
+                "bundle_id": "com.worknetwork.mobile"
               }
             }
           ]
