@@ -56,12 +56,6 @@ class _RootProviderState extends State<RootProvider> {
         BlocProvider.value(
           value: _meetingBloc,
         ),
-        // BlocProvider(
-        //   lazy: false,
-        //   create: (context) =>
-        //       NotificationBloc(webSocketRepository: webSocketRepository)
-        //         ..add(const OpenNotificationHiveStarted()),
-        // ),
         BlocProvider.value(
           value: _notificationBloc,
         )
