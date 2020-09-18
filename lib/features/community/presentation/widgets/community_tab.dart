@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
+import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/post_card/post_card.dart';
 import '../../../../utils/app_localizations.dart';
@@ -135,11 +135,12 @@ class _CommunityTabState extends State<CommunityTab> {
   }
 
   void _updatePostsList(CommunityGetPageResponseReceived state) {
-    _refreshCompleter.complete();
+    _refreshCompleter?.complete();
     _refreshCompleter = Completer();
     setState(() {
       _currentPage = state.currentPage;
-      _posts = [..._posts, ...state.posts];
+      _posts =
+          state.currentPage == 1 ? state.posts : [..._posts, ...state.posts];
       _pages = state.pages;
       _count = state.count;
       _fromCache = state.fromCache;
@@ -201,7 +202,6 @@ class _CommunityTabState extends State<CommunityTab> {
   }
 
   void _onCommentPostPressed(int postId) {
-    // Navigator.of(context).push(CommentsModal(postId: postId));
     ExtendedNavigator.of(context)
         .push(Routes.postScreen, arguments: PostScreenArguments(postId: postId))
         .then((value) {

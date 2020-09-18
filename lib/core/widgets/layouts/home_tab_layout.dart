@@ -24,6 +24,7 @@ class HomeTabLayout extends StatelessWidget {
           onRefresh: onRefresh,
           displacement: AppTheme.appBarHeight.height + 50,
           child: CustomScrollView(
+            controller: listController,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverOverlapInjector(
