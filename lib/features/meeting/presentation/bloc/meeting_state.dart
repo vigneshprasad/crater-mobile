@@ -78,3 +78,21 @@ class PostMeetingPreferencesLoaded extends MeetingState {
         preferences,
       ];
 }
+
+class PostUserProfileResponseLoaded extends MeetingState {
+  final UserProfile profile;
+
+  const PostUserProfileResponseLoaded({
+    @required this.profile,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [
+        loading,
+        error,
+        profile,
+      ];
+}

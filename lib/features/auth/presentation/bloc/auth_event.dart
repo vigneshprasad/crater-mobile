@@ -93,3 +93,14 @@ class AuthUserUpdateRecieved extends AuthEvent {
   @override
   List<Object> get props => [user];
 }
+
+class AuthUserProfileUpdateRecieved extends AuthEvent {
+  final UserProfile profile;
+
+  const AuthUserProfileUpdateRecieved({
+    this.profile,
+  });
+
+  @override
+  List<Object> get props => [profile];
+}

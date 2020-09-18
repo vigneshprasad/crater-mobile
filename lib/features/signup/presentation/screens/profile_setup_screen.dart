@@ -148,6 +148,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         _tags = state.tags;
       });
     } else if (state is PostUserProfileRequestLoaded) {
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
       ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
     }
   }

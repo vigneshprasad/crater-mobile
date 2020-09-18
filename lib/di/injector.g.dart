@@ -277,7 +277,8 @@ class _$MeetingInjector extends MeetingInjector {
     container.registerFactory((c) => MeetingBloc(
         getMeetingConfig: c<UCGetMeetingConfig>(),
         postMeetingPreferences: c<UCPostMeetingPreferences>(),
-        patchMeetingPreferences: c<UCPatchMeetingPreferences>()));
+        patchMeetingPreferences: c<UCPatchMeetingPreferences>(),
+        postUserProfile: c<UCPostUserProfile>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));

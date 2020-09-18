@@ -24,8 +24,8 @@ class _RegisterFormState extends State<RegisterForm> {
   MeetingObjective _objective;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingInterest> _selectedInterests = [];
-  String _introduction;
-  String _linkedinUrl;
+  String _introduction = "";
+  String _linkedinUrl = "";
   MeetingBloc _bloc;
 
   @override
@@ -205,10 +205,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 },
               ),
             ),
-            if (user.linkedinUrl == null)
+            if (user.linkedinUrl == null && profile.linkedinUrl == null)
               BaseFormField(
                 label: linkedinLabel,
                 child: BaseFormInput(
+                  autovalidate: false,
                   label: linkedinLabel,
                   validator: (value) =>
                       value.isEmpty ? "This field is required" : null,
@@ -247,8 +248,20 @@ class _RegisterFormState extends State<RegisterForm> {
   void submit() {
     final isValid = _formKey.currentState.validate();
     final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
-    print(_selectedSlots.map((e) => e.pk).toList());
     if (isValid) {
+      if (_linkedinUrl.isNotEmpty || _introduction.isNotEmpty) {
+        final Map<String, dynamic> body = {};
+        if (_linkedinUrl.isNotEmpty) {
+          body["linkedin_url"] = _linkedinUrl;
+        }
+
+        if (_introduction.isNotEmpty) {
+          body["introduction"] = _introduction;
+        }
+
+        _bloc.add(PostUserProfileRequestStarted(requestBody: body));
+      }
+
       if (widget.preference.pk == null) {
         _bloc.add(PostMeetingPreferencesStarted(
           meeting: widget.meeting.pk,

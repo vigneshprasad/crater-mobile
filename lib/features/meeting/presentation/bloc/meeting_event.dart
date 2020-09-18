@@ -63,3 +63,14 @@ class PatchMeetingPreferencesStarted extends MeetingEvent {
         timeSlots,
       ];
 }
+
+class PostUserProfileRequestStarted extends MeetingEvent {
+  final Map<String, dynamic> requestBody;
+
+  const PostUserProfileRequestStarted({
+    this.requestBody,
+  });
+
+  @override
+  List<Object> get props => [requestBody];
+}

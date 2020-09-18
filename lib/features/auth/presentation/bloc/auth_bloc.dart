@@ -77,6 +77,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapRegisterEmailToState(event);
     } else if (event is AuthUserUpdateRecieved) {
       yield AuthStateSuccess(user: event.user, profile: state.profile);
+    } else if (event is AuthUserProfileUpdateRecieved) {
+      yield AuthStateSuccess(user: state.user, profile: event.profile);
     }
   }
 

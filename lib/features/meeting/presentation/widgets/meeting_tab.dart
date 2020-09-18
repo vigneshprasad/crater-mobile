@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -138,6 +139,9 @@ class _MeetingTabState extends State<MeetingTab> {
       setState(() {
         _preference = state.preferences;
       });
+    } else if (state is PostUserProfileResponseLoaded) {
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
     }
   }
 

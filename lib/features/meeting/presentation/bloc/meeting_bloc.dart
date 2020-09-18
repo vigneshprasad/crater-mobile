@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/domain/usecase/post_user_profile_usecase.dart';
 import 'package:worknetwork/features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -20,14 +23,17 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
   final UCGetMeetingConfig getMeetingConfig;
   final UCPostMeetingPreferences postMeetingPreferences;
   final UCPatchMeetingPreferences patchMeetingPreferences;
+  final UCPostUserProfile postUserProfile;
 
   MeetingBloc({
     @required this.getMeetingConfig,
     @required this.postMeetingPreferences,
     @required this.patchMeetingPreferences,
+    @required this.postUserProfile,
   })  : assert(getMeetingConfig != null),
         assert(postMeetingPreferences != null),
         assert(patchMeetingPreferences != null),
+        assert(postUserProfile != null),
         super(const MeetingInitial());
 
   @override
@@ -40,6 +46,8 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       yield* _mapPostMeetingPreferencesToState(event);
     } else if (event is PatchMeetingPreferencesStarted) {
       yield* _mapPatchMeetingPreferencesToState(event);
+    } else if (event is PostUserProfileRequestStarted) {
+      yield* _mapPostUserProfileToState(event);
     }
   }
 
@@ -91,6 +99,18 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     yield patchOrError.fold(
       (failure) => MeetingRequestError(error: failure),
       (prefs) => PostMeetingPreferencesLoaded(preferences: prefs),
+    );
+  }
+
+  Stream<MeetingState> _mapPostUserProfileToState(
+      PostUserProfileRequestStarted event) async* {
+    yield const MeetingGetRequestLoading();
+    final profileOrError =
+        await postUserProfile(PostUserProfileParams(body: event.requestBody));
+
+    yield profileOrError.fold(
+      (failure) => MeetingRequestError(error: failure),
+      (profile) => PostUserProfileResponseLoaded(profile: profile),
     );
   }
 }
