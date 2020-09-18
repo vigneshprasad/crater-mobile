@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../constants/theme.dart';
 import '../../../features/article/domain/entity/article_entity.dart';
@@ -19,7 +21,9 @@ class ArticleCard extends StatelessWidget {
       ),
       child: InkWell(
         splashColor: Colors.grey[200],
-        onTap: () => _launchURL(context),
+        onTap: () {
+          _launchURL(context);
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
           child: Row(
@@ -27,17 +31,7 @@ class ArticleCard extends StatelessWidget {
             children: <Widget>[
               const SizedBox(width: AppInsets.xl),
               _buildCardInfo(context),
-              Container(
-                width: 74,
-                height: 74,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: NetworkImage(article.picture),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              _buildImagePreview(context),
               const SizedBox(width: AppInsets.xl),
             ],
           ),
@@ -90,6 +84,48 @@ class ArticleCard extends StatelessWidget {
       // An exception is thrown if browser app is not installed on Android device.
       debugPrint(e.toString());
     }
+  }
+
+  Widget _buildImagePreview(BuildContext context) {
+    final image = article.picture;
+    final defaultImage = AppImageAssets.articleDefault;
+    if (image != null) {
+      return CachedNetworkImage(
+        imageUrl: image,
+        errorWidget: (context, url, error) {
+          return _ImageThumbnail(
+            image: defaultImage,
+          );
+        },
+        imageBuilder: (context, imageProvider) {
+          return _ImageThumbnail(image: imageProvider);
+        },
+      );
+    } else {
+      return _ImageThumbnail(
+        image: defaultImage,
+      );
+    }
+  }
+}
+
+class _ImageThumbnail extends StatelessWidget {
+  final ImageProvider<dynamic> image;
+
+  const _ImageThumbnail({
+    Key key,
+    @required this.image,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 74,
+      height: 74,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        image: DecorationImage(image: image),
+      ),
+    );
   }
 }
 

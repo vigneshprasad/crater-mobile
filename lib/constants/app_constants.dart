@@ -78,6 +78,8 @@ class AppImageAssets {
   static const searchUserempty =
       AssetImage("assets/images/img_no_user_search.png");
   static const drawerBg = AssetImage("assets/images/img_drawer_image.png");
+  static const articleDefault =
+      AssetImage("assets/images/img_article_placeholder.png");
 }
 
 class AppSvgAssets {
