@@ -29,17 +29,18 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   Future<AccessToken> getAppleAccessToken() async {
     try {
       final creds = await SignInWithApple.getAppleIDCredential(
-          scopes: [
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-          webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: AppConstants.appleClientId,
-            redirectUri: Uri.parse(AppConstants.appleRedirectUri),
-          ));
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: AppConstants.appleClientId,
+          redirectUri: Uri.parse(AppConstants.appleRedirectUri),
+        ),
+      );
       return AccessToken(creds.authorizationCode);
     } catch (error) {
-      throw ServerException(error);
+      throw ServerException();
     }
   }
 

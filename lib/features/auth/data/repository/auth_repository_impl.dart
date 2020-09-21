@@ -20,9 +20,14 @@ class AuthRepositoryImpl implements AuthRepository {
       this.remoteDataSource, this.localDataSource, this.networkInfo);
 
   @override
-  Future<Either<Failure, User>> authWithApple(String token, String osId) {
-    // TODO: implement authWithApple
-    throw UnimplementedError();
+  Future<Either<Failure, User>> authWithApple(String token, String osId) async {
+    try {
+      final response = await remoteDataSource.authWithApple(token, osId);
+      localDataSource.setUserToCache(response);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
   }
 
   @override

@@ -34,8 +34,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     _bloc = KiwiContainer().resolve<ProfileSetupBloc>()
       ..add(const GetUserTagsRequestStarted());
     _name = BlocProvider.of<AuthBloc>(context).state.user.name;
-    final letter = _name.substring(0, 1).toLowerCase();
-    _photoUrl = AppConstants.defaultAvatar[letter];
+    if (_name.trim().isNotEmpty) {
+      final letter = _name.substring(0, 1).toLowerCase();
+      _photoUrl = AppConstants.defaultAvatar[letter];
+    } else {
+      _photoUrl = AppConstants.defaultAvatar["default"];
+    }
+
     _tags = [];
     _selectedTags = [];
     super.initState();

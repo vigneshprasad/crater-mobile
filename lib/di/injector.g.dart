@@ -58,6 +58,7 @@ class _$AuthInjector extends AuthInjector {
         getAuthentication: c<UCGetAuthentication>(),
         authLinkedIn: c<UCAuthLinkedIn>(),
         authGoogle: c<UCGoogleAuth>(),
+        authWithApple: c<UCAuthWithApple>(),
         authFacebook: c<UCFacebookAuth>(),
         loginEmail: c<UCLoginEmail>(),
         socialAuthToken: c<UCGetSocialAuthToken>(),
@@ -74,6 +75,7 @@ class _$AuthInjector extends AuthInjector {
     container.registerSingleton(
         (c) => UCGoogleAuth(repository: c<AuthRepository>()));
     container.registerSingleton((c) => UCFacebookAuth(c<AuthRepository>()));
+    container.registerSingleton((c) => UCAuthWithApple(c<AuthRepository>()));
     container.registerSingleton(
         (c) => UCLoginEmail(repository: c<AuthRepository>()));
     container.registerSingleton(

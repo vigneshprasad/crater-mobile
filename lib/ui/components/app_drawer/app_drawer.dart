@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
-import 'package:worknetwork/core/local_storage/local_storage.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/ui/components/list_items/drawer_item/drawer_menu_item.dart';
+import '../../../constants/app_constants.dart';
+import '../../../constants/theme.dart';
+import '../../../constants/work_net_icons_icons.dart';
+import '../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import '../../../core/local_storage/local_storage.dart';
+import '../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../routes.gr.dart';
+import '../list_items/drawer_item/drawer_menu_item.dart';
 
 enum DrawerItemKeys { notificationSettings, logout, account }
 
@@ -107,12 +107,12 @@ class AppDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                state.user.name,
+                state.user.name ?? "",
                 style: nameStyle,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                state.user.email,
+                state.user.email ?? "",
                 style: emailStyle,
                 overflow: TextOverflow.ellipsis,
               ),

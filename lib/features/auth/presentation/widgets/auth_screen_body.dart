@@ -23,7 +23,7 @@ class AuthScreenBody extends StatelessWidget {
           children: [
             Image(
               image: const AssetImage('assets/images/sign_up_heading.png'),
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.35,
             ),
             const SizedBox(height: 16),
             Expanded(

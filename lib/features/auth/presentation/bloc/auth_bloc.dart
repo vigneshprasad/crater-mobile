@@ -4,22 +4,23 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/domain/usecase/facebook_auth_usecase.dart';
-import 'package:worknetwork/features/auth/domain/usecase/get_authentication_usecase.dart';
-import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
-import 'package:worknetwork/features/auth/domain/usecase/get_user_usecase.dart';
-import 'package:worknetwork/features/auth/domain/usecase/register_email_usecase.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/push_notfications/push_notifications.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../../core/validators/validators.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../../domain/entity/user_entity.dart';
+import '../../domain/entity/user_profile_entity.dart';
+import '../../domain/usecase/apple_auth_usecase.dart';
+import '../../domain/usecase/facebook_auth_usecase.dart';
+import '../../domain/usecase/get_authentication_usecase.dart';
+import '../../domain/usecase/get_user_profile_usecase.dart';
+import '../../domain/usecase/get_user_usecase.dart';
 import '../../domain/usecase/google_auth_usecase.dart';
 import '../../domain/usecase/linked_auth_usecase.dart';
 import '../../domain/usecase/login_email_usercase.dart';
+import '../../domain/usecase/register_email_usecase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -31,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCGetAuthentication getAuthentication;
   final UCAuthLinkedIn authLinkedIn;
   final UCGoogleAuth authGoogle;
+  final UCAuthWithApple authWithApple;
   final UCFacebookAuth authFacebook;
   final UCLoginEmail loginEmail;
   final UCGetSocialAuthToken socialAuthToken;
@@ -43,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.getAuthentication,
     @required this.authLinkedIn,
     @required this.authGoogle,
+    @required this.authWithApple,
     @required this.authFacebook,
     @required this.loginEmail,
     @required this.socialAuthToken,
@@ -52,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         assert(pushNotifications != null),
         assert(getAuthentication != null),
         assert(authLinkedIn != null),
+        assert(authWithApple != null),
         assert(authGoogle != null),
         assert(authFacebook != null),
         assert(loginEmail != null),
@@ -139,6 +143,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else if (provider == SocialAuthProviders.facebook) {
           return authFacebook(
               FacebookAuthParams(osId: osId, token: token.token));
+        } else if (provider == SocialAuthProviders.apple) {
+          return authWithApple(AppleAuthParams(osId: osId, token: token.token));
         }
         return Future.value(Left(ServerFailure()));
       }),
