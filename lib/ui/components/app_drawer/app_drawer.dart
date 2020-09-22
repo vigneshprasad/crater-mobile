@@ -127,6 +127,12 @@ class AppDrawer extends StatelessWidget {
     if (state.user.photo != null) {
       return CachedNetworkImage(
         imageUrl: state.user.photo,
+        errorWidget: (context, url, error) {
+          return const CircleAvatar(
+            backgroundImage: AppImageAssets.defaultAvatar,
+            radius: 24,
+          );
+        },
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(
             backgroundImage: imageProvider,
