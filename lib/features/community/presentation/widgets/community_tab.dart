@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -39,9 +40,11 @@ class _CommunityTabState extends State<CommunityTab> {
   List<Post> _posts = [];
   CommunityBloc _bloc;
   ScrollController _controller;
+  bool _showShimmer;
 
   @override
   void initState() {
+    _showShimmer = true;
     _bloc = BlocProvider.of<CommunityBloc>(context)
       ..add(GetCommunityPageRequestStarted(
         page: _currentPage,
@@ -71,26 +74,9 @@ class _CommunityTabState extends State<CommunityTab> {
                       horizontal: AppInsets.med,
                       vertical: AppInsets.l,
                     ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return PostCard(
-                            post: _posts[index],
-                            onPostDelete: _onDeletePost,
-                            user: user,
-                            onLikePost: (postId, myLike) {
-                              if (myLike) {
-                                _sendDeleteLikeRequest(postId);
-                              } else {
-                                _sendCreateLikeRequest(postId, authState.user);
-                              }
-                            },
-                            onCommentPost: _onCommentPostPressed,
-                          );
-                        },
-                        childCount: _posts.length,
-                      ),
-                    ),
+                    sliver: _showShimmer
+                        ? _buildShimmerList()
+                        : _buildPostsList(user),
                   ),
                 ],
               );
@@ -100,6 +86,50 @@ class _CommunityTabState extends State<CommunityTab> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildShimmerList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300],
+            highlightColor: Colors.grey[200],
+            child: Card(
+              margin: const EdgeInsets.symmetric(
+                  vertical: AppInsets.sm, horizontal: AppInsets.sm),
+              child: Container(
+                height: 160,
+              ),
+            ),
+          );
+        },
+        childCount: 5,
+      ),
+    );
+  }
+
+  Widget _buildPostsList(User user) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return PostCard(
+            post: _posts[index],
+            onPostDelete: _onDeletePost,
+            user: user,
+            onLikePost: (postId, myLike) {
+              if (myLike) {
+                _sendDeleteLikeRequest(postId);
+              } else {
+                _sendCreateLikeRequest(postId, user);
+              }
+            },
+            onCommentPost: _onCommentPostPressed,
+          );
+        },
+        childCount: _posts.length,
+      ),
     );
   }
 
@@ -124,6 +154,7 @@ class _CommunityTabState extends State<CommunityTab> {
       _pages = 1;
       _currentPage = 1;
       _posts = [];
+      _showShimmer = true;
     });
     _bloc.add(
       GetCommunityPageRequestStarted(
@@ -138,6 +169,7 @@ class _CommunityTabState extends State<CommunityTab> {
     _refreshCompleter?.complete();
     _refreshCompleter = Completer();
     setState(() {
+      _showShimmer = false;
       _currentPage = state.currentPage;
       _posts =
           state.currentPage == 1 ? state.posts : [..._posts, ...state.posts];

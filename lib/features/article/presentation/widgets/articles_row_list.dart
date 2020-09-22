@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/article/domain/entity/article_entity.dart';
-import 'package:worknetwork/features/article/presentation/bloc/article_bloc.dart';
-import 'package:worknetwork/features/article/presentation/widgets/article_card.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../constants/theme.dart';
+import '../../domain/entity/article_entity.dart';
+import '../bloc/article_bloc.dart';
+import 'article_card.dart';
 
 class ArticlesRowList extends StatefulWidget {
   final int websiteTagId;
@@ -46,16 +48,38 @@ class _ArticlesRowListState extends State<ArticlesRowList> {
       builder: (context, state) {
         return Container(
           height: 200,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(left: AppInsets.l),
-            scrollDirection: Axis.horizontal,
-            itemCount: _articles.length,
-            itemBuilder: (context, index) {
-              return ArticleCard(article: _articles[index]);
-            },
-          ),
+          child: state.loading ? _buildShimmerLayout() : _buildArticlesList(),
         );
       },
+    );
+  }
+
+  Widget _buildArticlesList() {
+    return ListView.builder(
+      padding: const EdgeInsets.only(left: AppInsets.l),
+      scrollDirection: Axis.horizontal,
+      itemCount: _articles.length,
+      itemBuilder: (context, index) {
+        return ArticleCard(article: _articles[index]);
+      },
+    );
+  }
+
+  Widget _buildShimmerLayout() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300],
+      highlightColor: Colors.grey[200],
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: AppInsets.l),
+        itemCount: 4,
+        itemBuilder: (context, index) => Card(
+          color: Colors.white,
+          child: Container(
+            width: 180,
+          ),
+        ),
+      ),
     );
   }
 
