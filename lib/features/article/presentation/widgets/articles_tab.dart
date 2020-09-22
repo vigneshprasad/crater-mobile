@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
 import 'package:worknetwork/features/article/domain/entity/article_entity.dart';
+import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
+import 'package:worknetwork/features/article/presentation/widgets/articles_row_list.dart';
 import 'package:worknetwork/ui/components/article_card/article_card.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 
@@ -25,24 +28,16 @@ class ArticlesTab extends HomeScreenTab {
 }
 
 class _ArticlesTabState extends State<ArticlesTab> {
-  int _pages;
-  int _currentPage;
   ArticleBloc _bloc;
-  List<Article> _articles;
+  List<ArticleWebsite> _websites;
   Completer<void> _completer;
-  final _pageSize = 10;
 
   @override
   void initState() {
     _completer = Completer<void>();
-    _pages = 1;
-    _currentPage = 1;
+    _websites = [];
     _bloc = BlocProvider.of<ArticleBloc>(context)
-      ..add(ArticlesGetPageRequestStarted(
-        page: _currentPage,
-        pageSize: _pageSize,
-      ));
-    _articles = [];
+      ..add(const GetArticleWebsitesRequestStarted());
     super.initState();
   }
 
@@ -54,12 +49,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
         return HomeTabLayout(
           onRefresh: _onRefreshArticles,
           slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                _buildArticlesList,
-                childCount: _articles.length,
-              ),
-            )
+            ..._buildArticlesRows(context),
           ],
         );
       },
@@ -67,32 +57,47 @@ class _ArticlesTabState extends State<ArticlesTab> {
   }
 
   void _blocListener(BuildContext context, ArticleState state) {
-    if (state is ArticlesPageRequestLoaded) {
+    if (state is ArticleWebsitesRequestLoaded) {
       _completer.complete();
       _completer = Completer<void>();
       setState(() {
-        _pages = state.pages;
-        _articles = [..._articles, ...state.articles];
-        _currentPage = state.currentPage;
+        _websites = state.websites;
       });
     }
   }
 
-  Widget _buildArticlesList(BuildContext context, int index) {
-    final article = _articles[index];
-    return ArticleCard(article: article);
-  }
-
   Future<void> _onRefreshArticles() {
     setState(() {
-      _articles = [];
-      _pages = 1;
-      _currentPage = 1;
-      _bloc.add(ArticlesGetPageRequestStarted(
-        page: _currentPage,
-        pageSize: _pageSize,
-      ));
+      _websites = [];
     });
+    _bloc.add(const GetArticleWebsitesRequestStarted());
     return _completer.future;
+  }
+
+  List<Widget> _buildArticlesRows(BuildContext context) {
+    return _websites.fold([], (previousValue, website) {
+      final headingStyle = Theme.of(context).textTheme.headline6.copyWith(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: Colors.grey[800],
+          );
+      final heading = SliverPadding(
+        padding: const EdgeInsets.symmetric(
+            vertical: AppInsets.l, horizontal: AppInsets.xxl),
+        sliver: SliverToBoxAdapter(
+          child: Text(website.name, style: headingStyle),
+        ),
+      );
+
+      final list = SliverToBoxAdapter(
+        child: ArticlesRowList(
+          websiteTagId: website.pk,
+        ),
+      );
+
+      previousValue.add(heading);
+      previousValue.add(list);
+      return previousValue;
+    });
   }
 }

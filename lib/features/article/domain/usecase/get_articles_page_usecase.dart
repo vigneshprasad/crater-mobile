@@ -17,15 +17,18 @@ class UCGetArticlesPage
   @override
   Future<Either<Failure, PageApiResponse<Article>>> call(
       GetArticlesPageParams params) {
-    return repository.getArticlesPage(params.page, params.pageSize);
+    return repository.getArticlesPage(
+        params.page, params.pageSize, params.websiteTag);
   }
 }
 
 class GetArticlesPageParams extends Equatable {
+  final int websiteTag;
   final int page;
   final int pageSize;
 
   const GetArticlesPageParams({
+    @required this.websiteTag,
     @required this.page,
     @required this.pageSize,
   });

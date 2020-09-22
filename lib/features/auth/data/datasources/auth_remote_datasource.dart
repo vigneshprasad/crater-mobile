@@ -27,6 +27,11 @@ abstract class AuthRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> authWithGoogle(String token, String osId);
 
+  /// Calls the Apple Auth Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserModel> authWithApple(String token, String osId);
+
   /// Calls the Linked Auth Endpoint on backend.
   ///
   /// Throws a [ServerException] for all error codes.
@@ -68,6 +73,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> authWithGoogle(String token, String osId) async {
     final body = {"access_token": token, "role": "user", "os_id": osId};
     final response = await apiService.authWithGoogle(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final model = AuthResponseModel.fromJson(json);
+      return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserModel> authWithApple(String token, String osId) async {
+    final body = {"access_token": token, "role": "user", "os_id": osId};
+    final response = await apiService.authWithApple(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);

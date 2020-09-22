@@ -8,64 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:577637183424:android:ec1af71124db0b01bbe225",
-        "android_client_info": {
-          "package_name": "com.worknetwork.mobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "577637183424-lgmfsrstgg5g40tt21bk6blu6fn5erv7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.worknetwork.mobile",
-            "certificate_hash": "55b164c32eb8460a3759fa2d837987a1f572cf29"
-          }
-        },
-        {
-          "client_id": "577637183424-mes7tqh5uks9u9muf29lu9qunpsfbjsb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.worknetwork.mobile",
-            "certificate_hash": "7068f1fd9e92fb58620086078533f4c132e4027a"
-          }
-        },
-        {
-          "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBJFr3Ctn3p1-HvbwJnbbnnDp_sJs0Nnzk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "577637183424-mv7hcj5vit0gnp5slu1jljdk2nrmnjnu.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.wurknet.mobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:577637183424:android:5926929df1a78a98bbe225",
         "android_client_info": {
           "package_name": "com.wurknet.mobile"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "577637183424-frutcif7v9i5l7mt028la259eif4c25u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wurknet.mobile",
+            "certificate_hash": "55b164c32eb8460a3759fa2d837987a1f572cf29"
+          }
+        },
         {
           "client_id": "577637183424-0gibl28umqf2aos4p1i07pn2r53ihd93.apps.googleusercontent.com",
           "client_type": 1,
@@ -124,10 +80,10 @@
               "client_type": 3
             },
             {
-              "client_id": "577637183424-eto0rib0r9mn3lhlp1muu7dumgc4embr.apps.googleusercontent.com",
+              "client_id": "577637183424-9mrdl7fhgpoedvkbhh8bfg53jihkv75c.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.wurknet.mobile"
+                "bundle_id": "com.worknetwork.mobile"
               }
             }
           ]

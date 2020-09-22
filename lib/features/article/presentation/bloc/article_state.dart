@@ -35,6 +35,7 @@ class ArticlesRequestLoading extends ArticleState {
 }
 
 class ArticlesPageRequestLoaded extends ArticleState {
+  final int websiteTag;
   final List<Article> articles;
   final int currentPage;
   final int pages;
@@ -42,6 +43,7 @@ class ArticlesPageRequestLoaded extends ArticleState {
   final bool fromCache;
 
   const ArticlesPageRequestLoaded({
+    @required this.websiteTag,
     @required this.articles,
     @required this.currentPage,
     @required this.pages,
@@ -62,4 +64,18 @@ class ArticlesPageRequestLoaded extends ArticleState {
         pages,
         fromCache,
       ];
+}
+
+class ArticleWebsitesRequestLoaded extends ArticleState {
+  final List<ArticleWebsite> websites;
+
+  const ArticleWebsitesRequestLoaded({
+    this.websites,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+
+  @override
+  List<Object> get props => [loading, error, websites];
 }

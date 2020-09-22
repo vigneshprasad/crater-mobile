@@ -51,11 +51,13 @@ class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
       PostProfileRequestStarted event) async* {
     yield const ProfileSetupRequestLoading();
     final Map<String, dynamic> body = {
-      "name": event.name,
       "linkedin_url": event.linkedinUrl,
       "photo_url": event.photoUrl,
       "tags": event.userTags,
     };
+    if (event.name.trim().isNotEmpty) {
+      body["name"] = event.name;
+    }
     final profileOrError =
         await postUserProfile(PostUserProfileParams(body: body));
 

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/network_info/network_info.dart';
@@ -23,12 +24,12 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   @override
   Future<Either<Failure, PageApiResponse<Article>>> getArticlesPage(
-      int page, int pageSize) async {
+      int page, int pageSize, int websiteTag) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
-        final response =
-            await remoteDatasource.getArticePageFromRemote(page, pageSize);
+        final response = await remoteDatasource.getArticePageFromRemote(
+            page, pageSize, websiteTag);
         await localDatasource.persistArticlesToCache(response.results);
         return Right(response);
       } on ServerException {
@@ -46,6 +47,27 @@ class ArticleRepositoryImpl implements ArticleRepository {
         ));
       } on CacheException {
         return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ArticleWebsite>>> getArticleWebsites() async {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final response = await remoteDatasource.getArticleWebsitesFromRemote();
+        await localDatasource.persistArticleWebsitesToCache(response);
+        return Right(response);
+      } on ServerException catch (error) {
+        return Left(ServerFailure(error.message));
+      }
+    } else {
+      try {
+        final response = localDatasource.getArticleWebsitesFromCache();
+        return Right(response);
+      } on CacheException catch (error) {
+        return Left(CacheFailure(error));
       }
     }
   }

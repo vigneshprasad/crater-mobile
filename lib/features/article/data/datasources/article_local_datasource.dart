@@ -2,36 +2,68 @@ import 'package:hive/hive.dart';
 import 'package:worknetwork/constants/app_hive_boxes.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
 import 'package:worknetwork/features/article/data/models/article_model.dart';
+import 'package:worknetwork/features/article/data/models/article_website_model.dart';
+import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
 import '../../domain/entity/article_entity.dart';
 
 abstract class ArticleLocalDatasource {
   Future<void> persistArticlesToCache(List<Article> articles);
   List<Article> getAllArticlesFromCache();
+  Future<void> persistArticleWebsitesToCache(List<ArticleWebsite> websites);
+  List<ArticleWebsite> getArticleWebsitesFromCache();
 }
 
 class ArticleLocalDatasourceImpl implements ArticleLocalDatasource {
-  final Box<ArticleModel> _box =
+  final Box<ArticleModel> _articlesBox =
       Hive.box<ArticleModel>(AppHiveBoxes.articlesBox);
+  final Box<ArticleWebsiteModel> _articleWebsiteBox =
+      Hive.box<ArticleWebsiteModel>(AppHiveBoxes.articlesWebsiteBox);
 
   @override
   List<Article> getAllArticlesFromCache() {
-    if (_box.isEmpty) {
-      throw CacheException("${_box.name} is empty");
+    if (_articlesBox.isEmpty) {
+      throw CacheException("${_articlesBox.name} is empty");
     }
-    return _box.values.toList();
+    return _articlesBox.values.toList();
   }
 
   @override
   Future<void> persistArticlesToCache(List<Article> articles) async {
     final Map<String, ArticleModel> entries = articles.fold(
-        {},
-        (previousValue, element) => {
-              ...previousValue,
-              element.pk.toString(): element as ArticleModel,
-            });
+      {},
+      (previousValue, element) => {
+        ...previousValue,
+        element.pk.toString(): element as ArticleModel,
+      },
+    );
     try {
-      await _box.putAll(entries);
+      await _articlesBox.putAll(entries);
+    } catch (error) {
+      throw CacheException(error);
+    }
+  }
+
+  @override
+  List<ArticleWebsite> getArticleWebsitesFromCache() {
+    if (_articleWebsiteBox.isEmpty) {
+      throw CacheException("${_articleWebsiteBox.name} is empty");
+    }
+    return _articleWebsiteBox.values.toList();
+  }
+
+  @override
+  Future<void> persistArticleWebsitesToCache(
+      List<ArticleWebsite> websites) async {
+    final Map<String, ArticleWebsiteModel> entries = websites.fold(
+      {},
+      (previousValue, element) => {
+        ...previousValue,
+        element.pk.toString(): element as ArticleWebsiteModel,
+      },
+    );
+    try {
+      await _articleWebsiteBox.putAll(entries);
     } catch (error) {
       throw CacheException(error);
     }

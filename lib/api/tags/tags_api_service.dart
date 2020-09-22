@@ -24,4 +24,7 @@ abstract class TagsApiService extends ChopperService {
 
   @Get(path: "user/")
   Future<Response> getUserTags();
+
+  @Get(path: "websites/")
+  Future<Response> getArticleWebsites();
 }

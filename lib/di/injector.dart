@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/domain/usecase/facebook_auth_usecase.dart';
-import 'package:worknetwork/features/auth/domain/usecase/get_user_profile_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
-import 'package:worknetwork/features/signup/domain/usecase/post_new_phone_number_usecase.dart';
-import 'package:worknetwork/features/signup/domain/usecase/post_sms_code_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -37,13 +31,17 @@ import '../features/article/data/datasources/article_local_datasource.dart';
 import '../features/article/data/datasources/article_remote_datasource.dart';
 import '../features/article/data/repository/article_repository_impl.dart';
 import '../features/article/domain/repository/article_repository.dart';
+import '../features/article/domain/usecase/get_article_websites_usecase.dart';
 import '../features/article/domain/usecase/get_articles_page_usecase.dart';
 import '../features/article/presentation/bloc/article_bloc.dart';
 import '../features/auth/data/datasources/auth_local_datasource.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/repository/auth_repository_impl.dart';
 import '../features/auth/domain/repository/auth_repository.dart';
+import '../features/auth/domain/usecase/apple_auth_usecase.dart';
+import '../features/auth/domain/usecase/facebook_auth_usecase.dart';
 import '../features/auth/domain/usecase/get_authentication_usecase.dart';
+import '../features/auth/domain/usecase/get_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/get_user_usecase.dart';
 import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
@@ -92,6 +90,8 @@ import '../features/meeting/data/datasources/meetings_remote_datasource.dart';
 import '../features/meeting/data/repository/meeting_respository_impl.dart';
 import '../features/meeting/domain/repository/meeting_repository.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
+import '../features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
 import '../features/notification/data/datasources/notification_remote_datasource.dart';
@@ -110,6 +110,8 @@ import '../features/signup/data/repository/signup_repository_impl.dart';
 import '../features/signup/domain/repository/signup_repository.dart';
 import '../features/signup/domain/usecase/get_user_objectives.dart';
 import '../features/signup/domain/usecase/get_user_tags_usecase.dart';
+import '../features/signup/domain/usecase/post_new_phone_number_usecase.dart';
+import '../features/signup/domain/usecase/post_sms_code_usecase.dart';
 import '../features/signup/presentation/bloc/objectives/objectives_bloc.dart';
 import '../features/signup/presentation/bloc/phone_verify/phone_verify_bloc.dart';
 import '../features/signup/presentation/bloc/profile_setup/profile_setup_bloc.dart';
@@ -159,6 +161,7 @@ abstract class AuthInjector {
   @Register.singleton(UCGetAuthentication)
   @Register.singleton(UCGoogleAuth)
   @Register.singleton(UCFacebookAuth)
+  @Register.singleton(UCAuthWithApple)
   @Register.singleton(UCLoginEmail)
   @Register.singleton(UCAuthLinkedIn)
   @Register.singleton(UCRegisterEmail)
@@ -245,6 +248,7 @@ abstract class ArticleInjector {
       from: ArticleRemoteDatasourceImpl)
   @Register.singleton(ArticleLocalDatasource, from: ArticleLocalDatasourceImpl)
   @Register.singleton(UCGetArticlesPage)
+  @Register.singleton(UCGetArticleWebsites)
   void configure();
 }
 
