@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:worknetwork/features/article/data/models/article_website_model.dart';
 import 'package:worknetwork/features/auth/data/models/user_tag_model.dart';
 
 import '../../constants/app_hive_boxes.dart';
@@ -39,6 +40,7 @@ class LocalStorageImpl implements LocalStorage {
     Hive.registerAdapter(PointsModelAdapter());
     Hive.registerAdapter(NotificationModelAdapter());
     Hive.registerAdapter(ArticleModelAdapter());
+    Hive.registerAdapter(ArticleWebsiteModelAdapter());
   }
 
   @override
@@ -56,6 +58,7 @@ class LocalStorageImpl implements LocalStorage {
     await Hive.openBox<CommentModel>(AppHiveBoxes.commentsBox);
     await Hive.openBox<ChatUserModel>(AppHiveBoxes.chatUserBox);
     await Hive.openBox<ArticleModel>(AppHiveBoxes.articlesBox);
+    await Hive.openBox<ArticleWebsiteModel>(AppHiveBoxes.articlesWebsiteBox);
     await Hive.openBox<ChatMessageModel>(AppHiveBoxes.chatMessageBox);
     await Hive.openBox<UserChatModel>(AppHiveBoxes.userChatBox);
     await Hive.openBox<VideoModel>(AppHiveBoxes.videoBox);

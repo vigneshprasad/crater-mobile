@@ -31,6 +31,7 @@ import '../features/article/data/datasources/article_local_datasource.dart';
 import '../features/article/data/datasources/article_remote_datasource.dart';
 import '../features/article/data/repository/article_repository_impl.dart';
 import '../features/article/domain/repository/article_repository.dart';
+import '../features/article/domain/usecase/get_article_websites_usecase.dart';
 import '../features/article/domain/usecase/get_articles_page_usecase.dart';
 import '../features/article/presentation/bloc/article_bloc.dart';
 import '../features/auth/data/datasources/auth_local_datasource.dart';
@@ -247,6 +248,7 @@ abstract class ArticleInjector {
       from: ArticleRemoteDatasourceImpl)
   @Register.singleton(ArticleLocalDatasource, from: ArticleLocalDatasourceImpl)
   @Register.singleton(UCGetArticlesPage)
+  @Register.singleton(UCGetArticleWebsites)
   void configure();
 }
 

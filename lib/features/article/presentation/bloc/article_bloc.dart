@@ -3,19 +3,26 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
+import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
-import 'package:worknetwork/features/article/domain/entity/article_entity.dart';
-import 'package:worknetwork/features/article/domain/usecase/get_articles_page_usecase.dart';
+import '../../domain/entity/article_entity.dart';
+import '../../domain/usecase/get_article_websites_usecase.dart';
+import '../../domain/usecase/get_articles_page_usecase.dart';
 
 part 'article_event.dart';
 part 'article_state.dart';
 
 class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   final UCGetArticlesPage getArticles;
+  final UCGetArticleWebsites getArticleWebsites;
 
   ArticleBloc({
     @required this.getArticles,
-  }) : super(const ArticleInitial());
+    @required this.getArticleWebsites,
+  })  : assert(getArticleWebsites != null),
+        assert(getArticles != null),
+        super(const ArticleInitial());
 
   @override
   Stream<ArticleState> mapEventToState(
@@ -23,6 +30,8 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   ) async* {
     if (event is ArticlesGetPageRequestStarted) {
       yield* _mapArticleRequestToState(event);
+    } else if (event is GetArticleWebsitesRequestStarted) {
+      yield* _mapArticleWebsitesToState(event);
     }
   }
 
@@ -32,17 +41,31 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     final resultsOrError = await getArticles(GetArticlesPageParams(
       page: event.page,
       pageSize: event.pageSize,
+      websiteTag: event.websiteTag,
     ));
 
     yield resultsOrError.fold(
       (failure) => ArticleRequestError(error: failure),
       (response) => ArticlesPageRequestLoaded(
+        websiteTag: event.websiteTag,
         articles: response.results,
         count: response.count,
         pages: response.pages,
         fromCache: response.fromCache,
         currentPage: response.currentPage,
       ),
+    );
+  }
+
+  Stream<ArticleState> _mapArticleWebsitesToState(
+      GetArticleWebsitesRequestStarted event) async* {
+    yield const ArticlesRequestLoading();
+
+    final websitesOrError = await getArticleWebsites(NoParams());
+
+    yield websitesOrError.fold(
+      (failure) => ArticleRequestError(error: failure),
+      (websites) => ArticleWebsitesRequestLoaded(websites: websites),
     );
   }
 }

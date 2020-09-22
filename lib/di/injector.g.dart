@@ -235,18 +235,23 @@ class _$ChatInjector extends ChatInjector {
 class _$ArticleInjector extends ArticleInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory(
-        (c) => ArticleBloc(getArticles: c<UCGetArticlesPage>()));
+    container.registerFactory((c) => ArticleBloc(
+        getArticles: c<UCGetArticlesPage>(),
+        getArticleWebsites: c<UCGetArticleWebsites>()));
     container.registerSingleton<ArticleRepository>((c) => ArticleRepositoryImpl(
         remoteDatasource: c<ArticleRemoteDatasource>(),
         localDatasource: c<ArticleLocalDatasource>(),
         networkInfo: c<NetworkInfo>()));
     container.registerSingleton<ArticleRemoteDatasource>((c) =>
-        ArticleRemoteDatasourceImpl(apiService: c<ArticlesApiService>()));
+        ArticleRemoteDatasourceImpl(
+            apiService: c<ArticlesApiService>(),
+            tagsApiService: c<TagsApiService>()));
     container.registerSingleton<ArticleLocalDatasource>(
         (c) => ArticleLocalDatasourceImpl());
     container
         .registerSingleton((c) => UCGetArticlesPage(c<ArticleRepository>()));
+    container
+        .registerSingleton((c) => UCGetArticleWebsites(c<ArticleRepository>()));
   }
 }
 

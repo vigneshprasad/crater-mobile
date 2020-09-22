@@ -21,6 +21,6 @@ abstract class ArticlesApiService extends ChopperService {
   }
 
   @Get(path: '')
-  Future<Response> getArticlesPage(
-      @Query() int page, @Query("page_size") int pageSize);
+  Future<Response> getArticlesPage(@Query() int page,
+      @Query("page_size") int pageSize, @Query("website_tags") int websiteTags);
 }
