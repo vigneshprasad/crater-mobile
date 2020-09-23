@@ -4,15 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
-import 'package:worknetwork/features/auth/data/models/user_model.dart';
-import 'package:worknetwork/utils/analytics_helpers.dart';
 
+import '../../../../core/analytics/analytics.dart';
+import '../../../../core/analytics/anlytics_events.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/push_notfications/push_notifications.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../../core/validators/validators.dart';
+import '../../../../utils/analytics_helpers.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../../domain/entity/user_entity.dart';
 import '../../domain/entity/user_profile_entity.dart';
@@ -112,7 +111,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   properties: getUserTraitsFromModel(user));
               yield profileOrError.fold(
                 (profileFailure) => AuthStateSuccess(user: user, profile: null),
-                (profile) => AuthStateSuccess(user: user, profile: profile),
+                (profile) {
+                  analytics.identify(
+                      properties: getProfileTraitsFromModel(profile));
+                  return AuthStateSuccess(user: user, profile: profile);
+                },
               );
             },
           );
