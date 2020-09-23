@@ -81,9 +81,11 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            manifestPlaceholders = [segmentDebugMode: "true", segmentWriteKey: "OV2KWxTSYAcsdmMb7gvHGkWYVMdKV2Dn"]
         }
         release {
             signingConfig signingConfigs.release
+            manifestPlaceholders = [segmentDebugMode: "false", segmentWriteKey: "iGbaBkLh7gb9l1rkZjGFSqmzkj13z4YN"]
         }
     }
 

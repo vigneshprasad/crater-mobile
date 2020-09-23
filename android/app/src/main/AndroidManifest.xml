@@ -74,9 +74,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.claimsforce.segment.WRITE_KEY" android:value="xVxQBw09BSYzTQFhoHlVepB9BQ11CKQe" />
+        <meta-data android:name="com.claimsforce.segment.WRITE_KEY" android:value="${segmentWriteKey}" />
         <meta-data android:name="com.claimsforce.segment.TRACK_APPLICATION_LIFECYCLE_EVENTS" android:value="true" />
-        <meta-data android:name="com.claimsforce.segment.DEBUG" android:value="true" />
+        <meta-data android:name="com.claimsforce.segment.DEBUG" android:value="${segmentDebugMode}" />
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

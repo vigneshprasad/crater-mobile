@@ -23,9 +23,11 @@ class LoggerImpl implements Logger {
     dynamic exception,
     StackTrace stackTrace,
   }) async {
-    final event =
-        await getSentryEvent(exception: exception, stackTrace: stackTrace);
-    await sentryClient.capture(event: event);
+    if (ConfigReader.getEnv() == "prod") {
+      final event =
+          await getSentryEvent(exception: exception, stackTrace: stackTrace);
+      await sentryClient.capture(event: event);
+    }
   }
 
   Future<Event> getSentryEvent({
