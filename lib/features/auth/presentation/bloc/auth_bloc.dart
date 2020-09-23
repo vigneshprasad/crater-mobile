@@ -4,6 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/utils/analytics_helpers.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/push_notfications/push_notifications.dart';
@@ -37,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UCLoginEmail loginEmail;
   final UCGetSocialAuthToken socialAuthToken;
   final UCRegisterEmail registerEmail;
+  final Analytics analytics;
 
   AuthBloc({
     @required this.getUser,
@@ -50,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.loginEmail,
     @required this.socialAuthToken,
     @required this.registerEmail,
+    @required this.analytics,
   })  : assert(getUser != null),
         assert(getUserProfile != null),
         assert(pushNotifications != null),
@@ -61,6 +67,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         assert(loginEmail != null),
         assert(socialAuthToken != null),
         assert(registerEmail != null),
+        assert(analytics != null),
         super(const AuthStateInitial());
 
   @override
@@ -101,6 +108,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             },
             (user) async* {
               final profileOrError = await getUserProfile(NoParams());
+              await analytics.identify(
+                  properties: getUserTraitsFromModel(user));
               yield profileOrError.fold(
                 (profileFailure) => AuthStateSuccess(user: user, profile: null),
                 (profile) => AuthStateSuccess(user: user, profile: profile),
@@ -135,33 +144,52 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (failure) async* {
         yield AuthRequestFailure(error: failure);
       },
-      (token) => _mapSocialAuthBackendCallToState(() {
-        if (provider == SocialAuthProviders.google) {
-          return authGoogle(GoogleAuthParams(osId: osId, token: token.token));
-        } else if (provider == SocialAuthProviders.linkedin) {
-          return authLinkedIn(LinkedAuthParams(osId: osId, token: token.token));
-        } else if (provider == SocialAuthProviders.facebook) {
-          return authFacebook(
-              FacebookAuthParams(osId: osId, token: token.token));
-        } else if (provider == SocialAuthProviders.apple) {
-          return authWithApple(AppleAuthParams(osId: osId, token: token.token));
-        }
-        return Future.value(Left(ServerFailure()));
-      }),
+      (token) => _mapSocialAuthBackendCallToState(
+        () {
+          if (provider == SocialAuthProviders.google) {
+            return authGoogle(GoogleAuthParams(osId: osId, token: token.token));
+          } else if (provider == SocialAuthProviders.linkedin) {
+            return authLinkedIn(
+                LinkedAuthParams(osId: osId, token: token.token));
+          } else if (provider == SocialAuthProviders.facebook) {
+            return authFacebook(
+                FacebookAuthParams(osId: osId, token: token.token));
+          } else if (provider == SocialAuthProviders.apple) {
+            return authWithApple(
+                AppleAuthParams(osId: osId, token: token.token));
+          }
+          return Future.value(Left(ServerFailure()));
+        },
+        provider,
+      ),
     );
   }
 
   Stream<AuthState> _mapSocialAuthBackendCallToState(
-      Future<Either<Failure, User>> Function() callback) async* {
+    Future<Either<Failure, User>> Function() callback,
+    SocialAuthProviders provider,
+  ) async* {
     yield state.loading();
 
     final respose = await callback();
     yield respose.fold(
       (failure) => AuthRequestFailure(error: failure),
-      (user) => AuthStateSuccess(
-        user: user,
-        profile: state.profile,
-      ),
+      (user) {
+        analytics.identify(properties: getUserTraitsFromModel(user));
+        analytics.trackEvent(
+          eventName: AnalyticsEvents.authSocial,
+          properties: {
+            "email": user.email,
+            "intent": user.intent,
+            "provider": provider.toString(),
+          },
+        );
+        analytics.initSdk();
+        return AuthStateSuccess(
+          user: user,
+          profile: state.profile,
+        );
+      },
     );
   }
 
@@ -177,10 +205,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
-        (user) => AuthStateSuccess(
-          user: user,
-          profile: state.profile,
-        ),
+        (user) {
+          analytics.identify(properties: getUserTraitsFromModel(user));
+          analytics.trackEvent(
+            eventName: AnalyticsEvents.signInemail,
+            properties: {
+              "email": user.email,
+              "intent": user.intent,
+            },
+          );
+          analytics.initSdk();
+          return AuthStateSuccess(
+            user: user,
+            profile: state.profile,
+          );
+        },
       );
     }
   }
@@ -199,10 +238,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield registerOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
-        (user) => AuthStateSuccess(
-          user: user,
-          profile: state.profile,
-        ),
+        (user) {
+          analytics.identify(properties: getUserTraitsFromModel(user));
+          analytics.trackEvent(
+            eventName: AnalyticsEvents.signUpEmail,
+            properties: {
+              "email": user.email,
+              "intent": user.intent,
+            },
+          );
+          analytics.initSdk();
+          return AuthStateSuccess(
+            user: user,
+            profile: state.profile,
+          );
+        },
       );
     }
   }

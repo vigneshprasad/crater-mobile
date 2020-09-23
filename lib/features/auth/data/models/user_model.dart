@@ -91,6 +91,9 @@ class UserModel extends User {
   @JsonKey(name: "linkedin_url")
   String linkedinUrl;
 
+  @HiveField(22)
+  String intent;
+
   UserModel({
     this.token,
     this.pk,
@@ -114,6 +117,7 @@ class UserModel extends User {
     this.isApproved,
     this.objectives,
     this.linkedinUrl,
+    this.intent,
   }) : super(
           token: token,
           pk: pk,
@@ -137,6 +141,7 @@ class UserModel extends User {
           isApproved: isApproved,
           objectives: objectives,
           linkedinUrl: linkedinUrl,
+          intent: intent,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -166,6 +171,7 @@ class UserModel extends User {
     bool isApproved,
     List<int> objectives,
     String linkedinUrl,
+    String intent,
   }) {
     return UserModel(
       token: token ?? this.token,
@@ -192,6 +198,7 @@ class UserModel extends User {
       isApproved: isApproved ?? this.isApproved,
       objectives: objectives ?? this.objectives,
       linkedinUrl: linkedinUrl ?? this.linkedinUrl,
+      intent: intent ?? this.intent,
     );
   }
 }

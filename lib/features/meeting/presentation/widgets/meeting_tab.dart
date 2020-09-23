@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
-import '../../../../utils/app_localizations.dart';
+import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
@@ -32,6 +34,7 @@ class MeetingTab extends HomeScreenTab {
 }
 
 class _MeetingTabState extends State<MeetingTab> {
+  final Analytics analytics = KiwiContainer().resolve<Analytics>();
   MeetingConfig _meetingConfig;
   UserMeetingPreference _preference;
   MeetingBloc _bloc;
@@ -115,6 +118,13 @@ class _MeetingTabState extends State<MeetingTab> {
   }
 
   void _onPressRegisterMeets() {
+    analytics.trackEvent(
+      eventName: AnalyticsEvents.meetingRegistrationButtonClick,
+      properties: {
+        "week_start_date": _meetingConfig.weekStartDate,
+        "meeting": _meetingConfig.pk,
+      },
+    );
     Navigator.of(context).push(RegisterMeetOverlay(
       meeting: _meetingConfig,
       preference: _preference,
@@ -140,6 +150,21 @@ class _MeetingTabState extends State<MeetingTab> {
           duration: Duration(seconds: 2),
         ),
       );
+      analytics.trackEvent(
+        eventName: AnalyticsEvents.registerMeetingPreferences,
+        properties: {
+          "week_start_date": _meetingConfig.weekStartDate,
+          "week_end_date": _meetingConfig.weekEndDate,
+          "number_of_meetings": state.preferences.numberOfMeetings,
+          "time_slots": _getSelectedTimeSlotNames(state.preferences.timeSlots),
+          "objective": _objectives
+              .firstWhere(
+                  (element) => element.key == state.preferences.objective)
+              .label,
+          "interests": _getSelectedInterestNames(state.preferences.interests),
+          "meeting": state.preferences.meeting,
+        },
+      );
       setState(() {
         _preference = state.preferences;
       });
@@ -147,6 +172,27 @@ class _MeetingTabState extends State<MeetingTab> {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.profile));
     }
+  }
+
+  List<String> _getSelectedInterestNames(List<int> selected) {
+    return _interests
+        .where((element) => selected.contains(element.pk))
+        .map((e) => e.name)
+        .toList();
+  }
+
+  List<String> _getSelectedTimeSlotNames(List<int> selected) {
+    return _meetingConfig.availableTimeSlots.entries.fold(
+      [],
+      (previousValue, element) {
+        for (final timeSlot in element.value) {
+          if (selected.contains(timeSlot.pk)) {
+            previousValue.add("${timeSlot.start} - ${timeSlot.end}");
+          }
+        }
+        return previousValue;
+      },
+    );
   }
 
   Future<void> _onRefreshTab() {

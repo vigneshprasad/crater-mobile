@@ -20,7 +20,7 @@ class ObjectivesScreen extends StatefulWidget {
 class _ObjectivesScreenState extends State<ObjectivesScreen> {
   ObjectivesBloc _bloc;
   List<UserObjective> _objectives;
-  List<int> _selectedObjectives;
+  List<UserObjective> _selectedObjectives;
 
   @override
   void initState() {
@@ -133,13 +133,11 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   void _onPressedObjectiveItem(UserObjective item, bool isSelected) {
     if (isSelected) {
       setState(() {
-        _selectedObjectives = (_selectedObjectives..add(item.pk));
+        _selectedObjectives = (_selectedObjectives..add(item));
       });
     } else {
       setState(() {
-        _selectedObjectives = [
-          ..._selectedObjectives.where((element) => element != item.pk)
-        ];
+        _selectedObjectives = (_selectedObjectives..remove(item));
       });
     }
   }

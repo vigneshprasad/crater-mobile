@@ -14,6 +14,7 @@ import '../api/post/post_api_service.dart';
 import '../api/tags/tags_api_service.dart';
 import '../api/user/user_api_service.dart';
 import '../constants/app_constants.dart';
+import '../core/analytics/analytics.dart';
 import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -135,6 +136,7 @@ abstract class CoreInjector {
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
   @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
+  @Register.singleton(Analytics, from: AnalyticsImpl)
   void configure();
 }
 

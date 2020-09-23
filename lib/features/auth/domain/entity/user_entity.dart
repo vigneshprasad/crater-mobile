@@ -45,6 +45,8 @@ class User extends HiveObject {
 
   final String linkedinUrl;
 
+  final String intent;
+
   User({
     this.token,
     this.pk,
@@ -68,6 +70,7 @@ class User extends HiveObject {
     this.isApproved,
     this.objectives,
     this.linkedinUrl,
+    this.intent,
   });
 
   User copyWith({
@@ -93,6 +96,7 @@ class User extends HiveObject {
     bool isApproved,
     List<int> objectives,
     String linkedinUrl,
+    String intent,
   }) {
     return User(
       token: token ?? this.token,
@@ -119,6 +123,7 @@ class User extends HiveObject {
       isApproved: isApproved ?? this.isApproved,
       objectives: objectives ?? this.objectives,
       linkedinUrl: linkedinUrl ?? this.linkedinUrl,
+      intent: intent ?? this.intent,
     );
   }
 }

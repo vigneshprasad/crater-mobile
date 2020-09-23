@@ -39,13 +39,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       isApproved: fields[19] as bool,
       objectives: (fields[20] as List)?.cast<int>(),
       linkedinUrl: fields[21] as String,
+      intent: fields[22] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(23)
       ..writeByte(0)
       ..write(obj.token)
       ..writeByte(1)
@@ -89,7 +90,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(20)
       ..write(obj.objectives)
       ..writeByte(21)
-      ..write(obj.linkedinUrl);
+      ..write(obj.linkedinUrl)
+      ..writeByte(22)
+      ..write(obj.intent);
   }
 
   @override
@@ -132,6 +135,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     isApproved: json['is_approved'] as bool,
     objectives: (json['objectives'] as List)?.map((e) => e as int)?.toList(),
     linkedinUrl: json['linkedin_url'] as String,
+    intent: json['intent'] as String,
   );
 }
 
@@ -158,4 +162,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'is_approved': instance.isApproved,
       'objectives': instance.objectives,
       'linkedin_url': instance.linkedinUrl,
+      'intent': instance.intent,
     };

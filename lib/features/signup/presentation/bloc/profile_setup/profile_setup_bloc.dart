@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/domain/usecase/post_user_profile_usecase.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
+import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/usecase/aysnc_usecase.dart';
+import '../../../../auth/domain/entity/user_profile_entity.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
+import '../../../../auth/domain/usecase/post_user_profile_usecase.dart';
 import '../../../domain/usecase/get_user_tags_usecase.dart';
 
 part 'profile_setup_event.dart';
@@ -17,12 +19,15 @@ part 'profile_setup_state.dart';
 class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
   final UCGetUserTags getUserTags;
   final UCPostUserProfile postUserProfile;
+  final Analytics analytics;
 
   ProfileSetupBloc({
     @required this.getUserTags,
     @required this.postUserProfile,
+    @required this.analytics,
   })  : assert(getUserTags != null),
         assert(postUserProfile != null),
+        assert(analytics != null),
         super(const ProfileSetupInitial());
 
   @override
@@ -53,7 +58,7 @@ class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
     final Map<String, dynamic> body = {
       "linkedin_url": event.linkedinUrl,
       "photo_url": event.photoUrl,
-      "tags": event.userTags,
+      "tags": event.userTags.map((e) => e.pk).toList(),
     };
     if (event.name.trim().isNotEmpty) {
       body["name"] = event.name;
@@ -63,7 +68,19 @@ class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
 
     yield profileOrError.fold(
       (failure) => ProfileSetupRequestError(error: failure),
-      (profile) => PostUserProfileRequestLoaded(profile: profile),
+      (profile) {
+        final properties = {
+          "linkedin_url": profile.linkedinUrl,
+          "name": profile.name,
+          "user_tags": event.userTags.map((e) => e.name).toList(),
+        };
+        analytics.identify(properties: properties);
+        analytics.trackEvent(
+          eventName: AnalyticsEvents.signUpBasicProfile,
+          properties: properties,
+        );
+        return PostUserProfileRequestLoaded(profile: profile);
+      },
     );
   }
 }

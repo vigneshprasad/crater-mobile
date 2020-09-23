@@ -19,12 +19,14 @@ class PostNewPhoneNumberRequestStarted extends PhoneVerifyEvent {
 }
 
 class PostSmsCodeRequestStarted extends PhoneVerifyEvent {
+  final String phoneNumber;
   final String smsCode;
 
   const PostSmsCodeRequestStarted({
-    this.smsCode,
+    @required this.smsCode,
+    @required this.phoneNumber,
   });
 
   @override
-  List<Object> get props => [smsCode];
+  List<Object> get props => [smsCode, phoneNumber];
 }
