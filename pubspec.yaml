@@ -67,6 +67,7 @@ dependencies:
   sign_in_with_apple: ^2.5.2
   shimmer: ^1.1.1
   flutter_segment: ^3.0.0
+  sentry: ">=3.0.0 <4.0.0"
 
 dev_dependencies:
   flutter_test:

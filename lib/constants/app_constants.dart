@@ -21,6 +21,9 @@ class AppConstants {
   static const appleClientId = "com.wurknet.mobile.service";
   static const appleRedirectUri = "$apiBaseUrl/connect/apple";
 
+  static const sentryDsn =
+      "https://031858ce7cf54ad980fa4ed132099a0c@o410273.ingest.sentry.io/5438229";
+
   static const defaultAvatar = {
     "a":
         'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/A.png',

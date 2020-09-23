@@ -17,6 +17,7 @@ class _$CoreInjector extends CoreInjector {
     container.registerSingleton<LocalStorage>((c) => LocalStorageImpl());
     container.registerSingleton<Analytics>((c) => AnalyticsImpl(
         c<PushNotifications>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
+    container.registerSingleton<Logger>((c) => LoggerImpl(c<SentryClient>()));
   }
 }
 

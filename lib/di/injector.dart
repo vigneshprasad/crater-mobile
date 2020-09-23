@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:sentry/sentry.dart';
+import 'package:worknetwork/core/logger/logger.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -137,6 +139,7 @@ abstract class CoreInjector {
   @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
   @Register.singleton(Analytics, from: AnalyticsImpl)
+  @Register.singleton(Logger, from: LoggerImpl)
   void configure();
 }
 
@@ -370,6 +373,7 @@ class Di {
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
+    container.registerInstance(SentryClient(dsn: AppConstants.sentryDsn));
     container.registerInstance(FacebookLogin());
     container.registerInstance(GlobalKey<NavigatorState>());
   }
