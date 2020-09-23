@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
 
-import '../../constants/app_constants.dart';
+import '../../core/config_reader/config_reader.dart';
 import '../interceptors/authorized_interceptor.dart';
 
 part 'points_api_service.chopper.dart';
@@ -9,7 +9,7 @@ part 'points_api_service.chopper.dart';
 abstract class PointsApiService extends ChopperService {
   static PointsApiService create() {
     final client = ChopperClient(
-      baseUrl: AppConstants.apiBaseUrl,
+      baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
         _$PointsApiService(),
       ],

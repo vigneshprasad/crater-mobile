@@ -3,8 +3,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:worknetwork/constants/app_constants.dart';
 
+import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../domain/entity/access_token.dart';
@@ -34,8 +34,8 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: AppConstants.appleClientId,
-          redirectUri: Uri.parse(AppConstants.appleRedirectUri),
+          clientId: ConfigReader.getAppleClientId(),
+          redirectUri: Uri.parse(ConfigReader.getAppleRedirectUrl()),
         ),
       );
       return AccessToken(creds.authorizationCode);

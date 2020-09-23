@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
 
+import '../../features/chat/data/models/chat_message_model.dart';
 import '../../routes.gr.dart';
+import '../config_reader/config_reader.dart';
 
 abstract class PushNotifications {
   Future<void> initSdk();
-  Future<String> getSubscribtionsToken();
+  Future<String> getSubscriptionToken();
   Future<String> getPushToken();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
@@ -17,7 +17,7 @@ abstract class PushNotifications {
 
 class PushNotificationsImpl implements PushNotifications {
   @override
-  Future<String> getSubscribtionsToken() async {
+  Future<String> getSubscriptionToken() async {
     final sub = await OneSignal.shared.getPermissionSubscriptionState();
     return sub.subscriptionStatus.userId;
   }
@@ -55,7 +55,7 @@ class PushNotificationsImpl implements PushNotifications {
     };
 
     await OneSignal.shared.init(
-      AppConstants.oneSignalAppId,
+      ConfigReader.getOneSignalAppId(),
       iOSSettings: settings,
     );
 

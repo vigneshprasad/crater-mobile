@@ -4,7 +4,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
-import 'package:worknetwork/core/logger/logger.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -17,6 +16,7 @@ import '../api/tags/tags_api_service.dart';
 import '../api/user/user_api_service.dart';
 import '../constants/app_constants.dart';
 import '../core/analytics/analytics.dart';
+import '../core/config_reader/config_reader.dart';
 import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -28,6 +28,7 @@ import '../core/features/websocket/domain/usecase/get_websocket_state.dart';
 import '../core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../core/local_storage/local_storage.dart';
+import '../core/logger/logger.dart';
 import '../core/network_info/network_info.dart';
 import '../core/push_notfications/push_notifications.dart';
 import '../features/article/data/datasources/article_local_datasource.dart';
@@ -373,7 +374,7 @@ class Di {
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
-    container.registerInstance(SentryClient(dsn: AppConstants.sentryDsn));
+    container.registerInstance(SentryClient(dsn: ConfigReader.getSentryDsn()));
     container.registerInstance(FacebookLogin());
     container.registerInstance(GlobalKey<NavigatorState>());
   }

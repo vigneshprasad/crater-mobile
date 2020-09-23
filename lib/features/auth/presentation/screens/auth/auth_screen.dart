@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 
-import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/config_reader/config_reader.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
@@ -35,9 +35,9 @@ class _AuthScreenState extends State<AuthScreen> {
   void initState() {
     LinkedInLogin.initialize(
       context,
-      clientId: AppConstants.linkedinClientId,
-      clientSecret: AppConstants.linkedinSecret,
-      redirectUri: AppConstants.linkedinRedirect,
+      clientId: ConfigReader.getLinkedInClientId(),
+      clientSecret: ConfigReader.getLinkedInSecret(),
+      redirectUri: ConfigReader.getLinkedInRedirect(),
     );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();

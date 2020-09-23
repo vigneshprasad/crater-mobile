@@ -68,6 +68,8 @@ dependencies:
   shimmer: ^1.1.1
   flutter_segment: ^3.0.0
   sentry: ">=3.0.0 <4.0.0"
+  device_info: ^0.4.2+8
+  package_info: ^0.4.3
 
 dev_dependencies:
   flutter_test:
@@ -97,6 +99,7 @@ flutter:
     - assets/svg/
     - assets/icons/
     - lang/en.json
+    - config/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

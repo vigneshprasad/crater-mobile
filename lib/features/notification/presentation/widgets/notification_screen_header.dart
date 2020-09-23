@@ -27,7 +27,6 @@ class NotifficationScreenHeader extends SliverPersistentHeaderDelegate {
         builder: (context, constraints) {
           return Stack(
             fit: StackFit.expand,
-            overflow: Overflow.clip,
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 400),
