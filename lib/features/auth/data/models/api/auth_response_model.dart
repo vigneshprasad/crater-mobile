@@ -41,5 +41,6 @@ class AuthResponseModel {
         isApproved: user.isApproved,
         objectives: user.objectives,
         linkedinUrl: user.linkedinUrl,
+        intent: user.intent,
       );
 }

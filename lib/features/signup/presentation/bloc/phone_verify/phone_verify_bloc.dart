@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
+import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../domain/usecase/post_new_phone_number_usecase.dart';
 import '../../../domain/usecase/post_sms_code_usecase.dart';
@@ -14,12 +16,15 @@ part 'phone_verify_state.dart';
 class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
   final UCPostNewPhoneNumber postNewPhoneNumber;
   final UCPostSmsCode postSmsCode;
+  final Analytics analytics;
 
   PhoneVerifyBloc({
     @required this.postNewPhoneNumber,
     @required this.postSmsCode,
+    @required this.analytics,
   })  : assert(postNewPhoneNumber != null),
         assert(postSmsCode != null),
+        assert(analytics != null),
         super(const PhoneVerifyInitial());
 
   @override
@@ -53,7 +58,19 @@ class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
 
     yield sentOrError.fold(
       (failure) => PhoneVerifyRequestError(error: failure),
-      (response) => PhoneSmsCodeRequestLoaded(status: response.status),
+      (response) {
+        analytics.identify(properties: {
+          "phone_number": event.phoneNumber,
+          "phone_number_verified": true,
+        });
+        analytics.trackEvent(
+          eventName: AnalyticsEvents.signUpPhoneVerified,
+          properties: {
+            "phone_number": event.phoneNumber,
+          },
+        );
+        return PhoneSmsCodeRequestLoaded(status: response.status);
+      },
     );
   }
 }

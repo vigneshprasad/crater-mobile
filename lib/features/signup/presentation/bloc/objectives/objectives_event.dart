@@ -12,7 +12,7 @@ class GetObjectivesRequestStarted extends ObjectivesEvent {
 }
 
 class PostObjectivesRequestStarted extends ObjectivesEvent {
-  final List<int> objectives;
+  final List<UserObjective> objectives;
 
   const PostObjectivesRequestStarted({
     @required this.objectives,

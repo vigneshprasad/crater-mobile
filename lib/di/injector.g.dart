@@ -15,6 +15,9 @@ class _$CoreInjector extends CoreInjector {
         .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
     container.registerSingleton<DeepLinkManager>((c) => DeepLinkManagerImpl());
     container.registerSingleton<LocalStorage>((c) => LocalStorageImpl());
+    container.registerSingleton<Analytics>((c) => AnalyticsImpl(
+        c<PushNotifications>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
+    container.registerSingleton<Logger>((c) => LoggerImpl(c<SentryClient>()));
   }
 }
 
@@ -62,7 +65,8 @@ class _$AuthInjector extends AuthInjector {
         authFacebook: c<UCFacebookAuth>(),
         loginEmail: c<UCLoginEmail>(),
         socialAuthToken: c<UCGetSocialAuthToken>(),
-        registerEmail: c<UCRegisterEmail>()));
+        registerEmail: c<UCRegisterEmail>(),
+        analytics: c<Analytics>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
     container.registerSingleton<AuthRemoteDataSource>((c) =>
@@ -93,13 +97,16 @@ class _$SignupInjector extends SignupInjector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ObjectivesBloc(
         getUserObjectives: c<UCGetUserObjectives>(),
-        patchUser: c<UCPatchUser>()));
+        patchUser: c<UCPatchUser>(),
+        analytics: c<Analytics>()));
     container.registerFactory((c) => ProfileSetupBloc(
         getUserTags: c<UCGetUserTags>(),
-        postUserProfile: c<UCPostUserProfile>()));
+        postUserProfile: c<UCPostUserProfile>(),
+        analytics: c<Analytics>()));
     container.registerFactory((c) => PhoneVerifyBloc(
         postNewPhoneNumber: c<UCPostNewPhoneNumber>(),
-        postSmsCode: c<UCPostSmsCode>()));
+        postSmsCode: c<UCPostSmsCode>(),
+        analytics: c<Analytics>()));
     container.registerSingleton<SignupRepository>(
         (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
     container.registerSingleton<SignupRemoteDatasource>((c) =>
@@ -139,8 +146,8 @@ class _$CommunityInjector extends CommunityInjector {
         getPost: c<UCGetPost>(),
         getCommentsPage: c<UCGetCommentsPage>(),
         createComment: c<UCCreateCommentPost>()));
-    container
-        .registerFactory((c) => CreatePostBloc(createPost: c<UCCreatePost>()));
+    container.registerFactory((c) => CreatePostBloc(
+        createPost: c<UCCreatePost>(), analytics: c<Analytics>()));
     container.registerSingleton<CommunityRepository>((c) =>
         CommunityRepositoryImpl(
             remoteDatasource: c<CommunityRemoteDatasource>(),

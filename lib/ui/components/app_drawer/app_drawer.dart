@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
@@ -176,6 +177,7 @@ class AppDrawer extends StatelessWidget {
 
   Future<void> _handleLogout(BuildContext context) async {
     BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
+    await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
     ExtendedNavigator.of(context)

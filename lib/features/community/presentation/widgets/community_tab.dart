@@ -57,32 +57,34 @@ class _CommunityTabState extends State<CommunityTab> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<CommunityBloc, CommunityState>(
       listener: _blocListener,
       builder: (context, state) {
         return BlocBuilder<AuthBloc, AuthState>(
           builder: (context, authState) {
-            if (authState is AuthStateSuccess) {
-              final user = authState.user;
-              return HomeTabLayout(
-                onRefresh: _onRefreshList,
-                listController: _controller,
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.med,
-                      vertical: AppInsets.l,
-                    ),
-                    sliver: _showShimmer
-                        ? _buildShimmerList()
-                        : _buildPostsList(user),
+            final user = authState.user;
+            return HomeTabLayout(
+              onRefresh: _onRefreshList,
+              listController: _controller,
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.med,
+                    vertical: AppInsets.l,
                   ),
-                ],
-              );
-            } else {
-              return Container();
-            }
+                  sliver: _showShimmer
+                      ? _buildShimmerList()
+                      : _buildPostsList(user),
+                ),
+              ],
+            );
           },
         );
       },

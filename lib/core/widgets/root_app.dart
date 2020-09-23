@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:flutter_segment/flutter_segment.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
+import '../analytics/analytics.dart';
 import '../features/deep_link_manager/deep_link_manager.dart';
 import '../push_notfications/push_notifications.dart';
 import '../status_bar_color/status_bar_color.dart';
@@ -22,11 +24,16 @@ class _RootAppState extends State<RootApp> {
 
   @override
   void initState() {
+    initApp();
+    super.initState();
+  }
+
+  void initApp() async {
     _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
     KiwiContainer().resolve<PushNotifications>().initSdk();
     StatusBarColor.setTheme(ThemeType.light);
     KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
-    super.initState();
+    KiwiContainer().resolve<Analytics>().initSdk();
   }
 
   @override
@@ -65,6 +72,9 @@ class _RootAppState extends State<RootApp> {
             router: Router(),
             initialRoute: "/",
             navigatorKey: _navigatorKey,
+            observers: [
+              SegmentObserver(),
+            ],
             builder: (context, child) {
               return Theme(
                 data: AppTheme.lightTheme,

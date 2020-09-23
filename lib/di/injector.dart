@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:sentry/sentry.dart';
+import 'package:worknetwork/core/logger/logger.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -14,6 +16,7 @@ import '../api/post/post_api_service.dart';
 import '../api/tags/tags_api_service.dart';
 import '../api/user/user_api_service.dart';
 import '../constants/app_constants.dart';
+import '../core/analytics/analytics.dart';
 import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -135,6 +138,8 @@ abstract class CoreInjector {
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
   @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
+  @Register.singleton(Analytics, from: AnalyticsImpl)
+  @Register.singleton(Logger, from: LoggerImpl)
   void configure();
 }
 
@@ -368,6 +373,7 @@ class Di {
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
+    container.registerInstance(SentryClient(dsn: AppConstants.sentryDsn));
     container.registerInstance(FacebookLogin());
     container.registerInstance(GlobalKey<NavigatorState>());
   }

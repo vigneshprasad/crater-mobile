@@ -9,6 +9,7 @@ import '../../routes.gr.dart';
 abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscribtionsToken();
+  Future<String> getPushToken();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
   void handleNotificationReceived(OSNotification notification);
@@ -19,6 +20,12 @@ class PushNotificationsImpl implements PushNotifications {
   Future<String> getSubscribtionsToken() async {
     final sub = await OneSignal.shared.getPermissionSubscriptionState();
     return sub.subscriptionStatus.userId;
+  }
+
+  @override
+  Future<String> getPushToken() async {
+    final sub = await OneSignal.shared.getPermissionSubscriptionState();
+    return sub.subscriptionStatus.pushToken;
   }
 
   @override

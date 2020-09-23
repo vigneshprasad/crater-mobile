@@ -22,3 +22,8 @@ class WebsocketLocalException implements Exception {
   final dynamic message;
   WebsocketLocalException([this.message]);
 }
+
+class AnalyticsException implements Exception {
+  final dynamic message;
+  AnalyticsException([this.message]);
+}

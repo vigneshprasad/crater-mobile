@@ -13,7 +13,7 @@ class GetUserTagsRequestStarted extends ProfileSetupEvent {
 
 class PostProfileRequestStarted extends ProfileSetupEvent {
   final String photoUrl;
-  final List<int> userTags;
+  final List<UserTag> userTags;
   final String linkedinUrl;
   final String name;
 

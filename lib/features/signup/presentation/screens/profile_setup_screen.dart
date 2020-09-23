@@ -209,7 +209,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         photoUrl: _photoUrl,
         linkedinUrl: _linkedInController.text,
         name: _name,
-        userTags: _selectedTags.map((e) => e.pk).toList(),
+        userTags: _selectedTags,
       ));
     }
   }

@@ -191,7 +191,10 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   }
 
   void _postSmsCode() {
-    _bloc.add(PostSmsCodeRequestStarted(smsCode: _smsCode));
+    _bloc.add(PostSmsCodeRequestStarted(
+      smsCode: _smsCode,
+      phoneNumber: _phoneNumber,
+    ));
   }
 
   void _onValidPhoneNumber(bool isValid) {
