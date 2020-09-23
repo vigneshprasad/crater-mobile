@@ -29,7 +29,11 @@ class _RootProviderState extends State<RootProvider> {
   void initState() {
     _authBloc = KiwiContainer().resolve<AuthBloc>();
     _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
-    _notificationBloc = KiwiContainer().resolve<NotificationBloc>();
+    _notificationBloc = KiwiContainer().resolve<NotificationBloc>()
+      ..add(const GetNotificationsRequestStarted(
+        page: 1,
+        pageSize: 10,
+      ));
     _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
     super.initState();
   }
