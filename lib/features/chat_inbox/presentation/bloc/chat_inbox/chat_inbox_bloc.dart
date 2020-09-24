@@ -98,12 +98,7 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
 
     yield usersOrError.fold(
       (failure) => ChatInboxError(error: failure),
-      (fromCache) => ChatInboxUsersResponseReceived(
-        users: const [],
-        page: fromCache.page,
-        pages: fromCache.pages,
-        fromCache: true,
-      ),
+      (fromCache) => const ChatInboxUsersRequestSent(),
     );
   }
 
