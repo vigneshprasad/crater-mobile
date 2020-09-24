@@ -3,12 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
+import '../../../core/analytics/analytics.dart';
+import '../../../core/config_reader/config_reader.dart';
 import '../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../../../core/local_storage/local_storage.dart';
 import '../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -34,11 +36,11 @@ class DrawerItem extends Equatable {
 
 class AppDrawer extends StatelessWidget {
   final List<DrawerItem> _items = const [
-    DrawerItem(
-      icon: WorkNetIcons.notification,
-      label: "drawer_item:notfication",
-      key: DrawerItemKeys.notificationSettings,
-    ),
+    // DrawerItem(
+    //   icon: WorkNetIcons.notification,
+    //   label: "drawer_item:notfication",
+    //   key: DrawerItemKeys.notificationSettings,
+    // ),
     DrawerItem(
         icon: WorkNetIcons.account,
         label: "drawer_item:acoount",
@@ -170,6 +172,9 @@ class AppDrawer extends StatelessWidget {
       case DrawerItemKeys.logout:
         _handleLogout(context);
         break;
+      case DrawerItemKeys.account:
+        _openAccountsPage(context);
+        break;
       default:
         break;
     }
@@ -182,5 +187,28 @@ class AppDrawer extends StatelessWidget {
     await KiwiContainer().resolve<LocalStorage>().initStorage();
     ExtendedNavigator.of(context)
         .pushAndRemoveUntil(Routes.authScreen, (route) => false);
+  }
+
+  Future<void> _openAccountsPage(BuildContext context) async {
+    try {
+      await launch(
+        ConfigReader.getAccountPageLink(),
+        option: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          extraCustomTabs: <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(error.toString());
+    }
   }
 }
