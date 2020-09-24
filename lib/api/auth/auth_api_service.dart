@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
 
-import '../../constants/app_constants.dart';
+import '../../core/config_reader/config_reader.dart';
 
 part 'auth_api_service.chopper.dart';
 
@@ -8,7 +8,7 @@ part 'auth_api_service.chopper.dart';
 abstract class AuthApiService extends ChopperService {
   static AuthApiService create() {
     final client = ChopperClient(
-      baseUrl: AppConstants.apiBaseUrl,
+      baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
         _$AuthApiService(),
       ],

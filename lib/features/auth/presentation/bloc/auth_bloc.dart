@@ -138,7 +138,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapSocialAuthToState(AuthSocialPressed event) async* {
     final provider = event.provider;
-    final osId = await pushNotifications.getSubscribtionsToken();
+    final osId = await pushNotifications.getSubscriptionToken();
     final tokenOrFailure = await socialAuthToken(
       SocialAuthTokenParams(provider: provider),
     );
@@ -199,7 +199,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoginEmailToState(AuthLoginEmailPressed event) async* {
     if (state.isFormValid) {
       yield state.loading();
-      final osId = await pushNotifications.getSubscribtionsToken();
+      final osId = await pushNotifications.getSubscriptionToken();
       final userOrFailure = await loginEmail(EmailLoginParams(
         email: event.email,
         password: event.password,
@@ -231,7 +231,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthRegisterEmailPressed event) async* {
     if (state.isFormValid) {
       yield state.loading();
-      final osId = await pushNotifications.getSubscribtionsToken();
+      final osId = await pushNotifications.getSubscriptionToken();
       final registerOrFailure = await registerEmail(RegisterEmailParams(
         email: event.email,
         password: event.password,

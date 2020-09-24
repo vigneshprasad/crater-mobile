@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 
-import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
-import 'package:worknetwork/constants/app_constants.dart';
+import '../../core/config_reader/config_reader.dart';
+import '../interceptors/authorized_interceptor.dart';
 
 part 'meets_api_service.chopper.dart';
 
@@ -9,7 +9,7 @@ part 'meets_api_service.chopper.dart';
 abstract class MeetsApiService extends ChopperService {
   static MeetsApiService create() {
     final client = ChopperClient(
-      baseUrl: AppConstants.apiBaseUrl,
+      baseUrl: ConfigReader.getApiBaseUrl(),
       interceptors: [AuthorizedInterceptor()],
       services: [_$MeetsApiService()],
       converter: const JsonConverter(),

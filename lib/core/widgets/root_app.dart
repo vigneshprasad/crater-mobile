@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:kiwi/kiwi.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -28,7 +28,7 @@ class _RootAppState extends State<RootApp> {
     super.initState();
   }
 
-  void initApp() async {
+  Future<void> initApp() async {
     _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
     KiwiContainer().resolve<PushNotifications>().initSdk();
     StatusBarColor.setTheme(ThemeType.light);

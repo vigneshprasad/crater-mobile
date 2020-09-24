@@ -1,7 +1,8 @@
 import 'package:chopper/chopper.dart';
 import 'package:http/http.dart' hide Response, Request;
-import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
-import 'package:worknetwork/constants/app_constants.dart';
+
+import '../../core/config_reader/config_reader.dart';
+import '../interceptors/authorized_interceptor.dart';
 
 part 'post_api_service.chopper.dart';
 
@@ -9,7 +10,7 @@ part 'post_api_service.chopper.dart';
 abstract class PostApiService extends ChopperService {
   static PostApiService create() {
     final client = ChopperClient(
-      baseUrl: AppConstants.apiBaseUrl,
+      baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
         _$PostApiService(),
       ],

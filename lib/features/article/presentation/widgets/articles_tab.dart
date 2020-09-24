@@ -2,16 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
-import 'package:worknetwork/features/article/domain/entity/article_entity.dart';
-import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
-import 'package:worknetwork/features/article/presentation/widgets/articles_row_list.dart';
-import 'package:worknetwork/ui/components/article_card/article_card.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
+import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
+import '../../domain/entity/article_website_entity.dart';
 import '../bloc/article_bloc.dart';
+import 'articles_row_list.dart';
 
 class ArticlesTab extends HomeScreenTab {
   @override

@@ -1,7 +1,7 @@
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
-import '../../../../../constants/app_constants.dart';
 import '../../../../error/exceptions.dart';
 
 abstract class WebSocketRemoteDataSource {
@@ -15,8 +15,8 @@ class WebSocketRemoteDataSourceImpl implements WebSocketRemoteDataSource {
   @override
   Future<WebSocketChannel> connectToWebsocketBackend(String token) async {
     try {
-      final channel = IOWebSocketChannel.connect(
-          "${AppConstants.websocketBaseUrl}/$token/");
+      final baseUrl = ConfigReader.getWebSocketBaseUrl();
+      final channel = IOWebSocketChannel.connect("$baseUrl/$token/");
       return channel;
     } catch (error) {
       throw WebsocketServerException(error);

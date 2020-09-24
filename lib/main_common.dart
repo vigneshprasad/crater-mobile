@@ -3,22 +3,34 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/logger/logger.dart';
 
+import 'core/config_reader/config_reader.dart';
+import 'core/environments/environments.dart';
 import 'core/local_storage/local_storage.dart';
+import 'core/logger/logger.dart';
 import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
 import 'utils/simple_bloc_observer.dart';
 
-Future<void> main() async {
+Future<void> mainCommon(String configPath, String env) async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = SimpleBlocObserver();
+
+  // Load Configurations
+  await ConfigReader.intialize(configPath);
+
+  // Bloc Logger
+  if (env != Environment.prod) {
+    Bloc.observer = SimpleBlocObserver();
+  }
+
+  // Setup KiwiContainer (Dependency Injection Contianers)
   Di.setup();
   await KiwiContainer().resolve<LocalStorage>().initSdk();
   KiwiContainer().resolve<LocalStorage>().registerAdapters();
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   final Logger logger = KiwiContainer().resolve<Logger>();
 
+  // Run App wrapped with Sentry Logger
   runZonedGuarded(
     () => runApp(RootApp()),
     (error, stackTrace) async {

@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
-import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
-import 'package:worknetwork/constants/app_constants.dart';
+
+import '../../core/config_reader/config_reader.dart';
+import '../interceptors/authorized_interceptor.dart';
 
 part 'masterclass_api_service.chopper.dart';
 
@@ -8,7 +9,7 @@ part 'masterclass_api_service.chopper.dart';
 abstract class MasterClassApiService extends ChopperService {
   static MasterClassApiService create() {
     final client = ChopperClient(
-      baseUrl: AppConstants.apiBaseUrl,
+      baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
         _$MasterClassApiService(),
       ],
