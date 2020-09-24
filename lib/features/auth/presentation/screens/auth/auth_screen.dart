@@ -72,11 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   // onTapPlayButton: _onTapPlayButton,
                 ),
                 if (state.isSubmitting != null && state.isSubmitting)
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    color: Colors.black.withOpacity(0.7),
-                  )
+                  _buildOverlay(context)
               ],
             );
           },
@@ -179,6 +175,36 @@ class _AuthScreenState extends State<AuthScreen> {
                     }
                   },
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOverlay(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.black.withOpacity(0.7),
+      child: Center(
+        child: Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 32,
+                width: 32,
+                child: CircularProgressIndicator(),
+              ),
+              const SizedBox(height: AppInsets.xl),
+              const Text("Loading..."),
             ],
           ),
         ),

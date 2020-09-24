@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -18,8 +20,19 @@ abstract class PushNotifications {
 class PushNotificationsImpl implements PushNotifications {
   @override
   Future<String> getSubscriptionToken() async {
+    final Completer<String> _completer = Completer();
     final sub = await OneSignal.shared.getPermissionSubscriptionState();
-    return sub.subscriptionStatus.userId;
+    final userId = sub.subscriptionStatus.userId;
+    if (userId == null) {
+      OneSignal.shared.setSubscriptionObserver((changes) {
+        if (changes.to.userId != null) {
+          _completer.complete(changes.to.userId);
+        }
+      });
+    } else {
+      _completer.complete(userId);
+    }
+    return _completer.future;
   }
 
   @override

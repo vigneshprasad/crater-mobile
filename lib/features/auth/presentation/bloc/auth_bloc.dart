@@ -137,8 +137,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSocialAuthToState(AuthSocialPressed event) async* {
+    yield state.loading();
     final provider = event.provider;
     final osId = await pushNotifications.getSubscriptionToken();
+    yield state.copyWith(isSubmitting: false);
     final tokenOrFailure = await socialAuthToken(
       SocialAuthTokenParams(provider: provider),
     );
