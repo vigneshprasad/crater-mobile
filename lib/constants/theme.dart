@@ -4,7 +4,7 @@ import 'package:worknetwork/utils/create_material_color.dart';
 
 mixin AppTheme {
   static const Size appBarHeight = Size.fromHeight(48);
-  static const Color primaryColor = Color(0xFFD3596C);
+  static const Color primaryColor = Color(0xFF025DA9);
   static final TextTheme primaryTextTheme = Typography.material2018().black;
   static final MaterialColor primarySwatch = createMaterialColor(primaryColor);
   static const Color blueAccent = Color(0xFF7AB9DE);

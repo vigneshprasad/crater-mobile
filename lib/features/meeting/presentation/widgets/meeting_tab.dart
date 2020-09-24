@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/analytics/analytics.dart';
+import '../../../../core/analytics/anlytics_events.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -63,7 +64,8 @@ class _MeetingTabState extends State<MeetingTab> {
                 _preference.pk == null)
               _buildEmptyState(_meetingConfig)
             else if (_meetingConfig != null && _preference.pk != null)
-              _buildPreferencesCard(context)
+              _buildRegisteredMeetingScreen(context, _meetingConfig)
+            // _buildPreferencesCard(context)
           ],
         );
       },
@@ -80,7 +82,7 @@ class _MeetingTabState extends State<MeetingTab> {
         children: <Widget>[
           const Image(
             width: 140,
-            image: AssetImage('assets/images/img_empty_meetings.png'),
+            image: AppImageAssets.emptyMeeting,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: AppInsets.med),
@@ -102,6 +104,40 @@ class _MeetingTabState extends State<MeetingTab> {
     );
   }
 
+  Widget _buildRegisteredMeetingScreen(
+      BuildContext context, MeetingConfig meeting) {
+    final formatDate = DateFormat('MMMM d');
+    final date = DateTime.parse(meeting.weekStartDate);
+
+    return SliverFillRemaining(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Image(
+            width: 140,
+            image: AppImageAssets.registeredMeeting,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: AppInsets.med),
+          SizedBox(
+            width: 320,
+            child: Text(
+              'You have signed up for a meeting for the week of ${formatDate.format(date)}. Click here to update your preferences.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+          ),
+          const SizedBox(height: AppInsets.med),
+          RaisedButton(
+            onPressed: _onPressRegisterMeets,
+            child: const Text('Update'),
+          )
+        ],
+      ),
+    );
+  }
+
+  // ignore: unused_element
   Widget _buildPreferencesCard(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: AppInsets.med),

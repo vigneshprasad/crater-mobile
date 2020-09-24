@@ -41,11 +41,16 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
+        String heading;
         final next =
             AppLocalizations.of(context).translate("next").toUpperCase();
         final user = authState.user;
-        final heading =
-            "${user.name}, who would you like us to introduce you to?";
+        if (user.name.trim().isEmpty) {
+          heading = "Hey, who would you like us to introduce you to?";
+        } else {
+          heading = "${user.name}, who would you like us to introduce you to?";
+        }
+
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
               fontWeight: FontWeight.w500,

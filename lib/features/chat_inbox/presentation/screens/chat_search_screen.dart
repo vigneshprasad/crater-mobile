@@ -36,6 +36,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _chatSearchBloc.close();
     _searchInputController.dispose();
     super.dispose();

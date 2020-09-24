@@ -23,6 +23,7 @@ class ProfileSetupScreen extends StatefulWidget {
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _linkedInController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   ProfileSetupBloc _bloc;
   String _photoUrl;
   List<UserTag> _tags;
@@ -35,6 +36,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       ..add(const GetUserTagsRequestStarted());
     _name = BlocProvider.of<AuthBloc>(context).state.user.name;
     if (_name.trim().isNotEmpty) {
+      _nameController.text = _name;
       final letter = _name.substring(0, 1).toLowerCase();
       _photoUrl = AppConstants.defaultAvatar[letter];
     } else {
@@ -49,6 +51,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   @override
   void dispose() {
     _linkedInController.dispose();
+    _nameController.dispose();
     _bloc.close();
     super.dispose();
   }
@@ -57,13 +60,18 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
+        String heading;
         final user = authState.user;
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
               fontWeight: FontWeight.w500,
             );
-        final heading =
-            "Thanks, ${user.name}.\nHow do we introduce you to others?";
+        if (user.name.trim().isEmpty) {
+          heading = "Thanks, How do we introduce you to others?";
+        } else {
+          heading = "Thanks, ${user.name}.\nHow do we introduce you to others?";
+        }
+
         final next = AppLocalizations.of(context).translate("next");
         return BlocProvider.value(
           value: _bloc,
@@ -153,15 +161,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         _tags = state.tags;
       });
     } else if (state is PostUserProfileRequestLoaded) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
-      ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
+      final bloc = BlocProvider.of<AuthBloc>(context)
+        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      if (bloc.state.user.phoneNumberVerified) {
+        ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+      } else {
+        ExtendedNavigator.of(context)
+            .popAndPush(Routes.phoneVerificationScreen);
+      }
     }
   }
 
   Widget _buildProfileForm(BuildContext context, User user) {
     final linkedinLabel =
         AppLocalizations.of(context).translate("linkedin:placeholder");
+    final nameLabel =
+        AppLocalizations.of(context).translate("name:placeholder");
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppInsets.xxl, vertical: AppInsets.l),
@@ -169,6 +184,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         key: _formKey,
         child: Column(
           children: [
+            const SizedBox(height: AppInsets.xxl),
+            BaseFormInput(
+              controller: _nameController,
+              label: nameLabel,
+              autovalidate: false,
+              validator: (value) =>
+                  value.isEmpty ? "This field is required" : null,
+            ),
             const SizedBox(height: AppInsets.xxl),
             BaseFormInput(
               controller: _linkedInController,
@@ -208,7 +231,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       _bloc.add(PostProfileRequestStarted(
         photoUrl: _photoUrl,
         linkedinUrl: _linkedInController.text,
-        name: _name,
+        name: _nameController.text,
         userTags: _selectedTags,
       ));
     }

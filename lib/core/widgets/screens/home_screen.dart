@@ -15,7 +15,6 @@ import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
-import '../../../features/videos/presentation/widgets/videos_tab.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
@@ -39,11 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentTab = 0;
 
   final List<HomeScreenTab> _screens = [
-    CommunityTab(),
     MeetingTab(),
+    CommunityTab(),
     InboxTab(),
     ArticlesTab(),
-    VideoTab()
+    // VideoTab()
   ];
 
   @override
@@ -98,16 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
     final String meetsLabel = translate("home_tab:meets");
     final String inboxLabel = translate("home_tab:inbox");
     final String articlesLabel = translate("home_tab:articles");
-    final String videosLabel = translate("home_tab:videos");
+    // final String videosLabel = translate("home_tab:videos");
 
     return [
       BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.community),
-        title: Text(communityLabel),
-      ),
-      BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.people),
         title: Text(meetsLabel),
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(WorkNetIcons.community),
+        title: Text(communityLabel),
       ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.inbox),
@@ -117,10 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: const Icon(WorkNetIcons.articles),
         title: Text(articlesLabel),
       ),
-      BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.videos),
-        title: Text(videosLabel),
-      ),
+      // BottomNavigationBarItem(
+      //   icon: const Icon(WorkNetIcons.videos),
+      //   title: Text(videosLabel),
+      // ),
     ];
   }
 
