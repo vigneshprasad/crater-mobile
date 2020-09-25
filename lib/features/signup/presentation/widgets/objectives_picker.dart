@@ -22,16 +22,28 @@ class ObjectivesPicker extends StatelessWidget {
           ? (list..add([objective]))
           : (list..last.add(objective)),
     );
+
+    rows.map((row) {
+      if (row.length < 3) {
+        final filler = List(3 - row.length);
+        row.addAll(filler.map((e) => null));
+      }
+    }).toList();
+
     return Table(
       children: rows
           .map((row) => TableRow(
                 children: row
-                    .map((col) => ObjectiveCell(
-                          item: col,
-                          onPressedItem: (item, isSelected) {
-                            onPressedItem(item, isSelected);
-                          },
-                        ))
+                    .map(
+                      (col) => col != null
+                          ? ObjectiveCell(
+                              item: col,
+                              onPressedItem: (item, isSelected) {
+                                onPressedItem(item, isSelected);
+                              },
+                            )
+                          : Container(),
+                    )
                     .toList(),
               ))
           .toList(),
