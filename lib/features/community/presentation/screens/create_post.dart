@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
+import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/domain/entity/user_entity.dart';

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/videos/data/models/video_model.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
 
 import '../../../../api/masterclass/masterclass_api_service.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../domain/entity/video_entity.dart';
+import '../models/video_model.dart';
 import '../models/videos_api_response.dart';
 
 abstract class VideoRemoteDatasource {

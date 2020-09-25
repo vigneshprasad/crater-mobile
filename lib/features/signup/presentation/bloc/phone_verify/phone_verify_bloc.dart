@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
 import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../domain/usecase/post_new_phone_number_usecase.dart';
 import '../../../domain/usecase/post_sms_code_usecase.dart';

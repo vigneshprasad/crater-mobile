@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../models/chat_user_model.dart';
 

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/usecase/sync_usecase.dart';
 
 import '../../../../error/failures.dart';
 import '../../../../usecase/aysnc_usecase.dart';
+import '../../../../usecase/sync_usecase.dart';
 import '../entity/websocket_connection.dart';
 import '../repository/websocket_repository.dart';
 

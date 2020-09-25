@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -10,6 +9,7 @@ import '../../domain/repository/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';
 import '../datasources/auth_remote_datasource.dart';
 import '../models/user_model.dart';
+import '../models/user_profile_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;

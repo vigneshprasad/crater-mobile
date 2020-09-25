@@ -1,12 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/community/domain/repository/community_repository.dart';
-
+import '../../../../core/error/failures.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/post_entity.dart';
+import '../repository/community_repository.dart';
 
 class UCGetPostsPage
     implements AsyncUseCase<PageApiResponse<Post>, GetPostPageParams> {

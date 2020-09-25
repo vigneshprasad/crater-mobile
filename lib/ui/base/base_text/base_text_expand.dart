@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../constants/theme.dart';
+import '../../../utils/app_localizations.dart';
 
 class BaseTextExpand extends StatefulWidget {
   const BaseTextExpand(

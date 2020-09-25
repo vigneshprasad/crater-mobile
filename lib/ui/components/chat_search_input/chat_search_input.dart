@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../utils/app_localizations.dart';
 
 class ChatSearchInput extends StatelessWidget {
   final TextEditingController controller;

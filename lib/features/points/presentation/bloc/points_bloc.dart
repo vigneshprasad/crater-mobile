@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
 
-import 'package:worknetwork/features/points/domain/usecases/get_self_user_points.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+import '../../domain/usecases/get_self_user_points.dart';
 
 part 'points_event.dart';
 part 'points_state.dart';

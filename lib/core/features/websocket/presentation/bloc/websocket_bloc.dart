@@ -5,12 +5,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import 'package:worknetwork/core/features/websocket/domain/usecase/add_message_to_sink.dart';
-import 'package:worknetwork/core/features/websocket/domain/usecase/close_websocket_connection.dart';
-import 'package:worknetwork/core/features/websocket/domain/usecase/get_websocket_state.dart';
-import 'package:worknetwork/core/features/websocket/domain/usecase/websocket_connect_usecase.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../usecase/aysnc_usecase.dart';
+import '../../domain/usecase/add_message_to_sink.dart';
+import '../../domain/usecase/close_websocket_connection.dart';
+import '../../domain/usecase/get_websocket_state.dart';
+import '../../domain/usecase/websocket_connect_usecase.dart';
 
 part 'websocket_event.dart';
 part 'websocket_state.dart';

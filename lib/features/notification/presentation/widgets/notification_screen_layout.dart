@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/notification/presentation/widgets/notification_screen_header.dart';
+
+import 'notification_screen_header.dart';
 
 class NotificationScreenLayout extends StatelessWidget {
   final IndexedWidgetBuilder itemBuilder;

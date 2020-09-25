@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/signup/domain/entity/user_objective_entity.dart';
 
+import '../../domain/entity/user_objective_entity.dart';
 import 'objective_cell.dart';
 
 class ObjectivesPicker extends StatelessWidget {

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:worknetwork/api/meets/meets_api_service.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/meeting/data/models/user_meeting_preference_model.dart';
-import 'package:worknetwork/features/meeting/domain/entity/user_meeting_preference_entity.dart';
-
+import '../../../../api/meets/meets_api_service.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../models/api_models.dart';
+import '../models/user_meeting_preference_model.dart';
 
 abstract class MeetingRemoteDatasource {
   Future<GetMeetingConfigApiResponse> getMeetingConfigFromRemote();

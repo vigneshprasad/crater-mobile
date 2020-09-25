@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
 
-import 'package:worknetwork/features/videos/domain/usecase/get_video_item_usecase.dart';
-import 'package:worknetwork/features/videos/domain/usecase/get_videos_list_usecase.dart';
+import '../../../domain/entity/video_entity.dart';
+import '../../../domain/usecase/get_video_item_usecase.dart';
+import '../../../domain/usecase/get_videos_list_usecase.dart';
 
 part 'video_player_event.dart';
 part 'video_player_state.dart';

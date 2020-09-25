@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/community/presentation/widgets/comments_form.dart';
+
+import '../widgets/comments_form.dart';
 
 class CommentsModal extends ModalRoute<void> {
   final int postId;

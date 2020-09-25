@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Notification;
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/notification/domain/entity/notification_entity.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../domain/entity/notification_entity.dart';
 
 class NotificationListItem extends StatelessWidget {
   final Notification notification;

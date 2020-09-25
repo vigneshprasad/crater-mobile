@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
-import 'package:worknetwork/features/videos/domain/repository/video_repository.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+import '../entity/video_entity.dart';
+import '../repository/video_repository.dart';
 
 class UCGetVideoItem implements AsyncUseCase<Video, GetVideoItemParams> {
   final VideoRepository repository;

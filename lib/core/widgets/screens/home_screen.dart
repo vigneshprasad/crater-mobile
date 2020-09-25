@@ -3,21 +3,21 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/widgets/screens/models/home_screen_tab_model.dart';
-import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
-import 'package:worknetwork/features/community/presentation/widgets/community_tab.dart';
 
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/article/presentation/bloc/article_bloc.dart';
 import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
+import '../../../features/community/domain/entity/post_entity.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
+import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
+import 'models/home_screen_tab_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tabIndex;

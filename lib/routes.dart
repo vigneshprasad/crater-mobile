@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route_annotations.dart';
-import 'package:worknetwork/features/signup/presentation/screens/phone_verification_screen.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -10,6 +9,7 @@ import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
+import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 

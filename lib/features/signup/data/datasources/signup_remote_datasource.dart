@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:worknetwork/api/user/user_api_service.dart';
-
 import '../../../../api/tags/tags_api_service.dart';
+import '../../../../api/user/user_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../auth/data/models/user_tag_model.dart';
 import '../../../auth/domain/entity/user_tag_entity.dart';

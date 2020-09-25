@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
+
+import '../../../../error/exceptions.dart';
 
 abstract class WebSocketLocalDataSource {
   /// Local Websocket channel to Backendx

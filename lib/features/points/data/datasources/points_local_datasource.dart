@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:worknetwork/features/points/data/models/points_model.dart';
-import 'package:worknetwork/features/points/domain/entity/points_entity.dart';
+
+import '../../../../constants/app_hive_boxes.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../../auth/data/datasources/auth_local_datasource.dart';
+import '../../domain/entity/points_entity.dart';
+import '../models/points_model.dart';
 
 abstract class PointsLocalDatasource {
   Points getSelfUserPointsFromCache();

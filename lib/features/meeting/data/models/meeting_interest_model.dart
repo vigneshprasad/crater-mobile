@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
+
+import '../../domain/entity/meeting_interest_entity.dart';
 
 part 'meeting_interest_model.g.dart';
 

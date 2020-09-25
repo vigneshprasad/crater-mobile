@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:worknetwork/features/community/data/models/comment_model.dart';
-import 'package:worknetwork/features/community/data/models/post_model.dart';
+import '../models/comment_model.dart';
+import '../models/post_model.dart';
 
 import '../../../../api/post/post_api_service.dart';
 import '../../../../core/error/exceptions.dart';

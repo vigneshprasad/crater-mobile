@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_config_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/user_meeting_preference_entity.dart';
+import '../../../../constants/theme.dart';
+import '../../domain/entity/meeting_config_entity.dart';
+import '../../domain/entity/meeting_interest_entity.dart';
+import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/time_slot_entity.dart';
+import '../../domain/entity/user_meeting_preference_entity.dart';
 
 class MeetingPreferencesCard extends StatelessWidget {
   final UserMeetingPreference preference;

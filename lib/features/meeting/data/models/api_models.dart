@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
-import 'package:worknetwork/features/meeting/data/models/time_slot_model.dart';
-import 'package:worknetwork/features/meeting/data/models/user_meeting_preference_model.dart';
+import 'meeting_interest_model.dart';
+import 'meeting_objective_model.dart';
+import 'time_slot_model.dart';
+import 'user_meeting_preference_model.dart';
 
 part 'api_models.g.dart';
 

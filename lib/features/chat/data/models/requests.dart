@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/core/features/websocket/data/models/ws_request.dart';
+import '../../../../core/features/websocket/data/models/ws_request.dart';
 
 part 'requests.g.dart';
 

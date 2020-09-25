@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
 
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/features/websocket/domain/repository/websocket_repository.dart';
 import '../models/requests.dart';
 

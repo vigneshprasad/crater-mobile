@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/app_constants.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../core/analytics/analytics.dart';
 import '../../../../core/analytics/anlytics_events.dart';

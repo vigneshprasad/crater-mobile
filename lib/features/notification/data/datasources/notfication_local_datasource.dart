@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
 import '../../domain/entity/notification_entity.dart';
 import '../models/notification_model.dart';

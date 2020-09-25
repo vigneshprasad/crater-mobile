@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
+
+import '../config_reader/config_reader.dart';
 
 abstract class Logger {
   Future<void> captureException({

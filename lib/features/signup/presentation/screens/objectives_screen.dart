@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';

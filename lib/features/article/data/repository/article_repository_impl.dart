@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network_info/network_info.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
 import '../../domain/entity/article_entity.dart';
+import '../../domain/entity/article_website_entity.dart';
 import '../../domain/repository/article_repository.dart';
 import '../datasources/article_local_datasource.dart';
 import '../datasources/article_remote_datasource.dart';

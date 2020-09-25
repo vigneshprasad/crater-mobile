@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/ui/base/code_input/code_input.dart';
-import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/code_input/code_input.dart';
+import '../../../../ui/base/phone_number_input/phone_number_input.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/phone_verify/phone_verify_bloc.dart';
 

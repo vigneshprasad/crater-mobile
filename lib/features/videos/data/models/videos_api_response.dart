@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/videos/data/models/video_model.dart';
+import 'video_model.dart';
 
 part 'videos_api_response.g.dart';
 

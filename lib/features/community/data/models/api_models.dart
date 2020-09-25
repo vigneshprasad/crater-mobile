@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/community/data/models/comment_model.dart';
-
+import 'comment_model.dart';
 import 'post_model.dart';
 
 part 'api_models.g.dart';
