@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getFloatingActionButton(int index) {
-    if (index == 0) {
+    if (index == 1) {
       return FloatingActionButton(
         onPressed: () {
           ExtendedNavigator.of(context)
