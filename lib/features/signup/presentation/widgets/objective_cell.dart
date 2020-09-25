@@ -45,7 +45,6 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
           height: 1.2,
           color: isSelected ? Colors.white : Colors.grey[800],
         );
-    print(widget.item.icon);
     return Container(
       margin: const EdgeInsets.all(AppInsets.med),
       height: 96,
