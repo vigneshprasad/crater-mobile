@@ -21,7 +21,7 @@ class UserProfileModel extends UserProfile {
   final String additionalInformation;
 
   @HiveField(2)
-  final String cover;
+  final int cover;
 
   @HiveField(3)
   @JsonKey(name: "cover_file")

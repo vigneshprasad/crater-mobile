@@ -74,6 +74,10 @@ class AppImageAssets {
       AssetImage("assets/images/img_article_placeholder.png");
   static const videoPlaceholder =
       AssetImage("assets/images/ic_video_placeholder.png");
+  static const emptyMeeting =
+      AssetImage("assets/images/img_empty_meetings.png");
+  static const registeredMeeting =
+      AssetImage("assets/images/img_meeting_registered.png");
 }
 
 class AppSvgAssets {

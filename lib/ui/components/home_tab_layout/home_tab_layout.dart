@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/ui/base/tab_header/tab_header.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../constants/theme.dart';
+import '../../../utils/app_localizations.dart';
+import '../../base/tab_header/tab_header.dart';
 
 class HomeTabLayout extends StatelessWidget {
   final String titleKey;

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
 
 import '../../../../constants/app_constants.dart';
+import '../../../../features/chat/domain/entity/chat_message_entity.dart';
 import '../../../../features/chat_inbox/domain/entity/chat_user_entity.dart';
 import '../../../../routes.gr.dart';
 import '../../../base/base_badge/base_badge.dart';

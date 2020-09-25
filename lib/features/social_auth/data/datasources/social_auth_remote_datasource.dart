@@ -46,7 +46,7 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
 
   @override
   Future<AccessToken> getFacebookAccessToken() async {
-    facebookLogin.loginBehavior = FacebookLoginBehavior.nativeWithFallback;
+    facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     try {
       await facebookLogin.logOut();
       final result = await facebookLogin.logIn(["email"]);

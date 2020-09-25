@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
 
+import '../../../../constants/theme.dart';
 import '../../domain/entity/video_entity.dart';
 
 class VideoScreenLayout extends StatelessWidget {

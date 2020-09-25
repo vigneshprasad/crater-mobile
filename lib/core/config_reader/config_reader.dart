@@ -34,4 +34,6 @@ abstract class ConfigReader {
       _config["APPLE_REDIRECT_URL"] as String;
 
   static String getSentryDsn() => _config["SENTRY_DSN"] as String;
+
+  static String getAccountPageLink() => _config["ACCOUNTS_PAGE_LINK"] as String;
 }

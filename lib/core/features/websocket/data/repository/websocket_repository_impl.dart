@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:worknetwork/features/auth/domain/repository/auth_repository.dart';
 
+import '../../../../../features/auth/data/datasources/auth_local_datasource.dart';
+import '../../../../../features/auth/domain/repository/auth_repository.dart';
+import '../../../../error/exceptions.dart';
 import '../../../../error/failures.dart';
 import '../../domain/entity/websocket_connection.dart';
 import '../../domain/repository/websocket_repository.dart';

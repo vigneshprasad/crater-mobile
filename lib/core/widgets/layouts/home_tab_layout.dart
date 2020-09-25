@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
+import '../../../constants/theme.dart';
 
 typedef RefreshCallback = Future<void> Function();
 

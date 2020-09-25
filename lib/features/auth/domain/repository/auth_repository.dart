@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+
+import '../../../../core/error/failures.dart';
+import '../entity/user_entity.dart';
+import '../entity/user_profile_entity.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, User>> loginwithEmail(

@@ -11,7 +11,6 @@ import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
 import '../analytics/analytics.dart';
 import '../features/deep_link_manager/deep_link_manager.dart';
-import '../push_notfications/push_notifications.dart';
 import '../status_bar_color/status_bar_color.dart';
 
 class RootApp extends StatefulWidget {
@@ -30,10 +29,9 @@ class _RootAppState extends State<RootApp> {
 
   Future<void> initApp() async {
     _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
-    KiwiContainer().resolve<PushNotifications>().initSdk();
     StatusBarColor.setTheme(ThemeType.light);
-    KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
-    KiwiContainer().resolve<Analytics>().initSdk();
+    await KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
+    await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
   @override

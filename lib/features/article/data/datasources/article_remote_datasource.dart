@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/api/tags/tags_api_service.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/article/data/models/article_website_model.dart';
-import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
 import '../../../../api/articles/articles_api_service.dart';
+import '../../../../api/tags/tags_api_service.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
 import '../../domain/entity/article_entity.dart';
+import '../../domain/entity/article_website_entity.dart';
 import '../models/api_models.dart';
+import '../models/article_website_model.dart';
 
 abstract class ArticleRemoteDatasource {
   Future<PageApiResponse<Article>> getArticePageFromRemote(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../chat_inbox/domain/entity/chat_user_entity.dart';
 
 class ChatLayout extends StatefulWidget {
   final bool userIsTyping;

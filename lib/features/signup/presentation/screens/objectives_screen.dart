@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -41,11 +41,16 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
+        String heading;
         final next =
             AppLocalizations.of(context).translate("next").toUpperCase();
         final user = authState.user;
-        final heading =
-            "${user.name}, who would you like us to introduce you to?";
+        if (user.name.trim().isEmpty) {
+          heading = "Hey, who would you like us to introduce you to?";
+        } else {
+          heading = "${user.name}, who would you like us to introduce you to?";
+        }
+
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
               fontWeight: FontWeight.w500,

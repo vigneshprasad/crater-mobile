@@ -1,7 +1,7 @@
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
 
+import '../../../../config_reader/config_reader.dart';
 import '../../../../error/exceptions.dart';
 
 abstract class WebSocketRemoteDataSource {

@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/article/data/models/article_model.dart';
-import 'package:worknetwork/features/article/data/models/article_website_model.dart';
-import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
+import '../../../../constants/app_hive_boxes.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/article_entity.dart';
+import '../../domain/entity/article_website_entity.dart';
+import '../models/article_model.dart';
+import '../models/article_website_model.dart';
 
 abstract class ArticleLocalDatasource {
   Future<void> persistArticlesToCache(List<Article> articles);

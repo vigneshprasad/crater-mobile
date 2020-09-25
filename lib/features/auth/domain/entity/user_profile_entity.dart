@@ -5,7 +5,7 @@ import 'user_tag_entity.dart';
 class UserProfile extends HiveObject {
   final int pk;
   final String additionalInformation;
-  final String cover;
+  final int cover;
   final String coverFile;
   final String coverThumbnail;
   final String coverTranscoder;

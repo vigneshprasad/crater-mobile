@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_error_text/base_error_text.dart';
 
 typedef LabelGetterFunc<T> = String Function(T item);
 typedef OnChangeItems<T> = void Function(List<T> items);

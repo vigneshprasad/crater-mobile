@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:worknetwork/constants/theme.dart';
+
+import '../../../constants/theme.dart';
 
 class Logo extends StatelessWidget {
   static const logoAsset = 'assets/svg/logo.svg';

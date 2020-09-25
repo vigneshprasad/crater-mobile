@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../app_drawer/app_drawer.dart';
 
 typedef DrawerItemCallback = void Function(DrawerItem);
 

@@ -72,11 +72,12 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.network(
-                    widget.item.icon,
-                    color: iconColor,
-                    height: 28,
-                  ),
+                  if (widget.item.icon != null)
+                    SvgPicture.network(
+                      widget.item.icon,
+                      color: iconColor,
+                      height: 28,
+                    ),
                   const SizedBox(height: AppInsets.med),
                   Text(
                     widget.item.name,

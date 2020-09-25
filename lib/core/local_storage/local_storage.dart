@@ -1,12 +1,12 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:worknetwork/features/article/data/models/article_website_model.dart';
-import 'package:worknetwork/features/auth/data/models/user_tag_model.dart';
 
 import '../../constants/app_hive_boxes.dart';
 import '../../features/article/data/models/article_model.dart';
+import '../../features/article/data/models/article_website_model.dart';
 import '../../features/auth/data/models/user_model.dart';
 import '../../features/auth/data/models/user_profile_model.dart';
+import '../../features/auth/data/models/user_tag_model.dart';
 import '../../features/chat/data/models/chat_message_model.dart';
 import '../../features/chat/data/models/user_chat_model.dart';
 import '../../features/chat_inbox/data/models/chat_user_model.dart';

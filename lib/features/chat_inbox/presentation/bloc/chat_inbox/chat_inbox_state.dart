@@ -29,6 +29,14 @@ class ChatInboxError extends ChatInboxState {
         );
 }
 
+class ChatInboxUsersRequestSent extends ChatInboxState {
+  const ChatInboxUsersRequestSent()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
 class ChatInboxUsersResponseReceived extends ChatInboxState {
   final List<ChatUser> users;
   final int page;

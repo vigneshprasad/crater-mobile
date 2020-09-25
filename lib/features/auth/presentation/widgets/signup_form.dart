@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../../../ui/base/base_large_button/base_large_button.dart';
+import '../../../../utils/app_localizations.dart';
+import '../bloc/auth_bloc.dart';
 
 class SignupForm extends StatefulWidget {
   @override

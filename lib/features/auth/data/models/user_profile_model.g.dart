@@ -19,7 +19,7 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
     return UserProfileModel(
       pk: fields[0] as int,
       additionalInformation: fields[1] as String,
-      cover: fields[2] as String,
+      cover: fields[2] as int,
       coverFile: fields[3] as String,
       coverThumbnail: fields[4] as String,
       coverTranscoder: fields[5] as String,
@@ -114,7 +114,7 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
   return UserProfileModel(
     pk: json['pk'] as int,
     additionalInformation: json['additional_information'] as String,
-    cover: json['cover'] as String,
+    cover: json['cover'] as int,
     coverFile: json['cover_file'] as String,
     coverThumbnail: json['cover_thumbnail'] as String,
     coverTranscoder: json['cover_transcoder'] as String,

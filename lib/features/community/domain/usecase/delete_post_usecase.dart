@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/community/domain/repository/community_repository.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+import '../repository/community_repository.dart';
 
 class UCDeletePost implements AsyncUseCase<int, DeletePostParams> {
   final CommunityRepository repository;

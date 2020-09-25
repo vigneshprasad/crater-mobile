@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart' hide Notification;
-import 'package:worknetwork/core/error/exceptions.dart';
 
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network_info/network_info.dart';
 import '../../../../core/page_api_response/page_api_response.dart';

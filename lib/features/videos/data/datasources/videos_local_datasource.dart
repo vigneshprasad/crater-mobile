@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/videos/data/models/video_model.dart';
 
+import '../../../../constants/app_hive_boxes.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/video_entity.dart';
+import '../models/video_model.dart';
 
 abstract class VideoLocalDataSource {
   Future<void> persistVideoToCache(List<Video> videos);

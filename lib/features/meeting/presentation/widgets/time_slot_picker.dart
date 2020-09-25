@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_error_text/base_error_text.dart';
+import '../../domain/entity/time_slot_entity.dart';
 
 typedef TimeSlotTappedCallback = void Function(TimeSlot slot);
 typedef TimeSelectedChangeCallback = void Function(List<TimeSlot> slots);

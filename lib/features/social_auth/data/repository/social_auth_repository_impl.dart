@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/core/error/exceptions.dart';
-import 'package:worknetwork/features/social_auth/data/datasources/social_auth_remote_datasource.dart';
 
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entity/access_token.dart';
 import '../../domain/repository/social_auth_repository.dart';
+import '../datasources/social_auth_remote_datasource.dart';
 
 class SocialAuthRepositoryImpl implements SocialAuthRepository {
   final SocialAuthRemoteDataSource remoteDataSource;

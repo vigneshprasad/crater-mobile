@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+
+import '../../../constants/app_constants.dart';
+import '../../../constants/theme.dart';
+import '../../../features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 enum AuthProvider { google, facebook, linkedin }
 

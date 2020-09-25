@@ -4,12 +4,11 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
-import 'package:worknetwork/features/community/domain/usecase/create_post_usecase.dart';
-
+import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../domain/entity/post_entity.dart';
+import '../../../domain/usecase/create_post_usecase.dart';
 
 part 'create_post_event.dart';
 part 'create_post_state.dart';

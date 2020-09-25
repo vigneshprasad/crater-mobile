@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/article/domain/entity/article_website_entity.dart';
 
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../domain/entity/article_entity.dart';
+import '../../domain/entity/article_website_entity.dart';
 import '../../domain/usecase/get_article_websites_usecase.dart';
 import '../../domain/usecase/get_articles_page_usecase.dart';
 

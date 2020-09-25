@@ -2,11 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/core/widgets/components/home_tab_persistent_header.dart';
-import 'package:worknetwork/features/points/presentation/widgets/points_badge.dart';
-
+import '../../../constants/work_net_icons_icons.dart';
+import '../../../features/points/presentation/widgets/points_badge.dart';
 import '../../../routes.gr.dart';
+import '../components/home_tab_persistent_header.dart';
 
 typedef RefreshCallback = Future<void> Function();
 

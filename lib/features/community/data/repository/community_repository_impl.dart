@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/community/domain/entity/comment_entity.dart';
-import 'package:worknetwork/features/community/domain/entity/like_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network_info/network_info.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
+import '../../domain/entity/comment_entity.dart';
+import '../../domain/entity/like_entity.dart';
 import '../../domain/entity/post_entity.dart';
 import '../../domain/repository/community_repository.dart';
 import '../datasources/community_local_datasource.dart';

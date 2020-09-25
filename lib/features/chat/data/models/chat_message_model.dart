@@ -1,8 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/constants/app_hive_boxes.dart';
-
+import '../../../../constants/app_hive_boxes.dart';
 import '../../domain/entity/chat_message_entity.dart';
 
 part 'chat_message_model.g.dart';

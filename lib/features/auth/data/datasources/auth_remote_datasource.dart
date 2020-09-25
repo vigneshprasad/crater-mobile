@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:worknetwork/api/user/user_api_service.dart';
-import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-
 import '../../../../api/auth/auth_api_service.dart';
+import '../../../../api/user/user_api_service.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../domain/entity/user_entity.dart';
+import '../../domain/entity/user_profile_entity.dart';
 import '../models/api/auth_response_model.dart';
 import '../models/user_model.dart';
+import '../models/user_profile_model.dart';
 
 abstract class AuthRemoteDataSource {
   /// Calls the Email Login Endpoint on backend.

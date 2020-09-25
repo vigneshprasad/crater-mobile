@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
-import 'package:url_launcher/url_launcher.dart' show launch;
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
@@ -147,7 +147,7 @@ class PostCard extends StatelessWidget {
                 highlightColor: Colors.grey[200],
                 onTap: () {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    launch(link);
+                    _launchUrl(context, link);
                   }
                 },
                 child: renderMetaData(data, context),
@@ -159,6 +159,29 @@ class PostCard extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<void> _launchUrl(BuildContext context, String link) async {
+    try {
+      await launch(
+        link,
+        option: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          extraCustomTabs: <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(error.toString());
+    }
   }
 
   Widget renderMetaData(Metadata data, BuildContext context) {

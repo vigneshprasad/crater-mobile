@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 
 class NotifficationScreenHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/community/domain/entity/comment_entity.dart';
-import 'package:worknetwork/features/community/domain/entity/post_entity.dart';
-import 'package:worknetwork/features/community/domain/usecase/create_comment_post_usercase.dart';
 
+import '../../../domain/entity/comment_entity.dart';
+import '../../../domain/entity/post_entity.dart';
+import '../../../domain/usecase/create_comment_post_usercase.dart';
 import '../../../domain/usecase/get_comments_page_usecase.dart';
 import '../../../domain/usecase/get_post_usecase.dart';
 

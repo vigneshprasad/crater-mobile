@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/ui/components/list_items/user_list_item/user_list_item.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/components/chat_search_input/chat_search_input.dart';
+import '../../../../ui/components/list_items/user_list_item/user_list_item.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_search/chat_search_bloc.dart';
@@ -36,6 +36,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _chatSearchBloc.close();
     _searchInputController.dispose();
     super.dispose();

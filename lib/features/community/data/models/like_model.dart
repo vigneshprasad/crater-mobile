@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/community/domain/entity/like_entity.dart';
+import '../../domain/entity/like_entity.dart';
 
 part 'like_model.g.dart';
 

@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/videos/domain/entity/video_entity.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../domain/entity/video_entity.dart';
 
 class VideoPlayerListItem extends StatelessWidget {
   final Video video;

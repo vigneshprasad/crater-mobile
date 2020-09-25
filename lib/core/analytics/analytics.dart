@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_segment/flutter_segment.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
 import '../../features/auth/data/datasources/auth_local_datasource.dart';
 import '../error/exceptions.dart';
 import '../network_info/network_info.dart';
 import '../push_notfications/push_notifications.dart';
+import 'anlytics_events.dart';
 
 abstract class Analytics {
   /// Intialize Sdk and set base properties
