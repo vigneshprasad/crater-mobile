@@ -4,6 +4,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -93,8 +94,11 @@ import '../features/community/presentation/bloc/post/post_bloc.dart';
 import '../features/meeting/data/datasources/meetings_remote_datasource.dart';
 import '../features/meeting/data/repository/meeting_respository_impl.dart';
 import '../features/meeting/domain/repository/meeting_repository.dart';
+import '../features/meeting/domain/usecase/get_meeting_interests_usecase.dart';
+import '../features/meeting/domain/usecase/get_meeting_objectives_usecase.dart';
+import '../features/meeting/domain/usecase/get_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
-import '../features/meeting/domain/usecase/patch_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/get_meetings_usecase.dart';
 import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
@@ -135,6 +139,7 @@ import '../features/videos/presentation/bloc/video_player/video_player_bloc.dart
 part 'injector.g.dart';
 
 abstract class CoreInjector {
+  @Register.singleton(CustomTabs, from: CustomTabImpl)
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
   @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
@@ -274,9 +279,12 @@ abstract class MeetingInjector {
   @Register.singleton(MeetingRepository, from: MeetingRepositoryImpl)
   @Register.singleton(MeetingRemoteDatasource,
       from: MeetingRemoteDatasourceImpl)
+  @Register.singleton(UCGetMeetings)
+  @Register.singleton(UCGetMeetingInterests)
+  @Register.singleton(UCGetMeetingObjectives)
   @Register.singleton(UCGetMeetingConfig)
+  @Register.singleton(UCGetMeetingPreferences)
   @Register.singleton(UCPostMeetingPreferences)
-  @Register.singleton(UCPatchMeetingPreferences)
   void configure();
 }
 

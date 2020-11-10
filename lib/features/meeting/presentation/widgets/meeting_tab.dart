@@ -1,24 +1,24 @@
-import 'dart:async';
-
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/meeting/presentation/widgets/meetings_past_tab.dart';
+import 'package:worknetwork/features/meeting/presentation/widgets/register_meeting_button.dart';
+import 'package:worknetwork/routes.gr.dart';
 
-import '../../../../constants/app_constants.dart';
-import '../../../../constants/theme.dart';
 import '../../../../core/analytics/analytics.dart';
-import '../../../../core/analytics/anlytics_events.dart';
-import '../../../../core/widgets/layouts/home_tab_layout.dart';
+import '../../../../core/widgets/base/base_tab_bar/base_tab_bar.dart';
+import '../../../../core/widgets/layouts/tab_layouts/tab_with_tabbar_layout.dart';
 import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/meeting_config_entity.dart';
+import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
-import 'meeting_preferences_card.dart';
-import 'register_meet.dart';
+import 'meeting_upcoming_tab.dart';
 
 class MeetingTab extends HomeScreenTab {
   @override
@@ -34,205 +34,148 @@ class MeetingTab extends HomeScreenTab {
   String get subheadingKey => "meeting:subtitle";
 }
 
-class _MeetingTabState extends State<MeetingTab> {
+class _MeetingTabState extends State<MeetingTab>
+    with
+        AutomaticKeepAliveClientMixin<MeetingTab>,
+        SingleTickerProviderStateMixin {
   final Analytics analytics = KiwiContainer().resolve<Analytics>();
-  MeetingConfig _meetingConfig;
-  UserMeetingPreference _preference;
-  MeetingBloc _bloc;
-  List<MeetingInterest> _interests;
-  List<MeetingObjective> _objectives;
-  Completer<void> _completer;
+  MeetingConfig config;
+  UserMeetingPreference preference;
+  List<Meeting> upcoming;
+  List<Meeting> past;
+  List<MeetingInterest> interests;
+  List<MeetingObjective> objectives;
+  TabController _tabController;
+
+  final List<Widget> tabs = [
+    const BaseTab(text: "Upcoming"),
+    const BaseTab(text: "Past")
+  ];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    _completer = Completer<void>();
-    _bloc = BlocProvider.of<MeetingBloc>(context)
-      ..add(const GetMeetingConfigStarted());
+    initializeData();
+    _tabController = TabController(length: tabs.length, vsync: this);
+    upcoming = [];
+    past = [];
+    objectives = [];
+    interests = [];
+    config = null;
+    preference = null;
     super.initState();
+  }
+
+  void initializeData() {
+    BlocProvider.of<MeetingBloc>(context)
+      ..add(const GetMeetingPreferencesStarted())
+      ..add(const GetMeetingConfigStarted())
+      ..add(const GetMeetingStarted())
+      ..add(const GetMeetingObjectivesStarted())
+      ..add(const GetMeetingInterestsStarted());
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final heading = AppLocalizations.of(context).translate("meeting:title");
+    final subheading =
+        AppLocalizations.of(context).translate("meeting:subtitle");
+
     return BlocConsumer<MeetingBloc, MeetingState>(
       listener: _blockListener,
       builder: (context, state) {
-        return HomeTabLayout(
-          onRefresh: _onRefreshTab,
-          slivers: [
-            if (_meetingConfig != null &&
-                _meetingConfig.isRegistrationOpen &&
-                _preference.pk == null)
-              _buildEmptyState(_meetingConfig)
-            else if (_meetingConfig != null && _preference.pk != null)
-              _buildRegisteredMeetingScreen(context, _meetingConfig)
-            // _buildPreferencesCard(context)
-          ],
+        return TabWithTabbarLayout(
+          heading: heading,
+          subheading: subheading,
+          tabbar: BaseTabBar(
+            controller: _tabController,
+            tabs: tabs,
+          ),
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              TabBarView(
+                controller: _tabController,
+                children: [
+                  MeetingUpcomingTab(
+                    upcoming: upcoming,
+                    config: config,
+                    preference: preference,
+                    onRefresh: _onRefreshTab,
+                  ),
+                  MeetingsPastTab(
+                    past: past,
+                    onRefresh: _onRefreshTab,
+                  ),
+                ],
+              ),
+              if (preference == null)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: AppInsets.xxl),
+                    child: RegisterMeetingButton(
+                      onPressed: () {
+                        ExtendedNavigator.of(context)
+                            .push(
+                              Routes.registerMeetingScreen,
+                              arguments: RegisterMeetingScreenArguments(
+                                config: config,
+                                preference: preference,
+                                objectives: objectives,
+                                interests: interests,
+                              ),
+                            )
+                            .then((value) => initializeData());
+                      },
+                    ),
+                  ),
+                )
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget _buildEmptyState(MeetingConfig meeting) {
-    final formatDate = DateFormat('MMMM d');
-    final date = DateTime.parse(meeting.weekStartDate);
-
-    return SliverFillRemaining(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Image(
-            width: 140,
-            image: AppImageAssets.emptyMeeting,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: AppInsets.med),
-          SizedBox(
-            width: 300,
-            child: Text(
-              'You have not signed up for a meeting for the week of ${formatDate.format(date)}. Click here to register.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ),
-          const SizedBox(height: AppInsets.med),
-          RaisedButton(
-            onPressed: _onPressRegisterMeets,
-            child: const Text('Register Now'),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRegisteredMeetingScreen(
-      BuildContext context, MeetingConfig meeting) {
-    final formatDate = DateFormat('MMMM d');
-    final date = DateTime.parse(meeting.weekStartDate);
-
-    return SliverFillRemaining(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Image(
-            width: 140,
-            image: AppImageAssets.registeredMeeting,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: AppInsets.med),
-          SizedBox(
-            width: 320,
-            child: Text(
-              'You have signed up for a meeting for the week of ${formatDate.format(date)}. Click here to update your preferences.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ),
-          const SizedBox(height: AppInsets.med),
-          RaisedButton(
-            onPressed: _onPressRegisterMeets,
-            child: const Text('Update'),
-          )
-        ],
-      ),
-    );
-  }
-
-  // ignore: unused_element
-  Widget _buildPreferencesCard(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: AppInsets.med),
-      sliver: SliverToBoxAdapter(
-        child: MeetingPreferencesCard(
-          preference: _preference,
-          meetingConfig: _meetingConfig,
-          objectives: _objectives,
-          interests: _interests,
-          onTapCard: _onPressRegisterMeets,
-        ),
-      ),
-    );
-  }
-
-  void _onPressRegisterMeets() {
-    analytics.trackEvent(
-      eventName: AnalyticsEvents.meetingRegistrationButtonClick,
-      properties: {
-        "week_start_date": _meetingConfig.weekStartDate,
-        "meeting": _meetingConfig.pk,
-      },
-    );
-    Navigator.of(context).push(RegisterMeetOverlay(
-      meeting: _meetingConfig,
-      preference: _preference,
-      objectives: _objectives,
-      interests: _interests,
-    ));
-  }
-
-  void _blockListener(BuildContext context, state) {
-    if (state is GetMeetingConfigLoaded) {
-      _completer.complete();
-      _completer = Completer<void>();
+  void _blockListener(BuildContext context, MeetingState state) {
+    if (state is GetMeetingLoaded) {
       setState(() {
-        _meetingConfig = state.meeting;
-        _preference = state.preferences;
-        _interests = state.interests;
-        _objectives = state.objectives;
+        upcoming = state.upcoming;
+        past = state.past;
       });
-    } else if (state is PostMeetingPreferencesLoaded) {
-      Scaffold.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Meeting Preferences updated"),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      analytics.trackEvent(
-        eventName: AnalyticsEvents.registerMeetingPreferences,
-        properties: {
-          "week_start_date": _meetingConfig.weekStartDate,
-          "week_end_date": _meetingConfig.weekEndDate,
-          "number_of_meetings": state.preferences.numberOfMeetings,
-          "time_slots": _getSelectedTimeSlotNames(state.preferences.timeSlots),
-          "objective": _objectives
-              .firstWhere(
-                  (element) => element.key == state.preferences.objective)
-              .label,
-          "interests": _getSelectedInterestNames(state.preferences.interests),
-          "meeting": state.preferences.meeting,
-        },
-      );
+    } else if (state is MeetingGetConfigLoaded) {
       setState(() {
-        _preference = state.preferences;
+        config = state.config;
       });
-    } else if (state is PostUserProfileResponseLoaded) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+    } else if (state is MeetingGetPreferencesLoaded) {
+      setState(() {
+        preference = state.preference;
+      });
+    } else if (state is MeetingGetObjectivesLoaded) {
+      setState(() {
+        objectives = state.objectives;
+      });
+    } else if (state is MeetingGetInterestsLoaded) {
+      setState(() {
+        interests = state.interests;
+      });
     }
   }
 
-  List<String> _getSelectedInterestNames(List<int> selected) {
-    return _interests
-        .where((element) => selected.contains(element.pk))
-        .map((e) => e.name)
-        .toList();
-  }
-
-  List<String> _getSelectedTimeSlotNames(List<int> selected) {
-    return _meetingConfig.availableTimeSlots.entries.fold(
-      [],
-      (previousValue, element) {
-        for (final timeSlot in element.value) {
-          if (selected.contains(timeSlot.pk)) {
-            previousValue.add("${timeSlot.start} - ${timeSlot.end}");
-          }
-        }
-        return previousValue;
-      },
-    );
-  }
-
-  Future<void> _onRefreshTab() {
-    _bloc.add(const GetMeetingConfigStarted());
-    return _completer.future;
+  void _onRefreshTab() {
+    setState(() {
+      upcoming = [];
+      BlocProvider.of<MeetingBloc>(context).add(const GetMeetingStarted());
+    });
   }
 }

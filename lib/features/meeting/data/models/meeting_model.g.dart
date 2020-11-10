@@ -1,0 +1,39 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'meeting_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
+  return MeetingModel(
+    config: json['config'] as int,
+    end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
+    isCanceled: json['is_canceled'] as bool,
+    isPast: json['is_past'] as bool,
+    link: json['link'] as String,
+    participants: (json['participants'] as List)
+        ?.map((e) => e == null
+            ? null
+            : MeetingParticipantModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    pk: json['pk'] as int,
+    start:
+        json['start'] == null ? null : DateTime.parse(json['start'] as String),
+    timeSlot: json['time_slot'] as int,
+  );
+}
+
+Map<String, dynamic> _$MeetingModelToJson(MeetingModel instance) =>
+    <String, dynamic>{
+      'config': instance.config,
+      'end': instance.end?.toIso8601String(),
+      'is_canceled': instance.isCanceled,
+      'is_past': instance.isPast,
+      'link': instance.link,
+      'participants': instance.participants,
+      'pk': instance.pk,
+      'start': instance.start?.toIso8601String(),
+      'time_slot': instance.timeSlot,
+    };

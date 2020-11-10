@@ -11,55 +11,43 @@ class GetMeetingConfigStarted extends MeetingEvent {
   const GetMeetingConfigStarted();
 }
 
+class GetMeetingStarted extends MeetingEvent {
+  const GetMeetingStarted();
+}
+
+class GetMeetingInterestsStarted extends MeetingEvent {
+  const GetMeetingInterestsStarted();
+}
+
+class GetMeetingObjectivesStarted extends MeetingEvent {
+  const GetMeetingObjectivesStarted();
+}
+
+class GetMeetingPreferencesStarted extends MeetingEvent {
+  const GetMeetingPreferencesStarted();
+}
+
 class PostMeetingPreferencesStarted extends MeetingEvent {
-  final List<int> interests;
-  final int meeting;
+  final List<MeetingInterest> interests;
+  final MeetingConfig config;
   final int numberOfMeetings;
-  final String objective;
-  final List<int> timeSlots;
+  final List<MeetingObjective> objectives;
+  final List<TimeSlot> timeSlots;
 
   const PostMeetingPreferencesStarted({
     @required this.interests,
-    @required this.meeting,
+    @required this.config,
     @required this.numberOfMeetings,
-    @required this.objective,
+    @required this.objectives,
     @required this.timeSlots,
   });
 
   @override
   List<Object> get props => [
         interests,
-        meeting,
+        config,
         numberOfMeetings,
-        objective,
-        timeSlots,
-      ];
-}
-
-class PatchMeetingPreferencesStarted extends MeetingEvent {
-  final int meetingPref;
-  final List<int> interests;
-  final int meeting;
-  final int numberOfMeetings;
-  final String objective;
-  final List<int> timeSlots;
-
-  const PatchMeetingPreferencesStarted({
-    @required this.meetingPref,
-    @required this.interests,
-    @required this.meeting,
-    @required this.numberOfMeetings,
-    @required this.objective,
-    @required this.timeSlots,
-  });
-
-  @override
-  List<Object> get props => [
-        meetingPref,
-        interests,
-        meeting,
-        numberOfMeetings,
-        objective,
+        objectives,
         timeSlots,
       ];
 }

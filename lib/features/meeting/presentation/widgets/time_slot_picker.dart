@@ -58,48 +58,70 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.3,
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: _buildHeaderTabs(context),
+      width: double.infinity,
+      height: 160,
+      child: Column(
+        children: [
+          Row(
+            children: _buildHeaderTabs(context),
+          ),
+          const SizedBox(height: AppInsets.xxl),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (value) {
+                setState(() {
+                  _activePage = value;
+                });
+              },
+              children: _buildPages(context, _dateSlots),
             ),
-            const SizedBox(height: AppInsets.xxl),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    _activePage = value;
-                  });
-                },
-                children: _buildPages(context, _dateSlots),
-              ),
-            )
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 
   List<Widget> _buildPages(BuildContext context, List<_TimeSlotItem> slots) {
-    return slots
-        .map(
-          (slot) => Wrap(
-            children: slot.timeSlots
-                .map(
-                  (timeSlot) => _TimeSlot(
-                    slot: timeSlot,
-                    selected: widget.value.contains(timeSlot),
-                    onTap: () {
-                      widget.onSlotTapped(timeSlot);
-                    },
-                  ),
-                )
-                .toList(),
-          ),
-        )
-        .toList();
+    return slots.map(
+      (slot) {
+        final List<List<TimeSlot>> rows = slot.timeSlots.fold(
+          [[]],
+          (list, timeSlot) => list.last.length == 2
+              ? (list..add([timeSlot]))
+              : (list..last.add(timeSlot)),
+        );
+
+        rows.map((row) {
+          if (row.length < 2) {
+            final filler = List(3 - row.length);
+            row.addAll(filler.map((e) => null));
+          }
+        }).toList();
+
+        return Table(
+          children: rows
+              .map(
+                (row) => TableRow(
+                  children: row
+                      .map(
+                        (col) => col != null
+                            ? _TimeSlot(
+                                slot: col,
+                                selected: widget.value.contains(col),
+                                onTap: () {
+                                  widget.onSlotTapped(col);
+                                },
+                              )
+                            : Container(),
+                      )
+                      .toList(),
+                ),
+              )
+              .toList(),
+        );
+      },
+    ).toList();
   }
 
   List<Widget> _buildHeaderTabs(BuildContext context) {
@@ -234,13 +256,14 @@ class _TimeSlot extends StatelessWidget {
     const placeholderDate = "2020-01-01";
     final timeFormatter = DateFormat("hh:mm a");
     final startTime = DateTime.parse("$placeholderDate ${slot.start}");
-    final endTime = DateTime.parse("$placeholderDate ${slot.end}");
-    final label =
-        "${timeFormatter.format(startTime)} to ${timeFormatter.format(endTime)}";
+    final label = timeFormatter.format(startTime);
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          fontSize: 14,
+          fontSize: 13,
           color: selected ? Colors.white : Colors.grey[700],
         );
+    final border = selected
+        ? Border.all(color: Theme.of(context).primaryColor, width: 2)
+        : Border.all(color: Colors.grey[300], width: 2);
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.med, bottom: AppInsets.xl),
       child: Material(
@@ -255,9 +278,14 @@ class _TimeSlot extends StatelessWidget {
               horizontal: AppInsets.xl,
               vertical: AppInsets.l,
             ),
+            decoration: BoxDecoration(
+              border: border,
+              borderRadius: borderRadius,
+            ),
             child: Text(
               label,
               style: labelStyle,
+              textAlign: TextAlign.center,
             ),
           ),
         ),

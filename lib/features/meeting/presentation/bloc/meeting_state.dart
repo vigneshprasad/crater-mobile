@@ -3,14 +3,34 @@ part of 'meeting_bloc.dart';
 abstract class MeetingState extends Equatable {
   final bool loading;
   final dynamic error;
+  final MeetingConfig config;
+  final List<Meeting> upcoming;
+  final List<Meeting> past;
+  final List<MeetingObjective> objectives;
+  final List<MeetingInterest> interests;
+  final UserMeetingPreference preference;
 
   const MeetingState({
     this.loading,
     this.error,
+    this.upcoming,
+    this.past,
+    this.objectives,
+    this.interests,
+    this.config,
+    this.preference,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => [
+        loading,
+        error,
+        upcoming,
+        past,
+        objectives,
+        interests,
+        config,
+      ];
 }
 
 class MeetingInitial extends MeetingState {
@@ -18,6 +38,10 @@ class MeetingInitial extends MeetingState {
       : super(
           loading: false,
           error: null,
+          upcoming: const [],
+          past: const [],
+          config: null,
+          preference: null,
         );
 }
 
@@ -29,35 +53,111 @@ class MeetingGetRequestLoading extends MeetingState {
         );
 }
 
-class MeetingRequestError extends MeetingState {
-  const MeetingRequestError({@required dynamic error})
+class MeetingGetConfigLoading extends MeetingState {
+  const MeetingGetConfigLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class MeetingGetPreferencesLoading extends MeetingState {
+  const MeetingGetPreferencesLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class MeetingGetInterestsRequestLoading extends MeetingState {
+  const MeetingGetInterestsRequestLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class MeetingGetObjectivesRequestLoading extends MeetingState {
+  const MeetingGetObjectivesRequestLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class MeetingPostPreferencesLoading extends MeetingState {
+  const MeetingPostPreferencesLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class MeetingGetRequestError extends MeetingState {
+  const MeetingGetRequestError({@required dynamic error})
       : super(
           loading: false,
           error: error,
         );
 }
 
-class GetMeetingConfigLoaded extends MeetingState {
-  final MeetingConfig meeting;
-  final UserMeetingPreference preferences;
-  final List<MeetingInterest> interests;
-  final List<MeetingObjective> objectives;
+class MeetingGetInterestsLoaded extends MeetingState {
+  const MeetingGetInterestsLoaded({
+    @required List<MeetingInterest> interests,
+  }) : super(
+          loading: false,
+          error: null,
+          interests: interests,
+        );
+}
 
-  const GetMeetingConfigLoaded({
-    @required this.meeting,
-    @required this.preferences,
-    @required this.interests,
-    @required this.objectives,
-  });
+class MeetingGetObjectivesLoaded extends MeetingState {
+  const MeetingGetObjectivesLoaded({
+    @required List<MeetingObjective> objectives,
+  }) : super(
+          loading: false,
+          error: null,
+          objectives: objectives,
+        );
+}
+
+class MeetingGetPreferencesLoaded extends MeetingState {
+  const MeetingGetPreferencesLoaded({
+    @required UserMeetingPreference preference,
+  }) : super(
+          loading: false,
+          error: null,
+          preference: preference,
+        );
+}
+
+class MeetingGetConfigLoaded extends MeetingState {
+  const MeetingGetConfigLoaded({
+    @required MeetingConfig config,
+  }) : super(
+          loading: false,
+          error: null,
+          config: config,
+        );
+}
+
+class GetMeetingLoaded extends MeetingState {
+  const GetMeetingLoaded({
+    @required List<Meeting> upcoming,
+    @required List<Meeting> past,
+  }) : super(
+          loading: false,
+          error: null,
+          upcoming: upcoming,
+          past: past,
+        );
 
   @override
   List<Object> get props => [
         loading,
         error,
-        meeting,
-        preferences,
-        interests,
-        objectives,
+        upcoming,
+        past,
       ];
 }
 

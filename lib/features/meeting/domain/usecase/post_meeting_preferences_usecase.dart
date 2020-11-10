@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
+import '../entity/meeting_config_entity.dart';
+import '../entity/meeting_interest_entity.dart';
+import '../entity/meeting_objective_entity.dart';
+import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 import '../repository/meeting_repository.dart';
 
@@ -18,35 +22,35 @@ class UCPostMeetingPreferences
       PostMeetingPrefParams params) {
     return repository.postUserMeetingPreferences(
       params.interests,
-      params.meeting,
+      params.config,
       params.numberOfMeetings,
-      params.objective,
+      params.objectives,
       params.timeSlots,
     );
   }
 }
 
 class PostMeetingPrefParams extends Equatable {
-  final List<int> interests;
-  final int meeting;
+  final List<MeetingInterest> interests;
+  final MeetingConfig config;
   final int numberOfMeetings;
-  final String objective;
-  final List<int> timeSlots;
+  final List<MeetingObjective> objectives;
+  final List<TimeSlot> timeSlots;
 
   const PostMeetingPrefParams({
     @required this.interests,
-    @required this.meeting,
+    @required this.config,
     @required this.numberOfMeetings,
-    @required this.objective,
+    @required this.objectives,
     @required this.timeSlots,
   });
 
   @override
   List<Object> get props => [
         interests,
-        meeting,
+        config,
         numberOfMeetings,
-        objective,
+        objectives,
         timeSlots,
       ];
 }

@@ -91,7 +91,7 @@ class MeetingPreferencesCard extends StatelessWidget {
               ),
               _PreferenceItemDisplay(
                 label: "Your Objective",
-                child: Text(_getSelectedObjective().label),
+                child: Text(_getSelectedObjective().name),
               ),
               _PreferenceItemDisplay(
                 label: "Your Preferences",
@@ -137,8 +137,7 @@ class MeetingPreferencesCard extends StatelessWidget {
   }
 
   MeetingObjective _getSelectedObjective() {
-    return objectives
-        .firstWhere((element) => element.key == preference.objective);
+    return MeetingObjective();
   }
 
   List<MeetingInterest> _getSelectedInterests() {

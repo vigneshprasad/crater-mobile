@@ -59,64 +59,75 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
     final border = widget.error
         ? Border.all(width: 2, color: Theme.of(context).errorColor)
         : null;
-    return Container(
-      height: kMinInteractiveDimension,
-      decoration: BoxDecoration(
-        border: border,
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: kMinInteractiveDimension,
+        minWidth: MediaQuery.of(context).size.width,
       ),
-      child: Stack(
-        fit: StackFit.expand,
-        overflow: Overflow.visible,
-        children: [
-          DropdownButtonHideUnderline(
-            child: ButtonTheme(
-              padding:
-                  const EdgeInsets.only(left: AppInsets.l, right: AppInsets.l),
-              alignedDropdown: true,
-              child: DropdownButton<T>(
-                isExpanded: true,
-                items: _items,
-                onChanged: widget.maxLength != null
-                    ? (_selectedItems.length >= widget.maxLength
-                        ? null
-                        : _onChangedDropdownValue)
-                    : _onChangedDropdownValue,
-              ),
-            ),
-          ),
-          if (_selectedItems.isEmpty)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: AppInsets.xl),
-                child: Text(
-                  widget.label,
-                  style: labelStyle,
+      child: Container(
+        decoration: BoxDecoration(
+          border: border,
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
+        ),
+        child: Stack(
+          fit: StackFit.passthrough,
+          overflow: Overflow.visible,
+          children: [
+            DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                padding: const EdgeInsets.only(
+                    left: AppInsets.l, right: AppInsets.l),
+                alignedDropdown: true,
+                child: DropdownButton<T>(
+                  isExpanded: true,
+                  items: _items,
+                  onChanged: widget.maxLength != null
+                      ? (_selectedItems.length >= widget.maxLength
+                          ? null
+                          : _onChangedDropdownValue)
+                      : _onChangedDropdownValue,
                 ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-            child: Row(
-              children: _selectedItems
-                  .map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(right: AppInsets.med),
-                      child: Chip(
-                        label: Text(widget.labelGetter(item)),
-                        deleteIconColor: Theme.of(context).primaryColor,
-                        onDeleted: () {
-                          _onDeleteChip(item);
-                        },
+            if (_selectedItems.isEmpty)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: AppInsets.xl),
+                  child: Text(
+                    widget.label,
+                    style: labelStyle,
+                  ),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: AppInsets.l,
+                right: AppInsets.xxl,
+              ),
+              child: Wrap(
+                children: _selectedItems
+                    .map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(right: AppInsets.med),
+                        child: Chip(
+                          label: Text(
+                            widget.labelGetter(item),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          deleteIconColor: Theme.of(context).primaryColor,
+                          onDeleted: () {
+                            _onDeleteChip(item);
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

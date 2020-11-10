@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/work_net_icons_icons.dart';
-import '../../../features/points/presentation/widgets/points_badge.dart';
 import '../../../routes.gr.dart';
 import '../components/home_tab_persistent_header.dart';
 
@@ -39,7 +38,6 @@ class HomeScreenBodyLayout extends StatelessWidget {
                   heading: heading,
                   subHeading: subheading,
                   appBarActions: [
-                    PointsBadge(),
                     IconButton(
                       color: Colors.black87,
                       icon: const Icon(WorkNetIcons.notification),

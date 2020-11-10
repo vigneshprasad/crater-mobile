@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/register_meeting_screen.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -28,7 +29,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: ChatSearchScreen, path: "/chat/search"),
     MaterialRoute(page: VideoPlayerScreen, path: "/video-player"),
     MaterialRoute(page: NotificationsScreen, path: "/notifications"),
-    MaterialRoute(page: PostScreen, path: "/post")
+    MaterialRoute(page: PostScreen, path: "/post"),
+    MaterialRoute(page: RegisterMeetingScreen, path: "/register-meeting")
   ],
 )
 class $Router {}

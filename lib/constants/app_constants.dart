@@ -62,6 +62,9 @@ class AppConstants {
     "default":
         'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/default.png',
   };
+
+  static const String meetingTypeformLink =
+      "https://worknetwork.typeform.com/to/OX3ZB9QV#email=";
 }
 
 class AppImageAssets {
@@ -78,6 +81,9 @@ class AppImageAssets {
       AssetImage("assets/images/img_empty_meetings.png");
   static const registeredMeeting =
       AssetImage("assets/images/img_meeting_registered.png");
+  static const meetingsEmpty = AssetImage("assets/images/meetings_empty.png");
+  static const meetingScheduled =
+      AssetImage("assets/images/meeting_scheduled.png");
 }
 
 class AppSvgAssets {

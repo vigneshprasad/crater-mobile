@@ -9,6 +9,7 @@ part of 'injector.dart';
 class _$CoreInjector extends CoreInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
+    container.registerSingleton<CustomTabs>((c) => CustomTabImpl());
     container.registerSingleton<NetworkInfo>(
         (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
     container
@@ -289,21 +290,29 @@ class _$MeetingInjector extends MeetingInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MeetingBloc(
+        getMeetings: c<UCGetMeetings>(),
+        getMeetingInterests: c<UCGetMeetingInterests>(),
+        getMeetingObjectives: c<UCGetMeetingObjectives>(),
         getMeetingConfig: c<UCGetMeetingConfig>(),
-        postMeetingPreferences: c<UCPostMeetingPreferences>(),
-        patchMeetingPreferences: c<UCPatchMeetingPreferences>(),
-        postUserProfile: c<UCPostUserProfile>()));
+        getMeetingPreferences: c<UCGetMeetingPreferences>(),
+        postMeetingPreferences: c<UCPostMeetingPreferences>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
     container.registerSingleton<MeetingRemoteDatasource>(
         (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()));
+    container.registerSingleton(
+        (c) => UCGetMeetings(repository: c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCGetMeetingInterests(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCGetMeetingObjectives(c<MeetingRepository>()));
     container
         .registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()));
     container.registerSingleton(
-        (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
+        (c) => UCGetMeetingPreferences(c<MeetingRepository>()));
     container.registerSingleton(
-        (c) => UCPatchMeetingPreferences(c<MeetingRepository>()));
+        (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
   }
 }
 

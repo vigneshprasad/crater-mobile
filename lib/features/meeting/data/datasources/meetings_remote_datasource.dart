@@ -1,28 +1,33 @@
 import 'dart:convert';
 
+import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
+
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../domain/entity/meeting_config_entity.dart';
+import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/meeting_interest_entity.dart';
+import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
-import '../models/api_models.dart';
+import '../models/meeting_config_model.dart';
+import '../models/meeting_interest_model.dart';
+import '../models/meeting_model.dart';
+import '../models/meeting_objective_model.dart';
 import '../models/user_meeting_preference_model.dart';
 
 abstract class MeetingRemoteDatasource {
-  Future<GetMeetingConfigApiResponse> getMeetingConfigFromRemote();
+  Future<MeetingConfig> getMeetingConfigFromRemote();
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
-    List<int> interests,
-    int meeting,
+    List<MeetingInterest> interests,
+    MeetingConfig config,
     int numberOfMeetings,
-    String objective,
-    List<int> timeSlots,
+    List<MeetingObjective> objectives,
+    List<TimeSlot> timeSlots,
   );
-  Future<UserMeetingPreference> patchUserMeetingPreferencesToRemote(
-    int meetingPref,
-    List<int> interests,
-    int meeting,
-    int numberOfMeetings,
-    String objective,
-    List<int> timeSlots,
-  );
+  Future<List<Meeting>> getMeetingsFromRemote();
+  Future<List<MeetingObjective>> getMeetingObjectivesFromRemote();
+  Future<List<MeetingInterest>> getMeetingInterestFromRemote();
+  Future<UserMeetingPreference> getMeetingPreferenceFromRemote();
 }
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
@@ -31,11 +36,11 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   MeetingRemoteDatasourceImpl(this.apiService);
 
   @override
-  Future<GetMeetingConfigApiResponse> getMeetingConfigFromRemote() async {
-    final response = await apiService.getMeetings();
+  Future<MeetingConfig> getMeetingConfigFromRemote() async {
+    final response = await apiService.getMeetingsConfig();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return GetMeetingConfigApiResponse.fromJson(json);
+      return MeetingConfigModel.fromJson(json);
     } else {
       throw ServerException(response.error);
     }
@@ -43,18 +48,18 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
 
   @override
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
-    List<int> interests,
-    int meeting,
+    List<MeetingInterest> interests,
+    MeetingConfig config,
     int numberOfMeetings,
-    String objective,
-    List<int> timeSlots,
+    List<MeetingObjective> objectives,
+    List<TimeSlot> timeSlots,
   ) async {
     final body = {
-      "meeting": meeting,
-      "interests": interests,
+      "meeting": config.pk,
+      "interests": interests.map((e) => e.pk).toList(),
       "number_of_meetings": numberOfMeetings,
-      "objective": objective,
-      "time_slots": timeSlots,
+      "objectives": objectives.map((e) => e.pk).toList(),
+      "time_slots": timeSlots.map((e) => e.pk).toList(),
     };
     final response = await apiService.postMeetingPreferences(body);
     if (response.statusCode == 201) {
@@ -66,26 +71,54 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<UserMeetingPreference> patchUserMeetingPreferencesToRemote(
-    int meetingPref,
-    List<int> interests,
-    int meeting,
-    int numberOfMeetings,
-    String objective,
-    List<int> timeSlots,
-  ) async {
-    final body = {
-      "meeting": meeting,
-      "interests": interests,
-      "number_of_meetings": numberOfMeetings,
-      "objective": objective,
-      "time_slots": timeSlots,
-    };
-    final response =
-        await apiService.patchMeetingPreferences(meetingPref, body);
+  Future<List<Meeting>> getMeetingsFromRemote() async {
+    final response = await apiService.getMeetings();
+    if (response.statusCode == 200) {
+      final Iterable json = jsonDecode(response.bodyString) as Iterable;
+      return json
+          .map((item) => MeetingModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<MeetingInterest>> getMeetingInterestFromRemote() async {
+    final response = await apiService.getMeetingInterests();
+    if (response.statusCode == 200) {
+      final Iterable json = jsonDecode(response.bodyString) as Iterable;
+      return json
+          .map((interest) =>
+              MeetingInterestModel.fromJson(interest as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<MeetingObjective>> getMeetingObjectivesFromRemote() async {
+    final response = await apiService.getMeetingObjectives();
+    if (response.statusCode == 200) {
+      final Iterable json = jsonDecode(response.bodyString) as Iterable;
+      return json
+          .map((objective) =>
+              MeetingObjectiveModel.fromJson(objective as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserMeetingPreference> getMeetingPreferenceFromRemote() async {
+    final response = await apiService.getMeetingPreferences();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserMeetingPreferenceModel.fromJson(json);
+    } else if (response.statusCode == 204) {
+      return null;
     } else {
       throw ServerException(response.error);
     }

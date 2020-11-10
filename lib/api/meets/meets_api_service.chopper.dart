@@ -17,8 +17,15 @@ class _$MeetsApiService extends MeetsApiService {
   final definitionType = MeetsApiService;
 
   @override
-  Future<Response<dynamic>> getMeetings() {
-    final $url = '/resources/meetings/';
+  Future<Response<dynamic>> getMeetingsConfig() {
+    final $url = '/resources/meetings/config/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingPreferences() {
+    final $url = '/resources/meetings/preferences/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -37,6 +44,27 @@ class _$MeetsApiService extends MeetsApiService {
     final $url = '/resources/meeting-preferences/$id/';
     final $body = body;
     final $request = Request('PATCH', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetings() {
+    final $url = '/resources/meetings/meeting/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingObjectives() {
+    final $url = '/resources/meetings/objectives/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingInterests() {
+    final $url = '/resources/meetings/interests/';
+    final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 }
