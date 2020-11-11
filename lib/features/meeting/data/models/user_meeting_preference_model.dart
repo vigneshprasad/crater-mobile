@@ -18,7 +18,7 @@ class UserMeetingPreferenceModel extends UserMeetingPreference {
   @JsonKey(name: 'number_of_meetings')
   final int numberOfMeetings;
 
-  final String objective;
+  final List<int> objectives;
 
   final List<int> interests;
 
@@ -30,7 +30,7 @@ class UserMeetingPreferenceModel extends UserMeetingPreference {
     this.user,
     this.meeting,
     this.numberOfMeetings,
-    this.objective,
+    this.objectives,
     this.interests,
     this.timeSlots,
   });

@@ -17,13 +17,27 @@ abstract class MeetsApiService extends ChopperService {
     return _$MeetsApiService(client);
   }
 
-  @Get(path: 'meetings/')
-  Future<Response> getMeetings();
+  @Get(path: 'meetings/config/')
+  Future<Response> getMeetingsConfig();
+
+  @Get(path: 'meetings/preferences/')
+  Future<Response> getMeetingPreferences();
 
   @Post(path: 'meeting-preferences/')
   Future<Response> postMeetingPreferences(@Body() Map<String, dynamic> body);
 
   @Patch(path: 'meeting-preferences/{id}/')
   Future<Response> patchMeetingPreferences(
-      @Path() int id, @Body() Map<String, dynamic> body);
+    @Path() int id,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @Get(path: 'meetings/meeting/')
+  Future<Response> getMeetings();
+
+  @Get(path: 'meetings/objectives/')
+  Future<Response> getMeetingObjectives();
+
+  @Get(path: 'meetings/interests/')
+  Future<Response> getMeetingInterests();
 }

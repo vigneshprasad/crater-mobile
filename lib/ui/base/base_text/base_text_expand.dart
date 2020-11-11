@@ -4,14 +4,14 @@ import '../../../constants/theme.dart';
 import '../../../utils/app_localizations.dart';
 
 class BaseTextExpand extends StatefulWidget {
+  final String data;
+  final TextStyle style;
+
   const BaseTextExpand(
     this.data, {
     Key key,
     this.style,
   }) : super(key: key);
-
-  final String data;
-  final TextStyle style;
 
   @override
   _BaseTextExpandState createState() => _BaseTextExpandState();

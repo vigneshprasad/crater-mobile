@@ -13,7 +13,7 @@ UserMeetingPreferenceModel _$UserMeetingPreferenceModelFromJson(
     user: json['user'] as String,
     meeting: json['meeting'] as int,
     numberOfMeetings: json['number_of_meetings'] as int,
-    objective: json['objective'] as String,
+    objectives: (json['objectives'] as List)?.map((e) => e as int)?.toList(),
     interests: (json['interests'] as List)?.map((e) => e as int)?.toList(),
     timeSlots: (json['time_slots'] as List)?.map((e) => e as int)?.toList(),
   );
@@ -26,7 +26,7 @@ Map<String, dynamic> _$UserMeetingPreferenceModelToJson(
       'user': instance.user,
       'meeting': instance.meeting,
       'number_of_meetings': instance.numberOfMeetings,
-      'objective': instance.objective,
+      'objectives': instance.objectives,
       'interests': instance.interests,
       'time_slots': instance.timeSlots,
     };

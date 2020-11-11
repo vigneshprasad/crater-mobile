@@ -4,16 +4,18 @@ class UserMeetingPreference extends HiveObject {
   final int pk;
   final int meeting;
   final int numberOfMeetings;
-  final String objective;
+  final List<int> objectives;
   final List<int> interests;
   final List<int> timeSlots;
+  final String user;
 
   UserMeetingPreference({
     this.pk,
     this.meeting,
     this.numberOfMeetings,
-    this.objective,
+    this.objectives,
     this.interests,
     this.timeSlots,
+    this.user,
   });
 }

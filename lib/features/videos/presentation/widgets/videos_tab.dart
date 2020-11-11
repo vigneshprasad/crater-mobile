@@ -5,23 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
-import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../../ui/components/cards/masterclass_card/masterclass_card.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/video_entity.dart';
 import '../bloc/video/video_bloc.dart';
 
-class VideoTab extends HomeScreenTab {
+class VideoTab extends StatefulWidget {
   @override
   _VideoTabState createState() => _VideoTabState();
-
-  @override
-  double get expandedHeight => 116;
-
-  @override
-  String get headingKey => "videos:title";
-
-  @override
-  String get subheadingKey => "videos:subtitle";
 }
 
 class _VideoTabState extends State<VideoTab> {
@@ -48,10 +39,16 @@ class _VideoTabState extends State<VideoTab> {
 
   @override
   Widget build(BuildContext context) {
+    final String heading =
+        AppLocalizations.of(context).translate('videos:title');
+    final String subHeading =
+        AppLocalizations.of(context).translate('videos:subtitle');
     return BlocConsumer<VideoBloc, VideoState>(
       listener: _blocListener,
       builder: (context, state) {
         return HomeTabLayout(
+          heading: heading,
+          subHeading: subHeading,
           onRefresh: _onRefreshList,
           slivers: [
             SliverPadding(

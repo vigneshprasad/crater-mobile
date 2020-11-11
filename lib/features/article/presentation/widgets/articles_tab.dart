@@ -2,26 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
-import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../domain/entity/article_website_entity.dart';
 import '../bloc/article_bloc.dart';
 import 'articles_row_list.dart';
 
-class ArticlesTab extends HomeScreenTab {
+class ArticlesTab extends StatefulWidget {
   @override
   _ArticlesTabState createState() => _ArticlesTabState();
-
-  @override
-  double get expandedHeight => 116;
-
-  @override
-  String get headingKey => "articles:title";
-
-  @override
-  String get subheadingKey => "articles:subtitle";
 }
 
 class _ArticlesTabState extends State<ArticlesTab> {
@@ -40,10 +31,16 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   @override
   Widget build(BuildContext context) {
+    final String heading =
+        AppLocalizations.of(context).translate('articles:title');
+    final String subHeading =
+        AppLocalizations.of(context).translate('articles:subtitle');
     return BlocConsumer<ArticleBloc, ArticleState>(
       listener: _blocListener,
       builder: (context, state) {
         return HomeTabLayout(
+          heading: heading,
+          subHeading: subHeading,
           onRefresh: _onRefreshArticles,
           slivers: [
             ..._buildArticlesRows(context),

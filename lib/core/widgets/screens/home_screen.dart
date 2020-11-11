@@ -17,7 +17,6 @@ import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
-import 'models/home_screen_tab_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tabIndex;
@@ -37,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
   int _currentTab = 0;
 
-  final List<HomeScreenTab> _screens = [
+  final List<Widget> _screens = [
     MeetingTab(),
     CommunityTab(),
     InboxTab(),

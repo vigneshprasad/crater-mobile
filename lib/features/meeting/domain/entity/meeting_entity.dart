@@ -1,0 +1,26 @@
+import 'package:hive/hive.dart';
+import 'meeting_participant_entity.dart';
+
+class Meeting extends HiveObject {
+  final int config;
+  final DateTime end;
+  final bool isCanceled;
+  final bool isPast;
+  final String link;
+  final List<MeetingParticipant> participants;
+  final int pk;
+  final DateTime start;
+  final int timeSlot;
+
+  Meeting({
+    this.config,
+    this.end,
+    this.isCanceled,
+    this.isPast,
+    this.link,
+    this.participants,
+    this.pk,
+    this.start,
+    this.timeSlot,
+  });
+}

@@ -7,7 +7,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
-import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/post_card/post_card.dart';
 import '../../../../utils/app_localizations.dart';
@@ -16,18 +15,9 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/post_entity.dart';
 import '../bloc/community/community_bloc.dart';
 
-class CommunityTab extends HomeScreenTab {
+class CommunityTab extends StatefulWidget {
   @override
   _CommunityTabState createState() => _CommunityTabState();
-
-  @override
-  double get expandedHeight => 116;
-
-  @override
-  String get headingKey => "community:title";
-
-  @override
-  String get subheadingKey => "community:subtitle";
 }
 
 class _CommunityTabState extends State<CommunityTab> {
@@ -64,6 +54,10 @@ class _CommunityTabState extends State<CommunityTab> {
 
   @override
   Widget build(BuildContext context) {
+    final String heading =
+        AppLocalizations.of(context).translate('community:title');
+    final String subHeading =
+        AppLocalizations.of(context).translate('community:subtitle');
     return BlocConsumer<CommunityBloc, CommunityState>(
       listener: _blocListener,
       builder: (context, state) {
@@ -71,6 +65,8 @@ class _CommunityTabState extends State<CommunityTab> {
           builder: (context, authState) {
             final user = authState.user;
             return HomeTabLayout(
+              heading: heading,
+              subHeading: subHeading,
               onRefresh: _onRefreshList,
               listController: _controller,
               slivers: [

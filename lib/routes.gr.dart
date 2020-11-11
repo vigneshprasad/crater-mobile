@@ -16,6 +16,11 @@ import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
+import 'features/meeting/domain/entity/meeting_config_entity.dart';
+import 'features/meeting/domain/entity/meeting_interest_entity.dart';
+import 'features/meeting/domain/entity/meeting_objective_entity.dart';
+import 'features/meeting/domain/entity/user_meeting_preference_entity.dart';
+import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
@@ -36,6 +41,7 @@ class Routes {
   static const String videoPlayerScreen = '/video-player';
   static const String notificationsScreen = '/notifications';
   static const String postScreen = '/post';
+  static const String registerMeetingScreen = '/register-meeting';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -49,6 +55,7 @@ class Routes {
     videoPlayerScreen,
     notificationsScreen,
     postScreen,
+    registerMeetingScreen,
   };
 }
 
@@ -68,6 +75,7 @@ class Router extends RouterBase {
     RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
     RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
     RouteDef(Routes.postScreen, page: PostScreen),
+    RouteDef(Routes.registerMeetingScreen, page: RegisterMeetingScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -158,6 +166,19 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    RegisterMeetingScreen: (data) {
+      final args = data.getArgs<RegisterMeetingScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => RegisterMeetingScreen(
+          key: args.key,
+          config: args.config,
+          preference: args.preference,
+          objectives: args.objectives,
+          interests: args.interests,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -214,6 +235,23 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.postScreen,
         arguments: PostScreenArguments(key: key, postId: postId),
       );
+
+  Future<dynamic> pushRegisterMeetingScreen({
+    Key key,
+    @required MeetingConfig config,
+    @required UserMeetingPreference preference,
+    @required List<MeetingObjective> objectives,
+    @required List<MeetingInterest> interests,
+  }) =>
+      push<dynamic>(
+        Routes.registerMeetingScreen,
+        arguments: RegisterMeetingScreenArguments(
+            key: key,
+            config: config,
+            preference: preference,
+            objectives: objectives,
+            interests: interests),
+      );
 }
 
 /// ************************************************************************
@@ -239,4 +277,19 @@ class PostScreenArguments {
   final Key key;
   final int postId;
   PostScreenArguments({this.key, @required this.postId});
+}
+
+/// RegisterMeetingScreen arguments holder class
+class RegisterMeetingScreenArguments {
+  final Key key;
+  final MeetingConfig config;
+  final UserMeetingPreference preference;
+  final List<MeetingObjective> objectives;
+  final List<MeetingInterest> interests;
+  RegisterMeetingScreenArguments(
+      {this.key,
+      @required this.config,
+      @required this.preference,
+      @required this.objectives,
+      @required this.interests});
 }
