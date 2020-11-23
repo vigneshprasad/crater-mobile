@@ -69,10 +69,17 @@ class RewardsBloc extends Bloc<RewardsEvent, RewardsState> {
     yield responseOrError.fold(
       (failure) => RewardsRequestError(error: failure),
       (package) {
-        final model = package as PackageModel;
         analytics.trackEvent(
           eventName: AnalyticsEvents.packageDetailViewed,
-          properties: model.toJson(),
+          properties: {
+            'title': package.title,
+            'max_discount': package.maxDiscount,
+            'pk': package.pk,
+            'points_conversion': package.pointsConversion,
+            'provider': {
+              'name': package.provider.name,
+            }
+          },
         );
         return RewardsGetPackageLoaded(package: package);
       },

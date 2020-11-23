@@ -21,7 +21,13 @@ class PackageRequestModel extends PackageRequest {
     this.package,
     this.pointsApplied,
     this.status,
-  });
+  }) : super(
+          quantity: quantity,
+          requestedBy: requestedBy,
+          package: package,
+          pointsApplied: pointsApplied,
+          status: status,
+        );
 
   factory PackageRequestModel.fromJson(Map<String, dynamic> json) =>
       _$PackageRequestModelFromJson(json);

@@ -75,7 +75,21 @@ class PackageModel extends Package {
     this.longDesc,
     this.pointsConversion,
     this.isDark,
-  });
+  }) : super(
+          pk: pk,
+          maxPrice: maxPrice,
+          maxDiscount: maxDiscount,
+          maxDiscountPoints: maxDiscountPoints,
+          title: title,
+          shortDesc: shortDesc,
+          listImage: listImage,
+          coverImage: coverImage,
+          color: color,
+          provider: provider,
+          longDesc: longDesc,
+          pointsConversion: pointsConversion,
+          isDark: isDark,
+        );
 
   factory PackageModel.fromJson(Map<String, dynamic> json) =>
       _$PackageModelFromJson(json);

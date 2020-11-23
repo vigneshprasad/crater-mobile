@@ -25,7 +25,11 @@ class PackageProviderModel extends PackageProvider {
     this.name,
     this.description,
     this.logo,
-  });
+  }) : super(
+          name: name,
+          description: description,
+          logo: logo,
+        );
 
   factory PackageProviderModel.fromJson(Map<String, dynamic> json) =>
       _$PackageProviderModelFromJson(json);
