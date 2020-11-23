@@ -29,7 +29,7 @@ class HomeScreenLayout extends StatelessWidget {
           canvasColor: Colors.white,
         ),
         child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
+          type: BottomNavigationBarType.shifting,
           items: navItems,
           currentIndex: currentTabIndex,
           onTap: onTabTapped,

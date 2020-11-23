@@ -22,4 +22,11 @@ class _$PointsApiService extends PointsApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getPointsRules() {
+    final $url = '/points/rules/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

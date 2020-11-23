@@ -22,4 +22,7 @@ abstract class PointsApiService extends ChopperService {
 
   @Get(path: 'my/')
   Future<Response> getSelfUserPoints();
+
+  @Get(path: 'rules/')
+  Future<Response> getPointsRules();
 }

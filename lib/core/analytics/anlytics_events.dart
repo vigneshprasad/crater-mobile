@@ -10,4 +10,8 @@ class AnalyticsEvents {
   static const meetingRegistrationButtonClick =
       "meeting_registration_button_click";
   static const registerMeetingPreferences = "register_meeting_preferences";
+  static const packageDetailViewed = "package_detail_viewed";
+  static const packageRedeemPressed = "package_redeem_pressed";
+  static const packagePurchaseViewed = "package_purchase_viewed";
+  static const packagePurchased = "package_purchased";
 }

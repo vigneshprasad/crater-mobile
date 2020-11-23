@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:worknetwork/constants/theme.dart';
 
 class RegisterMeetingButton extends MaterialButton {
+  final String label;
+
   const RegisterMeetingButton({
     Key key,
+    @required this.label,
     @required VoidCallback onPressed,
   }) : super(
           key: key,
@@ -29,7 +32,7 @@ class RegisterMeetingButton extends MaterialButton {
             horizontal: AppInsets.xxl,
           ),
           child: Text(
-            "Opt In for Next Week",
+            label,
             style: theme.textTheme.button.copyWith(
               color: buttonTheme.getTextColor(this),
             ),

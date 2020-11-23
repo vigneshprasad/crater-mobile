@@ -3,8 +3,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/community/presentation/bloc/post/post_bloc.dart';
+import 'package:worknetwork/features/points/domain/entity/points_faq_entity.dart';
+import 'package:worknetwork/features/points/domain/entity/points_rule_entity.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
+import '../../domain/usecases/get_points_faq_usecase.dart';
+import '../../domain/usecases/get_points_rule_usecase.dart';
 import '../../domain/usecases/get_self_user_points.dart';
 
 part 'points_event.dart';
@@ -12,10 +17,17 @@ part 'points_state.dart';
 
 class PointsBloc extends Bloc<PointsEvent, PointsState> {
   final UCGetSelfUserPoints getPoints;
+  final UCGetPointsFaq getPointsFaq;
+  final UCGetPointsRules pointsRules;
 
   PointsBloc({
     @required this.getPoints,
-  }) : super(const PointsInitial());
+    @required this.getPointsFaq,
+    @required this.pointsRules,
+  })  : assert(getPoints != null),
+        assert(getPointsFaq != null),
+        assert(pointsRules != null),
+        super(const PointsInitial());
 
   @override
   Stream<PointsState> mapEventToState(
@@ -23,6 +35,10 @@ class PointsBloc extends Bloc<PointsEvent, PointsState> {
   ) async* {
     if (event is GetUserPointsStarted) {
       yield* _mapGetUserRequestToState(event);
+    } else if (event is GetPointsFaqStarted) {
+      yield* _mapGetPointsFaqToState(event);
+    } else if (event is GetPointsRulesStarted) {
+      yield* _mapGetPointsRulesToState(event);
     }
   }
 
@@ -33,7 +49,31 @@ class PointsBloc extends Bloc<PointsEvent, PointsState> {
 
     yield pointsOrError.fold(
       (failure) => state.copyWith(loading: false, error: failure),
-      (points) => PointsValueUpdateRecieved(points: points.points),
+      (data) => PointsValueUpdateRecieved(
+        points: data.points,
+        moneyValue: data.moneyValue,
+      ),
+    );
+  }
+
+  Stream<PointsState> _mapGetPointsFaqToState(
+      GetPointsFaqStarted event) async* {
+    yield state.copyWith(loading: true);
+    final responseOrError = await getPointsFaq(NoParams());
+
+    yield responseOrError.fold(
+      (failure) => state.copyWith(loading: false, error: failure),
+      (faqs) => PointsFaqListLoaded(faqs: faqs),
+    );
+  }
+
+  Stream<PointsState> _mapGetPointsRulesToState(PointsEvent event) async* {
+    yield state.copyWith(loading: true);
+    final responseOrError = await pointsRules(NoParams());
+
+    yield responseOrError.fold(
+      (failure) => state.copyWith(loading: false, error: failure),
+      (rules) => PointsRulesListLoaded(rules: rules),
     );
   }
 }

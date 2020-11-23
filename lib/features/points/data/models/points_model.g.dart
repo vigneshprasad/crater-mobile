@@ -18,15 +18,18 @@ class PointsModelAdapter extends TypeAdapter<PointsModel> {
     };
     return PointsModel(
       points: fields[0] as int,
+      moneyValue: fields[1] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, PointsModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.points);
+      ..write(obj.points)
+      ..writeByte(1)
+      ..write(obj.moneyValue);
   }
 
   @override
@@ -47,10 +50,12 @@ class PointsModelAdapter extends TypeAdapter<PointsModel> {
 PointsModel _$PointsModelFromJson(Map<String, dynamic> json) {
   return PointsModel(
     points: json['points'] as int,
+    moneyValue: (json['money_value'] as num)?.toDouble(),
   );
 }
 
 Map<String, dynamic> _$PointsModelToJson(PointsModel instance) =>
     <String, dynamic>{
       'points': instance.points,
+      'money_value': instance.moneyValue,
     };

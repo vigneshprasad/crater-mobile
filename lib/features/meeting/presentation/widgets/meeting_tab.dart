@@ -2,15 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/meetings_past_tab.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/register_meeting_button.dart';
-import 'package:worknetwork/routes.gr.dart';
 
+import '../../../../constants/theme.dart';
 import '../../../../core/analytics/analytics.dart';
 import '../../../../core/widgets/base/base_tab_bar/base_tab_bar.dart';
 import '../../../../core/widgets/layouts/tab_layouts/tab_with_tabbar_layout.dart';
-import '../../../../core/widgets/screens/models/home_screen_tab_model.dart';
+import '../../../../routes.gr.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
@@ -19,19 +16,12 @@ import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
 import 'meeting_upcoming_tab.dart';
+import 'meetings_past_tab.dart';
+import 'register_meeting_button.dart';
 
-class MeetingTab extends HomeScreenTab {
+class MeetingTab extends StatefulWidget {
   @override
   _MeetingTabState createState() => _MeetingTabState();
-
-  @override
-  double get expandedHeight => 116;
-
-  @override
-  String get headingKey => "meeting:title";
-
-  @override
-  String get subheadingKey => "meeting:subtitle";
 }
 
 class _MeetingTabState extends State<MeetingTab>
@@ -124,6 +114,7 @@ class _MeetingTabState extends State<MeetingTab>
                   child: Container(
                     margin: const EdgeInsets.only(bottom: AppInsets.xxl),
                     child: RegisterMeetingButton(
+                      label: "Opt In for Next Week",
                       onPressed: () {
                         ExtendedNavigator.of(context)
                             .push(

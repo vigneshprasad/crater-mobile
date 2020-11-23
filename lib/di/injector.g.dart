@@ -319,8 +319,10 @@ class _$MeetingInjector extends MeetingInjector {
 class _$PointsInjector extends PointsInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory(
-        (c) => PointsBloc(getPoints: c<UCGetSelfUserPoints>()));
+    container.registerFactory((c) => PointsBloc(
+        getPoints: c<UCGetSelfUserPoints>(),
+        getPointsFaq: c<UCGetPointsFaq>(),
+        pointsRules: c<UCGetPointsRules>()));
     container.registerSingleton<PointsRepository>((c) => PointsRepositoryImpl(
         localDatasource: c<PointsLocalDatasource>(),
         remoteDatasource: c<PointsRemoteDatasource>(),
@@ -328,10 +330,14 @@ class _$PointsInjector extends PointsInjector {
     container.registerSingleton<PointsLocalDatasource>((c) =>
         PointsLocalDatasourceImpl(
             authLocalDataSource: c<AuthLocalDataSource>()));
-    container.registerSingleton<PointsRemoteDatasource>(
-        (c) => PointsRemoteDatasourceImpl(apiService: c<PointsApiService>()));
+    container.registerSingleton<PointsRemoteDatasource>((c) =>
+        PointsRemoteDatasourceImpl(
+            apiService: c<PointsApiService>(),
+            tagsApiService: c<TagsApiService>()));
     container.registerSingleton(
         (c) => UCGetSelfUserPoints(repository: c<PointsRepository>()));
+    container.registerSingleton((c) => UCGetPointsRules(c<PointsRepository>()));
+    container.registerSingleton((c) => UCGetPointsFaq(c<PointsRepository>()));
   }
 }
 
@@ -352,5 +358,29 @@ class _$NotificationInjector extends NotificationInjector {
             apiService: c<NotificationApiService>()));
     container.registerSingleton((c) =>
         UCGetNotificationPageRequest(repository: c<NotificationRepository>()));
+  }
+}
+
+class _$RewardsInjector extends RewardsInjector {
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => RewardsBloc(
+        getPackagesList: c<UCGetPackagesList>(),
+        getPackage: c<UCGetPackage>(),
+        packageRequest: c<UCPostPackageRequest>(),
+        analytics: c<Analytics>()));
+    container.registerSingleton<RewardsRepository>((c) => RewardsRepositoryImpl(
+        networkInfo: c<NetworkInfo>(),
+        localDatasource: c<RewardsLocalDatasource>(),
+        remoteDatasource: c<RewardsRemoteDatasource>()));
+    container.registerSingleton<RewardsLocalDatasource>(
+        (c) => RewardsLocalDatasourceImpl());
+    container.registerSingleton<RewardsRemoteDatasource>(
+        (c) => RewardsRemoteDatasourceImpl(apiService: c<RewardsApiService>()));
+    container.registerSingleton(
+        (c) => UCGetPackagesList(repository: c<RewardsRepository>()));
+    container.registerSingleton((c) => UCGetPackage(c<RewardsRepository>()));
+    container
+        .registerSingleton((c) => UCPostPackageRequest(c<RewardsRepository>()));
   }
 }

@@ -84,6 +84,10 @@ class AppImageAssets {
   static const meetingsEmpty = AssetImage("assets/images/meetings_empty.png");
   static const meetingScheduled =
       AssetImage("assets/images/meeting_scheduled.png");
+  static const packageSuccess =
+      AssetImage("assets/images/img_success_purchase.jpg");
+  static const rewardsTrophy =
+      AssetImage("assets/images/img_reward_trophy.png");
 }
 
 class AppSvgAssets {
@@ -96,4 +100,8 @@ class AppSvgAssets {
 class AppLottieAssets {
   static const imageLoading = "assets/lottie/loading_dots.json";
   static const typingAnimation = "assets/lottie/typing_animation.json";
+}
+
+class AppHeroTransitions {
+  static const packageCard = "packageCardTransition";
 }

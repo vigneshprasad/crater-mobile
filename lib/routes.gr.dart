@@ -22,6 +22,10 @@ import 'features/meeting/domain/entity/meeting_objective_entity.dart';
 import 'features/meeting/domain/entity/user_meeting_preference_entity.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
+import 'features/points/presentation/screens/points_faq_screen.dart';
+import 'features/rewards/domain/entity/package_entity.dart';
+import 'features/rewards/presentation/screens/package_detail_screen.dart';
+import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
@@ -42,6 +46,9 @@ class Routes {
   static const String notificationsScreen = '/notifications';
   static const String postScreen = '/post';
   static const String registerMeetingScreen = '/register-meeting';
+  static const String packageDetailScreen = '/package-detail';
+  static const String packagePurchaseScreen = '/package-purchase';
+  static const String pointsFaqScreen = '/points-faq';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -56,6 +63,9 @@ class Routes {
     notificationsScreen,
     postScreen,
     registerMeetingScreen,
+    packageDetailScreen,
+    packagePurchaseScreen,
+    pointsFaqScreen,
   };
 }
 
@@ -76,6 +86,9 @@ class Router extends RouterBase {
     RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
     RouteDef(Routes.postScreen, page: PostScreen),
     RouteDef(Routes.registerMeetingScreen, page: RegisterMeetingScreen),
+    RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
+    RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
+    RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -179,6 +192,32 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    PackageDetailScreen: (data) {
+      final args = data.getArgs<PackageDetailScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PackageDetailScreen(
+          key: args.key,
+          packageId: args.packageId,
+        ),
+        settings: data,
+      );
+    },
+    PackagePurchaseScreen: (data) {
+      final args = data.getArgs<PackagePurchaseScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PackagePurchaseScreen(
+          key: args.key,
+          package: args.package,
+        ),
+        settings: data,
+      );
+    },
+    PointsFaqScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PointsFaqScreen(),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -252,6 +291,27 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
             objectives: objectives,
             interests: interests),
       );
+
+  Future<dynamic> pushPackageDetailScreen({
+    Key key,
+    @required int packageId,
+  }) =>
+      push<dynamic>(
+        Routes.packageDetailScreen,
+        arguments: PackageDetailScreenArguments(key: key, packageId: packageId),
+      );
+
+  Future<dynamic> pushPackagePurchaseScreen({
+    Key key,
+    @required Package package,
+  }) =>
+      push<dynamic>(
+        Routes.packagePurchaseScreen,
+        arguments: PackagePurchaseScreenArguments(key: key, package: package),
+      );
+
+  Future<dynamic> pushPointsFaqScreen() =>
+      push<dynamic>(Routes.pointsFaqScreen);
 }
 
 /// ************************************************************************
@@ -292,4 +352,18 @@ class RegisterMeetingScreenArguments {
       @required this.preference,
       @required this.objectives,
       @required this.interests});
+}
+
+/// PackageDetailScreen arguments holder class
+class PackageDetailScreenArguments {
+  final Key key;
+  final int packageId;
+  PackageDetailScreenArguments({this.key, @required this.packageId});
+}
+
+/// PackagePurchaseScreen arguments holder class
+class PackagePurchaseScreenArguments {
+  final Key key;
+  final Package package;
+  PackagePurchaseScreenArguments({this.key, @required this.package});
 }
