@@ -105,10 +105,13 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                       height: 56,
                       width: 56,
                       decoration: BoxDecoration(
+                        border: isDark
+                            ? Border.all(color: Colors.white, width: 2)
+                            : Border.all(color: Colors.grey[700], width: 2),
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
                           image: imageProvider,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     );
