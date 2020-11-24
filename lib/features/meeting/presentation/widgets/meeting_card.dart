@@ -76,12 +76,15 @@ class MeetingCard extends StatelessWidget {
         );
     return Row(
       children: [
-        CachedNetworkImage(
-          imageUrl: participant.photo,
-          imageBuilder: (context, imageProvider) => CircleAvatar(
-            backgroundImage: imageProvider,
+        if (participant.photo != null)
+          CachedNetworkImage(
+            imageUrl: participant.photo,
+            imageBuilder: (context, imageProvider) => CircleAvatar(
+              backgroundImage: imageProvider,
+            ),
           ),
-        ),
+        if (participant.photo == null)
+          const CircleAvatar(backgroundImage: AppImageAssets.defaultAvatar),
         const SizedBox(width: AppInsets.l),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,10 +105,11 @@ class MeetingCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppInsets.xs),
-            Text(
-              'at ${dateFormat.format(meeting.start)}',
-              style: dateStyle,
-            ),
+            if (meeting.start != null)
+              Text(
+                'at ${dateFormat.format(meeting.start)}',
+                style: dateStyle,
+              ),
           ],
         )
       ],

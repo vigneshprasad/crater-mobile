@@ -4,7 +4,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -13,11 +12,13 @@ import '../api/meets/meets_api_service.dart';
 import '../api/notifications/notifications_api_service.dart';
 import '../api/points/points_api_service.dart';
 import '../api/post/post_api_service.dart';
+import '../api/rewards/rewards_api_service.dart';
 import '../api/tags/tags_api_service.dart';
 import '../api/user/user_api_service.dart';
 import '../constants/app_constants.dart';
 import '../core/analytics/analytics.dart';
 import '../core/config_reader/config_reader.dart';
+import '../core/custom_tabs/custom_tabs.dart';
 import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
@@ -111,8 +112,18 @@ import '../features/points/data/datasources/points_local_datasource.dart';
 import '../features/points/data/datasources/points_remote_datasource.dart';
 import '../features/points/data/repository/points_repository_impl.dart';
 import '../features/points/domain/repository/points_repository.dart';
+import '../features/points/domain/usecases/get_points_faq_usecase.dart';
+import '../features/points/domain/usecases/get_points_rule_usecase.dart';
 import '../features/points/domain/usecases/get_self_user_points.dart';
 import '../features/points/presentation/bloc/points_bloc.dart';
+import '../features/rewards/data/datasources/rewards_local_datasource.dart';
+import '../features/rewards/data/datasources/rewards_remote_datasource.dart';
+import '../features/rewards/data/repository/rewards_repository_impl.dart';
+import '../features/rewards/domain/repository/rewards_repository.dart';
+import '../features/rewards/domain/usecases/get_package_usecase.dart';
+import '../features/rewards/domain/usecases/get_packages_list_usecase.dart';
+import '../features/rewards/domain/usecases/post_package_request_usecase.dart';
+import '../features/rewards/presentation/bloc/rewards_bloc.dart';
 import '../features/signup/data/datasources/signup_remote_datasource.dart';
 import '../features/signup/data/repository/signup_repository_impl.dart';
 import '../features/signup/domain/repository/signup_repository.dart';
@@ -294,6 +305,8 @@ abstract class PointsInjector {
   @Register.singleton(PointsLocalDatasource, from: PointsLocalDatasourceImpl)
   @Register.singleton(PointsRemoteDatasource, from: PointsRemoteDatasourceImpl)
   @Register.singleton(UCGetSelfUserPoints)
+  @Register.singleton(UCGetPointsRules)
+  @Register.singleton(UCGetPointsFaq)
   void configure();
 }
 
@@ -305,6 +318,18 @@ abstract class NotificationInjector {
   @Register.singleton(NotificationRemotDatasource,
       from: NotificationRemotDatasourceImpl)
   @Register.singleton(UCGetNotificationPageRequest)
+  void configure();
+}
+
+abstract class RewardsInjector {
+  @Register.factory(RewardsBloc)
+  @Register.singleton(RewardsRepository, from: RewardsRepositoryImpl)
+  @Register.singleton(RewardsLocalDatasource, from: RewardsLocalDatasourceImpl)
+  @Register.singleton(RewardsRemoteDatasource,
+      from: RewardsRemoteDatasourceImpl)
+  @Register.singleton(UCGetPackagesList)
+  @Register.singleton(UCGetPackage)
+  @Register.singleton(UCPostPackageRequest)
   void configure();
 }
 
@@ -324,6 +349,7 @@ class Di {
     final notficationInjector = _$NotificationInjector();
     final communityInjector = _$CommunityInjector();
     final meetingInjector = _$MeetingInjector();
+    final rewardsInjector = _$RewardsInjector();
 
     /// [Core]
     ///
@@ -366,6 +392,9 @@ class Di {
     // Notifications
     notficationInjector.configure();
 
+    // Rewards
+    rewardsInjector.configure();
+
     // Api Services
     container.registerInstance(AuthApiService.create());
     container.registerInstance(UserApiService.create());
@@ -376,6 +405,7 @@ class Di {
     container.registerInstance(ArticlesApiService.create());
     container.registerInstance(MeetsApiService.create());
     container.registerInstance(TagsApiService.create());
+    container.registerInstance(RewardsApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

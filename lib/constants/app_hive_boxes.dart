@@ -12,6 +12,9 @@ class AppHiveBoxes {
   static const commentsBox = "COMMENT_MODEL_BOX";
   static const articlesBox = "ARTICLE_MODEL_BOX";
   static const articlesWebsiteBox = "ARTICLE_WEBSITE_MODEL_BOX";
+  static const packagesBox = "PACKAGES_MODEL_BOX";
+  static const pointRuleBox = "POINTS_RULE_BOX";
+  static const pointFaqBox = "POINTS_FAQ_BOX";
 }
 
 class AppHiveTypeIds {
@@ -30,4 +33,8 @@ class AppHiveTypeIds {
   static const userProfile = 13;
   static const userTag = 14;
   static const articleWebsite = 15;
+  static const package = 16;
+  static const packageProvider = 17;
+  static const pointsFaq = 18;
+  static const pointsRule = 19;
 }

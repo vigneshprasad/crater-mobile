@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:worknetwork/features/points/data/models/points_faq_model.dart';
+import 'package:worknetwork/features/points/data/models/points_rule_model.dart';
 
 import '../../constants/app_hive_boxes.dart';
 import '../../features/article/data/models/article_model.dart';
@@ -14,6 +16,8 @@ import '../../features/community/data/models/comment_model.dart';
 import '../../features/community/data/models/post_model.dart';
 import '../../features/notification/data/models/notification_model.dart';
 import '../../features/points/data/models/points_model.dart';
+import '../../features/rewards/data/models/package_model.dart';
+import '../../features/rewards/data/models/package_provider_model.dart';
 import '../../features/videos/data/models/video_model.dart';
 
 abstract class LocalStorage {
@@ -41,6 +45,10 @@ class LocalStorageImpl implements LocalStorage {
     Hive.registerAdapter(NotificationModelAdapter());
     Hive.registerAdapter(ArticleModelAdapter());
     Hive.registerAdapter(ArticleWebsiteModelAdapter());
+    Hive.registerAdapter(PackageModelAdapter());
+    Hive.registerAdapter(PackageProviderModelAdapter());
+    Hive.registerAdapter(PointsFaqModelAdapter());
+    Hive.registerAdapter(PointsRuleModelAdapter());
   }
 
   @override
@@ -64,6 +72,9 @@ class LocalStorageImpl implements LocalStorage {
     await Hive.openBox<VideoModel>(AppHiveBoxes.videoBox);
     await Hive.openBox<PointsModel>(AppHiveBoxes.pointsBox);
     await Hive.openBox<NotificationModel>(AppHiveBoxes.notificationsBox);
+    await Hive.openBox<PackageModel>(AppHiveBoxes.packagesBox);
+    await Hive.openBox<PointsFaqModel>(AppHiveBoxes.pointFaqBox);
+    await Hive.openBox<PointsRuleModel>(AppHiveBoxes.pointRuleBox);
   }
 
   @override
@@ -79,5 +90,8 @@ class LocalStorageImpl implements LocalStorage {
     await Hive.box<VideoModel>(AppHiveBoxes.videoBox).clear();
     await Hive.box<PointsModel>(AppHiveBoxes.pointsBox).clear();
     await Hive.box<NotificationModel>(AppHiveBoxes.notificationsBox).clear();
+    await Hive.box<PackageModel>(AppHiveBoxes.packagesBox).clear();
+    await Hive.box<PointsFaqModel>(AppHiveBoxes.pointFaqBox).clear();
+    await Hive.box<PointsRuleModel>(AppHiveBoxes.pointRuleBox).clear();
   }
 }

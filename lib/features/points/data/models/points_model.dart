@@ -15,9 +15,17 @@ class PointsModel extends Points {
   @HiveField(0)
   final int points;
 
+  @HiveField(1)
+  @JsonKey(name: "money_value")
+  final double moneyValue;
+
   PointsModel({
     this.points,
-  }) : super(points: points);
+    this.moneyValue,
+  }) : super(
+          points: points,
+          moneyValue: moneyValue,
+        );
 
   factory PointsModel.fromJson(Map<String, dynamic> json) =>
       _$PointsModelFromJson(json);

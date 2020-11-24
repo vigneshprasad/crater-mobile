@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
+import 'package:worknetwork/features/rewards/presentation/bloc/rewards_bloc.dart';
 
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
@@ -24,6 +26,8 @@ class _RootProviderState extends State<RootProvider> {
   WebsocketBloc _websocketBloc;
   NotificationBloc _notificationBloc;
   MeetingBloc _meetingBloc;
+  RewardsBloc _rewardsBloc;
+  PointsBloc _pointsBloc;
 
   @override
   void initState() {
@@ -31,6 +35,8 @@ class _RootProviderState extends State<RootProvider> {
     _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
     _notificationBloc = KiwiContainer().resolve<NotificationBloc>();
     _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
+    _rewardsBloc = KiwiContainer().resolve<RewardsBloc>();
+    _pointsBloc = KiwiContainer().resolve<PointsBloc>();
     super.initState();
   }
 
@@ -40,6 +46,8 @@ class _RootProviderState extends State<RootProvider> {
     _websocketBloc.close();
     _notificationBloc.close();
     _meetingBloc.close();
+    _rewardsBloc.close();
+    _pointsBloc.close();
     super.dispose();
   }
 
@@ -58,6 +66,12 @@ class _RootProviderState extends State<RootProvider> {
         ),
         BlocProvider.value(
           value: _notificationBloc,
+        ),
+        BlocProvider.value(
+          value: _rewardsBloc,
+        ),
+        BlocProvider.value(
+          value: _pointsBloc,
         )
       ],
       child: widget.child,

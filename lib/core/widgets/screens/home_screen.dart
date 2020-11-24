@@ -13,7 +13,7 @@ import '../../../features/community/domain/entity/post_entity.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
-import '../../../features/videos/presentation/bloc/video/video_bloc.dart';
+import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
@@ -32,16 +32,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final CommunityBloc _communityBloc = KiwiContainer().resolve();
   final ArticleBloc _articleBloc = KiwiContainer().resolve();
-  final VideoBloc _videoBloc = KiwiContainer().resolve();
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
   int _currentTab = 0;
 
   final List<Widget> _screens = [
     MeetingTab(),
-    CommunityTab(),
     InboxTab(),
+    CommunityTab(),
     ArticlesTab(),
-    // VideoTab()
+    RewardsTab(),
   ];
 
   @override
@@ -58,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _communityBloc.close();
     _articleBloc.close();
-    _videoBloc.close();
     _chatInboxBloc.close();
     super.dispose();
   }
@@ -72,9 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         BlocProvider.value(
           value: _articleBloc,
-        ),
-        BlocProvider.value(
-          value: _videoBloc,
         ),
         BlocProvider.value(
           value: _chatInboxBloc,
@@ -96,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final String meetsLabel = translate("home_tab:meets");
     final String inboxLabel = translate("home_tab:inbox");
     final String articlesLabel = translate("home_tab:articles");
-    // final String videosLabel = translate("home_tab:videos");
+    final String rewardsLabel = translate("home_tab:rewards");
 
     return [
       BottomNavigationBarItem(
@@ -104,21 +99,21 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(meetsLabel),
       ),
       BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.community),
-        title: Text(communityLabel),
-      ),
-      BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.inbox),
         title: Text(inboxLabel),
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(WorkNetIcons.community),
+        title: Text(communityLabel),
       ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.articles),
         title: Text(articlesLabel),
       ),
-      // BottomNavigationBarItem(
-      //   icon: const Icon(WorkNetIcons.videos),
-      //   title: Text(videosLabel),
-      // ),
+      BottomNavigationBarItem(
+        icon: const Icon(WorkNetIcons.staroutline),
+        title: Text(rewardsLabel),
+      ),
     ];
   }
 

@@ -10,3 +10,11 @@ abstract class PointsEvent extends Equatable {
 class GetUserPointsStarted extends PointsEvent {
   const GetUserPointsStarted();
 }
+
+class GetPointsFaqStarted extends PointsEvent {
+  const GetPointsFaqStarted();
+}
+
+class GetPointsRulesStarted extends PointsEvent {
+  const GetPointsRulesStarted();
+}
