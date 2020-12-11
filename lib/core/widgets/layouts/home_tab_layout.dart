@@ -15,7 +15,6 @@ class HomeTabLayout extends StatelessWidget {
   final String heading;
   final String subHeading;
   final double expandedHeight;
-  final GlobalKey refreshIndicatorKey;
 
   const HomeTabLayout({
     Key key,
@@ -25,7 +24,6 @@ class HomeTabLayout extends StatelessWidget {
     @required this.heading,
     this.subHeading,
     this.expandedHeight = 124,
-    this.refreshIndicatorKey,
   }) : super(key: key);
 
   @override
