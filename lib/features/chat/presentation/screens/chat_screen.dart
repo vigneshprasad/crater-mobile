@@ -52,6 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
               if (chatState is ChatWebSocketReady) {
                 _chatBloc
                     .add(SetChatWithUserStarted(recieverId: widget.recieverId));
+                _chatBloc.add(const SendReadChatMessagesRequest());
               }
             },
             builder: (context, chatState) {

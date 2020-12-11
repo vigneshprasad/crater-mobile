@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
+import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../models/meeting_config_model.dart';
 import '../models/meeting_interest_model.dart';

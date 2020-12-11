@@ -222,7 +222,8 @@ class _$ChatInjector extends ChatInjector {
         sendMessage: c<UCSendChatToUser>(),
         receivedSetChatWithUser: c<UCReceivedSetChatWithUser>(),
         sendUserIsTyping: c<UCSendUserIsTyping>(),
-        persistReceivedMessage: c<UCPersistReceivedMessage>()));
+        persistReceivedMessage: c<UCPersistReceivedMessage>(),
+        sendReadUserMessage: c<UCSendReadUserMessage>()));
     container.registerSingleton<ChatRepository>((c) => ChatRepositoryImpl(
         repository: c<WebSocketRepository>(),
         localDataSource: c<ChatLocalDataSource>(),
@@ -241,6 +242,8 @@ class _$ChatInjector extends ChatInjector {
         (c) => UCSendUserIsTyping(repository: c<ChatRepository>()));
     container.registerSingleton(
         (c) => UCPersistReceivedMessage(repository: c<ChatRepository>()));
+    container.registerSingleton(
+        (c) => UCSendReadUserMessage(repository: c<ChatRepository>()));
   }
 }
 

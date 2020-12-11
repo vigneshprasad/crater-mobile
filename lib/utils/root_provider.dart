@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
-import 'package:worknetwork/features/rewards/presentation/bloc/rewards_bloc.dart';
 
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/presentation/bloc/notification_bloc.dart';
+import '../features/points/presentation/bloc/points_bloc.dart';
+import '../features/rewards/presentation/bloc/rewards_bloc.dart';
 
 class RootProvider extends StatefulWidget {
   final Widget child;

@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/rewards/presentation/widgets/redeem_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
-import '../../../../routes.gr.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/package_entity.dart';
+import '../widgets/redeem_button.dart';
 
 class PackageRequestSuccess extends ModalRoute<void> {
   final Package package;

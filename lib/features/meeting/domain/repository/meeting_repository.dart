@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_config_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
 
 import '../../../../core/error/failures.dart';
+import '../entity/meeting_config_entity.dart';
 import '../entity/meeting_entity.dart';
 import '../entity/meeting_interest_entity.dart';
 import '../entity/meeting_objective_entity.dart';
+import '../entity/number_of_meetings_entity.dart';
+import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 
 abstract class MeetingRepository {

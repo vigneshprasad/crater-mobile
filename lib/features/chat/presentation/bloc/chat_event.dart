@@ -57,3 +57,7 @@ class ReceivedChatMessageResponse extends ChatEvent {
     @required this.message,
   });
 }
+
+class SendReadChatMessagesRequest extends ChatEvent {
+  const SendReadChatMessagesRequest();
+}

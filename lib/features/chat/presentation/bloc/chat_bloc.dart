@@ -14,6 +14,7 @@ import '../../domain/entity/chat_message_entity.dart';
 import '../../domain/usecases/persist_received_message.dart';
 import '../../domain/usecases/received_set_chat_with_user.dart';
 import '../../domain/usecases/send_message_to_user_usecase.dart';
+import '../../domain/usecases/send_read_user_messaged.dart';
 import '../../domain/usecases/send_user_typing.dart';
 import '../../domain/usecases/set_chat_with_user_usecase.dart';
 
@@ -27,6 +28,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final UCReceivedSetChatWithUser receivedSetChatWithUser;
   final UCSendUserIsTyping sendUserIsTyping;
   final UCPersistReceivedMessage persistReceivedMessage;
+  final UCSendReadUserMessage sendReadUserMessage;
 
   StreamSubscription _webSocketBlocSub;
   StreamSubscription _streamSubscription;
@@ -38,7 +40,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     @required this.receivedSetChatWithUser,
     @required this.sendUserIsTyping,
     @required this.persistReceivedMessage,
-  }) : super(const ChatInitial()) {
+    @required this.sendReadUserMessage,
+  })  : assert(websocketBloc != null),
+        assert(setChatWithUser != null),
+        assert(sendMessage != null),
+        assert(receivedSetChatWithUser != null),
+        assert(sendUserIsTyping != null),
+        assert(persistReceivedMessage != null),
+        assert(sendReadUserMessage != null),
+        super(const ChatInitial()) {
     if (websocketBloc.state is WebSocketConnected) {
       add(const WebSocketBlocConnected());
     } else {
@@ -88,6 +98,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       if (type == WSResponseType.loadChatMessages) {
         final response = SetChatUserResponse.fromJson(json);
+        sendReadUserMessage(NoParams());
         add(ReceivedSetChatUserResponse(response: response));
       }
       if (type == WSResponseType.getUserMessage) {

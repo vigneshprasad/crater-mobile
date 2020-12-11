@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import '../models/comment_model.dart';
-import '../models/post_model.dart';
 
 import '../../../../api/post/post_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -13,7 +11,9 @@ import '../../domain/entity/comment_entity.dart';
 import '../../domain/entity/like_entity.dart';
 import '../../domain/entity/post_entity.dart';
 import '../models/api_models.dart';
+import '../models/comment_model.dart';
 import '../models/like_model.dart';
+import '../models/post_model.dart';
 
 abstract class CommunityRemoteDatasource {
   Future<PageApiResponse<Post>> getPostsPageFromRemote(int pageSize, int page);

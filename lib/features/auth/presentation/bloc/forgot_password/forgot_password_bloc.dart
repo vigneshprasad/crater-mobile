@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/validators/validators.dart';
 
 import '../../../../../core/error/failures.dart';
+import '../../../../../core/validators/validators.dart';
 import '../../../domain/usecase/post_password_reset_usecase.dart';
 
 part 'forgot_password_event.dart';

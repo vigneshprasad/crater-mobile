@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/rewards/domain/entity/package_request_entity.dart';
+import '../../domain/entity/package_request_entity.dart';
 
 part 'package_request_model.g.dart';
 

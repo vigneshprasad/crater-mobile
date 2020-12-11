@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/meeting_config_entity.dart';
 import '../entity/meeting_interest_entity.dart';
 import '../entity/meeting_objective_entity.dart';
+import '../entity/number_of_meetings_entity.dart';
 import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 import '../repository/meeting_repository.dart';

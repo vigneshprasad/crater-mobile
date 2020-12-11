@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/rewards/data/models/package_request_model.dart';
-import 'package:worknetwork/features/rewards/domain/entity/package_request_entity.dart';
 
 import '../../../../api/rewards/rewards_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/package_entity.dart';
+import '../../domain/entity/package_request_entity.dart';
 import '../models/package_model.dart';
+import '../models/package_request_model.dart';
 
 abstract class RewardsRemoteDatasource {
   Future<List<Package>> getPackageListFromRemote();

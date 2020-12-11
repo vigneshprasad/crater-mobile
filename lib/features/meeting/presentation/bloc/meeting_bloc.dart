@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
@@ -12,6 +10,7 @@ import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/usecase/get_meeting_interests_usecase.dart';
@@ -19,6 +18,7 @@ import '../../domain/usecase/get_meeting_objectives_usecase.dart';
 import '../../domain/usecase/get_meeting_preferences_usecase.dart';
 import '../../domain/usecase/get_meetings_config_usecase.dart';
 import '../../domain/usecase/get_meetings_usecase.dart';
+import '../../domain/usecase/get_past_meeting_preferences_usecase.dart';
 import '../../domain/usecase/post_meeting_preferences_usecase.dart';
 
 part 'meeting_event.dart';

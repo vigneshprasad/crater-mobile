@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/community/presentation/bloc/post/post_bloc.dart';
-import 'package:worknetwork/features/points/domain/entity/points_faq_entity.dart';
-import 'package:worknetwork/features/points/domain/entity/points_rule_entity.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
+import '../../domain/entity/points_faq_entity.dart';
+import '../../domain/entity/points_rule_entity.dart';
 import '../../domain/usecases/get_points_faq_usecase.dart';
 import '../../domain/usecases/get_points_rule_usecase.dart';
 import '../../domain/usecases/get_self_user_points.dart';

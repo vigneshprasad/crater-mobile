@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../ui/components/list_items/user_list_item/user_list_item.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_inbox/chat_inbox_bloc.dart';
 

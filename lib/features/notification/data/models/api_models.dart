@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import './notification_model.dart';
+import 'notification_model.dart';
 
 part 'api_models.g.dart';
 

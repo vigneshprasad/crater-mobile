@@ -4,8 +4,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -59,6 +57,7 @@ import '../features/auth/domain/usecase/post_password_reset_usecase.dart';
 import '../features/auth/domain/usecase/post_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
+import '../features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import '../features/chat/data/datasources/chat_local_datasource.dart';
 import '../features/chat/data/datasources/chat_remote_datasource.dart';
 import '../features/chat/data/repository/chat_repository_impl.dart';
@@ -66,6 +65,7 @@ import '../features/chat/domain/repository/chat_repository.dart';
 import '../features/chat/domain/usecases/persist_received_message.dart';
 import '../features/chat/domain/usecases/received_set_chat_with_user.dart';
 import '../features/chat/domain/usecases/send_message_to_user_usecase.dart';
+import '../features/chat/domain/usecases/send_read_user_messaged.dart';
 import '../features/chat/domain/usecases/send_user_typing.dart';
 import '../features/chat/domain/usecases/set_chat_with_user_usecase.dart';
 import '../features/chat/presentation/bloc/chat_bloc.dart';
@@ -103,6 +103,7 @@ import '../features/meeting/domain/usecase/get_meeting_objectives_usecase.dart';
 import '../features/meeting/domain/usecase/get_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_usecase.dart';
+import '../features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
@@ -265,6 +266,7 @@ abstract class ChatInjector {
   @Register.singleton(UCReceivedSetChatWithUser)
   @Register.singleton(UCSendUserIsTyping)
   @Register.singleton(UCPersistReceivedMessage)
+  @Register.singleton(UCSendReadUserMessage)
   void configure();
 }
 

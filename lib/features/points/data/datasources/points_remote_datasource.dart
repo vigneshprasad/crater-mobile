@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/api/tags/tags_api_service.dart';
-import 'package:worknetwork/features/points/data/models/points_faq_model.dart';
-import 'package:worknetwork/features/points/data/models/points_rule_model.dart';
-import 'package:worknetwork/features/points/domain/entity/points_faq_entity.dart';
-import 'package:worknetwork/features/points/domain/entity/points_rule_entity.dart';
 
 import '../../../../api/points/points_api_service.dart';
+import '../../../../api/tags/tags_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/points_entity.dart';
+import '../../domain/entity/points_faq_entity.dart';
+import '../../domain/entity/points_rule_entity.dart';
+import '../models/points_faq_model.dart';
 import '../models/points_model.dart';
+import '../models/points_rule_model.dart';
 
 abstract class PointsRemoteDatasource {
   Future<Points> getSelfUserPointsFromRemote();

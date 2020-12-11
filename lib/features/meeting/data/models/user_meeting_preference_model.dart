@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
 
 import '../../domain/entity/user_meeting_preference_entity.dart';
+import 'meeting_interest_model.dart';
+import 'meeting_objective_model.dart';
 
 part 'user_meeting_preference_model.g.dart';
 

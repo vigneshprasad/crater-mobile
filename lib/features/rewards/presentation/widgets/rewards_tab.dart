@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/register_meeting_button.dart';
 
+import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_tab_bar/base_tab_bar.dart';
 import '../../../../core/widgets/layouts/tab_layouts/tab_with_tabbar_layout.dart';
 import '../../../../utils/app_localizations.dart';
+import '../../../meeting/presentation/widgets/register_meeting_button.dart';
 import '../../../points/presentation/widgets/points_tab.dart';
 import '../../domain/entity/package_entity.dart';
 import '../bloc/rewards_bloc.dart';

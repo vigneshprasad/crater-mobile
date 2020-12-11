@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/article_website_entity.dart';
 import '../bloc/article_bloc.dart';
 import 'articles_row_list.dart';

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -17,6 +16,7 @@ import '../../../signup/presentation/widgets/multiselect_dropdown.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
@@ -119,7 +119,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                           : null,
                     ),
                   ),
-                  buildFullWidth(),
+                  buildFullWidth(meetingState),
                 ],
               ),
             );
@@ -129,12 +129,14 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
     );
   }
 
-  Widget buildFullWidth() {
+  Widget buildFullWidth(MeetingState state) {
     return Material(
       color: Theme.of(context).primaryColor,
       child: InkWell(
         onTap: () {
-          submit();
+          if (!state.loading) {
+            submit();
+          }
         },
         splashColor: Theme.of(context).splashColor,
         highlightColor: Theme.of(context).highlightColor,

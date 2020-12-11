@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:worknetwork/features/points/data/models/points_faq_model.dart';
-import 'package:worknetwork/features/points/data/models/points_rule_model.dart';
 
 import '../../constants/app_hive_boxes.dart';
 import '../../features/article/data/models/article_model.dart';
@@ -15,7 +13,9 @@ import '../../features/chat_inbox/data/models/chat_user_model.dart';
 import '../../features/community/data/models/comment_model.dart';
 import '../../features/community/data/models/post_model.dart';
 import '../../features/notification/data/models/notification_model.dart';
+import '../../features/points/data/models/points_faq_model.dart';
 import '../../features/points/data/models/points_model.dart';
+import '../../features/points/data/models/points_rule_model.dart';
 import '../../features/rewards/data/models/package_model.dart';
 import '../../features/rewards/data/models/package_provider_model.dart';
 import '../../features/videos/data/models/video_model.dart';
