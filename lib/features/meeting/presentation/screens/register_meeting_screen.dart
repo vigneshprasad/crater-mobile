@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../constants/theme.dart';
@@ -76,6 +77,11 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         return BlocConsumer<MeetingBloc, MeetingState>(
           listener: (context, state) {
             if (state is PostMeetingPreferencesLoaded) {
+              ExtendedNavigator.of(context).pop();
+            } else if (state is PostMeetingPreferenceError) {
+              Fluttertoast.showToast(
+                msg: state.error as String,
+              );
               ExtendedNavigator.of(context).pop();
             } else if (state is MeetingGetPastPreferencesLoaded) {
               final UserMeetingPreference pastPrefs = state.pastPreferences;

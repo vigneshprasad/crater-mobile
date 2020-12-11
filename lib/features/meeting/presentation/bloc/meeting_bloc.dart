@@ -146,7 +146,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     ));
 
     yield responseOrError.fold(
-      (failure) => MeetingGetRequestError(error: failure),
+      (failure) => PostMeetingPreferenceError(error: failure),
       (prefs) => PostMeetingPreferencesLoaded(preferences: prefs),
     );
   }

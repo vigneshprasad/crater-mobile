@@ -200,6 +200,20 @@ class PostMeetingPreferencesLoaded extends MeetingState {
       ];
 }
 
+class PostMeetingPreferenceError extends MeetingState {
+  const PostMeetingPreferenceError({
+    dynamic error,
+  }) : super(
+          loading: false,
+          error: error,
+        );
+  @override
+  List<Object> get props => [
+        loading,
+        error,
+      ];
+}
+
 class PostUserProfileResponseLoaded extends MeetingState {
   final UserProfile profile;
 
