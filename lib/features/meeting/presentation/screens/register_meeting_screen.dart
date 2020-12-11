@@ -43,6 +43,7 @@ class RegisterMeetingScreen extends StatefulWidget {
 class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<NumberOfMeetings> _monthlyMeetingOptions = [
+    const NumberOfMeetings(label: "Ask me every week", value: 0),
     const NumberOfMeetings(label: "One meeting per month", value: 1),
     const NumberOfMeetings(label: "Bi-weekly meetings", value: 2),
     const NumberOfMeetings(label: "One meeting every week'", value: 4),
@@ -57,14 +58,12 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   String _introduction = "";
   String _linkedinUrl = "";
   MeetingBloc _bloc;
-  bool showForm;
 
   @override
   void initState() {
     _bloc = BlocProvider.of<MeetingBloc>(context);
     _bloc.add(const GetPastMeetingPreferencesStarted());
     _splitObjectives(widget.objectives);
-    showForm = false;
     super.initState();
   }
 
@@ -74,7 +73,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
       builder: (context, state) {
         final user = state.user;
         final profile = state.profile;
-        return BlocListener<MeetingBloc, MeetingState>(
+        return BlocConsumer<MeetingBloc, MeetingState>(
           listener: (context, state) {
             if (state is PostMeetingPreferencesLoaded) {
               ExtendedNavigator.of(context).pop();
@@ -102,26 +101,29 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                           (element) => element.type == ObjectiveType.lookingTo)
                       .toList();
                   _selectedSlots = slots;
-                  showForm = true;
                 });
               }
             }
           },
-          child: Scaffold(
-            appBar: BaseAppBar(),
-            body: Column(
-              children: [
-                if (!showForm) const LinearProgressIndicator(),
-                _buildHeader(context),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: showForm ? _buildForm(context, user, profile) : null,
+          builder: (context, meetingState) {
+            return Scaffold(
+              appBar: BaseAppBar(),
+              body: Column(
+                children: [
+                  if (meetingState.loading) const LinearProgressIndicator(),
+                  _buildHeader(context),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: !meetingState.loading
+                          ? _buildForm(context, user, profile)
+                          : null,
+                    ),
                   ),
-                ),
-                buildFullWidth(),
-              ],
-            ),
-          ),
+                  buildFullWidth(),
+                ],
+              ),
+            );
+          },
         );
       },
     );
@@ -280,7 +282,9 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               child: TimeSlotFormField(
                 validator: (value) {
                   if (value.isEmpty) {
-                    return "Please select one time slot";
+                    return "Please select two time slots";
+                  } else if (value.length < 2) {
+                    return "Please select atleast two time slots";
                   }
                   return null;
                 },
