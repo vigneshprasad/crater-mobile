@@ -9,6 +9,7 @@ abstract class MeetingState extends Equatable {
   final List<MeetingObjective> objectives;
   final List<MeetingInterest> interests;
   final UserMeetingPreference preference;
+  final UserMeetingPreference pastPreferences;
 
   const MeetingState({
     this.loading,
@@ -19,6 +20,7 @@ abstract class MeetingState extends Equatable {
     this.interests,
     this.config,
     this.preference,
+    this.pastPreferences,
   });
 
   @override
@@ -30,6 +32,7 @@ abstract class MeetingState extends Equatable {
         objectives,
         interests,
         config,
+        pastPreferences,
       ];
 }
 
@@ -93,6 +96,14 @@ class MeetingPostPreferencesLoading extends MeetingState {
         );
 }
 
+class MeetingGetPastPreferencesLoading extends MeetingState {
+  const MeetingGetPastPreferencesLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
 class MeetingGetRequestError extends MeetingState {
   const MeetingGetRequestError({@required dynamic error})
       : super(
@@ -128,6 +139,16 @@ class MeetingGetPreferencesLoaded extends MeetingState {
           loading: false,
           error: null,
           preference: preference,
+        );
+}
+
+class MeetingGetPastPreferencesLoaded extends MeetingState {
+  const MeetingGetPastPreferencesLoaded({
+    @required UserMeetingPreference pastPreferences,
+  }) : super(
+          loading: false,
+          error: null,
+          pastPreferences: pastPreferences,
         );
 }
 

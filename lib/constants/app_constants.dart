@@ -88,6 +88,7 @@ class AppImageAssets {
       AssetImage("assets/images/img_success_purchase.jpg");
   static const rewardsTrophy =
       AssetImage("assets/images/img_reward_trophy.png");
+  static const emailReset = AssetImage("assets/images/img_email.png");
 }
 
 class AppSvgAssets {

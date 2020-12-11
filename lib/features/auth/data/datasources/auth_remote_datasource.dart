@@ -60,6 +60,11 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<UserProfile> getUserProfileFromRemote();
+
+  /// Calls the Post Password Reset Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<String> postPasswordResetToRemote(String email);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -202,6 +207,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserProfileModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<String> postPasswordResetToRemote(String email) async {
+    final body = {'email': email};
+    final response = await apiService.postPasswordReset(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return json['detail'] as String;
     } else {
       throw ServerException(response.error);
     }

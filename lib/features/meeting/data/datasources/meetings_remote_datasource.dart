@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
@@ -20,7 +21,7 @@ abstract class MeetingRemoteDatasource {
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    int numberOfMeetings,
+    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   );
@@ -28,6 +29,7 @@ abstract class MeetingRemoteDatasource {
   Future<List<MeetingObjective>> getMeetingObjectivesFromRemote();
   Future<List<MeetingInterest>> getMeetingInterestFromRemote();
   Future<UserMeetingPreference> getMeetingPreferenceFromRemote();
+  Future<UserMeetingPreference> getPastMeetingPreferenceFromRemote();
 }
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
@@ -50,14 +52,14 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    int numberOfMeetings,
+    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   ) async {
     final body = {
       "meeting": config.pk,
       "interests": interests.map((e) => e.pk).toList(),
-      "number_of_meetings": numberOfMeetings,
+      "number_of_meetings_per_month": numberOfMeetings.value,
       "objectives": objectives.map((e) => e.pk).toList(),
       "time_slots": timeSlots.map((e) => e.pk).toList(),
     };
@@ -114,6 +116,19 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   @override
   Future<UserMeetingPreference> getMeetingPreferenceFromRemote() async {
     final response = await apiService.getMeetingPreferences();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserMeetingPreferenceModel.fromJson(json);
+    } else if (response.statusCode == 204) {
+      return null;
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserMeetingPreference> getPastMeetingPreferenceFromRemote() async {
+    final response = await apiService.getPastMeetingPreferences();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserMeetingPreferenceModel.fromJson(json);

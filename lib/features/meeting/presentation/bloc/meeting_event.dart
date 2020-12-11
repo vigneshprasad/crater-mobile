@@ -27,10 +27,14 @@ class GetMeetingPreferencesStarted extends MeetingEvent {
   const GetMeetingPreferencesStarted();
 }
 
+class GetPastMeetingPreferencesStarted extends MeetingEvent {
+  const GetPastMeetingPreferencesStarted();
+}
+
 class PostMeetingPreferencesStarted extends MeetingEvent {
   final List<MeetingInterest> interests;
   final MeetingConfig config;
-  final int numberOfMeetings;
+  final NumberOfMeetings numberOfMeetings;
   final List<MeetingObjective> objectives;
   final List<TimeSlot> timeSlots;
 

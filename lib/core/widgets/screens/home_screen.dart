@@ -118,7 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getFloatingActionButton(int index) {
-    if (index == 1) {
+    // New Post FAB
+    if (index == 2) {
       return FloatingActionButton(
         onPressed: () {
           ExtendedNavigator.of(context)
@@ -134,7 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(WorkNetIcons.newpost),
       );
     }
-    if (index == 2) {
+
+    // Chat Search FAB
+    if (index == 1) {
       return FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(Routes.chatSearchScreen);

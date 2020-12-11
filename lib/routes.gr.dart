@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
+import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
@@ -39,6 +40,7 @@ class Routes {
   static const String profileSetupScreen = '/profile-setup';
   static const String phoneVerificationScreen = '/phone-verify';
   static const String authScreen = '/auth';
+  static const String forgotPasswordScreen = '/forgot-password';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
@@ -56,6 +58,7 @@ class Routes {
     profileSetupScreen,
     phoneVerificationScreen,
     authScreen,
+    forgotPasswordScreen,
     createPostScreen,
     chatScreen,
     chatSearchScreen,
@@ -79,6 +82,7 @@ class Router extends RouterBase {
     RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes.authScreen, page: AuthScreen),
+    RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
@@ -127,6 +131,12 @@ class Router extends RouterBase {
     AuthScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => AuthScreen(),
+        settings: data,
+      );
+    },
+    ForgotPasswordScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ForgotPasswordScreen(),
         settings: data,
       );
     },
@@ -238,6 +248,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
       push<dynamic>(Routes.phoneVerificationScreen);
 
   Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
+
+  Future<dynamic> pushForgotPasswordScreen() =>
+      push<dynamic>(Routes.forgotPasswordScreen);
 
   Future<dynamic> pushCreatePostScreen() =>
       push<dynamic>(Routes.createPostScreen);

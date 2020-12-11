@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -42,7 +43,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    int numberOfMeetings,
+    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   ) async {
@@ -95,6 +96,18 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> getMeetingPreference() async {
     try {
       final response = await remoteDatasource.getMeetingPreferenceFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserMeetingPreference>>
+      getPastMeetingPreference() async {
+    try {
+      final response =
+          await remoteDatasource.getPastMeetingPreferenceFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

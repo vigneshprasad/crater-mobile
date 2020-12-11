@@ -4,6 +4,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -53,6 +55,7 @@ import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
 import '../features/auth/domain/usecase/login_email_usercase.dart';
 import '../features/auth/domain/usecase/patch_user_usecase.dart';
+import '../features/auth/domain/usecase/post_password_reset_usecase.dart';
 import '../features/auth/domain/usecase/post_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
@@ -176,6 +179,7 @@ abstract class WebSocketInjector {
 
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
+  @Register.factory(ForgotPasswordBloc)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -190,6 +194,7 @@ abstract class AuthInjector {
   @Register.singleton(UCPatchUser)
   @Register.singleton(UCPostUserProfile)
   @Register.singleton(UCGetUserProfile)
+  @Register.singleton(UCPostPasswordReset)
   void configure();
 }
 
@@ -296,6 +301,7 @@ abstract class MeetingInjector {
   @Register.singleton(UCGetMeetingConfig)
   @Register.singleton(UCGetMeetingPreferences)
   @Register.singleton(UCPostMeetingPreferences)
+  @Register.singleton(UCGetPastMeetingPreferences)
   void configure();
 }
 

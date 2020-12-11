@@ -32,6 +32,11 @@ class _LoginFormState extends State<LoginForm> {
         AppLocalizations.of(context).translate("input_label_email");
     final String password =
         AppLocalizations.of(context).translate("input_password");
+    final String forgotPassword =
+        AppLocalizations.of(context).translate("auth:forgot_password");
+    final forgotPasswordStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          color: Theme.of(context).primaryColor,
+        );
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
@@ -66,6 +71,30 @@ class _LoginFormState extends State<LoginForm> {
                     if (text.isEmpty) return null;
                     return !state.isPasswordValid ? 'Invalid Password' : null;
                   },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppInsets.l,
+                      horizontal: AppInsets.med,
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        ExtendedNavigator.of(context)
+                            .push(Routes.forgotPasswordScreen)
+                            .then((value) {
+                          if (value != null) {
+                            _emailController.text = value as String;
+                          }
+                        });
+                      },
+                      child: Text(
+                        forgotPassword,
+                        style: forgotPasswordStyle,
+                      ),
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 BaseLargeButton(

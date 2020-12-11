@@ -5,10 +5,12 @@ import '../../../constants/theme.dart';
 class BaseLargeButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  final bool enabled;
   const BaseLargeButton({
     Key key,
     this.onPressed,
     this.text,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class BaseLargeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
         ),
         fillColor: fillColor,
-        onPressed: onPressed,
+        onPressed: enabled ? onPressed : null,
         child: Text(
           text.toUpperCase(),
           style: textStyle,

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/meeting/domain/entity/number_of_meetings_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -33,7 +34,7 @@ class UCPostMeetingPreferences
 class PostMeetingPrefParams extends Equatable {
   final List<MeetingInterest> interests;
   final MeetingConfig config;
-  final int numberOfMeetings;
+  final NumberOfMeetings numberOfMeetings;
   final List<MeetingObjective> objectives;
   final List<TimeSlot> timeSlots;
 

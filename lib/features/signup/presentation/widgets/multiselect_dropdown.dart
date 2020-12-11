@@ -164,6 +164,11 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
         _items = _buildItems(widget.items);
       });
     }
+    if (oldWidget.initialValue != widget.initialValue) {
+      setState(() {
+        _selectedItems = widget.initialValue;
+      });
+    }
     super.didUpdateWidget(oldWidget);
   }
 }
