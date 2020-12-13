@@ -53,9 +53,11 @@ import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
 import '../features/auth/domain/usecase/login_email_usercase.dart';
 import '../features/auth/domain/usecase/patch_user_usecase.dart';
+import '../features/auth/domain/usecase/post_password_reset_usecase.dart';
 import '../features/auth/domain/usecase/post_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
+import '../features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import '../features/chat/data/datasources/chat_local_datasource.dart';
 import '../features/chat/data/datasources/chat_remote_datasource.dart';
 import '../features/chat/data/repository/chat_repository_impl.dart';
@@ -63,6 +65,7 @@ import '../features/chat/domain/repository/chat_repository.dart';
 import '../features/chat/domain/usecases/persist_received_message.dart';
 import '../features/chat/domain/usecases/received_set_chat_with_user.dart';
 import '../features/chat/domain/usecases/send_message_to_user_usecase.dart';
+import '../features/chat/domain/usecases/send_read_user_messaged.dart';
 import '../features/chat/domain/usecases/send_user_typing.dart';
 import '../features/chat/domain/usecases/set_chat_with_user_usecase.dart';
 import '../features/chat/presentation/bloc/chat_bloc.dart';
@@ -100,6 +103,7 @@ import '../features/meeting/domain/usecase/get_meeting_objectives_usecase.dart';
 import '../features/meeting/domain/usecase/get_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_usecase.dart';
+import '../features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
@@ -176,6 +180,7 @@ abstract class WebSocketInjector {
 
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
+  @Register.factory(ForgotPasswordBloc)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -190,6 +195,7 @@ abstract class AuthInjector {
   @Register.singleton(UCPatchUser)
   @Register.singleton(UCPostUserProfile)
   @Register.singleton(UCGetUserProfile)
+  @Register.singleton(UCPostPasswordReset)
   void configure();
 }
 
@@ -260,6 +266,7 @@ abstract class ChatInjector {
   @Register.singleton(UCReceivedSetChatWithUser)
   @Register.singleton(UCSendUserIsTyping)
   @Register.singleton(UCPersistReceivedMessage)
+  @Register.singleton(UCSendReadUserMessage)
   void configure();
 }
 
@@ -296,6 +303,7 @@ abstract class MeetingInjector {
   @Register.singleton(UCGetMeetingConfig)
   @Register.singleton(UCGetMeetingPreferences)
   @Register.singleton(UCPostMeetingPreferences)
+  @Register.singleton(UCGetPastMeetingPreferences)
   void configure();
 }
 

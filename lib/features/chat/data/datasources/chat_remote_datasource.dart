@@ -20,10 +20,11 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<void> sendSetChatWithUserRequest(String receiverId) async {
     final request = SetChatRequest(
-        message: SetChatRequestParams(
-      user: receiverId,
-      page: 1,
-    ));
+      message: SetChatRequestParams(
+        user: receiverId,
+        page: 1,
+      ),
+    );
     final sendOrError = await repository.addMessageToSink(request.toJson());
     if (sendOrError.isLeft()) {
       throw WebsocketServerException();

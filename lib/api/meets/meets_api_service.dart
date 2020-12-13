@@ -23,6 +23,9 @@ abstract class MeetsApiService extends ChopperService {
   @Get(path: 'meetings/preferences/')
   Future<Response> getMeetingPreferences();
 
+  @Get(path: 'meetings/preferences/past/')
+  Future<Response> getPastMeetingPreferences();
+
   @Post(path: 'meeting-preferences/')
   Future<Response> postMeetingPreferences(@Body() Map<String, dynamic> body);
 

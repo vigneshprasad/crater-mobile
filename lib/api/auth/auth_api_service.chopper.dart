@@ -63,4 +63,12 @@ class _$AuthApiService extends AuthApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postPasswordReset(Map<String, dynamic> body) {
+    final $url = '/user/auth/password/reset/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

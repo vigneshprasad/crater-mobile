@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 import 'meeting_participant_entity.dart';
 
 class Meeting extends HiveObject {

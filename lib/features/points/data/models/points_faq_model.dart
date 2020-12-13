@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
 
+import '../../../../constants/app_hive_boxes.dart';
 import '../../domain/entity/points_faq_entity.dart';
 
 part 'points_faq_model.g.dart';

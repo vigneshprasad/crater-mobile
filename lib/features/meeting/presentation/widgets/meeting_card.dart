@@ -3,16 +3,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_participant_entity.dart';
-import 'package:worknetwork/ui/base/base_text/base_text_expand.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
+import '../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/base_text/base_text_expand.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../auth/domain/entity/user_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/meeting_participant_entity.dart';
 
 class MeetingCard extends StatelessWidget {
   final Meeting meeting;

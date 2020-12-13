@@ -12,13 +12,13 @@ typedef TimeSelectedChangeCallback = void Function(List<TimeSlot> slots);
 class TimeSlotPicker extends StatefulWidget {
   final List<TimeSlot> value;
   final Map<String, List<TimeSlot>> slots;
-  final TimeSlotTappedCallback onSlotTapped;
+  final TimeSlotTappedCallback onSlotTap;
 
   const TimeSlotPicker({
     Key key,
-    this.value,
+    this.value = const [],
     @required this.slots,
-    @required this.onSlotTapped,
+    @required this.onSlotTap,
   }) : super(key: key);
 
   @override
@@ -110,7 +110,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
                                 slot: col,
                                 selected: widget.value.contains(col),
                                 onTap: () {
-                                  widget.onSlotTapped(col);
+                                  widget.onSlotTap(col);
                                 },
                               )
                             : Container(),
@@ -149,43 +149,45 @@ class TimeSlotFormField extends FormField<List<TimeSlot>> {
   final TimeSelectedChangeCallback onChange;
 
   TimeSlotFormField({
-    List<TimeSlot> initialValue = const [],
+    List<TimeSlot> initialValue,
     FormFieldSetter<List<TimeSlot>> onSaved,
     FormFieldValidator<List<TimeSlot>> validator,
     bool autovalidate = false,
     @required this.slots,
     @required this.onChange,
   }) : super(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-            autovalidate: autovalidate,
-            builder: (FormFieldState<List<TimeSlot>> state) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TimeSlotPicker(
-                    value: state.value,
-                    slots: slots,
-                    onSlotTapped: (slot) {
-                      final updated = [...state.value];
-                      if (state.value.contains(slot)) {
-                        updated.remove(slot);
-                      } else {
-                        updated.add(slot);
-                      }
-                      state.didChange(updated);
-                      onChange(state.value);
-                    },
-                  ),
-                  if (state.hasError)
-                    BaseErrorText(
-                      text: state.errorText,
-                    )
-                ],
-              );
-            });
+          initialValue: initialValue,
+          onSaved: onSaved,
+          validator: validator,
+          autovalidate: autovalidate,
+          builder: (FormFieldState<List<TimeSlot>> state) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TimeSlotPicker(
+                  value: state.value,
+                  slots: slots,
+                  onSlotTap: (slot) {
+                    final selected = state.value.contains(slot);
+                    final updated = [...state.value];
+                    if (selected) {
+                      updated.remove(slot);
+                    } else {
+                      updated.add(slot);
+                    }
+                    state.didChange(updated);
+                    onChange(updated);
+                  },
+                ),
+                if (state.hasError)
+                  BaseErrorText(
+                    text: state.errorText,
+                  )
+              ],
+            );
+          },
+        );
 }
 
 class _TimeSlotTab extends StatelessWidget {

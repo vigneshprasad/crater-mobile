@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
+
+import '../../../../constants/theme.dart';
 
 class RedeemButton extends MaterialButton {
   final double width;

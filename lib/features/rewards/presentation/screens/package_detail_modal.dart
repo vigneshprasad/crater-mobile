@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/style.dart';
-import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/theme.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:worknetwork/features/rewards/presentation/widgets/checkout_button.dart';
-import 'package:worknetwork/features/rewards/presentation/widgets/redeem_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/package_entity.dart';
+import '../widgets/redeem_button.dart';
 
 class PackageDetailModal extends ModalRoute<void> {
   final Package package;

@@ -114,7 +114,7 @@ class _MeetingTabState extends State<MeetingTab>
                   child: Container(
                     margin: const EdgeInsets.only(bottom: AppInsets.xxl),
                     child: RegisterMeetingButton(
-                      label: "Opt In for Next Week",
+                      label: "Opt-in for a meeting",
                       onPressed: () {
                         ExtendedNavigator.of(context)
                             .push(

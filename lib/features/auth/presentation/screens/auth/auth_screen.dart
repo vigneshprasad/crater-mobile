@@ -10,6 +10,7 @@ import 'package:flutter_linkedin/linkedloginflutter.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/config_reader/config_reader.dart';
 import '../../../../../core/error/failures.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../ui/base/social_auth_button/social_auth_button.dart';

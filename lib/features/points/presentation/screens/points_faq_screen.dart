@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/points/domain/entity/points_faq_entity.dart';
-import 'package:worknetwork/features/points/domain/entity/points_rule_entity.dart';
-import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../../constants/theme.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../domain/entity/points_faq_entity.dart';
+import '../../domain/entity/points_rule_entity.dart';
+import '../bloc/points_bloc.dart';
 
 class PointsFaqScreen extends StatefulWidget {
   @override

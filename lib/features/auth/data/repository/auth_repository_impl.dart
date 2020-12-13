@@ -168,4 +168,14 @@ class AuthRepositoryImpl implements AuthRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, String>> postPasswordReset(String email) async {
+    try {
+      final response = await remoteDataSource.postPasswordResetToRemote(email);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
 }

@@ -3,13 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/features/points/presentation/bloc/points_bloc.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../routes.gr.dart';
+import '../../../../utils/app_localizations.dart';
+import '../bloc/points_bloc.dart';
 
 class PointsTab extends StatefulWidget {
   const PointsTab({

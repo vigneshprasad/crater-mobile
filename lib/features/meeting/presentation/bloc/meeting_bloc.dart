@@ -3,21 +3,23 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_config_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_meeting_interests_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_meeting_objectives_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_meeting_preferences_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_meetings_config_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/meeting_interest_entity.dart';
+import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
+import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
+import '../../domain/usecase/get_meeting_interests_usecase.dart';
+import '../../domain/usecase/get_meeting_objectives_usecase.dart';
+import '../../domain/usecase/get_meeting_preferences_usecase.dart';
+import '../../domain/usecase/get_meetings_config_usecase.dart';
 import '../../domain/usecase/get_meetings_usecase.dart';
+import '../../domain/usecase/get_past_meeting_preferences_usecase.dart';
+import '../../domain/usecase/post_meeting_preferences_usecase.dart';
 
 part 'meeting_event.dart';
 part 'meeting_state.dart';
@@ -29,6 +31,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
   final UCGetMeetingConfig getMeetingConfig;
   final UCGetMeetingPreferences getMeetingPreferences;
   final UCPostMeetingPreferences postMeetingPreferences;
+  final UCGetPastMeetingPreferences getPastMeetingPreferences;
 
   MeetingBloc({
     @required this.getMeetings,
@@ -37,12 +40,14 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     @required this.getMeetingConfig,
     @required this.getMeetingPreferences,
     @required this.postMeetingPreferences,
+    @required this.getPastMeetingPreferences,
   })  : assert(getMeetings != null),
         assert(getMeetingInterests != null),
         assert(getMeetingObjectives != null),
         assert(getMeetingConfig != null),
         assert(getMeetingPreferences != null),
         assert(postMeetingPreferences != null),
+        assert(getPastMeetingPreferences != null),
         super(const MeetingInitial());
 
   @override
@@ -61,6 +66,8 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       yield* _mapGetMeetingInterestsToState(event);
     } else if (event is PostMeetingPreferencesStarted) {
       yield* _mapPostMeetingPreferencesToState(event);
+    } else if (event is GetPastMeetingPreferencesStarted) {
+      yield* _mapGetPastMeetingPrefsToState(event);
     }
   }
 
@@ -139,8 +146,20 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     ));
 
     yield responseOrError.fold(
-      (failure) => MeetingGetRequestError(error: failure),
+      (failure) => PostMeetingPreferenceError(error: failure),
       (prefs) => PostMeetingPreferencesLoaded(preferences: prefs),
+    );
+  }
+
+  Stream<MeetingState> _mapGetPastMeetingPrefsToState(
+      GetPastMeetingPreferencesStarted event) async* {
+    yield const MeetingGetPastPreferencesLoading();
+
+    final responseOrError = await getPastMeetingPreferences(NoParams());
+
+    yield responseOrError.fold(
+      (failure) => MeetingGetRequestError(error: failure),
+      (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs),
     );
   }
 }

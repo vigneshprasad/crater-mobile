@@ -1,24 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/meeting/presentation/bloc/meeting_bloc.dart';
-import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_dropdown/base_dropdown.dart';
 import '../../../../ui/base/base_form_field/base_form_field.dart';
+import '../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../auth/domain/entity/user_entity.dart';
+import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../signup/presentation/widgets/multiselect_dropdown.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
+import '../bloc/meeting_bloc.dart';
 import '../widgets/time_slot_picker.dart';
 
 class RegisterMeetingScreen extends StatefulWidget {
@@ -41,9 +43,15 @@ class RegisterMeetingScreen extends StatefulWidget {
 
 class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final List<NumberOfMeetings> _monthlyMeetingOptions = [
+    const NumberOfMeetings(label: "Ask me every week", value: 0),
+    const NumberOfMeetings(label: "One meeting per month", value: 1),
+    const NumberOfMeetings(label: "Bi-weekly meetings", value: 2),
+    const NumberOfMeetings(label: "One meeting every week'", value: 4),
+  ];
   List<MeetingObjective> lookingFor;
   List<MeetingObjective> lookingTo;
-  int _numMeetings;
+  NumberOfMeetings _numMeetings;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingObjective> _selectedLookingFor = [];
   List<MeetingObjective> _selectedLookingTo = [];
@@ -55,6 +63,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   @override
   void initState() {
     _bloc = BlocProvider.of<MeetingBloc>(context);
+    _bloc.add(const GetPastMeetingPreferencesStarted());
     _splitObjectives(widget.objectives);
     super.initState();
   }
@@ -65,37 +74,75 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
       builder: (context, state) {
         final user = state.user;
         final profile = state.profile;
-        return BlocListener<MeetingBloc, MeetingState>(
+        return BlocConsumer<MeetingBloc, MeetingState>(
           listener: (context, state) {
             if (state is PostMeetingPreferencesLoaded) {
               ExtendedNavigator.of(context).pop();
+            } else if (state is PostMeetingPreferenceError) {
+              Fluttertoast.showToast(
+                msg: state.error as String,
+              );
+              ExtendedNavigator.of(context).pop();
+            } else if (state is MeetingGetPastPreferencesLoaded) {
+              final UserMeetingPreference pastPrefs = state.pastPreferences;
+              if (pastPrefs.pk != null) {
+                final List<TimeSlot> slots = [];
+                _selectedInterests = pastPrefs.interests;
+                widget.config.availableTimeSlots.forEach((key, value) {
+                  for (final slot in value) {
+                    if (pastPrefs.timeSlots.contains(slot.pk)) {
+                      slots.add(slot);
+                    }
+                  }
+                });
+                setState(() {
+                  _numMeetings = _monthlyMeetingOptions.firstWhere((element) =>
+                      element.value == pastPrefs.numberOfMeetingsPerMonth);
+                  _selectedLookingFor = pastPrefs.objectives
+                      .where(
+                          (element) => element.type == ObjectiveType.lookingFor)
+                      .toList();
+                  _selectedLookingTo = pastPrefs.objectives
+                      .where(
+                          (element) => element.type == ObjectiveType.lookingTo)
+                      .toList();
+                  _selectedSlots = slots;
+                });
+              }
             }
           },
-          child: Scaffold(
-            appBar: BaseAppBar(),
-            body: Column(
-              children: [
-                _buildHeader(context),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: _buildForm(context, user, profile),
+          builder: (context, meetingState) {
+            return Scaffold(
+              appBar: BaseAppBar(),
+              body: Column(
+                children: [
+                  if (meetingState.loading) const LinearProgressIndicator(),
+                  _buildHeader(context),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: !meetingState.loading
+                          ? _buildForm(context, user, profile)
+                          : null,
+                    ),
                   ),
-                ),
-                buildFullWidth(),
-              ],
-            ),
-          ),
+                  buildFullWidth(meetingState),
+                ],
+              ),
+            );
+          },
         );
       },
     );
   }
 
-  Widget buildFullWidth() {
+  Widget buildFullWidth(MeetingState state) {
     return Material(
       color: Theme.of(context).primaryColor,
       child: InkWell(
         onTap: () {
-          submit();
+          if (!state.loading) {
+            submit();
+          }
         },
         splashColor: Theme.of(context).splashColor,
         highlightColor: Theme.of(context).highlightColor,
@@ -129,9 +176,12 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
     final dateFormat = DateFormat("dd MMMM");
     final subheadText =
         "Choose preferences for the week of ${dateFormat.format(startDate)}";
-    const headerText = "Register for meeting\n";
+    const headerText = "Register for a meeting\n";
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppInsets.xl,
+        vertical: AppInsets.xl,
+      ),
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
@@ -160,10 +210,10 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         child: Column(
           children: [
             BaseFormField(
-              label: "How many meetings?",
-              child: BaseDropdown<int>(
-                listItems: const [1, 2],
-                labelGetter: (item) => item.toString(),
+              label: "Number of meetings this month?",
+              child: BaseDropdown<NumberOfMeetings>(
+                listItems: _monthlyMeetingOptions,
+                labelGetter: (item) => item.label,
                 placeholder: "Indicate your preference",
                 value: _numMeetings,
                 validator: (value) =>
@@ -240,7 +290,9 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               child: TimeSlotFormField(
                 validator: (value) {
                   if (value.isEmpty) {
-                    return "Please select one time slot";
+                    return "Please select two time slots";
+                  } else if (value.length < 2) {
+                    return "Please select atleast two time slots";
                   }
                   return null;
                 },

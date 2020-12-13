@@ -7,6 +7,7 @@ import '../../../../core/usecase/aysnc_usecase.dart';
 import '../entity/meeting_config_entity.dart';
 import '../entity/meeting_interest_entity.dart';
 import '../entity/meeting_objective_entity.dart';
+import '../entity/number_of_meetings_entity.dart';
 import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 import '../repository/meeting_repository.dart';
@@ -33,7 +34,7 @@ class UCPostMeetingPreferences
 class PostMeetingPrefParams extends Equatable {
   final List<MeetingInterest> interests;
   final MeetingConfig config;
-  final int numberOfMeetings;
+  final NumberOfMeetings numberOfMeetings;
   final List<MeetingObjective> objectives;
   final List<TimeSlot> timeSlots;
 

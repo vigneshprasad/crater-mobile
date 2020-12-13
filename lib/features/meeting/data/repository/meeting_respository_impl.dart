@@ -8,6 +8,7 @@ import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
@@ -42,7 +43,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    int numberOfMeetings,
+    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   ) async {
@@ -95,6 +96,18 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> getMeetingPreference() async {
     try {
       final response = await remoteDatasource.getMeetingPreferenceFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserMeetingPreference>>
+      getPastMeetingPreference() async {
+    try {
+      final response =
+          await remoteDatasource.getPastMeetingPreferenceFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

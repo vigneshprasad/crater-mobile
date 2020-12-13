@@ -8,6 +8,8 @@
     "auth:signup_text": "Don't have an account?",
     "auth:signin": "Sign-in",
     "auth:signup": "Sign-up",
+    "auth:forgot_password": "Forgot Password?",
+    "auth:forgot_password_desc": "Enter your email address and we’ll send you a link to set a new password.",
     "home_tab:community": "Community",
     "home_tab:meets": "Meets",
     "home_tab:inbox": "Inbox",

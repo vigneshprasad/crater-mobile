@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/rewards/presentation/widgets/package_card.dart';
 
+import '../../../../constants/theme.dart';
 import '../../domain/entity/package_entity.dart';
+import 'package_card.dart';
 
 class RewardsPackagesTab extends StatefulWidget {
   final List<Package> packages;

@@ -96,7 +96,9 @@ class _CommunityTabState extends State<CommunityTab> {
             highlightColor: Colors.grey[200],
             child: Card(
               margin: const EdgeInsets.symmetric(
-                  vertical: AppInsets.sm, horizontal: AppInsets.sm),
+                vertical: AppInsets.sm,
+                horizontal: AppInsets.sm,
+              ),
               child: Container(
                 height: 160,
               ),

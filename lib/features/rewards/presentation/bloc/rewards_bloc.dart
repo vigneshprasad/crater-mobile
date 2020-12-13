@@ -3,18 +3,16 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/rewards/data/models/package_model.dart';
-import 'package:worknetwork/features/rewards/data/models/package_request_model.dart';
-import 'package:worknetwork/features/rewards/domain/entity/package_request_entity.dart';
-import 'package:worknetwork/features/rewards/domain/usecases/get_package_usecase.dart';
-import 'package:worknetwork/features/rewards/domain/usecases/post_package_request_usecase.dart';
 
+import '../../../../core/analytics/analytics.dart';
+import '../../../../core/analytics/anlytics_events.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../domain/entity/package_entity.dart';
+import '../../domain/entity/package_request_entity.dart';
+import '../../domain/usecases/get_package_usecase.dart';
 import '../../domain/usecases/get_packages_list_usecase.dart';
+import '../../domain/usecases/post_package_request_usecase.dart';
 
 part 'rewards_event.dart';
 part 'rewards_state.dart';

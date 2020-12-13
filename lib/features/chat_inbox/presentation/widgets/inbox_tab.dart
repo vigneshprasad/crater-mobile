@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../ui/components/list_items/user_list_item/user_list_item.dart';
+import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_inbox/chat_inbox_bloc.dart';
 
@@ -21,9 +22,11 @@ class _InboxTabState extends State<InboxTab> {
   int _currentPage = 1;
   int _pages = 1;
   Completer<void> _completer;
+  bool _showShimmer;
 
   @override
   void initState() {
+    _showShimmer = true;
     _inboxBloc = BlocProvider.of<ChatInboxBloc>(context)
       ..add(GetAllChatUsersRequest(
         filter: _filter,
@@ -48,15 +51,46 @@ class _InboxTabState extends State<InboxTab> {
             expandedHeight: 106,
             onRefresh: _onRefreshList,
             slivers: [
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  _buildAllUsersList,
-                  childCount: _users.length,
-                ),
-              )
+              if (_showShimmer) _buildShimmerList() else _buildUserList()
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildShimmerList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300],
+            highlightColor: Colors.grey[200],
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.grey[200],
+              ),
+              title: Container(
+                height: 10,
+                color: Colors.grey[200],
+              ),
+              subtitle: Container(
+                height: 10,
+                color: Colors.grey[200],
+              ),
+            ),
+          );
+        },
+        childCount: 5,
+      ),
+    );
+  }
+
+  Widget _buildUserList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        _buildAllUsersList,
+        childCount: _users.length,
       ),
     );
   }
@@ -91,6 +125,7 @@ class _InboxTabState extends State<InboxTab> {
         _users = [..._users, ...state.users];
         _currentPage = state.page;
         _pages = state.pages;
+        _showShimmer = false;
       });
     } else if (state is ChatInboxStarChangeReceived) {
       setState(() {
@@ -109,6 +144,7 @@ class _InboxTabState extends State<InboxTab> {
       _currentPage = 1;
       _pages = 1;
       _users = [];
+      _showShimmer = true;
     });
     _inboxBloc.add(GetAllChatUsersRequest(
       filter: _filter,

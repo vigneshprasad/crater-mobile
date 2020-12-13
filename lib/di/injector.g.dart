@@ -68,6 +68,8 @@ class _$AuthInjector extends AuthInjector {
         socialAuthToken: c<UCGetSocialAuthToken>(),
         registerEmail: c<UCRegisterEmail>(),
         analytics: c<Analytics>()));
+    container.registerFactory(
+        (c) => ForgotPasswordBloc(passwordReset: c<UCPostPasswordReset>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
     container.registerSingleton<AuthRemoteDataSource>((c) =>
@@ -90,6 +92,8 @@ class _$AuthInjector extends AuthInjector {
         .registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()));
     container.registerSingleton((c) => UCPostUserProfile(c<AuthRepository>()));
     container.registerSingleton((c) => UCGetUserProfile(c<AuthRepository>()));
+    container
+        .registerSingleton((c) => UCPostPasswordReset(c<AuthRepository>()));
   }
 }
 
@@ -218,7 +222,8 @@ class _$ChatInjector extends ChatInjector {
         sendMessage: c<UCSendChatToUser>(),
         receivedSetChatWithUser: c<UCReceivedSetChatWithUser>(),
         sendUserIsTyping: c<UCSendUserIsTyping>(),
-        persistReceivedMessage: c<UCPersistReceivedMessage>()));
+        persistReceivedMessage: c<UCPersistReceivedMessage>(),
+        sendReadUserMessage: c<UCSendReadUserMessage>()));
     container.registerSingleton<ChatRepository>((c) => ChatRepositoryImpl(
         repository: c<WebSocketRepository>(),
         localDataSource: c<ChatLocalDataSource>(),
@@ -237,6 +242,8 @@ class _$ChatInjector extends ChatInjector {
         (c) => UCSendUserIsTyping(repository: c<ChatRepository>()));
     container.registerSingleton(
         (c) => UCPersistReceivedMessage(repository: c<ChatRepository>()));
+    container.registerSingleton(
+        (c) => UCSendReadUserMessage(repository: c<ChatRepository>()));
   }
 }
 
@@ -295,7 +302,8 @@ class _$MeetingInjector extends MeetingInjector {
         getMeetingObjectives: c<UCGetMeetingObjectives>(),
         getMeetingConfig: c<UCGetMeetingConfig>(),
         getMeetingPreferences: c<UCGetMeetingPreferences>(),
-        postMeetingPreferences: c<UCPostMeetingPreferences>()));
+        postMeetingPreferences: c<UCPostMeetingPreferences>(),
+        getPastMeetingPreferences: c<UCGetPastMeetingPreferences>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
@@ -313,6 +321,8 @@ class _$MeetingInjector extends MeetingInjector {
         (c) => UCGetMeetingPreferences(c<MeetingRepository>()));
     container.registerSingleton(
         (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCGetPastMeetingPreferences(c<MeetingRepository>()));
   }
 }
 

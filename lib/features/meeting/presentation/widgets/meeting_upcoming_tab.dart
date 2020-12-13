@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/features/meeting/presentation/bloc/meeting_bloc.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -12,6 +11,7 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
+import '../bloc/meeting_bloc.dart';
 import 'meeting_card.dart';
 
 class MeetingUpcomingTab extends StatefulWidget {

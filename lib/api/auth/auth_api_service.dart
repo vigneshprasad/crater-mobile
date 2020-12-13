@@ -39,4 +39,7 @@ abstract class AuthApiService extends ChopperService {
 
   @Post(path: 'social/linkedin/')
   Future<Response> authWithLinkedin(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'password/reset/')
+  Future<Response> postPasswordReset(@Body() Map<String, dynamic> body);
 }
