@@ -9,13 +9,14 @@ import '../../../../utils/app_localizations.dart';
 import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_config_entity.dart';
-import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
 import 'meeting_card.dart';
+import 'meeting_date_label.dart';
 
 class MeetingUpcomingTab extends StatefulWidget {
-  final List<Meeting> upcoming;
+  final List<MeetingsByDate> upcoming;
   final MeetingConfig config;
   final UserMeetingPreference preference;
   final Function onRefresh;
@@ -81,27 +82,12 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
         ),
       ));
     } else {
-      slivers.add(
-        SliverPadding(
-          padding: const EdgeInsets.only(
-            left: AppInsets.med,
-            right: AppInsets.med,
-            top: AppInsets.med,
-            bottom: 120,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              _buildMeetingCard,
-              childCount: widget.upcoming.length,
-            ),
-          ),
-        ),
-      );
+      slivers.insertAll(0, _buildMeetingListforDate(context));
     }
 
     return BlocListener<MeetingBloc, MeetingState>(
       listener: (context, state) {
-        if (state is GetMeetingLoaded) {
+        if (state is GetUpcomingMeetingsLoaded) {
           _completer.complete();
         }
       },
@@ -118,19 +104,47 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
             SliverOverlapInjector(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             ),
-            ...slivers
+            ...slivers,
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 120),
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMeetingCard(BuildContext context, int index) {
-    final Meeting meeting = widget.upcoming[index];
-    final User user = BlocProvider.of<AuthBloc>(context).state.user;
-    return MeetingCard(
-      meeting: meeting,
-      user: user,
-    );
+  List<Widget> _buildMeetingListforDate(BuildContext context) {
+    final List<Widget> slivers = [];
+
+    for (final MeetingsByDate meetingsByDate in widget.upcoming) {
+      slivers.add(SliverToBoxAdapter(
+        child: MeetingDateLabel(
+          date: meetingsByDate.date,
+        ),
+      ));
+
+      slivers.add(SliverPadding(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.med,
+          horizontal: AppInsets.med,
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final User user = BlocProvider.of<AuthBloc>(context).state.user;
+              return MeetingCard(
+                meeting: meetingsByDate.meetings[index],
+                user: user,
+                onRefresh: widget.onRefresh,
+              );
+            },
+            childCount: meetingsByDate.meetings.length,
+          ),
+        ),
+      ));
+    }
+
+    return slivers;
   }
 }

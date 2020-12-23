@@ -8,6 +8,7 @@ import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
+import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
@@ -36,6 +37,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: NotificationsScreen, path: "/notifications"),
     MaterialRoute(page: PostScreen, path: "/post"),
     MaterialRoute(page: RegisterMeetingScreen, path: "/register-meeting"),
+    MaterialRoute(page: MeetingDetailScreen, path: "/meeting-detail"),
     MaterialRoute(page: PackageDetailScreen, path: "/package-detail"),
     MaterialRoute(page: PackagePurchaseScreen, path: "/package-purchase"),
     MaterialRoute(page: PointsFaqScreen, path: "/points-faq")

@@ -19,7 +19,12 @@ class MeetingParticipantModel extends MeetingParticipant {
     this.name,
     this.introduction,
     this.photo,
-  });
+  }) : super(
+          pk: pk,
+          name: name,
+          introduction: introduction,
+          photo: photo,
+        );
 
   factory MeetingParticipantModel.fromJson(Map<String, dynamic> json) =>
       _$MeetingParticipantModelFromJson(json);

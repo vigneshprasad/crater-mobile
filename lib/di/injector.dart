@@ -101,10 +101,12 @@ import '../features/meeting/domain/repository/meeting_repository.dart';
 import '../features/meeting/domain/usecase/get_meeting_interests_usecase.dart';
 import '../features/meeting/domain/usecase/get_meeting_objectives_usecase.dart';
 import '../features/meeting/domain/usecase/get_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/get_meetings_by_date_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
-import '../features/meeting/domain/usecase/get_meetings_usecase.dart';
 import '../features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
 import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/post_rsvp_status_update_usecase.dart';
+import '../features/meeting/domain/usecase/retrieve_meeting_details_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/data/datasources/notfication_local_datasource.dart';
 import '../features/notification/data/datasources/notification_remote_datasource.dart';
@@ -297,13 +299,15 @@ abstract class MeetingInjector {
   @Register.singleton(MeetingRepository, from: MeetingRepositoryImpl)
   @Register.singleton(MeetingRemoteDatasource,
       from: MeetingRemoteDatasourceImpl)
-  @Register.singleton(UCGetMeetings)
   @Register.singleton(UCGetMeetingInterests)
   @Register.singleton(UCGetMeetingObjectives)
   @Register.singleton(UCGetMeetingConfig)
   @Register.singleton(UCGetMeetingPreferences)
   @Register.singleton(UCPostMeetingPreferences)
   @Register.singleton(UCGetPastMeetingPreferences)
+  @Register.singleton(UCGetMeetingsByDate)
+  @Register.singleton(UCRetrieveMeetingDetails)
+  @Register.singleton(UCPostRsvpStatus)
   void configure();
 }
 

@@ -297,20 +297,20 @@ class _$MeetingInjector extends MeetingInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MeetingBloc(
-        getMeetings: c<UCGetMeetings>(),
         getMeetingInterests: c<UCGetMeetingInterests>(),
         getMeetingObjectives: c<UCGetMeetingObjectives>(),
         getMeetingConfig: c<UCGetMeetingConfig>(),
         getMeetingPreferences: c<UCGetMeetingPreferences>(),
         postMeetingPreferences: c<UCPostMeetingPreferences>(),
-        getPastMeetingPreferences: c<UCGetPastMeetingPreferences>()));
+        getPastMeetingPreferences: c<UCGetPastMeetingPreferences>(),
+        getMeetingsByDate: c<UCGetMeetingsByDate>(),
+        retrieveMeetingDetails: c<UCRetrieveMeetingDetails>(),
+        postRsvpStatus: c<UCPostRsvpStatus>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
     container.registerSingleton<MeetingRemoteDatasource>(
         (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()));
-    container.registerSingleton(
-        (c) => UCGetMeetings(repository: c<MeetingRepository>()));
     container.registerSingleton(
         (c) => UCGetMeetingInterests(c<MeetingRepository>()));
     container.registerSingleton(
@@ -323,6 +323,12 @@ class _$MeetingInjector extends MeetingInjector {
         (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
     container.registerSingleton(
         (c) => UCGetPastMeetingPreferences(c<MeetingRepository>()));
+    container
+        .registerSingleton((c) => UCGetMeetingsByDate(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCRetrieveMeetingDetails(c<MeetingRepository>()));
+    container
+        .registerSingleton((c) => UCPostRsvpStatus(c<MeetingRepository>()));
   }
 }
 

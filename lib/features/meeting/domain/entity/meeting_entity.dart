@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 
+import '../../data/models/meeting_model.dart';
 import 'meeting_participant_entity.dart';
+import 'meeting_rsvp_entity.dart';
 
 class Meeting extends HiveObject {
   final int config;
@@ -12,6 +14,8 @@ class Meeting extends HiveObject {
   final int pk;
   final DateTime start;
   final int timeSlot;
+  final List<MeetingRsvp> rsvps;
+  final MeetingStatus status;
 
   Meeting({
     this.config,
@@ -23,5 +27,7 @@ class Meeting extends HiveObject {
     this.pk,
     this.start,
     this.timeSlot,
+    this.rsvps,
+    this.status,
   });
 }

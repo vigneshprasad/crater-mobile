@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:chopper/chopper.dart';
+
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/meeting_rsvp_entity.dart';
+import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
@@ -13,6 +17,8 @@ import '../models/meeting_config_model.dart';
 import '../models/meeting_interest_model.dart';
 import '../models/meeting_model.dart';
 import '../models/meeting_objective_model.dart';
+import '../models/meeting_rsvp_model.dart';
+import '../models/meetings_by_date_model.dart';
 import '../models/user_meeting_preference_model.dart';
 
 abstract class MeetingRemoteDatasource {
@@ -29,6 +35,10 @@ abstract class MeetingRemoteDatasource {
   Future<List<MeetingInterest>> getMeetingInterestFromRemote();
   Future<UserMeetingPreference> getMeetingPreferenceFromRemote();
   Future<UserMeetingPreference> getPastMeetingPreferenceFromRemote();
+  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool past});
+  Future<Meeting> retrieveMeetingDetailFromRemote(int meetingId);
+  Future<MeetingRsvp> postRsvpStatusToRemote(
+      MeetingRsvpStatus status, int meetingId);
 }
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
@@ -135,6 +145,66 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
       return null;
     } else {
       throw ServerException(response.error);
+    }
+  }
+
+  Future<Response<dynamic>> _getMeetingsData({bool past}) {
+    if (past) {
+      return apiService.getPastMeetings();
+    } else {
+      return apiService.getUpcomingMeetings();
+    }
+  }
+
+  @override
+  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool past}) async {
+    final response = await _getMeetingsData(past: past);
+    if (response.statusCode == 200) {
+      final Iterable json = jsonDecode(response.bodyString) as Iterable;
+      return json
+          .map((data) =>
+              MeetingsByDateModel.fromJson(data as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Meeting> retrieveMeetingDetailFromRemote(int meetingId) async {
+    final response = await apiService.retrieveMeetingDetail(meetingId);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+
+      return MeetingModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<MeetingRsvp> postRsvpStatusToRemote(
+      MeetingRsvpStatus status, int meetingId) async {
+    final response = await _postRsvpStatus(status, meetingId);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return MeetingRsvpModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  Future<Response> _postRsvpStatus(MeetingRsvpStatus status, int meetingId) {
+    final data = {
+      'meeting': meetingId,
+    };
+    if (status == MeetingRsvpStatus.attending) {
+      return apiService.postRsvpAttendingStatus(data);
+    } else if (status == MeetingRsvpStatus.notAttending) {
+      return apiService.postRsvpCancelledStatus(data);
+    } else {
+      throw ServerException('Incorrect rsvp status');
     }
   }
 }
