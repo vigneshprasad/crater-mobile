@@ -43,7 +43,10 @@ class BaseLargeIconButton extends MaterialButton {
                 size: iconSize,
               ),
               const SizedBox(height: AppInsets.med),
-              Text(text),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),

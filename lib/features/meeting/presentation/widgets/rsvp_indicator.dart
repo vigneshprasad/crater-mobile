@@ -8,10 +8,12 @@ import '../utils/meeting_rsvp_utils.dart';
 
 class RsvpIndicator extends StatelessWidget {
   final MeetingRsvp rsvp;
+  final bool showIndicator;
 
   const RsvpIndicator({
     Key key,
     @required this.rsvp,
+    @required this.showIndicator,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class RsvpIndicator extends StatelessWidget {
       overflow: Overflow.visible,
       children: [
         _buildImagePreview(context),
-        _buildStatusIndicator(context),
+        if (showIndicator) _buildStatusIndicator(context),
       ],
     );
   }

@@ -92,7 +92,7 @@ class MeetingCard extends StatelessWidget {
             ],
           ),
         ),
-        _buildCardStatus(context),
+        if (!meeting.isPast) _buildCardStatus(context),
       ],
     );
   }
@@ -103,6 +103,7 @@ class MeetingCard extends StatelessWidget {
         ...meeting.rsvps
             .map((rsvp) => RsvpIndicator(
                   rsvp: rsvp,
+                  showIndicator: !meeting.isPast,
                 ))
             .toList(),
         const Spacer(),

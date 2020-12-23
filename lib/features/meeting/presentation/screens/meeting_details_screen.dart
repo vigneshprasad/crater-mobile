@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/ui/base/base_icon_button/base_icon_button.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -110,7 +112,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             _buildHeader(context),
             const SizedBox(height: AppInsets.l),
             const Divider(),
-            if (meeting.status != MeetingStatus.cancelled)
+            if (meeting.status != MeetingStatus.cancelled || meeting.isPast)
               ..._buildMeetingInfo(context),
             const Divider(),
             const SizedBox(height: AppInsets.l),
@@ -126,12 +128,20 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   List<Widget> _buildMeetingInfo(BuildContext context) {
     List<Widget> buttons = [];
     final dateFormat = DateFormat('hh:mm a, EEEE, d MMMM');
-    final meetingLabel =
-        'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
+    final meetingLabel = meeting.isPast
+        ? 'Your meeting was scheduled at ${dateFormat.format(meeting.start)}'
+        : 'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 15,
         );
-    if (meeting.status == MeetingStatus.pending) {
+    if (meeting.isPast) {
+      buttons = [
+        OutlineButton(
+          child: Text("Share Feedback"),
+          onPressed: () {},
+        ),
+      ];
+    } else if (meeting.status == MeetingStatus.pending) {
       final userRsvp =
           meeting.rsvps.where((element) => element != participant).first;
       if (userRsvp.status == MeetingRsvpStatus.pending) {
@@ -223,8 +233,11 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           fontSize: 14,
           color: Colors.grey[600],
         );
-    final label =
-        AppLocalizations.of(context).translate('meeting_detail:name_label');
+    final label = meeting.isPast
+        ? AppLocalizations.of(context)
+            .translate("meeting_detail:past_name_label")
+        : AppLocalizations.of(context)
+            .translate('meeting_detail:upcoming_name_label');
     final nameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 20,
         );
