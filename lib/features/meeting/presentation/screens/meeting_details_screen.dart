@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/ui/base/base_icon_button/base_icon_button.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import '../../../../ui/base/base_icon_button/base_icon_button.dart';
+import '../../../../ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
