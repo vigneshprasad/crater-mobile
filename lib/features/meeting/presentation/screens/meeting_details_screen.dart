@@ -143,7 +143,6 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             final link = ConfigReader.getMeetingFeedbackTypeformLink();
             final feedbackLink =
                 "$link#meeting_id=${meeting.pk}&email=${user.email}";
-            print(feedbackLink);
             KiwiContainer().resolve<CustomTabs>().openLink(feedbackLink);
           },
           child: Text(feedbackText),
