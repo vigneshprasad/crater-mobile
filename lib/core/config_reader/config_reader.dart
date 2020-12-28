@@ -36,4 +36,7 @@ abstract class ConfigReader {
   static String getSentryDsn() => _config["SENTRY_DSN"] as String;
 
   static String getAccountPageLink() => _config["ACCOUNTS_PAGE_LINK"] as String;
+
+  static String getMeetingFeedbackTypeformLink() =>
+      _config["MEETING_FEEDBACK_TYPEFORM"] as String;
 }

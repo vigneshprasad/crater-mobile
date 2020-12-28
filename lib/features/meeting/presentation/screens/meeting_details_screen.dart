@@ -5,8 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import '../../../../ui/base/base_icon_button/base_icon_button.dart';
-import '../../../../ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -126,8 +125,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   List<Widget> _buildMeetingInfo(BuildContext context) {
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
     List<Widget> buttons = [];
-    final dateFormat = DateFormat('hh:mm a, EEEE, d MMMM');
+    final dateFormat = DateFormat('hh:mm a, EEEE, d MMMM.');
     final meetingLabel = meeting.isPast
         ? 'Your meeting was scheduled at ${dateFormat.format(meeting.start)}'
         : 'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
@@ -135,10 +135,18 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           fontSize: 15,
         );
     if (meeting.isPast) {
+      final feedbackText = AppLocalizations.of(context)
+          .translate("meeting_detail:share_feedback");
       buttons = [
         OutlineButton(
-          child: Text("Share Feedback"),
-          onPressed: () {},
+          onPressed: () {
+            final link = ConfigReader.getMeetingFeedbackTypeformLink();
+            final feedbackLink =
+                "$link#meeting_id=${meeting.pk}&email=${user.email}";
+            print(feedbackLink);
+            KiwiContainer().resolve<CustomTabs>().openLink(feedbackLink);
+          },
+          child: Text(feedbackText),
         ),
       ];
     } else if (meeting.status == MeetingStatus.pending) {
@@ -154,6 +162,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             },
           ),
           const SizedBox(width: AppInsets.med),
+          const VerticalDivider(
+            endIndent: AppInsets.xl,
+            indent: AppInsets.xl,
+          ),
           const SizedBox(width: AppInsets.med),
           BaseLargeIconButton(
             icon: Icons.clear,
@@ -173,6 +185,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             },
           ),
           const SizedBox(width: AppInsets.med),
+          const VerticalDivider(
+            endIndent: AppInsets.xl,
+            indent: AppInsets.xl,
+          ),
           const SizedBox(width: AppInsets.med),
           BaseLargeIconButton(
             icon: Icons.clear,
@@ -193,6 +209,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           },
         ),
         const SizedBox(width: AppInsets.med),
+        const VerticalDivider(
+          endIndent: AppInsets.xl,
+          indent: AppInsets.xl,
+        ),
         const SizedBox(width: AppInsets.med),
         BaseLargeIconButton(
           icon: Icons.clear,
@@ -210,11 +230,14 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         style: labelStyle,
       ),
       const SizedBox(height: AppInsets.l),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ...buttons,
-        ],
+      Container(
+        height: 78,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ...buttons,
+          ],
+        ),
       ),
       const SizedBox(height: AppInsets.l),
     ];
