@@ -22,11 +22,6 @@ MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
     start:
         json['start'] == null ? null : DateTime.parse(json['start'] as String),
     timeSlot: json['time_slot'] as int,
-    rsvps: (json['rsvps'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingRsvpModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
     status: _$enumDecodeNullable(_$MeetingStatusEnumMap, json['status']),
   );
 }
@@ -43,7 +38,6 @@ Map<String, dynamic> _$MeetingModelToJson(MeetingModel instance) =>
       'start': instance.start?.toIso8601String(),
       'status': _$MeetingStatusEnumMap[instance.status],
       'time_slot': instance.timeSlot,
-      'rsvps': instance.rsvps,
     };
 
 T _$enumDecode<T>(

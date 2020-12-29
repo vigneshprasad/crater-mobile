@@ -13,6 +13,19 @@ MeetingParticipantModel _$MeetingParticipantModelFromJson(
     name: json['name'] as String,
     introduction: json['introduction'] as String,
     photo: json['photo'] as String,
+    rsvp: json['rsvp'] == null
+        ? null
+        : MeetingRsvpModel.fromJson(json['rsvp'] as Map<String, dynamic>),
+    interests: (json['interests'] as List)
+        ?.map((e) => e == null
+            ? null
+            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    objectives: (json['objectives'] as List)
+        ?.map((e) => e == null
+            ? null
+            : MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -23,4 +36,7 @@ Map<String, dynamic> _$MeetingParticipantModelToJson(
       'name': instance.name,
       'introduction': instance.introduction,
       'photo': instance.photo,
+      'rsvp': instance.rsvp,
+      'interests': instance.interests,
+      'objectives': instance.objectives,
     };

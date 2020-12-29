@@ -56,8 +56,8 @@ class MeetingCard extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    final meetingParticipant = meeting.rsvps
-        .firstWhere((element) => element.participant.pk != user.pk);
+    final meetingParticipant =
+        meeting.participants.firstWhere((element) => element.pk != user.pk);
     final timeFormat = DateFormat.jm();
     final startTime = timeFormat.format(meeting.start);
     final endTime = timeFormat.format(meeting.end);
@@ -69,7 +69,7 @@ class MeetingCard extends StatelessWidget {
           fontSize: 13,
           height: 1.6,
         );
-    final name = "${meetingParticipant.participant.name}\n";
+    final name = "${meetingParticipant.name}\n";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,12 +100,15 @@ class MeetingCard extends StatelessWidget {
   Widget _buildActionsRow(BuildContext context) {
     return Row(
       children: [
-        ...meeting.rsvps
-            .map((rsvp) => RsvpIndicator(
-                  rsvp: rsvp,
-                  showIndicator: !meeting.isPast,
-                ))
-            .toList(),
+        if (meeting.participants.isNotEmpty)
+          ...meeting.participants
+              .map((participant) => participant.rsvp != null
+                  ? RsvpIndicator(
+                      participant: participant,
+                      showIndicator: !meeting.isPast,
+                    )
+                  : Container())
+              .toList(),
         const Spacer(),
         BaseCardButton(
           onPressed: () {

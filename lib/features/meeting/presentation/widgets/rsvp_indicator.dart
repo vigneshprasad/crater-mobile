@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
-import '../../domain/entity/meeting_rsvp_entity.dart';
+import '../../domain/entity/meeting_participant_entity.dart';
 import '../utils/meeting_rsvp_utils.dart';
 
 class RsvpIndicator extends StatelessWidget {
-  final MeetingRsvp rsvp;
+  final MeetingParticipant participant;
   final bool showIndicator;
 
   const RsvpIndicator({
     Key key,
-    @required this.rsvp,
+    @required this.participant,
     @required this.showIndicator,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class RsvpIndicator extends StatelessWidget {
   }
 
   Widget _buildImagePreview(BuildContext context) {
-    final photo = rsvp.participant.photo;
+    final photo = participant.photo;
     if (photo == null) {
       return _buildAvatar(AppImageAssets.defaultAvatar);
     }
@@ -55,7 +55,7 @@ class RsvpIndicator extends StatelessWidget {
         height: 16,
         width: 16,
         decoration: BoxDecoration(
-          color: MeetingRsvpUtils.getRsvpStatusColor(rsvp.status),
+          color: MeetingRsvpUtils.getRsvpStatusColor(participant.rsvp.status),
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white,

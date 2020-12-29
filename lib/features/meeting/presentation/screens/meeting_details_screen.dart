@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_participant_entity.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -38,7 +39,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   MeetingBloc _bloc;
   Meeting meeting;
   bool loading;
-  MeetingRsvp participant;
+  MeetingParticipant participant;
   bool loadingInfo;
 
   @override
@@ -66,8 +67,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             ? FloatingActionButton(
                 onPressed: () {
                   ExtendedNavigator.of(context).push(Routes.chatScreen,
-                      arguments: ChatScreenArguments(
-                          recieverId: participant.participant.pk));
+                      arguments:
+                          ChatScreenArguments(recieverId: participant.pk));
                 },
                 child: const Icon(WorkNetIcons.message),
               )
@@ -79,8 +80,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   void _blocListener(BuildContext context, MeetingState state) {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     if (state is RetrieveMeetingLoaded) {
-      final _participant = state.meeting.rsvps
-          .where((element) => element.participant.pk != user.pk)
+      final _participant = state.meeting.participants
+          .where((element) => element.pk != user.pk)
           .first;
       setState(() {
         loadingInfo = false;
@@ -150,8 +151,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       ];
     } else if (meeting.status == MeetingStatus.pending) {
       final userRsvp =
-          meeting.rsvps.where((element) => element != participant).first;
-      if (userRsvp.status == MeetingRsvpStatus.pending) {
+          meeting.participants.where((element) => element != participant).first;
+      if (userRsvp.rsvp.status == MeetingRsvpStatus.pending) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.check,
@@ -174,7 +175,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             },
           )
         ];
-      } else if (userRsvp.status == MeetingRsvpStatus.attending) {
+      } else if (userRsvp.rsvp.status == MeetingRsvpStatus.attending) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.videocam,
@@ -276,7 +277,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
               ),
               const SizedBox(height: AppInsets.sm),
               Text(
-                participant.participant.name,
+                participant.name,
                 style: nameStyle,
               ),
               const SizedBox(height: AppInsets.sm),
@@ -328,9 +329,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   Widget _buildImage() {
-    if (participant.participant.photo != null) {
+    if (participant.photo != null) {
       return CachedNetworkImage(
-        imageUrl: participant.participant.photo,
+        imageUrl: participant.photo,
         imageBuilder: (context, imageProvider) {
           return Container(
             height: 60,
@@ -355,7 +356,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   List<Widget> _buildIntro(BuildContext context) {
-    final introLabel = 'About ${participant.participant.name}';
+    final introLabel = 'About ${participant.name}';
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
         );
@@ -371,7 +372,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       ),
       const SizedBox(height: AppInsets.med),
       Text(
-        participant.participant.introduction,
+        participant.introduction,
         style: introStyle,
       ),
     ];

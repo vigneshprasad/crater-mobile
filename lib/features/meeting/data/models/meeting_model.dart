@@ -43,8 +43,6 @@ class MeetingModel extends Meeting {
   @JsonKey(name: 'time_slot')
   final int timeSlot;
 
-  final List<MeetingRsvpModel> rsvps;
-
   MeetingModel({
     this.config,
     this.end,
@@ -55,7 +53,6 @@ class MeetingModel extends Meeting {
     this.pk,
     this.start,
     this.timeSlot,
-    this.rsvps,
     this.status,
   }) : super(
           config: config,
@@ -67,7 +64,6 @@ class MeetingModel extends Meeting {
           pk: pk,
           start: start,
           timeSlot: timeSlot,
-          rsvps: rsvps,
           status: status,
         );
 

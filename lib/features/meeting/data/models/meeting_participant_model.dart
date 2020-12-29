@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_rsvp_model.dart';
 
 import '../../domain/entity/meeting_participant_entity.dart';
 
@@ -13,17 +16,26 @@ class MeetingParticipantModel extends MeetingParticipant {
   final String name;
   final String introduction;
   final String photo;
+  final MeetingRsvpModel rsvp;
+  final List<MeetingInterestModel> interests;
+  final List<MeetingObjectiveModel> objectives;
 
   MeetingParticipantModel({
     this.pk,
     this.name,
     this.introduction,
     this.photo,
+    this.rsvp,
+    this.interests,
+    this.objectives,
   }) : super(
           pk: pk,
           name: name,
           introduction: introduction,
           photo: photo,
+          rsvp: rsvp,
+          interests: interests,
+          objectives: objectives,
         );
 
   factory MeetingParticipantModel.fromJson(Map<String, dynamic> json) =>

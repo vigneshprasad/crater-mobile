@@ -8,32 +8,15 @@ part of 'meeting_rsvp_model.dart';
 
 MeetingRsvpModel _$MeetingRsvpModelFromJson(Map<String, dynamic> json) {
   return MeetingRsvpModel(
-    participant: json['participant'] == null
-        ? null
-        : MeetingParticipantModel.fromJson(
-            json['participant'] as Map<String, dynamic>),
     pk: json['pk'] as int,
     status: _$enumDecodeNullable(_$MeetingRsvpStatusEnumMap, json['status']),
-    interests: (json['interests'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    objectives: (json['objectives'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
   );
 }
 
 Map<String, dynamic> _$MeetingRsvpModelToJson(MeetingRsvpModel instance) =>
     <String, dynamic>{
-      'participant': instance.participant,
       'pk': instance.pk,
       'status': _$MeetingRsvpStatusEnumMap[instance.status],
-      'interests': instance.interests,
-      'objectives': instance.objectives,
     };
 
 T _$enumDecode<T>(
