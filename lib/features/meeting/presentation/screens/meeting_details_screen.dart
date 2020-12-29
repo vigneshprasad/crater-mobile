@@ -5,12 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_participant_entity.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
+import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../core/widgets/base/base_large_icon_button/base_large_icon_button.dart';
 import '../../../../routes.gr.dart';
@@ -20,7 +19,7 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/meeting_model.dart';
 import '../../data/models/meeting_rsvp_model.dart';
 import '../../domain/entity/meeting_entity.dart';
-import '../../domain/entity/meeting_rsvp_entity.dart';
+import '../../domain/entity/meeting_participant_entity.dart';
 import '../bloc/meeting_bloc.dart';
 
 class MeetingDetailScreen extends StatefulWidget {
@@ -57,11 +56,13 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       listener: _blocListener,
       child: Scaffold(
         appBar: BaseAppBar(),
-        body: Column(
-          children: [
-            if (loading || loadingInfo) const LinearProgressIndicator(),
-            if (!loadingInfo) _buildContent(context)
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (loading || loadingInfo) const LinearProgressIndicator(),
+              if (!loadingInfo) _buildContent(context)
+            ],
+          ),
         ),
         floatingActionButton: !loadingInfo
             ? FloatingActionButton(
@@ -103,24 +104,23 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   Widget _buildContent(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(context),
-            const SizedBox(height: AppInsets.l),
-            const Divider(),
-            if (meeting.status != MeetingStatus.cancelled || meeting.isPast)
-              ..._buildMeetingInfo(context),
-            const Divider(),
-            const SizedBox(height: AppInsets.l),
-            ..._buildIntro(context),
-            ..._buildObjectives(context),
-            ..._buildInterests(context),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(context),
+          const SizedBox(height: AppInsets.l),
+          const Divider(),
+          if (meeting.status != MeetingStatus.cancelled || meeting.isPast)
+            ..._buildMeetingInfo(context),
+          const Divider(),
+          const SizedBox(height: AppInsets.l),
+          ..._buildIntro(context),
+          ..._buildObjectives(context),
+          ..._buildInterests(context),
+          const SizedBox(height: AppInsets.xl),
+        ],
       ),
     );
   }
