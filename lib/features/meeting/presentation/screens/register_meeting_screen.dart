@@ -85,7 +85,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               ExtendedNavigator.of(context).pop();
             } else if (state is MeetingGetPastPreferencesLoaded) {
               final UserMeetingPreference pastPrefs = state.pastPreferences;
-              if (pastPrefs.pk != null) {
+              if (pastPrefs != null) {
                 final List<TimeSlot> slots = [];
                 _selectedInterests = pastPrefs.interests;
                 widget.config.availableTimeSlots.forEach((key, value) {

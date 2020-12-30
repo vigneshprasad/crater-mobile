@@ -22,6 +22,7 @@ MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
     start:
         json['start'] == null ? null : DateTime.parse(json['start'] as String),
     timeSlot: json['time_slot'] as int,
+    status: _$enumDecodeNullable(_$MeetingStatusEnumMap, json['status']),
   );
 }
 
@@ -35,5 +36,45 @@ Map<String, dynamic> _$MeetingModelToJson(MeetingModel instance) =>
       'participants': instance.participants,
       'pk': instance.pk,
       'start': instance.start?.toIso8601String(),
+      'status': _$MeetingStatusEnumMap[instance.status],
       'time_slot': instance.timeSlot,
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$MeetingStatusEnumMap = {
+  MeetingStatus.confirmed: 'confirmed',
+  MeetingStatus.cancelled: 'cancelled',
+  MeetingStatus.pending: 'pending',
+  MeetingStatus.rescheduled: 'rescheduled',
+};

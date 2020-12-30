@@ -4,58 +4,72 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../../data/models/meeting_rsvp_model.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/meeting_rsvp_entity.dart';
+import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/usecase/get_meeting_interests_usecase.dart';
 import '../../domain/usecase/get_meeting_objectives_usecase.dart';
 import '../../domain/usecase/get_meeting_preferences_usecase.dart';
+import '../../domain/usecase/get_meetings_by_date_usecase.dart';
 import '../../domain/usecase/get_meetings_config_usecase.dart';
-import '../../domain/usecase/get_meetings_usecase.dart';
 import '../../domain/usecase/get_past_meeting_preferences_usecase.dart';
 import '../../domain/usecase/post_meeting_preferences_usecase.dart';
+import '../../domain/usecase/post_rsvp_status_update_usecase.dart';
+import '../../domain/usecase/retrieve_meeting_details_usecase.dart';
 
 part 'meeting_event.dart';
 part 'meeting_state.dart';
 
 class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
-  final UCGetMeetings getMeetings;
   final UCGetMeetingInterests getMeetingInterests;
   final UCGetMeetingObjectives getMeetingObjectives;
   final UCGetMeetingConfig getMeetingConfig;
   final UCGetMeetingPreferences getMeetingPreferences;
   final UCPostMeetingPreferences postMeetingPreferences;
   final UCGetPastMeetingPreferences getPastMeetingPreferences;
+  final UCGetMeetingsByDate getMeetingsByDate;
+  final UCRetrieveMeetingDetails retrieveMeetingDetails;
+  final UCPostRsvpStatus postRsvpStatus;
 
   MeetingBloc({
-    @required this.getMeetings,
     @required this.getMeetingInterests,
     @required this.getMeetingObjectives,
     @required this.getMeetingConfig,
     @required this.getMeetingPreferences,
     @required this.postMeetingPreferences,
     @required this.getPastMeetingPreferences,
-  })  : assert(getMeetings != null),
-        assert(getMeetingInterests != null),
+    @required this.getMeetingsByDate,
+    @required this.retrieveMeetingDetails,
+    @required this.postRsvpStatus,
+  })  : assert(getMeetingInterests != null),
         assert(getMeetingObjectives != null),
         assert(getMeetingConfig != null),
         assert(getMeetingPreferences != null),
         assert(postMeetingPreferences != null),
         assert(getPastMeetingPreferences != null),
+        assert(getMeetingsByDate != null),
+        assert(retrieveMeetingDetails != null),
+        assert(postRsvpStatus != null),
         super(const MeetingInitial());
 
   @override
   Stream<MeetingState> mapEventToState(
     MeetingEvent event,
   ) async* {
-    if (event is GetMeetingStarted) {
-      yield* _mapGetMeetingToState(event);
+    if (event is GetUpcomingMeetingsStarted) {
+      yield* _mapGetUpcomingMeetingsToState(event);
+    } else if (event is GetPastMeetingStarted) {
+      yield* _mapGetPastMeetingsToState(event);
     } else if (event is GetMeetingConfigStarted) {
       yield* _mapGetMeetingConfigToState(event);
     } else if (event is GetMeetingPreferencesStarted) {
@@ -68,26 +82,11 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       yield* _mapPostMeetingPreferencesToState(event);
     } else if (event is GetPastMeetingPreferencesStarted) {
       yield* _mapGetPastMeetingPrefsToState(event);
+    } else if (event is RetrieveMeetingDetailStarted) {
+      yield* _mapRetrieveMeetingToState(event);
+    } else if (event is PostMeetingRsvpStatusStarted) {
+      yield* _mapPostRsvpStatusToState(event);
     }
-  }
-
-  Stream<MeetingState> _mapGetMeetingToState(GetMeetingStarted event) async* {
-    yield const MeetingGetRequestLoading();
-    final responseOrError = await getMeetings(NoParams());
-
-    yield responseOrError.fold(
-      (failure) => MeetingGetRequestError(error: failure),
-      (response) {
-        final List<Meeting> upcoming =
-            response.where((element) => !element.isPast).toList();
-        final List<Meeting> past =
-            response.where((element) => element.isPast).toList();
-        return GetMeetingLoaded(
-          past: past,
-          upcoming: upcoming,
-        );
-      },
-    );
   }
 
   Stream<MeetingState> _mapGetMeetingConfigToState(
@@ -160,6 +159,58 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
       (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs),
+    );
+  }
+
+  Stream<MeetingState> _mapGetUpcomingMeetingsToState(
+      GetUpcomingMeetingsStarted event) async* {
+    yield const MeetingGetUpcomingRequestLoading();
+
+    final responseOrError =
+        await getMeetingsByDate(const GetMeetingsByWeekParams());
+
+    yield responseOrError.fold(
+      (failure) => MeetingGetUpcomingRequestError(error: failure),
+      (upcoming) => GetUpcomingMeetingsLoaded(upcoming: upcoming),
+    );
+  }
+
+  Stream<MeetingState> _mapGetPastMeetingsToState(
+      GetPastMeetingStarted event) async* {
+    yield const MeetingGetPastRequestLoading();
+
+    final responseOrError =
+        await getMeetingsByDate(const GetMeetingsByWeekParams(past: true));
+
+    yield responseOrError.fold(
+      (failure) => MeetingPastRequestError(error: failure),
+      (past) => GetPastMeetingsLoaded(past: past),
+    );
+  }
+
+  Stream<MeetingState> _mapRetrieveMeetingToState(
+      RetrieveMeetingDetailStarted event) async* {
+    yield const RetrieveMeetingLoading();
+
+    final responseOrError = await retrieveMeetingDetails(
+        RetrieveMeetingDetailsParams(meetingId: event.meetingId));
+
+    yield responseOrError.fold(
+      (failure) => RetrieveMeetingError(error: failure),
+      (meeting) => RetrieveMeetingLoaded(meeting: meeting),
+    );
+  }
+
+  Stream<MeetingState> _mapPostRsvpStatusToState(
+      PostMeetingRsvpStatusStarted event) async* {
+    yield const PostMeetingRsvpStatusLoading();
+
+    final responseOrError = await postRsvpStatus(
+        PostRsvpStatusParams(meetingId: event.meetingId, status: event.status));
+
+    yield responseOrError.fold(
+      (failure) => PostMeetingRsvpStatusError(error: failure),
+      (rsvp) => PostMeetingRsvpStatusLoaded(rsvp: rsvp),
     );
   }
 }

@@ -31,6 +31,14 @@ class GetPastMeetingPreferencesStarted extends MeetingEvent {
   const GetPastMeetingPreferencesStarted();
 }
 
+class GetUpcomingMeetingsStarted extends MeetingEvent {
+  const GetUpcomingMeetingsStarted();
+}
+
+class GetPastMeetingStarted extends MeetingEvent {
+  const GetPastMeetingStarted();
+}
+
 class PostMeetingPreferencesStarted extends MeetingEvent {
   final List<MeetingInterest> interests;
   final MeetingConfig config;
@@ -65,4 +73,31 @@ class PostUserProfileRequestStarted extends MeetingEvent {
 
   @override
   List<Object> get props => [requestBody];
+}
+
+class RetrieveMeetingDetailStarted extends MeetingEvent {
+  final int meetingId;
+
+  const RetrieveMeetingDetailStarted({
+    @required this.meetingId,
+  });
+
+  @override
+  List<Object> get props => [meetingId];
+}
+
+class PostMeetingRsvpStatusStarted extends MeetingEvent {
+  final MeetingRsvpStatus status;
+  final int meetingId;
+
+  const PostMeetingRsvpStatusStarted({
+    @required this.status,
+    @required this.meetingId,
+  });
+
+  @override
+  List<Object> get props => [
+        status,
+        meetingId,
+      ];
 }

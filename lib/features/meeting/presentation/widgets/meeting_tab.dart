@@ -10,9 +10,9 @@ import '../../../../core/widgets/layouts/tab_layouts/tab_with_tabbar_layout.dart
 import '../../../../routes.gr.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../domain/entity/meeting_config_entity.dart';
-import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
 import 'meeting_upcoming_tab.dart';
@@ -31,8 +31,8 @@ class _MeetingTabState extends State<MeetingTab>
   final Analytics analytics = KiwiContainer().resolve<Analytics>();
   MeetingConfig config;
   UserMeetingPreference preference;
-  List<Meeting> upcoming;
-  List<Meeting> past;
+  List<MeetingsByDate> upcoming;
+  List<MeetingsByDate> past;
   List<MeetingInterest> interests;
   List<MeetingObjective> objectives;
   TabController _tabController;
@@ -60,9 +60,11 @@ class _MeetingTabState extends State<MeetingTab>
 
   void initializeData() {
     BlocProvider.of<MeetingBloc>(context)
+      ..add(const GetPastMeetingPreferencesStarted())
+      ..add(const GetUpcomingMeetingsStarted())
+      ..add(const GetPastMeetingStarted())
       ..add(const GetMeetingPreferencesStarted())
       ..add(const GetMeetingConfigStarted())
-      ..add(const GetMeetingStarted())
       ..add(const GetMeetingObjectivesStarted())
       ..add(const GetMeetingInterestsStarted());
   }
@@ -100,11 +102,11 @@ class _MeetingTabState extends State<MeetingTab>
                     upcoming: upcoming,
                     config: config,
                     preference: preference,
-                    onRefresh: _onRefreshTab,
+                    onRefresh: _onRefreshUpcomingTab,
                   ),
                   MeetingsPastTab(
                     past: past,
-                    onRefresh: _onRefreshTab,
+                    onRefresh: _onRefreshPastTab,
                   ),
                 ],
               ),
@@ -139,9 +141,12 @@ class _MeetingTabState extends State<MeetingTab>
   }
 
   void _blockListener(BuildContext context, MeetingState state) {
-    if (state is GetMeetingLoaded) {
+    if (state is GetUpcomingMeetingsLoaded) {
       setState(() {
         upcoming = state.upcoming;
+      });
+    } else if (state is GetPastMeetingsLoaded) {
+      setState(() {
         past = state.past;
       });
     } else if (state is MeetingGetConfigLoaded) {
@@ -163,10 +168,18 @@ class _MeetingTabState extends State<MeetingTab>
     }
   }
 
-  void _onRefreshTab() {
+  void _onRefreshUpcomingTab() {
     setState(() {
       upcoming = [];
-      BlocProvider.of<MeetingBloc>(context).add(const GetMeetingStarted());
     });
+    BlocProvider.of<MeetingBloc>(context)
+        .add(const GetUpcomingMeetingsStarted());
+  }
+
+  void _onRefreshPastTab() {
+    setState(() {
+      past = [];
+    });
+    BlocProvider.of<MeetingBloc>(context).add(const GetPastMeetingStarted());
   }
 }

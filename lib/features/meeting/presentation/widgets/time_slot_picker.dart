@@ -94,7 +94,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
 
         rows.map((row) {
           if (row.length < 2) {
-            final filler = List(3 - row.length);
+            final filler = List(2 - row.length);
             row.addAll(filler.map((e) => null));
           }
         }).toList();

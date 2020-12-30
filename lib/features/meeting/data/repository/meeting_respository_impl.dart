@@ -8,11 +8,14 @@ import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
+import '../../domain/entity/meeting_rsvp_entity.dart';
+import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
 import '../datasources/meetings_remote_datasource.dart';
+import '../models/meeting_rsvp_model.dart';
 
 class MeetingRepositoryImpl implements MeetingRepository {
   final MeetingRemoteDatasource remoteDatasource;
@@ -108,6 +111,41 @@ class MeetingRepositoryImpl implements MeetingRepository {
     try {
       final response =
           await remoteDatasource.getPastMeetingPreferenceFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MeetingsByDate>>> getMeetingsByDate(
+      {bool past}) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingsByDateFromRemote(past: past);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Meeting>> retrieveMeetingDetails(int meetingId) async {
+    try {
+      final response =
+          await remoteDatasource.retrieveMeetingDetailFromRemote(meetingId);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MeetingRsvp>> postRsvpStatusUpdate(
+      MeetingRsvpStatus status, int meetingId) async {
+    try {
+      final response =
+          await remoteDatasource.postRsvpStatusToRemote(status, meetingId);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

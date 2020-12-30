@@ -2,11 +2,26 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entity/meeting_entity.dart';
 import 'meeting_participant_model.dart';
+import 'meeting_rsvp_model.dart';
 
 part 'meeting_model.g.dart';
 
 // ignore_for_file: annotate_overrides
 // ignore_for_file: overridden_fields
+
+enum MeetingStatus {
+  @JsonValue('confirmed')
+  confirmed,
+
+  @JsonValue('cancelled')
+  cancelled,
+
+  @JsonValue('pending')
+  pending,
+
+  @JsonValue('rescheduled')
+  rescheduled,
+}
 
 @JsonSerializable()
 class MeetingModel extends Meeting {
@@ -23,6 +38,7 @@ class MeetingModel extends Meeting {
   final List<MeetingParticipantModel> participants;
   final int pk;
   final DateTime start;
+  final MeetingStatus status;
 
   @JsonKey(name: 'time_slot')
   final int timeSlot;
@@ -37,7 +53,19 @@ class MeetingModel extends Meeting {
     this.pk,
     this.start,
     this.timeSlot,
-  });
+    this.status,
+  }) : super(
+          config: config,
+          end: end,
+          isCanceled: isCanceled,
+          isPast: isPast,
+          link: link,
+          participants: participants,
+          pk: pk,
+          start: start,
+          timeSlot: timeSlot,
+          status: status,
+        );
 
   factory MeetingModel.fromJson(Map<String, dynamic> json) =>
       _$MeetingModelFromJson(json);

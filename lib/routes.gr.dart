@@ -21,6 +21,7 @@ import 'features/meeting/domain/entity/meeting_config_entity.dart';
 import 'features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'features/meeting/domain/entity/meeting_objective_entity.dart';
 import 'features/meeting/domain/entity/user_meeting_preference_entity.dart';
+import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
@@ -48,6 +49,7 @@ class Routes {
   static const String notificationsScreen = '/notifications';
   static const String postScreen = '/post';
   static const String registerMeetingScreen = '/register-meeting';
+  static const String meetingDetailScreen = '/meeting-detail';
   static const String packageDetailScreen = '/package-detail';
   static const String packagePurchaseScreen = '/package-purchase';
   static const String pointsFaqScreen = '/points-faq';
@@ -66,6 +68,7 @@ class Routes {
     notificationsScreen,
     postScreen,
     registerMeetingScreen,
+    meetingDetailScreen,
     packageDetailScreen,
     packagePurchaseScreen,
     pointsFaqScreen,
@@ -90,6 +93,7 @@ class Router extends RouterBase {
     RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
     RouteDef(Routes.postScreen, page: PostScreen),
     RouteDef(Routes.registerMeetingScreen, page: RegisterMeetingScreen),
+    RouteDef(Routes.meetingDetailScreen, page: MeetingDetailScreen),
     RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
@@ -202,6 +206,16 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    MeetingDetailScreen: (data) {
+      final args = data.getArgs<MeetingDetailScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MeetingDetailScreen(
+          key: args.key,
+          meetingId: args.meetingId,
+        ),
+        settings: data,
+      );
+    },
     PackageDetailScreen: (data) {
       final args = data.getArgs<PackageDetailScreenArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -305,6 +319,15 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
             interests: interests),
       );
 
+  Future<dynamic> pushMeetingDetailScreen({
+    Key key,
+    @required int meetingId,
+  }) =>
+      push<dynamic>(
+        Routes.meetingDetailScreen,
+        arguments: MeetingDetailScreenArguments(key: key, meetingId: meetingId),
+      );
+
   Future<dynamic> pushPackageDetailScreen({
     Key key,
     @required int packageId,
@@ -365,6 +388,13 @@ class RegisterMeetingScreenArguments {
       @required this.preference,
       @required this.objectives,
       @required this.interests});
+}
+
+/// MeetingDetailScreen arguments holder class
+class MeetingDetailScreenArguments {
+  final Key key;
+  final int meetingId;
+  MeetingDetailScreenArguments({this.key, @required this.meetingId});
 }
 
 /// PackageDetailScreen arguments holder class

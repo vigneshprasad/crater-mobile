@@ -74,4 +74,50 @@ class _$MeetsApiService extends MeetsApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> retrieveMeetingDetail(int id) {
+    final $url = '/resources/meetings/meeting/$id/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getUpcomingMeetings() {
+    final $url = '/resources/meetings/meeting/upcoming/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getPastMeetings() {
+    final $url = '/resources/meetings/meeting/past/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postRsvpAttendingStatus(Map<String, dynamic> data) {
+    final $url = '/resources/meetings/rsvp/confirmed/';
+    final $body = data;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postRsvpCancelledStatus(Map<String, dynamic> data) {
+    final $url = '/resources/meetings/rsvp/cancelled/';
+    final $body = data;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postRsvpRescheduleStatus(
+      Map<String, dynamic> data) {
+    final $url = '/resources/meetings/rsvp/reschedule/';
+    final $body = data;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }
