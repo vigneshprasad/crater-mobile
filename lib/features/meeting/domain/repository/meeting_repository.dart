@@ -9,6 +9,7 @@ import '../entity/meeting_objective_entity.dart';
 import '../entity/meeting_rsvp_entity.dart';
 import '../entity/meetings_by_date_entity.dart';
 import '../entity/number_of_meetings_entity.dart';
+import '../entity/reschedule_request_entity.dart';
 import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 
@@ -30,4 +31,17 @@ abstract class MeetingRepository {
   Future<Either<Failure, Meeting>> retrieveMeetingDetails(int meetingId);
   Future<Either<Failure, MeetingRsvp>> postRsvpStatusUpdate(
       MeetingRsvpStatus status, int meetingId);
+  Future<Either<Failure, List<List<DateTime>>>> getRescheduleTimeSlots();
+  Future<Either<Failure, RescheduleRequest>> postRecheduleRsvpStatus(
+    int oldMeeting,
+    String requestedBy,
+    List<DateTime> timeSlots,
+  );
+  Future<Either<Failure, RescheduleRequest>> getRescheduleRequest(
+    int meetingId,
+  );
+  Future<Either<Failure, bool>> postConfirmRescheduleRequest(
+    DateTime timeSlot,
+    int rescheduleRequest,
+  );
 }

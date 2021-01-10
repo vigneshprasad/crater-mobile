@@ -327,3 +327,121 @@ class PostMeetingRsvpStatusError extends MeetingState {
           error: error,
         );
 }
+
+/// Get Reschedule Slots states
+
+class GetMeetingRescheduleSlotsLoading extends MeetingState {
+  const GetMeetingRescheduleSlotsLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class GetMeetingRescheduleSlotsError extends MeetingState {
+  const GetMeetingRescheduleSlotsError({
+    @required dynamic error,
+  }) : super(
+          loading: false,
+          error: error,
+        );
+}
+
+class GetMeetingRescheduleSlotsLoaded extends MeetingState {
+  final List<List<DateTime>> timeslots;
+  const GetMeetingRescheduleSlotsLoaded({
+    @required this.timeslots,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}
+
+/// Post Rechedule Rsvp Status
+
+class PostMeetingRecheduleRsvpLoading extends MeetingState {
+  const PostMeetingRecheduleRsvpLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class PostMeetingRecheduleRsvpError extends MeetingState {
+  const PostMeetingRecheduleRsvpError({
+    @required dynamic error,
+  }) : super(
+          loading: false,
+          error: error,
+        );
+}
+
+class PostMeetingRecheduleRsvpLoaded extends MeetingState {
+  final RescheduleRequest response;
+  const PostMeetingRecheduleRsvpLoaded({
+    @required this.response,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}
+
+/// Get Meeting Reschedule Request
+
+class GetMeetingRescheduleRequestLoading extends MeetingState {
+  const GetMeetingRescheduleRequestLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class GetMeetingRescheduleRequestError extends MeetingState {
+  const GetMeetingRescheduleRequestError({
+    @required dynamic error,
+  }) : super(
+          loading: false,
+          error: error,
+        );
+}
+
+class GetMeetingRescheduleRequestLoaded extends MeetingState {
+  final RescheduleRequest response;
+
+  const GetMeetingRescheduleRequestLoaded({
+    @required this.response,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}
+
+/// Post Confirm Reschedule Request States
+
+class PostConfirmRescheduleRequestLoading extends MeetingState {
+  const PostConfirmRescheduleRequestLoading()
+      : super(
+          loading: true,
+          error: null,
+        );
+}
+
+class PostConfirmRescheduleRequestError extends MeetingState {
+  const PostConfirmRescheduleRequestError({
+    @required dynamic error,
+  }) : super(
+          loading: false,
+          error: error,
+        );
+}
+
+class PostConfirmRescheduleRequestLoaded extends MeetingState {
+  final bool response;
+
+  const PostConfirmRescheduleRequestLoaded({
+    @required this.response,
+  }) : super(
+          loading: false,
+          error: null,
+        );
+}

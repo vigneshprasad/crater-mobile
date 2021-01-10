@@ -305,7 +305,11 @@ class _$MeetingInjector extends MeetingInjector {
         getPastMeetingPreferences: c<UCGetPastMeetingPreferences>(),
         getMeetingsByDate: c<UCGetMeetingsByDate>(),
         retrieveMeetingDetails: c<UCRetrieveMeetingDetails>(),
-        postRsvpStatus: c<UCPostRsvpStatus>()));
+        postRsvpStatus: c<UCPostRsvpStatus>(),
+        getRescheduleTimeSlots: c<UCGetRescheduleTimeSlots>(),
+        postRecheduleRsvpStatus: c<UCPostRecheduleRsvpStatus>(),
+        getRescheduleRequest: c<UCGetRescheduleRequest>(),
+        postConfirmRescheduleRequest: c<UCPostConfirmRescheduleRequest>()));
     container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
         remoteDatasource: c<MeetingRemoteDatasource>(),
         networkInfo: c<NetworkInfo>()));
@@ -329,6 +333,14 @@ class _$MeetingInjector extends MeetingInjector {
         (c) => UCRetrieveMeetingDetails(c<MeetingRepository>()));
     container
         .registerSingleton((c) => UCPostRsvpStatus(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCGetRescheduleTimeSlots(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCPostRecheduleRsvpStatus(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCGetRescheduleRequest(c<MeetingRepository>()));
+    container.registerSingleton(
+        (c) => UCPostConfirmRescheduleRequest(c<MeetingRepository>()));
   }
 }
 

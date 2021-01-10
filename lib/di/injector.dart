@@ -4,6 +4,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/get_reschedule_request_usecase.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/post_confirm_reschedule_request_usecase.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -104,7 +106,9 @@ import '../features/meeting/domain/usecase/get_meeting_preferences_usecase.dart'
 import '../features/meeting/domain/usecase/get_meetings_by_date_usecase.dart';
 import '../features/meeting/domain/usecase/get_meetings_config_usecase.dart';
 import '../features/meeting/domain/usecase/get_past_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/get_reschedule_time_slots.dart';
 import '../features/meeting/domain/usecase/post_meeting_preferences_usecase.dart';
+import '../features/meeting/domain/usecase/post_rechedule_rsvp_status_usecase.dart';
 import '../features/meeting/domain/usecase/post_rsvp_status_update_usecase.dart';
 import '../features/meeting/domain/usecase/retrieve_meeting_details_usecase.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
@@ -308,6 +312,10 @@ abstract class MeetingInjector {
   @Register.singleton(UCGetMeetingsByDate)
   @Register.singleton(UCRetrieveMeetingDetails)
   @Register.singleton(UCPostRsvpStatus)
+  @Register.singleton(UCGetRescheduleTimeSlots)
+  @Register.singleton(UCPostRecheduleRsvpStatus)
+  @Register.singleton(UCGetRescheduleRequest)
+  @Register.singleton(UCPostConfirmRescheduleRequest)
   void configure();
 }
 

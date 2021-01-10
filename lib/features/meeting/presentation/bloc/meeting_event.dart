@@ -101,3 +101,55 @@ class PostMeetingRsvpStatusStarted extends MeetingEvent {
         meetingId,
       ];
 }
+
+class GetMeetingRescheduleSlotsStarted extends MeetingEvent {
+  const GetMeetingRescheduleSlotsStarted();
+}
+
+class PostMeetingRescheduleRsvpStarted extends MeetingEvent {
+  final int oldMeeting;
+  final String requestedBy;
+  final List<DateTime> timeSlots;
+
+  const PostMeetingRescheduleRsvpStarted({
+    this.oldMeeting,
+    this.requestedBy,
+    this.timeSlots,
+  });
+
+  @override
+  List<Object> get props => [
+        oldMeeting,
+        requestedBy,
+        timeSlots,
+      ];
+}
+
+class GetRescheduleRequestStarted extends MeetingEvent {
+  final int meetingId;
+
+  const GetRescheduleRequestStarted({
+    @required this.meetingId,
+  });
+
+  @override
+  List<Object> get props => [
+        meetingId,
+      ];
+}
+
+class PostConfirmRescheduleRequestStarted extends MeetingEvent {
+  final DateTime timeSlot;
+  final int rescheduleRequest;
+
+  const PostConfirmRescheduleRequestStarted({
+    @required this.timeSlot,
+    @required this.rescheduleRequest,
+  });
+
+  @override
+  List<Object> get props => [
+        timeSlot,
+        rescheduleRequest,
+      ];
+}
