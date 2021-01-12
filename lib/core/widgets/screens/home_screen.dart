@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import '../../../features/article/presentation/bloc/article_bloc.dart';
 import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
-import '../../../features/community/domain/entity/post_entity.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
