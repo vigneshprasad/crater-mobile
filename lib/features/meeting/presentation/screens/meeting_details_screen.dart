@@ -139,7 +139,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             _buildCancelledMeetingReschedule(context),
           const Divider(),
           const SizedBox(height: AppInsets.l),
-          ..._buildIntro(context),
+          if (participant.name != null && participant.introduction != null)
+            ..._buildIntro(context),
           ..._buildObjectives(context),
           ..._buildInterests(context),
           const SizedBox(height: AppInsets.xl),
