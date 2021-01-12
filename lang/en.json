@@ -27,7 +27,7 @@
     "videos:title": "Videos",
     "videos:subtitle": "Learn from the experiences of other members",
     "meeting:title": "Meetings",
-    "4": "Cancel Meeting",
+    "meeting:cancel_meeting": "Cancel Meeting",
     "meeting:subtitle": "Get matched for a 1:1 video meeting.",
     "meeting:register_title": "Register for Meet",
     "meeting:tab_upcoming": "Upcoming",
