@@ -222,7 +222,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.check,
             text: "Confirm",
             onPressed: () {
-              _onPressCancelMeeting(context);
+              _postMeetingStatusRequest(MeetingRsvpStatus.attending);
             },
           ),
           const VerticalDivider(
