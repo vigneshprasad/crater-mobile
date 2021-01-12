@@ -147,7 +147,7 @@ class MeetingCard extends StatelessWidget {
         );
         break;
       case MeetingStatus.rescheduled:
-        text = 'Meeting rescheduled';
+        text = 'Reschedule Requested';
         style = style.copyWith(
           color: Colors.orange,
         );

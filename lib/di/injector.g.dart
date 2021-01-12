@@ -7,6 +7,7 @@ part of 'injector.dart';
 // **************************************************************************
 
 class _$CoreInjector extends CoreInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton<CustomTabs>((c) => CustomTabImpl());
@@ -23,6 +24,7 @@ class _$CoreInjector extends CoreInjector {
 }
 
 class _$WebSocketInjector extends WebSocketInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => WebsocketBloc(
@@ -53,6 +55,7 @@ class _$WebSocketInjector extends WebSocketInjector {
 }
 
 class _$AuthInjector extends AuthInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => AuthBloc(
@@ -98,6 +101,7 @@ class _$AuthInjector extends AuthInjector {
 }
 
 class _$SignupInjector extends SignupInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ObjectivesBloc(
@@ -126,6 +130,7 @@ class _$SignupInjector extends SignupInjector {
 }
 
 class _$SocialAuthInjector extends SocialAuthInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton(
@@ -140,6 +145,7 @@ class _$SocialAuthInjector extends SocialAuthInjector {
 }
 
 class _$CommunityInjector extends CommunityInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => CommunityBloc(
@@ -180,6 +186,7 @@ class _$CommunityInjector extends CommunityInjector {
 }
 
 class _$ChatInboxInjector extends ChatInboxInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ChatInboxBloc(
@@ -214,6 +221,7 @@ class _$ChatInboxInjector extends ChatInboxInjector {
 }
 
 class _$ChatInjector extends ChatInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ChatBloc(
@@ -248,6 +256,7 @@ class _$ChatInjector extends ChatInjector {
 }
 
 class _$ArticleInjector extends ArticleInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ArticleBloc(
@@ -271,6 +280,7 @@ class _$ArticleInjector extends ArticleInjector {
 }
 
 class _$VideoInjector extends VideoInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container
@@ -294,6 +304,7 @@ class _$VideoInjector extends VideoInjector {
 }
 
 class _$MeetingInjector extends MeetingInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MeetingBloc(
@@ -345,6 +356,7 @@ class _$MeetingInjector extends MeetingInjector {
 }
 
 class _$PointsInjector extends PointsInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => PointsBloc(
@@ -370,6 +382,7 @@ class _$PointsInjector extends PointsInjector {
 }
 
 class _$NotificationInjector extends NotificationInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) =>
@@ -390,6 +403,7 @@ class _$NotificationInjector extends NotificationInjector {
 }
 
 class _$RewardsInjector extends RewardsInjector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => RewardsBloc(

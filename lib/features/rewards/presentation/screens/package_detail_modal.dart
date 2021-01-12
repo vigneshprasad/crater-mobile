@@ -96,12 +96,12 @@ class _PackageDetailView extends StatelessWidget {
             height: 96,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
                 colors: [
                   Colors.white,
                   Colors.white.withOpacity(0.4),
                 ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
               ),
             ),
             child: Center(

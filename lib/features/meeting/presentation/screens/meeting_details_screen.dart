@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -5,14 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/meeting/presentation/widgets/reschedule_confirm_sheet.dart';
+import 'package:worknetwork/core/error/failures.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/custom_tabs/custom_tabs.dart';
-import '../../../../core/widgets/base/base_bottom_sheet/base_bottom_sheet_custom.dart';
+import '../../../../core/widgets/base/base_bottom_sheet_route/base_bottom_sheet_route.dart';
 import '../../../../core/widgets/base/base_large_icon_button/base_large_icon_button.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -23,6 +25,7 @@ import '../../data/models/meeting_rsvp_model.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_participant_entity.dart';
 import '../bloc/meeting_bloc.dart';
+import '../widgets/reschedule_confirm_sheet.dart';
 import '../widgets/reschedule_request_sheet.dart';
 
 class MeetingDetailScreen extends StatefulWidget {
@@ -107,6 +110,17 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         loading = false;
       });
       Fluttertoast.showToast(msg: "Update Status failed");
+    } else if (state is PostMeetingRecheduleRsvpError) {
+      final failure = state.error as ServerFailure;
+      final json = jsonDecode(failure.message as String);
+      if (json['non_field_errors'] != null) {
+        Fluttertoast.showToast(
+          msg: "Meeting cannot be resheduled. Please contact support for help.",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Theme.of(context).errorColor,
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -121,6 +135,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           const Divider(),
           if (meeting.status != MeetingStatus.cancelled || meeting.isPast)
             ..._buildMeetingInfo(context),
+          if (meeting.status == MeetingStatus.cancelled && !meeting.isPast)
+            _buildCancelledMeetingReschedule(context),
           const Divider(),
           const SizedBox(height: AppInsets.l),
           ..._buildIntro(context),
@@ -142,7 +158,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         color: Colors.orange,
         child: Center(
           child: Text(
-            'You have reschedule the meeting',
+            'You have requested a reschedule.',
             style: textStyle,
           ),
         ),
@@ -169,9 +185,16 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     List<Widget> buttons = [];
     final dateFormat = DateFormat('hh:mm a, EEEE, d MMMM.');
-    final meetingLabel = meeting.isPast
-        ? 'Your meeting was scheduled at ${dateFormat.format(meeting.start)}'
-        : 'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
+    String meetingLabel;
+    if (meeting.status == MeetingStatus.rescheduled) {
+      meetingLabel = AppLocalizations.of(context)
+          .translate("meeting_details:reschedule_request_label");
+    } else {
+      meetingLabel = meeting.isPast
+          ? 'Your meeting was scheduled at ${dateFormat.format(meeting.start)}'
+          : 'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
+    }
+
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 15,
         );
@@ -198,7 +221,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.check,
             text: "Confirm",
             onPressed: () {
-              _postMeetingStatusRequest(MeetingRsvpStatus.attending);
+              _onPressCancelMeeting(context);
             },
           ),
           const VerticalDivider(
@@ -209,7 +232,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.clear,
             text: "Cancel",
             onPressed: () {
-              _postMeetingStatusRequest(MeetingRsvpStatus.notAttending);
+              _onPressCancelMeeting(context);
             },
           ),
           const VerticalDivider(
@@ -227,31 +250,40 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       } else if (userRsvp.rsvp.status == MeetingRsvpStatus.attending) {
         buttons = [
           BaseLargeIconButton(
-            icon: Icons.videocam,
+            icon: Icons.duo,
             text: "Join call",
             onPressed: () {
               KiwiContainer().resolve<CustomTabs>().openLink(meeting.link);
             },
           ),
-          const SizedBox(width: AppInsets.med),
           const VerticalDivider(
             endIndent: AppInsets.xl,
             indent: AppInsets.xl,
           ),
-          const SizedBox(width: AppInsets.med),
           BaseLargeIconButton(
             icon: Icons.clear,
             text: "Cancel",
             onPressed: () {
-              _postMeetingStatusRequest(MeetingRsvpStatus.notAttending);
+              _onPressCancelMeeting(context);
             },
-          )
+          ),
+          const VerticalDivider(
+            endIndent: AppInsets.xl,
+            indent: AppInsets.xl,
+          ),
+          BaseLargeIconButton(
+            icon: Icons.restore,
+            text: "Reschedule",
+            onPressed: () {
+              _onPressReschedule(context);
+            },
+          ),
         ];
       }
     } else if (meeting.status == MeetingStatus.confirmed) {
       buttons = [
         BaseLargeIconButton(
-          icon: Icons.videocam,
+          icon: Icons.duo,
           text: "Join call",
           onPressed: () {
             KiwiContainer().resolve<CustomTabs>().openLink(meeting.link);
@@ -267,7 +299,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           icon: Icons.clear,
           text: "Cancel",
           onPressed: () {
-            _postMeetingStatusRequest(MeetingRsvpStatus.notAttending);
+            _onPressCancelMeeting(context);
           },
         )
       ];
@@ -280,7 +312,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.calendar_today,
             text: "Pick a slot",
             onPressed: () {
-              showModalBottomSheetCustom(
+              showModalBottomSheet(
                 context: context,
                 builder: (context) {
                   return RescheduleConfirmSheet(
@@ -288,7 +320,6 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
                   );
                 },
               ).then((value) {
-                print(value);
                 if (value != null && value == true) {
                   ExtendedNavigator.of(context).pop();
                 }
@@ -305,7 +336,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.clear,
             text: "Cancel",
             onPressed: () {
-              _postMeetingStatusRequest(MeetingRsvpStatus.notAttending);
+              _onPressCancelMeeting(context);
             },
           )
         ];
@@ -334,6 +365,32 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       ),
       const SizedBox(height: AppInsets.l),
     ];
+  }
+
+  Widget _buildCancelledMeetingReschedule(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyText1;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppInsets.sm),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            AppLocalizations.of(context)
+                .translate("meeting_details:reschedule_question"),
+            style: textStyle,
+            textAlign: TextAlign.center,
+          ),
+          FlatButton(
+            onPressed: () {
+              _onPressReschedule(context);
+            },
+            child: Text(AppLocalizations.of(context)
+                .translate("meeting_details:reschedule")),
+          ),
+        ],
+      ),
+    );
   }
 
   void _postMeetingStatusRequest(MeetingRsvpStatus status) {
@@ -385,20 +442,55 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   void _onPressReschedule(BuildContext context) {
-    showModalBottomSheetCustom(
-      context: context,
-      shape: AppTheme.bottomSheetShape,
-      builder: (context) {
-        return RescheduleRequestSheet(
+    Navigator.push(
+      context,
+      BaseBottomSheetRoute(
+        initialHeightRatio: 0.6,
+        maxScrollRatio: 0.6,
+        child: RescheduleRequestSheet(
           meeting: meeting,
-        );
-      },
+        ),
+      ),
     ).then((value) {
       _bloc.add(RetrieveMeetingDetailStarted(meetingId: widget.meetingId));
       setState(() {
         loadingInfo = true;
       });
     });
+  }
+
+  void _onPressCancelMeeting(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(AppLocalizations.of(context)
+              .translate("meetings_details:cancel_alert_title")),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context)
+                    .translate("alert:dismiss")
+                    .toUpperCase(),
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                _postMeetingStatusRequest(MeetingRsvpStatus.notAttending);
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)
+                  .translate("meeting:cancel_meeting")
+                  .toUpperCase()),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildStatusIndicator(BuildContext context) {
@@ -426,7 +518,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         );
         break;
       case MeetingStatus.rescheduled:
-        text = 'Meeting rescheduled';
+        text = 'Reschedule Requested';
         style = style.copyWith(
           color: Colors.orange,
         );
