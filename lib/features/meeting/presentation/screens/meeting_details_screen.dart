@@ -119,8 +119,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Theme.of(context).errorColor,
         );
-        Navigator.pop(context);
       }
+      Navigator.pop(context);
     }
   }
 
