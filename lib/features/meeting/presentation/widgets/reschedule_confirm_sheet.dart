@@ -44,7 +44,6 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
     return BlocListener<MeetingBloc, MeetingState>(
       listener: _blocListener,
       child: BaseBottomSheet(
-        heightRatio: 0.55,
         child: Column(
           children: [
             const SizedBox(height: AppInsets.xl),

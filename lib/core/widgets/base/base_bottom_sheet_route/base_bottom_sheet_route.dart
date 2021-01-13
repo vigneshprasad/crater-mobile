@@ -49,7 +49,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
                   topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
                   topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
                 ),
-                child: Expanded(child: child),
+                child: child,
               ),
             ),
           );

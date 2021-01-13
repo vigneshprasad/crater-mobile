@@ -5,19 +5,17 @@ import '../../../../constants/theme.dart';
 class BaseBottomSheet extends StatelessWidget {
   final bool showIndicator;
   final Widget child;
-  final double heightRatio;
 
   const BaseBottomSheet({
     Key key,
     this.showIndicator = true,
     @required this.child,
-    this.heightRatio = 0.6,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * heightRatio,
+      height: MediaQuery.of(context).size.height,
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
