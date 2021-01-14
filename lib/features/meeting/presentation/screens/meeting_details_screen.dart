@@ -290,19 +290,28 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             KiwiContainer().resolve<CustomTabs>().openLink(meeting.link);
           },
         ),
-        const SizedBox(width: AppInsets.med),
         const VerticalDivider(
           endIndent: AppInsets.xl,
           indent: AppInsets.xl,
         ),
-        const SizedBox(width: AppInsets.med),
         BaseLargeIconButton(
           icon: Icons.clear,
           text: "Cancel",
           onPressed: () {
             _onPressCancelMeeting(context);
           },
-        )
+        ),
+        const VerticalDivider(
+          endIndent: AppInsets.xl,
+          indent: AppInsets.xl,
+        ),
+        BaseLargeIconButton(
+          icon: Icons.restore,
+          text: "Reschedule",
+          onPressed: () {
+            _onPressReschedule(context);
+          },
+        ),
       ];
     } else if (meeting.status == MeetingStatus.rescheduled) {
       final otherUser =
