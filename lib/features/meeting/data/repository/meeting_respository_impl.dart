@@ -11,6 +11,7 @@ import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/meeting_rsvp_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/number_of_meetings_entity.dart';
+import '../../domain/entity/reschedule_request_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
@@ -148,7 +149,53 @@ class MeetingRepositoryImpl implements MeetingRepository {
           await remoteDatasource.postRsvpStatusToRemote(status, meetingId);
       return Right(response);
     } on ServerException catch (error) {
-      return Left(ServerFailure(error));
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<List<DateTime>>>> getRescheduleTimeSlots() async {
+    try {
+      final response = await remoteDatasource.getRescheduleSlotsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RescheduleRequest>> postRecheduleRsvpStatus(
+      int oldMeeting, String requestedBy, List<DateTime> timeSlots) async {
+    try {
+      final response = await remoteDatasource.postRecheduleRsvpStatusToRemote(
+          oldMeeting, requestedBy, timeSlots);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RescheduleRequest>> getRescheduleRequest(
+      int meetingId) async {
+    try {
+      final response =
+          await remoteDatasource.getRescheduleRequestFromRemote(meetingId);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postConfirmRescheduleRequest(
+      DateTime timeSlot, int rescheduleRequest) async {
+    try {
+      final response = await remoteDatasource
+          .postConfirmRescheduleRequestToRemote(timeSlot, rescheduleRequest);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
     }
   }
 }

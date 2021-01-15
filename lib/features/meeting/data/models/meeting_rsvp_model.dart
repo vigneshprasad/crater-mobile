@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entity/meeting_rsvp_entity.dart';
-import 'meeting_interest_model.dart';
-import 'meeting_objective_model.dart';
 
 part 'meeting_rsvp_model.g.dart';
 

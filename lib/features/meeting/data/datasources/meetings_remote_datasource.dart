@@ -11,6 +11,7 @@ import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/meeting_rsvp_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
 import '../../domain/entity/number_of_meetings_entity.dart';
+import '../../domain/entity/reschedule_request_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../models/meeting_config_model.dart';
@@ -19,6 +20,7 @@ import '../models/meeting_model.dart';
 import '../models/meeting_objective_model.dart';
 import '../models/meeting_rsvp_model.dart';
 import '../models/meetings_by_date_model.dart';
+import '../models/reschedule_request_model.dart';
 import '../models/user_meeting_preference_model.dart';
 
 abstract class MeetingRemoteDatasource {
@@ -38,7 +40,18 @@ abstract class MeetingRemoteDatasource {
   Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool past});
   Future<Meeting> retrieveMeetingDetailFromRemote(int meetingId);
   Future<MeetingRsvp> postRsvpStatusToRemote(
-      MeetingRsvpStatus status, int meetingId);
+    MeetingRsvpStatus status,
+    int meetingId,
+  );
+  Future<List<List<DateTime>>> getRescheduleSlotsFromRemote();
+  Future<RescheduleRequest> postRecheduleRsvpStatusToRemote(
+    int oldMeeting,
+    String requestedBy,
+    List<DateTime> timeSlots,
+  );
+  Future<RescheduleRequest> getRescheduleRequestFromRemote(int meetingId);
+  Future<bool> postConfirmRescheduleRequestToRemote(
+      DateTime timeSlot, int rescheduleRequest);
 }
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
@@ -205,6 +218,65 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
       return apiService.postRsvpCancelledStatus(data);
     } else {
       throw ServerException('Incorrect rsvp status');
+    }
+  }
+
+  @override
+  Future<List<List<DateTime>>> getRescheduleSlotsFromRemote() async {
+    final response = await apiService.getRecheduleTimeSlots();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Iterable;
+      return json.map((slots) {
+        final slotsList = slots as Iterable;
+        return slotsList.map((slot) => DateTime.parse(slot as String)).toList();
+      }).toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<RescheduleRequest> postRecheduleRsvpStatusToRemote(
+      int oldMeeting, String requestedBy, List<DateTime> timeSlots) async {
+    final body = {
+      'old_meeting': oldMeeting,
+      'requested_by': requestedBy,
+      'time_slots': timeSlots.map((slot) => slot.toIso8601String()).toList(),
+    };
+
+    final response = await apiService.postRsvpRescheduleStatus(body);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return RescheduleRequestModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<RescheduleRequest> getRescheduleRequestFromRemote(
+      int meetingId) async {
+    final response = await apiService.getRescheduleRequest(meetingId);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return RescheduleRequestModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<bool> postConfirmRescheduleRequestToRemote(
+      DateTime timeSlot, int rescheduleRequest) async {
+    final body = {
+      'time_slot': timeSlot.toIso8601String(),
+      'reschedule_request': rescheduleRequest,
+    };
+    final response = await apiService.postConfirmRescheduleRequest(body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw ServerException(response.body);
     }
   }
 }

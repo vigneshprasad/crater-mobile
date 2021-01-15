@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +8,7 @@ import '../../../features/article/presentation/bloc/article_bloc.dart';
 import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
-import '../../../features/community/domain/entity/post_entity.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
-import '../../../features/community/presentation/widgets/community_tab.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
 import '../../../routes.gr.dart';
@@ -38,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     MeetingTab(),
     InboxTab(),
-    CommunityTab(),
+    // CommunityTab(),
     ArticlesTab(),
     RewardsTab(),
   ];
@@ -87,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<BottomNavigationBarItem> getNavItems(BuildContext context) {
     final translate = AppLocalizations.of(context).translate;
-    final String communityLabel = translate("home_tab:community");
+    // final String communityLabel = translate("home_tab:community");
     final String meetsLabel = translate("home_tab:meets");
     final String inboxLabel = translate("home_tab:inbox");
     final String articlesLabel = translate("home_tab:articles");
@@ -96,45 +93,45 @@ class _HomeScreenState extends State<HomeScreen> {
     return [
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.people),
-        title: Text(meetsLabel),
+        label: meetsLabel,
       ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.inbox),
-        title: Text(inboxLabel),
+        label: inboxLabel,
       ),
-      BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.community),
-        title: Text(communityLabel),
-      ),
+      // BottomNavigationBarItem(
+      //   icon: const Icon(WorkNetIcons.community),
+      //   title: Text(communityLabel),
+      // ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.articles),
-        title: Text(articlesLabel),
+        label: articlesLabel,
       ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.staroutline),
-        title: Text(rewardsLabel),
+        label: rewardsLabel,
       ),
     ];
   }
 
   Widget getFloatingActionButton(int index) {
     // New Post FAB
-    if (index == 2) {
-      return FloatingActionButton(
-        onPressed: () {
-          ExtendedNavigator.of(context)
-              .push(Routes.createPostScreen)
-              .then((value) {
-            if (value != null) {
-              final post = value as Post;
-              _communityBloc.add(NewPostCreated(post: post));
-            }
-          });
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(WorkNetIcons.newpost),
-      );
-    }
+    // if (index == 2) {
+    //   return FloatingActionButton(
+    //     onPressed: () {
+    //       ExtendedNavigator.of(context)
+    //           .push(Routes.createPostScreen)
+    //           .then((value) {
+    //         if (value != null) {
+    //           final post = value as Post;
+    //           _communityBloc.add(NewPostCreated(post: post));
+    //         }
+    //       });
+    //     },
+    //     backgroundColor: Theme.of(context).primaryColor,
+    //     child: const Icon(WorkNetIcons.newpost),
+    //   );
+    // }
 
     // Chat Search FAB
     if (index == 1) {

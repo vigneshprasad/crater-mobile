@@ -22,7 +22,6 @@ mixin AppTheme {
     primaryColor: primaryColor,
     primarySwatch: primarySwatch,
     fontFamily: 'Aeonik',
-    textTheme: primaryTextTheme,
     dividerTheme: DividerThemeData(
       space: AppInsets.xs,
       color: Colors.grey[400],
@@ -64,6 +63,13 @@ mixin AppTheme {
       ),
     ),
   );
+
+  static const ShapeBorder bottomSheetShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+      topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+    ),
+  );
 }
 
 mixin AppPadding {
@@ -86,4 +92,5 @@ mixin AppInsets {
 mixin AppBorderRadius {
   static const textInput = 12.0;
   static const largeButton = 24.0;
+  static const bottomSheetRadius = 16.0;
 }

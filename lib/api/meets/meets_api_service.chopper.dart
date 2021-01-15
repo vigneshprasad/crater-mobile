@@ -120,4 +120,27 @@ class _$MeetsApiService extends MeetsApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getRecheduleTimeSlots() {
+    final $url = '/resources/meetings/reschedule/availability_slots/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getRescheduleRequest(int meetingId) {
+    final $url = '/resources/meetings/reschedule/$meetingId/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postConfirmRescheduleRequest(
+      Map<String, dynamic> body) {
+    final $url = '/resources/meetings/reschedule/accepted/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

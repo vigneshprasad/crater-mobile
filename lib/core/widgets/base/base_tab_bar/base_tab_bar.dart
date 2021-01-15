@@ -39,6 +39,12 @@ class _BaseTabBarState extends State<BaseTabBar> {
   }
 
   @override
+  void dispose() {
+    widget.controller.removeListener(_onIndexChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.preferredSize.width,

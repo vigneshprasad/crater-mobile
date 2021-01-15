@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
@@ -66,7 +66,7 @@ class _RootAppState extends State<RootApp> {
             return supportedLocales.first;
           },
           debugShowCheckedModeBanner: false,
-          builder: ExtendedNavigator.builder(
+          builder: ExtendedNavigator.builder<Router>(
             router: Router(),
             initialRoute: "/",
             navigatorKey: _navigatorKey,

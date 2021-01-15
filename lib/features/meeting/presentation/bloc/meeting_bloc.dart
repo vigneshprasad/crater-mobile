@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/features/meeting/domain/entity/reschedule_request_entity.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/get_reschedule_request_usecase.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/post_confirm_reschedule_request_usecase.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/post_rechedule_rsvp_status_usecase.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -23,6 +27,7 @@ import '../../domain/usecase/get_meeting_preferences_usecase.dart';
 import '../../domain/usecase/get_meetings_by_date_usecase.dart';
 import '../../domain/usecase/get_meetings_config_usecase.dart';
 import '../../domain/usecase/get_past_meeting_preferences_usecase.dart';
+import '../../domain/usecase/get_reschedule_time_slots.dart';
 import '../../domain/usecase/post_meeting_preferences_usecase.dart';
 import '../../domain/usecase/post_rsvp_status_update_usecase.dart';
 import '../../domain/usecase/retrieve_meeting_details_usecase.dart';
@@ -40,6 +45,10 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
   final UCGetMeetingsByDate getMeetingsByDate;
   final UCRetrieveMeetingDetails retrieveMeetingDetails;
   final UCPostRsvpStatus postRsvpStatus;
+  final UCGetRescheduleTimeSlots getRescheduleTimeSlots;
+  final UCPostRecheduleRsvpStatus postRecheduleRsvpStatus;
+  final UCGetRescheduleRequest getRescheduleRequest;
+  final UCPostConfirmRescheduleRequest postConfirmRescheduleRequest;
 
   MeetingBloc({
     @required this.getMeetingInterests,
@@ -51,6 +60,10 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     @required this.getMeetingsByDate,
     @required this.retrieveMeetingDetails,
     @required this.postRsvpStatus,
+    @required this.getRescheduleTimeSlots,
+    @required this.postRecheduleRsvpStatus,
+    @required this.getRescheduleRequest,
+    @required this.postConfirmRescheduleRequest,
   })  : assert(getMeetingInterests != null),
         assert(getMeetingObjectives != null),
         assert(getMeetingConfig != null),
@@ -60,6 +73,10 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
         assert(getMeetingsByDate != null),
         assert(retrieveMeetingDetails != null),
         assert(postRsvpStatus != null),
+        assert(getRescheduleTimeSlots != null),
+        assert(postRecheduleRsvpStatus != null),
+        assert(getRescheduleRequest != null),
+        assert(postConfirmRescheduleRequest != null),
         super(const MeetingInitial());
 
   @override
@@ -86,6 +103,14 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       yield* _mapRetrieveMeetingToState(event);
     } else if (event is PostMeetingRsvpStatusStarted) {
       yield* _mapPostRsvpStatusToState(event);
+    } else if (event is GetMeetingRescheduleSlotsStarted) {
+      yield* _mapGetRescheduleTimeslotsToState(event);
+    } else if (event is PostMeetingRescheduleRsvpStarted) {
+      yield* _mapPostRecheduleRsvpRequestToState(event);
+    } else if (event is GetRescheduleRequestStarted) {
+      yield* _mapGetRescheduleRequestToState(event);
+    } else if (event is PostConfirmRescheduleRequestStarted) {
+      yield* _mapPostConfirmRescheduleRequestToState(event);
     }
   }
 
@@ -211,6 +236,62 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
     yield responseOrError.fold(
       (failure) => PostMeetingRsvpStatusError(error: failure),
       (rsvp) => PostMeetingRsvpStatusLoaded(rsvp: rsvp),
+    );
+  }
+
+  Stream<MeetingState> _mapGetRescheduleTimeslotsToState(
+      GetMeetingRescheduleSlotsStarted event) async* {
+    yield const GetMeetingRescheduleSlotsLoading();
+
+    final responseOrError = await getRescheduleTimeSlots(NoParams());
+    yield responseOrError.fold(
+      (failure) => GetMeetingRescheduleSlotsError(error: failure),
+      (slots) => GetMeetingRescheduleSlotsLoaded(timeslots: slots),
+    );
+  }
+
+  Stream<MeetingState> _mapPostRecheduleRsvpRequestToState(
+      PostMeetingRescheduleRsvpStarted event) async* {
+    yield const PostMeetingRecheduleRsvpLoading();
+
+    final responseOrError =
+        await postRecheduleRsvpStatus(PostRescheduleRsvpParams(
+      oldMeeting: event.oldMeeting,
+      requestedBy: event.requestedBy,
+      timeSlots: event.timeSlots,
+    ));
+
+    yield responseOrError.fold(
+      (failure) => PostMeetingRecheduleRsvpError(error: failure),
+      (response) => PostMeetingRecheduleRsvpLoaded(response: response),
+    );
+  }
+
+  Stream<MeetingState> _mapGetRescheduleRequestToState(
+      GetRescheduleRequestStarted event) async* {
+    yield const GetMeetingRescheduleRequestLoading();
+
+    final responseOrError = await getRescheduleRequest(
+        GetRescheduleRequestParams(meetingId: event.meetingId));
+
+    yield responseOrError.fold(
+      (failure) => GetMeetingRescheduleRequestError(error: failure),
+      (response) => GetMeetingRescheduleRequestLoaded(response: response),
+    );
+  }
+
+  Stream<MeetingState> _mapPostConfirmRescheduleRequestToState(
+      PostConfirmRescheduleRequestStarted event) async* {
+    yield const PostConfirmRescheduleRequestLoading();
+
+    final responseOrError = await postConfirmRescheduleRequest(
+        PostConfirmRescheduleRequestParams(
+            rescheduleRequest: event.rescheduleRequest,
+            timeSlot: event.timeSlot));
+
+    yield responseOrError.fold(
+      (failure) => PostConfirmRescheduleRequestError(error: failure),
+      (response) => PostConfirmRescheduleRequestLoaded(response: response),
     );
   }
 }

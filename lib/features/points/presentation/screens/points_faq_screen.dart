@@ -58,7 +58,6 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
     } else if (state is PointsRulesListLoaded) {
       setState(() {
         rules = state.rules;
-        print(rules);
       });
     }
   }
