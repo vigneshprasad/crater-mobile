@@ -18,7 +18,6 @@ abstract class MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   );

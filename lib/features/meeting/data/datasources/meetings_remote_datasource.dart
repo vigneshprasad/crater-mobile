@@ -28,7 +28,6 @@ abstract class MeetingRemoteDatasource {
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   );
@@ -74,14 +73,12 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   ) async {
     final body = {
       "meeting": config.pk,
       "interests": interests.map((e) => e.pk).toList(),
-      "number_of_meetings_per_month": numberOfMeetings.value,
       "objectives": objectives.map((e) => e.pk).toList(),
       "time_slots": timeSlots.map((e) => e.pk).toList(),
     };

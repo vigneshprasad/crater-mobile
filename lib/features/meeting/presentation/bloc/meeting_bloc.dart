@@ -18,7 +18,6 @@ import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/meeting_rsvp_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
-import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/usecase/get_meeting_interests_usecase.dart';
@@ -165,7 +164,6 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       config: event.config,
       interests: event.interests,
       objectives: event.objectives,
-      numberOfMeetings: event.numberOfMeetings,
       timeSlots: event.timeSlots,
     ));
 
