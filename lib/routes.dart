@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -24,10 +25,11 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
   routes: <AutoRoute>[
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
+    MaterialRoute(page: WelcomeScreen, path: "/welcome"),
     MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
-    MaterialRoute(page: AuthScreen, path: "/auth"),
+    MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),

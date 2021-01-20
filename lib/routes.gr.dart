@@ -13,6 +13,7 @@ import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
+import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
@@ -37,10 +38,12 @@ class Routes {
   static const String splashScreen = '/';
   static const String _homeScreen = '/home/:tab?';
   static String homeScreen({dynamic tab = ''}) => '/home/$tab';
+  static const String welcomeScreen = '/welcome';
   static const String objectivesScreen = '/objectives';
   static const String profileSetupScreen = '/profile-setup';
   static const String phoneVerificationScreen = '/phone-verify';
-  static const String authScreen = '/auth';
+  static const String _authScreen = '/auth/:state?';
+  static String authScreen({dynamic state = ''}) => '/auth/$state';
   static const String forgotPasswordScreen = '/forgot-password';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
@@ -56,10 +59,11 @@ class Routes {
   static const all = <String>{
     splashScreen,
     _homeScreen,
+    welcomeScreen,
     objectivesScreen,
     profileSetupScreen,
     phoneVerificationScreen,
-    authScreen,
+    _authScreen,
     forgotPasswordScreen,
     createPostScreen,
     chatScreen,
@@ -81,10 +85,11 @@ class Router extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.splashScreen, page: SplashScreen),
     RouteDef(Routes._homeScreen, page: HomeScreen),
+    RouteDef(Routes.welcomeScreen, page: WelcomeScreen),
     RouteDef(Routes.objectivesScreen, page: ObjectivesScreen),
     RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
-    RouteDef(Routes.authScreen, page: AuthScreen),
+    RouteDef(Routes._authScreen, page: AuthScreen),
     RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
@@ -114,6 +119,12 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    WelcomeScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => WelcomeScreen(),
+        settings: data,
+      );
+    },
     ObjectivesScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ObjectivesScreen(),
@@ -133,8 +144,14 @@ class Router extends RouterBase {
       );
     },
     AuthScreen: (data) {
+      final args = data.getArgs<AuthScreenArguments>(
+        orElse: () => AuthScreenArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AuthScreen(),
+        builder: (context) => AuthScreen(
+          key: args.key,
+          state: data.pathParams['state'].stringValue ?? "signup",
+        ),
         settings: data,
       );
     },
@@ -252,6 +269,8 @@ class Router extends RouterBase {
 extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
 
+  Future<dynamic> pushWelcomeScreen() => push<dynamic>(Routes.welcomeScreen);
+
   Future<dynamic> pushObjectivesScreen() =>
       push<dynamic>(Routes.objectivesScreen);
 
@@ -260,8 +279,6 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushPhoneVerificationScreen() =>
       push<dynamic>(Routes.phoneVerificationScreen);
-
-  Future<dynamic> pushAuthScreen() => push<dynamic>(Routes.authScreen);
 
   Future<dynamic> pushForgotPasswordScreen() =>
       push<dynamic>(Routes.forgotPasswordScreen);
@@ -353,6 +370,12 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
+
+/// AuthScreen arguments holder class
+class AuthScreenArguments {
+  final Key key;
+  AuthScreenArguments({this.key});
+}
 
 /// ChatScreen arguments holder class
 class ChatScreenArguments {
