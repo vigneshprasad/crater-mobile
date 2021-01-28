@@ -14,15 +14,34 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   int _activeIndex;
-  List<String> textMap = [
-    "Opt-in for Meeting",
+
+  final List<Widget> _tabs = const [
+    _ImageSlide(image: AppImageAssets.splashHome),
+    _ImageSlide(image: AppImageAssets.splashObjective),
+    _ImageSlide(image: AppImageAssets.splashMeetingCard),
+    _ImageSlide(image: AppImageAssets.splashVideoCall),
+    _ImageSlide(image: AppImageAssets.splashReward),
+  ];
+
+  final List<String> _headings = [
+    "",
+    "Opt-in for a Meeting",
     "Curated Matching",
-    "Attend Meeting",
+    "Attend a 1-on-1 Meeting",
+    "Earn Rewards, Claim Discounts",
+  ];
+
+  final List<String> _subheadings = [
+    "",
+    "Provide your business objectives & preferences\nfor the meeting",
+    "Get matched with a business professional\ncurated just for you",
+    "Meet your matched member using \nin-app video chat",
+    "Attending meetings earns your rewards. Claim discounts on industry services."
   ];
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
     super.initState();
@@ -45,8 +64,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w700,
-          fontSize: 28,
-          color: Colors.white,
+          fontSize: 22,
+          color: Colors.grey[700],
+        );
+    final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+          color: Colors.grey[700],
         );
     return Scaffold(
       body: Stack(
@@ -54,11 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         children: [
           TabBarView(
             controller: _tabController,
-            children: [
-              _ImageSlide(image: AppImageAssets.drawerBg),
-              _ImageSlide(image: AppImageAssets.drawerBg),
-              _ImageSlide(image: AppImageAssets.drawerBg),
-            ],
+            children: _tabs,
           ),
           Positioned(
             bottom: 56,
@@ -68,11 +88,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             top: 72,
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: Text(
-                  textMap[_activeIndex],
-                  textAlign: TextAlign.center,
-                  style: headingStyle,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                child: Column(
+                  children: [
+                    Text(
+                      _headings[_activeIndex],
+                      textAlign: TextAlign.center,
+                      style: headingStyle,
+                    ),
+                    const SizedBox(height: AppInsets.med),
+                    Text(
+                      _subheadings[_activeIndex],
+                      textAlign: TextAlign.center,
+                      style: subheadingStyle,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -89,7 +120,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           _SlideIndicator(
-            length: 3,
+            length: _tabs.length,
             activeIndex: _activeIndex,
           ),
           const SizedBox(height: AppInsets.xxl),
@@ -177,7 +208,7 @@ class _SlideIndicator extends StatelessWidget {
 
     for (int index = 0; index < list.length; index++) {
       final primaryColor = Theme.of(context).primaryColor;
-      final color = index == activeIndex ? primaryColor : Colors.white;
+      final color = index == activeIndex ? primaryColor : Colors.grey[200];
       final isLast = index == length - 1;
 
       items.add(
