@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/logo/logo.dart';
 
 import '../../../../../routes.gr.dart';
 
@@ -90,21 +92,28 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-                child: Column(
-                  children: [
-                    Text(
-                      _headings[_activeIndex],
-                      textAlign: TextAlign.center,
-                      style: headingStyle,
-                    ),
-                    const SizedBox(height: AppInsets.med),
-                    Text(
-                      _subheadings[_activeIndex],
-                      textAlign: TextAlign.center,
-                      style: subheadingStyle,
-                    ),
-                  ],
-                ),
+                child: _activeIndex == 0
+                    ? SizedBox(
+                        width: 120,
+                        child: Logo(
+                          withSubtext: false,
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            _headings[_activeIndex],
+                            textAlign: TextAlign.center,
+                            style: headingStyle,
+                          ),
+                          const SizedBox(height: AppInsets.med),
+                          Text(
+                            _subheadings[_activeIndex],
+                            textAlign: TextAlign.center,
+                            style: subheadingStyle,
+                          ),
+                        ],
+                      ),
               ),
             ),
           ),
