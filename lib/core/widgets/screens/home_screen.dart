@@ -13,6 +13,7 @@ import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
+import '../../analytics/analytics.dart';
 import '../layouts/home_screen_layout.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -147,6 +148,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onTabTapped(int index) {
+    final tabNames = [
+      "meeting_tab",
+      "inbox_tab",
+      "articles_tab",
+      "rewards_tab",
+    ];
+    KiwiContainer()
+        .resolve<Analytics>()
+        .trackScreen(screenName: tabNames[index]);
     setState(() {
       _currentTab = index;
     });

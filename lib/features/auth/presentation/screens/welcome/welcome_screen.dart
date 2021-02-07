@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/ui/base/logo/logo.dart';
-
+import '../../../../../constants/app_constants.dart';
+import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../../ui/base/logo/logo.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override

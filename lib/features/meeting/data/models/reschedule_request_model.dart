@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:worknetwork/features/meeting/domain/entity/reschedule_request_entity.dart';
+import '../../domain/entity/reschedule_request_entity.dart';
 
 part 'reschedule_request_model.g.dart';
 

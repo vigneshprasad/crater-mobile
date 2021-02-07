@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/features/meeting/domain/entity/reschedule_request_entity.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_bottom_sheet/base_bottom_sheet.dart';
+import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/reschedule_request_entity.dart';
 import '../bloc/meeting_bloc.dart';
 import 'reschedule_slot_picker.dart';
 

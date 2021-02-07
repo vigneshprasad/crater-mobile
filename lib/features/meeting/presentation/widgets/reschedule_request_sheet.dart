@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/core/widgets/base/base_bottom_sheet/base_bottom_sheet.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_bottom_sheet/base_bottom_sheet.dart';
 import '../../../../core/widgets/base/base_date_time_picker/base_date_time_picker.dart.dart';
 import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../utils/app_localizations.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../bloc/meeting_bloc.dart';
 
