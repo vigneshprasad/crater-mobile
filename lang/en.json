@@ -12,6 +12,7 @@
     "auth:forgot_password": "Forgot Password?",
     "auth:forgot_password_desc": "Enter your email address and we’ll send you a link to set a new password.",
     "home_tab:community": "Community",
+    "home_tab:roundTable": "RoundTables",
     "home_tab:meets": "Meets",
     "home_tab:inbox": "Inbox",
     "home_tab:articles": "Articles",
@@ -76,5 +77,6 @@
     "phone_verify:send_otp": "Send OTP",
     "phone_verify:enter_otp": "Enter OTP",
     "verify": "Verify",
-    "got_it": "Got it"
+    "got_it": "Got it",
+    "roundtable_tab:explore": "RoundTables"
 }

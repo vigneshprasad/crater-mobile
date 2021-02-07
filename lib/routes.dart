@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:worknetwork/features/roundtable/presentation/screens/roundtable_screen/roundtable_screen.dart';
 
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -40,7 +41,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: MeetingDetailScreen, path: "/meeting-detail"),
     MaterialRoute(page: PackageDetailScreen, path: "/package-detail"),
     MaterialRoute(page: PackagePurchaseScreen, path: "/package-purchase"),
-    MaterialRoute(page: PointsFaqScreen, path: "/points-faq")
+    MaterialRoute(page: PointsFaqScreen, path: "/points-faq"),
+    MaterialRoute(page: RoundTableScreen, path: "/roundtable/:id")
   ],
 )
 class $Router {}

@@ -28,6 +28,7 @@ import 'features/points/presentation/screens/points_faq_screen.dart';
 import 'features/rewards/domain/entity/package_entity.dart';
 import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
+import 'features/roundtable/presentation/screens/roundtable_screen/roundtable_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
@@ -53,6 +54,8 @@ class Routes {
   static const String packageDetailScreen = '/package-detail';
   static const String packagePurchaseScreen = '/package-purchase';
   static const String pointsFaqScreen = '/points-faq';
+  static const String _roundTableScreen = '/roundtable/:id';
+  static String roundTableScreen({@required dynamic id}) => '/roundtable/$id';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -72,6 +75,7 @@ class Routes {
     packageDetailScreen,
     packagePurchaseScreen,
     pointsFaqScreen,
+    _roundTableScreen,
   };
 }
 
@@ -97,6 +101,7 @@ class Router extends RouterBase {
     RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
+    RouteDef(Routes._roundTableScreen, page: RoundTableScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -239,6 +244,13 @@ class Router extends RouterBase {
     PointsFaqScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => PointsFaqScreen(),
+        settings: data,
+      );
+    },
+    RoundTableScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) =>
+            RoundTableScreen(id: data.pathParams['id'].intValue),
         settings: data,
       );
     },

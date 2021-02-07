@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
 
 import 'core/config_reader/config_reader.dart';
@@ -34,7 +35,11 @@ Future<void> mainCommon(String configPath, String env) async {
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(
-    () => runApp(RootApp()),
+    () => runApp(
+      ProviderScope(
+        child: RootApp(),
+      ),
+    ),
     (error, stackTrace) async {
       await logger.captureException(
         exception: error,

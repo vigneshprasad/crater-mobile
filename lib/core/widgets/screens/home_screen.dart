@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_tab/roundtable_tab.dart';
 
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/article/presentation/bloc/article_bloc.dart';
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentTab = 0;
 
   final List<Widget> _screens = [
+    RoundTableTab(),
     MeetingTab(),
     InboxTab(),
     // CommunityTab(),
@@ -89,8 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final String inboxLabel = translate("home_tab:inbox");
     final String articlesLabel = translate("home_tab:articles");
     final String rewardsLabel = translate("home_tab:rewards");
+    final String roundTablesLabel = translate("home_tab:roundTable");
 
     return [
+      BottomNavigationBarItem(
+        icon: const Icon(WorkNetIcons.community),
+        label: roundTablesLabel,
+      ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.people),
         label: meetsLabel,
@@ -133,8 +140,17 @@ class _HomeScreenState extends State<HomeScreen> {
     //   );
     // }
 
+    // RoundTables FAB
+    if (index == 0) {
+      return FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text("Create a Table"),
+        icon: Icon(Icons.add),
+      );
+    }
+
     // Chat Search FAB
-    if (index == 1) {
+    if (index == 2) {
       return FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(Routes.chatSearchScreen);

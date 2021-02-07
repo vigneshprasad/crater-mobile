@@ -46,7 +46,7 @@ class BaseLargeButton extends MaterialButton {
 
     if (style == ButtonStyle.fill) {
       return SizedBox(
-        width: MediaQuery.of(context).size.width,
+        width: width ?? MediaQuery.of(context).size.width,
         height: buttonHeight,
         child: RawMaterialButton(
           fillColor: buttonThemeData.getFillColor(this),
