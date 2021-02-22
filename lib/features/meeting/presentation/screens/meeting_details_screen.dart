@@ -7,13 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/error/failures.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/widgets/base/base_bottom_sheet_route/base_bottom_sheet_route.dart';
 import '../../../../core/widgets/base/base_large_icon_button/base_large_icon_button.dart';
 import '../../../../routes.gr.dart';

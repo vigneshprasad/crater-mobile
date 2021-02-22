@@ -1,18 +1,22 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/all.dart';
+import 'package:worknetwork/features/roundtable/data/services/rtc_api_service/rtc_api_service.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/category_entity/category_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
+import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
+import '../models/agora_rtc_user_info/agora_rtc_user_info.dart';
 import '../models/roundtable_meta_api_response/roundtable_meta_api_response.dart';
 import '../services/round_table_api_service/roundtable_api_service.dart';
 
 final roundTableRemoteDatasourceProvider =
     Provider<RoundTableRemoteDatasource>((ref) {
-  final RoundTableApiService apiService =
+  final RoundTableApiService roundTableApiService =
       ref.read(roundTableApiServiceProvider);
-  return RoundTableRemoteDatasourceImpl(apiService);
+  final RtcApiService rtcApiService = ref.read(rtcApiServiceProvider);
+  return RoundTableRemoteDatasourceImpl(roundTableApiService, rtcApiService);
 });
 
 abstract class RoundTableRemoteDatasource {
@@ -43,16 +47,25 @@ abstract class RoundTableRemoteDatasource {
   /// Retrieve RoundTable from Remote server by [id]
   /// Throws [ServerException]
   Future<RoundTable> retrieveRoundTableFromRemote(int id);
+
+  /// Retrieve RoundTable RTC Info from Remote server by [tableId]
+  /// Throws [ServerException]
+  Future<RoundtableRtcInfo> getRoundTableRtcInfoFromRemote(int tableId);
+
+  /// Retrieve Agora User RTC Info from Remote server by [uid]
+  /// Throws [ServerException]
+  Future<AgoraRtcUserInfo> getAgoraRtcUserInfoFromRemote(String uid);
 }
 
 class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
-  final RoundTableApiService apiService;
+  final RoundTableApiService roundTableApiService;
+  final RtcApiService rtcApiService;
 
-  RoundTableRemoteDatasourceImpl(this.apiService);
+  RoundTableRemoteDatasourceImpl(this.roundTableApiService, this.rtcApiService);
 
   @override
   Future<List<Category>> getAllRoundTableCategoriesFromRemote() async {
-    final response = await apiService.getAllCategories();
+    final response = await roundTableApiService.getAllCategories();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -65,7 +78,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<Category>> getMyRoundTableCategoriesFromRemote() async {
-    final response = await apiService.getUserTableCategories();
+    final response = await roundTableApiService.getUserTableCategories();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -78,7 +91,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<Category>> getUpcomingRoundTableCategoriesFromRemote() async {
-    final response = await apiService.getUpcomingTableCategories();
+    final response = await roundTableApiService.getUpcomingTableCategories();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -91,7 +104,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<RoundTable>> getRoundTablesFromRemote() async {
-    final response = await apiService.getRoundTables();
+    final response = await roundTableApiService.getRoundTables();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -104,7 +117,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<RoundTable>> getMyRoundTablesFromRemote() async {
-    final response = await apiService.getMyRoundTables();
+    final response = await roundTableApiService.getMyRoundTables();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -118,7 +131,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<RoundTableMetaApiResponse> getRoundTableMetaFromRemote() async {
-    final response = await apiService.getRoundTablesMeta();
+    final response = await roundTableApiService.getRoundTablesMeta();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return RoundTableMetaApiResponse.fromJson(json);
@@ -129,11 +142,37 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<RoundTable> retrieveRoundTableFromRemote(int id) async {
-    final response = await apiService.retrieveRoundTable(id);
+    final response = await roundTableApiService.retrieveRoundTable(id);
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return RoundTable.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<RoundtableRtcInfo> getRoundTableRtcInfoFromRemote(int tableId) async {
+    final body = {
+      "channel_id": tableId,
+    };
+    final response = await rtcApiService.getRtcInfo(body);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return RoundtableRtcInfo.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<AgoraRtcUserInfo> getAgoraRtcUserInfoFromRemote(String uid) async {
+    final response = await rtcApiService.getRtcUserInfo(uid);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return AgoraRtcUserInfo.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

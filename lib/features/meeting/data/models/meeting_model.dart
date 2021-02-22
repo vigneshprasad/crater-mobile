@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entity/meeting_entity.dart';
 import 'meeting_participant_model.dart';
-import 'meeting_rsvp_model.dart';
 
 part 'meeting_model.g.dart';
 

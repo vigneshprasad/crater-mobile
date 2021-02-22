@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
+
 part 'category_entity.freezed.dart';
 part 'category_entity.g.dart';
 

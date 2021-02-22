@@ -10,8 +10,8 @@ part 'roundtable_entity.g.dart';
 abstract class RoundTable with _$RoundTable {
   factory RoundTable({
     int id,
-    Host host,
-    List<Speaker> speakers,
+    RoundTableUser host,
+    List<RoundTableUser> speakers,
     Agenda agenda,
     String description,
     List<MeetingInterestModel> interests,
@@ -29,26 +29,14 @@ abstract class RoundTable with _$RoundTable {
 }
 
 @freezed
-abstract class Speaker with _$Speaker {
-  factory Speaker({
+abstract class RoundTableUser with _$RoundTableUser {
+  factory RoundTableUser({
     String pk,
     String email,
     String name,
     String photo,
-  }) = _Speaker;
+  }) = _RoundTableUser;
 
-  factory Speaker.fromJson(Map<String, dynamic> json) =>
-      _$SpeakerFromJson(json);
-}
-
-@freezed
-abstract class Host with _$Host {
-  factory Host({
-    String pk,
-    String email,
-    String name,
-    String photo,
-  }) = _Host;
-
-  factory Host.fromJson(Map<String, dynamic> json) => _$HostFromJson(json);
+  factory RoundTableUser.fromJson(Map<String, dynamic> json) =>
+      _$RoundTableUserFromJson(json);
 }

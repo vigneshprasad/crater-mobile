@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/roundtable/data/models/roundtable_meta_api_response/roundtable_meta_api_response.dart';
+import 'package:worknetwork/features/roundtable/data/models/agora_rtc_user_info/agora_rtc_user_info.dart';
+import 'package:worknetwork/features/roundtable/domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -13,6 +15,7 @@ import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../domain/repository/roundtable_repository.dart';
 import '../datasources/roundtable_local_datasource.dart';
 import '../datasources/roundtable_remote_datasource.dart';
+import '../models/roundtable_meta_api_response/roundtable_meta_api_response.dart';
 
 final roundtableRepositoryProvider = Provider<RoundTableRepository>((ref) {
   final localDatasource = ref.read(roundtableLocalDatasourceProvider);
@@ -129,6 +132,40 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
       return Right(response);
     } on ServerException catch (error) {
       final message = error.message as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RoundtableRtcInfo>> getRoundTableRtcInfo(
+      int tableId) async {
+    try {
+      final response =
+          await _remoteDatasource.getRoundTableRtcInfoFromRemote(tableId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, AgoraRtcUserInfo>> getAgoraRtcUserInfo(
+      String uid) async {
+    try {
+      final response =
+          await _remoteDatasource.getAgoraRtcUserInfoFromRemote(uid);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {

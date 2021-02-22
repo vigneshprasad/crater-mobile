@@ -1,18 +1,20 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/roundtable/presentation/widgets/editable_text_field/editable_text_field.dart';
 
 import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
-import 'roundtable_screen_state.dart';
+import '../../widgets/editable_text_field/editable_text_field.dart';
+import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
+import '../../widgets/speaker_avatar/speaker_avatar.dart';
+import 'roundtable_screen_controller.dart';
 
 class RoundTableScreen extends HookWidget {
   final int id;
@@ -23,8 +25,8 @@ class RoundTableScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final roundTableState =
-        useProvider(roundTableStateNotifierProvier(id).state);
+    final state = useProvider(getRoundTableNotifier(id).state);
+
     return Scaffold(
       appBar: BaseAppBar(
         actions: [
@@ -34,9 +36,11 @@ class RoundTableScreen extends HookWidget {
           ),
         ],
       ),
-      body: roundTableState.when(
+      body: state.when(
         loading: () => _Loader(),
-        data: (table) => _RoundTableLoaded(table: table),
+        data: (table) => _RoundTableLoaded(
+          table: table,
+        ),
         error: (error, st) => Container(),
       ),
     );
@@ -60,7 +64,7 @@ class _Loader extends StatelessWidget {
   }
 }
 
-class _RoundTableLoaded extends StatelessWidget {
+class _RoundTableLoaded extends HookWidget {
   final RoundTable table;
 
   const _RoundTableLoaded({
@@ -70,6 +74,7 @@ class _RoundTableLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Styles
     final primaryColor = Theme.of(context).primaryColor;
     final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
@@ -82,15 +87,19 @@ class _RoundTableLoaded extends StatelessWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           color: Colors.grey,
         );
-    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          fontSize: 15,
-          color: Colors.grey[600],
-        );
     final pageLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14,
           color: primaryColor,
           fontWeight: FontWeight.w700,
         );
+
+    // Controller
+    final controller = useProvider(roundTableScreenControllerProvider(table));
+    bool isHost = false;
+    if (controller.localAuthUser != null &&
+        controller.localAuthUser.pk == table.host.pk) {
+      isHost = true;
+    }
     return Stack(
       children: [
         SingleChildScrollView(
@@ -106,114 +115,125 @@ class _RoundTableLoaded extends StatelessWidget {
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
                 const SizedBox(height: AppInsets.l),
-                EditableTextField(text: table.description, editable: true),
+                EditableTextField(text: table.description, editable: isHost),
                 const SizedBox(height: AppInsets.xl),
                 Text("Speakers(${table.speakers.length})",
                     style: pageLabelStyle),
                 const SizedBox(height: AppInsets.l),
                 Wrap(
-                  spacing: AppInsets.xl,
-                  children: table.speakers
-                      .map((speaker) => _SpeakerAvatar(speaker: speaker))
+                  spacing: AppInsets.xxl,
+                  children: controller.speakers
+                      .map((member) => SpeakerAvatar(
+                            user: member,
+                            isLive: controller.connectionState ==
+                                RtcConnectionState.connected,
+                          ))
                       .toList(),
                 ),
               ],
             ),
           ),
         ),
-        ..._buildActionButton(context),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 120,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              fit: StackFit.expand,
+              children: _buildActionButton(context, controller),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  List<Widget> _buildActionButton(BuildContext context) {
+  List<Widget> _buildActionButton(
+      BuildContext context, RoundTableScreenController controller) {
+    final bool showConnectionBar = controller.showConnectionBar;
     final List<Widget> items = [];
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     final isSpeaker =
         table.speakers.where((speaker) => speaker.pk == user.pk).isNotEmpty;
-
-    final overlay = Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: 112,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Colors.white,
-              Colors.white.withOpacity(0.0),
-            ],
-          ),
+    final overlay = Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            Colors.white,
+            Colors.white.withOpacity(0.0),
+          ],
         ),
       ),
     );
 
-    if (user.pk == table.host.pk) {
+    if (showConnectionBar) {
       items.add(overlay);
+      items.add(Align(
+        alignment: Alignment.bottomCenter,
+        child: RtcConnectionBar(
+          table: table,
+          controller: controller,
+        ),
+      ));
+    } else {
+      if (user.pk == table.host.pk) {
+        items.add(overlay);
 
-      items.add(
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-            child: BaseLargeButton(
-              width: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () {},
-              child: Text("Go Live"),
+        items.add(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+              child: BaseLargeButton(
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () {
+                  controller.joinRoundTableChannel(user);
+                },
+                child: Text("Go Live"),
+              ),
             ),
           ),
-        ),
-      );
-    } else if (!isSpeaker) {
-      items.add(overlay);
+        );
+      } else if (!isSpeaker) {
+        items.add(overlay);
 
-      items.add(
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-            child: BaseLargeButton(
-              width: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () {},
-              child: Text("Join Meeting"),
+        items.add(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+              child: BaseLargeButton(
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () {},
+                child: Text("Join Table"),
+              ),
             ),
           ),
-        ),
-      );
+        );
+      } else if (isSpeaker) {
+        items.add(overlay);
+
+        items.add(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+              child: BaseLargeButton(
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () {
+                  controller.joinRoundTableChannel(user);
+                },
+                child: Text("Join Live Table"),
+              ),
+            ),
+          ),
+        );
+      }
     }
 
     return items;
-  }
-}
-
-class _SpeakerAvatar extends StatelessWidget {
-  final Speaker speaker;
-
-  const _SpeakerAvatar({
-    Key key,
-    this.speaker,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 32,
-          backgroundImage: NetworkImage(speaker.photo),
-        ),
-        const SizedBox(height: AppInsets.med),
-        SizedBox(
-          width: 72,
-          child: Text(
-            speaker.name,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
   }
 }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../../constants/theme.dart';
+import '../../../../auth/domain/entity/user_entity.dart';
+import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../roundtable_card/roundtable_card.dart';
 import '../roundtable_tab/roundtable_tab.dart';

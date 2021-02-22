@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,15 @@ import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
 import 'utils/simple_bloc_observer.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 Future<void> mainCommon(String configPath, String env) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,6 +33,7 @@ Future<void> mainCommon(String configPath, String env) async {
   // Bloc Logger
   if (env != Environment.prod) {
     Bloc.observer = SimpleBlocObserver();
+    HttpOverrides.global = MyHttpOverrides();
   }
 
   // Setup KiwiContainer (Dependency Injection Contianers)

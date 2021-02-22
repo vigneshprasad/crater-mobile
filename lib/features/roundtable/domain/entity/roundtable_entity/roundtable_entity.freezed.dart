@@ -19,8 +19,8 @@ class _$RoundTableTearOff {
 // ignore: unused_element
   _RoundTable call(
       {int id,
-      Host host,
-      List<Speaker> speakers,
+      RoundTableUser host,
+      List<RoundTableUser> speakers,
       Agenda agenda,
       String description,
       List<MeetingInterestModel> interests,
@@ -61,8 +61,8 @@ const $RoundTable = _$RoundTableTearOff();
 /// @nodoc
 mixin _$RoundTable {
   int get id;
-  Host get host;
-  List<Speaker> get speakers;
+  RoundTableUser get host;
+  List<RoundTableUser> get speakers;
   Agenda get agenda;
   String get description;
   List<MeetingInterestModel> get interests;
@@ -88,8 +88,8 @@ abstract class $RoundTableCopyWith<$Res> {
       _$RoundTableCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      Host host,
-      List<Speaker> speakers,
+      RoundTableUser host,
+      List<RoundTableUser> speakers,
       Agenda agenda,
       String description,
       List<MeetingInterestModel> interests,
@@ -101,7 +101,7 @@ abstract class $RoundTableCopyWith<$Res> {
       bool closed,
       @JsonKey(name: 'closed_at') DateTime closedAt});
 
-  $HostCopyWith<$Res> get host;
+  $RoundTableUserCopyWith<$Res> get host;
   $AgendaCopyWith<$Res> get agenda;
 }
 
@@ -131,9 +131,10 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
-      host: host == freezed ? _value.host : host as Host,
-      speakers:
-          speakers == freezed ? _value.speakers : speakers as List<Speaker>,
+      host: host == freezed ? _value.host : host as RoundTableUser,
+      speakers: speakers == freezed
+          ? _value.speakers
+          : speakers as List<RoundTableUser>,
       agenda: agenda == freezed ? _value.agenda : agenda as Agenda,
       description:
           description == freezed ? _value.description : description as String,
@@ -152,11 +153,11 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
   }
 
   @override
-  $HostCopyWith<$Res> get host {
+  $RoundTableUserCopyWith<$Res> get host {
     if (_value.host == null) {
       return null;
     }
-    return $HostCopyWith<$Res>(_value.host, (value) {
+    return $RoundTableUserCopyWith<$Res>(_value.host, (value) {
       return _then(_value.copyWith(host: value));
     });
   }
@@ -180,8 +181,8 @@ abstract class _$RoundTableCopyWith<$Res> implements $RoundTableCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      Host host,
-      List<Speaker> speakers,
+      RoundTableUser host,
+      List<RoundTableUser> speakers,
       Agenda agenda,
       String description,
       List<MeetingInterestModel> interests,
@@ -194,7 +195,7 @@ abstract class _$RoundTableCopyWith<$Res> implements $RoundTableCopyWith<$Res> {
       @JsonKey(name: 'closed_at') DateTime closedAt});
 
   @override
-  $HostCopyWith<$Res> get host;
+  $RoundTableUserCopyWith<$Res> get host;
   @override
   $AgendaCopyWith<$Res> get agenda;
 }
@@ -227,9 +228,10 @@ class __$RoundTableCopyWithImpl<$Res> extends _$RoundTableCopyWithImpl<$Res>
   }) {
     return _then(_RoundTable(
       id: id == freezed ? _value.id : id as int,
-      host: host == freezed ? _value.host : host as Host,
-      speakers:
-          speakers == freezed ? _value.speakers : speakers as List<Speaker>,
+      host: host == freezed ? _value.host : host as RoundTableUser,
+      speakers: speakers == freezed
+          ? _value.speakers
+          : speakers as List<RoundTableUser>,
       agenda: agenda == freezed ? _value.agenda : agenda as Agenda,
       description:
           description == freezed ? _value.description : description as String,
@@ -273,9 +275,9 @@ class _$_RoundTable implements _RoundTable {
   @override
   final int id;
   @override
-  final Host host;
+  final RoundTableUser host;
   @override
-  final List<Speaker> speakers;
+  final List<RoundTableUser> speakers;
   @override
   final Agenda agenda;
   @override
@@ -373,8 +375,8 @@ class _$_RoundTable implements _RoundTable {
 abstract class _RoundTable implements RoundTable {
   factory _RoundTable(
       {int id,
-      Host host,
-      List<Speaker> speakers,
+      RoundTableUser host,
+      List<RoundTableUser> speakers,
       Agenda agenda,
       String description,
       List<MeetingInterestModel> interests,
@@ -392,9 +394,9 @@ abstract class _RoundTable implements RoundTable {
   @override
   int get id;
   @override
-  Host get host;
+  RoundTableUser get host;
   @override
-  List<Speaker> get speakers;
+  List<RoundTableUser> get speakers;
   @override
   Agenda get agenda;
   @override
@@ -422,17 +424,17 @@ abstract class _RoundTable implements RoundTable {
   _$RoundTableCopyWith<_RoundTable> get copyWith;
 }
 
-Speaker _$SpeakerFromJson(Map<String, dynamic> json) {
-  return _Speaker.fromJson(json);
+RoundTableUser _$RoundTableUserFromJson(Map<String, dynamic> json) {
+  return _RoundTableUser.fromJson(json);
 }
 
 /// @nodoc
-class _$SpeakerTearOff {
-  const _$SpeakerTearOff();
+class _$RoundTableUserTearOff {
+  const _$RoundTableUserTearOff();
 
 // ignore: unused_element
-  _Speaker call({String pk, String email, String name, String photo}) {
-    return _Speaker(
+  _RoundTableUser call({String pk, String email, String name, String photo}) {
+    return _RoundTableUser(
       pk: pk,
       email: email,
       name: name,
@@ -441,17 +443,17 @@ class _$SpeakerTearOff {
   }
 
 // ignore: unused_element
-  Speaker fromJson(Map<String, Object> json) {
-    return Speaker.fromJson(json);
+  RoundTableUser fromJson(Map<String, Object> json) {
+    return RoundTableUser.fromJson(json);
   }
 }
 
 /// @nodoc
 // ignore: unused_element
-const $Speaker = _$SpeakerTearOff();
+const $RoundTableUser = _$RoundTableUserTearOff();
 
 /// @nodoc
-mixin _$Speaker {
+mixin _$RoundTableUser {
   String get pk;
   String get email;
   String get name;
@@ -459,23 +461,25 @@ mixin _$Speaker {
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
-  $SpeakerCopyWith<Speaker> get copyWith;
+  $RoundTableUserCopyWith<RoundTableUser> get copyWith;
 }
 
 /// @nodoc
-abstract class $SpeakerCopyWith<$Res> {
-  factory $SpeakerCopyWith(Speaker value, $Res Function(Speaker) then) =
-      _$SpeakerCopyWithImpl<$Res>;
+abstract class $RoundTableUserCopyWith<$Res> {
+  factory $RoundTableUserCopyWith(
+          RoundTableUser value, $Res Function(RoundTableUser) then) =
+      _$RoundTableUserCopyWithImpl<$Res>;
   $Res call({String pk, String email, String name, String photo});
 }
 
 /// @nodoc
-class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
-  _$SpeakerCopyWithImpl(this._value, this._then);
+class _$RoundTableUserCopyWithImpl<$Res>
+    implements $RoundTableUserCopyWith<$Res> {
+  _$RoundTableUserCopyWithImpl(this._value, this._then);
 
-  final Speaker _value;
+  final RoundTableUser _value;
   // ignore: unused_field
-  final $Res Function(Speaker) _then;
+  final $Res Function(RoundTableUser) _then;
 
   @override
   $Res call({
@@ -494,21 +498,25 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$SpeakerCopyWith<$Res> implements $SpeakerCopyWith<$Res> {
-  factory _$SpeakerCopyWith(_Speaker value, $Res Function(_Speaker) then) =
-      __$SpeakerCopyWithImpl<$Res>;
+abstract class _$RoundTableUserCopyWith<$Res>
+    implements $RoundTableUserCopyWith<$Res> {
+  factory _$RoundTableUserCopyWith(
+          _RoundTableUser value, $Res Function(_RoundTableUser) then) =
+      __$RoundTableUserCopyWithImpl<$Res>;
   @override
   $Res call({String pk, String email, String name, String photo});
 }
 
 /// @nodoc
-class __$SpeakerCopyWithImpl<$Res> extends _$SpeakerCopyWithImpl<$Res>
-    implements _$SpeakerCopyWith<$Res> {
-  __$SpeakerCopyWithImpl(_Speaker _value, $Res Function(_Speaker) _then)
-      : super(_value, (v) => _then(v as _Speaker));
+class __$RoundTableUserCopyWithImpl<$Res>
+    extends _$RoundTableUserCopyWithImpl<$Res>
+    implements _$RoundTableUserCopyWith<$Res> {
+  __$RoundTableUserCopyWithImpl(
+      _RoundTableUser _value, $Res Function(_RoundTableUser) _then)
+      : super(_value, (v) => _then(v as _RoundTableUser));
 
   @override
-  _Speaker get _value => super._value as _Speaker;
+  _RoundTableUser get _value => super._value as _RoundTableUser;
 
   @override
   $Res call({
@@ -517,7 +525,7 @@ class __$SpeakerCopyWithImpl<$Res> extends _$SpeakerCopyWithImpl<$Res>
     Object name = freezed,
     Object photo = freezed,
   }) {
-    return _then(_Speaker(
+    return _then(_RoundTableUser(
       pk: pk == freezed ? _value.pk : pk as String,
       email: email == freezed ? _value.email : email as String,
       name: name == freezed ? _value.name : name as String,
@@ -529,11 +537,11 @@ class __$SpeakerCopyWithImpl<$Res> extends _$SpeakerCopyWithImpl<$Res>
 @JsonSerializable()
 
 /// @nodoc
-class _$_Speaker implements _Speaker {
-  _$_Speaker({this.pk, this.email, this.name, this.photo});
+class _$_RoundTableUser implements _RoundTableUser {
+  _$_RoundTableUser({this.pk, this.email, this.name, this.photo});
 
-  factory _$_Speaker.fromJson(Map<String, dynamic> json) =>
-      _$_$_SpeakerFromJson(json);
+  factory _$_RoundTableUser.fromJson(Map<String, dynamic> json) =>
+      _$_$_RoundTableUserFromJson(json);
 
   @override
   final String pk;
@@ -546,13 +554,13 @@ class _$_Speaker implements _Speaker {
 
   @override
   String toString() {
-    return 'Speaker(pk: $pk, email: $email, name: $name, photo: $photo)';
+    return 'RoundTableUser(pk: $pk, email: $email, name: $name, photo: $photo)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Speaker &&
+        (other is _RoundTableUser &&
             (identical(other.pk, pk) ||
                 const DeepCollectionEquality().equals(other.pk, pk)) &&
             (identical(other.email, email) ||
@@ -573,20 +581,21 @@ class _$_Speaker implements _Speaker {
 
   @JsonKey(ignore: true)
   @override
-  _$SpeakerCopyWith<_Speaker> get copyWith =>
-      __$SpeakerCopyWithImpl<_Speaker>(this, _$identity);
+  _$RoundTableUserCopyWith<_RoundTableUser> get copyWith =>
+      __$RoundTableUserCopyWithImpl<_RoundTableUser>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_SpeakerToJson(this);
+    return _$_$_RoundTableUserToJson(this);
   }
 }
 
-abstract class _Speaker implements Speaker {
-  factory _Speaker({String pk, String email, String name, String photo}) =
-      _$_Speaker;
+abstract class _RoundTableUser implements RoundTableUser {
+  factory _RoundTableUser(
+      {String pk, String email, String name, String photo}) = _$_RoundTableUser;
 
-  factory _Speaker.fromJson(Map<String, dynamic> json) = _$_Speaker.fromJson;
+  factory _RoundTableUser.fromJson(Map<String, dynamic> json) =
+      _$_RoundTableUser.fromJson;
 
   @override
   String get pk;
@@ -598,183 +607,5 @@ abstract class _Speaker implements Speaker {
   String get photo;
   @override
   @JsonKey(ignore: true)
-  _$SpeakerCopyWith<_Speaker> get copyWith;
-}
-
-Host _$HostFromJson(Map<String, dynamic> json) {
-  return _Host.fromJson(json);
-}
-
-/// @nodoc
-class _$HostTearOff {
-  const _$HostTearOff();
-
-// ignore: unused_element
-  _Host call({String pk, String email, String name, String photo}) {
-    return _Host(
-      pk: pk,
-      email: email,
-      name: name,
-      photo: photo,
-    );
-  }
-
-// ignore: unused_element
-  Host fromJson(Map<String, Object> json) {
-    return Host.fromJson(json);
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $Host = _$HostTearOff();
-
-/// @nodoc
-mixin _$Host {
-  String get pk;
-  String get email;
-  String get name;
-  String get photo;
-
-  Map<String, dynamic> toJson();
-  @JsonKey(ignore: true)
-  $HostCopyWith<Host> get copyWith;
-}
-
-/// @nodoc
-abstract class $HostCopyWith<$Res> {
-  factory $HostCopyWith(Host value, $Res Function(Host) then) =
-      _$HostCopyWithImpl<$Res>;
-  $Res call({String pk, String email, String name, String photo});
-}
-
-/// @nodoc
-class _$HostCopyWithImpl<$Res> implements $HostCopyWith<$Res> {
-  _$HostCopyWithImpl(this._value, this._then);
-
-  final Host _value;
-  // ignore: unused_field
-  final $Res Function(Host) _then;
-
-  @override
-  $Res call({
-    Object pk = freezed,
-    Object email = freezed,
-    Object name = freezed,
-    Object photo = freezed,
-  }) {
-    return _then(_value.copyWith(
-      pk: pk == freezed ? _value.pk : pk as String,
-      email: email == freezed ? _value.email : email as String,
-      name: name == freezed ? _value.name : name as String,
-      photo: photo == freezed ? _value.photo : photo as String,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$HostCopyWith<$Res> implements $HostCopyWith<$Res> {
-  factory _$HostCopyWith(_Host value, $Res Function(_Host) then) =
-      __$HostCopyWithImpl<$Res>;
-  @override
-  $Res call({String pk, String email, String name, String photo});
-}
-
-/// @nodoc
-class __$HostCopyWithImpl<$Res> extends _$HostCopyWithImpl<$Res>
-    implements _$HostCopyWith<$Res> {
-  __$HostCopyWithImpl(_Host _value, $Res Function(_Host) _then)
-      : super(_value, (v) => _then(v as _Host));
-
-  @override
-  _Host get _value => super._value as _Host;
-
-  @override
-  $Res call({
-    Object pk = freezed,
-    Object email = freezed,
-    Object name = freezed,
-    Object photo = freezed,
-  }) {
-    return _then(_Host(
-      pk: pk == freezed ? _value.pk : pk as String,
-      email: email == freezed ? _value.email : email as String,
-      name: name == freezed ? _value.name : name as String,
-      photo: photo == freezed ? _value.photo : photo as String,
-    ));
-  }
-}
-
-@JsonSerializable()
-
-/// @nodoc
-class _$_Host implements _Host {
-  _$_Host({this.pk, this.email, this.name, this.photo});
-
-  factory _$_Host.fromJson(Map<String, dynamic> json) =>
-      _$_$_HostFromJson(json);
-
-  @override
-  final String pk;
-  @override
-  final String email;
-  @override
-  final String name;
-  @override
-  final String photo;
-
-  @override
-  String toString() {
-    return 'Host(pk: $pk, email: $email, name: $name, photo: $photo)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _Host &&
-            (identical(other.pk, pk) ||
-                const DeepCollectionEquality().equals(other.pk, pk)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pk) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(photo);
-
-  @JsonKey(ignore: true)
-  @override
-  _$HostCopyWith<_Host> get copyWith =>
-      __$HostCopyWithImpl<_Host>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_HostToJson(this);
-  }
-}
-
-abstract class _Host implements Host {
-  factory _Host({String pk, String email, String name, String photo}) = _$_Host;
-
-  factory _Host.fromJson(Map<String, dynamic> json) = _$_Host.fromJson;
-
-  @override
-  String get pk;
-  @override
-  String get email;
-  @override
-  String get name;
-  @override
-  String get photo;
-  @override
-  @JsonKey(ignore: true)
-  _$HostCopyWith<_Host> get copyWith;
+  _$RoundTableUserCopyWith<_RoundTableUser> get copyWith;
 }

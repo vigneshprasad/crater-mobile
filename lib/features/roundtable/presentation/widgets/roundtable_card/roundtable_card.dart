@@ -40,52 +40,58 @@ class RoundTableCard extends StatelessWidget {
     final dateFormat = DateFormat("EEE, dd MMM");
     final categoryName = table.agenda.category.name;
     final agendaName = table.agenda.name;
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: AppInsets.xl,
-          right: AppInsets.xl,
-          top: 24,
-          bottom: AppInsets.xl,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(dateFormat.format(table.start), style: dateTextStyle),
-            const SizedBox(height: AppInsets.med),
-            Text(categoryName, style: categoryStyle),
-            const SizedBox(height: AppInsets.med),
-            Text(agendaName, style: agendaStyle),
-            const SizedBox(height: AppInsets.med),
-            Text(
-              "${timeFormat.format(table.start)} - ${timeFormat.format(table.end)}",
-              style: dateStyle,
-            ),
-            const SizedBox(height: AppInsets.xxl),
-            Wrap(
-              children: table.interests
-                  .map(
-                    (interest) => _InterestTag(interest: interest),
-                  )
-                  .toList(),
-            ),
-            const Spacer(),
-            _HostDisplay(host: table.host),
-            const SizedBox(height: AppInsets.l),
-            const Divider(),
-            const SizedBox(height: AppInsets.l),
-            Stack(
-              children: [
-                _SpeakersList(speakers: table.speakers),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: _getActionButton(context),
-                ),
-              ],
-            )
-          ],
+    return GestureDetector(
+      onTap: () {
+        ExtendedNavigator.of(context)
+            .push(Routes.roundTableScreen(id: table.id));
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: AppInsets.xl,
+            right: AppInsets.xl,
+            top: 24,
+            bottom: AppInsets.xl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(dateFormat.format(table.start), style: dateTextStyle),
+              const SizedBox(height: AppInsets.med),
+              Text(categoryName, style: categoryStyle),
+              const SizedBox(height: AppInsets.med),
+              Text(agendaName, style: agendaStyle),
+              const SizedBox(height: AppInsets.med),
+              Text(
+                "${timeFormat.format(table.start)} - ${timeFormat.format(table.end)}",
+                style: dateStyle,
+              ),
+              const SizedBox(height: AppInsets.xxl),
+              Wrap(
+                children: table.interests
+                    .map(
+                      (interest) => _InterestTag(interest: interest),
+                    )
+                    .toList(),
+              ),
+              const Spacer(),
+              _HostDisplay(host: table.host),
+              const SizedBox(height: AppInsets.l),
+              const Divider(),
+              const SizedBox(height: AppInsets.l),
+              Stack(
+                children: [
+                  _SpeakersList(speakers: table.speakers),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: _getActionButton(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -123,7 +129,7 @@ class RoundTableCard extends StatelessWidget {
 }
 
 class _SpeakersList extends StatelessWidget {
-  final List<Speaker> speakers;
+  final List<RoundTableUser> speakers;
 
   const _SpeakersList({
     Key key,
@@ -171,7 +177,7 @@ class _SpeakersList extends StatelessWidget {
 }
 
 class _HostDisplay extends StatelessWidget {
-  final Host host;
+  final RoundTableUser host;
 
   const _HostDisplay({
     Key key,

@@ -11,10 +11,11 @@ _$_RoundTable _$_$_RoundTableFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     host: json['host'] == null
         ? null
-        : Host.fromJson(json['host'] as Map<String, dynamic>),
+        : RoundTableUser.fromJson(json['host'] as Map<String, dynamic>),
     speakers: (json['speakers'] as List)
-        ?.map((e) =>
-            e == null ? null : Speaker.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null
+            ? null
+            : RoundTableUser.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     agenda: json['agenda'] == null
         ? null
@@ -55,8 +56,8 @@ Map<String, dynamic> _$_$_RoundTableToJson(_$_RoundTable instance) =>
       'closed_at': instance.closedAt?.toIso8601String(),
     };
 
-_$_Speaker _$_$_SpeakerFromJson(Map<String, dynamic> json) {
-  return _$_Speaker(
+_$_RoundTableUser _$_$_RoundTableUserFromJson(Map<String, dynamic> json) {
+  return _$_RoundTableUser(
     pk: json['pk'] as String,
     email: json['email'] as String,
     name: json['name'] as String,
@@ -64,24 +65,8 @@ _$_Speaker _$_$_SpeakerFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$_$_SpeakerToJson(_$_Speaker instance) =>
+Map<String, dynamic> _$_$_RoundTableUserToJson(_$_RoundTableUser instance) =>
     <String, dynamic>{
-      'pk': instance.pk,
-      'email': instance.email,
-      'name': instance.name,
-      'photo': instance.photo,
-    };
-
-_$_Host _$_$_HostFromJson(Map<String, dynamic> json) {
-  return _$_Host(
-    pk: json['pk'] as String,
-    email: json['email'] as String,
-    name: json['name'] as String,
-    photo: json['photo'] as String,
-  );
-}
-
-Map<String, dynamic> _$_$_HostToJson(_$_Host instance) => <String, dynamic>{
       'pk': instance.pk,
       'email': instance.email,
       'name': instance.name,
