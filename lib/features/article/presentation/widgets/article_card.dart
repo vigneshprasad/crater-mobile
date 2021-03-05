@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -21,7 +22,7 @@ class ArticleCard extends StatelessWidget {
         width: 180,
         child: InkWell(
           onTap: () {
-            _launchUrl(context);
+            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,29 +74,6 @@ class ArticleCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _launchUrl(BuildContext context) async {
-    try {
-      await launch(
-        article.websiteUrl,
-        option: CustomTabsOption(
-          toolbarColor: Theme.of(context).primaryColor,
-          enableDefaultShare: true,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          extraCustomTabs: <String>[
-            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
-            'org.mozilla.firefox',
-            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
-            'com.microsoft.emmx',
-          ],
-        ),
-      );
-    } catch (error) {
-      // An exception is thrown if browser app is not installed on Android device.
-      debugPrint(error.toString());
-    }
   }
 }
 

@@ -18,8 +18,12 @@ class _$CategoryTearOff {
 
 // ignore: unused_element
   _Category call(
-      {String name, String image, @JsonKey(name: 'is_active') bool isActive}) {
+      {int pk,
+      String name,
+      String image,
+      @JsonKey(name: 'is_active') bool isActive}) {
     return _Category(
+      pk: pk,
       name: name,
       image: image,
       isActive: isActive,
@@ -38,6 +42,7 @@ const $Category = _$CategoryTearOff();
 
 /// @nodoc
 mixin _$Category {
+  int get pk;
   String get name;
   String get image;
   @JsonKey(name: 'is_active')
@@ -53,7 +58,10 @@ abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res>;
   $Res call(
-      {String name, String image, @JsonKey(name: 'is_active') bool isActive});
+      {int pk,
+      String name,
+      String image,
+      @JsonKey(name: 'is_active') bool isActive});
 }
 
 /// @nodoc
@@ -66,11 +74,13 @@ class _$CategoryCopyWithImpl<$Res> implements $CategoryCopyWith<$Res> {
 
   @override
   $Res call({
+    Object pk = freezed,
     Object name = freezed,
     Object image = freezed,
     Object isActive = freezed,
   }) {
     return _then(_value.copyWith(
+      pk: pk == freezed ? _value.pk : pk as int,
       name: name == freezed ? _value.name : name as String,
       image: image == freezed ? _value.image : image as String,
       isActive: isActive == freezed ? _value.isActive : isActive as bool,
@@ -84,7 +94,10 @@ abstract class _$CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
       __$CategoryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String name, String image, @JsonKey(name: 'is_active') bool isActive});
+      {int pk,
+      String name,
+      String image,
+      @JsonKey(name: 'is_active') bool isActive});
 }
 
 /// @nodoc
@@ -98,11 +111,13 @@ class __$CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object pk = freezed,
     Object name = freezed,
     Object image = freezed,
     Object isActive = freezed,
   }) {
     return _then(_Category(
+      pk: pk == freezed ? _value.pk : pk as int,
       name: name == freezed ? _value.name : name as String,
       image: image == freezed ? _value.image : image as String,
       isActive: isActive == freezed ? _value.isActive : isActive as bool,
@@ -115,11 +130,16 @@ class __$CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
 /// @nodoc
 class _$_Category implements _Category {
   _$_Category(
-      {this.name, this.image, @JsonKey(name: 'is_active') this.isActive});
+      {this.pk,
+      this.name,
+      this.image,
+      @JsonKey(name: 'is_active') this.isActive});
 
   factory _$_Category.fromJson(Map<String, dynamic> json) =>
       _$_$_CategoryFromJson(json);
 
+  @override
+  final int pk;
   @override
   final String name;
   @override
@@ -130,13 +150,15 @@ class _$_Category implements _Category {
 
   @override
   String toString() {
-    return 'Category(name: $name, image: $image, isActive: $isActive)';
+    return 'Category(pk: $pk, name: $name, image: $image, isActive: $isActive)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Category &&
+            (identical(other.pk, pk) ||
+                const DeepCollectionEquality().equals(other.pk, pk)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.image, image) ||
@@ -149,6 +171,7 @@ class _$_Category implements _Category {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(pk) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(image) ^
       const DeepCollectionEquality().hash(isActive);
@@ -166,12 +189,15 @@ class _$_Category implements _Category {
 
 abstract class _Category implements Category {
   factory _Category(
-      {String name,
+      {int pk,
+      String name,
       String image,
       @JsonKey(name: 'is_active') bool isActive}) = _$_Category;
 
   factory _Category.fromJson(Map<String, dynamic> json) = _$_Category.fromJson;
 
+  @override
+  int get pk;
   @override
   String get name;
   @override

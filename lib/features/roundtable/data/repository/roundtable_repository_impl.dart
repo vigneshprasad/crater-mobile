@@ -4,8 +4,15 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_config_entity.dart';
 import 'package:worknetwork/features/roundtable/data/models/agora_rtc_user_info/agora_rtc_user_info.dart';
+import 'package:worknetwork/features/roundtable/data/models/create_table_meta/create_table_meta.dart';
+import 'package:worknetwork/features/roundtable/domain/entity/agenda_entity/agenda_entity.dart';
+import 'package:worknetwork/features/roundtable/domain/entity/optin_entity/optin_entity.dart';
 import 'package:worknetwork/features/roundtable/domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
+import 'package:worknetwork/features/roundtable/domain/entity/topic_entity/topic_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -162,6 +169,91 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
     try {
       final response =
           await _remoteDatasource.getAgoraRtcUserInfoFromRemote(uid);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Category>>> getAllCategories() async {
+    try {
+      final response = await _remoteDatasource.getAllCategoriesFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Agenda>>> getAgendas(int categoryId) async {
+    try {
+      final response = await _remoteDatasource.getAgendasFromRemote(categoryId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Topic>>> getAllTopics(int parent) async {
+    try {
+      final response = await _remoteDatasource.getAllTopicsFromRemote(parent);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Topic>> getRootTopic(int topicId) async {
+    try {
+      final response = await _remoteDatasource.getRootTopicFromRemote(topicId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Optin>> postGroupOptin(
+    List<MeetingInterest> interests,
+    List<TimeSlot> timeslots,
+    MeetingConfig config,
+    Topic topic,
+  ) async {
+    try {
+      final response = await _remoteDatasource.postGroupOptinToRemote(
+        interests,
+        timeslots,
+        config,
+        topic,
+      );
       return Right(response);
     } on ServerException catch (error) {
       final message =

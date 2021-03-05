@@ -17,22 +17,44 @@ class _$RoundTableApiService extends RoundTableApiService {
   final definitionType = RoundTableApiService;
 
   @override
-  Future<Response<dynamic>> getAllCategories() {
-    final $url = '/groups/category/';
+  Future<Response<dynamic>> getAllTopics(int parent) {
+    final $url = '/groups/topic/';
+    final $params = <String, dynamic>{'parent': parent};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getRootTopic(int id) {
+    final $url = '/groups/topic/$id/root/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAllCategoriesForTables() {
+    final $url = '/groups/topic/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
   Future<Response<dynamic>> getUserTableCategories() {
-    final $url = '/groups/category/my_groups/';
+    final $url = '/groups/topic/my_groups/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
   Future<Response<dynamic>> getUpcomingTableCategories() {
-    final $url = '/groups/category/upcoming/';
+    final $url = '/groups/topic/upcoming/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAllCategories() {
+    final $url = '/groups/category/all/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -62,6 +84,21 @@ class _$RoundTableApiService extends RoundTableApiService {
   Future<Response<dynamic>> getMyRoundTables() {
     final $url = '/groups/groups/my_groups/';
     final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAgendaByCategory(int categoryId) {
+    final $url = '/groups/groups/agendas/$categoryId';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postGroupOptin(Map<String, dynamic> body) {
+    final $url = '/groups/optin/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

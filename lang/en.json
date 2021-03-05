@@ -78,5 +78,6 @@
     "phone_verify:enter_otp": "Enter OTP",
     "verify": "Verify",
     "got_it": "Got it",
-    "roundtable_tab:explore": "RoundTables"
+    "roundtable_tab:explore": "RoundTables",
+    "roundtable_sheet:heading": "What would you like to discuss?"
 }

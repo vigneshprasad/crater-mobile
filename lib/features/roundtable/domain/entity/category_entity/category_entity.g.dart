@@ -8,6 +8,7 @@ part of 'category_entity.dart';
 
 _$_Category _$_$_CategoryFromJson(Map<String, dynamic> json) {
   return _$_Category(
+    pk: json['pk'] as int,
     name: json['name'] as String,
     image: json['image'] as String,
     isActive: json['is_active'] as bool,
@@ -16,6 +17,7 @@ _$_Category _$_$_CategoryFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_CategoryToJson(_$_Category instance) =>
     <String, dynamic>{
+      'pk': instance.pk,
       'name': instance.name,
       'image': instance.image,
       'is_active': instance.isActive,

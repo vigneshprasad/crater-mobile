@@ -22,14 +22,23 @@ abstract class RoundTableApiService extends ChopperService {
     return _$RoundTableApiService(client);
   }
 
-  @Get(path: 'category/')
-  Future<Response> getAllCategories();
+  @Get(path: 'topic/')
+  Future<Response> getAllTopics(@Query() int parent);
 
-  @Get(path: 'category/my_groups/')
+  @Get(path: 'topic/{id}/root/')
+  Future<Response> getRootTopic(@Path() int id);
+
+  @Get(path: 'topic/')
+  Future<Response> getAllCategoriesForTables();
+
+  @Get(path: 'topic/my_groups/')
   Future<Response> getUserTableCategories();
 
-  @Get(path: 'category/upcoming/')
+  @Get(path: 'topic/upcoming/')
   Future<Response> getUpcomingTableCategories();
+
+  @Get(path: 'category/all/')
+  Future<Response> getAllCategories();
 
   @Get(path: 'groups/meta/')
   Future<Response> getRoundTablesMeta();
@@ -42,4 +51,10 @@ abstract class RoundTableApiService extends ChopperService {
 
   @Get(path: 'groups/my_groups/')
   Future<Response> getMyRoundTables();
+
+  @Get(path: 'groups/agendas/{categoryId}')
+  Future<Response> getAgendaByCategory(@Path() int categoryId);
+
+  @Post(path: 'optin/')
+  Future<Response> postGroupOptin(@Body() Map<String, dynamic> body);
 }

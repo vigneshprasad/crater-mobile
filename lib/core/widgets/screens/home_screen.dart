@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +12,12 @@ import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
+import '../../../features/roundtable/presentation/screens/roundtable_categories_sheet/create_roundtable_sheet.dart';
 import '../../../features/roundtable/presentation/widgets/roundtable_tab/roundtable_tab.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../layouts/home_screen_layout.dart';
+import '../../../features/roundtable/domain/entity/topic_entity/topic_entity.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tabIndex;
@@ -143,7 +146,18 @@ class _HomeScreenState extends State<HomeScreen> {
     // RoundTables FAB
     if (index == 0) {
       return FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push<Object>(CreateRoundTableSheet())
+              .then((value) {
+            if (value is Topic && value != null) {
+              ExtendedNavigator.of(context).push(
+                Routes.createTableScreen,
+                arguments: CreateTableScreenArguments(topic: value),
+              );
+            }
+          });
+        },
         label: Text("Create a Table"),
         icon: Icon(Icons.add),
       );
@@ -153,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (index == 2) {
       return FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.chatSearchScreen);
+          ExtendedNavigator.of(context).push(Routes.chatSearchScreen);
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.message),

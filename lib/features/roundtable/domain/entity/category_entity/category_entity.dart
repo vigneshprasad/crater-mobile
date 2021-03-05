@@ -6,6 +6,7 @@ part 'category_entity.g.dart';
 @freezed
 abstract class Category with _$Category {
   factory Category({
+    int pk,
     String name,
     String image,
     @JsonKey(name: 'is_active') bool isActive,
