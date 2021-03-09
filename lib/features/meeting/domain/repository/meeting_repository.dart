@@ -8,7 +8,6 @@ import '../entity/meeting_interest_entity.dart';
 import '../entity/meeting_objective_entity.dart';
 import '../entity/meeting_rsvp_entity.dart';
 import '../entity/meetings_by_date_entity.dart';
-import '../entity/number_of_meetings_entity.dart';
 import '../entity/reschedule_request_entity.dart';
 import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
@@ -18,7 +17,6 @@ abstract class MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
     List<MeetingInterest> interests,
     MeetingConfig config,
-    NumberOfMeetings numberOfMeetings,
     List<MeetingObjective> objectives,
     List<TimeSlot> timeSlots,
   );

@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/meeting/domain/entity/reschedule_request_entity.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/get_reschedule_request_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/post_confirm_reschedule_request_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/usecase/post_rechedule_rsvp_status_usecase.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -18,7 +14,7 @@ import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/meeting_rsvp_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
-import '../../domain/entity/number_of_meetings_entity.dart';
+import '../../domain/entity/reschedule_request_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/usecase/get_meeting_interests_usecase.dart';
@@ -27,8 +23,11 @@ import '../../domain/usecase/get_meeting_preferences_usecase.dart';
 import '../../domain/usecase/get_meetings_by_date_usecase.dart';
 import '../../domain/usecase/get_meetings_config_usecase.dart';
 import '../../domain/usecase/get_past_meeting_preferences_usecase.dart';
+import '../../domain/usecase/get_reschedule_request_usecase.dart';
 import '../../domain/usecase/get_reschedule_time_slots.dart';
+import '../../domain/usecase/post_confirm_reschedule_request_usecase.dart';
 import '../../domain/usecase/post_meeting_preferences_usecase.dart';
+import '../../domain/usecase/post_rechedule_rsvp_status_usecase.dart';
 import '../../domain/usecase/post_rsvp_status_update_usecase.dart';
 import '../../domain/usecase/retrieve_meeting_details_usecase.dart';
 
@@ -165,7 +164,6 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
       config: event.config,
       interests: event.interests,
       objectives: event.objectives,
-      numberOfMeetings: event.numberOfMeetings,
       timeSlots: event.timeSlots,
     ));
 

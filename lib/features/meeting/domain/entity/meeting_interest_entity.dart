@@ -1,11 +1,17 @@
-import 'package:hive/hive.dart';
+import 'package:equatable/equatable.dart';
 
-class MeetingInterest extends HiveObject {
+class MeetingInterest extends Equatable {
   final int pk;
   final String name;
 
-  MeetingInterest({
+  const MeetingInterest({
     this.pk,
     this.name,
   });
+
+  @override
+  List<Object> get props => [
+        pk,
+        name,
+      ];
 }

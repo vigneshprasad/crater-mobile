@@ -1,7 +1,8 @@
-import 'package:worknetwork/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/core/usecase/aysnc_usecase.dart';
-import 'package:worknetwork/features/meeting/domain/repository/meeting_repository.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+import '../repository/meeting_repository.dart';
 
 class UCGetRescheduleTimeSlots
     implements AsyncUseCase<List<List<DateTime>>, NoParams> {

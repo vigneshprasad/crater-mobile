@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_rsvp_model.dart';
 
 import '../../domain/entity/meeting_participant_entity.dart';
+import 'meeting_interest_model.dart';
+import 'meeting_objective_model.dart';
+import 'meeting_rsvp_model.dart';
 
 part 'meeting_participant_model.g.dart';
 
