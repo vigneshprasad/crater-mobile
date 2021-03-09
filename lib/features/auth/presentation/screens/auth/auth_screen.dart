@@ -58,7 +58,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSuccess) {
-          navigatePostAuth(state.user);
+          navigatePostAuth(state.user, profile: state.profile);
         } else if (state is AuthRequestFailure) {
           _handleRequestError(state);
         }

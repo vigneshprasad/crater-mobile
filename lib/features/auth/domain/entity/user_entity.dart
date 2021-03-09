@@ -97,6 +97,10 @@ class User extends HiveObject {
     List<int> objectives,
     String linkedinUrl,
     String intent,
+    // int educationLevel,
+    // int yearsOfExperience,
+    // int companyType,
+    // int sector,
   }) {
     return User(
       token: token ?? this.token,
@@ -124,6 +128,10 @@ class User extends HiveObject {
       objectives: objectives ?? this.objectives,
       linkedinUrl: linkedinUrl ?? this.linkedinUrl,
       intent: intent ?? this.intent,
+      // educationLevel: educationLevel ?? this.educationLevel,
+      // yearsOfExperience: yearsOfExperience ?? this.yearsOfExperience,
+      // companyType: companyType ?? this.companyType,
+      // sector: sector ?? this.sector,
     );
   }
 }

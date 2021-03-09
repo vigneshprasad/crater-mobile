@@ -172,6 +172,10 @@ class UserModel extends User {
     List<int> objectives,
     String linkedinUrl,
     String intent,
+    // int educationLevel,
+    // int yearsOfExperience,
+    // int companyType,
+    // int sector,
   }) {
     return UserModel(
       token: token ?? this.token,
@@ -199,6 +203,10 @@ class UserModel extends User {
       objectives: objectives ?? this.objectives,
       linkedinUrl: linkedinUrl ?? this.linkedinUrl,
       intent: intent ?? this.intent,
+      // educationLevel: educationLevel ?? this.educationLevel,
+      // yearsOfExperience: yearsOfExperience ?? this.yearsOfExperience,
+      // companyType: companyType ?? this.companyType,
+      // sector: sector ?? this.sector
     );
   }
 }

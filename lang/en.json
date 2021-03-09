@@ -76,5 +76,6 @@
     "phone_verify:send_otp": "Send OTP",
     "phone_verify:enter_otp": "Enter OTP",
     "verify": "Verify",
-    "got_it": "Got it"
+    "got_it": "Got it",
+    "thats_accurate": "Thats accurate"
 }

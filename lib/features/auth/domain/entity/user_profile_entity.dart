@@ -26,6 +26,10 @@ class UserProfile extends HiveObject {
   final String tagLine;
   final List<UserTag> tagList;
   final String uuid;
+  final int educationLevel;
+  final int yearsOfExperience;
+  final int companyType;
+  final int sector;
 
   UserProfile({
     this.pk,
@@ -51,5 +55,9 @@ class UserProfile extends HiveObject {
     this.tagLine,
     this.tagList,
     this.uuid,
+    this.educationLevel,
+    this.yearsOfExperience,
+    this.companyType,
+    this.sector,
   });
 }

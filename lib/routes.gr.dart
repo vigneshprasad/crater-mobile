@@ -31,6 +31,7 @@ import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 
@@ -56,6 +57,9 @@ class Routes {
   static const String packageDetailScreen = '/package-detail';
   static const String packagePurchaseScreen = '/package-purchase';
   static const String pointsFaqScreen = '/points-faq';
+  static const String _profileIntroScreen = '/profile-intro/:editMode?';
+  static String profileIntroScreen({dynamic editMode = ''}) =>
+      '/profile-intro/$editMode';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -76,6 +80,7 @@ class Routes {
     packageDetailScreen,
     packagePurchaseScreen,
     pointsFaqScreen,
+    _profileIntroScreen,
   };
 }
 
@@ -102,6 +107,7 @@ class Router extends RouterBase {
     RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
+    RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -256,6 +262,18 @@ class Router extends RouterBase {
     PointsFaqScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => PointsFaqScreen(),
+        settings: data,
+      );
+    },
+    ProfileIntroScreen: (data) {
+      final args = data.getArgs<ProfileIntroScreenArguments>(
+        orElse: () => ProfileIntroScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileIntroScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
+        ),
         settings: data,
       );
     },
@@ -432,4 +450,10 @@ class PackagePurchaseScreenArguments {
   final Key key;
   final Package package;
   PackagePurchaseScreenArguments({this.key, @required this.package});
+}
+
+/// ProfileIntroScreen arguments holder class
+class ProfileIntroScreenArguments {
+  final Key key;
+  ProfileIntroScreenArguments({this.key});
 }
