@@ -17,9 +17,9 @@ _$_RoundTable _$_$_RoundTableFromJson(Map<String, dynamic> json) {
             ? null
             : RoundTableUser.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    agenda: json['agenda'] == null
+    topic: json['topic'] == null
         ? null
-        : Agenda.fromJson(json['agenda'] as Map<String, dynamic>),
+        : Topic.fromJson(json['topic'] as Map<String, dynamic>),
     description: json['description'] as String,
     interests: (json['interests'] as List)
         ?.map((e) => e == null
@@ -44,7 +44,7 @@ Map<String, dynamic> _$_$_RoundTableToJson(_$_RoundTable instance) =>
       'id': instance.id,
       'host': instance.host,
       'speakers': instance.speakers,
-      'agenda': instance.agenda,
+      'topic': instance.topic,
       'description': instance.description,
       'interests': instance.interests,
       'start': instance.start?.toIso8601String(),

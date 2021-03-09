@@ -95,11 +95,6 @@ class _RoundTableLoaded extends HookWidget {
 
     // Controller
     final controller = useProvider(roundTableScreenControllerProvider(table));
-    bool isHost = false;
-    if (controller.localAuthUser != null &&
-        controller.localAuthUser.pk == table.host.pk) {
-      isHost = true;
-    }
     return Stack(
       children: [
         SingleChildScrollView(
@@ -109,13 +104,15 @@ class _RoundTableLoaded extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(table.agenda.category.name, style: categoryStyle),
-                const SizedBox(height: AppInsets.sm),
-                Text(table.agenda.name, style: agendaStyle),
+                if (table.topic.root != null)
+                  Text(table.topic.root.name, style: categoryStyle),
+                if (table.topic.root != null)
+                  const SizedBox(height: AppInsets.sm),
+                Text(table.topic.name, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
                 const SizedBox(height: AppInsets.l),
-                EditableTextField(text: table.description, editable: isHost),
+                EditableTextField(text: table.description),
                 const SizedBox(height: AppInsets.xl),
                 Text("Speakers(${table.speakers.length})",
                     style: pageLabelStyle),
@@ -179,59 +176,23 @@ class _RoundTableLoaded extends HookWidget {
         ),
       ));
     } else {
-      if (user.pk == table.host.pk) {
-        items.add(overlay);
+      items.add(overlay);
 
-        items.add(
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  controller.joinRoundTableChannel(user);
-                },
-                child: Text("Go Live"),
-              ),
+      items.add(
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+            child: BaseLargeButton(
+              width: MediaQuery.of(context).size.width * 0.6,
+              onPressed: () {
+                controller.joinRoundTableChannel(user);
+              },
+              child: Text("Join Table"),
             ),
           ),
-        );
-      } else if (!isSpeaker) {
-        items.add(overlay);
-
-        items.add(
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {},
-                child: Text("Join Table"),
-              ),
-            ),
-          ),
-        );
-      } else if (isSpeaker) {
-        items.add(overlay);
-
-        items.add(
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  controller.joinRoundTableChannel(user);
-                },
-                child: Text("Join Live Table"),
-              ),
-            ),
-          ),
-        );
-      }
+        ),
+      );
     }
 
     return items;

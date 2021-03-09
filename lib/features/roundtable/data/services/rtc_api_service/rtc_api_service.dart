@@ -23,7 +23,4 @@ abstract class RtcApiService extends ChopperService {
 
   @Get(path: "token/")
   Future<Response> getRtcInfo(@Body() Map<String, dynamic> body);
-
-  @Get(path: "user/{uid}")
-  Future<Response> getRtcUserInfo(@Path() String uid);
 }

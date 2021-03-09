@@ -14,6 +14,7 @@ abstract class Topic with _$Topic {
     String description,
     @JsonKey(name: "is_approved") bool approved,
     String creator,
+    Topic root,
   }) = _Topic;
 
   factory Topic.fromJson(Map<String, dynamic> json) => _$TopicFromJson(json);

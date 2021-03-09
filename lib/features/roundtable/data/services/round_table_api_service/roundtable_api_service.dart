@@ -34,14 +34,8 @@ abstract class RoundTableApiService extends ChopperService {
   @Get(path: 'topic/my_groups/')
   Future<Response> getUserTableCategories();
 
-  @Get(path: 'topic/upcoming/')
-  Future<Response> getUpcomingTableCategories();
-
   @Get(path: 'category/all/')
   Future<Response> getAllCategories();
-
-  @Get(path: 'groups/meta/')
-  Future<Response> getRoundTablesMeta();
 
   @Get(path: 'groups/')
   Future<Response> getRoundTables();
@@ -49,8 +43,11 @@ abstract class RoundTableApiService extends ChopperService {
   @Get(path: 'groups/{id}/')
   Future<Response> retrieveRoundTable(@Path() int id);
 
-  @Get(path: 'groups/my_groups/')
+  @Get(path: 'groups/my/')
   Future<Response> getMyRoundTables();
+
+  @Get(path: 'groups/')
+  Future<Response> getAllRoundTables();
 
   @Get(path: 'groups/agendas/{categoryId}')
   Future<Response> getAgendaByCategory(@Path() int categoryId);

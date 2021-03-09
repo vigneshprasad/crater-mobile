@@ -5,18 +5,15 @@ import 'package:intl/intl.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 
 class RoundTableCard extends StatelessWidget {
   final RoundTable table;
-  final User user;
 
   const RoundTableCard({
     Key key,
     @required this.table,
-    @required this.user,
   }) : super(key: key);
 
   @override
@@ -38,8 +35,7 @@ class RoundTableCard extends StatelessWidget {
       color: Colors.grey[600],
     );
     final dateFormat = DateFormat("EEE, dd MMM");
-    final categoryName = table.agenda.category.name;
-    final agendaName = table.agenda.name;
+    final agendaName = table.topic.name;
     return GestureDetector(
       onTap: () {
         ExtendedNavigator.of(context)
@@ -60,7 +56,8 @@ class RoundTableCard extends StatelessWidget {
             children: [
               Text(dateFormat.format(table.start), style: dateTextStyle),
               const SizedBox(height: AppInsets.med),
-              Text(categoryName, style: categoryStyle),
+              if (table.topic.root != null)
+                Text(table.topic.root.name, style: categoryStyle),
               const SizedBox(height: AppInsets.med),
               Text(agendaName, style: agendaStyle),
               const SizedBox(height: AppInsets.med),
@@ -77,17 +74,12 @@ class RoundTableCard extends StatelessWidget {
                     .toList(),
               ),
               const Spacer(),
-              _HostDisplay(host: table.host),
               const SizedBox(height: AppInsets.l),
               const Divider(),
               const SizedBox(height: AppInsets.l),
               Stack(
                 children: [
                   _SpeakersList(speakers: table.speakers),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: _getActionButton(context),
-                  ),
                 ],
               )
             ],
@@ -95,36 +87,6 @@ class RoundTableCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _getActionButton(BuildContext context) {
-    final isSpeaker =
-        table.speakers.where((element) => element.pk == user.pk).isNotEmpty;
-    if (table.host.pk == user.pk) {
-      return FlatButton(
-        onPressed: () {
-          ExtendedNavigator.of(context)
-              .push(Routes.roundTableScreen(id: table.id));
-        },
-        child: Text("Manage Table"),
-      );
-    } else if (isSpeaker) {
-      return FlatButton(
-        onPressed: () {
-          ExtendedNavigator.of(context)
-              .push(Routes.roundTableScreen(id: table.id));
-        },
-        child: Text("View Table"),
-      );
-    } else {
-      return FlatButton(
-        onPressed: () {
-          ExtendedNavigator.of(context)
-              .push(Routes.roundTableScreen(id: table.id));
-        },
-        child: Text("Join Table"),
-      );
-    }
   }
 }
 
@@ -176,45 +138,6 @@ class _SpeakersList extends StatelessWidget {
   }
 }
 
-class _HostDisplay extends StatelessWidget {
-  final RoundTableUser host;
-
-  const _HostDisplay({
-    Key key,
-    @required this.host,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1;
-    return Row(
-      children: [
-        _buildThumbnail(context),
-        const SizedBox(width: AppInsets.med),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Hosted by", style: labelStyle),
-            Text(host.name, style: labelStyle),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildThumbnail(BuildContext context) => CachedNetworkImage(
-        imageUrl: host.photo,
-        imageBuilder: (context, imageProvider) => Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(image: imageProvider),
-          ),
-        ),
-      );
-}
-
 class _InterestTag extends StatelessWidget {
   final MeetingInterestModel interest;
 
@@ -225,15 +148,17 @@ class _InterestTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith();
+    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          color: Colors.white,
+        );
     return Padding(
       padding: const EdgeInsets.only(right: AppInsets.l),
       child: Container(
         padding: const EdgeInsets.symmetric(
             vertical: AppInsets.sm, horizontal: AppInsets.l),
         decoration: BoxDecoration(
+          color: Colors.grey[800],
           borderRadius: BorderRadius.circular(4.0),
-          border: Border.all(color: Colors.grey[700], width: 2),
         ),
         child: Text(
           interest.name,

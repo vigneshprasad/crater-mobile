@@ -5,19 +5,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
-import '../category_list/category_list.dart';
 import '../roundtables_page/roundtables_page.dart';
 import 'roundtable_tab_state.dart';
 
-enum RoundTablePageType { all, user, upcoming }
+enum RoundTablePageType { all, user }
 
 class RoundTableTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final heading =
         AppLocalizations.of(context).translate("roundtable_tab:explore");
-    final roundTableMetaState =
-        useProvider(roundTableMetaStateNotifierProvider.state);
+    final roundTableMetaState = useProvider(roundTableStateProvider.state);
     final _pageController = usePageController();
     final activeTab = useState(0);
     _pageController.addListener(() {
@@ -29,18 +27,23 @@ class RoundTableTab extends HookWidget {
       child: roundTableMetaState.when(
         loading: () => _Loader(),
         data: (meta) {
-          final pageType = [
-            if (meta.user > 0) RoundTablePageType.user,
-            if (meta.upcoming > 0) RoundTablePageType.upcoming,
+          // final pageType = [
+          //   if (meta.user > 0) RoundTablePageType.user,
+          //   if (meta.upcoming > 0) RoundTablePageType.upcoming,
+          //   RoundTablePageType.all,
+          // ];
+
+          final List<RoundTablePageType> pages = [
             RoundTablePageType.all,
+            if (meta.myTables != null) RoundTablePageType.user,
           ];
 
-          final categoriesViews = pageType
-              .map((type) => CategoriesList(
-                    type: type,
-                    key: ValueKey<RoundTablePageType>(type),
-                  ))
-              .toList();
+          // final categoriesViews = pageType
+          //     .map((type) => CategoriesList(
+          //           type: type,
+          //           key: ValueKey<RoundTablePageType>(type),
+          //         ))
+          //     .toList();
 
           return Column(
             children: [
@@ -53,31 +56,37 @@ class RoundTableTab extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _TabHeader(
-                            heading: _getTabHeader(pageType[activeTab.value])),
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 400),
-                          transitionBuilder: (child, animation) {
-                            return FadeTransition(
-                                opacity: animation, child: child);
-                          },
-                          child: categoriesViews[activeTab.value],
-                        ),
+                            heading: _getTabHeader(pages[activeTab.value])),
+                        // AnimatedSwitcher(
+                        //   duration: const Duration(milliseconds: 400),
+                        //   transitionBuilder: (child, animation) {
+                        //     return FadeTransition(
+                        //         opacity: animation, child: child);
+                        //   },
+                        //   child: categoriesViews[activeTab.value],
+                        // ),
                         Expanded(
-                          child: PageView.builder(
+                          child: PageView(
                             scrollDirection: Axis.vertical,
                             controller: _pageController,
-                            itemCount: pageType.length,
-                            itemBuilder: (context, index) =>
-                                RoundTablesPage(type: pageType[index]),
+                            children: [
+                              RoundTablesPage(
+                                  type: pages[0], tables: meta.allTables),
+                              if (meta.myTables != null)
+                                RoundTablesPage(
+                                  type: pages[1],
+                                  tables: meta.myTables.tables,
+                                ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    if (pageType.length > 1)
-                      _PageIndicator(
-                        length: pageType.length,
-                        selected: activeTab.value,
-                      )
+                    // if (pageType.length > 1)
+                    //   _PageIndicator(
+                    //     length: pageType.length,
+                    //     selected: activeTab.value,
+                    //   )
                   ],
                 ),
               ),
@@ -92,11 +101,9 @@ class RoundTableTab extends HookWidget {
   String _getTabHeader(RoundTablePageType type) {
     switch (type) {
       case RoundTablePageType.all:
-        return "Explore RoundTables";
+        return "Explore Tables";
       case RoundTablePageType.user:
         return "My Tables";
-      case RoundTablePageType.upcoming:
-        return "Upcoming Tables";
       default:
         return "";
     }

@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 
 import '../../../../../core/error/failures/failures.dart';
-import '../../../../../routes.gr.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import 'create_roundtable_sheet_state.dart';
@@ -165,7 +164,7 @@ class _SheetContent extends HookWidget {
             _TopicsList(
               onPressedItem: (topic) {
                 _topic.value = topic;
-                _onPressTopic(topic, getTopicsProvider, context);
+                _onPressTopic(_topic.value, context);
               },
             ),
           ],
@@ -174,9 +173,10 @@ class _SheetContent extends HookWidget {
     );
   }
 
-  Future<void> _onPressTopic(
-      Topic topic, GetRootTopicNotifier provider, BuildContext context) async {
-    final response = await provider.getTopicsForParentTopic(topic);
+  Future<void> _onPressTopic(Topic topic, BuildContext context) async {
+    final response = await context
+        .read(getRootTopicsProvider)
+        .getTopicsForParentTopic(topic.id);
 
     response.fold(
       (failure) {
@@ -185,10 +185,6 @@ class _SheetContent extends HookWidget {
       },
       (topics) {
         if (topics.isEmpty) {
-          // ExtendedNavigator.of(context).popAndPush(
-          //   Routes.createTableScreen,
-          //   arguments: CreateTableScreenArguments(topic: topic),
-          // );
           ExtendedNavigator.of(context).pop(topic);
         }
       },

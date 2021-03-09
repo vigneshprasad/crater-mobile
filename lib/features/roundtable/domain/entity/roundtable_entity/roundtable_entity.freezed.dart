@@ -21,7 +21,7 @@ class _$RoundTableTearOff {
       {int id,
       RoundTableUser host,
       List<RoundTableUser> speakers,
-      Agenda agenda,
+      Topic topic,
       String description,
       List<MeetingInterestModel> interests,
       DateTime start,
@@ -35,7 +35,7 @@ class _$RoundTableTearOff {
       id: id,
       host: host,
       speakers: speakers,
-      agenda: agenda,
+      topic: topic,
       description: description,
       interests: interests,
       start: start,
@@ -63,7 +63,7 @@ mixin _$RoundTable {
   int get id;
   RoundTableUser get host;
   List<RoundTableUser> get speakers;
-  Agenda get agenda;
+  Topic get topic;
   String get description;
   List<MeetingInterestModel> get interests;
   DateTime get start;
@@ -90,7 +90,7 @@ abstract class $RoundTableCopyWith<$Res> {
       {int id,
       RoundTableUser host,
       List<RoundTableUser> speakers,
-      Agenda agenda,
+      Topic topic,
       String description,
       List<MeetingInterestModel> interests,
       DateTime start,
@@ -102,7 +102,7 @@ abstract class $RoundTableCopyWith<$Res> {
       @JsonKey(name: 'closed_at') DateTime closedAt});
 
   $RoundTableUserCopyWith<$Res> get host;
-  $AgendaCopyWith<$Res> get agenda;
+  $TopicCopyWith<$Res> get topic;
 }
 
 /// @nodoc
@@ -118,7 +118,7 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
     Object id = freezed,
     Object host = freezed,
     Object speakers = freezed,
-    Object agenda = freezed,
+    Object topic = freezed,
     Object description = freezed,
     Object interests = freezed,
     Object start = freezed,
@@ -135,7 +135,7 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
       speakers: speakers == freezed
           ? _value.speakers
           : speakers as List<RoundTableUser>,
-      agenda: agenda == freezed ? _value.agenda : agenda as Agenda,
+      topic: topic == freezed ? _value.topic : topic as Topic,
       description:
           description == freezed ? _value.description : description as String,
       interests: interests == freezed
@@ -163,12 +163,12 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
   }
 
   @override
-  $AgendaCopyWith<$Res> get agenda {
-    if (_value.agenda == null) {
+  $TopicCopyWith<$Res> get topic {
+    if (_value.topic == null) {
       return null;
     }
-    return $AgendaCopyWith<$Res>(_value.agenda, (value) {
-      return _then(_value.copyWith(agenda: value));
+    return $TopicCopyWith<$Res>(_value.topic, (value) {
+      return _then(_value.copyWith(topic: value));
     });
   }
 }
@@ -183,7 +183,7 @@ abstract class _$RoundTableCopyWith<$Res> implements $RoundTableCopyWith<$Res> {
       {int id,
       RoundTableUser host,
       List<RoundTableUser> speakers,
-      Agenda agenda,
+      Topic topic,
       String description,
       List<MeetingInterestModel> interests,
       DateTime start,
@@ -197,7 +197,7 @@ abstract class _$RoundTableCopyWith<$Res> implements $RoundTableCopyWith<$Res> {
   @override
   $RoundTableUserCopyWith<$Res> get host;
   @override
-  $AgendaCopyWith<$Res> get agenda;
+  $TopicCopyWith<$Res> get topic;
 }
 
 /// @nodoc
@@ -215,7 +215,7 @@ class __$RoundTableCopyWithImpl<$Res> extends _$RoundTableCopyWithImpl<$Res>
     Object id = freezed,
     Object host = freezed,
     Object speakers = freezed,
-    Object agenda = freezed,
+    Object topic = freezed,
     Object description = freezed,
     Object interests = freezed,
     Object start = freezed,
@@ -232,7 +232,7 @@ class __$RoundTableCopyWithImpl<$Res> extends _$RoundTableCopyWithImpl<$Res>
       speakers: speakers == freezed
           ? _value.speakers
           : speakers as List<RoundTableUser>,
-      agenda: agenda == freezed ? _value.agenda : agenda as Agenda,
+      topic: topic == freezed ? _value.topic : topic as Topic,
       description:
           description == freezed ? _value.description : description as String,
       interests: interests == freezed
@@ -258,7 +258,7 @@ class _$_RoundTable implements _RoundTable {
       {this.id,
       this.host,
       this.speakers,
-      this.agenda,
+      this.topic,
       this.description,
       this.interests,
       this.start,
@@ -279,7 +279,7 @@ class _$_RoundTable implements _RoundTable {
   @override
   final List<RoundTableUser> speakers;
   @override
-  final Agenda agenda;
+  final Topic topic;
   @override
   final String description;
   @override
@@ -303,7 +303,7 @@ class _$_RoundTable implements _RoundTable {
 
   @override
   String toString() {
-    return 'RoundTable(id: $id, host: $host, speakers: $speakers, agenda: $agenda, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt)';
+    return 'RoundTable(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt)';
   }
 
   @override
@@ -317,8 +317,8 @@ class _$_RoundTable implements _RoundTable {
             (identical(other.speakers, speakers) ||
                 const DeepCollectionEquality()
                     .equals(other.speakers, speakers)) &&
-            (identical(other.agenda, agenda) ||
-                const DeepCollectionEquality().equals(other.agenda, agenda)) &&
+            (identical(other.topic, topic) ||
+                const DeepCollectionEquality().equals(other.topic, topic)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
@@ -350,7 +350,7 @@ class _$_RoundTable implements _RoundTable {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(host) ^
       const DeepCollectionEquality().hash(speakers) ^
-      const DeepCollectionEquality().hash(agenda) ^
+      const DeepCollectionEquality().hash(topic) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(interests) ^
       const DeepCollectionEquality().hash(start) ^
@@ -377,7 +377,7 @@ abstract class _RoundTable implements RoundTable {
       {int id,
       RoundTableUser host,
       List<RoundTableUser> speakers,
-      Agenda agenda,
+      Topic topic,
       String description,
       List<MeetingInterestModel> interests,
       DateTime start,
@@ -398,7 +398,7 @@ abstract class _RoundTable implements RoundTable {
   @override
   List<RoundTableUser> get speakers;
   @override
-  Agenda get agenda;
+  Topic get topic;
   @override
   String get description;
   @override

@@ -100,8 +100,8 @@ class CreateTableScreen extends HookWidget {
                         slots: meta.config.availableTimeSlots,
                         onChange: (slots) => _timeslots.value = slots,
                         validator: (value) {
-                          if (value.length < 3) {
-                            return "Please select atleast 3 slots.";
+                          if (value.length < 2) {
+                            return "Please select atleast 2 slots.";
                           }
                           return null;
                         },

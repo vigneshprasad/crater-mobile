@@ -34,9 +34,6 @@ class CategoryNotifier extends StateNotifier<ApiResult<List<Category>>> {
       case RoundTablePageType.user:
         responseOrError = await _repository.getMyRoundTableCategories();
         break;
-      case RoundTablePageType.upcoming:
-        responseOrError = await _repository.getUpcomingRoundTableCategories();
-        break;
     }
 
     state = responseOrError.fold(

@@ -46,22 +46,8 @@ class _$RoundTableApiService extends RoundTableApiService {
   }
 
   @override
-  Future<Response<dynamic>> getUpcomingTableCategories() {
-    final $url = '/groups/topic/upcoming/';
-    final $request = Request('GET', $url, client.baseUrl);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
   Future<Response<dynamic>> getAllCategories() {
     final $url = '/groups/category/all/';
-    final $request = Request('GET', $url, client.baseUrl);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> getRoundTablesMeta() {
-    final $url = '/groups/groups/meta/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -82,7 +68,14 @@ class _$RoundTableApiService extends RoundTableApiService {
 
   @override
   Future<Response<dynamic>> getMyRoundTables() {
-    final $url = '/groups/groups/my_groups/';
+    final $url = '/groups/groups/my/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAllRoundTables() {
+    final $url = '/groups/groups/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }

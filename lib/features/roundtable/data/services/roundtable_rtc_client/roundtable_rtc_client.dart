@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/config_reader/config_reader.dart';
-import '../../../../auth/domain/entity/user_entity.dart';
 
 final roundTableRtcClientProvider = Provider((_) => RoundTableRtcClient());
 

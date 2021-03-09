@@ -23,11 +23,4 @@ class _$RtcApiService extends RtcApiService {
     final $request = Request('GET', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
-
-  @override
-  Future<Response<dynamic>> getRtcUserInfo(String uid) {
-    final $url = '/integrations/agora/user/$uid';
-    final $request = Request('GET', $url, client.baseUrl);
-    return client.send<dynamic, dynamic>($request);
-  }
 }

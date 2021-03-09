@@ -25,7 +25,8 @@ class _$TopicTearOff {
       int parent,
       String description,
       @JsonKey(name: 'is_approved') bool approved,
-      String creator}) {
+      String creator,
+      Topic root}) {
     return _Topic(
       id: id,
       name: name,
@@ -35,6 +36,7 @@ class _$TopicTearOff {
       description: description,
       approved: approved,
       creator: creator,
+      root: root,
     );
   }
 
@@ -60,6 +62,7 @@ mixin _$Topic {
   @JsonKey(name: 'is_approved')
   bool get approved;
   String get creator;
+  Topic get root;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -78,7 +81,10 @@ abstract class $TopicCopyWith<$Res> {
       int parent,
       String description,
       @JsonKey(name: 'is_approved') bool approved,
-      String creator});
+      String creator,
+      Topic root});
+
+  $TopicCopyWith<$Res> get root;
 }
 
 /// @nodoc
@@ -99,6 +105,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
     Object description = freezed,
     Object approved = freezed,
     Object creator = freezed,
+    Object root = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -110,7 +117,18 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
           description == freezed ? _value.description : description as String,
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
+      root: root == freezed ? _value.root : root as Topic,
     ));
+  }
+
+  @override
+  $TopicCopyWith<$Res> get root {
+    if (_value.root == null) {
+      return null;
+    }
+    return $TopicCopyWith<$Res>(_value.root, (value) {
+      return _then(_value.copyWith(root: value));
+    });
   }
 }
 
@@ -127,7 +145,11 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
       int parent,
       String description,
       @JsonKey(name: 'is_approved') bool approved,
-      String creator});
+      String creator,
+      Topic root});
+
+  @override
+  $TopicCopyWith<$Res> get root;
 }
 
 /// @nodoc
@@ -149,6 +171,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
     Object description = freezed,
     Object approved = freezed,
     Object creator = freezed,
+    Object root = freezed,
   }) {
     return _then(_Topic(
       id: id == freezed ? _value.id : id as int,
@@ -160,6 +183,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
           description == freezed ? _value.description : description as String,
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
+      root: root == freezed ? _value.root : root as Topic,
     ));
   }
 }
@@ -176,7 +200,8 @@ class _$_Topic implements _Topic {
       this.parent,
       this.description,
       @JsonKey(name: 'is_approved') this.approved,
-      this.creator});
+      this.creator,
+      this.root});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
       _$_$_TopicFromJson(json);
@@ -199,10 +224,12 @@ class _$_Topic implements _Topic {
   final bool approved;
   @override
   final String creator;
+  @override
+  final Topic root;
 
   @override
   String toString() {
-    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, approved: $approved, creator: $creator)';
+    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, approved: $approved, creator: $creator, root: $root)';
   }
 
   @override
@@ -226,7 +253,10 @@ class _$_Topic implements _Topic {
                 const DeepCollectionEquality()
                     .equals(other.approved, approved)) &&
             (identical(other.creator, creator) ||
-                const DeepCollectionEquality().equals(other.creator, creator)));
+                const DeepCollectionEquality()
+                    .equals(other.creator, creator)) &&
+            (identical(other.root, root) ||
+                const DeepCollectionEquality().equals(other.root, root)));
   }
 
   @override
@@ -239,7 +269,8 @@ class _$_Topic implements _Topic {
       const DeepCollectionEquality().hash(parent) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(approved) ^
-      const DeepCollectionEquality().hash(creator);
+      const DeepCollectionEquality().hash(creator) ^
+      const DeepCollectionEquality().hash(root);
 
   @JsonKey(ignore: true)
   @override
@@ -261,7 +292,8 @@ abstract class _Topic implements Topic {
       int parent,
       String description,
       @JsonKey(name: 'is_approved') bool approved,
-      String creator}) = _$_Topic;
+      String creator,
+      Topic root}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
 
@@ -283,6 +315,8 @@ abstract class _Topic implements Topic {
   bool get approved;
   @override
   String get creator;
+  @override
+  Topic get root;
   @override
   @JsonKey(ignore: true)
   _$TopicCopyWith<_Topic> get copyWith;

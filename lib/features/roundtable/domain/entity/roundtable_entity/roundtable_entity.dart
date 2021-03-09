@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../agenda_entity/agenda_entity.dart';
+import '../topic_entity/topic_entity.dart';
 
 part 'roundtable_entity.freezed.dart';
 part 'roundtable_entity.g.dart';
@@ -12,7 +13,7 @@ abstract class RoundTable with _$RoundTable {
     int id,
     RoundTableUser host,
     List<RoundTableUser> speakers,
-    Agenda agenda,
+    Topic topic,
     String description,
     List<MeetingInterestModel> interests,
     DateTime start,

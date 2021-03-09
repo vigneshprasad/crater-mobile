@@ -97,12 +97,14 @@ class RoundTableScreenController extends ChangeNotifier {
 
   List<RtcUser> intializeSpeakers(RoundTable table) {
     List<RtcUser> initial = [];
-    initial.add(RtcUser(
-      userInfo: table.host,
-      pk: table.host.pk,
-      online: false,
-      muted: false,
-    ));
+    if (table.host != null) {
+      initial.add(RtcUser(
+        userInfo: table.host,
+        pk: table.host.pk,
+        online: false,
+        muted: false,
+      ));
+    }
 
     initial.addAll(table.speakers.map(
       (speaker) => RtcUser(
@@ -139,7 +141,7 @@ class RoundTableScreenController extends ChangeNotifier {
     await _rtcClient.initEngine();
     _setRtcEventHandlers(localUser);
     await _rtcClient.joinRoundTableChannel(
-        info.channelName, info.token, info.rtcUid);
+        info.channelName, info.token, localUser.pk);
   }
 
   Future<void> leaveRoundTableChannel() async {
@@ -254,18 +256,10 @@ class RoundTableScreenController extends ChangeNotifier {
       final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
       final rtcUid = info.userAccount;
       if (rtcUid != null) {
-        final responseOrError = await _repository.getAgoraRtcUserInfo(rtcUid);
-        responseOrError.fold(
-          (failure) => Fluttertoast.showToast(msg: failure.message),
-          (info) {
-            final index =
-                _speakers.indexWhere((element) => element.pk == info.userPk);
-            if (index > -1) {
-              _speakers[index] =
-                  _speakers[index].copyWith(volume: speaker.volume);
-            }
-          },
-        );
+        final index = _speakers.indexWhere((element) => element.pk == rtcUid);
+        if (index > -1) {
+          _speakers[index] = _speakers[index].copyWith(volume: speaker.volume);
+        }
       }
     }
 
@@ -289,17 +283,10 @@ class RoundTableScreenController extends ChangeNotifier {
         final info = await _rtcClient.engine.getUserInfoByUid(uid);
         final rtcUid = info.userAccount;
         if (rtcUid != null) {
-          final responseOrError = await _repository.getAgoraRtcUserInfo(rtcUid);
-          responseOrError.fold(
-            (failure) => Fluttertoast.showToast(msg: failure.message),
-            (info) {
-              final index =
-                  _speakers.indexWhere((element) => element.pk == info.userPk);
-              if (index > -1) {
-                _speakers[index] = _speakers[index].copyWith(muted: muted);
-              }
-            },
-          );
+          final index = _speakers.indexWhere((element) => element.pk == rtcUid);
+          if (index > -1) {
+            _speakers[index] = _speakers[index].copyWith(muted: muted);
+          }
         }
       }
     }
@@ -310,14 +297,8 @@ class RoundTableScreenController extends ChangeNotifier {
     final info = await _rtcClient.engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
-      final responseOrError = await _repository.getAgoraRtcUserInfo(rtcUid);
-      responseOrError.fold(
-        (failure) => Fluttertoast.showToast(msg: failure.message),
-        (info) {
-          _toggleSpeakerOnlineState(info.userPk, true);
-          notifyListeners();
-        },
-      );
+      _toggleSpeakerOnlineState(rtcUid, true);
+      notifyListeners();
     }
   }
 
@@ -325,14 +306,8 @@ class RoundTableScreenController extends ChangeNotifier {
     final info = await _rtcClient.engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
-      final responseOrError = await _repository.getAgoraRtcUserInfo(rtcUid);
-      responseOrError.fold(
-        (failure) => Fluttertoast.showToast(msg: failure.message),
-        (info) {
-          _toggleSpeakerOnlineState(info.userPk, true);
-          notifyListeners();
-        },
-      );
+      _toggleSpeakerOnlineState(rtcUid, true);
+      notifyListeners();
     }
   }
 
@@ -340,14 +315,8 @@ class RoundTableScreenController extends ChangeNotifier {
     final info = await _rtcClient.engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
-      final responseOrError = await _repository.getAgoraRtcUserInfo(rtcUid);
-      responseOrError.fold(
-        (failure) => Fluttertoast.showToast(msg: failure.message),
-        (info) {
-          _toggleSpeakerOnlineState(info.userPk, false);
-          notifyListeners();
-        },
-      );
+      _toggleSpeakerOnlineState(rtcUid, false);
+      notifyListeners();
     }
   }
 

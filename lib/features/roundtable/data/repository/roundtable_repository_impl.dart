@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/meeting/domain/entity/time_slot_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_config_entity.dart';
-import 'package:worknetwork/features/roundtable/data/models/agora_rtc_user_info/agora_rtc_user_info.dart';
-import 'package:worknetwork/features/roundtable/data/models/create_table_meta/create_table_meta.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/agenda_entity/agenda_entity.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/optin_entity/optin_entity.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/user_meeting_preference_entity.dart';
+import '../../../meeting/domain/entity/time_slot_entity.dart';
+import '../../../meeting/domain/entity/meeting_interest_entity.dart';
+import '../../../meeting/domain/entity/meeting_config_entity.dart';
+import '../models/agora_rtc_user_info/agora_rtc_user_info.dart';
+import '../../domain/entity/agenda_entity/agenda_entity.dart';
+import '../../domain/entity/optin_entity/optin_entity.dart';
+import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
+import '../../domain/entity/topic_entity/topic_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -74,22 +74,6 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   }
 
   @override
-  Future<Either<Failure, List<Category>>>
-      getUpcomingRoundTableCategories() async {
-    try {
-      final response =
-          await _remoteDatasource.getUpcomingRoundTableCategoriesFromRemote();
-      return Right(response);
-    } on ServerException catch (error) {
-      final message = error.message as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, List<RoundTable>>> getAllRoundTables() async {
     try {
       final response = await _remoteDatasource.getRoundTablesFromRemote();
@@ -118,10 +102,9 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   }
 
   @override
-  Future<Either<Failure, RoundTableMetaApiResponse>>
-      getRoundTableMetaInfo() async {
+  Future<Either<Failure, List<Optin>>> getAllMyOptins() async {
     try {
-      final response = await _remoteDatasource.getRoundTableMetaFromRemote();
+      final response = await _remoteDatasource.getAllUserOptinsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       final message = error.message as Map<String, dynamic>;
@@ -152,23 +135,6 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
     try {
       final response =
           await _remoteDatasource.getRoundTableRtcInfoFromRemote(tableId);
-      return Right(response);
-    } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, AgoraRtcUserInfo>> getAgoraRtcUserInfo(
-      String uid) async {
-    try {
-      final response =
-          await _remoteDatasource.getAgoraRtcUserInfoFromRemote(uid);
       return Right(response);
     } on ServerException catch (error) {
       final message =

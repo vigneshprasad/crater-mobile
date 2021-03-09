@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/all.dart';
 import '../../../../../constants/theme.dart';
 import '../../../domain/entity/category_entity/category_entity.dart';
 import '../roundtable_tab/roundtable_tab.dart';
-import '../roundtables_page/roundtables_page_state.dart';
 import 'category_list_state.dart';
 
 const _kHeightCategoryList = 72.00;
@@ -24,8 +23,6 @@ class CategoriesList extends HookWidget {
     final ValueNotifier<Category> selected = useState();
     final CategoryNotifier categoryNotifier =
         useProvider(categoriesStateProvider(type));
-    final RoundTablesNotifier roundTablesNotifier =
-        useProvider(roundTablesStateNotifier(type));
     useEffect(() {
       categoryNotifier.getRoundTableCategories(type);
       return;
@@ -49,10 +46,10 @@ class CategoriesList extends HookWidget {
               onPressed: (val) {
                 if (selected.value == val) {
                   selected.value = null;
-                  roundTablesNotifier.getRoundTables(type);
+                  // roundTablesNotifier.getRoundTables(type);
                 } else {
                   selected.value = val;
-                  roundTablesNotifier.filterRoundTables(val, type);
+                  // roundTablesNotifier.filterRoundTables(val, type);
                 }
               },
             ),

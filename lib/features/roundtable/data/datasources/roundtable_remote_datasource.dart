@@ -14,8 +14,6 @@ import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
 import '../../domain/entity/topic_entity/topic_entity.dart';
-import '../models/agora_rtc_user_info/agora_rtc_user_info.dart';
-import '../models/roundtable_meta_api_response/roundtable_meta_api_response.dart';
 import '../services/round_table_api_service/roundtable_api_service.dart';
 import '../services/rtc_api_service/rtc_api_service.dart';
 
@@ -54,10 +52,6 @@ abstract class RoundTableRemoteDatasource {
   /// Throws [ServerException]
   Future<List<Category>> getMyRoundTableCategoriesFromRemote();
 
-  /// Get List of Categories of User's Upcoming RoundTable from Remote server
-  /// Throws [ServerException]
-  Future<List<Category>> getUpcomingRoundTableCategoriesFromRemote();
-
   /// Get List of RoundTables from Remote server
   /// Throws [ServerException]
   Future<List<RoundTable>> getRoundTablesFromRemote();
@@ -66,10 +60,6 @@ abstract class RoundTableRemoteDatasource {
   /// Throws [ServerException]
   Future<List<RoundTable>> getMyRoundTablesFromRemote();
 
-  /// Get Meta Info of RoundTables from Remote server
-  /// Throws [ServerException]
-  Future<RoundTableMetaApiResponse> getRoundTableMetaFromRemote();
-
   /// Retrieve RoundTable from Remote server by [id]
   /// Throws [ServerException]
   Future<RoundTable> retrieveRoundTableFromRemote(int id);
@@ -77,10 +67,6 @@ abstract class RoundTableRemoteDatasource {
   /// Retrieve RoundTable RTC Info from Remote server by [tableId]
   /// Throws [ServerException]
   Future<RoundtableRtcInfo> getRoundTableRtcInfoFromRemote(int tableId);
-
-  /// Retrieve Agora User RTC Info from Remote server by [uid]
-  /// Throws [ServerException]
-  Future<AgoraRtcUserInfo> getAgoraRtcUserInfoFromRemote(String uid);
 
   /// Retrieve List of Agendas by [categoryId]
   /// Throws [ServerException]
@@ -94,6 +80,10 @@ abstract class RoundTableRemoteDatasource {
     MeetingConfig config,
     Topic topic,
   );
+
+  /// Get All User Optins from Remote Server
+  /// Throws [ServerException]
+  Future<List<Optin>> getAllUserOptinsFromRemote();
 }
 
 class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
@@ -149,19 +139,6 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
   }
 
   @override
-  Future<List<Category>> getUpcomingRoundTableCategoriesFromRemote() async {
-    final response = await roundTableApiService.getUpcomingTableCategories();
-    if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.bodyString) as Iterable;
-      return jsonList
-          .map((table) => Category.fromJson(table as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
   Future<List<RoundTable>> getRoundTablesFromRemote() async {
     final response = await roundTableApiService.getRoundTables();
     if (response.statusCode == 200) {
@@ -189,17 +166,6 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
   }
 
   @override
-  Future<RoundTableMetaApiResponse> getRoundTableMetaFromRemote() async {
-    final response = await roundTableApiService.getRoundTablesMeta();
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return RoundTableMetaApiResponse.fromJson(json);
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
   Future<RoundTable> retrieveRoundTableFromRemote(int id) async {
     final response = await roundTableApiService.retrieveRoundTable(id);
 
@@ -221,17 +187,6 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return RoundtableRtcInfo.fromJson(json);
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<AgoraRtcUserInfo> getAgoraRtcUserInfoFromRemote(String uid) async {
-    final response = await rtcApiService.getRtcUserInfo(uid);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return AgoraRtcUserInfo.fromJson(json);
     } else {
       throw ServerException(response.error);
     }
@@ -296,5 +251,17 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
     } else {
       throw ServerException(response.error);
     }
+  }
+
+  @override
+  Future<List<Optin>> getAllUserOptinsFromRemote() async {
+    final response = await meetsApiService.getMyMeetingPrefrences();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Optin.fromJson(json as Map<String, dynamic>))
+          .toList();
+    }
+    throw UnimplementedError();
   }
 }
