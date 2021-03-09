@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="25" height="62" viewBox="0 0 25 62"><g transform="translate(-37.5 -19)"><path d="M62.5,29V19h-10v8.586L46.086,34H37.5V44h10V35.414L53.914,29H56.5V71h-4V81h10V71h-4V29Zm-2,44v6h-6V73h6Zm-15-31h-6V36h6Zm9-15V21h6v6h-6Z" fill="rgba(211,89,108,0.66)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="62" viewBox="0 0 25 62">
+  <g id="logo" transform="translate(-37.5 -19)">
+    <path id="Path_153" data-name="Path 153" d="M62.5,29V19h-10v8.586L46.086,34H37.5V44h10V35.414L53.914,29H56.5V71h-4V81h10V71h-4V29Zm-2,44v6h-6V73Zm-15-31h-6V36h6Zm9-15V21h6v6Z" fill="#245da4"/>
+  </g>
+</svg>

@@ -185,8 +185,8 @@ class AppDrawer extends StatelessWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context)
-        .pushAndRemoveUntil(Routes.authScreen, (route) => false);
+    ExtendedNavigator.of(context).pushAndRemoveUntil(
+        Routes.authScreen(state: "signin"), (route) => false);
   }
 
   Future<void> _openAccountsPage(BuildContext context) async {

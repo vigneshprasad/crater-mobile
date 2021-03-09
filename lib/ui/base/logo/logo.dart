@@ -6,8 +6,13 @@ import '../../../constants/theme.dart';
 class Logo extends StatelessWidget {
   static const logoAsset = 'assets/svg/logo.svg';
   final bool withText;
+  final bool withSubtext;
 
-  const Logo({Key key, this.withText = true}) : super(key: key);
+  const Logo({
+    Key key,
+    this.withText = true,
+    this.withSubtext = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +52,16 @@ class Logo extends StatelessWidget {
         'WorkNetwork',
         style: TextStyle(
           fontSize: 28,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
         ),
       ),
-      const Text(
-        'Do more together',
-        style: TextStyle(
-          fontSize: 14,
-        ),
-      )
+      if (withSubtext)
+        const Text(
+          'Do more together',
+          style: TextStyle(
+            fontSize: 14,
+          ),
+        )
     ];
   }
 }

@@ -5,6 +5,7 @@ import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
+import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
@@ -26,10 +27,11 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
   routes: <AutoRoute>[
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
+    MaterialRoute(page: WelcomeScreen, path: "/welcome"),
     MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
-    MaterialRoute(page: AuthScreen, path: "/auth"),
+    MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),

@@ -42,14 +42,12 @@ class GetPastMeetingStarted extends MeetingEvent {
 class PostMeetingPreferencesStarted extends MeetingEvent {
   final List<MeetingInterest> interests;
   final MeetingConfig config;
-  final NumberOfMeetings numberOfMeetings;
   final List<MeetingObjective> objectives;
   final List<TimeSlot> timeSlots;
 
   const PostMeetingPreferencesStarted({
     @required this.interests,
     @required this.config,
-    @required this.numberOfMeetings,
     @required this.objectives,
     @required this.timeSlots,
   });
@@ -58,7 +56,6 @@ class PostMeetingPreferencesStarted extends MeetingEvent {
   List<Object> get props => [
         interests,
         config,
-        numberOfMeetings,
         objectives,
         timeSlots,
       ];

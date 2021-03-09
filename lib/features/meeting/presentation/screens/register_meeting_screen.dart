@@ -5,15 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_multi_select_dropdown/base_multi_select_dropdown.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../../ui/base/base_dropdown/base_dropdown.dart';
 import '../../../../ui/base/base_form_field/base_form_field.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../signup/presentation/widgets/multiselect_dropdown.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
@@ -51,7 +50,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   ];
   List<MeetingObjective> lookingFor;
   List<MeetingObjective> lookingTo;
-  NumberOfMeetings _numMeetings;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingObjective> _selectedLookingFor = [];
   List<MeetingObjective> _selectedLookingTo = [];
@@ -96,8 +94,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   }
                 });
                 setState(() {
-                  _numMeetings = _monthlyMeetingOptions.firstWhere((element) =>
-                      element.value == pastPrefs.numberOfMeetingsPerMonth);
                   _selectedLookingFor = pastPrefs.objectives
                       .where(
                           (element) => element.type == ObjectiveType.lookingFor)
@@ -146,7 +142,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         },
         splashColor: Theme.of(context).splashColor,
         highlightColor: Theme.of(context).highlightColor,
-        child: Container(
+        child: SizedBox(
           height: 48,
           width: double.infinity,
           child: Center(
@@ -210,35 +206,20 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         child: Column(
           children: [
             BaseFormField(
-              label: "Number of meetings this month?",
-              child: BaseDropdown<NumberOfMeetings>(
-                listItems: _monthlyMeetingOptions,
-                labelGetter: (item) => item.label,
-                placeholder: "Indicate your preference",
-                value: _numMeetings,
-                validator: (value) =>
-                    value == null ? "Please select number of meetings" : null,
-                onChanged: (value) {
-                  setState(() {
-                    _numMeetings = value;
-                  });
-                },
-              ),
-            ),
-            BaseFormField(
               label: "What are you looking to achieve?",
-              child: MultiSelectDropdownFormField<MeetingObjective>(
+              child: BaseMultiSelectDropdownFormField<MeetingObjective>(
                 items: lookingFor,
                 labelGetter: (item) => item.name,
                 label: "Pick atleast two",
                 initialValue: _selectedLookingFor,
+                maxLength: 0,
                 validator: (value) {
                   if (value.length < 2) {
                     return "Please select two objectives";
                   }
                   return null;
                 },
-                onChangeItems: (items) {
+                onChanged: (items) {
                   setState(() {
                     _selectedLookingFor = items;
                   });
@@ -247,18 +228,19 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
             ),
             BaseFormField(
               label: "How can you help your connects?",
-              child: MultiSelectDropdownFormField<MeetingObjective>(
+              child: BaseMultiSelectDropdownFormField<MeetingObjective>(
                 items: lookingTo,
                 labelGetter: (item) => item.name,
                 label: "Pick atleast two",
                 initialValue: _selectedLookingTo,
+                maxLength: 0,
                 validator: (value) {
                   if (value.length < 2) {
                     return "Please select two objectives";
                   }
                   return null;
                 },
-                onChangeItems: (items) {
+                onChanged: (items) {
                   setState(() {
                     _selectedLookingTo = items;
                   });
@@ -267,18 +249,19 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
             ),
             BaseFormField(
               label: "Who would you like to meet?",
-              child: MultiSelectDropdownFormField<MeetingInterest>(
+              child: BaseMultiSelectDropdownFormField<MeetingInterest>(
                 items: widget.interests,
                 labelGetter: (item) => item.name,
                 label: "Pick atleast two",
                 initialValue: _selectedInterests,
+                maxLength: 0,
                 validator: (value) {
                   if (value.length < 2) {
                     return "Please select two objectives";
                   }
                   return null;
                 },
-                onChangeItems: (items) {
+                onChanged: (items) {
                   setState(() {
                     _selectedInterests = items;
                   });
@@ -368,7 +351,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         interests: _selectedInterests,
         objectives: [..._selectedLookingFor, ..._selectedLookingTo],
         timeSlots: _selectedSlots,
-        numberOfMeetings: _numMeetings,
       ));
     }
   }

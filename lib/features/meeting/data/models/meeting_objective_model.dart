@@ -14,7 +14,7 @@ class MeetingObjectiveModel extends MeetingObjective {
   final int pk;
   final ObjectiveType type;
 
-  MeetingObjectiveModel({
+  const MeetingObjectiveModel({
     this.icon,
     this.name,
     this.pk,

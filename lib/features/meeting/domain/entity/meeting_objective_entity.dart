@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 enum ObjectiveType {
@@ -8,16 +9,24 @@ enum ObjectiveType {
   lookingTo,
 }
 
-class MeetingObjective {
+class MeetingObjective extends Equatable {
   final String icon;
   final String name;
   final int pk;
   final ObjectiveType type;
 
-  MeetingObjective({
+  const MeetingObjective({
     this.icon,
     this.name,
     this.pk,
     this.type,
   });
+
+  @override
+  List<Object> get props => [
+        icon,
+        name,
+        pk,
+        type,
+      ];
 }

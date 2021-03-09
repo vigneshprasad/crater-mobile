@@ -89,6 +89,15 @@ class AppImageAssets {
   static const rewardsTrophy =
       AssetImage("assets/images/img_reward_trophy.png");
   static const emailReset = AssetImage("assets/images/img_email.png");
+
+  static const splashHome = AssetImage("assets/images/img_splash_home.png");
+  static const splashObjective =
+      AssetImage("assets/images/img_splash_objective.png");
+  static const splashVideoCall =
+      AssetImage("assets/images/img_splash_video_call.png");
+  static const splashMeetingCard =
+      AssetImage("assets/images/img_splash_meeting_card.png");
+  static const splashReward = AssetImage("assets/images/img_splash_reward.png");
 }
 
 class AppSvgAssets {
