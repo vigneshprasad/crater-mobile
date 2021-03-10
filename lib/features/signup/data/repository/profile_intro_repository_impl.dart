@@ -23,10 +23,10 @@ class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
     try {
       const questions = [
         '{${ProfileIntroElement.name}} is a {${ProfileIntroElement.tags}}',
-        'with {${ProfileIntroElement.yearsOfExperience}} years of work experience,',
-        'Currently, working in the {${ProfileIntroElement.sector}} sector,',
-        'as/with a {${ProfileIntroElement.companyType}}',
-        'Previously, he received a {${ProfileIntroElement.educationLevel}} degree.'
+        'with {${ProfileIntroElement.yearsOfExperience}} years of work experience.',
+        'Currently working with a {${ProfileIntroElement.companyType}} ,',
+        'in the {${ProfileIntroElement.sector}} sector.',
+        'Previously has completed a {${ProfileIntroElement.educationLevel}} degree.'
       ];
 
       return const Right(questions);

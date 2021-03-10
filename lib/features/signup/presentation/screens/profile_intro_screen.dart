@@ -93,9 +93,11 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
       final user = authState.user;
       final name = user.name;
-      const title = 'How would you describe yourself';
-      const info = 'Just the basics, you can add more later.';
-      final submit = AppLocalizations.of(context).translate("thats_accurate");
+      final title = AppLocalizations.of(context)
+          .translate('how_would_you_describe_yourself');
+      final info = AppLocalizations.of(context)
+          .translate('just_the_basics_you_can_add_more_later');
+      final submit = AppLocalizations.of(context).translate('thats_accurate');
 
       return BlocProvider.value(
           value: _bloc,
@@ -194,7 +196,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void showNextQuestion() {
     if (_visibleQuestions < _allQuestions.length) {
       final nextQuestion = _allQuestions[_visibleQuestions];
-      appendQuestion(nextQuestion);
+      appendQuestionElement(nextQuestion);
       _visibleQuestions++;
     } else {
       setState(() {
@@ -203,16 +205,17 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     }
   }
 
-  void appendQuestion(ProfileIntroQuestion question) {
+  void appendQuestionElement(ProfileIntroQuestion question) {
     if (question.elements.isEmpty) {
       return;
     }
+    // Adds one work at a time. Each work is added after animation of previous work.
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
       setState(() {
         _elements.add(question.elements[0]);
       });
       question.elements.removeAt(0);
-      appendQuestion(question);
+      appendQuestionElement(question);
     });
   }
 

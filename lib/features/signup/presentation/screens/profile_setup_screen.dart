@@ -44,8 +44,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'A little about your online presence';
-        String subHeading = 'Providing your Linkedin will improve your matches';
+        String heading = AppLocalizations.of(context)
+            .translate('a_little_about_your_online_presence');
+        String subHeading = AppLocalizations.of(context)
+            .translate('providing_your_linkedin_will_improve_your_matches');
         final user = authState.user;
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,

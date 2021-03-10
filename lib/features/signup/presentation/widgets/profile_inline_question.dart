@@ -37,7 +37,7 @@ class ProfileInlineQuestion extends StatelessWidget {
                         totalRepeatCount: 1,
                         repeatForever: false,
                         speed: animateText == true
-                            ? const Duration(milliseconds: 300)
+                            ? const Duration(milliseconds: 40)
                             : Duration.zero,
                         text: [element.value],
                         textStyle: Theme.of(context).textTheme.bodyText1),

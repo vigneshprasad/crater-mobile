@@ -305,7 +305,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               ),
             if (profile != null && profile.introduction == null)
               BaseFormField(
-                label: "Your Introductions",
+                label: "Your Introduction",
                 child: BaseFormInput(
                   autovalidate: false,
                   keyboardType: TextInputType.multiline,

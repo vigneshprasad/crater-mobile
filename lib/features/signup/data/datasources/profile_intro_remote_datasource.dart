@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:worknetwork/api/profile_intro/profile_intro_api_service.dart';
+import 'package:worknetwork/core/file_utils/file_converter.dart';
 import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/signup/data/models/profile_intro_meta_model.dart';
@@ -88,18 +89,5 @@ class ProfileIntroRemoteDatasourceImpl implements ProfileIntroRemoteDatasource {
     } else {
       throw ServerException(response.error);
     }
-  }
-}
-
-class FileConverter {
-  static String getBase64FormateFile(String path) {
-    final File file = File(path);
-    // Image image = Image.file(file);
-    // ResizeImage(Image.asset(path).image, width: 150);
-    // print('File is = ' + file.toString());
-    final List<int> fileInByte = file.readAsBytesSync();
-
-    final String fileInBase64 = base64Encode(fileInByte);
-    return 'data:image/jpeg;base64,$fileInBase64';
   }
 }
