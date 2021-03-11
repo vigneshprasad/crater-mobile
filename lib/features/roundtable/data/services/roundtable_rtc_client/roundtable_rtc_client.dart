@@ -41,7 +41,7 @@ class RoundTableRtcClient {
     await _engine.setAudioProfile(
         AudioProfile.MusicHighQuality, AudioScenario.GameStreaming);
     await _engine.joinChannelWithUserAccount(token, channelName, account);
-    // await _engine.renewToken(token);
+    await _engine.renewToken(token);
   }
 
   void setEventHandler(RtcEngineEventHandler handler) {

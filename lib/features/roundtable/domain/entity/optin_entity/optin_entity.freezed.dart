@@ -21,23 +21,34 @@ class _$OptinTearOff {
       {int pk,
       String user,
       int meeting,
+      int topic,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
       @JsonKey(name: 'number_of_meetings')
           int numberOfMeetings,
       @JsonKey(name: 'number_of_meetings_per_month')
           int numberOfMeetingsPerMonth,
-      List<MeetingObjectiveModel> objectives,
-      List<MeetingInterestModel> interests,
+      List<int> objectives,
+      List<int> interests,
+      @JsonKey(name: 'interest_list')
+          List<MeetingInterestModel> interestList,
       @JsonKey(name: 'time_slots')
-          List<TimeSlotModel> timeSlots}) {
+          List<int> timeSlots,
+      @JsonKey(name: 'time_slot_list')
+          List<TimeSlotModel> timeSlotList}) {
     return _Optin(
       pk: pk,
       user: user,
       meeting: meeting,
+      topic: topic,
+      topicDetail: topicDetail,
       numberOfMeetings: numberOfMeetings,
       numberOfMeetingsPerMonth: numberOfMeetingsPerMonth,
       objectives: objectives,
       interests: interests,
+      interestList: interestList,
       timeSlots: timeSlots,
+      timeSlotList: timeSlotList,
     );
   }
 
@@ -56,14 +67,21 @@ mixin _$Optin {
   int get pk;
   String get user;
   int get meeting;
+  int get topic;
+  @JsonKey(name: 'topic_detail')
+  Topic get topicDetail;
   @JsonKey(name: 'number_of_meetings')
   int get numberOfMeetings;
   @JsonKey(name: 'number_of_meetings_per_month')
   int get numberOfMeetingsPerMonth;
-  List<MeetingObjectiveModel> get objectives;
-  List<MeetingInterestModel> get interests;
+  List<int> get objectives;
+  List<int> get interests;
+  @JsonKey(name: 'interest_list')
+  List<MeetingInterestModel> get interestList;
   @JsonKey(name: 'time_slots')
-  List<TimeSlotModel> get timeSlots;
+  List<int> get timeSlots;
+  @JsonKey(name: 'time_slot_list')
+  List<TimeSlotModel> get timeSlotList;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -78,14 +96,23 @@ abstract class $OptinCopyWith<$Res> {
       {int pk,
       String user,
       int meeting,
+      int topic,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
       @JsonKey(name: 'number_of_meetings')
           int numberOfMeetings,
       @JsonKey(name: 'number_of_meetings_per_month')
           int numberOfMeetingsPerMonth,
-      List<MeetingObjectiveModel> objectives,
-      List<MeetingInterestModel> interests,
+      List<int> objectives,
+      List<int> interests,
+      @JsonKey(name: 'interest_list')
+          List<MeetingInterestModel> interestList,
       @JsonKey(name: 'time_slots')
-          List<TimeSlotModel> timeSlots});
+          List<int> timeSlots,
+      @JsonKey(name: 'time_slot_list')
+          List<TimeSlotModel> timeSlotList});
+
+  $TopicCopyWith<$Res> get topicDetail;
 }
 
 /// @nodoc
@@ -101,32 +128,52 @@ class _$OptinCopyWithImpl<$Res> implements $OptinCopyWith<$Res> {
     Object pk = freezed,
     Object user = freezed,
     Object meeting = freezed,
+    Object topic = freezed,
+    Object topicDetail = freezed,
     Object numberOfMeetings = freezed,
     Object numberOfMeetingsPerMonth = freezed,
     Object objectives = freezed,
     Object interests = freezed,
+    Object interestList = freezed,
     Object timeSlots = freezed,
+    Object timeSlotList = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed ? _value.pk : pk as int,
       user: user == freezed ? _value.user : user as String,
       meeting: meeting == freezed ? _value.meeting : meeting as int,
+      topic: topic == freezed ? _value.topic : topic as int,
+      topicDetail:
+          topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
       numberOfMeetings: numberOfMeetings == freezed
           ? _value.numberOfMeetings
           : numberOfMeetings as int,
       numberOfMeetingsPerMonth: numberOfMeetingsPerMonth == freezed
           ? _value.numberOfMeetingsPerMonth
           : numberOfMeetingsPerMonth as int,
-      objectives: objectives == freezed
-          ? _value.objectives
-          : objectives as List<MeetingObjectiveModel>,
-      interests: interests == freezed
-          ? _value.interests
-          : interests as List<MeetingInterestModel>,
-      timeSlots: timeSlots == freezed
-          ? _value.timeSlots
-          : timeSlots as List<TimeSlotModel>,
+      objectives:
+          objectives == freezed ? _value.objectives : objectives as List<int>,
+      interests:
+          interests == freezed ? _value.interests : interests as List<int>,
+      interestList: interestList == freezed
+          ? _value.interestList
+          : interestList as List<MeetingInterestModel>,
+      timeSlots:
+          timeSlots == freezed ? _value.timeSlots : timeSlots as List<int>,
+      timeSlotList: timeSlotList == freezed
+          ? _value.timeSlotList
+          : timeSlotList as List<TimeSlotModel>,
     ));
+  }
+
+  @override
+  $TopicCopyWith<$Res> get topicDetail {
+    if (_value.topicDetail == null) {
+      return null;
+    }
+    return $TopicCopyWith<$Res>(_value.topicDetail, (value) {
+      return _then(_value.copyWith(topicDetail: value));
+    });
   }
 }
 
@@ -139,14 +186,24 @@ abstract class _$OptinCopyWith<$Res> implements $OptinCopyWith<$Res> {
       {int pk,
       String user,
       int meeting,
+      int topic,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
       @JsonKey(name: 'number_of_meetings')
           int numberOfMeetings,
       @JsonKey(name: 'number_of_meetings_per_month')
           int numberOfMeetingsPerMonth,
-      List<MeetingObjectiveModel> objectives,
-      List<MeetingInterestModel> interests,
+      List<int> objectives,
+      List<int> interests,
+      @JsonKey(name: 'interest_list')
+          List<MeetingInterestModel> interestList,
       @JsonKey(name: 'time_slots')
-          List<TimeSlotModel> timeSlots});
+          List<int> timeSlots,
+      @JsonKey(name: 'time_slot_list')
+          List<TimeSlotModel> timeSlotList});
+
+  @override
+  $TopicCopyWith<$Res> get topicDetail;
 }
 
 /// @nodoc
@@ -163,31 +220,41 @@ class __$OptinCopyWithImpl<$Res> extends _$OptinCopyWithImpl<$Res>
     Object pk = freezed,
     Object user = freezed,
     Object meeting = freezed,
+    Object topic = freezed,
+    Object topicDetail = freezed,
     Object numberOfMeetings = freezed,
     Object numberOfMeetingsPerMonth = freezed,
     Object objectives = freezed,
     Object interests = freezed,
+    Object interestList = freezed,
     Object timeSlots = freezed,
+    Object timeSlotList = freezed,
   }) {
     return _then(_Optin(
       pk: pk == freezed ? _value.pk : pk as int,
       user: user == freezed ? _value.user : user as String,
       meeting: meeting == freezed ? _value.meeting : meeting as int,
+      topic: topic == freezed ? _value.topic : topic as int,
+      topicDetail:
+          topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
       numberOfMeetings: numberOfMeetings == freezed
           ? _value.numberOfMeetings
           : numberOfMeetings as int,
       numberOfMeetingsPerMonth: numberOfMeetingsPerMonth == freezed
           ? _value.numberOfMeetingsPerMonth
           : numberOfMeetingsPerMonth as int,
-      objectives: objectives == freezed
-          ? _value.objectives
-          : objectives as List<MeetingObjectiveModel>,
-      interests: interests == freezed
-          ? _value.interests
-          : interests as List<MeetingInterestModel>,
-      timeSlots: timeSlots == freezed
-          ? _value.timeSlots
-          : timeSlots as List<TimeSlotModel>,
+      objectives:
+          objectives == freezed ? _value.objectives : objectives as List<int>,
+      interests:
+          interests == freezed ? _value.interests : interests as List<int>,
+      interestList: interestList == freezed
+          ? _value.interestList
+          : interestList as List<MeetingInterestModel>,
+      timeSlots:
+          timeSlots == freezed ? _value.timeSlots : timeSlots as List<int>,
+      timeSlotList: timeSlotList == freezed
+          ? _value.timeSlotList
+          : timeSlotList as List<TimeSlotModel>,
     ));
   }
 }
@@ -200,14 +267,21 @@ class _$_Optin implements _Optin {
       {this.pk,
       this.user,
       this.meeting,
+      this.topic,
+      @JsonKey(name: 'topic_detail')
+          this.topicDetail,
       @JsonKey(name: 'number_of_meetings')
           this.numberOfMeetings,
       @JsonKey(name: 'number_of_meetings_per_month')
           this.numberOfMeetingsPerMonth,
       this.objectives,
       this.interests,
+      @JsonKey(name: 'interest_list')
+          this.interestList,
       @JsonKey(name: 'time_slots')
-          this.timeSlots});
+          this.timeSlots,
+      @JsonKey(name: 'time_slot_list')
+          this.timeSlotList});
 
   factory _$_Optin.fromJson(Map<String, dynamic> json) =>
       _$_$_OptinFromJson(json);
@@ -219,22 +293,33 @@ class _$_Optin implements _Optin {
   @override
   final int meeting;
   @override
+  final int topic;
+  @override
+  @JsonKey(name: 'topic_detail')
+  final Topic topicDetail;
+  @override
   @JsonKey(name: 'number_of_meetings')
   final int numberOfMeetings;
   @override
   @JsonKey(name: 'number_of_meetings_per_month')
   final int numberOfMeetingsPerMonth;
   @override
-  final List<MeetingObjectiveModel> objectives;
+  final List<int> objectives;
   @override
-  final List<MeetingInterestModel> interests;
+  final List<int> interests;
+  @override
+  @JsonKey(name: 'interest_list')
+  final List<MeetingInterestModel> interestList;
   @override
   @JsonKey(name: 'time_slots')
-  final List<TimeSlotModel> timeSlots;
+  final List<int> timeSlots;
+  @override
+  @JsonKey(name: 'time_slot_list')
+  final List<TimeSlotModel> timeSlotList;
 
   @override
   String toString() {
-    return 'Optin(pk: $pk, user: $user, meeting: $meeting, numberOfMeetings: $numberOfMeetings, numberOfMeetingsPerMonth: $numberOfMeetingsPerMonth, objectives: $objectives, interests: $interests, timeSlots: $timeSlots)';
+    return 'Optin(pk: $pk, user: $user, meeting: $meeting, topic: $topic, topicDetail: $topicDetail, numberOfMeetings: $numberOfMeetings, numberOfMeetingsPerMonth: $numberOfMeetingsPerMonth, objectives: $objectives, interests: $interests, interestList: $interestList, timeSlots: $timeSlots, timeSlotList: $timeSlotList)';
   }
 
   @override
@@ -248,6 +333,11 @@ class _$_Optin implements _Optin {
             (identical(other.meeting, meeting) ||
                 const DeepCollectionEquality()
                     .equals(other.meeting, meeting)) &&
+            (identical(other.topic, topic) ||
+                const DeepCollectionEquality().equals(other.topic, topic)) &&
+            (identical(other.topicDetail, topicDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.topicDetail, topicDetail)) &&
             (identical(other.numberOfMeetings, numberOfMeetings) ||
                 const DeepCollectionEquality()
                     .equals(other.numberOfMeetings, numberOfMeetings)) &&
@@ -262,9 +352,15 @@ class _$_Optin implements _Optin {
             (identical(other.interests, interests) ||
                 const DeepCollectionEquality()
                     .equals(other.interests, interests)) &&
+            (identical(other.interestList, interestList) ||
+                const DeepCollectionEquality()
+                    .equals(other.interestList, interestList)) &&
             (identical(other.timeSlots, timeSlots) ||
                 const DeepCollectionEquality()
-                    .equals(other.timeSlots, timeSlots)));
+                    .equals(other.timeSlots, timeSlots)) &&
+            (identical(other.timeSlotList, timeSlotList) ||
+                const DeepCollectionEquality()
+                    .equals(other.timeSlotList, timeSlotList)));
   }
 
   @override
@@ -273,11 +369,15 @@ class _$_Optin implements _Optin {
       const DeepCollectionEquality().hash(pk) ^
       const DeepCollectionEquality().hash(user) ^
       const DeepCollectionEquality().hash(meeting) ^
+      const DeepCollectionEquality().hash(topic) ^
+      const DeepCollectionEquality().hash(topicDetail) ^
       const DeepCollectionEquality().hash(numberOfMeetings) ^
       const DeepCollectionEquality().hash(numberOfMeetingsPerMonth) ^
       const DeepCollectionEquality().hash(objectives) ^
       const DeepCollectionEquality().hash(interests) ^
-      const DeepCollectionEquality().hash(timeSlots);
+      const DeepCollectionEquality().hash(interestList) ^
+      const DeepCollectionEquality().hash(timeSlots) ^
+      const DeepCollectionEquality().hash(timeSlotList);
 
   @JsonKey(ignore: true)
   @override
@@ -295,14 +395,21 @@ abstract class _Optin implements Optin {
       {int pk,
       String user,
       int meeting,
+      int topic,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
       @JsonKey(name: 'number_of_meetings')
           int numberOfMeetings,
       @JsonKey(name: 'number_of_meetings_per_month')
           int numberOfMeetingsPerMonth,
-      List<MeetingObjectiveModel> objectives,
-      List<MeetingInterestModel> interests,
+      List<int> objectives,
+      List<int> interests,
+      @JsonKey(name: 'interest_list')
+          List<MeetingInterestModel> interestList,
       @JsonKey(name: 'time_slots')
-          List<TimeSlotModel> timeSlots}) = _$_Optin;
+          List<int> timeSlots,
+      @JsonKey(name: 'time_slot_list')
+          List<TimeSlotModel> timeSlotList}) = _$_Optin;
 
   factory _Optin.fromJson(Map<String, dynamic> json) = _$_Optin.fromJson;
 
@@ -313,18 +420,29 @@ abstract class _Optin implements Optin {
   @override
   int get meeting;
   @override
+  int get topic;
+  @override
+  @JsonKey(name: 'topic_detail')
+  Topic get topicDetail;
+  @override
   @JsonKey(name: 'number_of_meetings')
   int get numberOfMeetings;
   @override
   @JsonKey(name: 'number_of_meetings_per_month')
   int get numberOfMeetingsPerMonth;
   @override
-  List<MeetingObjectiveModel> get objectives;
+  List<int> get objectives;
   @override
-  List<MeetingInterestModel> get interests;
+  List<int> get interests;
+  @override
+  @JsonKey(name: 'interest_list')
+  List<MeetingInterestModel> get interestList;
   @override
   @JsonKey(name: 'time_slots')
-  List<TimeSlotModel> get timeSlots;
+  List<int> get timeSlots;
+  @override
+  @JsonKey(name: 'time_slot_list')
+  List<TimeSlotModel> get timeSlotList;
   @override
   @JsonKey(ignore: true)
   _$OptinCopyWith<_Optin> get copyWith;

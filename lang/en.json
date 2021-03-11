@@ -79,5 +79,7 @@
     "verify": "Verify",
     "got_it": "Got it",
     "roundtable_tab:explore": "RoundTables",
-    "roundtable_sheet:heading": "What would you like to discuss?"
+    "roundtable_sheet:heading": "What would you like to discuss?",
+    "roundtable_card:match_soon": "Your match will be setup soon.",
+    "error:generic": "Something went wrong"
 }

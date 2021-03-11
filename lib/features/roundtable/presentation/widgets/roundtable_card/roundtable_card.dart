@@ -2,18 +2,42 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/theme.dart';
-import '../../../../../routes.gr.dart';
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 
+const kAvatarSize = 48.00;
+const kBottomPadding = 40.00;
+
 class RoundTableCard extends StatelessWidget {
-  final RoundTable table;
+  final Object data;
+  final String rootTopicLabel;
+  final String topicLabel;
+  final DateTime startTime;
+  final DateTime endTime;
+  final String description;
+  final List<RoundTableUser> speakers;
+  final List<MeetingInterestModel> interests;
+  final ValueChanged<Object> onPressed;
+  final bool isOptin;
 
   const RoundTableCard({
     Key key,
-    @required this.table,
+    @required this.data,
+    this.rootTopicLabel,
+    @required this.topicLabel,
+    @required this.startTime,
+    @required this.endTime,
+    this.description,
+    this.speakers,
+    this.interests,
+    this.onPressed,
+    this.isOptin = false,
   }) : super(key: key);
 
   @override
@@ -24,65 +48,107 @@ class RoundTableCard extends StatelessWidget {
           color: Colors.grey,
         );
     final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
+          fontSize: 15,
           color: Theme.of(context).primaryColor,
         );
     final agendaStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 18,
+          fontSize: 20,
         );
     final dateStyle = categoryStyle.copyWith(
       fontWeight: FontWeight.w400,
       color: Colors.grey[600],
     );
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          fontSize: 15,
+          color: Colors.grey[600],
+        );
     final dateFormat = DateFormat("EEE, dd MMM");
-    final agendaName = table.topic.name;
-    return GestureDetector(
-      onTap: () {
-        ExtendedNavigator.of(context)
-            .push(Routes.roundTableScreen(id: table.id));
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        elevation: 2,
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.6,
+        ),
         child: Padding(
           padding: const EdgeInsets.only(
-            left: AppInsets.xl,
-            right: AppInsets.xl,
-            top: 24,
-            bottom: AppInsets.xl,
+            right: AppInsets.med,
+            left: AppInsets.med,
+            bottom: kBottomPadding,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(dateFormat.format(table.start), style: dateTextStyle),
-              const SizedBox(height: AppInsets.med),
-              if (table.topic.root != null)
-                Text(table.topic.root.name, style: categoryStyle),
-              const SizedBox(height: AppInsets.med),
-              Text(agendaName, style: agendaStyle),
-              const SizedBox(height: AppInsets.med),
-              Text(
-                "${timeFormat.format(table.start)} - ${timeFormat.format(table.end)}",
-                style: dateStyle,
+          child: Material(
+            type: MaterialType.card,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            elevation: 2,
+            child: InkWell(
+              hoverColor: Colors.white,
+              highlightColor: Colors.grey[100],
+              splashColor: Colors.grey[300],
+              onTap: onPressed != null
+                  ? () {
+                      onPressed(data);
+                    }
+                  : null,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: AppInsets.xl,
+                  right: AppInsets.xl,
+                  top: 24,
+                  bottom: AppInsets.xl,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!isOptin)
+                      Text(
+                        dateFormat.format(startTime),
+                        style: dateTextStyle,
+                      ),
+                    const SizedBox(height: AppInsets.med),
+                    if (rootTopicLabel != null)
+                      Text(rootTopicLabel, style: categoryStyle),
+                    const SizedBox(height: AppInsets.sm),
+                    Text(topicLabel, style: agendaStyle),
+                    const SizedBox(height: AppInsets.med),
+                    Text(
+                      isOptin
+                          ? "Scheduling..."
+                          : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
+                      style: dateStyle,
+                    ),
+                    const SizedBox(height: AppInsets.l),
+                    if (description != null)
+                      Text(
+                        description,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: descriptionStyle,
+                      ),
+                    const Spacer(),
+                    if (isOptin)
+                      const Center(
+                        child: Image(
+                          image: AppImageAssets.meetingsEmpty,
+                          height: 120,
+                        ),
+                      ),
+                    const Spacer(),
+                    if (speakers != null) _SpeakersList(speakers: speakers),
+                    const SizedBox(height: AppInsets.l),
+                    const Divider(),
+                    const SizedBox(height: AppInsets.l),
+                    if (interests != null)
+                      Wrap(
+                        children: interests
+                            .map(
+                              (interest) => _InterestTag(interest: interest),
+                            )
+                            .toList(),
+                      ),
+                  ],
+                ),
               ),
-              const SizedBox(height: AppInsets.xxl),
-              Wrap(
-                children: table.interests
-                    .map(
-                      (interest) => _InterestTag(interest: interest),
-                    )
-                    .toList(),
-              ),
-              const Spacer(),
-              const SizedBox(height: AppInsets.l),
-              const Divider(),
-              const SizedBox(height: AppInsets.l),
-              Stack(
-                children: [
-                  _SpeakersList(speakers: table.speakers),
-                ],
-              )
-            ],
+            ),
           ),
         ),
       ),
@@ -101,7 +167,7 @@ class _SpeakersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: kAvatarSize,
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: _buildItems(context),
@@ -115,20 +181,19 @@ class _SpeakersList extends StatelessWidget {
     speakers.asMap().forEach((index, value) {
       items.add(
         Positioned(
-          left: index * 24.00,
-          child: CachedNetworkImage(
+          left: index * (kAvatarSize / 1.5),
+          child: BaseNetworkImage(
             imageUrl: value.photo,
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(image: imageProvider),
-                  border: Border.all(width: 3, color: Colors.white),
-                ),
-              );
-            },
+            nullImage: AppImageAssets.defaultAvatar,
+            imagebuilder: (context, imageProvider) => Container(
+              width: kAvatarSize,
+              height: kAvatarSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider),
+                border: Border.all(width: 3, color: Colors.white),
+              ),
+            ),
           ),
         ),
       );
@@ -149,19 +214,18 @@ class _InterestTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          color: Colors.white,
+          fontSize: 13.00,
+          color: Colors.grey[500],
         );
     return Padding(
       padding: const EdgeInsets.only(right: AppInsets.l),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-            vertical: AppInsets.sm, horizontal: AppInsets.l),
         decoration: BoxDecoration(
-          color: Colors.grey[800],
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(4.0),
         ),
         child: Text(
-          interest.name,
+          "#${interest.name}",
           style: labelStyle,
         ),
       ),

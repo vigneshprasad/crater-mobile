@@ -54,4 +54,7 @@ abstract class RoundTableApiService extends ChopperService {
 
   @Post(path: 'optin/')
   Future<Response> postGroupOptin(@Body() Map<String, dynamic> body);
+
+  @Get(path: 'optin/')
+  Future<Response> getAlMyOptins();
 }

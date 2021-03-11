@@ -99,7 +99,7 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<Category>> getAllCategoriesFromRemote() async {
-    final response = await roundTableApiService.getAllCategories();
+    final response = await roundTableApiService.getAlMyOptins();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -255,13 +255,14 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
 
   @override
   Future<List<Optin>> getAllUserOptinsFromRemote() async {
-    final response = await meetsApiService.getMyMeetingPrefrences();
+    final response = await roundTableApiService.getAlMyOptins();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
           .map((json) => Optin.fromJson(json as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
     }
-    throw UnimplementedError();
   }
 }

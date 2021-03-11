@@ -176,23 +176,25 @@ class _RoundTableLoaded extends HookWidget {
         ),
       ));
     } else {
-      items.add(overlay);
+      if (isSpeaker) {
+        items.add(overlay);
 
-      items.add(
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-            child: BaseLargeButton(
-              width: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () {
-                controller.joinRoundTableChannel(user);
-              },
-              child: Text("Join Table"),
+        items.add(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+              child: BaseLargeButton(
+                width: MediaQuery.of(context).size.width * 0.6,
+                onPressed: () {
+                  controller.joinRoundTableChannel(user);
+                },
+                child: Text("Join Table"),
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return items;

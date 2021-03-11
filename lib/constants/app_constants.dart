@@ -110,6 +110,7 @@ class AppSvgAssets {
 class AppLottieAssets {
   static const imageLoading = "assets/lottie/loading_dots.json";
   static const typingAnimation = "assets/lottie/typing_animation.json";
+  static const peopleWaiting = "assets/lottie/people_waiting.json";
 }
 
 class AppHeroTransitions {

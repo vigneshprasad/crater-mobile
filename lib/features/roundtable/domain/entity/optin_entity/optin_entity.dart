@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
 import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
 import 'package:worknetwork/features/meeting/data/models/time_slot_model.dart';
+import '../topic_entity/topic_entity.dart';
 
 part 'optin_entity.freezed.dart';
 part 'optin_entity.g.dart';
@@ -12,11 +13,15 @@ abstract class Optin with _$Optin {
     int pk,
     String user,
     int meeting,
+    int topic,
+    @JsonKey(name: "topic_detail") Topic topicDetail,
     @JsonKey(name: "number_of_meetings") int numberOfMeetings,
     @JsonKey(name: "number_of_meetings_per_month") int numberOfMeetingsPerMonth,
-    List<MeetingObjectiveModel> objectives,
-    List<MeetingInterestModel> interests,
-    @JsonKey(name: "time_slots") List<TimeSlotModel> timeSlots,
+    List<int> objectives,
+    List<int> interests,
+    @JsonKey(name: "interest_list") List<MeetingInterestModel> interestList,
+    @JsonKey(name: "time_slots") List<int> timeSlots,
+    @JsonKey(name: "time_slot_list") List<TimeSlotModel> timeSlotList,
   }) = _Optin;
 
   factory Optin.fromJson(Map<String, dynamic> json) => _$OptinFromJson(json);

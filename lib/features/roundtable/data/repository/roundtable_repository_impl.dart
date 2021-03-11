@@ -4,25 +4,22 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/meeting/domain/entity/user_meeting_preference_entity.dart';
-import '../../../meeting/domain/entity/time_slot_entity.dart';
-import '../../../meeting/domain/entity/meeting_interest_entity.dart';
-import '../../../meeting/domain/entity/meeting_config_entity.dart';
-import '../models/agora_rtc_user_info/agora_rtc_user_info.dart';
-import '../../domain/entity/agenda_entity/agenda_entity.dart';
-import '../../domain/entity/optin_entity/optin_entity.dart';
-import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
-import '../../domain/entity/topic_entity/topic_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
 import '../../../../core/network_info/network_info.dart';
+import '../../../meeting/domain/entity/meeting_config_entity.dart';
+import '../../../meeting/domain/entity/meeting_interest_entity.dart';
+import '../../../meeting/domain/entity/time_slot_entity.dart';
+import '../../domain/entity/agenda_entity/agenda_entity.dart';
 import '../../domain/entity/category_entity/category_entity.dart';
+import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
+import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
+import '../../domain/entity/topic_entity/topic_entity.dart';
 import '../../domain/repository/roundtable_repository.dart';
 import '../datasources/roundtable_local_datasource.dart';
 import '../datasources/roundtable_remote_datasource.dart';
-import '../models/roundtable_meta_api_response/roundtable_meta_api_response.dart';
 
 final roundtableRepositoryProvider = Provider<RoundTableRepository>((ref) {
   final localDatasource = ref.read(roundtableLocalDatasourceProvider);
@@ -107,7 +104,8 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
       final response = await _remoteDatasource.getAllUserOptinsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message = error.message as Map<String, dynamic>;
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -222,6 +220,7 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
       );
       return Right(response);
     } on ServerException catch (error) {
+      print(error.message);
       final message =
           jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");

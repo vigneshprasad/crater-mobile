@@ -27,23 +27,10 @@ class RoundTableTab extends HookWidget {
       child: roundTableMetaState.when(
         loading: () => _Loader(),
         data: (meta) {
-          // final pageType = [
-          //   if (meta.user > 0) RoundTablePageType.user,
-          //   if (meta.upcoming > 0) RoundTablePageType.upcoming,
-          //   RoundTablePageType.all,
-          // ];
-
           final List<RoundTablePageType> pages = [
             RoundTablePageType.all,
             if (meta.myTables != null) RoundTablePageType.user,
           ];
-
-          // final categoriesViews = pageType
-          //     .map((type) => CategoriesList(
-          //           type: type,
-          //           key: ValueKey<RoundTablePageType>(type),
-          //         ))
-          //     .toList();
 
           return Column(
             children: [
@@ -57,14 +44,6 @@ class RoundTableTab extends HookWidget {
                       children: [
                         _TabHeader(
                             heading: _getTabHeader(pages[activeTab.value])),
-                        // AnimatedSwitcher(
-                        //   duration: const Duration(milliseconds: 400),
-                        //   transitionBuilder: (child, animation) {
-                        //     return FadeTransition(
-                        //         opacity: animation, child: child);
-                        //   },
-                        //   child: categoriesViews[activeTab.value],
-                        // ),
                         Expanded(
                           child: PageView(
                             scrollDirection: Axis.vertical,
@@ -76,17 +55,18 @@ class RoundTableTab extends HookWidget {
                                 RoundTablesPage(
                                   type: pages[1],
                                   tables: meta.myTables.tables,
+                                  optins: meta.myTables.optins,
                                 ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    // if (pageType.length > 1)
-                    //   _PageIndicator(
-                    //     length: pageType.length,
-                    //     selected: activeTab.value,
-                    //   )
+                    if (pages.length > 1)
+                      _PageIndicator(
+                        length: pages.length,
+                        selected: activeTab.value,
+                      )
                   ],
                 ),
               ),
