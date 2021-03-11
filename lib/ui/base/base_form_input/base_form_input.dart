@@ -15,6 +15,7 @@ class BaseFormInput extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final ValueChanged<String> onChanged;
+  final String initialValue;
 
   const BaseFormInput({
     Key key,
@@ -30,6 +31,7 @@ class BaseFormInput extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.onChanged,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class BaseFormInput extends StatelessWidget {
     return TextFormField(
       enabled: enabled,
       autovalidate: autovalidate,
+      initialValue: initialValue,
       autocorrect: autocorrect,
       controller: controller,
       keyboardType: keyboardType,

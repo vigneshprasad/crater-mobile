@@ -116,16 +116,43 @@ class _$SignupInjector extends SignupInjector {
         postNewPhoneNumber: c<UCPostNewPhoneNumber>(),
         postSmsCode: c<UCPostSmsCode>(),
         analytics: c<Analytics>()));
+    container.registerFactory((c) => ProfileIntroBloc(
+        getProfileIntroQuestions: c<UCGetProfileIntroQuestions>(),
+        getUserTags: c<UCGetUserTags>(),
+        getProfileIntroCompanies: c<UCGetProfileIntroCompanies>(),
+        getProfileIntroEducations: c<UCGetProfileIntroEducations>(),
+        getProfileIntroExperiences: c<UCGetProfileIntroExperiences>(),
+        getProfileIntroSectors: c<UCGetProfileIntroSectors>(),
+        postUserProfile: c<UCPostUserProfileIntro>(),
+        patchUser: c<UCPatchUser>(),
+        analytics: c<Analytics>()));
     container.registerSingleton<SignupRepository>(
         (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
     container.registerSingleton<SignupRemoteDatasource>((c) =>
         SignupRemoteDatasourceImpl(c<TagsApiService>(), c<UserApiService>()));
+    container.registerSingleton<ProfileIntroRemoteDatasource>(
+        (c) => ProfileIntroRemoteDatasourceImpl(c<ProfileIntroApiService>()));
+    container.registerSingleton<ProfileIntroRepository>((c) =>
+        ProfileIntroRepositoryImpl(
+            c<ProfileIntroRemoteDatasource>(), c<AuthLocalDataSource>()));
     container
         .registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()));
     container.registerSingleton((c) => UCGetUserTags(c<SignupRepository>()));
     container
         .registerSingleton((c) => UCPostNewPhoneNumber(c<SignupRepository>()));
     container.registerSingleton((c) => UCPostSmsCode(c<SignupRepository>()));
+    container.registerSingleton(
+        (c) => UCGetProfileIntroQuestions(c<ProfileIntroRepository>()));
+    container.registerSingleton(
+        (c) => UCGetProfileIntroCompanies(c<ProfileIntroRepository>()));
+    container.registerSingleton(
+        (c) => UCGetProfileIntroEducations(c<ProfileIntroRepository>()));
+    container.registerSingleton(
+        (c) => UCGetProfileIntroExperiences(c<ProfileIntroRepository>()));
+    container.registerSingleton(
+        (c) => UCGetProfileIntroSectors(c<ProfileIntroRepository>()));
+    container.registerSingleton(
+        (c) => UCPostUserProfileIntro(c<ProfileIntroRepository>()));
   }
 }
 

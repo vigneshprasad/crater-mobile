@@ -1,0 +1,32 @@
+import 'dart:io';
+
+import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/aysnc_usecase.dart';
+
+class UCPostUserProfileIntro
+    implements AsyncUseCase<UserProfile, UCPostUserProfileIntroParams> {
+  final ProfileIntroRepository repository;
+
+  UCPostUserProfileIntro(this.repository);
+
+  @override
+  Future<Either<Failure, UserProfile>> call(
+      UCPostUserProfileIntroParams params) {
+    return repository.postUserProfileIntro(params.body, params.photo);
+  }
+}
+
+class UCPostUserProfileIntroParams extends Equatable {
+  final Map<String, dynamic> body;
+  final File photo;
+
+  const UCPostUserProfileIntroParams({this.body, this.photo});
+
+  @override
+  List<Object> get props => [body, photo];
+}

@@ -40,13 +40,17 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       tagLine: fields[20] as String,
       tagList: (fields[21] as List)?.cast<UserTagModel>(),
       uuid: fields[22] as String,
+      educationLevel: fields[23] as int,
+      yearsOfExperience: fields[24] as int,
+      companyType: fields[25] as int,
+      sector: fields[26] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(23)
+      ..writeByte(27)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -92,7 +96,15 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(21)
       ..write(obj.tagList)
       ..writeByte(22)
-      ..write(obj.uuid);
+      ..write(obj.uuid)
+      ..writeByte(23)
+      ..write(obj.educationLevel)
+      ..writeByte(24)
+      ..write(obj.yearsOfExperience)
+      ..writeByte(25)
+      ..write(obj.companyType)
+      ..writeByte(26)
+      ..write(obj.sector);
   }
 
   @override
@@ -138,6 +150,10 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
             e == null ? null : UserTagModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     uuid: json['uuid'] as String,
+    educationLevel: json['education_level'] as int,
+    yearsOfExperience: json['years_of_experience'] as int,
+    companyType: json['company_type'] as int,
+    sector: json['sector'] as int,
   );
 }
 
@@ -166,4 +182,8 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'tag_line': instance.tagLine,
       'tag_list': instance.tagList,
       'uuid': instance.uuid,
+      'education_level': instance.educationLevel,
+      'years_of_experience': instance.yearsOfExperience,
+      'company_type': instance.companyType,
+      'sector': instance.sector,
     };

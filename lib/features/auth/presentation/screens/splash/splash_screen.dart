@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (state is AuthStateSuccess) {
-      navigatePostAuth(state.user);
+      navigatePostAuth(state.user, profile: state.profile);
     }
   }
 }
