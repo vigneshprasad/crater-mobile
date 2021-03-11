@@ -95,6 +95,22 @@ class UserProfileModel extends UserProfile {
   @HiveField(22)
   final String uuid;
 
+  @HiveField(23)
+  @JsonKey(name: 'education_level')
+  final int educationLevel;
+
+  @HiveField(24)
+  @JsonKey(name: 'years_of_experience')
+  final int yearsOfExperience;
+
+  @HiveField(25)
+  @JsonKey(name: 'company_type')
+  final int companyType;
+
+  @HiveField(26)
+  @JsonKey(name: 'sector')
+  final int sector;
+
   UserProfileModel({
     this.pk,
     this.additionalInformation,
@@ -119,6 +135,10 @@ class UserProfileModel extends UserProfile {
     this.tagLine,
     this.tagList,
     this.uuid,
+    this.educationLevel,
+    this.yearsOfExperience,
+    this.companyType,
+    this.sector,
   }) : super(
           pk: pk,
           additionalInformation: additionalInformation,
@@ -143,6 +163,10 @@ class UserProfileModel extends UserProfile {
           tagLine: tagLine,
           tagList: tagList,
           uuid: uuid,
+          educationLevel: educationLevel,
+          yearsOfExperience: yearsOfExperience,
+          companyType: companyType,
+          sector: sector,
         );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>

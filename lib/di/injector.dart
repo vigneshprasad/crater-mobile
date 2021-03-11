@@ -4,6 +4,19 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/api/profile_intro/profile_intro_api_service.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/get_reschedule_request_usecase.dart';
+import 'package:worknetwork/features/meeting/domain/usecase/post_confirm_reschedule_request_usecase.dart';
+import 'package:worknetwork/features/signup/data/datasources/profile_intro_remote_datasource.dart';
+import 'package:worknetwork/features/signup/data/repository/profile_intro_repository_impl.dart';
+import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
+import 'package:worknetwork/features/signup/domain/usecase/get_profile_intro_companies.dart';
+import 'package:worknetwork/features/signup/domain/usecase/get_profile_intro_educations.dart';
+import 'package:worknetwork/features/signup/domain/usecase/get_profile_intro_experiences.dart';
+import 'package:worknetwork/features/signup/domain/usecase/get_profile_intro_questions.dart';
+import 'package:worknetwork/features/signup/domain/usecase/get_profile_intro_sectors.dart';
+import 'package:worknetwork/features/signup/domain/usecase/post_user_profile_intro.dart';
+import 'package:worknetwork/features/signup/presentation/bloc/profile_intro/profile_intro_bloc.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -209,12 +222,22 @@ abstract class SignupInjector {
   @Register.factory(ObjectivesBloc)
   @Register.factory(ProfileSetupBloc)
   @Register.factory(PhoneVerifyBloc)
+  @Register.factory(ProfileIntroBloc)
   @Register.singleton(SignupRepository, from: SignupRepositoryImpl)
   @Register.singleton(SignupRemoteDatasource, from: SignupRemoteDatasourceImpl)
+  @Register.singleton(ProfileIntroRemoteDatasource,
+      from: ProfileIntroRemoteDatasourceImpl)
+  @Register.singleton(ProfileIntroRepository, from: ProfileIntroRepositoryImpl)
   @Register.singleton(UCGetUserObjectives)
   @Register.singleton(UCGetUserTags)
   @Register.singleton(UCPostNewPhoneNumber)
   @Register.singleton(UCPostSmsCode)
+  @Register.singleton(UCGetProfileIntroQuestions)
+  @Register.singleton(UCGetProfileIntroCompanies)
+  @Register.singleton(UCGetProfileIntroEducations)
+  @Register.singleton(UCGetProfileIntroExperiences)
+  @Register.singleton(UCGetProfileIntroSectors)
+  @Register.singleton(UCPostUserProfileIntro)
   void configure();
 }
 
@@ -426,6 +449,7 @@ class Di {
     container.registerInstance(MeetsApiService.create());
     container.registerInstance(TagsApiService.create());
     container.registerInstance(RewardsApiService.create());
+    container.registerInstance(ProfileIntroApiService.create());
 
     // Externals
     container.registerInstance(DataConnectionChecker());

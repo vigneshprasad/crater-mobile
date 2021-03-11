@@ -52,7 +52,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   List<MeetingObjective> lookingTo;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingObjective> _selectedLookingFor = [];
-  List<MeetingObjective> _selectedLookingTo = [];
   List<MeetingInterest> _selectedInterests = [];
   String _introduction = "";
   String _linkedinUrl = "";
@@ -97,10 +96,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   _selectedLookingFor = pastPrefs.objectives
                       .where(
                           (element) => element.type == ObjectiveType.lookingFor)
-                      .toList();
-                  _selectedLookingTo = pastPrefs.objectives
-                      .where(
-                          (element) => element.type == ObjectiveType.lookingTo)
                       .toList();
                   _selectedSlots = slots;
                 });
@@ -206,7 +201,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         child: Column(
           children: [
             BaseFormField(
-              label: "What are you looking to achieve?",
+              label: "What would you like to converse about?",
               child: BaseMultiSelectDropdownFormField<MeetingObjective>(
                 items: lookingFor,
                 labelGetter: (item) => item.name,
@@ -222,27 +217,6 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                 onChanged: (items) {
                   setState(() {
                     _selectedLookingFor = items;
-                  });
-                },
-              ),
-            ),
-            BaseFormField(
-              label: "How can you help your connects?",
-              child: BaseMultiSelectDropdownFormField<MeetingObjective>(
-                items: lookingTo,
-                labelGetter: (item) => item.name,
-                label: "Pick atleast two",
-                initialValue: _selectedLookingTo,
-                maxLength: 0,
-                validator: (value) {
-                  if (value.length < 2) {
-                    return "Please select two objectives";
-                  }
-                  return null;
-                },
-                onChanged: (items) {
-                  setState(() {
-                    _selectedLookingTo = items;
                   });
                 },
               ),
@@ -305,7 +279,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               ),
             if (profile != null && profile.introduction == null)
               BaseFormField(
-                label: "Your Introductions",
+                label: "Your Introduction",
                 child: BaseFormInput(
                   autovalidate: false,
                   keyboardType: TextInputType.multiline,
@@ -349,7 +323,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
       _bloc.add(PostMeetingPreferencesStarted(
         config: widget.config,
         interests: _selectedInterests,
-        objectives: [..._selectedLookingFor, ..._selectedLookingTo],
+        objectives: [..._selectedLookingFor],
         timeSlots: _selectedSlots,
       ));
     }

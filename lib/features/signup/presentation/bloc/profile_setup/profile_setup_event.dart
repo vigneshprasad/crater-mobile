@@ -12,18 +12,12 @@ class GetUserTagsRequestStarted extends ProfileSetupEvent {
 }
 
 class PostProfileRequestStarted extends ProfileSetupEvent {
-  final String photoUrl;
-  final List<UserTag> userTags;
   final String linkedinUrl;
-  final String name;
 
   const PostProfileRequestStarted({
-    this.photoUrl,
-    @required this.userTags,
     @required this.linkedinUrl,
-    @required this.name,
   });
 
   @override
-  List<Object> get props => [photoUrl, userTags, linkedinUrl];
+  List<Object> get props => [linkedinUrl];
 }

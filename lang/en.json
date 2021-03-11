@@ -81,5 +81,10 @@
     "roundtable_tab:explore": "RoundTables",
     "roundtable_sheet:heading": "What would you like to discuss?",
     "roundtable_card:match_soon": "Your match will be setup soon.",
-    "error:generic": "Something went wrong"
+    "error:generic": "Something went wrong",
+    "thats_accurate": "That's Accurate",
+    "how_would_you_describe_yourself": "How would you describe yourself",
+    "just_the_basics_you_can_add_more_later": "Just the basics, you can add more later.",
+    "a_little_about_your_online_presence": "A little about your online presence",
+    "providing_your_linkedin_will_improve_your_matches": "Providing your Linkedin will improve your matches"
 }

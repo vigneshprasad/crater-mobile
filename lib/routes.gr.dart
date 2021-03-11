@@ -34,6 +34,7 @@ import 'features/roundtable/presentation/screens/create_table_screen/create_tabl
 import 'features/roundtable/presentation/screens/roundtable_screen/roundtable_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 
@@ -62,6 +63,9 @@ class Routes {
   static const String _roundTableScreen = '/roundtable/:id';
   static String roundTableScreen({@required dynamic id}) => '/roundtable/$id';
   static const String createTableScreen = '/create-table';
+  static const String _profileIntroScreen = '/profile-intro/:editMode?';
+  static String profileIntroScreen({dynamic editMode = ''}) =>
+      '/profile-intro/$editMode';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -84,6 +88,7 @@ class Routes {
     pointsFaqScreen,
     _roundTableScreen,
     createTableScreen,
+    _profileIntroScreen,
   };
 }
 
@@ -112,6 +117,7 @@ class Router extends RouterBase {
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
     RouteDef(Routes._roundTableScreen, page: RoundTableScreen),
     RouteDef(Routes.createTableScreen, page: CreateTableScreen),
+    RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -282,6 +288,18 @@ class Router extends RouterBase {
         builder: (context) => CreateTableScreen(
           key: args.key,
           topic: args.topic,
+        ),
+        settings: data,
+      );
+    },
+    ProfileIntroScreen: (data) {
+      final args = data.getArgs<ProfileIntroScreenArguments>(
+        orElse: () => ProfileIntroScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileIntroScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
         ),
         settings: data,
       );
@@ -475,4 +493,10 @@ class CreateTableScreenArguments {
   final Key key;
   final Topic topic;
   CreateTableScreenArguments({this.key, @required this.topic});
+}
+
+/// ProfileIntroScreen arguments holder class
+class ProfileIntroScreenArguments {
+  final Key key;
+  ProfileIntroScreenArguments({this.key});
 }

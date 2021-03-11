@@ -65,6 +65,8 @@ class AppConstants {
 
   static const String meetingTypeformLink =
       "https://worknetwork.typeform.com/to/OX3ZB9QV#email=";
+
+  static const double profileImageMaxWidth = 1024;
 }
 
 class AppImageAssets {
