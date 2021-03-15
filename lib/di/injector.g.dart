@@ -15,7 +15,6 @@ class _$CoreInjector extends CoreInjector {
         (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
     container
         .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
-    container.registerSingleton<DeepLinkManager>((c) => DeepLinkManagerImpl());
     container.registerSingleton<LocalStorage>((c) => LocalStorageImpl());
     container.registerSingleton<Analytics>((c) => AnalyticsImpl(
         c<PushNotifications>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
@@ -73,6 +72,8 @@ class _$AuthInjector extends AuthInjector {
         analytics: c<Analytics>()));
     container.registerFactory(
         (c) => ForgotPasswordBloc(passwordReset: c<UCPostPasswordReset>()));
+    container.registerFactory(
+        (c) => NewPasswordBloc(postNewPassword: c<UCPostNewPassword>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
     container.registerSingleton<AuthRemoteDataSource>((c) =>
@@ -97,6 +98,7 @@ class _$AuthInjector extends AuthInjector {
     container.registerSingleton((c) => UCGetUserProfile(c<AuthRepository>()));
     container
         .registerSingleton((c) => UCPostPasswordReset(c<AuthRepository>()));
+    container.registerSingleton((c) => UCPostNewPassword(c<AuthRepository>()));
   }
 }
 

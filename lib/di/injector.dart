@@ -20,7 +20,6 @@ import '../constants/app_constants.dart';
 import '../core/analytics/analytics.dart';
 import '../core/config_reader/config_reader.dart';
 import '../core/custom_tabs/custom_tabs.dart';
-import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
 import '../core/features/websocket/data/repository/websocket_repository_impl.dart';
@@ -54,11 +53,13 @@ import '../features/auth/domain/usecase/google_auth_usecase.dart';
 import '../features/auth/domain/usecase/linked_auth_usecase.dart';
 import '../features/auth/domain/usecase/login_email_usercase.dart';
 import '../features/auth/domain/usecase/patch_user_usecase.dart';
+import '../features/auth/domain/usecase/post_new_password_usecase.dart';
 import '../features/auth/domain/usecase/post_password_reset_usecase.dart';
 import '../features/auth/domain/usecase/post_user_profile_usecase.dart';
 import '../features/auth/domain/usecase/register_email_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
+import '../features/auth/presentation/bloc/new_password/new_password_bloc.dart';
 import '../features/chat/data/datasources/chat_local_datasource.dart';
 import '../features/chat/data/datasources/chat_remote_datasource.dart';
 import '../features/chat/data/repository/chat_repository_impl.dart';
@@ -174,7 +175,6 @@ abstract class CoreInjector {
   @Register.singleton(CustomTabs, from: CustomTabImpl)
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
-  @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
   @Register.singleton(Analytics, from: AnalyticsImpl)
   @Register.singleton(Logger, from: LoggerImpl)
@@ -198,6 +198,7 @@ abstract class WebSocketInjector {
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
   @Register.factory(ForgotPasswordBloc)
+  @Register.factory(NewPasswordBloc)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -213,6 +214,7 @@ abstract class AuthInjector {
   @Register.singleton(UCPostUserProfile)
   @Register.singleton(UCGetUserProfile)
   @Register.singleton(UCPostPasswordReset)
+  @Register.singleton(UCPostNewPassword)
   void configure();
 }
 

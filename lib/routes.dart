@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
+import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -48,7 +49,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: PointsFaqScreen, path: "/points-faq"),
     MaterialRoute(page: RoundTableScreen, path: "/roundtable/:id"),
     MaterialRoute(page: CreateTableScreen, path: "/create-table"),
-    MaterialRoute(page: ProfileIntroScreen, path: "/profile-intro/:editMode?")
+    MaterialRoute(page: ProfileIntroScreen, path: "/profile-intro/:editMode?"),
+    MaterialRoute(page: NewPasswordScreen, path: "/new-password/:params?")
   ],
 )
 class $Router {}

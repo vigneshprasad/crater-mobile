@@ -178,4 +178,15 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(error));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> postNewPassword(
+      Map<String, String> body) async {
+    try {
+      final response = await remoteDataSource.postNewPasswordToRemote(body);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
 }

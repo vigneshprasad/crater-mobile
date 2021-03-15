@@ -42,4 +42,7 @@ abstract class AuthApiService extends ChopperService {
 
   @Post(path: 'password/reset/')
   Future<Response> postPasswordReset(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'password/reset/confirm/')
+  Future<Response> postNewPassword(@Body() Map<String, dynamic> body);
 }
