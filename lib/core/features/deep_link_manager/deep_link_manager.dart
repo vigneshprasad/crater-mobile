@@ -1,16 +1,45 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../routes.gr.dart';
 
+final deepLinkManagerProvider = Provider<DeepLinkManager>((_) {
+  final providers = [DeepLinkProviderType.firebase];
+  return DeepLinkManagerImpl(providers);
+});
+
+enum DeepLinkProviderType { firebase }
+
 abstract class DeepLinkManager {
+  List<DeepLinkProviderType> get providers;
   Future<void> handleDeepLink();
 }
 
 class DeepLinkManagerImpl implements DeepLinkManager {
+  final List<DeepLinkProviderType> _providers;
+
+  const DeepLinkManagerImpl(this._providers);
+
+  @override
+  List<DeepLinkProviderType> get providers => _providers;
+
   @override
   Future<void> handleDeepLink() async {
+    for (final provider in _providers) {
+      switch (provider) {
+        case DeepLinkProviderType.firebase:
+          await _handleFirebaseDeepLink();
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleFirebaseDeepLink() async {
     FirebaseDynamicLinks.instance.onLink(
       onSuccess: (linkData) async {
         final Uri deeplink = linkData?.link;
@@ -42,6 +71,9 @@ class DeepLinkManagerImpl implements DeepLinkManager {
       _navigator.currentState.pushNamed(Routes.homeScreen(tab: 3));
     } else if (pathSegments.contains("master-classes")) {
       _navigator.currentState.pushNamed(Routes.homeScreen(tab: 4));
+    } else if (pathSegments.contains("new-password")) {
+      _navigator.currentState
+          .pushNamed(Routes.newPasswordScreen(params: deeplink.query));
     }
   }
 }

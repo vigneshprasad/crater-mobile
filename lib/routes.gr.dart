@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'core/widgets/screens/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
+import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -60,6 +61,9 @@ class Routes {
   static const String _profileIntroScreen = '/profile-intro/:editMode?';
   static String profileIntroScreen({dynamic editMode = ''}) =>
       '/profile-intro/$editMode';
+  static const String _newPasswordScreen = '/new-password/:params?';
+  static String newPasswordScreen({dynamic params = ''}) =>
+      '/new-password/$params';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -81,6 +85,7 @@ class Routes {
     packagePurchaseScreen,
     pointsFaqScreen,
     _profileIntroScreen,
+    _newPasswordScreen,
   };
 }
 
@@ -108,6 +113,7 @@ class Router extends RouterBase {
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
     RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
+    RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -273,6 +279,18 @@ class Router extends RouterBase {
         builder: (context) => ProfileIntroScreen(
           key: args.key,
           editMode: data.pathParams['editMode'].boolValue,
+        ),
+        settings: data,
+      );
+    },
+    NewPasswordScreen: (data) {
+      final args = data.getArgs<NewPasswordScreenArguments>(
+        orElse: () => NewPasswordScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NewPasswordScreen(
+          key: args.key,
+          params: data.pathParams['params'].stringValue,
         ),
         settings: data,
       );
@@ -456,4 +474,10 @@ class PackagePurchaseScreenArguments {
 class ProfileIntroScreenArguments {
   final Key key;
   ProfileIntroScreenArguments({this.key});
+}
+
+/// NewPasswordScreen arguments holder class
+class NewPasswordScreenArguments {
+  final Key key;
+  NewPasswordScreenArguments({this.key});
 }

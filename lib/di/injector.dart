@@ -5,6 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
 import 'package:worknetwork/api/profile_intro/profile_intro_api_service.dart';
+import 'package:worknetwork/features/auth/domain/usecase/post_new_password_usecase.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/new_password/new_password_bloc.dart';
 import 'package:worknetwork/features/meeting/domain/usecase/get_reschedule_request_usecase.dart';
 import 'package:worknetwork/features/meeting/domain/usecase/post_confirm_reschedule_request_usecase.dart';
 import 'package:worknetwork/features/signup/data/datasources/profile_intro_remote_datasource.dart';
@@ -32,7 +34,6 @@ import '../constants/app_constants.dart';
 import '../core/analytics/analytics.dart';
 import '../core/config_reader/config_reader.dart';
 import '../core/custom_tabs/custom_tabs.dart';
-import '../core/features/deep_link_manager/deep_link_manager.dart';
 import '../core/features/websocket/data/datasources/weboscket_local_datasource.dart';
 import '../core/features/websocket/data/datasources/weboscket_remote_datasource.dart';
 import '../core/features/websocket/data/repository/websocket_repository_impl.dart';
@@ -176,7 +177,6 @@ abstract class CoreInjector {
   @Register.singleton(CustomTabs, from: CustomTabImpl)
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
-  @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
   @Register.singleton(Analytics, from: AnalyticsImpl)
   @Register.singleton(Logger, from: LoggerImpl)
@@ -200,6 +200,7 @@ abstract class WebSocketInjector {
 abstract class AuthInjector {
   @Register.singleton(AuthBloc)
   @Register.factory(ForgotPasswordBloc)
+  @Register.factory(NewPasswordBloc)
   @Register.singleton(AuthRepository, from: AuthRepositoryImpl)
   @Register.singleton(AuthRemoteDataSource, from: AuthRemoteDataSourceImpl)
   @Register.singleton(AuthLocalDataSource, from: AuthLocalDataSourceImpl)
@@ -215,6 +216,7 @@ abstract class AuthInjector {
   @Register.singleton(UCPostUserProfile)
   @Register.singleton(UCGetUserProfile)
   @Register.singleton(UCPostPasswordReset)
+  @Register.singleton(UCPostNewPassword)
   void configure();
 }
 

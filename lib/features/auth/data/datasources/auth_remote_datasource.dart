@@ -65,6 +65,11 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<String> postPasswordResetToRemote(String email);
+
+  /// Calls the Post New Password Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<String> postNewPasswordToRemote(Map<String, String> body);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -216,6 +221,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<String> postPasswordResetToRemote(String email) async {
     final body = {'email': email};
     final response = await apiService.postPasswordReset(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return json['detail'] as String;
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<String> postNewPasswordToRemote(Map<String, String> body) async {
+    final response = await apiService.postNewPassword(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return json['detail'] as String;
