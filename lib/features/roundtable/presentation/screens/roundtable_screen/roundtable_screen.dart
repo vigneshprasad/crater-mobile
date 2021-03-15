@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
@@ -16,6 +18,8 @@ import '../../widgets/editable_text_field/editable_text_field.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speaker_avatar/speaker_avatar.dart';
 import 'roundtable_screen_controller.dart';
+
+const kSpacingList = 24.00;
 
 class RoundTableScreen extends HookWidget {
   final int id;
@@ -105,11 +109,11 @@ class _RoundTableLoaded extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (table.topic.root != null)
-                  Text(table.topic.root.name, style: categoryStyle),
-                if (table.topic.root != null)
+                if (table.topicDetail.root != null)
+                  Text(table.topicDetail.root.name, style: categoryStyle),
+                if (table.topicDetail.root != null)
                   const SizedBox(height: AppInsets.sm),
-                Text(table.topic.name, style: agendaStyle),
+                Text(table.topicDetail.name, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
                 const SizedBox(height: AppInsets.l),
@@ -117,17 +121,19 @@ class _RoundTableLoaded extends HookWidget {
                 const SizedBox(height: AppInsets.xl),
                 Text("Speakers(${table.speakers.length})",
                     style: pageLabelStyle),
-                const SizedBox(height: AppInsets.l),
-                Wrap(
-                  spacing: AppInsets.xxl,
-                  children: controller.speakers
-                      .map((member) => SpeakerAvatar(
-                            user: member,
-                            isLive: controller.connectionState ==
-                                RtcConnectionState.connected,
-                          ))
-                      .toList(),
-                ),
+                const SizedBox(height: AppInsets.xxl),
+                if (table.isSpeaker)
+                  Wrap(
+                    spacing: AppInsets.xxl,
+                    children: controller.speakers
+                        .map((member) => SpeakerAvatar(
+                              user: member,
+                              isLive: controller.connectionState ==
+                                  RtcConnectionState.connected,
+                            ))
+                        .toList(),
+                  ),
+                if (!table.isSpeaker) _SpeakersListWithIntro(table: table)
               ],
             ),
           ),
@@ -152,8 +158,7 @@ class _RoundTableLoaded extends HookWidget {
     final bool showConnectionBar = controller.showConnectionBar;
     final List<Widget> items = [];
     final user = BlocProvider.of<AuthBloc>(context).state.user;
-    final isSpeaker =
-        table.speakers.where((speaker) => speaker.pk == user.pk).isNotEmpty;
+
     final overlay = Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -177,7 +182,7 @@ class _RoundTableLoaded extends HookWidget {
         ),
       ));
     } else {
-      if (isSpeaker) {
+      if (table.isSpeaker) {
         items.add(overlay);
 
         items.add(
@@ -242,6 +247,82 @@ class _RoundTableLoaded extends HookWidget {
       builder: (context) {
         return Container();
       },
+    );
+  }
+}
+
+class _SpeakersListWithIntro extends StatelessWidget {
+  final RoundTable table;
+  const _SpeakersListWithIntro({
+    Key key,
+    this.table,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> children = [];
+    if (table.host != null) {
+      children.add(_SpeakerWithIntro(user: table.hostDetail));
+    }
+
+    if (table.speakersDetailList != null &&
+        table.speakersDetailList.isNotEmpty) {
+      for (final speaker in table.speakersDetailList) {
+        children.add(_SpeakerWithIntro(user: speaker));
+      }
+    }
+
+    return Column(
+      children: children,
+    );
+  }
+}
+
+class _SpeakerWithIntro extends StatelessWidget {
+  final RoundTableUser user;
+
+  const _SpeakerWithIntro({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final description = user.introduction ?? user.email;
+    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 16,
+        );
+    final bodyStyle =
+        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: kSpacingList),
+      child: Row(
+        children: [
+          BaseNetworkImage(
+            imageUrl: user.photo,
+            nullImage: AppImageAssets.defaultAvatar,
+            imagebuilder: (context, imageProvider) => CircleAvatar(
+              backgroundImage: imageProvider,
+              radius: 36,
+            ),
+          ),
+          const SizedBox(width: AppInsets.xl),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(user.name, style: headingStyle),
+                const SizedBox(height: AppInsets.sm),
+                Text(
+                  description,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: bodyStyle,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

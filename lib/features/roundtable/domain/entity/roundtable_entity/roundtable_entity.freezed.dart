@@ -19,18 +19,30 @@ class _$RoundTableTearOff {
 // ignore: unused_element
   _RoundTable call(
       {int id,
-      RoundTableUser host,
-      List<RoundTableUser> speakers,
-      Topic topic,
+      String host,
+      List<String> speakers,
+      int topic,
       String description,
-      List<MeetingInterestModel> interests,
+      List<int> interests,
       DateTime start,
       DateTime end,
-      @JsonKey(name: 'max_speakers') int maxSpeakers,
+      @JsonKey(name: 'max_speakers')
+          int maxSpeakers,
       int privacy,
       int medium,
       bool closed,
-      @JsonKey(name: 'closed_at') DateTime closedAt}) {
+      @JsonKey(name: 'closed_at')
+          DateTime closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
+      @JsonKey(name: 'host_detail')
+          RoundTableUser hostDetail,
+      @JsonKey(name: 'interests_detail_list')
+          List<MeetingInterestModel> interestsDetailList,
+      @JsonKey(name: 'speakers_detail_list')
+          List<RoundTableUser> speakersDetailList,
+      @JsonKey(name: 'is_speaker')
+          bool isSpeaker}) {
     return _RoundTable(
       id: id,
       host: host,
@@ -45,6 +57,11 @@ class _$RoundTableTearOff {
       medium: medium,
       closed: closed,
       closedAt: closedAt,
+      topicDetail: topicDetail,
+      hostDetail: hostDetail,
+      interestsDetailList: interestsDetailList,
+      speakersDetailList: speakersDetailList,
+      isSpeaker: isSpeaker,
     );
   }
 
@@ -61,11 +78,11 @@ const $RoundTable = _$RoundTableTearOff();
 /// @nodoc
 mixin _$RoundTable {
   int get id;
-  RoundTableUser get host;
-  List<RoundTableUser> get speakers;
-  Topic get topic;
+  String get host;
+  List<String> get speakers;
+  int get topic;
   String get description;
-  List<MeetingInterestModel> get interests;
+  List<int> get interests;
   DateTime get start;
   DateTime get end;
   @JsonKey(name: 'max_speakers')
@@ -75,6 +92,16 @@ mixin _$RoundTable {
   bool get closed;
   @JsonKey(name: 'closed_at')
   DateTime get closedAt;
+  @JsonKey(name: 'topic_detail')
+  Topic get topicDetail;
+  @JsonKey(name: 'host_detail')
+  RoundTableUser get hostDetail;
+  @JsonKey(name: 'interests_detail_list')
+  List<MeetingInterestModel> get interestsDetailList;
+  @JsonKey(name: 'speakers_detail_list')
+  List<RoundTableUser> get speakersDetailList;
+  @JsonKey(name: 'is_speaker')
+  bool get isSpeaker;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -88,21 +115,33 @@ abstract class $RoundTableCopyWith<$Res> {
       _$RoundTableCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      RoundTableUser host,
-      List<RoundTableUser> speakers,
-      Topic topic,
+      String host,
+      List<String> speakers,
+      int topic,
       String description,
-      List<MeetingInterestModel> interests,
+      List<int> interests,
       DateTime start,
       DateTime end,
-      @JsonKey(name: 'max_speakers') int maxSpeakers,
+      @JsonKey(name: 'max_speakers')
+          int maxSpeakers,
       int privacy,
       int medium,
       bool closed,
-      @JsonKey(name: 'closed_at') DateTime closedAt});
+      @JsonKey(name: 'closed_at')
+          DateTime closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
+      @JsonKey(name: 'host_detail')
+          RoundTableUser hostDetail,
+      @JsonKey(name: 'interests_detail_list')
+          List<MeetingInterestModel> interestsDetailList,
+      @JsonKey(name: 'speakers_detail_list')
+          List<RoundTableUser> speakersDetailList,
+      @JsonKey(name: 'is_speaker')
+          bool isSpeaker});
 
-  $RoundTableUserCopyWith<$Res> get host;
-  $TopicCopyWith<$Res> get topic;
+  $TopicCopyWith<$Res> get topicDetail;
+  $RoundTableUserCopyWith<$Res> get hostDetail;
 }
 
 /// @nodoc
@@ -128,19 +167,22 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
     Object medium = freezed,
     Object closed = freezed,
     Object closedAt = freezed,
+    Object topicDetail = freezed,
+    Object hostDetail = freezed,
+    Object interestsDetailList = freezed,
+    Object speakersDetailList = freezed,
+    Object isSpeaker = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
-      host: host == freezed ? _value.host : host as RoundTableUser,
-      speakers: speakers == freezed
-          ? _value.speakers
-          : speakers as List<RoundTableUser>,
-      topic: topic == freezed ? _value.topic : topic as Topic,
+      host: host == freezed ? _value.host : host as String,
+      speakers:
+          speakers == freezed ? _value.speakers : speakers as List<String>,
+      topic: topic == freezed ? _value.topic : topic as int,
       description:
           description == freezed ? _value.description : description as String,
-      interests: interests == freezed
-          ? _value.interests
-          : interests as List<MeetingInterestModel>,
+      interests:
+          interests == freezed ? _value.interests : interests as List<int>,
       start: start == freezed ? _value.start : start as DateTime,
       end: end == freezed ? _value.end : end as DateTime,
       maxSpeakers:
@@ -149,26 +191,38 @@ class _$RoundTableCopyWithImpl<$Res> implements $RoundTableCopyWith<$Res> {
       medium: medium == freezed ? _value.medium : medium as int,
       closed: closed == freezed ? _value.closed : closed as bool,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
+      topicDetail:
+          topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
+      hostDetail: hostDetail == freezed
+          ? _value.hostDetail
+          : hostDetail as RoundTableUser,
+      interestsDetailList: interestsDetailList == freezed
+          ? _value.interestsDetailList
+          : interestsDetailList as List<MeetingInterestModel>,
+      speakersDetailList: speakersDetailList == freezed
+          ? _value.speakersDetailList
+          : speakersDetailList as List<RoundTableUser>,
+      isSpeaker: isSpeaker == freezed ? _value.isSpeaker : isSpeaker as bool,
     ));
   }
 
   @override
-  $RoundTableUserCopyWith<$Res> get host {
-    if (_value.host == null) {
+  $TopicCopyWith<$Res> get topicDetail {
+    if (_value.topicDetail == null) {
       return null;
     }
-    return $RoundTableUserCopyWith<$Res>(_value.host, (value) {
-      return _then(_value.copyWith(host: value));
+    return $TopicCopyWith<$Res>(_value.topicDetail, (value) {
+      return _then(_value.copyWith(topicDetail: value));
     });
   }
 
   @override
-  $TopicCopyWith<$Res> get topic {
-    if (_value.topic == null) {
+  $RoundTableUserCopyWith<$Res> get hostDetail {
+    if (_value.hostDetail == null) {
       return null;
     }
-    return $TopicCopyWith<$Res>(_value.topic, (value) {
-      return _then(_value.copyWith(topic: value));
+    return $RoundTableUserCopyWith<$Res>(_value.hostDetail, (value) {
+      return _then(_value.copyWith(hostDetail: value));
     });
   }
 }
@@ -181,23 +235,35 @@ abstract class _$RoundTableCopyWith<$Res> implements $RoundTableCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      RoundTableUser host,
-      List<RoundTableUser> speakers,
-      Topic topic,
+      String host,
+      List<String> speakers,
+      int topic,
       String description,
-      List<MeetingInterestModel> interests,
+      List<int> interests,
       DateTime start,
       DateTime end,
-      @JsonKey(name: 'max_speakers') int maxSpeakers,
+      @JsonKey(name: 'max_speakers')
+          int maxSpeakers,
       int privacy,
       int medium,
       bool closed,
-      @JsonKey(name: 'closed_at') DateTime closedAt});
+      @JsonKey(name: 'closed_at')
+          DateTime closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
+      @JsonKey(name: 'host_detail')
+          RoundTableUser hostDetail,
+      @JsonKey(name: 'interests_detail_list')
+          List<MeetingInterestModel> interestsDetailList,
+      @JsonKey(name: 'speakers_detail_list')
+          List<RoundTableUser> speakersDetailList,
+      @JsonKey(name: 'is_speaker')
+          bool isSpeaker});
 
   @override
-  $RoundTableUserCopyWith<$Res> get host;
+  $TopicCopyWith<$Res> get topicDetail;
   @override
-  $TopicCopyWith<$Res> get topic;
+  $RoundTableUserCopyWith<$Res> get hostDetail;
 }
 
 /// @nodoc
@@ -225,19 +291,22 @@ class __$RoundTableCopyWithImpl<$Res> extends _$RoundTableCopyWithImpl<$Res>
     Object medium = freezed,
     Object closed = freezed,
     Object closedAt = freezed,
+    Object topicDetail = freezed,
+    Object hostDetail = freezed,
+    Object interestsDetailList = freezed,
+    Object speakersDetailList = freezed,
+    Object isSpeaker = freezed,
   }) {
     return _then(_RoundTable(
       id: id == freezed ? _value.id : id as int,
-      host: host == freezed ? _value.host : host as RoundTableUser,
-      speakers: speakers == freezed
-          ? _value.speakers
-          : speakers as List<RoundTableUser>,
-      topic: topic == freezed ? _value.topic : topic as Topic,
+      host: host == freezed ? _value.host : host as String,
+      speakers:
+          speakers == freezed ? _value.speakers : speakers as List<String>,
+      topic: topic == freezed ? _value.topic : topic as int,
       description:
           description == freezed ? _value.description : description as String,
-      interests: interests == freezed
-          ? _value.interests
-          : interests as List<MeetingInterestModel>,
+      interests:
+          interests == freezed ? _value.interests : interests as List<int>,
       start: start == freezed ? _value.start : start as DateTime,
       end: end == freezed ? _value.end : end as DateTime,
       maxSpeakers:
@@ -246,6 +315,18 @@ class __$RoundTableCopyWithImpl<$Res> extends _$RoundTableCopyWithImpl<$Res>
       medium: medium == freezed ? _value.medium : medium as int,
       closed: closed == freezed ? _value.closed : closed as bool,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
+      topicDetail:
+          topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
+      hostDetail: hostDetail == freezed
+          ? _value.hostDetail
+          : hostDetail as RoundTableUser,
+      interestsDetailList: interestsDetailList == freezed
+          ? _value.interestsDetailList
+          : interestsDetailList as List<MeetingInterestModel>,
+      speakersDetailList: speakersDetailList == freezed
+          ? _value.speakersDetailList
+          : speakersDetailList as List<RoundTableUser>,
+      isSpeaker: isSpeaker == freezed ? _value.isSpeaker : isSpeaker as bool,
     ));
   }
 }
@@ -267,7 +348,12 @@ class _$_RoundTable implements _RoundTable {
       this.privacy,
       this.medium,
       this.closed,
-      @JsonKey(name: 'closed_at') this.closedAt});
+      @JsonKey(name: 'closed_at') this.closedAt,
+      @JsonKey(name: 'topic_detail') this.topicDetail,
+      @JsonKey(name: 'host_detail') this.hostDetail,
+      @JsonKey(name: 'interests_detail_list') this.interestsDetailList,
+      @JsonKey(name: 'speakers_detail_list') this.speakersDetailList,
+      @JsonKey(name: 'is_speaker') this.isSpeaker});
 
   factory _$_RoundTable.fromJson(Map<String, dynamic> json) =>
       _$_$_RoundTableFromJson(json);
@@ -275,15 +361,15 @@ class _$_RoundTable implements _RoundTable {
   @override
   final int id;
   @override
-  final RoundTableUser host;
+  final String host;
   @override
-  final List<RoundTableUser> speakers;
+  final List<String> speakers;
   @override
-  final Topic topic;
+  final int topic;
   @override
   final String description;
   @override
-  final List<MeetingInterestModel> interests;
+  final List<int> interests;
   @override
   final DateTime start;
   @override
@@ -300,10 +386,25 @@ class _$_RoundTable implements _RoundTable {
   @override
   @JsonKey(name: 'closed_at')
   final DateTime closedAt;
+  @override
+  @JsonKey(name: 'topic_detail')
+  final Topic topicDetail;
+  @override
+  @JsonKey(name: 'host_detail')
+  final RoundTableUser hostDetail;
+  @override
+  @JsonKey(name: 'interests_detail_list')
+  final List<MeetingInterestModel> interestsDetailList;
+  @override
+  @JsonKey(name: 'speakers_detail_list')
+  final List<RoundTableUser> speakersDetailList;
+  @override
+  @JsonKey(name: 'is_speaker')
+  final bool isSpeaker;
 
   @override
   String toString() {
-    return 'RoundTable(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt)';
+    return 'RoundTable(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker)';
   }
 
   @override
@@ -341,7 +442,22 @@ class _$_RoundTable implements _RoundTable {
                 const DeepCollectionEquality().equals(other.closed, closed)) &&
             (identical(other.closedAt, closedAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.closedAt, closedAt)));
+                    .equals(other.closedAt, closedAt)) &&
+            (identical(other.topicDetail, topicDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.topicDetail, topicDetail)) &&
+            (identical(other.hostDetail, hostDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.hostDetail, hostDetail)) &&
+            (identical(other.interestsDetailList, interestsDetailList) ||
+                const DeepCollectionEquality()
+                    .equals(other.interestsDetailList, interestsDetailList)) &&
+            (identical(other.speakersDetailList, speakersDetailList) ||
+                const DeepCollectionEquality()
+                    .equals(other.speakersDetailList, speakersDetailList)) &&
+            (identical(other.isSpeaker, isSpeaker) ||
+                const DeepCollectionEquality()
+                    .equals(other.isSpeaker, isSpeaker)));
   }
 
   @override
@@ -359,7 +475,12 @@ class _$_RoundTable implements _RoundTable {
       const DeepCollectionEquality().hash(privacy) ^
       const DeepCollectionEquality().hash(medium) ^
       const DeepCollectionEquality().hash(closed) ^
-      const DeepCollectionEquality().hash(closedAt);
+      const DeepCollectionEquality().hash(closedAt) ^
+      const DeepCollectionEquality().hash(topicDetail) ^
+      const DeepCollectionEquality().hash(hostDetail) ^
+      const DeepCollectionEquality().hash(interestsDetailList) ^
+      const DeepCollectionEquality().hash(speakersDetailList) ^
+      const DeepCollectionEquality().hash(isSpeaker);
 
   @JsonKey(ignore: true)
   @override
@@ -375,18 +496,30 @@ class _$_RoundTable implements _RoundTable {
 abstract class _RoundTable implements RoundTable {
   factory _RoundTable(
       {int id,
-      RoundTableUser host,
-      List<RoundTableUser> speakers,
-      Topic topic,
+      String host,
+      List<String> speakers,
+      int topic,
       String description,
-      List<MeetingInterestModel> interests,
+      List<int> interests,
       DateTime start,
       DateTime end,
-      @JsonKey(name: 'max_speakers') int maxSpeakers,
+      @JsonKey(name: 'max_speakers')
+          int maxSpeakers,
       int privacy,
       int medium,
       bool closed,
-      @JsonKey(name: 'closed_at') DateTime closedAt}) = _$_RoundTable;
+      @JsonKey(name: 'closed_at')
+          DateTime closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic topicDetail,
+      @JsonKey(name: 'host_detail')
+          RoundTableUser hostDetail,
+      @JsonKey(name: 'interests_detail_list')
+          List<MeetingInterestModel> interestsDetailList,
+      @JsonKey(name: 'speakers_detail_list')
+          List<RoundTableUser> speakersDetailList,
+      @JsonKey(name: 'is_speaker')
+          bool isSpeaker}) = _$_RoundTable;
 
   factory _RoundTable.fromJson(Map<String, dynamic> json) =
       _$_RoundTable.fromJson;
@@ -394,15 +527,15 @@ abstract class _RoundTable implements RoundTable {
   @override
   int get id;
   @override
-  RoundTableUser get host;
+  String get host;
   @override
-  List<RoundTableUser> get speakers;
+  List<String> get speakers;
   @override
-  Topic get topic;
+  int get topic;
   @override
   String get description;
   @override
-  List<MeetingInterestModel> get interests;
+  List<int> get interests;
   @override
   DateTime get start;
   @override
@@ -420,6 +553,21 @@ abstract class _RoundTable implements RoundTable {
   @JsonKey(name: 'closed_at')
   DateTime get closedAt;
   @override
+  @JsonKey(name: 'topic_detail')
+  Topic get topicDetail;
+  @override
+  @JsonKey(name: 'host_detail')
+  RoundTableUser get hostDetail;
+  @override
+  @JsonKey(name: 'interests_detail_list')
+  List<MeetingInterestModel> get interestsDetailList;
+  @override
+  @JsonKey(name: 'speakers_detail_list')
+  List<RoundTableUser> get speakersDetailList;
+  @override
+  @JsonKey(name: 'is_speaker')
+  bool get isSpeaker;
+  @override
   @JsonKey(ignore: true)
   _$RoundTableCopyWith<_RoundTable> get copyWith;
 }
@@ -433,12 +581,18 @@ class _$RoundTableUserTearOff {
   const _$RoundTableUserTearOff();
 
 // ignore: unused_element
-  _RoundTableUser call({String pk, String email, String name, String photo}) {
+  _RoundTableUser call(
+      {String pk,
+      String email,
+      String name,
+      String photo,
+      String introduction}) {
     return _RoundTableUser(
       pk: pk,
       email: email,
       name: name,
       photo: photo,
+      introduction: introduction,
     );
   }
 
@@ -458,6 +612,7 @@ mixin _$RoundTableUser {
   String get email;
   String get name;
   String get photo;
+  String get introduction;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -469,7 +624,12 @@ abstract class $RoundTableUserCopyWith<$Res> {
   factory $RoundTableUserCopyWith(
           RoundTableUser value, $Res Function(RoundTableUser) then) =
       _$RoundTableUserCopyWithImpl<$Res>;
-  $Res call({String pk, String email, String name, String photo});
+  $Res call(
+      {String pk,
+      String email,
+      String name,
+      String photo,
+      String introduction});
 }
 
 /// @nodoc
@@ -487,12 +647,16 @@ class _$RoundTableUserCopyWithImpl<$Res>
     Object email = freezed,
     Object name = freezed,
     Object photo = freezed,
+    Object introduction = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed ? _value.pk : pk as String,
       email: email == freezed ? _value.email : email as String,
       name: name == freezed ? _value.name : name as String,
       photo: photo == freezed ? _value.photo : photo as String,
+      introduction: introduction == freezed
+          ? _value.introduction
+          : introduction as String,
     ));
   }
 }
@@ -504,7 +668,12 @@ abstract class _$RoundTableUserCopyWith<$Res>
           _RoundTableUser value, $Res Function(_RoundTableUser) then) =
       __$RoundTableUserCopyWithImpl<$Res>;
   @override
-  $Res call({String pk, String email, String name, String photo});
+  $Res call(
+      {String pk,
+      String email,
+      String name,
+      String photo,
+      String introduction});
 }
 
 /// @nodoc
@@ -524,12 +693,16 @@ class __$RoundTableUserCopyWithImpl<$Res>
     Object email = freezed,
     Object name = freezed,
     Object photo = freezed,
+    Object introduction = freezed,
   }) {
     return _then(_RoundTableUser(
       pk: pk == freezed ? _value.pk : pk as String,
       email: email == freezed ? _value.email : email as String,
       name: name == freezed ? _value.name : name as String,
       photo: photo == freezed ? _value.photo : photo as String,
+      introduction: introduction == freezed
+          ? _value.introduction
+          : introduction as String,
     ));
   }
 }
@@ -538,7 +711,8 @@ class __$RoundTableUserCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_RoundTableUser implements _RoundTableUser {
-  _$_RoundTableUser({this.pk, this.email, this.name, this.photo});
+  _$_RoundTableUser(
+      {this.pk, this.email, this.name, this.photo, this.introduction});
 
   factory _$_RoundTableUser.fromJson(Map<String, dynamic> json) =>
       _$_$_RoundTableUserFromJson(json);
@@ -551,10 +725,12 @@ class _$_RoundTableUser implements _RoundTableUser {
   final String name;
   @override
   final String photo;
+  @override
+  final String introduction;
 
   @override
   String toString() {
-    return 'RoundTableUser(pk: $pk, email: $email, name: $name, photo: $photo)';
+    return 'RoundTableUser(pk: $pk, email: $email, name: $name, photo: $photo, introduction: $introduction)';
   }
 
   @override
@@ -568,7 +744,10 @@ class _$_RoundTableUser implements _RoundTableUser {
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)));
+                const DeepCollectionEquality().equals(other.photo, photo)) &&
+            (identical(other.introduction, introduction) ||
+                const DeepCollectionEquality()
+                    .equals(other.introduction, introduction)));
   }
 
   @override
@@ -577,7 +756,8 @@ class _$_RoundTableUser implements _RoundTableUser {
       const DeepCollectionEquality().hash(pk) ^
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(photo);
+      const DeepCollectionEquality().hash(photo) ^
+      const DeepCollectionEquality().hash(introduction);
 
   @JsonKey(ignore: true)
   @override
@@ -592,7 +772,11 @@ class _$_RoundTableUser implements _RoundTableUser {
 
 abstract class _RoundTableUser implements RoundTableUser {
   factory _RoundTableUser(
-      {String pk, String email, String name, String photo}) = _$_RoundTableUser;
+      {String pk,
+      String email,
+      String name,
+      String photo,
+      String introduction}) = _$_RoundTableUser;
 
   factory _RoundTableUser.fromJson(Map<String, dynamic> json) =
       _$_RoundTableUser.fromJson;
@@ -605,6 +789,8 @@ abstract class _RoundTableUser implements RoundTableUser {
   String get name;
   @override
   String get photo;
+  @override
+  String get introduction;
   @override
   @JsonKey(ignore: true)
   _$RoundTableUserCopyWith<_RoundTableUser> get copyWith;

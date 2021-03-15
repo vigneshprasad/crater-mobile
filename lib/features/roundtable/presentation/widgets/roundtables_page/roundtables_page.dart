@@ -29,13 +29,13 @@ class RoundTablesPage extends HookWidget {
     for (final table in tables) {
       children.add(RoundTableCard(
         data: table,
-        description: table.topic.description,
-        rootTopicLabel: table.topic.root?.name,
+        description: table.topicDetail.description,
+        rootTopicLabel: table.topicDetail.root?.name,
         startTime: table.start,
         endTime: table.end,
-        topicLabel: table.topic.name ?? "",
-        interests: table.interests,
-        speakers: table.speakers,
+        topicLabel: table.topicDetail.name ?? "",
+        interests: table.interestsDetailList,
+        speakers: table.speakersDetailList,
         onPressed: (value) {
           if (value is RoundTable) {
             ExtendedNavigator.of(context)

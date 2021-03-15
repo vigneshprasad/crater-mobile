@@ -9,23 +9,11 @@ part of 'roundtable_entity.dart';
 _$_RoundTable _$_$_RoundTableFromJson(Map<String, dynamic> json) {
   return _$_RoundTable(
     id: json['id'] as int,
-    host: json['host'] == null
-        ? null
-        : RoundTableUser.fromJson(json['host'] as Map<String, dynamic>),
-    speakers: (json['speakers'] as List)
-        ?.map((e) => e == null
-            ? null
-            : RoundTableUser.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    topic: json['topic'] == null
-        ? null
-        : Topic.fromJson(json['topic'] as Map<String, dynamic>),
+    host: json['host'] as String,
+    speakers: (json['speakers'] as List)?.map((e) => e as String)?.toList(),
+    topic: json['topic'] as int,
     description: json['description'] as String,
-    interests: (json['interests'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    interests: (json['interests'] as List)?.map((e) => e as int)?.toList(),
     start:
         json['start'] == null ? null : DateTime.parse(json['start'] as String),
     end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
@@ -36,6 +24,23 @@ _$_RoundTable _$_$_RoundTableFromJson(Map<String, dynamic> json) {
     closedAt: json['closed_at'] == null
         ? null
         : DateTime.parse(json['closed_at'] as String),
+    topicDetail: json['topic_detail'] == null
+        ? null
+        : Topic.fromJson(json['topic_detail'] as Map<String, dynamic>),
+    hostDetail: json['host_detail'] == null
+        ? null
+        : RoundTableUser.fromJson(json['host_detail'] as Map<String, dynamic>),
+    interestsDetailList: (json['interests_detail_list'] as List)
+        ?.map((e) => e == null
+            ? null
+            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    speakersDetailList: (json['speakers_detail_list'] as List)
+        ?.map((e) => e == null
+            ? null
+            : RoundTableUser.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    isSpeaker: json['is_speaker'] as bool,
   );
 }
 
@@ -54,6 +59,11 @@ Map<String, dynamic> _$_$_RoundTableToJson(_$_RoundTable instance) =>
       'medium': instance.medium,
       'closed': instance.closed,
       'closed_at': instance.closedAt?.toIso8601String(),
+      'topic_detail': instance.topicDetail,
+      'host_detail': instance.hostDetail,
+      'interests_detail_list': instance.interestsDetailList,
+      'speakers_detail_list': instance.speakersDetailList,
+      'is_speaker': instance.isSpeaker,
     };
 
 _$_RoundTableUser _$_$_RoundTableUserFromJson(Map<String, dynamic> json) {
@@ -62,6 +72,7 @@ _$_RoundTableUser _$_$_RoundTableUserFromJson(Map<String, dynamic> json) {
     email: json['email'] as String,
     name: json['name'] as String,
     photo: json['photo'] as String,
+    introduction: json['introduction'] as String,
   );
 }
 
@@ -71,4 +82,5 @@ Map<String, dynamic> _$_$_RoundTableUserToJson(_$_RoundTableUser instance) =>
       'email': instance.email,
       'name': instance.name,
       'photo': instance.photo,
+      'introduction': instance.introduction,
     };

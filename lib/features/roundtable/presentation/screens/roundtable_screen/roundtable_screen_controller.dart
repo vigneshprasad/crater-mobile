@@ -100,14 +100,14 @@ class RoundTableScreenController extends ChangeNotifier {
     List<RtcUser> initial = [];
     if (table.host != null) {
       initial.add(RtcUser(
-        userInfo: table.host,
-        pk: table.host.pk,
+        userInfo: table.hostDetail,
+        pk: table.hostDetail.pk,
         online: false,
         muted: false,
       ));
     }
 
-    initial.addAll(table.speakers.map(
+    initial.addAll(table.speakersDetailList.map(
       (speaker) => RtcUser(
         userInfo: speaker,
         pk: speaker.pk,
