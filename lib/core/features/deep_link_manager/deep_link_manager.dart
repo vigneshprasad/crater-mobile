@@ -30,7 +30,7 @@ class DeepLinkManagerImpl implements DeepLinkManager {
     for (final provider in _providers) {
       switch (provider) {
         case DeepLinkProviderType.firebase:
-          await _handleFirebase();
+          await _handleFirebaseDeepLink();
           break;
 
         default:
@@ -39,7 +39,7 @@ class DeepLinkManagerImpl implements DeepLinkManager {
     }
   }
 
-  Future<void> _handleFirebase() async {
+  Future<void> _handleFirebaseDeepLink() async {
     FirebaseDynamicLinks.instance.onLink(
       onSuccess: (linkData) async {
         final Uri deeplink = linkData?.link;

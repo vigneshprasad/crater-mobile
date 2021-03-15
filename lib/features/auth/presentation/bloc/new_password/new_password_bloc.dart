@@ -12,10 +12,10 @@ part 'new_password_event.dart';
 part 'new_password_state.dart';
 
 class NewPasswordBloc extends Bloc<NewPasswordEvent, NewPasswordState> {
-  final UCPostNewPassword passwordReset;
+  final UCPostNewPassword postNewPassword;
   NewPasswordBloc({
-    @required this.passwordReset,
-  })  : assert(passwordReset != null),
+    @required this.postNewPassword,
+  })  : assert(postNewPassword != null),
         super(const NewPasswordInitial());
 
   @override
@@ -40,7 +40,7 @@ class NewPasswordBloc extends Bloc<NewPasswordEvent, NewPasswordState> {
 
     body['new_password'] = event.password;
     final responseOrerror =
-        await passwordReset(PostNewPasswordParams(body: body));
+        await postNewPassword(PostNewPasswordParams(body: body));
 
     yield responseOrerror.fold(
       (error) => NewPasswordFailure(error: error),

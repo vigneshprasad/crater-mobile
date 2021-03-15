@@ -177,7 +177,6 @@ abstract class CoreInjector {
   @Register.singleton(CustomTabs, from: CustomTabImpl)
   @Register.singleton(NetworkInfo, from: NetworkInfoImpl)
   @Register.singleton(PushNotifications, from: PushNotificationsImpl)
-  // @Register.singleton(DeepLinkManager, from: DeepLinkManagerImpl)
   @Register.singleton(LocalStorage, from: LocalStorageImpl)
   @Register.singleton(Analytics, from: AnalyticsImpl)
   @Register.singleton(Logger, from: LoggerImpl)

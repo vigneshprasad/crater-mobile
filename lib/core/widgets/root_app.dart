@@ -18,8 +18,6 @@ import '../status_bar_color/status_bar_color.dart';
 class RootApp extends HookWidget {
   Future<void> initApp(BuildContext context) async {
     StatusBarColor.setTheme(ThemeType.light);
-
-    // await KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
