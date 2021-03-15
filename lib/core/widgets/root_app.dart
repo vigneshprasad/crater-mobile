@@ -1,41 +1,40 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:kiwi/kiwi.dart';
 
+import 'package:hooks_riverpod/all.dart' hide RootProvider;
+import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
 import '../analytics/analytics.dart';
-import '../features/deep_link_manager/deep_link_manager.dart';
 import '../status_bar_color/status_bar_color.dart';
 
-class RootApp extends StatefulWidget {
-  @override
-  _RootAppState createState() => _RootAppState();
-}
-
-class _RootAppState extends State<RootApp> {
-  GlobalKey<NavigatorState> _navigatorKey;
-
-  @override
-  void initState() {
-    initApp();
-    super.initState();
-  }
-
-  Future<void> initApp() async {
-    _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+class RootApp extends HookWidget {
+  Future<void> initApp(BuildContext context) async {
     StatusBarColor.setTheme(ThemeType.light);
-    await KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
+
+    // await KiwiContainer().resolve<DeepLinkManager>().handleDeepLink();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
   @override
   Widget build(BuildContext context) {
+    final deepLinkManager = useProvider(deepLinkManagerProvider);
+    useEffect(() {
+      deepLinkManager.handleDeepLink();
+      initApp(context);
+      return;
+    }, []);
+
+    final GlobalKey<NavigatorState> _navigatorKey =
+        KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         // For Android.

@@ -20,4 +20,5 @@ abstract class AuthRepository {
       Map<String, dynamic> body);
   Future<Either<Failure, UserProfile>> getUserProfile();
   Future<Either<Failure, String>> postPasswordReset(String email);
+  Future<Either<Failure, String>> postNewPassword(Map<String, String> body);
 }
