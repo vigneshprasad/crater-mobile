@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_interest_model.dart';
-import 'package:worknetwork/features/meeting/data/models/meeting_objective_model.dart';
-import 'package:worknetwork/features/meeting/data/models/time_slot_model.dart';
+
+import '../../../../meeting/data/models/meeting_interest_model.dart';
+import '../../../../meeting/data/models/time_slot_model.dart';
 import '../topic_entity/topic_entity.dart';
 
 part 'optin_entity.freezed.dart';

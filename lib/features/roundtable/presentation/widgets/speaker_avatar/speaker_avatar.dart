@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/rtc_user_entity/rtc_user_entity.dart';
+
+import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 
 const kItemWidth = 76.00;
 

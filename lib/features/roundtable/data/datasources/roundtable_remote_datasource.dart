@@ -10,6 +10,7 @@ import '../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../domain/entity/agenda_entity/agenda_entity.dart';
 import '../../domain/entity/category_entity/category_entity.dart';
+import '../../domain/entity/group_request/group_request_enitity.dart';
 import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
@@ -84,6 +85,10 @@ abstract class RoundTableRemoteDatasource {
   /// Get All User Optins from Remote Server
   /// Throws [ServerException]
   Future<List<Optin>> getAllUserOptinsFromRemote();
+
+  // Post Group request data to Remote Server
+  /// Throws [ServerException]
+  Future<GroupRequest> postGroupRequestToRemote(GroupRequest request);
 }
 
 class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
@@ -261,6 +266,18 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
       return jsonList
           .map((json) => Optin.fromJson(json as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<GroupRequest> postGroupRequestToRemote(GroupRequest request) async {
+    final body = request.toJson();
+    final response = await roundTableApiService.postGroupRequest(body);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return GroupRequest.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

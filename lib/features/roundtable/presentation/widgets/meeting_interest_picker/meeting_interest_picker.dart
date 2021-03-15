@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 
-import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
+import '../../../../../constants/app_constants.dart';
+import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import '../../../../../ui/base/base_error_text/base_error_text.dart';
+import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 
 const kIconSize = 74.00;
 const kSelectorSize = 84.00;

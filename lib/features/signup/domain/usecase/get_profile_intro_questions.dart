@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
+import '../repository/profile_intro_repository.dart';
 
 class UCGetProfileIntroQuestions
     implements AsyncUseCase<List<String>, NoParams> {

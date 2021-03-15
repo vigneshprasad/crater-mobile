@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
+import '../../../../core/custom_tabs/custom_tabs.dart';
 import '../../domain/entity/article_entity.dart';
 
 class ArticleCard extends StatelessWidget {

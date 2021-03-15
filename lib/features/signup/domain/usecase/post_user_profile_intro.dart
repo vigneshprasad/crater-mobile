@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
+import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../repository/profile_intro_repository.dart';
 
 class UCPostUserProfileIntro
     implements AsyncUseCase<UserProfile, UCPostUserProfileIntroParams> {

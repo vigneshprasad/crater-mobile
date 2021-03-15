@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../meeting/data/models/meeting_interest_model.dart';
-import '../agenda_entity/agenda_entity.dart';
 import '../topic_entity/topic_entity.dart';
 
 part 'roundtable_entity.freezed.dart';

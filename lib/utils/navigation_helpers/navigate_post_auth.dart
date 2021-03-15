@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 
 import '../../features/auth/domain/entity/user_entity.dart';
+import '../../features/auth/domain/entity/user_profile_entity.dart';
 import '../../routes.gr.dart';
 
 void navigatePostAuth(User user, {UserProfile profile}) {

@@ -3,14 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../core/analytics/analytics.dart';
-import '../../../core/config_reader/config_reader.dart';
 import '../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../../../core/local_storage/local_storage.dart';
 import '../../../features/auth/presentation/bloc/auth_bloc.dart';

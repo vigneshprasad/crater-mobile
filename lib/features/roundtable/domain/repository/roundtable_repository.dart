@@ -4,9 +4,9 @@ import '../../../../core/error/failures/failures.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../meeting/domain/entity/time_slot_entity.dart';
-import '../../data/models/agora_rtc_user_info/agora_rtc_user_info.dart';
 import '../entity/agenda_entity/agenda_entity.dart';
 import '../entity/category_entity/category_entity.dart';
+import '../entity/group_request/group_request_enitity.dart';
 import '../entity/optin_entity/optin_entity.dart';
 import '../entity/roundtable_entity/roundtable_entity.dart';
 import '../entity/roundtable_rtc_info/roundtable_rtc_info.dart';
@@ -34,4 +34,7 @@ abstract class RoundTableRepository {
     MeetingConfig config,
     Topic topic,
   );
+
+  Future<Either<Failure, GroupRequest>> postRequestToJoinGroup(
+      GroupRequest request);
 }

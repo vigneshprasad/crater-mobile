@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
+import '../../../../../utils/app_localizations.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/time_slot_entity.dart';

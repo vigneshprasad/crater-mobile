@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 

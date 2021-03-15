@@ -101,4 +101,12 @@ class _$RoundTableApiService extends RoundTableApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postGroupRequest(Map<String, dynamic> body) {
+    final $url = '/groups/requests/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

@@ -13,6 +13,7 @@ import '../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../domain/entity/agenda_entity/agenda_entity.dart';
 import '../../domain/entity/category_entity/category_entity.dart';
+import '../../domain/entity/group_request/group_request_enitity.dart';
 import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
@@ -220,7 +221,23 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
       );
       return Right(response);
     } on ServerException catch (error) {
-      print(error.message);
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GroupRequest>> postRequestToJoinGroup(
+      GroupRequest request) async {
+    try {
+      final response =
+          await _remoteDatasource.postGroupRequestToRemote(request);
+      return Right(response);
+    } on ServerException catch (error) {
       final message =
           jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");

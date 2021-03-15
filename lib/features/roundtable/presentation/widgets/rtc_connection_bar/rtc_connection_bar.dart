@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/features/roundtable/presentation/screens/roundtable_screen/roundtable_screen_controller.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
+import '../../screens/roundtable_screen/roundtable_screen_controller.dart';
 
 const kconnectionBarHeight = 68.00;
 const kbarBorderRadius = Radius.circular(24.0);

@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/error/failures/failures.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/roundtable/data/repository/roundtable_repository_impl.dart';
-import 'package:worknetwork/features/roundtable/data/services/roundtable_rtc_client/roundtable_rtc_client.dart';
-import 'package:worknetwork/features/roundtable/domain/entity/rtc_user_entity/rtc_user_entity.dart';
-import 'package:worknetwork/features/roundtable/domain/repository/roundtable_repository.dart';
 
 import '../../../../../core/api_result/api_result.dart';
+import '../../../../../core/error/failures/failures.dart';
+import '../../../../auth/domain/entity/user_entity.dart';
+import '../../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../data/repository/roundtable_repository_impl.dart';
+import '../../../data/services/roundtable_rtc_client/roundtable_rtc_client.dart';
+import '../../../domain/entity/group_request/group_request_enitity.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../../domain/entity/roundtable_rtc_info/roundtable_rtc_info.dart';
+import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
+import '../../../domain/repository/roundtable_repository.dart';
 
 enum RtcConnectionState { connected, connecting, disconnected }
 
@@ -116,6 +117,11 @@ class RoundTableScreenController extends ChangeNotifier {
     ));
 
     return initial;
+  }
+
+  Future<Either<Failure, GroupRequest>> requestToJoinGroup(int group) async {
+    final request = GroupRequest(group: group);
+    return _repository.postRequestToJoinGroup(request);
   }
 
   Future<void> joinRoundTableChannel(User localUser) async {
@@ -253,17 +259,19 @@ class RoundTableScreenController extends ChangeNotifier {
   Future<void> _onAudioVolumeIndicationChange(
       List<AudioVolumeInfo> speakers, int totalVolume) async {
     for (final speaker in speakers) {
-      final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
-      final rtcUid = info.userAccount;
-      if (rtcUid != null) {
+      try {
+        final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
+        print("heloo $info");
+        final rtcUid = info.userAccount;
         final index = _speakers.indexWhere((element) => element.pk == rtcUid);
         if (index > -1) {
           _speakers[index] = _speakers[index].copyWith(volume: speaker.volume);
         }
+        notifyListeners();
+      } catch (error) {
+        print(error);
       }
     }
-
-    notifyListeners();
   }
 
   Future<void> _onRemoteAudioStateChanged(

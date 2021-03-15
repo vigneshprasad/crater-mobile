@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/signup/data/datasources/profile_intro_remote_datasource.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../../../auth/data/datasources/auth_local_datasource.dart';
+import '../../../auth/data/models/user_profile_model.dart';
+import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../../domain/entity/profile_intro_meta.dart';
+import '../../domain/entity/profile_intro_question.dart';
+import '../../domain/repository/profile_intro_repository.dart';
+import '../datasources/profile_intro_remote_datasource.dart';
 
 class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
   final ProfileIntroRemoteDatasource remoteDatasource;
