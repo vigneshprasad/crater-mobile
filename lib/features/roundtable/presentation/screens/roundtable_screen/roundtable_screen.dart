@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
@@ -11,6 +12,7 @@ import 'package:worknetwork/core/widgets/base/base_network_image/base_network_im
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
@@ -126,10 +128,14 @@ class _RoundTableLoaded extends HookWidget {
                   Wrap(
                     spacing: AppInsets.xxl,
                     children: controller.speakers
-                        .map((member) => SpeakerAvatar(
-                              user: member,
-                              isLive: controller.connectionState ==
-                                  RtcConnectionState.connected,
+                        .map((member) => InkWell(
+                              onTap: () => ExtendedNavigator.of(context).push(
+                                  Routes.profileScreen(userId: member.pk)),
+                              child: SpeakerAvatar(
+                                user: member,
+                                isLive: controller.connectionState ==
+                                    RtcConnectionState.connected,
+                              ),
                             ))
                         .toList(),
                   ),
@@ -293,35 +299,39 @@ class _SpeakerWithIntro extends StatelessWidget {
         );
     final bodyStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: kSpacingList),
-      child: Row(
-        children: [
-          BaseNetworkImage(
-            imageUrl: user.photo,
-            defaultImage: AppImageAssets.defaultAvatar,
-            imagebuilder: (context, imageProvider) => CircleAvatar(
-              backgroundImage: imageProvider,
-              radius: 36,
+    return InkWell(
+      onTap: () => ExtendedNavigator.of(context)
+          .push(Routes.profileScreen(userId: user.pk)),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: kSpacingList),
+        child: Row(
+          children: [
+            BaseNetworkImage(
+              imageUrl: user.photo,
+              defaultImage: AppImageAssets.defaultAvatar,
+              imagebuilder: (context, imageProvider) => CircleAvatar(
+                backgroundImage: imageProvider,
+                radius: 36,
+              ),
             ),
-          ),
-          const SizedBox(width: AppInsets.xl),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user.name, style: headingStyle),
-                const SizedBox(height: AppInsets.sm),
-                Text(
-                  description,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: bodyStyle,
-                )
-              ],
+            const SizedBox(width: AppInsets.xl),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.name, style: headingStyle),
+                  const SizedBox(height: AppInsets.sm),
+                  Text(
+                    description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: bodyStyle,
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

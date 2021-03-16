@@ -1,0 +1,262 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/auto_route_annotations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen_state.dart';
+
+import '../../../../../routes.gr.dart';
+import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+
+class ProfileScreen extends HookWidget {
+  final String userId;
+  final bool allowEdit;
+
+  const ProfileScreen(
+    @PathParam('userId') this.userId, {
+    @PathParam('allowEdit') this.allowEdit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final profileState = useProvider(getProfileNotifierProvider(userId).state);
+    const fabHeroTag = Object();
+    return Scaffold(
+        appBar: BaseAppBar(),
+        extendBodyBehindAppBar: true,
+        body: profileState.when(
+          data: (state) => Scaffold(
+              floatingActionButton: allowEdit != null && allowEdit
+                  ? FloatingActionButton(
+                      heroTag: fabHeroTag,
+                      onPressed: () => ExtendedNavigator.of(context)
+                          .push(Routes.profileIntroScreen(editMode: true)),
+                      child: const Icon(Icons.edit),
+                    )
+                  : FloatingActionButton(
+                      heroTag: fabHeroTag,
+                      onPressed: () => ExtendedNavigator.of(context).push(
+                        Routes.chatScreen,
+                        arguments: ChatScreenArguments(recieverId: userId),
+                      ),
+                      child: const Icon(Icons.chat),
+                    ),
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      _ProfileBody(state.profile),
+                      if (state.interests != null && state.objectives != null)
+                        _MeetingPreferenceInfo(
+                            state.interests, state.objectives),
+                    ],
+                  ),
+                ),
+              )),
+          loading: () => Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const LinearProgressIndicator(),
+                ],
+              ),
+            ),
+          ),
+          error: (error, stackTrace) => Container(color: Colors.red),
+        ));
+  }
+}
+
+class _ProfileBody extends HookWidget {
+  final Profile profile;
+
+  const _ProfileBody(this.profile);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _buildImage(),
+        ),
+        Text(
+          profile.name,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        if (profile.tag != null)
+          Text(
+            profile.tag[0].name,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        if (profile.linkedIn != null) _buildLinkedInButton(),
+        if (profile.introduction != null)
+          Text(
+            profile.introduction,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildImage() {
+    final String photo = profile.photo;
+    if (photo != null) {
+      return CachedNetworkImage(
+        imageUrl: photo,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50.0),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.0),
+          image: const DecorationImage(image: AppImageAssets.defaultAvatar),
+        ),
+      );
+    }
+  }
+
+  Widget _buildLinkedInButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RawMaterialButton(
+        constraints: const BoxConstraints(
+          minWidth: 40,
+        ),
+        fillColor: AppTheme.linkedInColor,
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.sm,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        onPressed: () =>
+            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn),
+        child: SvgPicture.asset(
+          AppSvgAssets.linkedinFilled,
+          height: 30.0,
+        ),
+      ),
+    );
+  }
+}
+
+class _MeetingPreferenceInfo extends HookWidget {
+  final List<MeetingInterest> interests;
+  final List<MeetingObjective> objectives;
+
+  const _MeetingPreferenceInfo(this.interests, this.objectives);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ..._buildObjectives(context),
+        ..._buildInterests(context),
+      ],
+    );
+  }
+
+  List<Widget> _buildObjectives(BuildContext context) {
+    const introLabel = "Objectives";
+    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 16,
+        );
+    if (objectives.isEmpty) {
+      return [];
+    }
+
+    return [
+      const SizedBox(height: AppInsets.xxl),
+      Text(
+        introLabel,
+        style: labelStyle,
+      ),
+      const SizedBox(height: AppInsets.med),
+      ...objectives
+          .map((objective) => _ListItem(
+                text: objective.name,
+              ))
+          .toList(),
+    ];
+  }
+
+  List<Widget> _buildInterests(BuildContext context) {
+    const introLabel = "Looking to meet:";
+    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 16,
+        );
+    if (interests.isEmpty) {
+      return [];
+    }
+
+    return [
+      const SizedBox(height: AppInsets.xxl),
+      Text(
+        introLabel,
+        style: labelStyle,
+      ),
+      const SizedBox(height: AppInsets.med),
+      ...interests
+          .map((interest) => _ListItem(
+                text: interest.name,
+              ))
+          .toList(),
+    ];
+  }
+}
+
+class _ListItem extends StatelessWidget {
+  final String text;
+
+  const _ListItem({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          fontSize: 14,
+          height: 1.4,
+          color: Colors.grey[700],
+        );
+    return Row(
+      children: [
+        Container(
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: AppInsets.med),
+        Text(
+          text,
+          style: textStyle,
+        )
+      ],
+    );
+  }
+}

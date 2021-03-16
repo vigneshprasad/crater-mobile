@@ -68,7 +68,7 @@
     "chat_search:input_prefix": "To:",
     "chat_search:input_prefix_text": "Search for user...",
     "drawer_item:notfication": "Notification",
-    "drawer_item:acoount": "Account",
+    "drawer_item:account": "Account",
     "drawer_item:logout": "Sign out",
     "delete": "delete",
     "dismiss": "dismiss",
