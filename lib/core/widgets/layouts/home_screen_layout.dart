@@ -39,6 +39,7 @@ class HomeScreenLayout extends StatelessWidget {
         ),
       ),
       floatingActionButton: getFabButton(currentTabIndex),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

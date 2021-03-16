@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
+
+import 'profile_intro_meta.dart';
 
 class ProfileIntroQuestion extends HiveObject {
   final List<ProfileIntroElement> elements;

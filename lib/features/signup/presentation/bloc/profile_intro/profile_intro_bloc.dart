@@ -4,12 +4,16 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/auth/data/models/user_tag_model.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/signup/domain/usecase/post_user_profile_intro.dart';
+
+import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
+import '../../../../../core/error/failures.dart';
 import '../../../../../core/usecase/aysnc_usecase.dart';
+import '../../../../auth/data/models/user_model.dart';
+import '../../../../auth/domain/entity/user_entity.dart';
+import '../../../../auth/domain/entity/user_profile_entity.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
+import '../../../../auth/domain/usecase/patch_user_usecase.dart';
 import '../../../domain/entity/profile_intro_meta.dart';
 import '../../../domain/entity/profile_intro_question.dart';
 import '../../../domain/usecase/get_profile_intro_companies.dart';
@@ -18,12 +22,7 @@ import '../../../domain/usecase/get_profile_intro_experiences.dart';
 import '../../../domain/usecase/get_profile_intro_questions.dart';
 import '../../../domain/usecase/get_profile_intro_sectors.dart';
 import '../../../domain/usecase/get_user_tags_usecase.dart';
-
-import '../../../../../core/analytics/analytics.dart';
-import '../../../../../core/analytics/anlytics_events.dart';
-import '../../../../../core/error/failures.dart';
-import '../../../../auth/data/models/user_model.dart';
-import '../../../../auth/domain/usecase/patch_user_usecase.dart';
+import '../../../domain/usecase/post_user_profile_intro.dart';
 
 part 'profile_intro_event.dart';
 part 'profile_intro_state.dart';

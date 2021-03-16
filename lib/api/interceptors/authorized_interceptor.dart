@@ -16,7 +16,6 @@ class AuthorizedInterceptor extends RequestInterceptor {
       final authHeader = {HttpHeaders.authorizationHeader: 'JWT $token'};
       final requestWithAuth =
           request.copyWith(headers: {...request.headers, ...authHeader});
-
       return requestWithAuth;
     }
     return request;

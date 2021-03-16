@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/multiselect_dropdown.dart';
+
+import '../../domain/entity/profile_intro_meta.dart';
+import '../../domain/entity/profile_intro_question.dart';
+import 'multiselect_dropdown.dart';
 
 class AutoSizeMultiSelectDropdown extends StatelessWidget {
   const AutoSizeMultiSelectDropdown(

@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -116,6 +117,8 @@ class _AuthScreenState extends State<AuthScreen> {
           );
         },
       );
+    } else {
+      Fluttertoast.showToast(msg: failure.message as String);
     }
   }
 

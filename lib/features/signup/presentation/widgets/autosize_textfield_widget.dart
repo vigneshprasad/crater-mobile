@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+
+import '../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../domain/entity/profile_intro_question.dart';
 
 class AutoSizeTextField extends StatefulWidget {
   const AutoSizeTextField({

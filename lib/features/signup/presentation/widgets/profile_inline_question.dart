@@ -1,10 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/autosize_multiselect_dropdown.dart';
 
+import '../../domain/entity/profile_intro_meta.dart';
+import '../../domain/entity/profile_intro_question.dart';
 import 'autosize_dropdown_widget.dart';
+import 'autosize_multiselect_dropdown.dart';
 import 'autosize_textfield_widget.dart';
 
 class ProfileInlineQuestion extends StatelessWidget {

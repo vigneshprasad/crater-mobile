@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/article/presentation/bloc/article_bloc.dart';
 import '../../../features/article/presentation/widgets/articles_tab.dart';
@@ -10,6 +12,9 @@ import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
 import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
+import '../../../features/roundtable/domain/entity/topic_entity/topic_entity.dart';
+import '../../../features/roundtable/presentation/screens/create_table_sheet/create_roundtable_sheet.dart';
+import '../../../features/roundtable/presentation/widgets/roundtable_tab/roundtable_tab.dart';
 import '../../../routes.gr.dart';
 import '../../../utils/app_localizations.dart';
 import '../../analytics/analytics.dart';
@@ -33,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentTab = 0;
 
   final List<Widget> _screens = [
+    RoundTableTab(),
     MeetingTab(),
     InboxTab(),
     // CommunityTab(),
@@ -89,8 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final String inboxLabel = translate("home_tab:inbox");
     final String articlesLabel = translate("home_tab:articles");
     final String rewardsLabel = translate("home_tab:rewards");
+    final String roundTablesLabel = translate("home_tab:roundTable");
 
     return [
+      BottomNavigationBarItem(
+        icon: const Icon(WorkNetIcons.community),
+        label: roundTablesLabel,
+      ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.people),
         label: meetsLabel,
@@ -133,11 +144,31 @@ class _HomeScreenState extends State<HomeScreen> {
     //   );
     // }
 
+    // RoundTables FAB
+    if (index == 0) {
+      return FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context)
+              .push<Object>(CreateRoundTableSheet())
+              .then((value) {
+            if (value is Topic && value != null) {
+              ExtendedNavigator.of(context).push(
+                Routes.createTableScreen,
+                arguments: CreateTableScreenArguments(topic: value),
+              );
+            }
+          });
+        },
+        label: Text("Create a Table"),
+        icon: Icon(Icons.add),
+      );
+    }
+
     // Chat Search FAB
-    if (index == 1) {
+    if (index == 2) {
       return FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.chatSearchScreen);
+          ExtendedNavigator.of(context).push(Routes.chatSearchScreen);
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(WorkNetIcons.message),

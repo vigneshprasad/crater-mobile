@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:worknetwork/api/profile_intro/profile_intro_api_service.dart';
-import 'package:worknetwork/core/file_utils/file_converter.dart';
-import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/signup/data/models/profile_intro_meta_model.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
+import '../../../../api/profile_intro/profile_intro_api_service.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/file_utils/file_converter.dart';
+import '../../../auth/data/models/user_profile_model.dart';
+import '../../../auth/domain/entity/user_profile_entity.dart';
+import '../../domain/entity/profile_intro_meta.dart';
+import '../models/profile_intro_meta_model.dart';
 
 abstract class ProfileIntroRemoteDatasource {
   Future<List<ProfileIntroMeta>> getCompaniesFromRemote();

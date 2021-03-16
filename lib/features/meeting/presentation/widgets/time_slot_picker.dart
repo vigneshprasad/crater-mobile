@@ -257,7 +257,7 @@ class _TimeSlot extends StatelessWidget {
     final borderRadius = BorderRadius.circular(12);
     const placeholderDate = "2020-01-01";
     final timeFormatter = DateFormat("hh:mm a");
-    final startTime = DateTime.parse("$placeholderDate ${slot.start}");
+    final startTime = slot.start;
     final label = timeFormatter.format(startTime);
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 13,
