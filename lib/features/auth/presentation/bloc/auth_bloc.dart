@@ -176,10 +176,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async* {
     yield state.loading();
 
-    final respose = await callback();
-    yield respose.fold(
-      (failure) => AuthRequestFailure(error: failure),
-      (user) {
+    final response = await callback();
+    yield* response.fold(
+      (failure) async* {
+        yield AuthRequestFailure(error: failure);
+      },
+      (user) async* {
         analytics.identify(properties: getUserTraitsFromModel(user));
         analytics.trackEvent(
           eventName: AnalyticsEvents.authSocial,
@@ -190,9 +192,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
         analytics.initSdk();
-        return AuthStateSuccess(
-          user: user,
-          profile: state.profile,
+        final profileOrError = await getUserProfile(NoParams());
+        yield profileOrError.fold(
+          (failure) => AuthStateSuccess(
+            user: user,
+            profile: state.profile,
+          ),
+          (profile) => AuthStateSuccess(
+            user: user,
+            profile: profile,
+          ),
         );
       },
     );

@@ -26,7 +26,6 @@ abstract class RoundTableRepository {
   Future<Either<Failure, List<Agenda>>> getAgendas(int categoryId);
 
   Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
-  Future<Either<Failure, Topic>> getRootTopic(int topicId);
 
   Future<Either<Failure, Optin>> postGroupOptin(
     List<MeetingInterest> interests,

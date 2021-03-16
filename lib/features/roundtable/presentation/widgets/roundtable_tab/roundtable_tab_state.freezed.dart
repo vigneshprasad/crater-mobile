@@ -14,10 +14,12 @@ class _$MyTablesStateTearOff {
   const _$MyTablesStateTearOff();
 
 // ignore: unused_element
-  _MyTablesState call({List<RoundTable> tables, List<Optin> optins}) {
+  _MyTablesState call(
+      {List<RoundTable> tables, List<Optin> optins, List<Meeting> meetings}) {
     return _MyTablesState(
       tables: tables,
       optins: optins,
+      meetings: meetings,
     );
   }
 }
@@ -30,6 +32,7 @@ const $MyTablesState = _$MyTablesStateTearOff();
 mixin _$MyTablesState {
   List<RoundTable> get tables;
   List<Optin> get optins;
+  List<Meeting> get meetings;
 
   @JsonKey(ignore: true)
   $MyTablesStateCopyWith<MyTablesState> get copyWith;
@@ -40,7 +43,8 @@ abstract class $MyTablesStateCopyWith<$Res> {
   factory $MyTablesStateCopyWith(
           MyTablesState value, $Res Function(MyTablesState) then) =
       _$MyTablesStateCopyWithImpl<$Res>;
-  $Res call({List<RoundTable> tables, List<Optin> optins});
+  $Res call(
+      {List<RoundTable> tables, List<Optin> optins, List<Meeting> meetings});
 }
 
 /// @nodoc
@@ -56,10 +60,13 @@ class _$MyTablesStateCopyWithImpl<$Res>
   $Res call({
     Object tables = freezed,
     Object optins = freezed,
+    Object meetings = freezed,
   }) {
     return _then(_value.copyWith(
       tables: tables == freezed ? _value.tables : tables as List<RoundTable>,
       optins: optins == freezed ? _value.optins : optins as List<Optin>,
+      meetings:
+          meetings == freezed ? _value.meetings : meetings as List<Meeting>,
     ));
   }
 }
@@ -71,7 +78,8 @@ abstract class _$MyTablesStateCopyWith<$Res>
           _MyTablesState value, $Res Function(_MyTablesState) then) =
       __$MyTablesStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<RoundTable> tables, List<Optin> optins});
+  $Res call(
+      {List<RoundTable> tables, List<Optin> optins, List<Meeting> meetings});
 }
 
 /// @nodoc
@@ -89,26 +97,31 @@ class __$MyTablesStateCopyWithImpl<$Res>
   $Res call({
     Object tables = freezed,
     Object optins = freezed,
+    Object meetings = freezed,
   }) {
     return _then(_MyTablesState(
       tables: tables == freezed ? _value.tables : tables as List<RoundTable>,
       optins: optins == freezed ? _value.optins : optins as List<Optin>,
+      meetings:
+          meetings == freezed ? _value.meetings : meetings as List<Meeting>,
     ));
   }
 }
 
 /// @nodoc
 class _$_MyTablesState implements _MyTablesState {
-  _$_MyTablesState({this.tables, this.optins});
+  _$_MyTablesState({this.tables, this.optins, this.meetings});
 
   @override
   final List<RoundTable> tables;
   @override
   final List<Optin> optins;
+  @override
+  final List<Meeting> meetings;
 
   @override
   String toString() {
-    return 'MyTablesState(tables: $tables, optins: $optins)';
+    return 'MyTablesState(tables: $tables, optins: $optins, meetings: $meetings)';
   }
 
   @override
@@ -118,14 +131,18 @@ class _$_MyTablesState implements _MyTablesState {
             (identical(other.tables, tables) ||
                 const DeepCollectionEquality().equals(other.tables, tables)) &&
             (identical(other.optins, optins) ||
-                const DeepCollectionEquality().equals(other.optins, optins)));
+                const DeepCollectionEquality().equals(other.optins, optins)) &&
+            (identical(other.meetings, meetings) ||
+                const DeepCollectionEquality()
+                    .equals(other.meetings, meetings)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(tables) ^
-      const DeepCollectionEquality().hash(optins);
+      const DeepCollectionEquality().hash(optins) ^
+      const DeepCollectionEquality().hash(meetings);
 
   @JsonKey(ignore: true)
   @override
@@ -134,13 +151,17 @@ class _$_MyTablesState implements _MyTablesState {
 }
 
 abstract class _MyTablesState implements MyTablesState {
-  factory _MyTablesState({List<RoundTable> tables, List<Optin> optins}) =
-      _$_MyTablesState;
+  factory _MyTablesState(
+      {List<RoundTable> tables,
+      List<Optin> optins,
+      List<Meeting> meetings}) = _$_MyTablesState;
 
   @override
   List<RoundTable> get tables;
   @override
   List<Optin> get optins;
+  @override
+  List<Meeting> get meetings;
   @override
   @JsonKey(ignore: true)
   _$MyTablesStateCopyWith<_MyTablesState> get copyWith;

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../../core/error/failures/failures.dart';
@@ -45,7 +45,6 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
     final response = await Future.wait([
       _meetingRepository.getMeetingInterests(),
       _meetingRepository.getMeetingsCoonfigs(),
-      _roundTableRepository.getRootTopic(topicId),
     ]);
 
     for (final result in response) {
@@ -59,7 +58,6 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
     final interests =
         response[0].getOrElse(() => null) as List<MeetingInterest>;
     final config = response[1].getOrElse(() => null) as MeetingConfig;
-    final topic = response[2].getOrElse(() => null) as Topic;
 
     if (config == null) {
       state = TableMetaState.emptyConfig();
@@ -69,7 +67,6 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
     state = TableMetaState.data(CreateTableMeta(
       interests: interests,
       config: config,
-      rootTopic: topic,
     ));
   }
 }

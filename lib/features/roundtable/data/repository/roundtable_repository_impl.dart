@@ -191,21 +191,6 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   }
 
   @override
-  Future<Either<Failure, Topic>> getRootTopic(int topicId) async {
-    try {
-      final response = await _remoteDatasource.getRootTopicFromRemote(topicId);
-      return Right(response);
-    } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, Optin>> postGroupOptin(
     List<MeetingInterest> interests,
     List<TimeSlot> timeslots,

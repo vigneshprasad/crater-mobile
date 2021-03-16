@@ -56,6 +56,7 @@ class RoundTableTab extends HookWidget {
                                   type: pages[1],
                                   tables: meta.myTables.tables,
                                   optins: meta.myTables.optins,
+                                  meetings: meta.myTables.meetings,
                                 ),
                             ],
                           ),

@@ -181,7 +181,7 @@ class _SpeakersList extends StatelessWidget {
           left: index * (kAvatarSize / 1.5),
           child: BaseNetworkImage(
             imageUrl: value.photo,
-            nullImage: AppImageAssets.defaultAvatar,
+            defaultImage: AppImageAssets.defaultAvatar,
             imagebuilder: (context, imageProvider) => Container(
               width: kAvatarSize,
               height: kAvatarSize,

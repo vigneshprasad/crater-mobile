@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_entity.dart';
 
 import '../../../../../routes.gr.dart';
 import '../../../domain/entity/optin_entity/optin_entity.dart';
@@ -12,11 +13,13 @@ class RoundTablesPage extends HookWidget {
   final RoundTablePageType type;
   final List<RoundTable> tables;
   final List<Optin> optins;
+  final List<Meeting> meetings;
 
   const RoundTablesPage({
     @required this.type,
     @required this.tables,
     this.optins,
+    this.meetings,
   });
 
   @override
@@ -45,7 +48,7 @@ class RoundTablesPage extends HookWidget {
       ));
     }
 
-    if (type == RoundTablePageType.user && optins.isNotEmpty) {
+    if (type == RoundTablePageType.user) {
       for (final optin in optins) {
         final startTime = optin.timeSlotList[0].start;
         final endTime = optin.timeSlotList[0].start;
@@ -57,6 +60,20 @@ class RoundTablesPage extends HookWidget {
           endTime: endTime,
           interests: optin.interestList,
           isOptin: true,
+        ));
+      }
+
+      for (final meeting in meetings) {
+        children.add(RoundTableCard(
+          data: meeting,
+          topicLabel: meeting.participants[0].name,
+          startTime: meeting.start,
+          endTime: meeting.end,
+          onPressed: (value) {
+            final _meeting = value as Meeting;
+            ExtendedNavigator.of(context)
+                .pushMeetingDetailScreen(meetingId: _meeting.pk);
+          },
         ));
       }
     }

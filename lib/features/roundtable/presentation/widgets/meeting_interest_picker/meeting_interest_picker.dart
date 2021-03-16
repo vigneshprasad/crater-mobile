@@ -102,7 +102,7 @@ class _InterestItem extends StatelessWidget {
           children: [
             BaseNetworkImage(
               imageUrl: interest.icon,
-              nullImage: AppImageAssets.defaultAvatar,
+              defaultImage: AppImageAssets.defaultAvatar,
               imagebuilder: (context, imageProvider) {
                 return Container(
                   height: kSelectorSize,

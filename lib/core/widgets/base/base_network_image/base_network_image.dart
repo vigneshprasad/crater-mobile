@@ -6,13 +6,13 @@ class BaseNetworkImage extends StatelessWidget {
   final ImageWidgetBuilder imagebuilder;
   final LoadingErrorWidgetBuilder errorBuilder;
   final LoadingErrorWidgetBuilder loadingBuilder;
-  final ImageProvider nullImage;
+  final ImageProvider defaultImage;
 
   const BaseNetworkImage({
     Key key,
     @required this.imageUrl,
     @required this.imagebuilder,
-    @required this.nullImage,
+    @required this.defaultImage,
     this.errorBuilder,
     this.loadingBuilder,
   }) : super(key: key);
@@ -26,7 +26,7 @@ class BaseNetworkImage extends StatelessWidget {
         errorWidget: errorBuilder,
       );
     } else {
-      return imagebuilder(context, nullImage);
+      return imagebuilder(context, defaultImage);
     }
   }
 }

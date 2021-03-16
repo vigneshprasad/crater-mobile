@@ -27,7 +27,7 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
 
     return BaseNetworkImage(
       imageUrl: widget.photoUrl,
-      nullImage: AppImageAssets.articleDefault,
+      defaultImage: AppImageAssets.articleDefault,
       imagebuilder: (context, imageProvider) {
         return CircleAvatar(
           backgroundImage:

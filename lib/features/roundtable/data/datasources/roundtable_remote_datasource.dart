@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
@@ -36,10 +36,6 @@ abstract class RoundTableRemoteDatasource {
   /// filter based on [parent] topic id.
   /// Throws [ServerException]
   Future<List<Topic>> getAllTopicsFromRemote(int parent);
-
-  /// Get Root Topic for a topic based on [id]
-  /// Throws [ServerException]
-  Future<Topic> getRootTopicFromRemote(int parent);
 
   /// Get List of All Categories from Remote server
   /// Throws [ServerException]
@@ -218,19 +214,6 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
       return jsonList
           .map((topic) => Topic.fromJson(topic as Map<String, dynamic>))
           .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<Topic> getRootTopicFromRemote(int parent) async {
-    final response = await roundTableApiService.getRootTopic(parent);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return Topic.fromJson(json);
-    } else if (response.statusCode == 204) {
-      return null;
     } else {
       throw ServerException(response.error);
     }

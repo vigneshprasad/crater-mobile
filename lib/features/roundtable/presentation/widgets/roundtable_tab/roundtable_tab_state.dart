@@ -1,5 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_entity.dart';
+import 'package:worknetwork/features/meeting/domain/repository/meeting_repository.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
@@ -13,7 +16,8 @@ part 'roundtable_tab_state.freezed.dart';
 final roundTableStateProvider =
     StateNotifierProvider.autoDispose<RoundTableTabStateNotifier>((ref) {
   final repository = ref.read(roundtableRepositoryProvider);
-  return RoundTableTabStateNotifier(repository);
+  final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
+  return RoundTableTabStateNotifier(repository, meetingRepository);
 });
 
 @freezed
@@ -21,6 +25,7 @@ abstract class MyTablesState with _$MyTablesState {
   factory MyTablesState({
     List<RoundTable> tables,
     List<Optin> optins,
+    List<Meeting> meetings,
   }) = _MyTablesState;
 }
 
@@ -35,7 +40,9 @@ abstract class RoundTableTabState with _$RoundTableTabState {
 class RoundTableTabStateNotifier
     extends StateNotifier<ApiResult<RoundTableTabState>> {
   final RoundTableRepository _repository;
-  RoundTableTabStateNotifier(this._repository)
+  final MeetingRepository _meetingRepository;
+
+  RoundTableTabStateNotifier(this._repository, this._meetingRepository)
       : super(ApiResult<RoundTableTabState>.loading()) {
     getRoundTableTabState();
   }
@@ -47,6 +54,7 @@ class RoundTableTabStateNotifier
       _repository.getAllRoundTables(),
       _repository.getAllMyRoundTables(),
       _repository.getAllMyOptins(),
+      _meetingRepository.getMeetings(),
     ];
 
     final response = await Future.wait(futures);
@@ -64,13 +72,15 @@ class RoundTableTabStateNotifier
     final myTables =
         response[1].getOrElse(() => <RoundTable>[]) as List<RoundTable>;
     final optins = response[2].getOrElse(() => <Optin>[]) as List<Optin>;
+    final meetings = response[3].getOrElse(() => <Meeting>[]) as List<Meeting>;
 
     MyTablesState myTablesState;
 
-    if (myTables.isNotEmpty || optins.isNotEmpty) {
+    if (myTables.isNotEmpty || optins.isNotEmpty || meetings.isNotEmpty) {
       myTablesState = MyTablesState(
         tables: myTables,
         optins: optins,
+        meetings: meetings,
       );
     }
 

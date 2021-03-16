@@ -299,7 +299,7 @@ class _SpeakerWithIntro extends StatelessWidget {
         children: [
           BaseNetworkImage(
             imageUrl: user.photo,
-            nullImage: AppImageAssets.defaultAvatar,
+            defaultImage: AppImageAssets.defaultAvatar,
             imagebuilder: (context, imageProvider) => CircleAvatar(
               backgroundImage: imageProvider,
               radius: 36,

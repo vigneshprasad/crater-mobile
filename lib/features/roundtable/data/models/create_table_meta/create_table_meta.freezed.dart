@@ -15,13 +15,10 @@ class _$CreateTableMetaTearOff {
 
 // ignore: unused_element
   _CreateTableMeta call(
-      {List<MeetingInterest> interests,
-      MeetingConfig config,
-      Topic rootTopic}) {
+      {List<MeetingInterest> interests, MeetingConfig config}) {
     return _CreateTableMeta(
       interests: interests,
       config: config,
-      rootTopic: rootTopic,
     );
   }
 }
@@ -34,7 +31,6 @@ const $CreateTableMeta = _$CreateTableMetaTearOff();
 mixin _$CreateTableMeta {
   List<MeetingInterest> get interests;
   MeetingConfig get config;
-  Topic get rootTopic;
 
   @JsonKey(ignore: true)
   $CreateTableMetaCopyWith<CreateTableMeta> get copyWith;
@@ -45,10 +41,7 @@ abstract class $CreateTableMetaCopyWith<$Res> {
   factory $CreateTableMetaCopyWith(
           CreateTableMeta value, $Res Function(CreateTableMeta) then) =
       _$CreateTableMetaCopyWithImpl<$Res>;
-  $Res call(
-      {List<MeetingInterest> interests, MeetingConfig config, Topic rootTopic});
-
-  $TopicCopyWith<$Res> get rootTopic;
+  $Res call({List<MeetingInterest> interests, MeetingConfig config});
 }
 
 /// @nodoc
@@ -64,25 +57,13 @@ class _$CreateTableMetaCopyWithImpl<$Res>
   $Res call({
     Object interests = freezed,
     Object config = freezed,
-    Object rootTopic = freezed,
   }) {
     return _then(_value.copyWith(
       interests: interests == freezed
           ? _value.interests
           : interests as List<MeetingInterest>,
       config: config == freezed ? _value.config : config as MeetingConfig,
-      rootTopic: rootTopic == freezed ? _value.rootTopic : rootTopic as Topic,
     ));
-  }
-
-  @override
-  $TopicCopyWith<$Res> get rootTopic {
-    if (_value.rootTopic == null) {
-      return null;
-    }
-    return $TopicCopyWith<$Res>(_value.rootTopic, (value) {
-      return _then(_value.copyWith(rootTopic: value));
-    });
   }
 }
 
@@ -93,11 +74,7 @@ abstract class _$CreateTableMetaCopyWith<$Res>
           _CreateTableMeta value, $Res Function(_CreateTableMeta) then) =
       __$CreateTableMetaCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {List<MeetingInterest> interests, MeetingConfig config, Topic rootTopic});
-
-  @override
-  $TopicCopyWith<$Res> get rootTopic;
+  $Res call({List<MeetingInterest> interests, MeetingConfig config});
 }
 
 /// @nodoc
@@ -115,32 +92,28 @@ class __$CreateTableMetaCopyWithImpl<$Res>
   $Res call({
     Object interests = freezed,
     Object config = freezed,
-    Object rootTopic = freezed,
   }) {
     return _then(_CreateTableMeta(
       interests: interests == freezed
           ? _value.interests
           : interests as List<MeetingInterest>,
       config: config == freezed ? _value.config : config as MeetingConfig,
-      rootTopic: rootTopic == freezed ? _value.rootTopic : rootTopic as Topic,
     ));
   }
 }
 
 /// @nodoc
 class _$_CreateTableMeta implements _CreateTableMeta {
-  _$_CreateTableMeta({this.interests, this.config, this.rootTopic});
+  _$_CreateTableMeta({this.interests, this.config});
 
   @override
   final List<MeetingInterest> interests;
   @override
   final MeetingConfig config;
-  @override
-  final Topic rootTopic;
 
   @override
   String toString() {
-    return 'CreateTableMeta(interests: $interests, config: $config, rootTopic: $rootTopic)';
+    return 'CreateTableMeta(interests: $interests, config: $config)';
   }
 
   @override
@@ -151,18 +124,14 @@ class _$_CreateTableMeta implements _CreateTableMeta {
                 const DeepCollectionEquality()
                     .equals(other.interests, interests)) &&
             (identical(other.config, config) ||
-                const DeepCollectionEquality().equals(other.config, config)) &&
-            (identical(other.rootTopic, rootTopic) ||
-                const DeepCollectionEquality()
-                    .equals(other.rootTopic, rootTopic)));
+                const DeepCollectionEquality().equals(other.config, config)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(interests) ^
-      const DeepCollectionEquality().hash(config) ^
-      const DeepCollectionEquality().hash(rootTopic);
+      const DeepCollectionEquality().hash(config);
 
   @JsonKey(ignore: true)
   @override
@@ -173,15 +142,12 @@ class _$_CreateTableMeta implements _CreateTableMeta {
 abstract class _CreateTableMeta implements CreateTableMeta {
   factory _CreateTableMeta(
       {List<MeetingInterest> interests,
-      MeetingConfig config,
-      Topic rootTopic}) = _$_CreateTableMeta;
+      MeetingConfig config}) = _$_CreateTableMeta;
 
   @override
   List<MeetingInterest> get interests;
   @override
   MeetingConfig get config;
-  @override
-  Topic get rootTopic;
   @override
   @JsonKey(ignore: true)
   _$CreateTableMetaCopyWith<_CreateTableMeta> get copyWith;

@@ -57,7 +57,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs photo permission to share imaages on the community.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>WE need access to microphone to connect audio meetings.</string>
+	<string>We need access to microphone to connect audio meetings.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

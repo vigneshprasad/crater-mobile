@@ -64,9 +64,9 @@ class CreateTableScreen extends HookWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (meta.rootTopic != null)
+                        if (topic.root != null)
                           Text(
-                            meta.rootTopic.name,
+                            topic.root.name,
                             style: rootTopicStyle,
                           ),
                         Text(
