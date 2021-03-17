@@ -130,7 +130,8 @@ class _RoundTableLoaded extends HookWidget {
                     children: controller.speakers
                         .map((member) => InkWell(
                               onTap: () => ExtendedNavigator.of(context).push(
-                                  Routes.profileScreen(userId: member.pk)),
+                                  Routes.profileScreen(
+                                      userId: member.pk, allowEdit: false)),
                               child: SpeakerAvatar(
                                 user: member,
                                 isLive: controller.connectionState ==
@@ -301,9 +302,9 @@ class _SpeakerWithIntro extends StatelessWidget {
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
     return InkWell(
       onTap: () => ExtendedNavigator.of(context)
-          .push(Routes.profileScreen(userId: user.pk)),
+          .push(Routes.profileScreen(userId: user.pk, allowEdit: false)),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: kSpacingList),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
             BaseNetworkImage(
