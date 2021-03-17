@@ -132,6 +132,7 @@ class _InterestItem extends StatelessWidget {
             Text(
               interest.name,
               style: labelStyle,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

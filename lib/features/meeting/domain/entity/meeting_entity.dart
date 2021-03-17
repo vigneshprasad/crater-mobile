@@ -14,6 +14,7 @@ class Meeting extends HiveObject {
   final DateTime start;
   final int timeSlot;
   final MeetingStatus status;
+  final MeetingParticipant participantDetail;
 
   Meeting({
     this.config,
@@ -26,5 +27,6 @@ class Meeting extends HiveObject {
     this.start,
     this.timeSlot,
     this.status,
+    this.participantDetail,
   });
 }
