@@ -81,7 +81,8 @@ class CreateTableScreen extends HookWidget {
                           ),
                         const SizedBox(height: AppInsets.xl),
                         _FormLabel(
-                          heading: "Pick people of interest",
+                          heading: AppLocalizations.of(context)
+                              .translate("conversations:interests_label"),
                           subheading: "Pick atleast 3 options",
                         ),
                         const SizedBox(height: AppInsets.xl),
@@ -91,16 +92,18 @@ class CreateTableScreen extends HookWidget {
                           onSaved: (value) => _interests.value = value,
                           validator: (value) {
                             if (value.length < 3) {
-                              return "Please select atleast 3 interests.";
+                              return "Please select atleast 3 types of people.";
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: AppInsets.xl),
-                        _FormLabel(heading: "Pick suitable time slots"),
+                        _FormLabel(
+                            heading: AppLocalizations.of(context)
+                                .translate("conversations:time_slot_label")),
                         const SizedBox(height: AppInsets.xl),
                         TimeSlotFormField(
-                          initialValue: [],
+                          initialValue: const [],
                           slots: meta.config.availableTimeSlots,
                           onChange: (slots) => _timeslots.value = slots,
                           validator: (value) {
@@ -121,7 +124,7 @@ class CreateTableScreen extends HookWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: AppInsets.xxl),
                   child: BaseLargeButton(
-                    text: "Submit",
+                    text: AppLocalizations.of(context).translate("confirm"),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         _postGroupOptin(

@@ -39,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screens = [
     RoundTableTab(),
-    MeetingTab(),
     InboxTab(),
     // CommunityTab(),
     ArticlesTab(),
@@ -84,8 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
         getFabButton: getFloatingActionButton,
         onTabTapped: _onTabTapped,
         currentTabIndex: _currentTab,
+        floatingActionButtonLocation: _getFabLocation(_currentTab),
       ),
     );
+  }
+
+  FloatingActionButtonLocation _getFabLocation(int index) {
+    if (index == 0) {
+      return FloatingActionButtonLocation.centerFloat;
+    } else {
+      return null;
+    }
   }
 
   List<BottomNavigationBarItem> getNavItems(BuildContext context) {
@@ -102,10 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: const Icon(WorkNetIcons.community),
         label: roundTablesLabel,
       ),
-      BottomNavigationBarItem(
-        icon: const Icon(WorkNetIcons.people),
-        label: meetsLabel,
-      ),
+      // BottomNavigationBarItem(
+      //   icon: const Icon(WorkNetIcons.people),
+      //   label: meetsLabel,
+      // ),
       BottomNavigationBarItem(
         icon: const Icon(WorkNetIcons.inbox),
         label: inboxLabel,
@@ -146,6 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // RoundTables FAB
     if (index == 0) {
+      final label =
+          AppLocalizations.of(context).translate("conversations:start");
       return FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context)
@@ -159,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           });
         },
-        label: Text("Create a Table"),
+        label: Text(label),
         icon: Icon(Icons.add),
       );
     }
 
     // Chat Search FAB
-    if (index == 2) {
+    if (index == 1) {
       return FloatingActionButton(
         onPressed: () {
           ExtendedNavigator.of(context).push(Routes.chatSearchScreen);

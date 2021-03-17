@@ -1,15 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
+import '../roundtable_card_layout/roundtable_card_layout.dart';
 
 const kAvatarSize = 48.00;
-const kBottomPadding = 40.00;
 
 class RoundTableCard extends StatelessWidget {
   final Object data;
@@ -60,94 +61,63 @@ class RoundTableCard extends StatelessWidget {
           color: Colors.grey[600],
         );
     final dateFormat = DateFormat("EEE, dd MMM");
-    return Center(
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.6,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            right: AppInsets.med,
-            left: AppInsets.med,
-            bottom: kBottomPadding,
+    return RoundTableCardLayout(
+      onPressed: onPressed != null
+          ? () {
+              onPressed(data);
+            }
+          : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isOptin)
+            Text(
+              dateFormat.format(startTime),
+              style: dateTextStyle,
+            ),
+          const SizedBox(height: AppInsets.med),
+          if (rootTopicLabel != null)
+            Text(rootTopicLabel, style: categoryStyle),
+          const SizedBox(height: AppInsets.sm),
+          Text(topicLabel, style: agendaStyle),
+          const SizedBox(height: AppInsets.med),
+          Text(
+            isOptin
+                ? AppLocalizations.of(context)
+                    .translate("conversation:scheduling")
+                : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
+            style: dateStyle,
           ),
-          child: Material(
-            type: MaterialType.card,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-            elevation: 2,
-            child: InkWell(
-              hoverColor: Colors.white,
-              highlightColor: Colors.grey[100],
-              splashColor: Colors.grey[300],
-              onTap: onPressed != null
-                  ? () {
-                      onPressed(data);
-                    }
-                  : null,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: AppInsets.xl,
-                  right: AppInsets.xl,
-                  top: 24,
-                  bottom: AppInsets.xl,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!isOptin)
-                      Text(
-                        dateFormat.format(startTime),
-                        style: dateTextStyle,
-                      ),
-                    const SizedBox(height: AppInsets.med),
-                    if (rootTopicLabel != null)
-                      Text(rootTopicLabel, style: categoryStyle),
-                    const SizedBox(height: AppInsets.sm),
-                    Text(topicLabel, style: agendaStyle),
-                    const SizedBox(height: AppInsets.med),
-                    Text(
-                      isOptin
-                          ? "Scheduling..."
-                          : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
-                      style: dateStyle,
-                    ),
-                    const SizedBox(height: AppInsets.l),
-                    if (description != null)
-                      Text(
-                        description,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        style: descriptionStyle,
-                      ),
-                    const Spacer(),
-                    if (isOptin)
-                      const Center(
-                        child: Image(
-                          image: AppImageAssets.meetingsEmpty,
-                          height: 120,
-                        ),
-                      ),
-                    const Spacer(),
-                    if (speakers != null) _SpeakersList(speakers: speakers),
-                    const SizedBox(height: AppInsets.l),
-                    const Divider(),
-                    const SizedBox(height: AppInsets.l),
-                    if (interests != null)
-                      Wrap(
-                        children: interests
-                            .map(
-                              (interest) => _InterestTag(interest: interest),
-                            )
-                            .toList(),
-                      ),
-                  ],
-                ),
+          const SizedBox(height: AppInsets.l),
+          // if (description != null)
+          //   Text(
+          //     description,
+          //     maxLines: 4,
+          //     overflow: TextOverflow.ellipsis,
+          //     style: descriptionStyle,
+          //   ),
+          const Spacer(),
+          if (isOptin)
+            const Center(
+              child: Image(
+                image: AppImageAssets.meetingsEmpty,
+                height: 120,
               ),
             ),
-          ),
-        ),
+          const Spacer(),
+          if (speakers != null) _SpeakersList(speakers: speakers),
+          const SizedBox(height: AppInsets.l),
+          const Divider(),
+          const SizedBox(height: AppInsets.l),
+          if (interests != null)
+            Wrap(
+              children: interests
+                  .map(
+                    (interest) => _InterestTag(interest: interest),
+                  )
+                  .toList(),
+            ),
+        ],
       ),
     );
   }

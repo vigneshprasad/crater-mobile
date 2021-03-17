@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_entity.dart';
+import 'package:worknetwork/features/roundtable/presentation/widgets/meeting_card/meeting_card.dart';
 
 import '../../../../../routes.gr.dart';
 import '../../../domain/entity/optin_entity/optin_entity.dart';
@@ -64,11 +65,8 @@ class RoundTablesPage extends HookWidget {
       }
 
       for (final meeting in meetings) {
-        children.add(RoundTableCard(
-          data: meeting,
-          topicLabel: meeting.participants[0].name,
-          startTime: meeting.start,
-          endTime: meeting.end,
+        children.add(MeetingCard(
+          meeting: meeting,
           onPressed: (value) {
             final _meeting = value as Meeting;
             ExtendedNavigator.of(context)

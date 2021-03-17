@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 
+import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
@@ -54,7 +55,10 @@ class RoundTableScreen extends HookWidget {
   }
 
   void _onShare() {
-    Share.share("Share WorkNetwork");
+    Share.share(
+      AppConstants.defaultShareText,
+      subject: "Know any relevant people?",
+    );
   }
 }
 
@@ -123,7 +127,9 @@ class _RoundTableLoaded extends HookWidget {
                 const SizedBox(height: AppInsets.l),
                 EditableTextField(text: table.description),
                 const SizedBox(height: AppInsets.xl),
-                Text("Speakers(${table.speakers.length})",
+                Text(
+                    AppLocalizations.of(context)
+                        .translate("conversations:speakers_label"),
                     style: pageLabelStyle),
                 const SizedBox(height: AppInsets.xxl),
                 if (table.isSpeaker)
@@ -227,7 +233,8 @@ class _RoundTableLoaded extends HookWidget {
                 onPressed: () {
                   postRequestToJoinGroup(context, controller, table.id);
                 },
-                child: Text("Join Table"),
+                child: Text(AppLocalizations.of(context)
+                    .translate("conversations:join_button_label")),
               ),
             ),
           ),
