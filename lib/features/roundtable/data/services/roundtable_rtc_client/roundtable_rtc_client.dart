@@ -36,6 +36,9 @@ class RoundTableRtcClient {
     if (_engine == null) {
       await initEngine();
     }
+    await _engine.setClientRole(
+      ClientRole.Broadcaster,
+    );
     await _engine.setLogFilter(LogFilter.Off);
     await _engine.enableAudioVolumeIndication(300, 3, true);
     await _engine.setAudioProfile(

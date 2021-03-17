@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -82,7 +83,8 @@ class RoundTableCard extends StatelessWidget {
           const SizedBox(height: AppInsets.med),
           Text(
             isOptin
-                ? "Scheduling..."
+                ? AppLocalizations.of(context)
+                    .translate("conversation:scheduling")
                 : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
             style: dateStyle,
           ),

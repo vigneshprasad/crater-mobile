@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -52,7 +53,10 @@ class RoundTableScreen extends HookWidget {
   }
 
   void _onShare() {
-    Share.share("Share WorkNetwork");
+    Share.share(
+      AppConstants.defaultShareText,
+      subject: "Know any relevant people?",
+    );
   }
 }
 
@@ -119,7 +123,9 @@ class _RoundTableLoaded extends HookWidget {
                 const SizedBox(height: AppInsets.l),
                 EditableTextField(text: table.description),
                 const SizedBox(height: AppInsets.xl),
-                Text("Speakers(${table.speakers.length})",
+                Text(
+                    AppLocalizations.of(context)
+                        .translate("conversations:speakers_label"),
                     style: pageLabelStyle),
                 const SizedBox(height: AppInsets.xxl),
                 if (table.isSpeaker)
@@ -213,7 +219,8 @@ class _RoundTableLoaded extends HookWidget {
                 onPressed: () {
                   postRequestToJoinGroup(context, controller, table.id);
                 },
-                child: Text("Join Table"),
+                child: Text(AppLocalizations.of(context)
+                    .translate("conversations:join_button_label")),
               ),
             ),
           ),

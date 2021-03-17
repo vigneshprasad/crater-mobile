@@ -6,6 +6,12 @@ class AppConstants {
     'https://www.googleapis.com/auth/userinfo.profile',
   ];
 
+  static const defaultShareText = """
+    Hey, 
+
+    I would like to invite you to WorkNetwork. A place to meet & converse with relevant professionals to trade knowledge & grow your business/career, while building authentic relationships. Here’s the link: https://worknetwork.onelink.me/KbQv/AppStore. 
+  """;
+
   static const defaultAvatar = {
     "a":
         'https://1worknetwork-prod.s3.ap-south-1.amazonaws.com/media/stock_profile_pictures/A.png',

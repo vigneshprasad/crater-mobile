@@ -154,6 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // RoundTables FAB
     if (index == 0) {
+      final label =
+          AppLocalizations.of(context).translate("conversations:start");
       return FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context)
@@ -167,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           });
         },
-        label: Text("Create a Table"),
+        label: Text(label),
         icon: Icon(Icons.add),
       );
     }

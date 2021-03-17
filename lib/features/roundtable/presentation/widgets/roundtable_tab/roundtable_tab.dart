@@ -43,7 +43,11 @@ class RoundTableTab extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _TabHeader(
-                            heading: _getTabHeader(pages[activeTab.value])),
+                          heading:
+                              _getTabHeader(pages[activeTab.value], context),
+                          subheading:
+                              _getTabSubHeader(pages[activeTab.value], context),
+                        ),
                         Expanded(
                           child: PageView(
                             scrollDirection: Axis.vertical,
@@ -79,12 +83,25 @@ class RoundTableTab extends HookWidget {
     );
   }
 
-  String _getTabHeader(RoundTablePageType type) {
+  String _getTabHeader(RoundTablePageType type, BuildContext context) {
     switch (type) {
       case RoundTablePageType.all:
-        return "Explore Tables";
+        return AppLocalizations.of(context).translate("conversatons:upcoming");
       case RoundTablePageType.user:
-        return "My Tables";
+        return AppLocalizations.of(context).translate("conversatons:my");
+      default:
+        return "";
+    }
+  }
+
+  String _getTabSubHeader(RoundTablePageType type, BuildContext context) {
+    switch (type) {
+      case RoundTablePageType.all:
+        return AppLocalizations.of(context)
+            .translate("conversatons:upcoming_subheading");
+      case RoundTablePageType.user:
+        return AppLocalizations.of(context)
+            .translate("conversatons:my_subheading");
       default:
         return "";
     }
@@ -107,6 +124,9 @@ class _TabHeader extends StatelessWidget {
         .textTheme
         .headline5
         .copyWith(fontWeight: FontWeight.w700);
+    final subheadingStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+          color: Colors.grey[500],
+        );
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
@@ -115,6 +135,12 @@ class _TabHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(heading, style: headingStyle),
+          if (subheading != null)
+            Text(
+              subheading,
+              style: subheadingStyle,
+              overflow: TextOverflow.ellipsis,
+            )
         ],
       ),
     );
