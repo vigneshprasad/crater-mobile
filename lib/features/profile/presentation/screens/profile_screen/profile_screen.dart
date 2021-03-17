@@ -96,7 +96,7 @@ class _ProfileBody extends HookWidget {
           profile.name,
           style: Theme.of(context).textTheme.headline6,
         ),
-        if (profile.tag != null)
+        if (profile.tag.isNotEmpty)
           Text(
             profile.tag[0].name,
             style: Theme.of(context).textTheme.bodyText1,
