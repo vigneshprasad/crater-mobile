@@ -100,6 +100,8 @@ class _RoundTableLoaded extends HookWidget {
           fontWeight: FontWeight.w700,
         );
 
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+
     // Controller
     final controller = useProvider(roundTableScreenControllerProvider(table));
     return Stack(
@@ -131,7 +133,8 @@ class _RoundTableLoaded extends HookWidget {
                         .map((member) => InkWell(
                               onTap: () => ExtendedNavigator.of(context).push(
                                   Routes.profileScreen(
-                                      userId: member.pk, allowEdit: false)),
+                                      userId: member.pk,
+                                      allowEdit: member.pk == authUserPK)),
                               child: SpeakerAvatar(
                                 user: member,
                                 isLive: controller.connectionState ==
@@ -140,7 +143,11 @@ class _RoundTableLoaded extends HookWidget {
                             ))
                         .toList(),
                   ),
-                if (!table.isSpeaker) _SpeakersListWithIntro(table: table)
+                if (!table.isSpeaker)
+                  _SpeakersListWithIntro(
+                    table: table,
+                    authUserPk: authUserPK,
+                  )
               ],
             ),
           ),
@@ -260,21 +267,29 @@ class _RoundTableLoaded extends HookWidget {
 
 class _SpeakersListWithIntro extends StatelessWidget {
   final RoundTable table;
+  final String authUserPk;
   const _SpeakersListWithIntro({
     Key key,
     this.table,
+    @required this.authUserPk,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
     if (table.host != null) {
-      children.add(_SpeakerWithIntro(user: table.hostDetail));
+      children.add(_SpeakerWithIntro(
+        user: table.hostDetail,
+        authUserPk: authUserPk,
+      ));
     }
 
     if (table.speakersDetailList != null &&
         table.speakersDetailList.isNotEmpty) {
       for (final speaker in table.speakersDetailList) {
-        children.add(_SpeakerWithIntro(user: speaker));
+        children.add(_SpeakerWithIntro(
+          user: speaker,
+          authUserPk: authUserPk,
+        ));
       }
     }
 
@@ -286,10 +301,11 @@ class _SpeakersListWithIntro extends StatelessWidget {
 
 class _SpeakerWithIntro extends StatelessWidget {
   final RoundTableUser user;
-
+  final String authUserPk;
   const _SpeakerWithIntro({
     Key key,
     @required this.user,
+    @required this.authUserPk,
   }) : super(key: key);
 
   @override
@@ -301,8 +317,8 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context)
-          .push(Routes.profileScreen(userId: user.pk, allowEdit: false)),
+      onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
+          userId: user.pk, allowEdit: authUserPk == user.pk)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(

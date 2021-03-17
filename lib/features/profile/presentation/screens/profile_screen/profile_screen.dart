@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -41,7 +42,7 @@ class ProfileScreen extends HookWidget {
                       heroTag: fabHeroTag,
                       onPressed: () => ExtendedNavigator.of(context)
                           .push(Routes.profileIntroScreen(editMode: true)),
-                      child: const Icon(Icons.edit),
+                      child: const Icon(WorkNetIcons.newpost),
                     )
                   : FloatingActionButton(
                       heroTag: fabHeroTag,
@@ -49,7 +50,7 @@ class ProfileScreen extends HookWidget {
                         Routes.chatScreen,
                         arguments: ChatScreenArguments(recieverId: userId),
                       ),
-                      child: const Icon(Icons.chat),
+                      child: const Icon(WorkNetIcons.message),
                     ),
               body: SingleChildScrollView(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
@@ -102,8 +103,24 @@ class _ProfileBody extends HookWidget {
           ),
         if (profile.linkedIn != null) _buildLinkedInButton(),
         if (profile.introduction != null)
-          Text(
-            profile.introduction,
+          SizedBox(
+            width: double.infinity,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'About me:',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text(
+                profile.introduction,
+              )
+            ]),
           ),
       ],
     );
@@ -203,9 +220,10 @@ class _MeetingPreferenceInfo extends HookWidget {
 
   List<Widget> _buildInterests(BuildContext context) {
     const introLabel = "Looking to meet:";
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16,
-        );
+    final labelStyle = Theme.of(context)
+        .textTheme
+        .subtitle1
+        .copyWith(fontWeight: FontWeight.bold);
     if (interests.isEmpty) {
       return [];
     }
@@ -216,12 +234,18 @@ class _MeetingPreferenceInfo extends HookWidget {
         introLabel,
         style: labelStyle,
       ),
-      const SizedBox(height: AppInsets.med),
-      ...interests
-          .map((interest) => _ListItem(
-                text: interest.name,
-              ))
-          .toList(),
+      const SizedBox(
+        height: AppInsets.med,
+        width: double.infinity,
+      ),
+      Wrap(
+        spacing: 12,
+        children: interests
+            .map((interest) => _ListItem(
+                  text: interest.name,
+                ))
+            .toList(),
+      )
     ];
   }
 }
@@ -236,27 +260,15 @@ class _ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          fontSize: 14,
-          height: 1.4,
-          color: Colors.grey[700],
-        );
-    return Row(
-      children: [
-        Container(
-          width: 6,
-          height: 6,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            shape: BoxShape.circle,
-          ),
-        ),
-        const SizedBox(width: AppInsets.med),
-        Text(
+    final textStyle = Theme.of(context).textTheme.bodyText1;
+    return Chip(
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            side: BorderSide()),
+        label: Text(
           text,
           style: textStyle,
-        )
-      ],
-    );
+        ));
   }
 }
