@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
@@ -6,13 +7,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
@@ -102,6 +104,8 @@ class _RoundTableLoaded extends HookWidget {
           fontWeight: FontWeight.w700,
         );
 
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+
     // Controller
     final controller = useProvider(roundTableScreenControllerProvider(table));
     return Stack(
@@ -132,14 +136,24 @@ class _RoundTableLoaded extends HookWidget {
                   Wrap(
                     spacing: AppInsets.xxl,
                     children: controller.speakers
-                        .map((member) => SpeakerAvatar(
-                              user: member,
-                              isLive: controller.connectionState ==
-                                  RtcConnectionState.connected,
+                        .map((member) => InkWell(
+                              onTap: () => ExtendedNavigator.of(context).push(
+                                  Routes.profileScreen(
+                                      userId: member.pk,
+                                      allowEdit: member.pk == authUserPK)),
+                              child: SpeakerAvatar(
+                                user: member,
+                                isLive: controller.connectionState ==
+                                    RtcConnectionState.connected,
+                              ),
                             ))
                         .toList(),
                   ),
-                if (!table.isSpeaker) _SpeakersListWithIntro(table: table)
+                if (!table.isSpeaker)
+                  _SpeakersListWithIntro(
+                    table: table,
+                    authUserPk: authUserPK,
+                  )
               ],
             ),
           ),
@@ -260,21 +274,29 @@ class _RoundTableLoaded extends HookWidget {
 
 class _SpeakersListWithIntro extends StatelessWidget {
   final RoundTable table;
+  final String authUserPk;
   const _SpeakersListWithIntro({
     Key key,
     this.table,
+    @required this.authUserPk,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
     if (table.host != null) {
-      children.add(_SpeakerWithIntro(user: table.hostDetail));
+      children.add(_SpeakerWithIntro(
+        user: table.hostDetail,
+        authUserPk: authUserPk,
+      ));
     }
 
     if (table.speakersDetailList != null &&
         table.speakersDetailList.isNotEmpty) {
       for (final speaker in table.speakersDetailList) {
-        children.add(_SpeakerWithIntro(user: speaker));
+        children.add(_SpeakerWithIntro(
+          user: speaker,
+          authUserPk: authUserPk,
+        ));
       }
     }
 
@@ -286,10 +308,11 @@ class _SpeakersListWithIntro extends StatelessWidget {
 
 class _SpeakerWithIntro extends StatelessWidget {
   final RoundTableUser user;
-
+  final String authUserPk;
   const _SpeakerWithIntro({
     Key key,
     @required this.user,
+    @required this.authUserPk,
   }) : super(key: key);
 
   @override
@@ -300,35 +323,39 @@ class _SpeakerWithIntro extends StatelessWidget {
         );
     final bodyStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: kSpacingList),
-      child: Row(
-        children: [
-          BaseNetworkImage(
-            imageUrl: user.photo,
-            defaultImage: AppImageAssets.defaultAvatar,
-            imagebuilder: (context, imageProvider) => CircleAvatar(
-              backgroundImage: imageProvider,
-              radius: 36,
+    return InkWell(
+      onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
+          userId: user.pk, allowEdit: authUserPk == user.pk)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            BaseNetworkImage(
+              imageUrl: user.photo,
+              defaultImage: AppImageAssets.defaultAvatar,
+              imagebuilder: (context, imageProvider) => CircleAvatar(
+                backgroundImage: imageProvider,
+                radius: 36,
+              ),
             ),
-          ),
-          const SizedBox(width: AppInsets.xl),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user.name, style: headingStyle),
-                const SizedBox(height: AppInsets.sm),
-                Text(
-                  description,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: bodyStyle,
-                )
-              ],
+            const SizedBox(width: AppInsets.xl),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.name, style: headingStyle),
+                  const SizedBox(height: AppInsets.sm),
+                  Text(
+                    description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: bodyStyle,
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

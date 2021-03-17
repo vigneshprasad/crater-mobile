@@ -27,6 +27,7 @@ import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
+import 'features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import 'features/rewards/domain/entity/package_entity.dart';
 import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
@@ -70,6 +71,10 @@ class Routes {
   static const String _newPasswordScreen = '/new-password/:params?';
   static String newPasswordScreen({dynamic params = ''}) =>
       '/new-password/$params';
+  static const String _profileScreen = '/profile/:userId/:allowEdit';
+  static String profileScreen(
+          {@required dynamic userId, @required dynamic allowEdit}) =>
+      '/profile/$userId/$allowEdit';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -94,6 +99,7 @@ class Routes {
     createTableScreen,
     _profileIntroScreen,
     _newPasswordScreen,
+    _profileScreen,
   };
 }
 
@@ -124,6 +130,7 @@ class Router extends RouterBase {
     RouteDef(Routes.createTableScreen, page: CreateTableScreen),
     RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
     RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
+    RouteDef(Routes._profileScreen, page: ProfileScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -318,6 +325,15 @@ class Router extends RouterBase {
         builder: (context) => NewPasswordScreen(
           key: args.key,
           params: data.pathParams['params'].stringValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileScreen(
+          data.pathParams['userId'].stringValue,
+          allowEdit: data.pathParams['allowEdit'].boolValue,
         ),
         settings: data,
       );
