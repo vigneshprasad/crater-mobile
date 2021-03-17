@@ -196,9 +196,10 @@ class _MeetingPreferenceInfo extends HookWidget {
 
   List<Widget> _buildObjectives(BuildContext context) {
     const introLabel = "Objectives";
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16,
-        );
+    final labelStyle = Theme.of(context)
+        .textTheme
+        .subtitle1
+        .copyWith(fontWeight: FontWeight.bold);
     if (objectives.isEmpty) {
       return [];
     }
@@ -241,7 +242,7 @@ class _MeetingPreferenceInfo extends HookWidget {
       Wrap(
         spacing: 12,
         children: interests
-            .map((interest) => _ListItem(
+            .map((interest) => _ChipItem(
                   text: interest.name,
                 ))
             .toList(),
@@ -254,6 +255,41 @@ class _ListItem extends StatelessWidget {
   final String text;
 
   const _ListItem({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          fontSize: 14,
+          height: 1.4,
+          color: Colors.grey[700],
+        );
+    return Row(
+      children: [
+        Container(
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: AppInsets.med),
+        Text(
+          text,
+          style: textStyle,
+        )
+      ],
+    );
+  }
+}
+
+class _ChipItem extends StatelessWidget {
+  final String text;
+
+  const _ChipItem({
     Key key,
     @required this.text,
   }) : super(key: key);
