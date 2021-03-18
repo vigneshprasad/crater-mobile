@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
-
+import '../../../../../constants/app_constants.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
-
-const kItemWidth = 76.00;
 
 class SpeakerAvatar extends HookWidget {
   final RtcUser user;
   final bool isLive;
+  final double avtarSize;
 
   const SpeakerAvatar({
     Key key,
     @required this.user,
     @required this.isLive,
+    this.avtarSize,
   }) : super(key: key);
 
   Future<void> _hideVoiceIndicator(
@@ -62,51 +61,60 @@ class SpeakerAvatar extends HookWidget {
       }
       return;
     }, [user]);
-    return Opacity(
-      opacity: opacity,
-      child: Column(
-        children: [
-          SizedBox(
-            width: kItemWidth,
-            height: kItemWidth,
-            child: Stack(
-              fit: StackFit.expand,
-              overflow: Overflow.visible,
-              children: [
-                if (showVoiceActivity.value)
-                  Align(
-                    child: _AnimatedAudioInteraction(
-                        controller: _animationController),
-                  ),
+    return Column(
+      children: [
+        SizedBox(
+          width: avtarSize,
+          height: avtarSize,
+          child: Stack(
+            fit: StackFit.expand,
+            overflow: Overflow.visible,
+            children: [
+              if (showVoiceActivity.value)
                 Align(
-                  child: BaseNetworkImage(
-                    imageUrl: user.userInfo.photo,
-                    defaultImage: AppImageAssets.defaultAvatar,
-                    imagebuilder: (context, imageProvider) => CircleAvatar(
-                      radius: 30,
-                      backgroundImage: imageProvider,
+                  child: _AnimatedAudioInteraction(
+                      controller: _animationController),
+                ),
+              Align(
+                child: BaseNetworkImage(
+                  imageUrl: user.userInfo.photo,
+                  defaultImage: AppImageAssets.defaultAvatar,
+                  imagebuilder: (context, imageProvider) => Container(
+                    width: avtarSize,
+                    height: avtarSize,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                          colorFilter: !isLive
+                              ? ColorFilter.mode(
+                                  Colors.grey,
+                                  BlendMode.saturation,
+                                )
+                              : null),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                 ),
-                if (isLive && user.online)
-                  Positioned(
-                    top: 44,
-                    right: 0,
-                    child: _MicrophoneIcon(micEnabled: !user.muted),
-                  ),
-              ],
-            ),
+              ),
+              if (isLive && user.online)
+                Positioned(
+                  top: avtarSize - 20,
+                  left: avtarSize - 20,
+                  child: _MicrophoneIcon(micEnabled: !user.muted),
+                ),
+            ],
           ),
-          SizedBox(
-            width: kItemWidth,
-            child: Text(
-              user.userInfo.name,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
+        ),
+        // SizedBox(
+        //   width: kItemWidth,
+        //   child: Text(
+        //     user.userInfo.name,
+        //     overflow: TextOverflow.ellipsis,
+        //     textAlign: TextAlign.center,
+        //   ),
+        // ),
+      ],
     );
   }
 }
