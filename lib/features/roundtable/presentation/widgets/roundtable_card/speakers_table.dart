@@ -10,7 +10,7 @@ class SpeakersTable extends StatelessWidget {
     Key key,
     @required this.speakers,
     this.chairSize,
-    @required this.isLive,
+    this.isLive = false,
   }) : super(key: key);
 
   @override
