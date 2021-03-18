@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'speakers_table.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_card/speakers_table.dart';
+
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
@@ -71,23 +71,9 @@ class RoundTableCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isOptin)
-            Row(
-              children: [
-                Text(
-                  dateFormat.format(startTime),
-                  style: dateTextStyle,
-                ),
-                Spacer(),
-                Text(
-                  "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
-                  style: dateTextStyle,
-                )
-              ],
-            )
-          else
             Text(
-              AppLocalizations.of(context).translate("conversation:scheduling"),
-              style: dateStyle,
+              dateFormat.format(startTime),
+              style: dateTextStyle,
             ),
           const SizedBox(height: AppInsets.med),
           if (rootTopicLabel != null)
@@ -95,17 +81,12 @@ class RoundTableCard extends StatelessWidget {
           const SizedBox(height: AppInsets.sm),
           Text(topicLabel, style: agendaStyle),
           const SizedBox(height: AppInsets.med),
-
-          if (interests != null)
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: interests
-                  .map(
-                    (interest) => _InterestTag(interest: interest),
-                  )
-                  .toList(),
-            ),
+          Text(
+            isOptin
+                ? "Scheduling..."
+                : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
+            style: dateStyle,
+          ),
           const SizedBox(height: AppInsets.l),
           // if (description != null)
           //   Text(
@@ -122,9 +103,19 @@ class RoundTableCard extends StatelessWidget {
                 height: 120,
               ),
             ),
-          if (speakers != null) SpeakersTable(speakers: speakers),
-
           const Spacer(),
+          if (speakers != null) SpeakersTable(speakers: speakers),
+          const Spacer(),
+          const Divider(),
+          const SizedBox(height: AppInsets.l),
+          if (interests != null)
+            Wrap(
+              children: interests
+                  .map(
+                    (interest) => _InterestTag(interest: interest),
+                  )
+                  .toList(),
+            ),
         ],
       ),
     );
@@ -190,18 +181,19 @@ class _InterestTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 13.00,
-          color: Colors.white,
+          color: Colors.grey[500],
         );
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppInsets.med, vertical: AppInsets.sm),
-      decoration: BoxDecoration(
-        color: Colors.grey[800],
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: Text(
-        interest.name,
-        style: labelStyle,
+    return Padding(
+      padding: const EdgeInsets.only(right: AppInsets.l),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        child: Text(
+          "#${interest.name}",
+          style: labelStyle,
+        ),
       ),
     );
   }

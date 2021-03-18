@@ -86,8 +86,8 @@ class SpeakerAvatar extends HookWidget {
                       image: DecorationImage(
                           image: imageProvider,
                           fit: BoxFit.cover,
-                          colorFilter: !isLive
-                              ? ColorFilter.mode(
+                          colorFilter: !isLive || !user.online
+                              ? const ColorFilter.mode(
                                   Colors.grey,
                                   BlendMode.saturation,
                                 )

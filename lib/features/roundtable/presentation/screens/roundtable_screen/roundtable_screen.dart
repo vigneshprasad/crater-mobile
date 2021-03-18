@@ -130,7 +130,7 @@ class _RoundTableLoaded extends HookWidget {
                     AppLocalizations.of(context)
                         .translate("conversations:speakers_label"),
                     style: pageLabelStyle),
-                const SizedBox(height: AppInsets.xxl),
+                const SizedBox(height: 72),
                 if (table.isSpeaker)
                   SpeakersTable(
                       speakers: controller.speakers,
