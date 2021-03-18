@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-
+import '../../widgets/roundtable_card/speakers_table.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
@@ -19,7 +19,6 @@ import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
-import '../../widgets/speaker_avatar/speaker_avatar.dart';
 import 'roundtable_screen_controller.dart';
 
 const kSpacingList = 24.00;
@@ -133,22 +132,11 @@ class _RoundTableLoaded extends HookWidget {
                     style: pageLabelStyle),
                 const SizedBox(height: AppInsets.xxl),
                 if (table.isSpeaker)
-                  Wrap(
-                    spacing: AppInsets.xxl,
-                    children: controller.speakers
-                        .map((member) => InkWell(
-                              onTap: () => ExtendedNavigator.of(context).push(
-                                  Routes.profileScreen(
-                                      userId: member.pk,
-                                      allowEdit: member.pk == authUserPK)),
-                              child: SpeakerAvatar(
-                                user: member,
-                                isLive: controller.connectionState ==
-                                    RtcConnectionState.connected,
-                              ),
-                            ))
-                        .toList(),
-                  ),
+                  SpeakersTable(
+                      speakers: controller.speakers,
+                      chairSize: 60,
+                      isLive: controller.connectionState ==
+                          RtcConnectionState.connected),
                 if (!table.isSpeaker)
                   _SpeakersListWithIntro(
                     table: table,

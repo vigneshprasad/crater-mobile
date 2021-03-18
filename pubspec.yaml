@@ -77,6 +77,7 @@ dependencies:
   permission_handler: ^3.0.0
   uuid: ^2.2.2
   animated_text_kit: ^3.1.2
+  custom_rounded_rectangle_border: ^0.0.1
 
 dev_dependencies:
   flutter_test:
