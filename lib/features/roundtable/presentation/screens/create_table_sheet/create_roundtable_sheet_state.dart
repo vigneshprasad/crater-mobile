@@ -35,7 +35,6 @@ class GetRootTopicNotifier extends StateNotifier<ApiResult<List<Topic>>> {
 
   Future<Either<Failure, List<Topic>>> getTopicsForParentTopic(
       int parent) async {
-    print(parent);
     state = ApiResult<List<Topic>>.loading();
     final response = await _repository.getAllTopics(parent);
 

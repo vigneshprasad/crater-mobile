@@ -1,5 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../api/interceptors/authorized_interceptor.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -25,26 +25,17 @@ abstract class RoundTableApiService extends ChopperService {
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int parent);
 
-  @Get(path: 'topic/{id}/root/')
-  Future<Response> getRootTopic(@Path() int id);
-
-  @Get(path: 'topic/')
-  Future<Response> getAllCategoriesForTables();
-
-  @Get(path: 'topic/my_groups/')
-  Future<Response> getUserTableCategories();
-
-  @Get(path: 'category/all/')
-  Future<Response> getAllCategories();
+  @Get(path: 'topic/for_groups/')
+  Future<Response> getAllRootTopicsForGroups();
 
   @Get(path: 'groups/')
-  Future<Response> getRoundTables();
+  Future<Response> getRoundTables(@Body() Map<String, dynamic> body);
 
   @Get(path: 'groups/{id}/')
   Future<Response> retrieveRoundTable(@Path() int id);
 
   @Get(path: 'groups/my/')
-  Future<Response> getMyRoundTables();
+  Future<Response> getMyRoundTables(@Body() Map<String, dynamic> body);
 
   @Get(path: 'groups/')
   Future<Response> getAllRoundTables();
