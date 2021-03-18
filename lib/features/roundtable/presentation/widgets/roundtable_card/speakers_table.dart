@@ -10,7 +10,7 @@ class SpeakersTable extends StatelessWidget {
     Key key,
     @required this.speakers,
     this.chairSize,
-    this.isLive,
+    @required this.isLive,
   }) : super(key: key);
 
   @override
@@ -23,6 +23,7 @@ class SpeakersTable extends StatelessWidget {
     final tableWidth = (avatarSize * cols) + (spacing * (cols - 1));
     final tableHeight = (avatarSize * rows) + (spacing * (rows - 1));
     const spaceBetweenChairs = SizedBox(width: spacing, height: spacing);
+    final primaryColor = Theme.of(context).primaryColor;
 
     return Center(
       child: SizedBox(
@@ -34,7 +35,7 @@ class SpeakersTable extends StatelessWidget {
               margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.blue),
+                  border: Border.all(color: primaryColor),
                   color: Colors.blue[50]),
             ),
             Column(

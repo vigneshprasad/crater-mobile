@@ -13,17 +13,17 @@ import '../speaker_avatar/speaker_avatar.dart';
 enum SpeakerChairPosition { top, left, right, bottom }
 
 class SpeakerChair extends StatelessWidget {
-  final speaker;
+  final dynamic speaker;
   final SpeakerChairPosition position;
   final bool isLive;
   final double avtarSize;
 
   const SpeakerChair({
     Key key,
-    this.speaker,
-    this.avtarSize,
-    this.position,
-    this.isLive,
+    @required this.speaker,
+    @required this.avtarSize,
+    @required this.position,
+    @required this.isLive,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,8 @@ class SpeakerChair extends StatelessWidget {
     const borderWidth = 3;
     const padding = 2;
     final iconSize = avtarSize - (borderWidth + padding) * 2;
-    final borderSide = BorderSide(color: Colors.blue[600], width: 3);
+    final primaryColor = Theme.of(context).primaryColor;
+    final borderSide = BorderSide(color: primaryColor, width: 3);
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
 
     return Container(
