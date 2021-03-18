@@ -106,14 +106,6 @@ class SpeakerAvatar extends HookWidget {
             ],
           ),
         ),
-        // SizedBox(
-        //   width: kItemWidth,
-        //   child: Text(
-        //     user.userInfo.name,
-        //     overflow: TextOverflow.ellipsis,
-        //     textAlign: TextAlign.center,
-        //   ),
-        // ),
       ],
     );
   }

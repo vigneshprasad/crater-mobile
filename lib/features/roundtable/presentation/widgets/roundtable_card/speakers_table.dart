@@ -15,95 +15,88 @@ class SpeakersTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spacing = 20.0;
+    const spacing = 20.0;
+    const rows = 3;
+    const cols = 4;
+
     final avatarSize = chairSize ?? 48.0;
-    final width = (avatarSize * 4) + (spacing * 3);
-    final height = (avatarSize * 3) + (spacing * 2);
-    final emptyBox = SizedBox(width: avatarSize, height: avatarSize);
-    final space = SizedBox(width: spacing, height: avatarSize);
+    final tableWidth = (avatarSize * cols) + (spacing * (cols - 1));
+    final tableHeight = (avatarSize * rows) + (spacing * (rows - 1));
+    const spaceBetweenChairs = SizedBox(width: spacing, height: spacing);
+
     return Center(
-      child: Container(
-        height: height,
-        width: width,
+      child: SizedBox(
+        height: tableHeight,
+        width: tableWidth,
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.blue),
                   color: Colors.blue[50]),
             ),
-            Container(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      emptyBox,
-                      space,
-                      SpeakerChair(
-                        speaker: speakers.length > 2 ? speakers[2] : null,
-                        position: SpeakerChairPosition.top,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                      space,
-                      SpeakerChair(
-                        speaker: speakers.length > 4 ? speakers[4] : null,
-                        position: SpeakerChairPosition.top,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                      space,
-                      emptyBox,
-                    ],
-                  ),
-                  SizedBox(width: double.infinity, height: spacing),
-                  Row(
-                    children: [
-                      SpeakerChair(
-                        speaker: speakers.length > 0 ? speakers[0] : null,
-                        position: SpeakerChairPosition.left,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                      space,
-                      emptyBox,
-                      space,
-                      emptyBox,
-                      space,
-                      SpeakerChair(
-                        speaker: speakers.length > 1 ? speakers[1] : null,
-                        position: SpeakerChairPosition.right,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: double.infinity, height: spacing),
-                  Row(
-                    children: [
-                      emptyBox,
-                      space,
-                      SpeakerChair(
-                        speaker: speakers.length > 3 ? speakers[3] : null,
-                        position: SpeakerChairPosition.bottom,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                      space,
-                      SpeakerChair(
-                        speaker: speakers.length > 5 ? speakers[5] : null,
-                        position: SpeakerChairPosition.bottom,
-                        avtarSize: avatarSize,
-                        isLive: isLive,
-                      ),
-                      space,
-                      emptyBox,
-                    ],
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    const Spacer(),
+                    SpeakerChair(
+                      speaker: speakers.length > 2 ? speakers[2] : null,
+                      position: SpeakerChairPosition.top,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                    spaceBetweenChairs,
+                    SpeakerChair(
+                      speaker: speakers.length > 4 ? speakers[4] : null,
+                      position: SpeakerChairPosition.top,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                spaceBetweenChairs,
+                Row(
+                  children: [
+                    SpeakerChair(
+                      speaker: speakers.isNotEmpty ? speakers[0] : null,
+                      position: SpeakerChairPosition.left,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                    const Spacer(),
+                    SpeakerChair(
+                      speaker: speakers.length > 1 ? speakers[1] : null,
+                      position: SpeakerChairPosition.right,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                  ],
+                ),
+                spaceBetweenChairs,
+                Row(
+                  children: [
+                    const Spacer(),
+                    SpeakerChair(
+                      speaker: speakers.length > 3 ? speakers[3] : null,
+                      position: SpeakerChairPosition.bottom,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                    spaceBetweenChairs,
+                    SpeakerChair(
+                      speaker: speakers.length > 5 ? speakers[5] : null,
+                      position: SpeakerChairPosition.bottom,
+                      avtarSize: avatarSize,
+                      isLive: isLive,
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ],
             ),
           ],
         ),

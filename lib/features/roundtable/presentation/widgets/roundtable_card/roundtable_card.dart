@@ -1,9 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_card/speakers_table.dart';
+import 'speakers_table.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
-
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';

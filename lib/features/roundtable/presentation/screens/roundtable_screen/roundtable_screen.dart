@@ -7,8 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_card/speakers_table.dart';
-
+import '../../widgets/roundtable_card/speakers_table.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
@@ -138,22 +137,6 @@ class _RoundTableLoaded extends HookWidget {
                       chairSize: 60,
                       isLive: controller.connectionState ==
                           RtcConnectionState.connected),
-                // Wrap(
-                //   spacing: AppInsets.xxl,
-                //   children: controller.speakers
-                //       .map((member) => InkWell(
-                //             onTap: () => ExtendedNavigator.of(context).push(
-                //                 Routes.profileScreen(
-                //                     userId: member.pk,
-                //                     allowEdit: member.pk == authUserPK)),
-                //             child: SpeakerAvatar(
-                //               user: member,
-                //               isLive: controller.connectionState ==
-                //                   RtcConnectionState.connected,
-                //             ),
-                //           ))
-                //       .toList(),
-                // ),
                 if (!table.isSpeaker)
                   _SpeakersListWithIntro(
                     table: table,
