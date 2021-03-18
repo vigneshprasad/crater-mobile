@@ -1,110 +1,105 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../roundtables_page/roundtables_page.dart';
-import 'roundtable_tab_state.dart';
+import '../topics_filter_list/topics_filter_list.dart';
 
 enum RoundTablePageType { all, user }
 
 class RoundTableTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final heading =
-        AppLocalizations.of(context).translate("roundtable_tab:explore");
-    final roundTableMetaState = useProvider(roundTableStateProvider.state);
     final _pageController = usePageController();
     final activeTab = useState(0);
+    final pages = [
+      RoundTablePageType.all,
+      RoundTablePageType.user,
+    ];
     _pageController.addListener(() {
       if (_pageController.page.toInt() != activeTab.value) {
         activeTab.value = _pageController.page.toInt();
       }
     });
-    return SafeArea(
-      child: roundTableMetaState.when(
-        loading: () => _Loader(),
-        data: (meta) {
-          final List<RoundTablePageType> pages = [
-            RoundTablePageType.all,
-            if (meta.myTables != null) RoundTablePageType.user,
-          ];
 
-          return Column(
-            children: [
-              BaseAppBar(),
-              Expanded(
-                child: Stack(
-                  fit: StackFit.expand,
+    return SafeArea(
+      child: Column(
+        children: [
+          BaseAppBar(),
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _TabHeader(
-                          heading:
-                              _getTabHeader(pages[activeTab.value], context),
-                          subheading:
-                              _getTabSubHeader(pages[activeTab.value], context),
-                        ),
-                        Expanded(
-                          child: PageView(
-                            scrollDirection: Axis.vertical,
-                            controller: _pageController,
-                            children: [
-                              RoundTablesPage(
-                                  type: pages[0], tables: meta.allTables),
-                              if (meta.myTables != null)
-                                RoundTablesPage(
-                                  type: pages[1],
-                                  tables: meta.myTables.tables,
-                                  optins: meta.myTables.optins,
-                                  meetings: meta.myTables.meetings,
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    _TabHeader(
+                      heading: _getTabHeader(activeTab.value, context),
+                      subheading: _getTabSubHeader(activeTab.value, context),
                     ),
-                    if (pages.length > 1)
-                      _PageIndicator(
-                        length: pages.length,
-                        selected: activeTab.value,
-                      )
+                    const SizedBox(height: AppInsets.l),
+                    TopicsFilterList(type: pages[activeTab.value]),
+                    _PageBuilderVertical(
+                      pages: pages,
+                      controller: _pageController,
+                    ),
                   ],
                 ),
-              ),
-            ],
-          );
-        },
-        error: (error, st) => Container(),
+                _PageIndicator(
+                  length: pages.length,
+                  selected: activeTab.value,
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  String _getTabHeader(RoundTablePageType type, BuildContext context) {
-    switch (type) {
-      case RoundTablePageType.all:
-        return AppLocalizations.of(context).translate("conversatons:upcoming");
-      case RoundTablePageType.user:
-        return AppLocalizations.of(context).translate("conversatons:my");
-      default:
-        return "";
+  String _getTabHeader(int index, BuildContext context) {
+    if (index == 0) {
+      return AppLocalizations.of(context).translate("conversatons:upcoming");
+    } else if (index == 1) {
+      return AppLocalizations.of(context).translate("conversatons:my");
     }
+    return "";
   }
 
-  String _getTabSubHeader(RoundTablePageType type, BuildContext context) {
-    switch (type) {
-      case RoundTablePageType.all:
+  String _getTabSubHeader(int index, BuildContext context) {
+    switch (index) {
+      case 0:
         return AppLocalizations.of(context)
             .translate("conversatons:upcoming_subheading");
-      case RoundTablePageType.user:
+      case 1:
         return AppLocalizations.of(context)
             .translate("conversatons:my_subheading");
       default:
         return "";
     }
+  }
+}
+
+class _PageBuilderVertical extends StatelessWidget {
+  final PageController controller;
+  final List<RoundTablePageType> pages;
+
+  const _PageBuilderVertical({
+    Key key,
+    @required this.controller,
+    @required this.pages,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: PageView(
+        controller: controller,
+        scrollDirection: Axis.vertical,
+        children: pages.map((type) => RoundTablesPage(type: type)).toList(),
+      ),
+    );
   }
 }
 

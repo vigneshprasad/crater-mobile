@@ -19,6 +19,7 @@ _$_Topic _$_$_TopicFromJson(Map<String, dynamic> json) {
     root: json['root'] == null
         ? null
         : Topic.fromJson(json['root'] as Map<String, dynamic>),
+    groupCount: json['groupCount'] as int,
   );
 }
 
@@ -32,4 +33,5 @@ Map<String, dynamic> _$_$_TopicToJson(_$_Topic instance) => <String, dynamic>{
       'is_approved': instance.approved,
       'creator': instance.creator,
       'root': instance.root,
+      'groupCount': instance.groupCount,
     };

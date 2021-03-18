@@ -26,7 +26,8 @@ class _$TopicTearOff {
       String description,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
-      Topic root}) {
+      Topic root,
+      int groupCount}) {
     return _Topic(
       id: id,
       name: name,
@@ -37,6 +38,7 @@ class _$TopicTearOff {
       approved: approved,
       creator: creator,
       root: root,
+      groupCount: groupCount,
     );
   }
 
@@ -63,6 +65,7 @@ mixin _$Topic {
   bool get approved;
   String get creator;
   Topic get root;
+  int get groupCount;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -82,7 +85,8 @@ abstract class $TopicCopyWith<$Res> {
       String description,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
-      Topic root});
+      Topic root,
+      int groupCount});
 
   $TopicCopyWith<$Res> get root;
 }
@@ -106,6 +110,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
     Object approved = freezed,
     Object creator = freezed,
     Object root = freezed,
+    Object groupCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -118,6 +123,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
+      groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
     ));
   }
 
@@ -146,7 +152,8 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
       String description,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
-      Topic root});
+      Topic root,
+      int groupCount});
 
   @override
   $TopicCopyWith<$Res> get root;
@@ -172,6 +179,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
     Object approved = freezed,
     Object creator = freezed,
     Object root = freezed,
+    Object groupCount = freezed,
   }) {
     return _then(_Topic(
       id: id == freezed ? _value.id : id as int,
@@ -184,6 +192,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
+      groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
     ));
   }
 }
@@ -201,7 +210,8 @@ class _$_Topic implements _Topic {
       this.description,
       @JsonKey(name: 'is_approved') this.approved,
       this.creator,
-      this.root});
+      this.root,
+      this.groupCount});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
       _$_$_TopicFromJson(json);
@@ -226,10 +236,12 @@ class _$_Topic implements _Topic {
   final String creator;
   @override
   final Topic root;
+  @override
+  final int groupCount;
 
   @override
   String toString() {
-    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, approved: $approved, creator: $creator, root: $root)';
+    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount)';
   }
 
   @override
@@ -256,7 +268,10 @@ class _$_Topic implements _Topic {
                 const DeepCollectionEquality()
                     .equals(other.creator, creator)) &&
             (identical(other.root, root) ||
-                const DeepCollectionEquality().equals(other.root, root)));
+                const DeepCollectionEquality().equals(other.root, root)) &&
+            (identical(other.groupCount, groupCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.groupCount, groupCount)));
   }
 
   @override
@@ -270,7 +285,8 @@ class _$_Topic implements _Topic {
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(approved) ^
       const DeepCollectionEquality().hash(creator) ^
-      const DeepCollectionEquality().hash(root);
+      const DeepCollectionEquality().hash(root) ^
+      const DeepCollectionEquality().hash(groupCount);
 
   @JsonKey(ignore: true)
   @override
@@ -293,7 +309,8 @@ abstract class _Topic implements Topic {
       String description,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
-      Topic root}) = _$_Topic;
+      Topic root,
+      int groupCount}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
 
@@ -317,6 +334,8 @@ abstract class _Topic implements Topic {
   String get creator;
   @override
   Topic get root;
+  @override
+  int get groupCount;
   @override
   @JsonKey(ignore: true)
   _$TopicCopyWith<_Topic> get copyWith;

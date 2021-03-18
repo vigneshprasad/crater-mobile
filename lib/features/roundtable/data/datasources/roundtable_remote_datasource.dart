@@ -37,25 +37,18 @@ abstract class RoundTableRemoteDatasource {
   /// Throws [ServerException]
   Future<List<Topic>> getAllTopicsFromRemote(int parent);
 
-  /// Get List of All Categories from Remote server
+  /// Get List of All Topcics from Remote server
+  /// filter based on [parent] topic id.
   /// Throws [ServerException]
-  Future<List<Category>> getAllCategoriesFromRemote();
-
-  /// Get List of Categories of All RoundTable from Remote server
-  /// Throws [ServerException]
-  Future<List<Category>> getAllRoundTableCategoriesFromRemote();
-
-  /// Get List of Categories of User's RoundTable from Remote server
-  /// Throws [ServerException]
-  Future<List<Category>> getMyRoundTableCategoriesFromRemote();
+  Future<List<Topic>> getAllRootTopicsForGroupsFromRemote();
 
   /// Get List of RoundTables from Remote server
   /// Throws [ServerException]
-  Future<List<RoundTable>> getRoundTablesFromRemote();
+  Future<List<RoundTable>> getRoundTablesFromRemote(List<int> topicsIds);
 
   /// Get List of RoundTables Hosted by User from Remote server
   /// Throws [ServerException]
-  Future<List<RoundTable>> getMyRoundTablesFromRemote();
+  Future<List<RoundTable>> getMyRoundTablesFromRemote(List<int> topicsIds);
 
   /// Retrieve RoundTable from Remote server by [id]
   /// Throws [ServerException]
@@ -113,35 +106,11 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
   }
 
   @override
-  Future<List<Category>> getAllRoundTableCategoriesFromRemote() async {
-    final response = await roundTableApiService.getAllCategoriesForTables();
-    if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.bodyString) as Iterable;
-      return jsonList
-          .map(
-              (category) => Category.fromJson(category as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<List<Category>> getMyRoundTableCategoriesFromRemote() async {
-    final response = await roundTableApiService.getUserTableCategories();
-    if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.bodyString) as Iterable;
-      return jsonList
-          .map((table) => Category.fromJson(table as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<List<RoundTable>> getRoundTablesFromRemote() async {
-    final response = await roundTableApiService.getRoundTables();
+  Future<List<RoundTable>> getRoundTablesFromRemote(List<int> topicsIds) async {
+    final body = {
+      'topics': topicsIds,
+    };
+    final response = await roundTableApiService.getRoundTables(body);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -153,8 +122,12 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
   }
 
   @override
-  Future<List<RoundTable>> getMyRoundTablesFromRemote() async {
-    final response = await roundTableApiService.getMyRoundTables();
+  Future<List<RoundTable>> getMyRoundTablesFromRemote(
+      List<int> topicsIds) async {
+    final body = {
+      'topics': topicsIds,
+    };
+    final response = await roundTableApiService.getMyRoundTables(body);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -213,6 +186,20 @@ class RoundTableRemoteDatasourceImpl implements RoundTableRemoteDatasource {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
           .map((topic) => Topic.fromJson(topic as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Topic>> getAllRootTopicsForGroupsFromRemote() async {
+    final response = await roundTableApiService.getAllRootTopicsForGroups();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((topicCount) =>
+              Topic.fromCountJson(topicCount as Map<String, dynamic>))
           .toList();
     } else {
       throw ServerException(response.error);

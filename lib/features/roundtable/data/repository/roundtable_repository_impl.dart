@@ -12,7 +12,6 @@ import '../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../domain/entity/agenda_entity/agenda_entity.dart';
-import '../../domain/entity/category_entity/category_entity.dart';
 import '../../domain/entity/group_request/group_request_enitity.dart';
 import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/roundtable_entity/roundtable_entity.dart';
@@ -42,10 +41,11 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   );
 
   @override
-  Future<Either<Failure, List<Category>>> getAllRoundTableCategories() async {
+  Future<Either<Failure, List<RoundTable>>> getAllRoundTables(
+      {List<int> topicsIds}) async {
     try {
       final response =
-          await _remoteDatasource.getAllRoundTableCategoriesFromRemote();
+          await _remoteDatasource.getRoundTablesFromRemote(topicsIds);
       return Right(response);
     } on ServerException catch (error) {
       final message = error.message as Map<String, dynamic>;
@@ -57,38 +57,11 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   }
 
   @override
-  Future<Either<Failure, List<Category>>> getMyRoundTableCategories() async {
+  Future<Either<Failure, List<RoundTable>>> getAllMyRoundTables(
+      {List<int> topicsIds}) async {
     try {
       final response =
-          await _remoteDatasource.getMyRoundTableCategoriesFromRemote();
-      return Right(response);
-    } on ServerException catch (error) {
-      final message = error.message as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<RoundTable>>> getAllRoundTables() async {
-    try {
-      final response = await _remoteDatasource.getRoundTablesFromRemote();
-      return Right(response);
-    } on ServerException catch (error) {
-      final message = error.message as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<RoundTable>>> getAllMyRoundTables() async {
-    try {
-      final response = await _remoteDatasource.getMyRoundTablesFromRemote();
+          await _remoteDatasource.getMyRoundTablesFromRemote(topicsIds);
       return Right(response);
     } on ServerException catch (error) {
       final message = error.message as Map<String, dynamic>;
@@ -146,21 +119,6 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   }
 
   @override
-  Future<Either<Failure, List<Category>>> getAllCategories() async {
-    try {
-      final response = await _remoteDatasource.getAllCategoriesFromRemote();
-      return Right(response);
-    } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
-      return Left(failure);
-    } on SocketException {
-      return Left(NetworkFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, List<Agenda>>> getAgendas(int categoryId) async {
     try {
       final response = await _remoteDatasource.getAgendasFromRemote(categoryId);
@@ -179,6 +137,22 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
   Future<Either<Failure, List<Topic>>> getAllTopics(int parent) async {
     try {
       final response = await _remoteDatasource.getAllTopicsFromRemote(parent);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Topic>>> getAllRootTopicsForGroups() async {
+    try {
+      final response =
+          await _remoteDatasource.getAllRootTopicsForGroupsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       final message =

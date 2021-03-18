@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../constants/theme.dart';
 
-const kBottomPadding = 40.00;
+const kBottomPadding = 64.00;
 
 class RoundTableCardLayout extends StatelessWidget {
   final Widget child;

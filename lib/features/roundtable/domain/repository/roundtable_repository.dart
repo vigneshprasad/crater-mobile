@@ -13,12 +13,10 @@ import '../entity/roundtable_rtc_info/roundtable_rtc_info.dart';
 import '../entity/topic_entity/topic_entity.dart';
 
 abstract class RoundTableRepository {
-  Future<Either<Failure, List<Category>>> getAllCategories();
-  Future<Either<Failure, List<Category>>> getAllRoundTableCategories();
-  Future<Either<Failure, List<Category>>> getMyRoundTableCategories();
-
-  Future<Either<Failure, List<RoundTable>>> getAllRoundTables();
-  Future<Either<Failure, List<RoundTable>>> getAllMyRoundTables();
+  Future<Either<Failure, List<RoundTable>>> getAllRoundTables(
+      {List<int> topicsIds});
+  Future<Either<Failure, List<RoundTable>>> getAllMyRoundTables(
+      {List<int> topicsIds});
   Future<Either<Failure, RoundTable>> retrieveRoundTable(int id);
   Future<Either<Failure, List<Optin>>> getAllMyOptins();
 
@@ -26,6 +24,7 @@ abstract class RoundTableRepository {
   Future<Either<Failure, List<Agenda>>> getAgendas(int categoryId);
 
   Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
+  Future<Either<Failure, List<Topic>>> getAllRootTopicsForGroups();
 
   Future<Either<Failure, Optin>> postGroupOptin(
     List<MeetingInterest> interests,
