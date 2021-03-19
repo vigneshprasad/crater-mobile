@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../constants/theme.dart';
 
-const kBottomPadding = 64.00;
+const kBottomPadding = 76.00;
 
 class RoundTableCardLayout extends StatelessWidget {
   final Widget child;
@@ -16,44 +16,34 @@ class RoundTableCardLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return FractionallySizedBox(
+      widthFactor: 0.95,
+      heightFactor: 1,
       child: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.6,
+        padding: const EdgeInsets.only(
+          bottom: kBottomPadding,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            right: AppInsets.med,
-            left: AppInsets.med,
-            bottom: kBottomPadding,
-          ),
-          child: Material(
-            type: MaterialType.card,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-            elevation: 2,
-            child: InkWell(
-              hoverColor: Colors.white,
-              highlightColor: Colors.grey[100],
-              splashColor: Colors.grey[300],
-              onTap: onPressed != null
-                  ? () {
-                      onPressed();
-                    }
-                  : null,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: AppInsets.xl,
-                  right: AppInsets.xl,
-                  top: 24,
-                  bottom: AppInsets.xl,
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: child,
-                ),
+        child: Material(
+          type: MaterialType.card,
+          color: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          elevation: 2,
+          child: InkWell(
+            hoverColor: Colors.white,
+            highlightColor: Colors.grey[100],
+            splashColor: Colors.grey[300],
+            onTap: onPressed != null
+                ? () {
+                    onPressed();
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppInsets.l,
+                horizontal: AppInsets.xl,
               ),
+              child: child,
             ),
           ),
         ),

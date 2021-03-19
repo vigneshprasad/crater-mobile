@@ -2,11 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_entity.dart';
-import 'package:worknetwork/features/roundtable/presentation/widgets/meeting_card/meeting_card.dart';
 
 import '../../../../../routes.gr.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
+import '../meeting_card/meeting_card.dart';
 import '../roundtable_card/roundtable_card.dart';
 import '../roundtable_tab/roundtable_tab.dart';
 import 'roundtables_page_state.dart';
@@ -77,11 +76,9 @@ class RoundTablesPage extends HookWidget {
           }
         }
 
-        return Expanded(
-          child: PageView(
-            controller: _pageController,
-            children: children,
-          ),
+        return PageView(
+          controller: _pageController,
+          children: children,
         );
       },
       error: (error, st) => _Loader(),
@@ -92,13 +89,12 @@ class RoundTablesPage extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-        child: Center(
+    return const Center(
       child: SizedBox(
         height: 24,
         width: 24,
         child: CircularProgressIndicator(),
       ),
-    ));
+    );
   }
 }

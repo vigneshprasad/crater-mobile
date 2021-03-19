@@ -124,7 +124,7 @@ class _RoundTableLoaded extends HookWidget {
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
                 const SizedBox(height: AppInsets.l),
-                EditableTextField(text: table.description),
+                EditableTextField(text: table.topicDetail.description),
                 const SizedBox(height: AppInsets.xl),
                 Text(
                     AppLocalizations.of(context)

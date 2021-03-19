@@ -28,7 +28,7 @@ class RoundTableTab extends HookWidget {
       child: Column(
         children: [
           BaseAppBar(),
-          Expanded(
+          Flexible(
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -40,6 +40,7 @@ class RoundTableTab extends HookWidget {
                     ),
                     const SizedBox(height: AppInsets.l),
                     TopicsFilterList(type: pages[activeTab.value]),
+                    const SizedBox(height: AppInsets.l),
                     _PageBuilderVertical(
                       pages: pages,
                       controller: _pageController,
@@ -93,11 +94,12 @@ class _PageBuilderVertical extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: PageView(
+    return Flexible(
+      child: PageView.builder(
+        itemCount: pages.length,
         controller: controller,
         scrollDirection: Axis.vertical,
-        children: pages.map((type) => RoundTablesPage(type: type)).toList(),
+        itemBuilder: (context, index) => RoundTablesPage(type: pages[index]),
       ),
     );
   }
@@ -125,7 +127,7 @@ class _TabHeader extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.med, horizontal: AppInsets.xl),
+          vertical: AppInsets.sm, horizontal: AppInsets.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
