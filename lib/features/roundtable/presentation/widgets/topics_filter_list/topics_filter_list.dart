@@ -148,22 +148,13 @@ class _TopicItem extends StatelessWidget {
             children: [
               _buildThumbnail(item),
               const SizedBox(width: AppInsets.med),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.name,
-                    style: headingStyle,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  const SizedBox(height: AppInsets.sm),
-                  // Text(
-                  //   "${item.groupCount} groups",
-                  //   style: subheadStyle,
-                  // )
-                ],
+              Flexible(
+                child: Text(
+                  item.name,
+                  style: headingStyle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
               ),
             ],
           ),
