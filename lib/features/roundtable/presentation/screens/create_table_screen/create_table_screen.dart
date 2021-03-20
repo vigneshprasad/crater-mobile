@@ -43,6 +43,8 @@ class CreateTableScreen extends HookWidget {
           fontSize: 14,
         );
 
+    final _scrollControiler = useScrollController();
+
     return Scaffold(
       appBar: BaseAppBar(),
       body: state.when(
@@ -53,6 +55,7 @@ class CreateTableScreen extends HookWidget {
             fit: StackFit.expand,
             children: [
               SingleChildScrollView(
+                controller: _scrollControiler,
                 child: Form(
                   key: _formKey,
                   child: Padding(
@@ -89,7 +92,15 @@ class CreateTableScreen extends HookWidget {
                         FormMeetingInterestPicker(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           options: meta.interests,
-                          onSaved: (value) => _interests.value = value,
+                          onSaved: (value) {
+                            _interests.value = value;
+                            if (_interests.value.length >= 3) {
+                              _scrollControiler.animateTo(
+                                  _scrollControiler.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeIn);
+                            }
+                          },
                           validator: (value) {
                             if (value.length < 3) {
                               return "Please select atleast 3 types of people.";

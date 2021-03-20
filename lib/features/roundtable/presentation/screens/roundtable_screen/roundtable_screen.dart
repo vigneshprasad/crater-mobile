@@ -130,15 +130,15 @@ class _RoundTableLoaded extends HookWidget {
                     AppLocalizations.of(context)
                         .translate("conversations:speakers_label"),
                     style: pageLabelStyle),
-                if (table.isSpeaker) const SizedBox(height: 72),
+                if (table.isSpeaker) const SizedBox(height: AppInsets.l),
                 if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
-                if (table.isSpeaker)
+                if (controller.showConnectionBar)
                   SpeakersTable(
                       speakers: controller.speakers,
                       chairSize: 60,
                       isLive: controller.connectionState ==
                           RtcConnectionState.connected),
-                if (!table.isSpeaker)
+                if (!controller.showConnectionBar)
                   _SpeakersListWithIntro(
                     table: table,
                     authUserPk: authUserPK,
