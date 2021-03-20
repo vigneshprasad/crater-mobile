@@ -41,6 +41,7 @@ class RoundTableRtcClient {
     );
     await _engine.setLogFilter(LogFilter.Off);
     await _engine.enableAudioVolumeIndication(300, 3, true);
+    await _engine.setDefaultAudioRoutetoSpeakerphone(true);
     await _engine.setAudioProfile(
         AudioProfile.MusicHighQuality, AudioScenario.GameStreaming);
     await _engine.joinChannelWithUserAccount(token, channelName, account);
