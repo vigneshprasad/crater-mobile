@@ -3,14 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../core/analytics/analytics.dart';
-import '../../../core/config_reader/config_reader.dart';
 import '../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../../../core/local_storage/local_storage.dart';
 import '../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -43,7 +41,7 @@ class AppDrawer extends StatelessWidget {
     // ),
     DrawerItem(
         icon: WorkNetIcons.account,
-        label: "drawer_item:acoount",
+        label: "drawer_item:account",
         key: DrawerItemKeys.account),
     DrawerItem(
       icon: WorkNetIcons.logout,
@@ -79,7 +77,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                _buildMenuItems(_items),
+                _buildMenuItems(_items, state),
               ],
             );
           } else {
@@ -151,7 +149,7 @@ class AppDrawer extends StatelessWidget {
     }
   }
 
-  Widget _buildMenuItems(List<DrawerItem> items) {
+  Widget _buildMenuItems(List<DrawerItem> items, AuthState authState) {
     return Expanded(
       child: ListView.separated(
         padding: const EdgeInsets.only(top: AppInsets.med),
@@ -159,7 +157,7 @@ class AppDrawer extends StatelessWidget {
         itemBuilder: (context, index) => DrawerMenuItem(
           item: items[index],
           onPressItem: (item) {
-            _onPressItem(item, context);
+            _onPressItem(item, context, authState);
           },
         ),
         separatorBuilder: (context, index) => const Divider(),
@@ -167,13 +165,15 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  void _onPressItem(DrawerItem item, BuildContext context) {
+  void _onPressItem(
+      DrawerItem item, BuildContext context, AuthState authState) {
     switch (item.key) {
       case DrawerItemKeys.logout:
         _handleLogout(context);
         break;
       case DrawerItemKeys.account:
-        _openAccountsPage(context);
+        ExtendedNavigator.of(context).push(
+            Routes.profileScreen(userId: authState.user.pk, allowEdit: true));
         break;
       default:
         break;

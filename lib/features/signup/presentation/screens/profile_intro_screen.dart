@@ -5,17 +5,17 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/features/signup/presentation/bloc/profile_intro/profile_intro_bloc.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/profile_inline_question.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/profile_photo_picker.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../constants/app_constants.dart';
+import '../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../routes.gr.dart';
+import '../../../../utils/app_localizations.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../domain/entity/profile_intro_meta.dart';
+import '../../domain/entity/profile_intro_question.dart';
+import '../bloc/profile_intro/profile_intro_bloc.dart';
+import '../widgets/profile_inline_question.dart';
+import '../widgets/profile_photo_picker.dart';
 
 class ProfileIntroScreen extends StatefulWidget {
   final bool editMode;

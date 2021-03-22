@@ -27,9 +27,13 @@ import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
+import 'features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import 'features/rewards/domain/entity/package_entity.dart';
 import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
+import 'features/roundtable/domain/entity/topic_entity/topic_entity.dart';
+import 'features/roundtable/presentation/screens/create_table_screen/create_table_screen.dart';
+import 'features/roundtable/presentation/screens/roundtable_screen/roundtable_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
@@ -58,12 +62,19 @@ class Routes {
   static const String packageDetailScreen = '/package-detail';
   static const String packagePurchaseScreen = '/package-purchase';
   static const String pointsFaqScreen = '/points-faq';
+  static const String _roundTableScreen = '/roundtable/:id';
+  static String roundTableScreen({@required dynamic id}) => '/roundtable/$id';
+  static const String createTableScreen = '/create-table';
   static const String _profileIntroScreen = '/profile-intro/:editMode?';
   static String profileIntroScreen({dynamic editMode = ''}) =>
       '/profile-intro/$editMode';
   static const String _newPasswordScreen = '/new-password/:params?';
   static String newPasswordScreen({dynamic params = ''}) =>
       '/new-password/$params';
+  static const String _profileScreen = '/profile/:userId/:allowEdit';
+  static String profileScreen(
+          {@required dynamic userId, @required dynamic allowEdit}) =>
+      '/profile/$userId/$allowEdit';
   static const all = <String>{
     splashScreen,
     _homeScreen,
@@ -84,8 +95,11 @@ class Routes {
     packageDetailScreen,
     packagePurchaseScreen,
     pointsFaqScreen,
+    _roundTableScreen,
+    createTableScreen,
     _profileIntroScreen,
     _newPasswordScreen,
+    _profileScreen,
   };
 }
 
@@ -112,8 +126,11 @@ class Router extends RouterBase {
     RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
+    RouteDef(Routes._roundTableScreen, page: RoundTableScreen),
+    RouteDef(Routes.createTableScreen, page: CreateTableScreen),
     RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
     RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
+    RouteDef(Routes._profileScreen, page: ProfileScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -271,6 +288,23 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    RoundTableScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) =>
+            RoundTableScreen(id: data.pathParams['id'].intValue),
+        settings: data,
+      );
+    },
+    CreateTableScreen: (data) {
+      final args = data.getArgs<CreateTableScreenArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => CreateTableScreen(
+          key: args.key,
+          topic: args.topic,
+        ),
+        settings: data,
+      );
+    },
     ProfileIntroScreen: (data) {
       final args = data.getArgs<ProfileIntroScreenArguments>(
         orElse: () => ProfileIntroScreenArguments(),
@@ -291,6 +325,15 @@ class Router extends RouterBase {
         builder: (context) => NewPasswordScreen(
           key: args.key,
           params: data.pathParams['params'].stringValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileScreen(
+          data.pathParams['userId'].stringValue,
+          allowEdit: data.pathParams['allowEdit'].boolValue,
         ),
         settings: data,
       );
@@ -401,6 +444,15 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushPointsFaqScreen() =>
       push<dynamic>(Routes.pointsFaqScreen);
+
+  Future<dynamic> pushCreateTableScreen({
+    Key key,
+    @required Topic topic,
+  }) =>
+      push<dynamic>(
+        Routes.createTableScreen,
+        arguments: CreateTableScreenArguments(key: key, topic: topic),
+      );
 }
 
 /// ************************************************************************
@@ -468,6 +520,13 @@ class PackagePurchaseScreenArguments {
   final Key key;
   final Package package;
   PackagePurchaseScreenArguments({this.key, @required this.package});
+}
+
+/// CreateTableScreen arguments holder class
+class CreateTableScreenArguments {
+  final Key key;
+  final Topic topic;
+  CreateTableScreenArguments({this.key, @required this.topic});
 }
 
 /// ProfileIntroScreen arguments holder class

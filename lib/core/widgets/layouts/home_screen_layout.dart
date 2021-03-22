@@ -8,6 +8,7 @@ class HomeScreenLayout extends StatelessWidget {
   final Widget Function(int) getFabButton;
   final void Function(int) onTabTapped;
   final int currentTabIndex;
+  final FloatingActionButtonLocation floatingActionButtonLocation;
 
   const HomeScreenLayout({
     Key key,
@@ -16,6 +17,7 @@ class HomeScreenLayout extends StatelessWidget {
     @required this.getFabButton,
     @required this.onTabTapped,
     @required this.currentTabIndex,
+    this.floatingActionButtonLocation = FloatingActionButtonLocation.endFloat,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class HomeScreenLayout extends StatelessWidget {
         ),
       ),
       floatingActionButton: getFabButton(currentTabIndex),
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 }

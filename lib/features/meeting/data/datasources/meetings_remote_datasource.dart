@@ -63,6 +63,8 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return MeetingConfigModel.fromJson(json);
+    } else if (response.statusCode == 204) {
+      return null;
     } else {
       throw ServerException(response.error);
     }

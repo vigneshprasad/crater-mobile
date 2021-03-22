@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
-import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
+
+import '../../../../ui/base/base_dropdown/base_dropdown.dart';
+import '../../domain/entity/profile_intro_meta.dart';
+import '../../domain/entity/profile_intro_question.dart';
 
 class AutoSizeDropdown extends StatelessWidget {
   const AutoSizeDropdown({

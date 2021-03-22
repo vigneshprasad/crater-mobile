@@ -39,4 +39,6 @@ abstract class ConfigReader {
 
   static String getMeetingFeedbackTypeformLink() =>
       _config["MEETING_FEEDBACK_TYPEFORM"] as String;
+
+  static String getAgoraAppId() => _config["AGORA_APP_ID"] as String;
 }

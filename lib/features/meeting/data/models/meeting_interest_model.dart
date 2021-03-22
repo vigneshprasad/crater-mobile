@@ -11,13 +11,16 @@ part 'meeting_interest_model.g.dart';
 class MeetingInterestModel extends MeetingInterest {
   final int pk;
   final String name;
+  final String icon;
 
   MeetingInterestModel({
     this.pk,
     this.name,
+    this.icon,
   }) : super(
           pk: pk,
           name: name,
+          icon: icon,
         );
 
   factory MeetingInterestModel.fromJson(Map<String, dynamic> json) =>

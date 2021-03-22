@@ -73,7 +73,7 @@ class _$AuthInjector extends AuthInjector {
     container.registerFactory(
         (c) => ForgotPasswordBloc(passwordReset: c<UCPostPasswordReset>()));
     container.registerFactory(
-        (c) => NewPasswordBloc(passwordReset: c<UCPostNewPassword>()));
+        (c) => NewPasswordBloc(postNewPassword: c<UCPostNewPassword>()));
     container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
         c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
     container.registerSingleton<AuthRemoteDataSource>((c) =>

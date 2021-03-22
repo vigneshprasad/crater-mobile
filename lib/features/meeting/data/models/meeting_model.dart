@@ -42,6 +42,9 @@ class MeetingModel extends Meeting {
   @JsonKey(name: 'time_slot')
   final int timeSlot;
 
+  @JsonKey(name: 'participant_detail')
+  final MeetingParticipantModel participantDetail;
+
   MeetingModel({
     this.config,
     this.end,
@@ -53,6 +56,7 @@ class MeetingModel extends Meeting {
     this.start,
     this.timeSlot,
     this.status,
+    this.participantDetail,
   }) : super(
           config: config,
           end: end,
@@ -64,6 +68,7 @@ class MeetingModel extends Meeting {
           start: start,
           timeSlot: timeSlot,
           status: status,
+          participantDetail: participantDetail,
         );
 
   factory MeetingModel.fromJson(Map<String, dynamic> json) =>
