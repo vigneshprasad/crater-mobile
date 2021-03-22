@@ -17,7 +17,7 @@ import '../roundtable_tab/roundtable_tab.dart';
 part 'roundtables_page_state.freezed.dart';
 
 final roundtablePageStateProvider =
-    StateNotifierProvider.family<RoundTablePageNotifier, RoundTablePageType>(
+    StateNotifierProvider.autoDispose.family<RoundTablePageNotifier, RoundTablePageType>(
         (ref, type) {
   final roundTableRepository = ref.read(roundtableRepositoryProvider);
   final meetingRepository = KiwiContainer().resolve<MeetingRepository>();

@@ -159,6 +159,7 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (state.hasError) BaseErrorText(text: state.errorText),
                 MeetingInterestPicker(
                   options: options,
                   onValueChanged: (value) {
@@ -166,7 +167,6 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
                     state.save();
                   },
                 ),
-                if (state.hasError) BaseErrorText(text: state.errorText),
               ],
             );
           },

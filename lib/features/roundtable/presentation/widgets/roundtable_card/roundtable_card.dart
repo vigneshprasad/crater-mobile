@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_card/speakers_table.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -46,11 +47,11 @@ class RoundTableCard extends StatelessWidget {
           color: Colors.grey,
         );
     final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 15,
+          fontSize: 14,
           color: Theme.of(context).primaryColor,
         );
     final agendaStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 20,
+          fontSize: 18,
         );
     final dateStyle = categoryStyle.copyWith(
       fontWeight: FontWeight.w400,
@@ -75,15 +76,14 @@ class RoundTableCard extends StatelessWidget {
               dateFormat.format(startTime),
               style: dateTextStyle,
             ),
-          const SizedBox(height: AppInsets.med),
+          if (rootTopicLabel != null) const SizedBox(height: AppInsets.sm),
           if (rootTopicLabel != null)
             Text(rootTopicLabel, style: categoryStyle),
-          const SizedBox(height: AppInsets.sm),
           Text(topicLabel, style: agendaStyle),
-          const SizedBox(height: AppInsets.med),
           Text(
             isOptin
-                ? "Scheduling..."
+                ? AppLocalizations.of(context)
+                    .translate("conversations:scheduling")
                 : "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}",
             style: dateStyle,
           ),

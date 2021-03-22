@@ -89,7 +89,7 @@
     "conversations:interests_label": "Who do you want to speak to?",
     "conversations:speakers_label": "Part of the conversation",
     "conversations:join_button_label": "Join the conversation",
-    "conversation:scheduling": "We are finding the best match, check back later.",
+    "conversations:scheduling": "We are finding the best match, check back later.",
     "conversations:time_slot_label": "When would you like to schedule it?",
     "roundtable_tab:explore": "RoundTables",
     "roundtable_sheet:heading": "Have a conversation about",

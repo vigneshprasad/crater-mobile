@@ -12,7 +12,7 @@ import '../roundtables_page/roundtables_page_state.dart';
 
 import 'topics_filter_list_state.dart';
 
-const _kHeightCategoryList = 72.00;
+const _kHeightCategoryList = 64.00;
 
 class TopicsFilterList extends HookWidget {
   final RoundTablePageType type;
@@ -73,41 +73,38 @@ class TopicsFilterList extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        padding: const EdgeInsets.only(left: AppInsets.xl),
-        scrollDirection: Axis.horizontal,
-        itemCount: 2,
-        separatorBuilder: (context, index) =>
-            const SizedBox(width: AppInsets.xl),
-        itemBuilder: (context, index) => BaseShimmerLoader(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 48,
-                width: 48,
-                color: Colors.white,
-              ),
-              const SizedBox(width: AppInsets.med),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 72,
-                    height: 10,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(height: AppInsets.l),
-                  Container(
-                    width: 72,
-                    height: 8,
-                    color: Colors.white,
-                  ),
-                ],
-              )
-            ],
-          ),
+    return ListView.separated(
+      padding: const EdgeInsets.only(left: AppInsets.xl),
+      scrollDirection: Axis.horizontal,
+      itemCount: 2,
+      separatorBuilder: (context, index) => const SizedBox(width: AppInsets.xl),
+      itemBuilder: (context, index) => BaseShimmerLoader(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 48,
+              width: 48,
+              color: Colors.white,
+            ),
+            const SizedBox(width: AppInsets.med),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 72,
+                  height: 10,
+                  color: Colors.white,
+                ),
+                const SizedBox(height: AppInsets.l),
+                Container(
+                  width: 72,
+                  height: 8,
+                  color: Colors.white,
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -151,22 +148,12 @@ class _TopicItem extends StatelessWidget {
             children: [
               _buildThumbnail(item),
               const SizedBox(width: AppInsets.med),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: headingStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: AppInsets.sm),
-                    // Text(
-                    //   "${item.groupCount} groups",
-                    //   style: subheadStyle,
-                    // )
-                  ],
+              Flexible(
+                child: Text(
+                  item.name,
+                  style: headingStyle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
               ),
             ],
