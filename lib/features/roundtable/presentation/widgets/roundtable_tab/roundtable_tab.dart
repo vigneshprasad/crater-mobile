@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:worknetwork/core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -27,7 +28,7 @@ class RoundTableTab extends HookWidget {
     return SafeArea(
       child: Column(
         children: [
-          BaseAppBar(),
+          const HomeScreenAppBar(),
           Flexible(
             child: Stack(
               fit: StackFit.expand,

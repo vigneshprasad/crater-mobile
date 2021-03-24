@@ -125,7 +125,7 @@ class _AnimatedAudioInteraction extends StatelessWidget {
           parent: controller,
           curve: const Interval(0.0, 0.250, curve: Curves.easeIn),
         )),
-        size = Tween<double>(begin: 64.00, end: 72.00).animate(
+        size = Tween<double>(begin: 64.00, end: 112.00).animate(
           CurvedAnimation(
             parent: controller,
             curve: const Interval(0.250, 1.00, curve: Curves.bounceInOut),
@@ -145,7 +145,7 @@ class _AnimatedAudioInteraction extends StatelessWidget {
             height: size.value,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: primaryColor, width: 3.0),
+              color: primaryColor.withOpacity(0.3),
             ),
           ),
         );

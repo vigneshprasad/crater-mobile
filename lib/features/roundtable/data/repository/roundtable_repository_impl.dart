@@ -20,6 +20,7 @@ import '../../domain/entity/topic_entity/topic_entity.dart';
 import '../../domain/repository/roundtable_repository.dart';
 import '../datasources/roundtable_local_datasource.dart';
 import '../datasources/roundtable_remote_datasource.dart';
+import '../models/roundtable_failures/roundtable_failures.dart';
 
 final roundtableRepositoryProvider = Provider<RoundTableRepository>((ref) {
   final localDatasource = ref.read(roundtableLocalDatasourceProvider);
@@ -199,7 +200,7 @@ class RoundTableRepositoryImpl implements RoundTableRepository {
     } on ServerException catch (error) {
       final message =
           jsonDecode(error.message as String) as Map<String, dynamic>;
-      final failure = ServerFailure(message: "Something went wrong");
+      final failure = RoundTableFailure.fromJson(message);
       return Left(failure);
     } on SocketException {
       return Left(NetworkFailure());

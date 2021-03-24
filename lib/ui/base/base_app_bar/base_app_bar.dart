@@ -60,7 +60,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: actions,
                   ),
-                )
+                ),
+              const SizedBox(width: AppInsets.l),
             ],
           ),
         ),
