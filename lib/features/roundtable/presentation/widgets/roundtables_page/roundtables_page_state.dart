@@ -17,10 +17,11 @@ import '../roundtable_tab/roundtable_tab.dart';
 part 'roundtables_page_state.freezed.dart';
 
 final roundtablePageStateProvider =
-    StateNotifierProvider.autoDispose.family<RoundTablePageNotifier, RoundTablePageType>(
+    StateNotifierProvider.family<RoundTablePageNotifier, RoundTablePageType>(
         (ref, type) {
   final roundTableRepository = ref.read(roundtableRepositoryProvider);
   final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
+
   return RoundTablePageNotifier(type, roundTableRepository, meetingRepository);
 });
 
