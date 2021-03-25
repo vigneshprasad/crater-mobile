@@ -40,7 +40,18 @@ class RoundTableTab extends HookWidget {
                       subheading: _getTabSubHeader(activeTab.value, context),
                     ),
                     const SizedBox(height: AppInsets.l),
-                    TopicsFilterList(type: pages[activeTab.value]),
+                    TopicsFilterList(
+                      type: pages[activeTab.value],
+                      onPressAction: (action) {
+                        if (action == 'my_conversation') {
+                          _pageController.animateToPage(
+                            1,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                    ),
                     const SizedBox(height: AppInsets.l),
                     _PageBuilderVertical(
                       pages: pages,
