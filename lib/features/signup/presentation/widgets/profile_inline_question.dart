@@ -71,6 +71,10 @@ class ProfileInlineQuestion extends StatelessWidget {
                   onValuesChange: onValuesChange);
               break;
 
+            case ProfileIntroElementType.newline:
+              return Container(width: double.infinity, height: 40);
+              break;
+
             default:
               return Container();
           }

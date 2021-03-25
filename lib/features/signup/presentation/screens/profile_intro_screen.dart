@@ -58,6 +58,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     _values[ProfileIntroElement.name] = _name;
     if (widget.editMode == true) {
       final profile = BlocProvider.of<AuthBloc>(context).state.profile;
+      _values[ProfileIntroElement.introduction] = profile.introduction;
       _values[ProfileIntroElement.educationLevel] = profile.educationLevel;
       _values[ProfileIntroElement.yearsOfExperience] =
           profile.yearsOfExperience;

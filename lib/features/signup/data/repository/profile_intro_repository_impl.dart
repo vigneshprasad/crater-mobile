@@ -26,7 +26,8 @@ class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
         'with {${ProfileIntroElement.yearsOfExperience}} years of work experience.',
         'Currently working with a {${ProfileIntroElement.companyType}} ,',
         'in the {${ProfileIntroElement.sector}} sector.',
-        'Previously has completed a {${ProfileIntroElement.educationLevel}} degree.'
+        'Previously has completed a {${ProfileIntroElement.educationLevel}} degree.',
+        '\n About {${ProfileIntroElement.introduction}}'
       ];
 
       return const Right(questions);
