@@ -201,7 +201,7 @@ class AppDrawer extends StatelessWidget {
   Future<void> _openWhatsnewPage(BuildContext context) async {
     try {
       await launch(
-        ConfigReader.getWhatsnewPageLink(),
+        AppConstants.whatsNewPageLink,
         option: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
