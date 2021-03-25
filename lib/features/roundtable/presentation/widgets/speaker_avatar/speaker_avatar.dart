@@ -28,6 +28,7 @@ class SpeakerAvatar extends HookWidget {
 
   Future<void> _showVoiceIndicator(
       AnimationController controller, ValueNotifier<bool> visible) async {
+    print("hello");
     try {
       visible.value = true;
       await controller.forward().orCancel;
@@ -61,6 +62,7 @@ class SpeakerAvatar extends HookWidget {
       }
       return;
     }, [user]);
+
     return Column(
       children: [
         SizedBox(
@@ -71,10 +73,7 @@ class SpeakerAvatar extends HookWidget {
             overflow: Overflow.visible,
             children: [
               if (showVoiceActivity.value)
-                Align(
-                  child: _AnimatedAudioInteraction(
-                      controller: _animationController),
-                ),
+                _AnimatedAudioInteraction(controller: _animationController),
               Align(
                 child: BaseNetworkImage(
                   imageUrl: user.userInfo.photo,
@@ -115,7 +114,6 @@ class _AnimatedAudioInteraction extends StatelessWidget {
   final AnimationController controller;
   final Animation<double> opacity;
   final Animation<double> size;
-
   _AnimatedAudioInteraction({
     this.controller,
   })  : opacity = Tween<double>(
@@ -125,32 +123,36 @@ class _AnimatedAudioInteraction extends StatelessWidget {
           parent: controller,
           curve: const Interval(0.0, 0.250, curve: Curves.easeIn),
         )),
-        size = Tween<double>(begin: 64.00, end: 112.00).animate(
+        size = Tween<double>(begin: 10.00, end: 20.00).animate(
           CurvedAnimation(
             parent: controller,
             curve: const Interval(0.250, 1.00, curve: Curves.bounceInOut),
           ),
         );
-
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        return Opacity(
-          opacity: opacity.value,
-          child: Container(
-            width: size.value,
-            height: size.value,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: primaryColor.withOpacity(0.3),
-            ),
-          ),
-        );
-      },
-    );
+    return Positioned(
+        top: -size.value,
+        left: -size.value,
+        right: -size.value,
+        bottom: -size.value,
+        child: AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) {
+            return Opacity(
+              opacity: opacity.value,
+              child: Container(
+                // width: size.value,
+                // height: size.value,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: primaryColor.withOpacity(0.3),
+                ),
+              ),
+            );
+          },
+        ));
   }
 }
 

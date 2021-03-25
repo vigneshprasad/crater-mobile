@@ -260,9 +260,15 @@ class RoundTableScreenController extends ChangeNotifier {
       List<AudioVolumeInfo> speakers, int totalVolume) async {
     for (final speaker in speakers) {
       try {
-        final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
-        print("heloo $info");
-        final rtcUid = info.userAccount;
+        String rtcUid;
+        // Represents local user
+        if (speaker.uid == 0) {
+          rtcUid = _localUser.pk;
+        } else {
+          final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
+          rtcUid = info.userAccount;
+        }
+
         final index = _speakers.indexWhere((element) => element.pk == rtcUid);
         if (index > -1) {
           _speakers[index] = _speakers[index].copyWith(volume: speaker.volume);

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -134,12 +135,11 @@ class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
               ),
               Align(
                 alignment: Alignment.topCenter,
-                child: BaseAppBar(
+                child: HomeScreenAppBar(
                   title: Opacity(
                     opacity: offset,
                     child: Text(heading, style: AppTheme.appBarTitle),
                   ),
-                  actions: appBarActions,
                 ),
               ),
               Positioned(

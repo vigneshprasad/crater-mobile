@@ -26,7 +26,7 @@ class HomeScreenAppBar extends StatelessWidget {
         IconButton(
           splashRadius: 18.00,
           color: Colors.grey[500],
-          icon: const Icon(Icons.maps_ugc_outlined),
+          icon: const Icon(Icons.outgoing_mail),
           onPressed: () {
             Share.share(AppConstants.defaultShareText);
           },
