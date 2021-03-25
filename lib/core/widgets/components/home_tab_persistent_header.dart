@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/theme.dart';
-import '../../../ui/base/base_app_bar/base_app_bar.dart';
+import 'home_screen_app_bar/home_screen_app_bar.dart';
 
 class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -87,14 +87,13 @@ class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
                 ),
               Align(
                 alignment: Alignment.topRight,
-                child: BaseAppBar(
+                child: HomeScreenAppBar(
                   title: Opacity(
                     opacity: shrinkOffset / maxExtent > 0.4
                         ? 1
                         : shrinkOffset / maxExtent,
                     child: Text(heading, style: AppTheme.appBarTitle),
                   ),
-                  actions: appBarActions,
                 ),
               ),
             ],
