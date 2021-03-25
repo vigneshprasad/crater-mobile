@@ -14,6 +14,7 @@ class ProfileIntroElement extends HiveObject {
   final String value;
   final List<ProfileIntroMeta> options;
   final double width;
+  final int lines;
   final String placeholder;
 
   ProfileIntroElement({
@@ -22,6 +23,7 @@ class ProfileIntroElement extends HiveObject {
     this.value,
     this.options,
     this.width,
+    this.lines,
     this.placeholder,
   });
 
@@ -31,6 +33,7 @@ class ProfileIntroElement extends HiveObject {
   static const String sector = "sector";
   static const String companyType = "company_type";
   static const String educationLevel = "education_level";
+  static const String introduction = "introduction";
 }
 
 enum ProfileIntroElementType {
@@ -38,4 +41,5 @@ enum ProfileIntroElementType {
   text,
   dropdown,
   multiselect,
+  newline,
 }
