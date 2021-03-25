@@ -73,6 +73,9 @@ class AppConstants {
       "https://worknetwork.typeform.com/to/OX3ZB9QV#email=";
 
   static const double profileImageMaxWidth = 1024;
+
+  static const whatsNewPageLink =
+      'https://www.notion.so/What-s-new-on-WorkNetwork-b17a439479194ed5890e13fb2cd24c24';
 }
 
 class AppImageAssets {
