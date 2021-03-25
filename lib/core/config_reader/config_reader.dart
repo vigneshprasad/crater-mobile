@@ -37,6 +37,8 @@ abstract class ConfigReader {
 
   static String getAccountPageLink() => _config["ACCOUNTS_PAGE_LINK"] as String;
 
+  static String getWhatsnewPageLink() => _config["NOTION_PAGE_LINK"] as String;
+
   static String getMeetingFeedbackTypeformLink() =>
       _config["MEETING_FEEDBACK_TYPEFORM"] as String;
 

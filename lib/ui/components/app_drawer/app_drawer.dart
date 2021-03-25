@@ -3,7 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';
@@ -15,7 +17,7 @@ import '../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../routes.gr.dart';
 import '../list_items/drawer_item/drawer_menu_item.dart';
 
-enum DrawerItemKeys { notificationSettings, logout, account }
+enum DrawerItemKeys { notificationSettings, logout, account, whatsnew }
 
 class DrawerItem extends Equatable {
   final IconData icon;
@@ -43,6 +45,10 @@ class AppDrawer extends StatelessWidget {
         icon: WorkNetIcons.account,
         label: "drawer_item:account",
         key: DrawerItemKeys.account),
+    DrawerItem(
+        icon: Icons.open_in_new_rounded,
+        label: "drawer_item:whatsnew",
+        key: DrawerItemKeys.whatsnew),
     DrawerItem(
       icon: WorkNetIcons.logout,
       label: "drawer_item:logout",
@@ -175,6 +181,9 @@ class AppDrawer extends StatelessWidget {
         ExtendedNavigator.of(context).push(
             Routes.profileScreen(userId: authState.user.pk, allowEdit: true));
         break;
+      case DrawerItemKeys.whatsnew:
+        _openWhatsnewPage(context);
+        break;
       default:
         break;
     }
@@ -189,28 +198,26 @@ class AppDrawer extends StatelessWidget {
         Routes.authScreen(state: "signin"), (route) => false);
   }
 
-  Future<void> _openAccountsPage(BuildContext context) async {
-    Navigator.pushNamed(context, Routes.profileIntroScreen(editMode: true));
-
-    // try {
-    //   await launch(
-    //     ConfigReader.getAccountPageLink(),
-    //     option: CustomTabsOption(
-    //       toolbarColor: Theme.of(context).primaryColor,
-    //       enableDefaultShare: true,
-    //       enableUrlBarHiding: true,
-    //       showPageTitle: true,
-    //       extraCustomTabs: <String>[
-    //         // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
-    //         'org.mozilla.firefox',
-    //         // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
-    //         'com.microsoft.emmx',
-    //       ],
-    //     ),
-    //   );
-    // } catch (error) {
-    //   // An exception is thrown if browser app is not installed on Android device.
-    //   debugPrint(error.toString());
-    // }
+  Future<void> _openWhatsnewPage(BuildContext context) async {
+    try {
+      await launch(
+        ConfigReader.getWhatsnewPageLink(),
+        option: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          extraCustomTabs: <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (error) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(error.toString());
+    }
   }
 }
