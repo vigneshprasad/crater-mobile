@@ -40,6 +40,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   String _photoUrl;
   String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> editedFieldIds = [];
 
   @override
   void initState() {
@@ -152,10 +153,8 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                                   onValuesChange: (id, value) {
                                     _values[id] = value;
 
-                                    final e = _elements.firstWhere(
-                                        (element) => element.id == id);
-                                    if (e.type !=
-                                        ProfileIntroElementType.text) {
+                                    if (!editedFieldIds.contains(id)) {
+                                      editedFieldIds.add(id);
                                       showNextQuestion();
                                     }
                                   },
