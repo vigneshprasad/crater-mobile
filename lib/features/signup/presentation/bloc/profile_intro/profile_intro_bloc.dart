@@ -129,6 +129,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
           List<ProfileIntroMeta> options = [];
           double width;
           int lines;
+          bool optional = false;
           switch (id) {
             case ProfileIntroElement.name:
               type = ProfileIntroElementType.text;
@@ -139,6 +140,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
               placeholder = 'A brief description';
               width = double.infinity;
               lines = 7;
+              optional = true;
               break;
             case ProfileIntroElement.tags:
               type = ProfileIntroElementType.multiselect;
@@ -168,7 +170,8 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
               options: options,
               placeholder: placeholder,
               width: width,
-              lines: lines);
+              lines: lines,
+              optional: optional);
         } else if (string == '\n') {
           return ProfileIntroElement(type: ProfileIntroElementType.newline);
         } else {

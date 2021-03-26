@@ -59,6 +59,9 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
           autovalidate: false,
           minLines: widget.element.lines,
           validator: (value) {
+            if (widget.element.optional) {
+              return null;
+            }
             return value.isEmpty ? 'Enter ${widget.element.id}' : null;
           },
           onChanged: (value) {
