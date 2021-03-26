@@ -16,6 +16,7 @@ class ProfileIntroElement extends HiveObject {
   final double width;
   final int lines;
   final String placeholder;
+  final bool optional;
 
   ProfileIntroElement({
     this.id,
@@ -25,6 +26,7 @@ class ProfileIntroElement extends HiveObject {
     this.width,
     this.lines,
     this.placeholder,
+    this.optional,
   });
 
   static const String name = "name";

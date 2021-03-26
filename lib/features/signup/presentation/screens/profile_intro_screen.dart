@@ -198,7 +198,10 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
       final nextQuestion = _allQuestions[_visibleQuestions];
       appendQuestionElement(nextQuestion);
       _visibleQuestions++;
-    } else {
+    }
+
+    final allRequiredQuestionsDone = _visibleQuestions == _allQuestions.length;
+    if (allRequiredQuestionsDone) {
       setState(() {
         _showSubmit = true;
       });
@@ -209,7 +212,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     if (question.elements.isEmpty) {
       return;
     }
-    // Adds one work at a time. Each work is added after animation of previous work.
+    // Adds one word at a time. Each word is added after animation of previous word.
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
       setState(() {
         _elements.add(question.elements[0]);
