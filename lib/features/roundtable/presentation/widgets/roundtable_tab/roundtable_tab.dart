@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 
 import '../../../../../constants/theme.dart';
-import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../../core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../roundtables_page/roundtables_page.dart';
 import '../topics_filter_list/topics_filter_list.dart';
@@ -40,7 +39,18 @@ class RoundTableTab extends HookWidget {
                       subheading: _getTabSubHeader(activeTab.value, context),
                     ),
                     const SizedBox(height: AppInsets.l),
-                    TopicsFilterList(type: pages[activeTab.value]),
+                    TopicsFilterList(
+                      type: pages[activeTab.value],
+                      onPressAction: (action) {
+                        if (action == 'my_conversation') {
+                          _pageController.animateToPage(
+                            1,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                    ),
                     const SizedBox(height: AppInsets.l),
                     _PageBuilderVertical(
                       pages: pages,
