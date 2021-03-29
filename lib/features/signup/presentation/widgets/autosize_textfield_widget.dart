@@ -33,6 +33,10 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
   }
 
   double getWidth() {
+    if (widget.element.width != null) {
+      return widget.element.width;
+    }
+
     final length = max(widget.element.placeholder.length, text.length);
     final width =
         (length * AutoSizeTextField.charWidth + AutoSizeTextField.padding)
@@ -53,7 +57,11 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
           label: widget.element.placeholder,
           key: Key(widget.element.id),
           autovalidate: false,
+          minLines: widget.element.lines,
           validator: (value) {
+            if (widget.element.optional) {
+              return null;
+            }
             return value.isEmpty ? 'Enter ${widget.element.id}' : null;
           },
           onChanged: (value) {

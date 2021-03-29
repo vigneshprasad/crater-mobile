@@ -40,6 +40,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   String _photoUrl;
   String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> editedFieldIds = [];
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     _values[ProfileIntroElement.name] = _name;
     if (widget.editMode == true) {
       final profile = BlocProvider.of<AuthBloc>(context).state.profile;
+      _values[ProfileIntroElement.introduction] = profile.introduction;
       _values[ProfileIntroElement.educationLevel] = profile.educationLevel;
       _values[ProfileIntroElement.yearsOfExperience] =
           profile.yearsOfExperience;
@@ -151,10 +153,8 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                                   onValuesChange: (id, value) {
                                     _values[id] = value;
 
-                                    final e = _elements.firstWhere(
-                                        (element) => element.id == id);
-                                    if (e.type !=
-                                        ProfileIntroElementType.text) {
+                                    if (!editedFieldIds.contains(id)) {
+                                      editedFieldIds.add(id);
                                       showNextQuestion();
                                     }
                                   },
@@ -198,7 +198,10 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
       final nextQuestion = _allQuestions[_visibleQuestions];
       appendQuestionElement(nextQuestion);
       _visibleQuestions++;
-    } else {
+    }
+
+    final allRequiredQuestionsDone = _visibleQuestions == _allQuestions.length;
+    if (allRequiredQuestionsDone) {
       setState(() {
         _showSubmit = true;
       });
@@ -209,7 +212,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     if (question.elements.isEmpty) {
       return;
     }
-    // Adds one work at a time. Each work is added after animation of previous work.
+    // Adds one word at a time. Each word is added after animation of previous word.
     Future.delayed(const Duration(milliseconds: 300)).then((value) {
       setState(() {
         _elements.add(question.elements[0]);
