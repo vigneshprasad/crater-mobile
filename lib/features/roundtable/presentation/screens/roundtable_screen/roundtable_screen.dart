@@ -23,6 +23,7 @@ import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import 'roundtable_screen_controller.dart';
 
 const kSpacingList = 24.00;
+const kListBottomPadding = 124.00;
 
 class RoundTableScreen extends HookWidget {
   final int id;
@@ -143,7 +144,8 @@ class _RoundTableLoaded extends HookWidget {
                   _SpeakersListWithIntro(
                     table: table,
                     authUserPk: authUserPK,
-                  )
+                  ),
+                const SizedBox(height: kListBottomPadding),
               ],
             ),
           ),
