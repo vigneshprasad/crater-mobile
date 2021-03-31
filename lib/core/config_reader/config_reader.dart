@@ -41,4 +41,6 @@ abstract class ConfigReader {
       _config["MEETING_FEEDBACK_TYPEFORM"] as String;
 
   static String getAgoraAppId() => _config["AGORA_APP_ID"] as String;
+
+  static String getAppsFlyerDevkey() => _config["APPSFLYER_DEV_KEY"] as String;
 }

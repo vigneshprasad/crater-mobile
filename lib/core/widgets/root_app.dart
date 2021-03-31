@@ -4,15 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/attribution/attribution_manager.dart';
 
-import 'package:hooks_riverpod/all.dart' hide RootProvider;
-import 'package:worknetwork/core/features/deep_link_manager/deep_link_manager.dart';
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
 import '../analytics/analytics.dart';
+import '../features/deep_link_manager/deep_link_manager.dart';
 import '../status_bar_color/status_bar_color.dart';
 
 class RootApp extends HookWidget {
@@ -24,8 +25,12 @@ class RootApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final deepLinkManager = useProvider(deepLinkManagerProvider);
+    final attributionProvider = useProvider(attributionManagerProvider);
+
     useEffect(() {
+      print("HELOoooooooooooooo");
       deepLinkManager.handleDeepLink();
+      attributionProvider.intializeSdk();
       initApp(context);
       return;
     }, []);

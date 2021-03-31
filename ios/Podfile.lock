@@ -10,6 +10,12 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - appsflyer_sdk (6.2.0):
+    - AppsFlyerFramework (= 6.2.4)
+    - Flutter
+  - AppsFlyerFramework (6.2.4):
+    - AppsFlyerFramework/Main (= 6.2.4)
+  - AppsFlyerFramework/Main (6.2.4)
   - device_info (0.0.1):
     - Flutter
   - FBSDKCoreKit (5.15.1):
@@ -140,6 +146,7 @@ PODS:
 
 DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
+  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
@@ -175,6 +182,7 @@ SPEC REPOS:
     - Amplitude-iOS
     - Analytics
     - AppAuth
+    - AppsFlyerFramework
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -198,6 +206,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   agora_rtc_engine:
     :path: ".symlinks/plugins/agora_rtc_engine/ios"
+  appsflyer_sdk:
+    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   firebase_core:
@@ -259,6 +269,8 @@ SPEC CHECKSUMS:
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  appsflyer_sdk: 1a363cc261ccbf1daffe10ea55558823be769859
+  AppsFlyerFramework: f3f0e978cfb8e7dc09a3ab90da316f52cd9c56fe
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
