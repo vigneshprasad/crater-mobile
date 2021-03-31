@@ -74,6 +74,15 @@ class DeepLinkManagerImpl implements DeepLinkManager {
     } else if (pathSegments.contains("new-password")) {
       _navigator.currentState
           .pushNamed(Routes.newPasswordScreen(params: deeplink.query));
+    } else if (pathSegments.contains("group")) {
+      final queryParam = deeplink.queryParameters['id'];
+      if (queryParam != null) {
+        final groupId = int.tryParse(queryParam);
+        if (groupId != null) {
+          _navigator.currentState
+              .pushNamed(Routes.roundTableScreen(id: groupId));
+        }
+      }
     }
   }
 }
