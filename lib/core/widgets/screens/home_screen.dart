@@ -2,7 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/roundtable/domain/entity/roundtable_entity/roundtable_entity.dart';
+import 'package:worknetwork/features/roundtable/presentation/screens/roundtable_screen/meeting_controller.dart';
 
 import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/article/presentation/bloc/article_bloc.dart';
@@ -10,7 +14,6 @@ import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
-import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
 import '../../../features/roundtable/domain/entity/topic_entity/topic_entity.dart';
 import '../../../features/roundtable/presentation/screens/create_table_sheet/create_roundtable_sheet.dart';
@@ -20,10 +23,10 @@ import '../../../utils/app_localizations.dart';
 import '../../analytics/analytics.dart';
 import '../layouts/home_screen_layout.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulHookWidget {
   final int tabIndex;
 
-  const HomeScreen({
+  HomeScreen({
     @PathParam("tab") this.tabIndex,
   });
 
@@ -36,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ArticleBloc _articleBloc = KiwiContainer().resolve();
   final ChatInboxBloc _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
   int _currentTab = 0;
+  OverlayEntry _meetingOverlayEntry;
 
   final List<Widget> _screens = [
     RoundTableTab(),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/roundtable/presentation/screens/roundtable_screen/meeting_controller.dart';
+import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_overlay_indicator/roundtable_overlay_indicator.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
@@ -21,15 +23,17 @@ enum RtcConnectionState { connected, connecting, disconnected }
 
 final roundTableScreenControllerProvider = ChangeNotifierProvider.autoDispose
     .family<RoundTableScreenController, RoundTable>((ref, table) {
-  final repository = ref.read(roundtableRepositoryProvider);
-  final rtcClient = ref.read(roundTableRtcClientProvider);
+  final repository = ref.watch(roundtableRepositoryProvider);
+  final rtcClient = ref.watch(roundTableRtcClientProvider);
   final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
+  final groupOverlayProvider = ref.watch(groupOverlayControllerProvider);
 
-  ref.onDispose(() {
-    rtcClient.engine?.destroy();
-  });
+  // ref.onDispose(() {
+  // rtcClient.engine?.destroy();
+  // });
 
-  return RoundTableScreenController(repository, rtcClient, table, localUser);
+  return RoundTableScreenController(
+      repository, rtcClient, table, localUser, groupOverlayProvider);
 });
 
 final getRoundTableNotifier = StateNotifierProvider.autoDispose
@@ -69,14 +73,15 @@ class RoundTableScreenController extends ChangeNotifier {
   final RoundTableRepository _repository;
   final RoundTable _table;
   final User _localUser;
+  final GroupOverlayController _groupOverlayController;
 
   RtcConnectionState _connectionState;
   List<RtcUser> _speakers;
   bool _showConnectionBar;
   RoundtableRtcInfo _rtcInfo;
 
-  RoundTableScreenController(
-      this._repository, this._rtcClient, this._table, this._localUser) {
+  RoundTableScreenController(this._repository, this._rtcClient, this._table,
+      this._localUser, this._groupOverlayController) {
     _connectionState = RtcConnectionState.disconnected;
     _speakers = intializeSpeakers(_table);
     _showConnectionBar = false;
@@ -89,6 +94,9 @@ class RoundTableScreenController extends ChangeNotifier {
   RtcConnectionState get connectionState => _connectionState;
   List<RtcUser> get speakers => _speakers;
   bool get showConnectionBar => _showConnectionBar;
+
+  bool hasOngoingMeeting() => _groupOverlayController.entry != null;
+
   RtcUser get locaRtclUser {
     if (_localUser == null) {
       return null;
@@ -125,6 +133,13 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> joinRoundTableChannel(User localUser) async {
+    if (hasOngoingMeeting()) {
+      // return;
+      await _rtcClient.dispose();
+
+      _groupOverlayController.removeOverlayEntry();
+    }
+
     // Reset Speakers List
     _speakers = intializeSpeakers(_table);
 
@@ -152,6 +167,7 @@ class RoundTableScreenController extends ChangeNotifier {
 
   Future<void> leaveRoundTableChannel() async {
     await _rtcClient.dispose();
+    _groupOverlayController.removeOverlayEntry();
     _connectionState = RtcConnectionState.disconnected;
     _showConnectionBar = false;
     // Reset Speakers List
@@ -351,5 +367,20 @@ class RoundTableScreenController extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    return OverlayEntry(builder: (context) {
+      return RoundTableOverlayIndicator(table: table);
+    });
+  }
+
+  void showOverlayEntry(BuildContext context) {
+    final entry = _createOverlayEntry();
+    _groupOverlayController.createOverlayEntry(context, entry);
+  }
+
+  void hideOverlayEntry() {
+    _groupOverlayController.removeOverlayEntry();
   }
 }
