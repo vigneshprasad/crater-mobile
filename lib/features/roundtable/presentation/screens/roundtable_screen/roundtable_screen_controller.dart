@@ -28,10 +28,6 @@ final roundTableScreenControllerProvider = ChangeNotifierProvider.autoDispose
   final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
   final groupOverlayProvider = ref.watch(groupOverlayControllerProvider);
 
-  // ref.onDispose(() {
-  // rtcClient.engine?.destroy();
-  // });
-
   return RoundTableScreenController(
       repository, rtcClient, table, localUser, groupOverlayProvider);
 });
@@ -381,7 +377,8 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   void hideOverlayEntry() {
-    if (table?.id != _groupOverlayController?.table?.id) {
+    final isSameTable = table?.id == _groupOverlayController?.table?.id;
+    if (!isSameTable) {
       return;
     }
     _groupOverlayController.removeOverlayEntry();
