@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/roundtable/presentation/screens/roundtable_screen/meeting_controller.dart';
-import 'package:worknetwork/features/roundtable/presentation/widgets/roundtable_overlay_indicator/roundtable_overlay_indicator.dart';
+import 'meeting_controller.dart';
+import '../../widgets/roundtable_overlay_indicator/roundtable_overlay_indicator.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
@@ -377,10 +377,13 @@ class RoundTableScreenController extends ChangeNotifier {
 
   void showOverlayEntry(BuildContext context) {
     final entry = _createOverlayEntry();
-    _groupOverlayController.createOverlayEntry(context, entry);
+    _groupOverlayController.createOverlayEntry(context, entry, table);
   }
 
   void hideOverlayEntry() {
+    if (table?.id != _groupOverlayController?.table?.id) {
+      return;
+    }
     _groupOverlayController.removeOverlayEntry();
   }
 }

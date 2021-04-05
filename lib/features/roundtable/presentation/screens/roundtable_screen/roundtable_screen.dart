@@ -112,10 +112,10 @@ class _RoundTableLoaded extends HookWidget {
     final rtcController =
         useProvider(roundTableScreenControllerProvider(table));
 
-    // useEffect(() {
-    // rtcController.hideOverlayEntry();
-    // return;
-    // }, []);
+    useEffect(() {
+      rtcController.hideOverlayEntry();
+      return;
+    }, []);
 
     return WillPopScope(
       onWillPop: () async {
