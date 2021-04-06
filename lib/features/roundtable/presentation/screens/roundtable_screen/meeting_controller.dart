@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/roundtable/domain/entity/roundtable_entity/roundtable_entity.dart';
 
-final groupOverlayControllerProvider = Provider.autoDispose((_) {
-  return GroupOverlayController();
-});
+final groupOverlayControllerProvider =
+    Provider((_) => GroupOverlayController());
 
 class GroupOverlayController {
   OverlayEntry _entry;
@@ -22,6 +21,7 @@ class GroupOverlayController {
   void removeOverlayEntry() {
     _entry?.remove();
     _entry = null;
+    _roundTable = null;
   }
 
   OverlayEntry get entry => _entry;

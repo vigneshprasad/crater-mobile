@@ -1,6 +1,8 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:kiwi/kiwi.dart';
@@ -23,13 +25,9 @@ enum RtcConnectionState { connected, connecting, disconnected }
 
 final roundTableScreenControllerProvider = ChangeNotifierProvider.autoDispose
     .family<RoundTableScreenController, RoundTable>((ref, table) {
-  final repository = ref.watch(roundtableRepositoryProvider);
-  final rtcClient = ref.watch(roundTableRtcClientProvider);
   final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
-  final groupOverlayProvider = ref.watch(groupOverlayControllerProvider);
 
-  return RoundTableScreenController(
-      repository, rtcClient, table, localUser, groupOverlayProvider);
+  return RoundTableScreenController(ref.read, table, localUser);
 });
 
 final getRoundTableNotifier = StateNotifierProvider.autoDispose
@@ -65,19 +63,16 @@ class GetRoundTableState extends StateNotifier<ApiResult<RoundTable>> {
 }
 
 class RoundTableScreenController extends ChangeNotifier {
-  final RoundTableRtcClient _rtcClient;
-  final RoundTableRepository _repository;
+  final Reader read;
   final RoundTable _table;
   final User _localUser;
-  final GroupOverlayController _groupOverlayController;
 
   RtcConnectionState _connectionState;
   List<RtcUser> _speakers;
   bool _showConnectionBar;
   RoundtableRtcInfo _rtcInfo;
 
-  RoundTableScreenController(this._repository, this._rtcClient, this._table,
-      this._localUser, this._groupOverlayController) {
+  RoundTableScreenController(this.read, this._table, this._localUser) {
     _connectionState = RtcConnectionState.disconnected;
     _speakers = intializeSpeakers(_table);
     _showConnectionBar = false;
@@ -91,7 +86,8 @@ class RoundTableScreenController extends ChangeNotifier {
   List<RtcUser> get speakers => _speakers;
   bool get showConnectionBar => _showConnectionBar;
 
-  bool hasOngoingMeeting() => _groupOverlayController.entry != null;
+  bool hasOngoingMeeting() =>
+      read(groupOverlayControllerProvider).entry != null;
 
   RtcUser get locaRtclUser {
     if (_localUser == null) {
@@ -125,21 +121,22 @@ class RoundTableScreenController extends ChangeNotifier {
 
   Future<Either<Failure, GroupRequest>> requestToJoinGroup(int group) async {
     final request = GroupRequest(group: group);
-    return _repository.postRequestToJoinGroup(request);
+    return read(roundtableRepositoryProvider).postRequestToJoinGroup(request);
   }
 
   Future<void> joinRoundTableChannel(User localUser) async {
     if (hasOngoingMeeting()) {
       // return;
-      await _rtcClient.dispose();
+      await read(roundTableRtcClientProvider).dispose();
 
-      _groupOverlayController.removeOverlayEntry();
+      read(groupOverlayControllerProvider).removeOverlayEntry();
     }
 
     // Reset Speakers List
     _speakers = intializeSpeakers(_table);
 
-    final responseOrError = await _repository.getRoundTableRtcInfo(_table.id);
+    final responseOrError = await read(roundtableRepositoryProvider)
+        .getRoundTableRtcInfo(_table.id);
 
     responseOrError.fold(
       (failure) {
@@ -155,15 +152,23 @@ class RoundTableScreenController extends ChangeNotifier {
     _connectionState = RtcConnectionState.connecting;
     _rtcInfo = info;
     notifyListeners();
+    final _rtcClient = read(roundTableRtcClientProvider);
     await _rtcClient.initEngine();
     _setRtcEventHandlers(localUser);
-    await _rtcClient.joinRoundTableChannel(
-        info.channelName, info.token, localUser.pk);
+    try {
+      await _rtcClient.joinRoundTableChannel(
+          info.channelName, info.token, localUser.pk);
+    } catch (exception) {
+      Fluttertoast.showToast(msg: 'Some error occurred. Please try again.');
+      debugPrint(exception.toString());
+
+      await leaveRoundTableChannel();
+    }
   }
 
   Future<void> leaveRoundTableChannel() async {
-    await _rtcClient.dispose();
-    _groupOverlayController.removeOverlayEntry();
+    read(groupOverlayControllerProvider).removeOverlayEntry();
+    await read(roundTableRtcClientProvider).dispose();
     _connectionState = RtcConnectionState.disconnected;
     _showConnectionBar = false;
     // Reset Speakers List
@@ -172,7 +177,7 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> muteLocalAudioStream({@required bool muted}) async {
-    await _rtcClient.muteLocalAudio(muted: muted);
+    await read(roundTableRtcClientProvider).muteLocalAudio(muted: muted);
     final index =
         _speakers.indexWhere((element) => element.pk == _localUser.pk);
     if (index > -1) {
@@ -182,7 +187,7 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   void _setRtcEventHandlers(User localUser) {
-    _rtcClient.setEventHandler(
+    read(roundTableRtcClientProvider).setEventHandler(
       RtcEngineEventHandler(
         joinChannelSuccess: (channel, uid, elapsed) =>
             _onJoinChannelSuccess(localUser),
@@ -221,7 +226,8 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> _renewTokenToRtcEngine() async {
-    final responseOrError = await _repository.getRoundTableRtcInfo(_table.id);
+    final responseOrError = await read(roundtableRepositoryProvider)
+        .getRoundTableRtcInfo(_table.id);
 
     responseOrError.fold(
       (failure) {
@@ -233,7 +239,7 @@ class RoundTableScreenController extends ChangeNotifier {
       (info) async {
         _rtcInfo = info;
         notifyListeners();
-        await _rtcClient.renewToken(info.token);
+        await read(roundTableRtcClientProvider).renewToken(info.token);
       },
     );
   }
@@ -277,7 +283,9 @@ class RoundTableScreenController extends ChangeNotifier {
         if (speaker.uid == 0) {
           rtcUid = _localUser.pk;
         } else {
-          final info = await _rtcClient.engine.getUserInfoByUid(speaker.uid);
+          final info = await read(roundTableRtcClientProvider)
+              .engine
+              .getUserInfoByUid(speaker.uid);
           rtcUid = info.userAccount;
         }
 
@@ -306,7 +314,9 @@ class RoundTableScreenController extends ChangeNotifier {
         reason == AudioRemoteStateReason.Internal) {
       if (states.contains(state)) {
         final muted = state != AudioRemoteState.Starting;
-        final info = await _rtcClient.engine.getUserInfoByUid(uid);
+        final info = await read(roundTableRtcClientProvider)
+            .engine
+            .getUserInfoByUid(uid);
         final rtcUid = info.userAccount;
         if (rtcUid != null) {
           final index = _speakers.indexWhere((element) => element.pk == rtcUid);
@@ -320,7 +330,8 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> _onRemoteUserJoined(int uid, int elapsed) async {
-    final info = await _rtcClient.engine.getUserInfoByUid(uid);
+    final info =
+        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, true);
@@ -329,7 +340,8 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> _onRemoteAudioDecoded(int uid, int elapsed) async {
-    final info = await _rtcClient.engine.getUserInfoByUid(uid);
+    final info =
+        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, true);
@@ -338,7 +350,8 @@ class RoundTableScreenController extends ChangeNotifier {
   }
 
   Future<void> _onRemoteUserOffline(int uid, UserOfflineReason reason) async {
-    final info = await _rtcClient.engine.getUserInfoByUid(uid);
+    final info =
+        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
     final rtcUid = info.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, false);
@@ -348,6 +361,7 @@ class RoundTableScreenController extends ChangeNotifier {
 
   Future<void> _onError(ErrorCode err) async {
     Fluttertoast.showToast(msg: err.toString());
+    final _rtcClient = read(roundTableRtcClientProvider);
     if (err == ErrorCode.InvalidToken) {
       _rtcClient.engine.leaveChannel();
       _connectionState = RtcConnectionState.disconnected;
@@ -373,10 +387,12 @@ class RoundTableScreenController extends ChangeNotifier {
 
   void showOverlayEntry(BuildContext context) {
     final entry = _createOverlayEntry();
-    _groupOverlayController.createOverlayEntry(context, entry, table);
+    read(groupOverlayControllerProvider)
+        .createOverlayEntry(context, entry, table);
   }
 
   void hideOverlayEntry() {
+    final _groupOverlayController = read(groupOverlayControllerProvider);
     final isSameTable = table?.id == _groupOverlayController?.table?.id;
     if (!isSameTable) {
       return;
