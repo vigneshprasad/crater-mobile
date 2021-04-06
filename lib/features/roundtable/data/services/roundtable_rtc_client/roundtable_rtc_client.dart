@@ -61,8 +61,8 @@ class RoundTableRtcClient {
   }
 
   Future<void> dispose() async {
-    await _engine.leaveChannel();
-    await _engine.destroy();
+    await _engine?.leaveChannel();
+    await _engine?.destroy();
     _engine = null;
   }
 }

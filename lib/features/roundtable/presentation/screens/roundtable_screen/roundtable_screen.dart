@@ -15,6 +15,7 @@ import '../../../../../core/widgets/base/base_network_image/base_network_image.d
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
+import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../domain/entity/roundtable_entity/roundtable_entity.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
@@ -108,11 +109,25 @@ class _RoundTableLoaded extends HookWidget {
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
 
     // Controller
-    final controller = useProvider(roundTableScreenControllerProvider(table));
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          child: Padding(
+    final rtcController =
+        useProvider(roundTableScreenControllerProvider(table));
+
+    useEffect(() {
+      rtcController.hideOverlayEntry();
+      return;
+    }, []);
+
+    return WillPopScope(
+      onWillPop: () async {
+        if (rtcController.connectionState != RtcConnectionState.disconnected) {
+          rtcController.showOverlayEntry(context);
+        }
+        return true;
+      },
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+              child: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppInsets.xl, vertical: AppInsets.l),
             child: Column(
@@ -122,6 +137,8 @@ class _RoundTableLoaded extends HookWidget {
                   Text(table.topicDetail.root.name, style: categoryStyle),
                 if (table.topicDetail.root != null)
                   const SizedBox(height: AppInsets.sm),
+                Text(table.topicDetail.name, style: agendaStyle),
+                const SizedBox(height: AppInsets.sm),
                 Text(table.topicDetail.name, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
@@ -134,13 +151,13 @@ class _RoundTableLoaded extends HookWidget {
                     style: pageLabelStyle),
                 if (table.isSpeaker) const SizedBox(height: AppInsets.l),
                 if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
-                if (controller.showConnectionBar)
+                if (rtcController.showConnectionBar)
                   SpeakersTable(
-                      speakers: controller.speakers,
+                      speakers: rtcController.speakers,
                       chairSize: 60,
-                      isLive: controller.connectionState ==
+                      isLive: rtcController.connectionState ==
                           RtcConnectionState.connected),
-                if (!controller.showConnectionBar)
+                if (!rtcController.showConnectionBar)
                   _SpeakersListWithIntro(
                     table: table,
                     authUserPk: authUserPK,
@@ -148,20 +165,20 @@ class _RoundTableLoaded extends HookWidget {
                 const SizedBox(height: kListBottomPadding),
               ],
             ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            height: 120,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              fit: StackFit.expand,
-              children: _buildActionButton(context, controller),
+          )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: 120,
+              width: MediaQuery.of(context).size.width,
+              child: Stack(
+                fit: StackFit.expand,
+                children: _buildActionButton(context, rtcController),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -205,7 +222,7 @@ class _RoundTableLoaded extends HookWidget {
               child: BaseLargeButton(
                 width: MediaQuery.of(context).size.width * 0.6,
                 onPressed: () {
-                  controller.joinRoundTableChannel(user);
+                  _joinRoundTableChannel(context, user, controller);
                 },
                 child: Text("Join Table"),
               ),
@@ -235,6 +252,40 @@ class _RoundTableLoaded extends HookWidget {
     }
 
     return items;
+  }
+
+  void _joinRoundTableChannel(
+      BuildContext context, User user, RoundTableScreenController controller) {
+    if (!controller.hasOngoingMeeting()) {
+      controller.joinRoundTableChannel(user);
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Leave Ongoing RoundTable"),
+          content: Text("Confirm to leave the roundtable discussion."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.joinRoundTableChannel(user);
+                Navigator.pop(context);
+              },
+              child: Text('LEAVE'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> postRequestToJoinGroup(BuildContext context,

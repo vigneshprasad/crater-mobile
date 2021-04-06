@@ -10,7 +10,8 @@ _$_RoundTableFailure _$_$_RoundTableFailureFromJson(Map<String, dynamic> json) {
   return _$_RoundTableFailure(
     message: json['error_message'] as String,
     errorCode: _$enumDecodeNullable(
-        _$RoundTableFailureTypeEnumMap, json['error_code']),
+            _$RoundTableFailureTypeEnumMap, json['error_code']) ??
+        RoundTableFailureType.genericError,
   );
 }
 
@@ -54,5 +55,6 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$RoundTableFailureTypeEnumMap = {
+  RoundTableFailureType.genericError: 'genericError',
   RoundTableFailureType.groupMaxSpeakersError: 'groupMaxSpeakersError',
 };

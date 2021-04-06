@@ -34,6 +34,14 @@
 				<string>fb562453967883820</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>worknetwork</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -50,24 +58,24 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app needs music permission to play your audio meetings.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app needs calendar permission</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera permission</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs contact permission to share the app with friends.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app uses location permission.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app uses location permission.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to microphone to connect audio meetings.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs photo permission to share imaages on the community.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This app needs contact permission to share the app with friends.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>This app needs calendar permission</string>
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera permission</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>This app needs music permission to play your audio meetings.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>This app needs motion permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs photo permission to share imaages on the community.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This app needs speech recognition permission to improve your audio quality.</string>
 	<key>UIBackgroundModes</key>

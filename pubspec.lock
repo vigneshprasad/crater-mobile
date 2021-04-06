@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.2"
+  appsflyer_sdk:
+    dependency: "direct main"
+    description:
+      name: appsflyer_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.2.4+1-flutterv1"
   archive:
     dependency: transitive
     description:
