@@ -18,8 +18,10 @@ class _$RoundTableFailureTearOff {
 
 // ignore: unused_element
   _RoundTableFailure call(
-      {@JsonKey(name: 'error_message') String message,
-      @JsonKey(name: 'error_code') RoundTableFailureType errorCode}) {
+      {@JsonKey(name: 'error_message')
+          String message,
+      @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
+          RoundTableFailureType errorCode}) {
     return _RoundTableFailure(
       message: message,
       errorCode: errorCode,
@@ -40,7 +42,7 @@ const $RoundTableFailure = _$RoundTableFailureTearOff();
 mixin _$RoundTableFailure {
   @JsonKey(name: 'error_message')
   String get message;
-  @JsonKey(name: 'error_code')
+  @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
   RoundTableFailureType get errorCode;
 
   Map<String, dynamic> toJson();
@@ -54,8 +56,10 @@ abstract class $RoundTableFailureCopyWith<$Res> {
           RoundTableFailure value, $Res Function(RoundTableFailure) then) =
       _$RoundTableFailureCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'error_message') String message,
-      @JsonKey(name: 'error_code') RoundTableFailureType errorCode});
+      {@JsonKey(name: 'error_message')
+          String message,
+      @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
+          RoundTableFailureType errorCode});
 }
 
 /// @nodoc
@@ -89,8 +93,10 @@ abstract class _$RoundTableFailureCopyWith<$Res>
       __$RoundTableFailureCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'error_message') String message,
-      @JsonKey(name: 'error_code') RoundTableFailureType errorCode});
+      {@JsonKey(name: 'error_message')
+          String message,
+      @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
+          RoundTableFailureType errorCode});
 }
 
 /// @nodoc
@@ -124,8 +130,10 @@ class __$RoundTableFailureCopyWithImpl<$Res>
 /// @nodoc
 class _$_RoundTableFailure implements _RoundTableFailure {
   _$_RoundTableFailure(
-      {@JsonKey(name: 'error_message') this.message,
-      @JsonKey(name: 'error_code') this.errorCode});
+      {@JsonKey(name: 'error_message')
+          this.message,
+      @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
+          this.errorCode});
 
   factory _$_RoundTableFailure.fromJson(Map<String, dynamic> json) =>
       _$_$_RoundTableFailureFromJson(json);
@@ -134,7 +142,7 @@ class _$_RoundTableFailure implements _RoundTableFailure {
   @JsonKey(name: 'error_message')
   final String message;
   @override
-  @JsonKey(name: 'error_code')
+  @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
   final RoundTableFailureType errorCode;
 
   @override
@@ -173,9 +181,10 @@ class _$_RoundTableFailure implements _RoundTableFailure {
 
 abstract class _RoundTableFailure implements RoundTableFailure, Failure {
   factory _RoundTableFailure(
-          {@JsonKey(name: 'error_message') String message,
-          @JsonKey(name: 'error_code') RoundTableFailureType errorCode}) =
-      _$_RoundTableFailure;
+      {@JsonKey(name: 'error_message')
+          String message,
+      @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
+          RoundTableFailureType errorCode}) = _$_RoundTableFailure;
 
   factory _RoundTableFailure.fromJson(Map<String, dynamic> json) =
       _$_RoundTableFailure.fromJson;
@@ -184,7 +193,7 @@ abstract class _RoundTableFailure implements RoundTableFailure, Failure {
   @JsonKey(name: 'error_message')
   String get message;
   @override
-  @JsonKey(name: 'error_code')
+  @JsonKey(name: 'error_code', defaultValue: RoundTableFailureType.genericError)
   RoundTableFailureType get errorCode;
   @override
   @JsonKey(ignore: true)

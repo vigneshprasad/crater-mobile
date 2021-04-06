@@ -5,6 +5,8 @@ part 'roundtable_failures.freezed.dart';
 part 'roundtable_failures.g.dart';
 
 enum RoundTableFailureType {
+  @JsonValue("genericError")
+  genericError,
   @JsonValue("groupMaxSpeakersError")
   groupMaxSpeakersError,
 }
@@ -14,7 +16,8 @@ abstract class RoundTableFailure extends Failure with _$RoundTableFailure {
   @Implements(Failure)
   factory RoundTableFailure({
     @JsonKey(name: "error_message") String message,
-    @JsonKey(name: "error_code") RoundTableFailureType errorCode,
+    @JsonKey(name: "error_code", defaultValue: RoundTableFailureType.genericError)
+        RoundTableFailureType errorCode,
   }) = _RoundTableFailure;
 
   factory RoundTableFailure.fromJson(Map<String, dynamic> json) =>
