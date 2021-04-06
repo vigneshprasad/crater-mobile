@@ -10,7 +10,6 @@ import '../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../features/community/presentation/bloc/community/community_bloc.dart';
-import '../../../features/meeting/presentation/widgets/meeting_tab.dart';
 import '../../../features/rewards/presentation/widgets/rewards_tab.dart';
 import '../../../features/roundtable/domain/entity/topic_entity/topic_entity.dart';
 import '../../../features/roundtable/presentation/screens/create_table_sheet/create_roundtable_sheet.dart';

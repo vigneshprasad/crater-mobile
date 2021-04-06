@@ -89,7 +89,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return IconButton(
       icon: Icon(icon),
       color: color,
-      onPressed: () => ExtendedNavigator.of(context).pop(),
+      onPressed: () => ExtendedNavigator.of(context).maybePop(),
     );
   }
 }
