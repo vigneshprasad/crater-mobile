@@ -21,11 +21,12 @@ class AttributionManagerImpl implements AttributionManager {
 
   Future<void> _initializeAppsFlyerSdk() async {
     final appId = await _getApplicationId();
+    final isDebug = ConfigReader.getEnv() != "prod";
 
     final Map appsFlyerOptions = {
       "afDevKey": ConfigReader.getAppsFlyerDevkey(),
       "afAppId": appId,
-      "isDebug": true,
+      "isDebug": isDebug,
     };
 
     final AppsflyerSdk appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
