@@ -35,12 +35,6 @@ class AttributionManagerImpl implements AttributionManager {
       registerOnAppOpenAttributionCallback: true,
       registerOnDeepLinkingCallback: true,
     );
-
-    appsflyerSdk.onDeepLinking((res) {
-      print("Heloooooooooooooooooooooooooooooo");
-      print(res);
-      print(res.toString());
-    });
   }
 
   Future<String> _getApplicationId() async {

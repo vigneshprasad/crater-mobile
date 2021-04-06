@@ -28,7 +28,6 @@ class RootApp extends HookWidget {
     final attributionProvider = useProvider(attributionManagerProvider);
 
     useEffect(() {
-      print("HELOoooooooooooooo");
       deepLinkManager.handleDeepLink();
       attributionProvider.intializeSdk();
       initApp(context);
