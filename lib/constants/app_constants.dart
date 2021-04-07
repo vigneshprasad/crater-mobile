@@ -109,6 +109,18 @@ class AppImageAssets {
   static const splashMeetingCard =
       AssetImage("assets/images/img_splash_meeting_card.png");
   static const splashReward = AssetImage("assets/images/img_splash_reward.png");
+
+  static const splashDiscover =
+      AssetImage("assets/images/splash/meeting-table.png");
+  static const splashTopic =
+      AssetImage("assets/images/splash/converse-topic.png");
+  static const splashPeople =
+      AssetImage("assets/images/splash/choose-meet.png");
+  static const splashAI = AssetImage("assets/images/splash/ai-work.png");
+  static const splashConversation =
+      AssetImage("assets/images/splash/conversation-setup.png");
+  static const splashVirtual =
+      AssetImage("assets/images/splash/converse-virtually.png");
 }
 
 class AppSvgAssets {
