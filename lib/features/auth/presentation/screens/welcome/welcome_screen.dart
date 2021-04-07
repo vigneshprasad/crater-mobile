@@ -178,7 +178,7 @@ class _ImageSlide extends StatelessWidget {
         Image(
           image: image,
           fit: BoxFit.contain,
-          height: 260,
+          height: 280,
         ),
         const Spacer(),
         Column(
