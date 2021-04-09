@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/theme.dart';

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/auth/domain/usecase/post_new_password_usecase.dart';
 
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/validators/validators.dart';
+import '../../../domain/usecase/post_new_password_usecase.dart';
 
 part 'new_password_event.dart';
 part 'new_password_state.dart';

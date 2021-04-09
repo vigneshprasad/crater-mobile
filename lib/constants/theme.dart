@@ -15,6 +15,7 @@ mixin AppTheme {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static const Color canvasColor = Color(0xFFFEFDFD);
 
   static const Color primaryLightStatusBar = Color(0x0D000000);
   static ThemeData lightTheme = ThemeData(
@@ -35,13 +36,13 @@ mixin AppTheme {
         color: Colors.grey[800],
       ),
       textTheme: primaryTextTheme,
-      color: Colors.grey[800],
+      color: canvasColor,
       brightness: Brightness.light,
       actionsIconTheme: IconThemeData(
         color: Colors.grey[800],
       ),
     ),
-    canvasColor: Colors.grey[100],
+    canvasColor: canvasColor,
     backgroundColor: Colors.grey[100],
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textSelectionHandleColor: primaryColor,

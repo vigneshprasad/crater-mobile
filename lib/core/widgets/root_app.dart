@@ -6,13 +6,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/attribution/attribution_manager.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
 import '../analytics/analytics.dart';
+import '../attribution/attribution_manager.dart';
 import '../features/deep_link_manager/deep_link_manager.dart';
 import '../status_bar_color/status_bar_color.dart';
 

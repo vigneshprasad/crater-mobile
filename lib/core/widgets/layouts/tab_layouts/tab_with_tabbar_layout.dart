@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../routes.gr.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../components/home_screen_app_bar/home_screen_app_bar.dart';
 
 class TabWithTabbarLayout extends StatelessWidget {
   final String heading;

@@ -1,0 +1,61 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../meeting/data/models/meeting_interest_model.dart';
+import '../topic_entity/topic_entity.dart';
+
+part 'conversation_entity.freezed.dart';
+part 'conversation_entity.g.dart';
+
+@freezed
+abstract class Conversation with _$Conversation {
+  factory Conversation({
+    int id,
+    String host,
+    List<String> speakers,
+    int topic,
+    String description,
+    List<int> interests,
+    DateTime start,
+    DateTime end,
+    @JsonKey(name: 'max_speakers') int maxSpeakers,
+    int privacy,
+    int medium,
+    bool closed,
+    @JsonKey(name: 'closed_at') DateTime closedAt,
+    @JsonKey(name: 'topic_detail') Topic topicDetail,
+    @JsonKey(name: 'host_detail') ConversationUser hostDetail,
+    @JsonKey(name: 'interests_detail_list')
+        List<MeetingInterestModel> interestsDetailList,
+    @JsonKey(name: 'speakers_detail_list')
+        List<ConversationUser> speakersDetailList,
+    @JsonKey(name: 'is_speaker') bool isSpeaker,
+  }) = _Conversation;
+
+  factory Conversation.fromJson(Map<String, dynamic> json) =>
+      _$ConversationFromJson(json);
+}
+
+@freezed
+abstract class ConversationUser with _$ConversationUser {
+  factory ConversationUser({
+    String pk,
+    String email,
+    String name,
+    String photo,
+    String introduction,
+  }) = _ConversationUser;
+
+  factory ConversationUser.fromJson(Map<String, dynamic> json) =>
+      _$ConversationUserFromJson(json);
+}
+
+@freezed
+abstract class ConversationByDate with _$ConversationByDate {
+  factory ConversationByDate({
+    DateTime date,
+    List<Conversation> conversations,
+  }) = _ConversationByDate;
+
+  factory ConversationByDate.fromJson(Map<String, dynamic> json) =>
+      _$ConversationByDateFromJson(json);
+}

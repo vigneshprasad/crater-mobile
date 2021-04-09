@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
+
+import '../config_reader/config_reader.dart';
 
 final attributionManagerProvider =
     Provider<AttributionManager>((_) => AttributionManagerImpl());

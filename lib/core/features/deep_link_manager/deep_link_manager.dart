@@ -80,7 +80,7 @@ class DeepLinkManagerImpl implements DeepLinkManager {
         final groupId = int.tryParse(queryParam);
         if (groupId != null) {
           _navigator.currentState
-              .pushNamed(Routes.roundTableScreen(id: groupId));
+              .pushNamed(Routes.conversationScreen(id: groupId));
         }
       }
     }

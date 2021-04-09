@@ -9,7 +9,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'core/widgets/screens/home_screen.dart';
+import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
@@ -19,6 +19,9 @@ import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
+import 'features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
 import 'features/meeting/domain/entity/meeting_config_entity.dart';
 import 'features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -31,9 +34,6 @@ import 'features/profile/presentation/screens/profile_screen/profile_screen.dart
 import 'features/rewards/domain/entity/package_entity.dart';
 import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
-import 'features/roundtable/domain/entity/topic_entity/topic_entity.dart';
-import 'features/roundtable/presentation/screens/create_table_screen/create_table_screen.dart';
-import 'features/roundtable/presentation/screens/roundtable_screen/roundtable_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
@@ -62,9 +62,9 @@ class Routes {
   static const String packageDetailScreen = '/package-detail';
   static const String packagePurchaseScreen = '/package-purchase';
   static const String pointsFaqScreen = '/points-faq';
-  static const String _roundTableScreen = '/roundtable/:id';
-  static String roundTableScreen({@required dynamic id}) => '/roundtable/$id';
-  static const String createTableScreen = '/create-table';
+  static const String _conversationScreen = '/roundtable/:id';
+  static String conversationScreen({@required dynamic id}) => '/roundtable/$id';
+  static const String createConversationScreen = '/create-conversation';
   static const String _profileIntroScreen = '/profile-intro/:editMode?';
   static String profileIntroScreen({dynamic editMode = ''}) =>
       '/profile-intro/$editMode';
@@ -95,8 +95,8 @@ class Routes {
     packageDetailScreen,
     packagePurchaseScreen,
     pointsFaqScreen,
-    _roundTableScreen,
-    createTableScreen,
+    _conversationScreen,
+    createConversationScreen,
     _profileIntroScreen,
     _newPasswordScreen,
     _profileScreen,
@@ -126,8 +126,8 @@ class Router extends RouterBase {
     RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
     RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
     RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
-    RouteDef(Routes._roundTableScreen, page: RoundTableScreen),
-    RouteDef(Routes.createTableScreen, page: CreateTableScreen),
+    RouteDef(Routes._conversationScreen, page: ConversationScreen),
+    RouteDef(Routes.createConversationScreen, page: CreateConversationScreen),
     RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
     RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
     RouteDef(Routes._profileScreen, page: ProfileScreen),
@@ -144,7 +144,7 @@ class Router extends RouterBase {
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) =>
-            HomeScreen(tabIndex: data.pathParams['tab'].intValue),
+            HomeScreen(tab: data.pathParams['tab'].stringValue),
         settings: data,
       );
     },
@@ -288,17 +288,18 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    RoundTableScreen: (data) {
+    ConversationScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) =>
-            RoundTableScreen(id: data.pathParams['id'].intValue),
+            ConversationScreen(id: data.pathParams['id'].intValue),
         settings: data,
       );
     },
-    CreateTableScreen: (data) {
-      final args = data.getArgs<CreateTableScreenArguments>(nullOk: false);
+    CreateConversationScreen: (data) {
+      final args =
+          data.getArgs<CreateConversationScreenArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => CreateTableScreen(
+        builder: (context) => CreateConversationScreen(
           key: args.key,
           topic: args.topic,
         ),
@@ -445,13 +446,13 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushPointsFaqScreen() =>
       push<dynamic>(Routes.pointsFaqScreen);
 
-  Future<dynamic> pushCreateTableScreen({
+  Future<dynamic> pushCreateConversationScreen({
     Key key,
     @required Topic topic,
   }) =>
       push<dynamic>(
-        Routes.createTableScreen,
-        arguments: CreateTableScreenArguments(key: key, topic: topic),
+        Routes.createConversationScreen,
+        arguments: CreateConversationScreenArguments(key: key, topic: topic),
       );
 }
 
@@ -522,11 +523,11 @@ class PackagePurchaseScreenArguments {
   PackagePurchaseScreenArguments({this.key, @required this.package});
 }
 
-/// CreateTableScreen arguments holder class
-class CreateTableScreenArguments {
+/// CreateConversationScreen arguments holder class
+class CreateConversationScreenArguments {
   final Key key;
   final Topic topic;
-  CreateTableScreenArguments({this.key, @required this.topic});
+  CreateConversationScreenArguments({this.key, @required this.topic});
 }
 
 /// ProfileIntroScreen arguments holder class

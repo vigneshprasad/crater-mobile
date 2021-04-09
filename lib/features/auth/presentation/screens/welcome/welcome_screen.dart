@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/logo/logo.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
