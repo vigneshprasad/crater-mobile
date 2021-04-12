@@ -17,6 +17,15 @@ class _$ConversationApiService extends ConversationApiService {
   final definitionType = ConversationApiService;
 
   @override
+  Future<Response<dynamic>> getConversationsByDate(
+      DateTime start, DateTime end) {
+    final $url = '/groups/conversation/calendar/';
+    final $params = <String, dynamic>{'start': start, 'end': end};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getAllTopics(int parent) {
     final $url = '/groups/topic/';
     final $params = <String, dynamic>{'parent': parent};

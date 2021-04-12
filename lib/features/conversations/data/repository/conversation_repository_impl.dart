@@ -28,9 +28,19 @@ class ConversationRepositoryImpl implements ConversationRepository {
 
   @override
   Future<Either<Failure, List<ConversationByDate>>> getAllConversations(
-      DateTime start, DateTime end) {
-    // TODO: implement getAllConversations
-    throw UnimplementedError();
+      DateTime start, DateTime end) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllConversationsByDatefromRemote(start, end);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
   }
 
   @override

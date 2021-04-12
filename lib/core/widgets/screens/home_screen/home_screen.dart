@@ -3,12 +3,24 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
+import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../components/home_tab_bar/home_tab_bar.dart';
+
+final homeScreenScrollController =
+    Provider.autoDispose<ScrollController>((ref) {
+  final controller = ScrollController();
+  ref.onDispose(() {
+    controller.dispose();
+  });
+  return controller;
+});
 
 class HomeScreen extends HookWidget {
   final String tab;
@@ -26,7 +38,7 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = useScrollController();
+    final _scrollController = useProvider(homeScreenScrollController);
     final _tabController = useTabController(initialLength: _tabs.length);
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 20,
@@ -39,43 +51,53 @@ class HomeScreen extends HookWidget {
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              floating: true,
-              pinned: true,
-              elevation: 0,
-              actions: [
-                UserProfileNavItem(
-                  onPressed: () {
-                    final user = BlocProvider.of<AuthBloc>(context).state?.user;
-                    if (user != null) {
-                      ExtendedNavigator.of(context).push(Routes.profileScreen(
-                          userId: user.pk, allowEdit: true));
-                    }
-                  },
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverAppBar(
+                expandedHeight: 120.00,
+                floating: true,
+                pinned: true,
+                elevation: 0,
+                actions: [
+                  UserProfileNavItem(
+                    onPressed: () {
+                      final user =
+                          BlocProvider.of<AuthBloc>(context).state?.user;
+                      if (user != null) {
+                        ExtendedNavigator.of(context).push(Routes.profileScreen(
+                            userId: user.pk, allowEdit: true));
+                      }
+                    },
+                  ),
+                  const SizedBox(width: AppInsets.l),
+                ],
+                bottom: TabBar(
+                  labelColor: Colors.grey[800],
+                  unselectedLabelColor: Colors.grey[400],
+                  isScrollable: true,
+                  labelStyle: labelStyle,
+                  controller: _tabController,
+                  indicatorColor: Theme.of(context).primaryColor,
+                  indicatorWeight: 4.0,
+                  tabs: _tabs,
                 ),
-                const SizedBox(width: AppInsets.l),
-              ],
-              bottom: TabBar(
-                labelColor: Colors.grey[800],
-                unselectedLabelColor: Colors.grey[400],
-                isScrollable: true,
-                labelStyle: labelStyle,
-                controller: _tabController,
-                indicatorColor: Theme.of(context).primaryColor,
-                indicatorWeight: 4.0,
-                tabs: _tabs,
               ),
             ),
           ];
         },
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            Container(color: Colors.green),
-            Container(color: Colors.red),
-            Container(color: Colors.yellow),
-            Container(color: Colors.orange),
-          ],
+        body: DefaultStickyHeaderController(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              ConversationCalendarTab(
+                type: ConversationTabType.all,
+                controller: _scrollController,
+              ),
+              Container(color: Colors.red),
+              Container(color: Colors.yellow),
+              Container(color: Colors.orange),
+            ],
+          ),
         ),
       ),
     );

@@ -26,7 +26,7 @@ abstract class ConversationRemoteDatasource {
 
   /// Get All Conversation for user from start to end date
   /// Throws [ServerException] on error
-  Future<List<Conversation>> getAllConversationsByDatefromRemote(
+  Future<List<ConversationByDate>> getAllConversationsByDatefromRemote(
       DateTime start, DateTime end);
 
   /// Get All Conversation by id
@@ -72,10 +72,19 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Conversation>> getAllConversationsByDatefromRemote(
-      DateTime start, DateTime end) {
-    // TODO: implement getAllConversationsByDate
-    throw UnimplementedError();
+  Future<List<ConversationByDate>> getAllConversationsByDatefromRemote(
+      DateTime start, DateTime end) async {
+    final response = await read(conversationApiServiceProvider)
+        .getConversationsByDate(start, end);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) =>
+              ConversationByDate.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
   }
 
   @override

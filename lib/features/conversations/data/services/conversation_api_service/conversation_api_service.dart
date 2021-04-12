@@ -22,6 +22,10 @@ abstract class ConversationApiService extends ChopperService {
     return _$ConversationApiService(client);
   }
 
+  @Get(path: 'conversation/calendar/')
+  Future<Response> getConversationsByDate(
+      @Query() DateTime start, @Query() DateTime end);
+
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int parent);
 
