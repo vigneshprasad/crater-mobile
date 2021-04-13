@@ -447,3 +447,160 @@ abstract class _Optin implements Optin {
   @JsonKey(ignore: true)
   _$OptinCopyWith<_Optin> get copyWith;
 }
+
+OptinsByDate _$OptinsByDateFromJson(Map<String, dynamic> json) {
+  return _OptinsByDate.fromJson(json);
+}
+
+/// @nodoc
+class _$OptinsByDateTearOff {
+  const _$OptinsByDateTearOff();
+
+// ignore: unused_element
+  _OptinsByDate call({DateTime date, List<Optin> optins}) {
+    return _OptinsByDate(
+      date: date,
+      optins: optins,
+    );
+  }
+
+// ignore: unused_element
+  OptinsByDate fromJson(Map<String, Object> json) {
+    return OptinsByDate.fromJson(json);
+  }
+}
+
+/// @nodoc
+// ignore: unused_element
+const $OptinsByDate = _$OptinsByDateTearOff();
+
+/// @nodoc
+mixin _$OptinsByDate {
+  DateTime get date;
+  List<Optin> get optins;
+
+  Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
+  $OptinsByDateCopyWith<OptinsByDate> get copyWith;
+}
+
+/// @nodoc
+abstract class $OptinsByDateCopyWith<$Res> {
+  factory $OptinsByDateCopyWith(
+          OptinsByDate value, $Res Function(OptinsByDate) then) =
+      _$OptinsByDateCopyWithImpl<$Res>;
+  $Res call({DateTime date, List<Optin> optins});
+}
+
+/// @nodoc
+class _$OptinsByDateCopyWithImpl<$Res> implements $OptinsByDateCopyWith<$Res> {
+  _$OptinsByDateCopyWithImpl(this._value, this._then);
+
+  final OptinsByDate _value;
+  // ignore: unused_field
+  final $Res Function(OptinsByDate) _then;
+
+  @override
+  $Res call({
+    Object date = freezed,
+    Object optins = freezed,
+  }) {
+    return _then(_value.copyWith(
+      date: date == freezed ? _value.date : date as DateTime,
+      optins: optins == freezed ? _value.optins : optins as List<Optin>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$OptinsByDateCopyWith<$Res>
+    implements $OptinsByDateCopyWith<$Res> {
+  factory _$OptinsByDateCopyWith(
+          _OptinsByDate value, $Res Function(_OptinsByDate) then) =
+      __$OptinsByDateCopyWithImpl<$Res>;
+  @override
+  $Res call({DateTime date, List<Optin> optins});
+}
+
+/// @nodoc
+class __$OptinsByDateCopyWithImpl<$Res> extends _$OptinsByDateCopyWithImpl<$Res>
+    implements _$OptinsByDateCopyWith<$Res> {
+  __$OptinsByDateCopyWithImpl(
+      _OptinsByDate _value, $Res Function(_OptinsByDate) _then)
+      : super(_value, (v) => _then(v as _OptinsByDate));
+
+  @override
+  _OptinsByDate get _value => super._value as _OptinsByDate;
+
+  @override
+  $Res call({
+    Object date = freezed,
+    Object optins = freezed,
+  }) {
+    return _then(_OptinsByDate(
+      date: date == freezed ? _value.date : date as DateTime,
+      optins: optins == freezed ? _value.optins : optins as List<Optin>,
+    ));
+  }
+}
+
+@JsonSerializable()
+
+/// @nodoc
+class _$_OptinsByDate implements _OptinsByDate {
+  _$_OptinsByDate({this.date, this.optins});
+
+  factory _$_OptinsByDate.fromJson(Map<String, dynamic> json) =>
+      _$_$_OptinsByDateFromJson(json);
+
+  @override
+  final DateTime date;
+  @override
+  final List<Optin> optins;
+
+  @override
+  String toString() {
+    return 'OptinsByDate(date: $date, optins: $optins)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _OptinsByDate &&
+            (identical(other.date, date) ||
+                const DeepCollectionEquality().equals(other.date, date)) &&
+            (identical(other.optins, optins) ||
+                const DeepCollectionEquality().equals(other.optins, optins)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(date) ^
+      const DeepCollectionEquality().hash(optins);
+
+  @JsonKey(ignore: true)
+  @override
+  _$OptinsByDateCopyWith<_OptinsByDate> get copyWith =>
+      __$OptinsByDateCopyWithImpl<_OptinsByDate>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_OptinsByDateToJson(this);
+  }
+}
+
+abstract class _OptinsByDate implements OptinsByDate {
+  factory _OptinsByDate({DateTime date, List<Optin> optins}) = _$_OptinsByDate;
+
+  factory _OptinsByDate.fromJson(Map<String, dynamic> json) =
+      _$_OptinsByDate.fromJson;
+
+  @override
+  DateTime get date;
+  @override
+  List<Optin> get optins;
+  @override
+  @JsonKey(ignore: true)
+  _$OptinsByDateCopyWith<_OptinsByDate> get copyWith;
+}

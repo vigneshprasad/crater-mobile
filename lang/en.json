@@ -96,6 +96,8 @@
     "roundtable_sheet:heading": "Have a conversation about",
     "roundtable_card:match_soon": "Your match will be setup soon.",
     "error:generic": "Something went wrong",
+    "my_conversations:empty_state_heading": "Curating conversations…",
+    "my_conversations:empty_state_subeading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     "thats_accurate": "That's Accurate",
     "how_would_you_describe_yourself": "How would you describe yourself",
     "just_the_basics_you_can_add_more_later": "Just the basics, you can add more later.",

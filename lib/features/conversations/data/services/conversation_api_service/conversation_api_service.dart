@@ -26,6 +26,10 @@ abstract class ConversationApiService extends ChopperService {
   Future<Response> getConversationsByDate(
       @Query() DateTime start, @Query() DateTime end);
 
+  @Get(path: 'conversation/calendar/my/')
+  Future<Response> getMyConversationsByDate(
+      @Query() DateTime start, @Query() DateTime end);
+
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int parent);
 
@@ -46,6 +50,9 @@ abstract class ConversationApiService extends ChopperService {
 
   @Get(path: 'optin/')
   Future<Response> getAllMyOptins();
+
+  @Get(path: 'optin/by_date/')
+  Future<Response> getOptinsByDate();
 
   @Post(path: 'requests/')
   Future<Response> postConversationRequest(@Body() Map<String, dynamic> body);

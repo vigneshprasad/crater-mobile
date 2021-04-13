@@ -44,6 +44,23 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
+  Future<Either<Failure, List<ConversationByDate>>> getMyConversations(
+      DateTime start, DateTime end) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getMyConversationsByDatefromRemote(start, end);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, Optin>> postGroupOptin(List<MeetingInterest> interests,
       List<TimeSlot> timeslots, MeetingConfig config, Topic topic) {
     // TODO: implement postGroupOptin
@@ -105,6 +122,39 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getConversationRtcInfoFromRemote(tableId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Optin>>> getAllConversationOptins() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllConversationOptinsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OptinsByDate>>>
+      getAllConversationOptinsByDate() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllConversationOptinsByDateFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       final message =

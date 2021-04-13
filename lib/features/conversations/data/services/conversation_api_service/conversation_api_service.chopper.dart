@@ -26,6 +26,15 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getMyConversationsByDate(
+      DateTime start, DateTime end) {
+    final $url = '/groups/conversation/calendar/my/';
+    final $params = <String, dynamic>{'start': start, 'end': end};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getAllTopics(int parent) {
     final $url = '/groups/topic/';
     final $params = <String, dynamic>{'parent': parent};
@@ -74,6 +83,13 @@ class _$ConversationApiService extends ConversationApiService {
   @override
   Future<Response<dynamic>> getAllMyOptins() {
     final $url = '/groups/optin/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getOptinsByDate() {
+    final $url = '/groups/optin/by_date/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }

@@ -13,6 +13,8 @@ import '../entity/topic_entity/topic_entity.dart';
 abstract class ConversationRepository {
   Future<Either<Failure, List<ConversationByDate>>> getAllConversations(
       DateTime start, DateTime end);
+  Future<Either<Failure, List<ConversationByDate>>> getMyConversations(
+      DateTime start, DateTime end);
   Future<Either<Failure, Conversation>> retreiveConversation(int id);
 
   Future<Either<Failure, ConversationRtcInfo>> getConversationRtcInfo(
@@ -29,4 +31,8 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, ConversationRequest>> postRequestToJoinGroup(
       ConversationRequest request);
+
+  Future<Either<Failure, List<Optin>>> getAllConversationOptins();
+
+  Future<Either<Failure, List<OptinsByDate>>> getAllConversationOptinsByDate();
 }

@@ -47,3 +47,19 @@ Map<String, dynamic> _$_$_OptinToJson(_$_Optin instance) => <String, dynamic>{
       'time_slots': instance.timeSlots,
       'time_slot_list': instance.timeSlotList,
     };
+
+_$_OptinsByDate _$_$_OptinsByDateFromJson(Map<String, dynamic> json) {
+  return _$_OptinsByDate(
+    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    optins: (json['optins'] as List)
+        ?.map(
+            (e) => e == null ? null : Optin.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$_$_OptinsByDateToJson(_$_OptinsByDate instance) =>
+    <String, dynamic>{
+      'date': instance.date?.toIso8601String(),
+      'optins': instance.optins,
+    };

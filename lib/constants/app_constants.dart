@@ -121,6 +121,8 @@ class AppImageAssets {
       AssetImage("assets/images/splash/conversation-setup.png");
   static const splashVirtual =
       AssetImage("assets/images/splash/converse-virtually.png");
+  static const emptyCalendar =
+      AssetImage("assets/images/img_empty_state_calendar.png");
 }
 
 class AppSvgAssets {

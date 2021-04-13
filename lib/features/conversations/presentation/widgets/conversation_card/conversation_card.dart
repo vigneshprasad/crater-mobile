@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
+
+import '../../../../../constants/app_constants.dart';
+import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 
 class ConversationCard extends StatelessWidget {
@@ -17,42 +19,21 @@ class ConversationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16.00,
-        );
     final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 12.00,
+          fontSize: 13.00,
         );
     final dateFormat = DateFormat.jm();
-    const background = Color(0xFFCDDAFD);
-    final now = DateTime.now();
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: AppInsets.xl,
-        right: AppInsets.xl,
-      ),
-      child: Material(
-        color: background,
-        borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-        child: Container(
-          padding: const EdgeInsets.all(AppInsets.xl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(conversation.topicDetail.name, style: titleStyle),
-              Text(dateFormat.format(conversation.start), style: titleStyle),
-              Row(
-                children: [
-                  Text("Relevancy: 80%", style: subheadStyle),
-                  Expanded(
-                    child: _SpeakersAvatarList(
-                        speakers: conversation.speakersDetailList),
-                  ),
-                ],
-              ),
-            ],
+    return CalendarCardLayout(
+      heading: conversation.topicDetail.name,
+      subHeading: dateFormat.format(conversation.start),
+      child: Row(
+        children: [
+          Text("Relevancy: 80%", style: subheadStyle),
+          Expanded(
+            child:
+                _SpeakersAvatarList(speakers: conversation.speakersDetailList),
           ),
-        ),
+        ],
       ),
     );
   }

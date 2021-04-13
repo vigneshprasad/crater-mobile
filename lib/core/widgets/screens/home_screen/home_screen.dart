@@ -10,6 +10,7 @@ import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
+import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../routes.gr.dart';
 import '../../components/home_tab_bar/home_tab_bar.dart';
 
@@ -93,7 +94,10 @@ class HomeScreen extends HookWidget {
                 type: ConversationTabType.all,
                 controller: _scrollController,
               ),
-              Container(color: Colors.red),
+              ConversationCalendarTab(
+                type: ConversationTabType.my,
+                controller: _scrollController,
+              ),
               Container(color: Colors.yellow),
               Container(color: Colors.orange),
             ],

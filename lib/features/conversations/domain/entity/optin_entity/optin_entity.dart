@@ -26,3 +26,14 @@ abstract class Optin with _$Optin {
 
   factory Optin.fromJson(Map<String, dynamic> json) => _$OptinFromJson(json);
 }
+
+@freezed
+abstract class OptinsByDate with _$OptinsByDate {
+  factory OptinsByDate({
+    DateTime date,
+    List<Optin> optins,
+  }) = _OptinsByDate;
+
+  factory OptinsByDate.fromJson(Map<String, dynamic> json) =>
+      _$OptinsByDateFromJson(json);
+}

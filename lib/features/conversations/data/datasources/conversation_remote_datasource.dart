@@ -29,6 +29,11 @@ abstract class ConversationRemoteDatasource {
   Future<List<ConversationByDate>> getAllConversationsByDatefromRemote(
       DateTime start, DateTime end);
 
+  /// Get My Conversation for user from start to end date
+  /// Throws [ServerException] on error
+  Future<List<ConversationByDate>> getMyConversationsByDatefromRemote(
+      DateTime start, DateTime end);
+
   /// Get All Conversation by id
   /// Throws [ServerException] on error
   Future<Conversation> retrieveConversationFromRemote(int id);
@@ -50,6 +55,14 @@ abstract class ConversationRemoteDatasource {
   /// Throws [ServerException]
   Future<ConversationRequest> postGroupRequestToRemote(
       ConversationRequest request);
+
+  // Get All Options for user for future week
+  /// Throws [ServerException]
+  Future<List<Optin>> getAllConversationOptinsFromRemote();
+
+  // Get All Options for user for future week by date
+  /// Throws [ServerException]
+  Future<List<OptinsByDate>> getAllConversationOptinsByDateFromRemote();
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -76,6 +89,22 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       DateTime start, DateTime end) async {
     final response = await read(conversationApiServiceProvider)
         .getConversationsByDate(start, end);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) =>
+              ConversationByDate.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<ConversationByDate>> getMyConversationsByDatefromRemote(
+      DateTime start, DateTime end) async {
+    final response = await read(conversationApiServiceProvider)
+        .getMyConversationsByDate(start, end);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -143,6 +172,34 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return ConversationRequest.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Optin>> getAllConversationOptinsFromRemote() async {
+    final response =
+        await read(conversationApiServiceProvider).getAllMyOptins();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((optin) => Optin.fromJson(optin as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<OptinsByDate>> getAllConversationOptinsByDateFromRemote() async {
+    final response =
+        await read(conversationApiServiceProvider).getOptinsByDate();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((optin) => OptinsByDate.fromJson(optin as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }
