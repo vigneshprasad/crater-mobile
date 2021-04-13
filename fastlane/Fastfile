@@ -1,0 +1,83 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the AppCenter"
+  lane :appcenter do
+    # gradle(task: "clean assembleRelease")
+    sh "flutter build apk -t lib/main_prod.dart"
+    
+    appcenter_upload(
+      api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+end
+
+
+# iOS Lanes
+platform :ios do
+  desc "Description of what the lane does"
+  lane :appcenter do
+    # add actions here: https://docs.fastlane.tools/actions
+    
+    # sh "flutter build ios -t lib/main_prod.dart"
+
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-release.ipa",
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+
+    appcenter_upload(
+      api_token: 'e3a3e8773e4e09550ed962bf5b63068a0142f17e',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/ios/flutter-ipa/app-release.ipa"
+    )
+  end
+end
