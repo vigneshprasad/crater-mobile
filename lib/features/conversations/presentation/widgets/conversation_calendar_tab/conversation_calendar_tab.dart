@@ -153,11 +153,12 @@ class _EmptyOptinsState extends StatelessWidget {
     final subheadingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
         );
-    return SliverFillRemaining(
+    return SliverToBoxAdapter(
       child: SizedBox(
         height: 640.00,
         child: Column(
           children: [
+            const SizedBox(height: AppInsets.xxl),
             Image(
               image: AppImageAssets.emptyCalendar,
               width: MediaQuery.of(context).size.width * 0.8,
