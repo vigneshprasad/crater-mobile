@@ -162,5 +162,24 @@ flutter:
         - asset: assets/fonts/Aeonik-BlackItalic.ttf
           style: italic
           weight: 700
+    - family: Apercu
+      fonts:
+        - asset: assets/fonts/Apercu/Apercu Light.otf
+          weight: 200
+        - asset: assets/fonts/Apercu/Apercu Light Italic.otf
+          style: italic
+          weight: 200
+        - asset: assets/fonts/Apercu/Apercu Regular.otf
+          weight: 400
+        - asset: assets/fonts/Apercu/Apercu Medium.otf
+          weight: 500
+        - asset: assets/fonts/Apercu/Apercu Medium Italic.otf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Apercu/Apercu Bold.otf
+          weight: 700
+        - asset: assets/fonts/Apercu/Apercu Bold Italic.otf
+          style: italic
+          weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -206,7 +206,7 @@ class _DateLabel extends StatelessWidget {
       shape: BoxShape.circle,
     );
     final dateLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 18.00,
+          fontSize: isToday ? 16.00 : 18.00,
           fontWeight: FontWeight.w700,
           color: isToday ? Colors.white : Colors.grey[800],
         );

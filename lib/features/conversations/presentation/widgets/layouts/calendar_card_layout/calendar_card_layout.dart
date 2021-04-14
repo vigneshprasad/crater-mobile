@@ -28,6 +28,7 @@ class CalendarCardLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16.00,
+          fontWeight: FontWeight.bold,
         );
     final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,

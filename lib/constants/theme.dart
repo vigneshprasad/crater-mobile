@@ -26,7 +26,7 @@ mixin AppTheme {
     brightness: Brightness.light,
     primaryColor: primaryColor,
     primarySwatch: primarySwatch,
-    fontFamily: 'Aeonik',
+    fontFamily: 'Apercu',
     dividerTheme: DividerThemeData(
       space: AppInsets.xs,
       color: Colors.grey[400],
