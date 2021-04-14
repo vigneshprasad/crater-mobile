@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/success_popup/success_popup.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -16,7 +18,6 @@ import '../bloc/rewards_bloc.dart';
 import '../widgets/discount_slider.dart';
 import '../widgets/quantity_picker.dart';
 import '../widgets/redeem_button.dart';
-import 'package_request_success_modal.dart';
 
 class PackagePurchaseScreen extends StatefulWidget {
   final Package package;
@@ -60,10 +61,18 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
 
   void _rewardsBlocListener(RewardsState state) {
     if (state is RewardsPostPackageRequestLoaded) {
+      final successText =
+          AppLocalizations.of(context).translate('rewards:succes_text');
+      final successDesc =
+          AppLocalizations.of(context).translate('rewards:success_desc');
+      final buttonText = AppLocalizations.of(context).translate("got_it");
       Navigator.of(context)
           .push(
-            PackageRequestSuccess(
-              package: widget.package,
+            SuccessPopup(
+              title: successText,
+              message: successDesc,
+              buttonTitle: buttonText,
+              iconAsset: AppImageAssets.packageSuccess,
             ),
           )
           .then((value) => ExtendedNavigator.of(context).popUntilRoot());
