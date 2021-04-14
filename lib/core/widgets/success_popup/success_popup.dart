@@ -10,7 +10,11 @@ class SuccessPopup extends ModalRoute<void> {
   final String buttonTitle;
   final AssetImage iconAsset;
 
-  SuccessPopup({@required this.title, @required this.message, @required this.buttonTitle, @required this.iconAsset);
+  SuccessPopup(
+      {@required this.title,
+      @required this.message,
+      @required this.buttonTitle,
+      @required this.iconAsset});
 
   @override
   Color get barrierColor => Colors.black.withOpacity(0.8);
