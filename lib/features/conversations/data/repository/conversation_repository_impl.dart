@@ -62,9 +62,19 @@ class ConversationRepositoryImpl implements ConversationRepository {
 
   @override
   Future<Either<Failure, Optin>> postGroupOptin(List<MeetingInterest> interests,
-      List<TimeSlot> timeslots, MeetingConfig config, Topic topic) {
-    // TODO: implement postGroupOptin
-    throw UnimplementedError();
+      List<TimeSlot> timeslots, MeetingConfig config, Topic topic) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postGroupOptinToRemote(interests, timeslots, config, topic);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
   }
 
   @override

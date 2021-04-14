@@ -178,7 +178,7 @@ class CreateConversationScreen extends HookWidget {
       },
       (optin) {
         _overlay.remove();
-        ExtendedNavigator.of(context).pop();
+        ExtendedNavigator.of(context).pop(optin);
       },
     );
   }

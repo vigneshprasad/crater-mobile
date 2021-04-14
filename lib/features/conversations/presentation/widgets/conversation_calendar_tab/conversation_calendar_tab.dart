@@ -10,6 +10,7 @@ import '../../../../../constants/theme.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../conversation_card/conversation_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
+import '../../../../../core/extensions/date_time_extensions.dart';
 import 'conversation_calendar_tab_state.dart';
 
 const kLeftPaddingForDate = 72.00;
@@ -134,6 +135,7 @@ class _LoadedConversationTab extends HookWidget {
       child: CustomScrollView(
         slivers: [
           ...children,
+          const SliverPadding(padding: EdgeInsets.only(bottom: 140.00)),
         ],
       ),
     );
@@ -195,9 +197,18 @@ class _DateLabel extends StatelessWidget {
     final weekdayLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
         );
+
+    final primaryColor = Theme.of(context).primaryColor;
+    final now = DateTime.now().toUtc();
+    final isToday = now.isSameDate(date);
+    final decoration = BoxDecoration(
+      color: isToday ? primaryColor : Colors.transparent,
+      shape: BoxShape.circle,
+    );
     final dateLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 18.00,
           fontWeight: FontWeight.w700,
+          color: isToday ? Colors.white : Colors.grey[800],
         );
     return Padding(
       padding: const EdgeInsets.all(AppInsets.xl),
@@ -205,9 +216,17 @@ class _DateLabel extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Column(
           children: [
-            Text(weekDayFormat.format(date), style: weekdayLabelStyle),
+            Text(weekDayFormat.format(date.toLocal()),
+                style: weekdayLabelStyle),
             const SizedBox(height: AppInsets.sm),
-            Text(dateFormat.format(date), style: dateLabelStyle),
+            Container(
+              height: 32.00,
+              width: 32.00,
+              decoration: decoration,
+              child: Center(
+                child: Text(dateFormat.format(date), style: dateLabelStyle),
+              ),
+            ),
           ],
         ),
       ),

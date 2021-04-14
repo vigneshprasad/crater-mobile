@@ -29,6 +29,7 @@ abstract class Conversation with _$Conversation {
     @JsonKey(name: 'speakers_detail_list')
         List<ConversationUser> speakersDetailList,
     @JsonKey(name: 'is_speaker') bool isSpeaker,
+    @JsonKey(name: 'is_past') bool isPast,
   }) = _Conversation;
 
   factory Conversation.fromJson(Map<String, dynamic> json) =>

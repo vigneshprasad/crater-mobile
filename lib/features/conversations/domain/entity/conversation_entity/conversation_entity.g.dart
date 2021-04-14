@@ -42,6 +42,7 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
             : ConversationUser.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     isSpeaker: json['is_speaker'] as bool,
+    isPast: json['is_past'] as bool,
   );
 }
 
@@ -65,6 +66,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'interests_detail_list': instance.interestsDetailList,
       'speakers_detail_list': instance.speakersDetailList,
       'is_speaker': instance.isSpeaker,
+      'is_past': instance.isPast,
     };
 
 _$_ConversationUser _$_$_ConversationUserFromJson(Map<String, dynamic> json) {

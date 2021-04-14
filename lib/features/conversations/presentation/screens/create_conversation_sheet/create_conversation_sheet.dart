@@ -12,7 +12,7 @@ import 'create_conversation_sheet_state.dart';
 
 const kSheetRadius = Radius.circular(32.00);
 
-class CreateConversationSheet extends PopupRoute<void> {
+class CreateConversationSheet extends PopupRoute<Topic> {
   @override
   Color get barrierColor => Colors.black.withOpacity(0.6);
 

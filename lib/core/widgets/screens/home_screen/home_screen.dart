@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -46,6 +49,21 @@ class HomeScreen extends HookWidget {
           fontWeight: FontWeight.w700,
           color: Colors.grey[800],
         );
+    final _activeTab = useState(0);
+
+    useEffect(() {
+      void _tabChangeListener() {
+        if (!_tabController.indexIsChanging) {
+          _activeTab.value = _tabController.index;
+        }
+      }
+
+      _tabController.addListener(_tabChangeListener);
+
+      return () {
+        _tabController.removeListener(_tabChangeListener);
+      };
+    });
 
     return Scaffold(
       body: NestedScrollView(
@@ -104,7 +122,35 @@ class HomeScreen extends HookWidget {
           ),
         ),
       ),
+      floatingActionButton:
+          _getFloatinActionButton(context, _activeTab.value, _tabController),
     );
+  }
+
+  Widget _getFloatinActionButton(
+      BuildContext context, int index, TabController controller) {
+    if (index == 0 || index == 1) {
+      return FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).push(CreateConversationSheet()).then(
+            (value) {
+              if (value != null && value is Topic) {
+                ExtendedNavigator.of(context)
+                    .pushCreateConversationScreen(topic: value)
+                    .then((value) {
+                  if (value is Optin) {
+                    controller.animateTo(1);
+                  }
+                });
+              }
+            },
+          );
+        },
+        label: Text("Schedule New"),
+        icon: Icon(Icons.add),
+      );
+    }
+    return null;
   }
 }
 

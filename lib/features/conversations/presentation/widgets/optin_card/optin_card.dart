@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 class OptinCard extends StatelessWidget {
   final Optin optin;
@@ -14,12 +15,20 @@ class OptinCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final label =
+        AppLocalizations.of(context).translate("conversations:scheduling");
     final dateFormat = DateFormat.jm();
     return CalendarCardLayout(
-      heading: optin.topicDetail.name,
-      subHeading: dateFormat.format(optin.timeSlotList.first.start),
+      heading: Text(optin.topicDetail.name),
+      subHeading: Text(dateFormat.format(optin.timeSlotList.first.start)),
+      border: Border.all(
+        color: Color(0xFFFFCB77),
+        width: 2.00,
+      ),
       child: Row(
-        children: [Text("Settng things up...")],
+        children: [
+          Text(label),
+        ],
       ),
     );
   }

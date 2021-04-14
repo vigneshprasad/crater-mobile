@@ -42,7 +42,9 @@ class _$ConversationTearOff {
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser> speakersDetailList,
       @JsonKey(name: 'is_speaker')
-          bool isSpeaker}) {
+          bool isSpeaker,
+      @JsonKey(name: 'is_past')
+          bool isPast}) {
     return _Conversation(
       id: id,
       host: host,
@@ -62,6 +64,7 @@ class _$ConversationTearOff {
       interestsDetailList: interestsDetailList,
       speakersDetailList: speakersDetailList,
       isSpeaker: isSpeaker,
+      isPast: isPast,
     );
   }
 
@@ -102,6 +105,8 @@ mixin _$Conversation {
   List<ConversationUser> get speakersDetailList;
   @JsonKey(name: 'is_speaker')
   bool get isSpeaker;
+  @JsonKey(name: 'is_past')
+  bool get isPast;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -138,7 +143,9 @@ abstract class $ConversationCopyWith<$Res> {
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser> speakersDetailList,
       @JsonKey(name: 'is_speaker')
-          bool isSpeaker});
+          bool isSpeaker,
+      @JsonKey(name: 'is_past')
+          bool isPast});
 
   $TopicCopyWith<$Res> get topicDetail;
   $ConversationUserCopyWith<$Res> get hostDetail;
@@ -172,6 +179,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
     Object interestsDetailList = freezed,
     Object speakersDetailList = freezed,
     Object isSpeaker = freezed,
+    Object isPast = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -203,6 +211,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
           ? _value.speakersDetailList
           : speakersDetailList as List<ConversationUser>,
       isSpeaker: isSpeaker == freezed ? _value.isSpeaker : isSpeaker as bool,
+      isPast: isPast == freezed ? _value.isPast : isPast as bool,
     ));
   }
 
@@ -259,7 +268,9 @@ abstract class _$ConversationCopyWith<$Res>
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser> speakersDetailList,
       @JsonKey(name: 'is_speaker')
-          bool isSpeaker});
+          bool isSpeaker,
+      @JsonKey(name: 'is_past')
+          bool isPast});
 
   @override
   $TopicCopyWith<$Res> get topicDetail;
@@ -297,6 +308,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
     Object interestsDetailList = freezed,
     Object speakersDetailList = freezed,
     Object isSpeaker = freezed,
+    Object isPast = freezed,
   }) {
     return _then(_Conversation(
       id: id == freezed ? _value.id : id as int,
@@ -328,6 +340,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
           ? _value.speakersDetailList
           : speakersDetailList as List<ConversationUser>,
       isSpeaker: isSpeaker == freezed ? _value.isSpeaker : isSpeaker as bool,
+      isPast: isPast == freezed ? _value.isPast : isPast as bool,
     ));
   }
 }
@@ -354,7 +367,8 @@ class _$_Conversation implements _Conversation {
       @JsonKey(name: 'host_detail') this.hostDetail,
       @JsonKey(name: 'interests_detail_list') this.interestsDetailList,
       @JsonKey(name: 'speakers_detail_list') this.speakersDetailList,
-      @JsonKey(name: 'is_speaker') this.isSpeaker});
+      @JsonKey(name: 'is_speaker') this.isSpeaker,
+      @JsonKey(name: 'is_past') this.isPast});
 
   factory _$_Conversation.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationFromJson(json);
@@ -402,10 +416,13 @@ class _$_Conversation implements _Conversation {
   @override
   @JsonKey(name: 'is_speaker')
   final bool isSpeaker;
+  @override
+  @JsonKey(name: 'is_past')
+  final bool isPast;
 
   @override
   String toString() {
-    return 'Conversation(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker)';
+    return 'Conversation(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker, isPast: $isPast)';
   }
 
   @override
@@ -458,7 +475,9 @@ class _$_Conversation implements _Conversation {
                     .equals(other.speakersDetailList, speakersDetailList)) &&
             (identical(other.isSpeaker, isSpeaker) ||
                 const DeepCollectionEquality()
-                    .equals(other.isSpeaker, isSpeaker)));
+                    .equals(other.isSpeaker, isSpeaker)) &&
+            (identical(other.isPast, isPast) ||
+                const DeepCollectionEquality().equals(other.isPast, isPast)));
   }
 
   @override
@@ -481,7 +500,8 @@ class _$_Conversation implements _Conversation {
       const DeepCollectionEquality().hash(hostDetail) ^
       const DeepCollectionEquality().hash(interestsDetailList) ^
       const DeepCollectionEquality().hash(speakersDetailList) ^
-      const DeepCollectionEquality().hash(isSpeaker);
+      const DeepCollectionEquality().hash(isSpeaker) ^
+      const DeepCollectionEquality().hash(isPast);
 
   @JsonKey(ignore: true)
   @override
@@ -520,7 +540,9 @@ abstract class _Conversation implements Conversation {
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser> speakersDetailList,
       @JsonKey(name: 'is_speaker')
-          bool isSpeaker}) = _$_Conversation;
+          bool isSpeaker,
+      @JsonKey(name: 'is_past')
+          bool isPast}) = _$_Conversation;
 
   factory _Conversation.fromJson(Map<String, dynamic> json) =
       _$_Conversation.fromJson;
@@ -568,6 +590,9 @@ abstract class _Conversation implements Conversation {
   @override
   @JsonKey(name: 'is_speaker')
   bool get isSpeaker;
+  @override
+  @JsonKey(name: 'is_past')
+  bool get isPast;
   @override
   @JsonKey(ignore: true)
   _$ConversationCopyWith<_Conversation> get copyWith;

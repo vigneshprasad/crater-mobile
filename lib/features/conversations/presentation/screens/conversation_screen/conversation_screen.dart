@@ -135,10 +135,6 @@ class _RoundTableLoaded extends HookWidget {
               children: [
                 if (table.topicDetail.root != null)
                   Text(table.topicDetail.root.name, style: categoryStyle),
-                if (table.topicDetail.root != null)
-                  const SizedBox(height: AppInsets.sm),
-                Text(table.topicDetail.name, style: agendaStyle),
-                const SizedBox(height: AppInsets.sm),
                 Text(table.topicDetail.name, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start), style: dateStyle),
@@ -210,8 +206,10 @@ class _RoundTableLoaded extends HookWidget {
           controller: controller,
         ),
       ));
-    } else {
+    } else if (!table.isPast) {
       if (table.isSpeaker) {
+        final label = AppLocalizations.of(context)
+            .translate("conversation_screen:go_live_label");
         items.add(overlay);
 
         items.add(
@@ -224,7 +222,7 @@ class _RoundTableLoaded extends HookWidget {
                 onPressed: () {
                   _joinRoundTableChannel(context, user, controller);
                 },
-                child: Text("Join Table"),
+                child: Text(label),
               ),
             ),
           ),

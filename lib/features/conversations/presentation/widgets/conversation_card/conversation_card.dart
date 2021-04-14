@@ -1,11 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import '../../../../../routes.gr.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
+import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
@@ -22,10 +24,58 @@ class ConversationCard extends StatelessWidget {
     final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 13.00,
         );
+    final isFull = conversation.speakers.length >= conversation.maxSpeakers;
+    final now = DateTime.now();
+    final difference = conversation.start.toLocal().difference(now).inMinutes;
+
+    final isSoon = difference > 0 && difference <= 30;
+    final startTime = difference <= 30 ? "In $difference minutes" : "";
     final dateFormat = DateFormat.jm();
+
+    BoxBorder _border;
+    Color background;
+
+    if (conversation.isPast) {
+      _border = Border.all(
+        color: Colors.grey[200],
+        width: 2.00,
+      );
+      background = Colors.grey[100];
+    } else {
+      if (conversation.isSpeaker) {
+        _border = Border.all(
+          color: AppTheme.blueAccentDark,
+          width: 2.00,
+        );
+      } else {
+        if (isFull) {
+          _border = Border.all(
+            color: Theme.of(context).errorColor,
+            width: 2.00,
+          );
+        }
+      }
+
+      if (isSoon) {
+        background = AppTheme.blueAccent;
+      }
+    }
+
     return CalendarCardLayout(
-      heading: conversation.topicDetail.name,
-      subHeading: dateFormat.format(conversation.start),
+      onPressed: () {
+        ExtendedNavigator.of(context)
+            .push(Routes.conversationScreen(id: conversation.id));
+      },
+      background: background,
+      heading: Row(
+        children: [
+          Text(conversation.topicDetail.name),
+          const Spacer(),
+          if (isSoon) Text(startTime, style: subheadStyle),
+        ],
+      ),
+      subHeading: Text(dateFormat.format(conversation.start.toLocal())),
+      border: _border,
       child: Row(
         children: [
           Text("Relevancy: 80%", style: subheadStyle),
@@ -59,7 +109,7 @@ class _SpeakersAvatarList extends StatelessWidget {
   }
 
   List<Widget> _buildItemList(BuildContext context) {
-    List<Widget> children = [];
+    final List<Widget> children = [];
     const background = Color(0xFFCDDAFD);
 
     for (int index = 0; index < speakers.length; index++) {
