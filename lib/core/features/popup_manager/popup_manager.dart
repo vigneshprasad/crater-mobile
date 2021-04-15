@@ -70,7 +70,6 @@ class PopupManagerImpl implements PopupManager {
   }
 
   Future<bool> shouldShowPopup(PopupType type) async {
-    return true;
     final key = getSharedPreferencekey(type);
     if (popupStatus[key] == true) {
       return false;
