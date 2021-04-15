@@ -69,11 +69,13 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
       Navigator.of(context)
           .push(
             SuccessPopup(
-              title: successText,
-              message: successDesc,
-              buttonTitle: buttonText,
-              iconAsset: AppImageAssets.packageSuccess,
-            ),
+                title: successText,
+                message: successDesc,
+                buttonTitle: buttonText,
+                iconAsset: AppImageAssets.packageSuccess,
+                onButtonClicked: () {
+                  Navigator.of(context).pop(true);
+                }),
           )
           .then((value) => ExtendedNavigator.of(context).popUntilRoot());
     }

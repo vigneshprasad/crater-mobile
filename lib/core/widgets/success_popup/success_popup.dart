@@ -9,12 +9,14 @@ class SuccessPopup extends ModalRoute<void> {
   final String message;
   final String buttonTitle;
   final AssetImage iconAsset;
+  final VoidCallback onButtonClicked;
 
   SuccessPopup(
       {@required this.title,
       @required this.message,
       @required this.buttonTitle,
-      @required this.iconAsset});
+      @required this.iconAsset,
+      @required this.onButtonClicked});
 
   @override
   Color get barrierColor => Colors.black.withOpacity(0.8);
@@ -51,31 +53,29 @@ class SuccessPopup extends ModalRoute<void> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            width: MediaQuery.of(context).size.width * 0.85,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.white,
-            ),
-            child: Column(
-              children: [
-                Flexible(
-                  child: Column(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(40),
+              margin: const EdgeInsets.all(40),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: 96,
-                        backgroundImage: iconAsset,
-                      ),
-                      const SizedBox(height: AppInsets.l),
+                      Image(image: iconAsset, height: 75),
+                      const SizedBox(height: 20),
                       Text(
                         title,
                         textAlign: TextAlign.center,
                         style: successStyle,
                       ),
-                      const SizedBox(height: AppInsets.med),
+                      const SizedBox(height: 10),
                       Text(
                         message,
                         textAlign: TextAlign.center,
@@ -83,19 +83,15 @@ class SuccessPopup extends ModalRoute<void> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(AppInsets.xl),
-                  child: RedeemButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
+                  const SizedBox(height: 40),
+                  RedeemButton(
+                    onPressed: onButtonClicked,
                     child: Text(buttonTitle),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
