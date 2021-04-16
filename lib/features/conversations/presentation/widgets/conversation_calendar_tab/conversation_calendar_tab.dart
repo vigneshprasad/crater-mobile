@@ -3,14 +3,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/optin_card/optin_card.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/conversation_tab_shimmer/conversation_tab_shimmer.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/extensions/date_time_extensions.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../conversation_card/conversation_card.dart';
+import '../optin_card/optin_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
-import '../../../../../core/extensions/date_time_extensions.dart';
 import 'conversation_calendar_tab_state.dart';
 
 const kLeftPaddingForDate = 72.00;
@@ -29,8 +30,10 @@ class ConversationCalendarTab extends HookWidget {
     final intialState = useProvider(initialStateProvider(type));
 
     return intialState.when(
-      loading: () => _Loader(),
-      data: (results) => _LoadedConversationTab(type: type),
+      loading: () => ConversationTabShimmer(),
+      data: (results) => _LoadedConversationTab(
+        type: type,
+      ),
       error: (err, st) => _Loader(),
     );
   }
@@ -39,7 +42,7 @@ class ConversationCalendarTab extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.green);
+    return Container(color: Colors.red);
   }
 }
 
@@ -77,15 +80,14 @@ class _LoadedConversationTab extends HookWidget {
                   left: kLeftPaddingForDate,
                   bottom: AppInsets.xl,
                 ),
-                sliver: SliverAnimatedList(
-                  itemBuilder: (context, index, animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: ConversationCard(
-                          conversation: date.conversations[index]),
-                    );
-                  },
-                  initialItemCount: date.conversations.length,
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return ConversationCard(
+                          conversation: date.conversations[index]);
+                    },
+                    childCount: date.conversations.length,
+                  ),
                 ),
               ),
             ),

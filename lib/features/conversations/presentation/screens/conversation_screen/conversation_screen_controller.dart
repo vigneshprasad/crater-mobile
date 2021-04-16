@@ -20,15 +20,16 @@ import 'conversation_overlay_controller.dart';
 
 enum RtcConnectionState { connected, connecting, disconnected }
 
-final conversationScreenControllerProvider = ChangeNotifierProvider.autoDispose
-    .family<ConversationScreenController, Conversation>((ref, table) {
+final conversationScreenControllerProvider =
+    ChangeNotifierProvider.family<ConversationScreenController, Conversation>(
+        (ref, table) {
   final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
 
   return ConversationScreenController(ref.read, table, localUser);
 });
 
-final getRoundTableNotifier = StateNotifierProvider.autoDispose
-    .family<GetRoundTableState, int>((ref, tableId) {
+final getRoundTableNotifier =
+    StateNotifierProvider.family<GetRoundTableState, int>((ref, tableId) {
   return GetRoundTableState(ref.read, tableId);
 });
 

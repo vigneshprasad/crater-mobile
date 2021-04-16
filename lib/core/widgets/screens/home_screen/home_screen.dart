@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/article/presentation/widgets/articles_tab.dart';
+import 'package:worknetwork/features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
@@ -116,8 +118,8 @@ class HomeScreen extends HookWidget {
                 type: ConversationTabType.my,
                 controller: _scrollController,
               ),
-              Container(color: Colors.yellow),
-              Container(color: Colors.orange),
+              InboxTab(),
+              ArticlesTab(),
             ],
           ),
         ),

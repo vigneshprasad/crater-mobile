@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/layouts/home_tab_layout.dart';
@@ -31,20 +32,20 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String heading =
-        AppLocalizations.of(context).translate('articles:title');
-    final String subHeading =
-        AppLocalizations.of(context).translate('articles:subtitle');
     return BlocConsumer<ArticleBloc, ArticleState>(
       listener: _blocListener,
       builder: (context, state) {
-        return HomeTabLayout(
-          heading: heading,
-          subHeading: subHeading,
+        return RefreshIndicator(
           onRefresh: _onRefreshArticles,
-          slivers: [
-            ..._buildArticlesRows(context),
-          ],
+          child: CustomScrollView(
+            slivers: [
+              SliverObstructionInjector(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              ),
+              ..._buildArticlesRows(context),
+            ],
+          ),
         );
       },
     );

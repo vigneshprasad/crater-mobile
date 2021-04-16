@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../core/widgets/layouts/home_tab_layout.dart';
 import '../../../../ui/components/list_items/user_list_item/user_list_item.dart';
 import '../../../../utils/app_localizations.dart';
+import '../../../conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_inbox/chat_inbox_bloc.dart';
 
@@ -39,20 +39,22 @@ class _InboxTabState extends State<InboxTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String heading =
-        AppLocalizations.of(context).translate('inbox:title');
     return BlocProvider.value(
       value: _inboxBloc,
       child: BlocConsumer<ChatInboxBloc, ChatInboxState>(
         listener: _blocListener,
         builder: (context, state) {
-          return HomeTabLayout(
-            heading: heading,
-            expandedHeight: 106,
+          return RefreshIndicator(
             onRefresh: _onRefreshList,
-            slivers: [
-              if (_showShimmer) _buildShimmerList() else _buildUserList()
-            ],
+            child: CustomScrollView(
+              slivers: [
+                SliverObstructionInjector(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                if (_showShimmer) _buildShimmerList() else _buildUserList()
+              ],
+            ),
           );
         },
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/article/presentation/bloc/article_bloc.dart';
+import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
@@ -28,6 +30,8 @@ class _RootProviderState extends State<RootProvider> {
   MeetingBloc _meetingBloc;
   RewardsBloc _rewardsBloc;
   PointsBloc _pointsBloc;
+  ChatInboxBloc _chatInboxBloc;
+  ArticleBloc _articleBloc;
 
   @override
   void initState() {
@@ -37,6 +41,8 @@ class _RootProviderState extends State<RootProvider> {
     _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
     _rewardsBloc = KiwiContainer().resolve<RewardsBloc>();
     _pointsBloc = KiwiContainer().resolve<PointsBloc>();
+    _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
+    _articleBloc = KiwiContainer().resolve<ArticleBloc>();
     super.initState();
   }
 
@@ -72,6 +78,12 @@ class _RootProviderState extends State<RootProvider> {
         ),
         BlocProvider.value(
           value: _pointsBloc,
+        ),
+        BlocProvider.value(
+          value: _chatInboxBloc,
+        ),
+        BlocProvider.value(
+          value: _articleBloc,
         )
       ],
       child: widget.child,
