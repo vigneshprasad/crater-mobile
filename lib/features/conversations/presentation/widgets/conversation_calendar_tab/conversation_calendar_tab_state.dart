@@ -42,15 +42,13 @@ class ConversationCalendarStateNofier
           throw failure;
         },
         (data) {
-          if (data.isNotEmpty) {
-            final weekData = CalendarWeekData(
-              future: false,
-              start: _start,
-              end: _end,
-              conversations: data,
-            );
-            state = [weekData];
-          }
+          final weekData = CalendarWeekData(
+            future: false,
+            start: _start,
+            end: _end,
+            conversations: data,
+          );
+          state = [weekData];
         },
       );
     } else {
