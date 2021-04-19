@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_tab_shimmer/conversation_tab_shimmer.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -60,6 +61,9 @@ class _LoadedConversationTab extends HookWidget {
     final weeks = useProvider(conversationCalendarStateProvider(type).state);
 
     final List<Widget> children = [];
+
+    final popupManager = useProvider(popupManagerProvider);
+    popupManager.showPopup(PopupType.signupComplete, context);
 
     children.add(SliverObstructionInjector(
       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
