@@ -100,5 +100,17 @@
     "how_would_you_describe_yourself": "How would you describe yourself",
     "just_the_basics_you_can_add_more_later": "Just the basics, you can add more later.",
     "a_little_about_your_online_presence": "A little about your online presence",
-    "providing_your_linkedin_will_improve_your_matches": "Providing your Linkedin will improve your matches"
+    "providing_your_linkedin_will_improve_your_matches": "Providing your Linkedin will improve your matches",
+    "popup:signup_complete_title": "How to get started?",
+    "popup:signup_complete_message": "Step 1: Click the opt-in button\nStep 2: Our algorithm with match you\nStep 3: Converse with relevant people",
+    "popup:signup_complete_button_title": "Opt-in for a conversation",
+    "popup:conversation_join_title": "You are in!",
+    "popup:conversation_join_message": "All you have to do is join the conversation at the time. Don't worry, we will send a reminder before.",
+    "popup:conversation_join_button_title": "Okay",
+    "popup:conversation_optin_title": "You are all set!",
+    "popup:conversation_optin_message": "Your will receive an introduction to your match & the conversation will be set up.",
+    "popup:conversation_optin_button_title": "Explore conversations",
+    "popup:conversation_leave_title": "Are you sure?",
+    "popup:conversation_leave_message": "People usually drop into a conversation few minutes in.",
+    "popup:conversation_leave_button_title": "Explore other conversations"
 }

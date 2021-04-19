@@ -121,6 +121,14 @@ class AppImageAssets {
       AssetImage("assets/images/splash/conversation-setup.png");
   static const splashVirtual =
       AssetImage("assets/images/splash/converse-virtually.png");
+
+  static const signupComplete = AssetImage("assets/images/ic_signup_popup.png");
+  static const conversationJoin =
+      AssetImage("assets/images/ic_conversation_join.png");
+  static const conversationOptin =
+      AssetImage("assets/images/ic_conversation_optin.png");
+  static const conversationLeave =
+      AssetImage("assets/images/ic_conversation_leave.png");
 }
 
 class AppSvgAssets {
