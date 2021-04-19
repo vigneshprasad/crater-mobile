@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../core/widgets/layouts/home_tab_layout.dart';
-import '../../../../utils/app_localizations.dart';
+import '../../../conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import '../../domain/entity/article_website_entity.dart';
 import '../bloc/article_bloc.dart';
 import 'articles_row_list.dart';

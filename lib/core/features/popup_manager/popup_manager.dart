@@ -2,9 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/widgets/success_popup/success_popup.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+
+import '../../../constants/app_constants.dart';
+import '../../../utils/app_localizations.dart';
+import '../../widgets/success_popup/success_popup.dart';
 
 final popupManagerProvider = Provider<PopupManager>((_) => PopupManagerImpl());
 

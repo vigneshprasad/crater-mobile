@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
+
+import '../../../../../constants/theme.dart';
+import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 
 const kCardBorderRadius = 8.00;
 const kLeftPaddingForDate = 72.00;

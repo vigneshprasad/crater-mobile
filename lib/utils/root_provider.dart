@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/article/presentation/bloc/article_bloc.dart';
-import 'package:worknetwork/features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 
 import '../core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import '../features/article/presentation/bloc/article_bloc.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
+import '../features/chat_inbox/presentation/bloc/chat_inbox/chat_inbox_bloc.dart';
 import '../features/meeting/presentation/bloc/meeting_bloc.dart';
 import '../features/notification/presentation/bloc/notification_bloc.dart';
 import '../features/points/presentation/bloc/points_bloc.dart';

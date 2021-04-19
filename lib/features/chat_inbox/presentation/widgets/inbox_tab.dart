@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../ui/components/list_items/user_list_item/user_list_item.dart';
-import '../../../../utils/app_localizations.dart';
 import '../../../conversations/presentation/widgets/sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import '../../domain/entity/chat_user_entity.dart';
 import '../bloc/chat_inbox/chat_inbox_bloc.dart';

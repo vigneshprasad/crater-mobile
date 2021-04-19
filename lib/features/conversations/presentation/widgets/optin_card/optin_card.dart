@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import '../../../../../utils/app_localizations.dart';
+import '../../../domain/entity/optin_entity/optin_entity.dart';
+import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 
 class OptinCard extends StatelessWidget {
   final Optin optin;

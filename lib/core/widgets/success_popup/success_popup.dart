@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
 import '../../../features/rewards/presentation/widgets/redeem_button.dart';
 
 class SuccessPopup extends ModalRoute<void> {

@@ -3,14 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/conversation_tab_shimmer/conversation_tab_shimmer.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
+import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../conversation_card/conversation_card.dart';
+import '../conversation_tab_shimmer/conversation_tab_shimmer.dart';
 import '../optin_card/optin_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'conversation_calendar_tab_state.dart';
