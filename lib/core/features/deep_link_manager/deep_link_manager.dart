@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -57,30 +58,28 @@ class DeepLinkManagerImpl implements DeepLinkManager {
   }
 
   void _handleDeepLink(Uri deeplink) {
-    final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+    final _navigator = ExtendedNavigator.root;
 
     final pathSegments = deeplink.pathSegments;
 
     if (pathSegments.contains("community-chat")) {
-      _navigator.currentState.pushNamed(Routes.homeScreen(tab: 0));
+      _navigator.push(Routes.homeScreen(tab: 0));
     } else if (pathSegments.contains("meetings")) {
-      _navigator.currentState.pushNamed(Routes.homeScreen(tab: 1));
+      _navigator.push(Routes.homeScreen(tab: 1));
     } else if (pathSegments.contains("inbox")) {
-      _navigator.currentState.pushNamed(Routes.homeScreen(tab: 2));
+      _navigator.push(Routes.homeScreen(tab: 2));
     } else if (pathSegments.contains("curated-articles")) {
-      _navigator.currentState.pushNamed(Routes.homeScreen(tab: 3));
+      _navigator.push(Routes.homeScreen(tab: 3));
     } else if (pathSegments.contains("master-classes")) {
-      _navigator.currentState.pushNamed(Routes.homeScreen(tab: 4));
+      _navigator.push(Routes.homeScreen(tab: 4));
     } else if (pathSegments.contains("new-password")) {
-      _navigator.currentState
-          .pushNamed(Routes.newPasswordScreen(params: deeplink.query));
+      _navigator.push(Routes.newPasswordScreen(params: deeplink.query));
     } else if (pathSegments.contains("group")) {
       final queryParam = deeplink.queryParameters['id'];
       if (queryParam != null) {
         final groupId = int.tryParse(queryParam);
         if (groupId != null) {
-          _navigator.currentState
-              .pushNamed(Routes.conversationScreen(id: groupId));
+          _navigator.push(Routes.conversationScreen(id: groupId));
         }
       }
     }

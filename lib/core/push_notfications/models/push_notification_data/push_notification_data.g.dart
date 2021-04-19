@@ -1,26 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'conversation_failures.dart';
+part of 'push_notification_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ConversationFailure _$_$_ConversationFailureFromJson(
+_$_ConversationNotificationData _$_$_ConversationNotificationDataFromJson(
     Map<String, dynamic> json) {
-  return _$_ConversationFailure(
-    message: json['error_message'] as String,
-    errorCode: _$enumDecodeNullable(
-            _$ConversationFailuresTypeEnumMap, json['error_code']) ??
-        ConversationFailuresType.genericError,
+  return _$_ConversationNotificationData(
+    type: _$enumDecodeNullable(_$PushTypeEnumMap, json['obj_type']),
+    groupId: json['group_id'],
   );
 }
 
-Map<String, dynamic> _$_$_ConversationFailureToJson(
-        _$_ConversationFailure instance) =>
+Map<String, dynamic> _$_$_ConversationNotificationDataToJson(
+        _$_ConversationNotificationData instance) =>
     <String, dynamic>{
-      'error_message': instance.message,
-      'error_code': _$ConversationFailuresTypeEnumMap[instance.errorCode],
+      'obj_type': _$PushTypeEnumMap[instance.type],
+      'group_id': instance.groupId,
     };
 
 T _$enumDecode<T>(
@@ -55,8 +53,9 @@ T _$enumDecodeNullable<T>(
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$ConversationFailuresTypeEnumMap = {
-  ConversationFailuresType.genericError: 'genericError',
-  ConversationFailuresType.groupMaxSpeakersError: 'groupMaxSpeakersError',
-  ConversationFailuresType.groupNotFound: 'groupNotFound',
+const _$PushTypeEnumMap = {
+  PushType.chatMessage: 'message',
+  PushType.conversation: 'conversation',
+  PushType.upcomingMeeting: 'upcoming_meeting',
+  PushType.createConversation: 'create_conversation',
 };

@@ -131,6 +131,9 @@ class AppImageAssets {
       AssetImage("assets/images/ic_conversation_optin.png");
   static const conversationLeave =
       AssetImage("assets/images/ic_conversation_leave.png");
+
+  static const groupNotFound =
+      AssetImage("assets/images/img_meeting_not_found.png");
 }
 
 class AppSvgAssets {

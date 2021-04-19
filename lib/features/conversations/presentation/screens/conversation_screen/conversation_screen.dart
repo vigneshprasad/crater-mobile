@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/conversations/data/models/conversation_failures/conversation_failures.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -22,6 +24,8 @@ import '../../widgets/editable_text_field/editable_text_field.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speakers_table/speakers_table.dart';
 import 'conversation_screen_controller.dart';
+
+part 'conversation_screen_error.dart';
 
 const kSpacingList = 24.00;
 const kListBottomPadding = 124.00;
@@ -51,7 +55,7 @@ class ConversationScreen extends HookWidget {
         data: (table) => _RoundTableLoaded(
           table: table,
         ),
-        error: (error, st) => Container(),
+        error: (error, st) => _ConversationError(failure: error),
       ),
     );
   }

@@ -155,35 +155,3 @@ class HomeScreen extends HookWidget {
     return null;
   }
 }
-
-class _HomeTabHeader extends SliverPersistentHeaderDelegate {
-  final List<HomeTabItem> tabs;
-  final TabController controller;
-  final Color backgroundColor;
-
-  _HomeTabHeader({
-    @required this.tabs,
-    @required this.controller,
-    this.backgroundColor = Colors.transparent,
-  });
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return HomeTabBar(
-      tabs: tabs,
-      controller: controller,
-      backgroundColor: backgroundColor,
-    );
-  }
-
-  @override
-  double get maxExtent => 56.00;
-
-  @override
-  double get minExtent => 48.00;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
-}

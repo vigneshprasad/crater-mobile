@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/data/models/conversation_exceptions/conversation_exceptions.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -104,6 +105,11 @@ class ConversationRepositoryImpl implements ConversationRepository {
           jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
+    } on GroupNotFoundException {
+      return Left(ConversationFailure(
+        message: "This seems to be an incorrect link. Return to home screen.",
+        errorCode: ConversationFailuresType.groupNotFound,
+      ));
     } on SocketException {
       return Left(NetworkFailure());
     }

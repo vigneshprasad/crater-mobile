@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/data/models/conversation_exceptions/conversation_exceptions.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -123,6 +124,8 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Conversation.fromJson(json);
+    } else if (response.statusCode == 404) {
+      throw GroupNotFoundException(response.error);
     } else {
       throw ServerException(response.error);
     }
