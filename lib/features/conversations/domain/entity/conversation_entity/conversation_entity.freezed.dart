@@ -31,6 +31,7 @@ class _$ConversationTearOff {
       int privacy,
       int medium,
       bool closed,
+      int relevancy,
       @JsonKey(name: 'closed_at')
           DateTime closedAt,
       @JsonKey(name: 'topic_detail')
@@ -58,6 +59,7 @@ class _$ConversationTearOff {
       privacy: privacy,
       medium: medium,
       closed: closed,
+      relevancy: relevancy,
       closedAt: closedAt,
       topicDetail: topicDetail,
       hostDetail: hostDetail,
@@ -93,6 +95,7 @@ mixin _$Conversation {
   int get privacy;
   int get medium;
   bool get closed;
+  int get relevancy;
   @JsonKey(name: 'closed_at')
   DateTime get closedAt;
   @JsonKey(name: 'topic_detail')
@@ -132,6 +135,7 @@ abstract class $ConversationCopyWith<$Res> {
       int privacy,
       int medium,
       bool closed,
+      int relevancy,
       @JsonKey(name: 'closed_at')
           DateTime closedAt,
       @JsonKey(name: 'topic_detail')
@@ -173,6 +177,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
     Object privacy = freezed,
     Object medium = freezed,
     Object closed = freezed,
+    Object relevancy = freezed,
     Object closedAt = freezed,
     Object topicDetail = freezed,
     Object hostDetail = freezed,
@@ -198,6 +203,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       privacy: privacy == freezed ? _value.privacy : privacy as int,
       medium: medium == freezed ? _value.medium : medium as int,
       closed: closed == freezed ? _value.closed : closed as bool,
+      relevancy: relevancy == freezed ? _value.relevancy : relevancy as int,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
       topicDetail:
           topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
@@ -257,6 +263,7 @@ abstract class _$ConversationCopyWith<$Res>
       int privacy,
       int medium,
       bool closed,
+      int relevancy,
       @JsonKey(name: 'closed_at')
           DateTime closedAt,
       @JsonKey(name: 'topic_detail')
@@ -302,6 +309,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
     Object privacy = freezed,
     Object medium = freezed,
     Object closed = freezed,
+    Object relevancy = freezed,
     Object closedAt = freezed,
     Object topicDetail = freezed,
     Object hostDetail = freezed,
@@ -327,6 +335,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
       privacy: privacy == freezed ? _value.privacy : privacy as int,
       medium: medium == freezed ? _value.medium : medium as int,
       closed: closed == freezed ? _value.closed : closed as bool,
+      relevancy: relevancy == freezed ? _value.relevancy : relevancy as int,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
       topicDetail:
           topicDetail == freezed ? _value.topicDetail : topicDetail as Topic,
@@ -362,6 +371,7 @@ class _$_Conversation implements _Conversation {
       this.privacy,
       this.medium,
       this.closed,
+      this.relevancy,
       @JsonKey(name: 'closed_at') this.closedAt,
       @JsonKey(name: 'topic_detail') this.topicDetail,
       @JsonKey(name: 'host_detail') this.hostDetail,
@@ -399,6 +409,8 @@ class _$_Conversation implements _Conversation {
   @override
   final bool closed;
   @override
+  final int relevancy;
+  @override
   @JsonKey(name: 'closed_at')
   final DateTime closedAt;
   @override
@@ -422,7 +434,7 @@ class _$_Conversation implements _Conversation {
 
   @override
   String toString() {
-    return 'Conversation(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker, isPast: $isPast)';
+    return 'Conversation(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, relevancy: $relevancy, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker, isPast: $isPast)';
   }
 
   @override
@@ -458,6 +470,9 @@ class _$_Conversation implements _Conversation {
                 const DeepCollectionEquality().equals(other.medium, medium)) &&
             (identical(other.closed, closed) ||
                 const DeepCollectionEquality().equals(other.closed, closed)) &&
+            (identical(other.relevancy, relevancy) ||
+                const DeepCollectionEquality()
+                    .equals(other.relevancy, relevancy)) &&
             (identical(other.closedAt, closedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.closedAt, closedAt)) &&
@@ -495,6 +510,7 @@ class _$_Conversation implements _Conversation {
       const DeepCollectionEquality().hash(privacy) ^
       const DeepCollectionEquality().hash(medium) ^
       const DeepCollectionEquality().hash(closed) ^
+      const DeepCollectionEquality().hash(relevancy) ^
       const DeepCollectionEquality().hash(closedAt) ^
       const DeepCollectionEquality().hash(topicDetail) ^
       const DeepCollectionEquality().hash(hostDetail) ^
@@ -529,6 +545,7 @@ abstract class _Conversation implements Conversation {
       int privacy,
       int medium,
       bool closed,
+      int relevancy,
       @JsonKey(name: 'closed_at')
           DateTime closedAt,
       @JsonKey(name: 'topic_detail')
@@ -572,6 +589,8 @@ abstract class _Conversation implements Conversation {
   int get medium;
   @override
   bool get closed;
+  @override
+  int get relevancy;
   @override
   @JsonKey(name: 'closed_at')
   DateTime get closedAt;

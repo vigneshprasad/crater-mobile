@@ -10,7 +10,6 @@ import 'package:share/share.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
@@ -138,7 +137,8 @@ class _RoundTableLoaded extends HookWidget {
                   Text(table.topicDetail.root.name, style: categoryStyle),
                 Text(table.topicDetail.name, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
-                Text(startDateFormat.format(table.start), style: dateStyle),
+                Text(startDateFormat.format(table.start.toLocal()),
+                    style: dateStyle),
                 const SizedBox(height: AppInsets.l),
                 EditableTextField(text: table.topicDetail.description),
                 const SizedBox(height: AppInsets.xl),
@@ -289,29 +289,21 @@ class _RoundTableLoaded extends HookWidget {
 
   Future<void> postRequestToJoinGroup(BuildContext context,
       ConversationScreenController controller, int group) async {
-    final response = await controller.requestToJoinGroup(group);
     final _overlay = _buildLoaderOverlay();
     Overlay.of(context).insert(_overlay);
-    try {
-      final response = await controller.requestToJoinGroup(group);
+    final response = await controller.requestToJoinGroup(group);
 
-      response.fold(
-        (failure) {
-          _overlay.remove();
-          Fluttertoast.showToast(msg: failure.message);
-        },
-        (result) {
-          final tableId = result.groupDetail.id;
-          _overlay.remove();
-          context.read(getRoundTableNotifier(tableId)).getTableInfo(tableId);
-
-          final popupManager = context.read(popupManagerProvider);
-          popupManager.showPopup(PopupType.conversationJoin, context);
-        },
-      );
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Some error occorred');
-    }
+    response.fold(
+      (failure) {
+        _overlay.remove();
+        Fluttertoast.showToast(msg: failure.message);
+      },
+      (result) {
+        final tableId = result.groupDetail.id;
+        _overlay.remove();
+        context.read(getRoundTableNotifier(tableId)).getTableInfo(tableId);
+      },
+    );
   }
 
   OverlayEntry _buildLoaderOverlay() {

@@ -21,6 +21,7 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
     privacy: json['privacy'] as int,
     medium: json['medium'] as int,
     closed: json['closed'] as bool,
+    relevancy: json['relevancy'] as int,
     closedAt: json['closed_at'] == null
         ? null
         : DateTime.parse(json['closed_at'] as String),
@@ -60,6 +61,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'privacy': instance.privacy,
       'medium': instance.medium,
       'closed': instance.closed,
+      'relevancy': instance.relevancy,
       'closed_at': instance.closedAt?.toIso8601String(),
       'topic_detail': instance.topicDetail,
       'host_detail': instance.hostDetail,

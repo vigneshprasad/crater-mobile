@@ -21,7 +21,7 @@ class SuccessPopup extends ModalRoute<void> {
   Color get barrierColor => Colors.black.withOpacity(0.8);
 
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
 
   @override
   String get barrierLabel => null;

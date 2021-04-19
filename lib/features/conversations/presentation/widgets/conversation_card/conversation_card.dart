@@ -78,7 +78,7 @@ class ConversationCard extends StatelessWidget {
       border: _border,
       child: Row(
         children: [
-          Text("Relevancy: 80%", style: subheadStyle),
+          Text("Relevancy: ${conversation.relevancy}%", style: subheadStyle),
           Expanded(
             child:
                 _SpeakersAvatarList(speakers: conversation.speakersDetailList),

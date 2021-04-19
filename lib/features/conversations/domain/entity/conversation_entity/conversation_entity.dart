@@ -21,6 +21,7 @@ abstract class Conversation with _$Conversation {
     int privacy,
     int medium,
     bool closed,
+    int relevancy,
     @JsonKey(name: 'closed_at') DateTime closedAt,
     @JsonKey(name: 'topic_detail') Topic topicDetail,
     @JsonKey(name: 'host_detail') ConversationUser hostDetail,

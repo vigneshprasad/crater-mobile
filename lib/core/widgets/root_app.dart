@@ -18,18 +18,18 @@ import '../status_bar_color/status_bar_color.dart';
 
 class RootApp extends HookWidget {
   Future<void> initApp(BuildContext context) async {
+    final deepLinkManager = context.read(deepLinkManagerProvider);
+    final attributionProvider = context.read(attributionManagerProvider);
     StatusBarColor.setTheme(ThemeType.light);
+
+    await deepLinkManager.handleDeepLink();
+    await attributionProvider.intializeSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
   @override
   Widget build(BuildContext context) {
-    final deepLinkManager = useProvider(deepLinkManagerProvider);
-    final attributionProvider = useProvider(attributionManagerProvider);
-
     useEffect(() {
-      deepLinkManager.handleDeepLink();
-      attributionProvider.intializeSdk();
       initApp(context);
       return;
     }, []);
