@@ -38,13 +38,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       image: AppImageAssets.splashAI,
       heading: "03.\nOur AI goes to work",
       subheading:
-          "Our AI engine with search for the best\npossible match for you ",
+          "Our AI engine will search for the best possible match for you.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashConversation,
       heading: "04.\nYour conversation is set up",
       subheading:
-          "You will be matched with 1 or more people\nfor the conversation ",
+          "You will be matched with 1 or more people\nfor the conversation",
     ),
     _ImageSlide(
       image: AppImageAssets.splashVirtual,
@@ -169,32 +169,31 @@ class _ImageSlide extends StatelessWidget {
           color: Colors.grey[700],
         );
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding:
-          const EdgeInsets.only(top: 40.0, bottom: 160, left: 40, right: 40),
+      padding: const EdgeInsets.only(top: 40.0, bottom: 200),
       child: Column(children: [
         const Spacer(),
         Image(
           image: image,
-          fit: BoxFit.contain,
-          height: 280,
         ),
         const Spacer(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              heading,
-              textAlign: TextAlign.start,
-              style: headingStyle,
-            ),
-            const SizedBox(height: AppInsets.med),
-            Text(
-              subheading,
-              textAlign: TextAlign.start,
-              style: subheadingStyle,
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                heading,
+                textAlign: TextAlign.start,
+                style: headingStyle,
+              ),
+              const SizedBox(height: AppInsets.med),
+              Text(
+                subheading,
+                textAlign: TextAlign.start,
+                style: subheadingStyle,
+              ),
+            ],
+          ),
         )
       ]),
     );

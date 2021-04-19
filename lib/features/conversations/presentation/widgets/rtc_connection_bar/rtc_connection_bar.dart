@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
@@ -35,8 +37,13 @@ class RtcConnectionBar extends HookWidget {
               child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 controller.leaveRoundTableChannel();
+
+                final popupManager = context.read(popupManagerProvider);
+                await popupManager.showPopup(
+                    PopupType.conversationLeave, context);
+
                 Navigator.pop(context);
               },
               child: Text('LEAVE'),

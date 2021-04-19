@@ -123,6 +123,14 @@ class AppImageAssets {
       AssetImage("assets/images/splash/converse-virtually.png");
   static const emptyCalendar =
       AssetImage("assets/images/img_empty_state_calendar.png");
+
+  static const signupComplete = AssetImage("assets/images/ic_signup_popup.png");
+  static const conversationJoin =
+      AssetImage("assets/images/ic_conversation_join.png");
+  static const conversationOptin =
+      AssetImage("assets/images/ic_conversation_optin.png");
+  static const conversationLeave =
+      AssetImage("assets/images/ic_conversation_leave.png");
 }
 
 class AppSvgAssets {

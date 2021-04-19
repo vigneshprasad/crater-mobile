@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -291,17 +292,26 @@ class _RoundTableLoaded extends HookWidget {
     final response = await controller.requestToJoinGroup(group);
     final _overlay = _buildLoaderOverlay();
     Overlay.of(context).insert(_overlay);
-    response.fold(
-      (failure) {
-        _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message);
-      },
-      (result) {
-        final tableId = result.groupDetail.id;
-        _overlay.remove();
-        context.read(getRoundTableNotifier(tableId)).getTableInfo(tableId);
-      },
-    );
+    try {
+      final response = await controller.requestToJoinGroup(group);
+
+      response.fold(
+        (failure) {
+          _overlay.remove();
+          Fluttertoast.showToast(msg: failure.message);
+        },
+        (result) {
+          final tableId = result.groupDetail.id;
+          _overlay.remove();
+          context.read(getRoundTableNotifier(tableId)).getTableInfo(tableId);
+
+          final popupManager = context.read(popupManagerProvider);
+          popupManager.showPopup(PopupType.conversationJoin, context);
+        },
+      );
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Some error occorred');
+    }
   }
 
   OverlayEntry _buildLoaderOverlay() {

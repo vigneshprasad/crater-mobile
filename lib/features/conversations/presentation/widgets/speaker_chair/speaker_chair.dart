@@ -64,43 +64,40 @@ class SpeakerChair extends StatelessWidget {
               : null,
         ),
       ),
-      child: speaker != null &&
-              (speaker is ConversationUser || speaker is RtcUser)
-          ? (speaker is ConversationUser)
-              ? BaseNetworkImage(
-                  imageUrl: (speaker as ConversationUser).photo,
-                  defaultImage: AppImageAssets.defaultAvatar,
-                  imagebuilder: (context, imageProvider) => Container(
-                    width: iconSize,
-                    height: iconSize,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.cover),
+      child:
+          speaker != null && (speaker is ConversationUser || speaker is RtcUser)
+              ? (speaker is ConversationUser)
+                  ? BaseNetworkImage(
+                      imageUrl: (speaker as ConversationUser).photo,
+                      defaultImage: AppImageAssets.defaultAvatar,
+                      imagebuilder: (context, imageProvider) => Container(
+                        width: iconSize,
+                        height: iconSize,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        ExtendedNavigator.of(context).push(Routes.profileScreen(
+                            userId: speaker.pk,
+                            allowEdit: speaker.pk == authUserPK));
+                      },
+                      child: SpeakerAvatar(
+                        user: speaker as RtcUser,
+                        avtarSize: iconSize,
+                        isLive: isLive,
+                      ))
+              : Container(
+                  width: iconSize,
+                  height: iconSize,
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                )
-              : InkWell(
-                  onTap: () {
-                    if (isLive) {
-                    } else {
-                      ExtendedNavigator.of(context).push(Routes.profileScreen(
-                          userId: speaker.pk,
-                          allowEdit: speaker.pk == authUserPK));
-                    }
-                  },
-                  child: SpeakerAvatar(
-                    user: speaker as RtcUser,
-                    avtarSize: iconSize,
-                    isLive: isLive,
-                  ))
-          : Container(
-              width: iconSize,
-              height: iconSize,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.blue[200]),
-            ),
+                      color: Colors.blue[200]),
+                ),
     );
   }
 }
