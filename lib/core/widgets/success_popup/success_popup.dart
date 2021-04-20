@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
 import '../../../features/rewards/presentation/widgets/redeem_button.dart';
 
 class SuccessPopup extends ModalRoute<void> {
@@ -22,7 +21,7 @@ class SuccessPopup extends ModalRoute<void> {
   Color get barrierColor => Colors.black.withOpacity(0.8);
 
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
 
   @override
   String get barrierLabel => null;

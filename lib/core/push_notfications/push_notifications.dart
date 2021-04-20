@@ -1,12 +1,17 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
+import '../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import '../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../routes.gr.dart';
 import '../config_reader/config_reader.dart';
+import '../widgets/screens/home_screen/home_screen.dart';
+import 'models/push_notification_data/push_notification_data.dart';
 
 abstract class PushNotifications {
   Future<void> initSdk();
@@ -48,15 +53,37 @@ class PushNotificationsImpl implements PushNotifications {
 
   @override
   void handleNotificationsPressed(OSNotificationOpenedResult result) {
+    if (result.notification.payload.additionalData == null) {
+      return;
+    }
+
     final objTyp = result.notification.payload.additionalData["obj_type"];
     final json = result.notification.payload.additionalData;
 
-    if (objTyp == "message") {
+    final PushType type = enumFromType(objTyp);
+    final _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+
+    if (type == PushType.chatMessage) {
       final message = ChatMessageModel.fromJson(json);
-      final _navigatorKey =
-          KiwiContainer().resolve<GlobalKey<NavigatorState>>();
       _navigatorKey.currentState.pushNamed(Routes.chatScreen,
           arguments: ChatScreenArguments(recieverId: message.senderId));
+    } else if (type == PushType.conversation) {
+      final data = ConversationNotificationData.fromJson(json);
+
+      _navigatorKey.currentState
+          .pushNamed(Routes.conversationScreen(id: data.groupId));
+    } else if (type == PushType.upcomingMeeting) {
+      if (_navigatorKey.currentWidget is! HomeScreen) {
+        _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
+      }
+    } else if (type == PushType.createConversation) {
+      _navigatorKey.currentState.push(CreateConversationSheet()).then(
+        (value) {
+          if (value != null && value is Topic) {
+            ExtendedNavigator.root.pushCreateConversationScreen(topic: value);
+          }
+        },
+      );
     }
   }
 

@@ -14,7 +14,6 @@ import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
 import '../../domain/entity/meeting_rsvp_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
-import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/reschedule_request_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';

@@ -5,27 +5,33 @@ import '../utils/create_material_color.dart';
 
 mixin AppTheme {
   static const Size appBarHeight = Size.fromHeight(48);
-  static const Color primaryColor = Color(0xFF025DA9);
+  static const Color primaryColor2 = Color(0xFF025DA9);
+  static const Color primaryColor = Color(0xFF283845);
   static final TextTheme primaryTextTheme = Typography.material2018().black;
   static final MaterialColor primarySwatch = createMaterialColor(primaryColor);
-  static const Color blueAccent = Color(0xFF7AB9DE);
+  static const Color blueAccent = Color(0xFFCDDAFD);
+  static const Color blueAccentDark = Color(0xFF86A0E6);
+  static const Color cardColor = Color(0xFFF5F6FB);
   static const Color linkedInColor = Color(0xFF0073b3);
   static const Color facebookColor = Color(0xFF405695);
+  static const Color errorColor = Color(0xFFBC4749);
   static const TextStyle appBarTitle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static const Color canvasColor = Color(0xFFFEFDFD);
 
   static const Color primaryLightStatusBar = Color(0x0D000000);
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: primaryColor,
     primarySwatch: primarySwatch,
-    fontFamily: 'Aeonik',
+    fontFamily: 'Apercu',
     dividerTheme: DividerThemeData(
       space: AppInsets.xs,
       color: Colors.grey[400],
     ),
+    cardColor: cardColor,
     buttonTheme: const ButtonThemeData(
       buttonColor: primaryColor,
       textTheme: ButtonTextTheme.primary,
@@ -35,13 +41,14 @@ mixin AppTheme {
         color: Colors.grey[800],
       ),
       textTheme: primaryTextTheme,
-      color: Colors.grey[800],
+      color: canvasColor,
       brightness: Brightness.light,
       actionsIconTheme: IconThemeData(
         color: Colors.grey[800],
       ),
     ),
-    canvasColor: Colors.grey[100],
+    errorColor: errorColor,
+    canvasColor: canvasColor,
     backgroundColor: Colors.grey[100],
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textSelectionHandleColor: primaryColor,

@@ -258,7 +258,7 @@ class _TimeSlot extends StatelessWidget {
     const placeholderDate = "2020-01-01";
     final timeFormatter = DateFormat("hh:mm a");
     final startTime = slot.start;
-    final label = timeFormatter.format(startTime);
+    final label = timeFormatter.format(startTime.toLocal());
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 13,
           color: selected ? Colors.white : Colors.grey[700],

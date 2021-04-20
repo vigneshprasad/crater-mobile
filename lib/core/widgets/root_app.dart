@@ -6,30 +6,30 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/attribution/attribution_manager.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/root_provider.dart';
 import '../analytics/analytics.dart';
+import '../attribution/attribution_manager.dart';
 import '../features/deep_link_manager/deep_link_manager.dart';
 import '../status_bar_color/status_bar_color.dart';
 
 class RootApp extends HookWidget {
   Future<void> initApp(BuildContext context) async {
+    final deepLinkManager = context.read(deepLinkManagerProvider);
+    final attributionProvider = context.read(attributionManagerProvider);
     StatusBarColor.setTheme(ThemeType.light);
+
+    await deepLinkManager.handleDeepLink();
+    await attributionProvider.intializeSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
   @override
   Widget build(BuildContext context) {
-    final deepLinkManager = useProvider(deepLinkManagerProvider);
-    final attributionProvider = useProvider(attributionManagerProvider);
-
     useEffect(() {
-      deepLinkManager.handleDeepLink();
-      attributionProvider.intializeSdk();
       initApp(context);
       return;
     }, []);

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/success_popup/success_popup.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
