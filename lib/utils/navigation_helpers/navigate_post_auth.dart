@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 
+import '../../core/push_notfications/push_notifications.dart';
 import '../../features/auth/domain/entity/user_entity.dart';
 import '../../features/auth/domain/entity/user_profile_entity.dart';
 import '../../routes.gr.dart';
@@ -19,5 +20,7 @@ void navigatePostAuth(User user, {UserProfile profile}) {
     _navigator.currentState.popAndPushNamed(Routes.phoneVerificationScreen);
   } else {
     _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
+
+    KiwiContainer().resolve<PushNotifications>().initSdk();
   }
 }
