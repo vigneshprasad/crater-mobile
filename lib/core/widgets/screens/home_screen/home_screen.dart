@@ -17,7 +17,6 @@ import '../../../../features/conversations/presentation/screens/create_conversat
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../routes.gr.dart';
-import '../../components/home_tab_bar/home_tab_bar.dart';
 
 final homeScreenScrollController =
     Provider.autoDispose<ScrollController>((ref) {
@@ -32,8 +31,8 @@ class HomeScreen extends HookWidget {
   final String tab;
 
   static const List<Widget> _tabs = [
-    Tab(text: "All Conversation"),
-    Tab(text: "My Conversation"),
+    Tab(text: "All Conversations"),
+    Tab(text: "My Conversations"),
     Tab(text: "Inbox"),
     Tab(text: "Articles"),
   ];

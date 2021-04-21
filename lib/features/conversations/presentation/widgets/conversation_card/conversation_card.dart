@@ -67,14 +67,14 @@ class ConversationCard extends StatelessWidget {
             .push(Routes.conversationScreen(id: conversation.id));
       },
       background: background,
-      heading: Row(
+      heading: Text(conversation.topicDetail.name),
+      subHeading: Row(
         children: [
-          Text(conversation.topicDetail.name),
+          Text(dateFormat.format(conversation.start.toLocal())),
           const Spacer(),
           if (isSoon) Text(startTime, style: subheadStyle),
         ],
       ),
-      subHeading: Text(dateFormat.format(conversation.start.toLocal())),
       border: _border,
       child: Row(
         children: [
