@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/new_password/new_password_bloc.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
+import '../../bloc/new_password/new_password_bloc.dart';
 import '../auth/auth_screen.dart';
 
 class NewPasswordScreen extends StatefulWidget {

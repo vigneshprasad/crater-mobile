@@ -109,6 +109,31 @@ class AppImageAssets {
   static const splashMeetingCard =
       AssetImage("assets/images/img_splash_meeting_card.png");
   static const splashReward = AssetImage("assets/images/img_splash_reward.png");
+
+  static const splashDiscover =
+      AssetImage("assets/images/splash/meeting-table.png");
+  static const splashTopic =
+      AssetImage("assets/images/splash/converse-topic.png");
+  static const splashPeople =
+      AssetImage("assets/images/splash/choose-meet.png");
+  static const splashAI = AssetImage("assets/images/splash/ai-work.png");
+  static const splashConversation =
+      AssetImage("assets/images/splash/conversation-setup.png");
+  static const splashVirtual =
+      AssetImage("assets/images/splash/converse-virtually.png");
+  static const emptyCalendar =
+      AssetImage("assets/images/img_empty_state_calendar.png");
+
+  static const signupComplete = AssetImage("assets/images/ic_signup_popup.png");
+  static const conversationJoin =
+      AssetImage("assets/images/ic_conversation_join.png");
+  static const conversationOptin =
+      AssetImage("assets/images/ic_conversation_optin.png");
+  static const conversationLeave =
+      AssetImage("assets/images/ic_conversation_leave.png");
+
+  static const groupNotFound =
+      AssetImage("assets/images/img_meeting_not_found.png");
 }
 
 class AppSvgAssets {

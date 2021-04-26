@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/logo/logo.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -17,27 +16,41 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   int _activeIndex;
 
   final List<Widget> _tabs = const [
-    _ImageSlide(image: AppImageAssets.splashHome),
-    _ImageSlide(image: AppImageAssets.splashObjective),
-    _ImageSlide(image: AppImageAssets.splashMeetingCard),
-    _ImageSlide(image: AppImageAssets.splashVideoCall),
-    _ImageSlide(image: AppImageAssets.splashReward),
-  ];
-
-  final List<String> _headings = [
-    "",
-    "Opt-in for a Meeting",
-    "Curated Matching",
-    "Attend a 1-on-1 Meeting",
-    "Earn Rewards, Claim Discounts",
-  ];
-
-  final List<String> _subheadings = [
-    "",
-    "Provide your business objectives & preferences\nfor the meeting",
-    "Get matched with a business professional\ncurated just for you",
-    "Meet your matched member using \nin-app video chat",
-    "Attending meetings earns your rewards. Claim discounts on industry services."
+    _ImageSlide(
+      image: AppImageAssets.splashDiscover,
+      heading: "00.\nDiscover & converse with relevant professionals",
+      subheading:
+          "Exchange knowledge, explore synergies, and advance your career & business by conversing with relevant professionals",
+    ),
+    _ImageSlide(
+      image: AppImageAssets.splashTopic,
+      heading: "01.\nPick a conversation topic",
+      subheading:
+          "Simply choose a topic that is relevant to\nyou or your business.",
+    ),
+    _ImageSlide(
+      image: AppImageAssets.splashPeople,
+      heading: "02.\nChoose whom to meet",
+      subheading:
+          "Simply choose the profession of the person you want to converse with",
+    ),
+    _ImageSlide(
+      image: AppImageAssets.splashAI,
+      heading: "03.\nOur AI goes to work",
+      subheading:
+          "Our AI engine will search for the best possible match for you.",
+    ),
+    _ImageSlide(
+      image: AppImageAssets.splashConversation,
+      heading: "04.\nYour conversation is set up",
+      subheading:
+          "You will be matched with 1 or more people\nfor the conversation",
+    ),
+    _ImageSlide(
+      image: AppImageAssets.splashVirtual,
+      heading: "05.\nConverse virtually ",
+      subheading: "All you have to do is join the meeting at\nthe meeting time",
+    ),
   ];
 
   @override
@@ -63,17 +76,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
-          fontWeight: FontWeight.w700,
-          fontSize: 22,
-          color: Colors.grey[700],
-        );
-    final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          color: Colors.grey[700],
-        );
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -84,37 +88,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           Positioned(
             bottom: 56,
             child: _buildViewContent(context),
-          ),
-          Positioned(
-            top: 72,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-                child: _activeIndex == 0
-                    ? SizedBox(
-                        width: 120,
-                        child: Logo(
-                          withSubtext: false,
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Text(
-                            _headings[_activeIndex],
-                            textAlign: TextAlign.center,
-                            style: headingStyle,
-                          ),
-                          const SizedBox(height: AppInsets.med),
-                          Text(
-                            _subheadings[_activeIndex],
-                            textAlign: TextAlign.center,
-                            style: subheadingStyle,
-                          ),
-                        ],
-                      ),
-              ),
-            ),
           ),
         ],
       ),
@@ -173,21 +146,56 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
 class _ImageSlide extends StatelessWidget {
   final ImageProvider image;
+  final String heading;
+  final String subheading;
 
   const _ImageSlide({
     Key key,
     @required this.image,
+    @required this.heading,
+    @required this.subheading,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
+          fontWeight: FontWeight.w500,
+          fontSize: 22,
+          color: Colors.grey[700],
+        );
+    final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+          color: Colors.grey[700],
+        );
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
+      padding: const EdgeInsets.only(top: 40.0, bottom: 200),
+      child: Column(children: [
+        const Spacer(),
+        Image(
           image: image,
-          fit: BoxFit.cover,
         ),
-      ),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                heading,
+                textAlign: TextAlign.start,
+                style: headingStyle,
+              ),
+              const SizedBox(height: AppInsets.med),
+              Text(
+                subheading,
+                textAlign: TextAlign.start,
+                style: subheadingStyle,
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }

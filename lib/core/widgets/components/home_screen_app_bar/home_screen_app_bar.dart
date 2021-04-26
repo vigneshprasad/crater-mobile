@@ -2,11 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 
-import '../../../../constants/work_net_icons_icons.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 
