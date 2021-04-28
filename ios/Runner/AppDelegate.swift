@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import appsflyer_sdk.AppsflyerSdkPlugin
+import FirebaseDynamicLinks
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -30,10 +31,13 @@ import appsflyer_sdk.AppsflyerSdkPlugin
         return true
     }
     
-    override func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+     override func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        
+        super.application(application, continue: userActivity, restorationHandler: restorationHandler)
         
         AppsFlyerLib.shared().continue(userActivity, restorationHandler: restorationHandler as? (([Any]?) -> Void))
         
         return true
-    }
+        
+     }
 }
