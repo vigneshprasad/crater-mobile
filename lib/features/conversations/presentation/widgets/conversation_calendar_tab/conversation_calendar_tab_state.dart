@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meetings_by_date_entity.dart';
+import 'package:worknetwork/features/meeting/domain/repository/meeting_repository.dart';
 
 import '../../../../../core/error/failures/failures.dart';
 import '../../../data/models/calendar_week_data/calendar_week_data.dart';
@@ -38,7 +40,9 @@ class ConversationCalendarStateNofier
     if (type == ConversationTabType.all) {
       final futures = [
         read(conversationRepositoryProvider).getMyConversations(_start, _end),
-        read(meetingRepositoryProvider).getMeetingsByDate(past: false),
+        KiwiContainer()
+            .resolve<MeetingRepository>()
+            .getMeetingsByDate(past: false),
       ];
 
       final response = await Future.wait(futures);
@@ -72,7 +76,9 @@ class ConversationCalendarStateNofier
       final futures = [
         read(conversationRepositoryProvider).getMyConversations(_start, _end),
         read(conversationRepositoryProvider).getAllConversationOptinsByDate(),
-        read(meetingRepositoryProvider).getMeetingsByDate(past: false),
+        KiwiContainer()
+            .resolve<MeetingRepository>()
+            .getMeetingsByDate(past: false),
       ];
 
       final response = await Future.wait(futures);

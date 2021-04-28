@@ -9,7 +9,7 @@ import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../utils/app_localizations.dart';
-import '../../../../meeting/presentation/widgets/oneonone_cart.dart';
+import '../../../../meeting/presentation/widgets/oneonone_card.dart';
 import '../conversation_card/conversation_card.dart';
 import '../conversation_tab_shimmer/conversation_tab_shimmer.dart';
 import '../optin_card/optin_card.dart';
