@@ -10,5 +10,6 @@ abstract class CreateTableMeta with _$CreateTableMeta {
   factory CreateTableMeta({
     List<MeetingInterest> interests,
     MeetingConfig config,
+    List<DateTime> timeSlots,
   }) = _CreateTableMeta;
 }

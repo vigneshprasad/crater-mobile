@@ -11,11 +11,9 @@ import '../../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
-import '../../../../features/conversations/domain/entity/optin_entity/optin_entity.dart';
-import '../../../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import '../../../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
+import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 
 final homeScreenScrollController =
@@ -32,9 +30,9 @@ class HomeScreen extends HookWidget {
 
   static const List<Widget> _tabs = [
     Tab(text: "All Conversations"),
+    Tab(text: "Topics"),
     Tab(text: "My Conversations"),
     Tab(text: "Inbox"),
-    Tab(text: "Articles"),
   ];
 
   const HomeScreen({
@@ -92,6 +90,10 @@ class HomeScreen extends HookWidget {
                   const SizedBox(width: AppInsets.l),
                 ],
                 bottom: TabBar(
+                  indicatorPadding: const EdgeInsets.only(
+                    left: AppInsets.med,
+                    right: AppInsets.med,
+                  ),
                   labelColor: Colors.grey[800],
                   unselectedLabelColor: Colors.grey[400],
                   isScrollable: true,
@@ -113,12 +115,12 @@ class HomeScreen extends HookWidget {
                 type: ConversationTabType.all,
                 controller: _scrollController,
               ),
+              TopicsTab(),
               ConversationCalendarTab(
                 type: ConversationTabType.my,
                 controller: _scrollController,
               ),
               InboxTab(),
-              ArticlesTab(),
             ],
           ),
         ),
@@ -130,22 +132,10 @@ class HomeScreen extends HookWidget {
 
   Widget _getFloatinActionButton(
       BuildContext context, int index, TabController controller) {
-    if (index == 0 || index == 1) {
+    if (index == 0 || index == 2) {
       return FloatingActionButton.extended(
         onPressed: () {
-          Navigator.of(context).push(CreateConversationSheet()).then(
-            (value) {
-              if (value != null && value is Topic) {
-                ExtendedNavigator.of(context)
-                    .pushCreateConversationScreen(topic: value)
-                    .then((value) {
-                  if (value is Optin) {
-                    controller.animateTo(1);
-                  }
-                });
-              }
-            },
-          );
+          controller.animateTo(1);
         },
         label: Text("Schedule New"),
         icon: Icon(Icons.add),

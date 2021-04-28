@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../../../core/features/popup_manager/popup_manager.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/date_time_picker/date_time_picker.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
@@ -15,6 +16,7 @@ import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../../../meeting/presentation/widgets/time_slot_picker.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
+import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../../widgets/meeting_interest_picker/meeting_interest_picker.dart';
 import 'create_conversation_state.dart';
@@ -24,18 +26,21 @@ const kBottomPadding = 96.00;
 class CreateConversationScreen extends HookWidget {
   final Topic topic;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ConversationType type;
 
   CreateConversationScreen({
     Key key,
     @required this.topic,
+    @required this.type,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(getCreateTableMetaNotifier(topic.id).state);
+    final state = useProvider(getCreateTableMetaNotifier(type).state);
     final topicStyle = Theme.of(context).textTheme.headline6;
     final _interests = useState<List<MeetingInterest>>([]);
     final _timeslots = useState<List<TimeSlot>>();
+    final _instantTimeSlot = useState<DateTime>();
     final primaryColor = Theme.of(context).primaryColor;
     final descriptionStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[700]);
@@ -114,17 +119,30 @@ class CreateConversationScreen extends HookWidget {
                             heading: AppLocalizations.of(context)
                                 .translate("conversations:time_slot_label")),
                         const SizedBox(height: AppInsets.xl),
-                        TimeSlotFormField(
-                          initialValue: const [],
-                          slots: meta.config.availableTimeSlots,
-                          onChange: (slots) => _timeslots.value = slots,
-                          validator: (value) {
-                            if (value.length < 2) {
-                              return "Please select atleast 2 slots.";
-                            }
-                            return null;
-                          },
-                        ),
+                        if (type == ConversationType.curated)
+                          TimeSlotFormField(
+                            initialValue: const [],
+                            slots: meta.config.availableTimeSlots,
+                            onChange: (slots) => _timeslots.value = slots,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Please select atleast 1 slots.";
+                              }
+                              return null;
+                            },
+                          ),
+                        if (type == ConversationType.instant)
+                          DateTimeFormField(
+                            slots: meta.timeSlots,
+                            onChanged: (value) =>
+                                _instantTimeSlot.value = value,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Please select a timeslot";
+                              }
+                              return null;
+                            },
+                          ),
                         const SizedBox(height: kBottomPadding)
                       ],
                     ),
@@ -139,13 +157,18 @@ class CreateConversationScreen extends HookWidget {
                     text: AppLocalizations.of(context).translate("confirm"),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _postGroupOptin(
-                          context,
-                          _interests.value,
-                          _timeslots.value,
-                          meta.config,
-                          topic,
-                        );
+                        if (type == ConversationType.curated) {
+                          _postGroupOptin(
+                            context,
+                            _interests.value,
+                            _timeslots.value,
+                            meta.config,
+                            topic,
+                          );
+                        } else {
+                          _postInstantConversation(context,
+                              _instantTimeSlot.value, _interests.value);
+                        }
                       }
                     },
                   ),
@@ -156,6 +179,41 @@ class CreateConversationScreen extends HookWidget {
         },
         error: (error, st) => Container(),
       ),
+    );
+  }
+
+  Future<void> _postInstantConversation(
+    BuildContext context,
+    DateTime start,
+    List<MeetingInterest> interests,
+  ) async {
+    final _overlay = _buildLoaderOverlay();
+    final conversation = Conversation(
+      topic: topic.id,
+      description: topic.description,
+      start: start.toLocal(),
+      interests: interests.map((e) => e.pk).toList(),
+      privacy: ConversationPrivacy.public,
+      medium: ConversationMedium.audio,
+      closed: false,
+      maxSpeakers: 6,
+    );
+
+    Overlay.of(context).insert(_overlay);
+    final response = await context
+        .read(conversationRepositoryProvider)
+        .postCreateInstantConversation(conversation);
+
+    response.fold(
+      (failure) {
+        _overlay.remove();
+        Fluttertoast.showToast(msg: failure.message);
+      },
+      (conversation) {
+        _overlay.remove();
+
+        ExtendedNavigator.of(context).pop(conversation);
+      },
     );
   }
 

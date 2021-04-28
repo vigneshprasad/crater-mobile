@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -10,10 +11,15 @@ import '../../../data/models/create_table_meta/create_table_meta.dart';
 
 part 'create_conversation_state.freezed.dart';
 
+enum ConversationType {
+  curated,
+  instant,
+}
+
 final getCreateTableMetaNotifier = StateNotifierProvider.autoDispose
-    .family<GetCreatTableMetaNotifier, int>((ref, id) {
+    .family<GetCreatTableMetaNotifier, ConversationType>((ref, type) {
   final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
-  return GetCreatTableMetaNotifier(meetingRepository, id);
+  return GetCreatTableMetaNotifier(meetingRepository, type, ref.read);
 });
 
 @freezed
@@ -27,15 +33,54 @@ abstract class TableMetaState with _$TableMetaState {
 
 class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
   final MeetingRepository _meetingRepository;
-  final int topicId;
+  final ConversationType type;
+  final Reader read;
 
-  GetCreatTableMetaNotifier(this._meetingRepository, this.topicId)
-      : super(TableMetaState.loading()) {
-    getCreateTableMetadata(topicId);
+  GetCreatTableMetaNotifier(
+    this._meetingRepository,
+    this.type,
+    this.read,
+  ) : super(TableMetaState.loading()) {
+    getInitialData(type);
   }
 
-  Future<void> getCreateTableMetadata(int topicId) async {
+  Future<void> getInitialData(ConversationType type) async {
     state = TableMetaState.loading();
+
+    if (type == ConversationType.curated) {
+      await getDataForCuratedConversation();
+    } else {
+      await getDataForInstantConversation();
+    }
+  }
+
+  Future<void> getDataForInstantConversation() async {
+    final futures = [
+      _meetingRepository.getMeetingInterests(),
+      read(conversationRepositoryProvider).getInstantConversationTimeSlots(),
+    ];
+
+    final response = await Future.wait(futures);
+
+    for (final result in response) {
+      if (result.isLeft()) {
+        final failure = result.getOrElse(() => null) as Failure;
+        state = TableMetaState.error(failure);
+        return;
+      }
+    }
+
+    final interests =
+        response[0].getOrElse(() => null) as List<MeetingInterest>;
+    final slots = response[1].getOrElse(() => <DateTime>[]) as List<DateTime>;
+
+    state = TableMetaState.data(CreateTableMeta(
+      interests: interests,
+      timeSlots: slots,
+    ));
+  }
+
+  Future<void> getDataForCuratedConversation() async {
     final response = await Future.wait([
       _meetingRepository.getMeetingInterests(),
       _meetingRepository.getMeetingsCoonfigs(),

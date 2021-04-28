@@ -28,8 +28,8 @@ class _$ConversationTearOff {
       DateTime end,
       @JsonKey(name: 'max_speakers')
           int maxSpeakers,
-      int privacy,
-      int medium,
+      ConversationPrivacy privacy,
+      ConversationMedium medium,
       bool closed,
       int relevancy,
       @JsonKey(name: 'closed_at')
@@ -92,8 +92,8 @@ mixin _$Conversation {
   DateTime get end;
   @JsonKey(name: 'max_speakers')
   int get maxSpeakers;
-  int get privacy;
-  int get medium;
+  ConversationPrivacy get privacy;
+  ConversationMedium get medium;
   bool get closed;
   int get relevancy;
   @JsonKey(name: 'closed_at')
@@ -132,8 +132,8 @@ abstract class $ConversationCopyWith<$Res> {
       DateTime end,
       @JsonKey(name: 'max_speakers')
           int maxSpeakers,
-      int privacy,
-      int medium,
+      ConversationPrivacy privacy,
+      ConversationMedium medium,
       bool closed,
       int relevancy,
       @JsonKey(name: 'closed_at')
@@ -200,8 +200,9 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       end: end == freezed ? _value.end : end as DateTime,
       maxSpeakers:
           maxSpeakers == freezed ? _value.maxSpeakers : maxSpeakers as int,
-      privacy: privacy == freezed ? _value.privacy : privacy as int,
-      medium: medium == freezed ? _value.medium : medium as int,
+      privacy:
+          privacy == freezed ? _value.privacy : privacy as ConversationPrivacy,
+      medium: medium == freezed ? _value.medium : medium as ConversationMedium,
       closed: closed == freezed ? _value.closed : closed as bool,
       relevancy: relevancy == freezed ? _value.relevancy : relevancy as int,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
@@ -260,8 +261,8 @@ abstract class _$ConversationCopyWith<$Res>
       DateTime end,
       @JsonKey(name: 'max_speakers')
           int maxSpeakers,
-      int privacy,
-      int medium,
+      ConversationPrivacy privacy,
+      ConversationMedium medium,
       bool closed,
       int relevancy,
       @JsonKey(name: 'closed_at')
@@ -332,8 +333,9 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
       end: end == freezed ? _value.end : end as DateTime,
       maxSpeakers:
           maxSpeakers == freezed ? _value.maxSpeakers : maxSpeakers as int,
-      privacy: privacy == freezed ? _value.privacy : privacy as int,
-      medium: medium == freezed ? _value.medium : medium as int,
+      privacy:
+          privacy == freezed ? _value.privacy : privacy as ConversationPrivacy,
+      medium: medium == freezed ? _value.medium : medium as ConversationMedium,
       closed: closed == freezed ? _value.closed : closed as bool,
       relevancy: relevancy == freezed ? _value.relevancy : relevancy as int,
       closedAt: closedAt == freezed ? _value.closedAt : closedAt as DateTime,
@@ -403,9 +405,9 @@ class _$_Conversation implements _Conversation {
   @JsonKey(name: 'max_speakers')
   final int maxSpeakers;
   @override
-  final int privacy;
+  final ConversationPrivacy privacy;
   @override
-  final int medium;
+  final ConversationMedium medium;
   @override
   final bool closed;
   @override
@@ -542,8 +544,8 @@ abstract class _Conversation implements Conversation {
       DateTime end,
       @JsonKey(name: 'max_speakers')
           int maxSpeakers,
-      int privacy,
-      int medium,
+      ConversationPrivacy privacy,
+      ConversationMedium medium,
       bool closed,
       int relevancy,
       @JsonKey(name: 'closed_at')
@@ -584,9 +586,9 @@ abstract class _Conversation implements Conversation {
   @JsonKey(name: 'max_speakers')
   int get maxSpeakers;
   @override
-  int get privacy;
+  ConversationPrivacy get privacy;
   @override
-  int get medium;
+  ConversationMedium get medium;
   @override
   bool get closed;
   @override

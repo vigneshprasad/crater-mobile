@@ -24,10 +24,12 @@ class _$TopicTearOff {
       @JsonKey(name: 'is_active') bool active,
       int parent,
       String description,
+      int article,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
       Topic root,
-      int groupCount}) {
+      int groupCount,
+      @JsonKey(name: 'article_detail') Article articleDetail}) {
     return _Topic(
       id: id,
       name: name,
@@ -35,10 +37,12 @@ class _$TopicTearOff {
       active: active,
       parent: parent,
       description: description,
+      article: article,
       approved: approved,
       creator: creator,
       root: root,
       groupCount: groupCount,
+      articleDetail: articleDetail,
     );
   }
 
@@ -61,11 +65,14 @@ mixin _$Topic {
   bool get active;
   int get parent;
   String get description;
+  int get article;
   @JsonKey(name: 'is_approved')
   bool get approved;
   String get creator;
   Topic get root;
   int get groupCount;
+  @JsonKey(name: 'article_detail')
+  Article get articleDetail;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -83,12 +90,15 @@ abstract class $TopicCopyWith<$Res> {
       @JsonKey(name: 'is_active') bool active,
       int parent,
       String description,
+      int article,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
       Topic root,
-      int groupCount});
+      int groupCount,
+      @JsonKey(name: 'article_detail') Article articleDetail});
 
   $TopicCopyWith<$Res> get root;
+  $ArticleCopyWith<$Res> get articleDetail;
 }
 
 /// @nodoc
@@ -107,10 +117,12 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
     Object active = freezed,
     Object parent = freezed,
     Object description = freezed,
+    Object article = freezed,
     Object approved = freezed,
     Object creator = freezed,
     Object root = freezed,
     Object groupCount = freezed,
+    Object articleDetail = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -120,10 +132,14 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
       parent: parent == freezed ? _value.parent : parent as int,
       description:
           description == freezed ? _value.description : description as String,
+      article: article == freezed ? _value.article : article as int,
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
       groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      articleDetail: articleDetail == freezed
+          ? _value.articleDetail
+          : articleDetail as Article,
     ));
   }
 
@@ -134,6 +150,16 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
     }
     return $TopicCopyWith<$Res>(_value.root, (value) {
       return _then(_value.copyWith(root: value));
+    });
+  }
+
+  @override
+  $ArticleCopyWith<$Res> get articleDetail {
+    if (_value.articleDetail == null) {
+      return null;
+    }
+    return $ArticleCopyWith<$Res>(_value.articleDetail, (value) {
+      return _then(_value.copyWith(articleDetail: value));
     });
   }
 }
@@ -150,13 +176,17 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
       @JsonKey(name: 'is_active') bool active,
       int parent,
       String description,
+      int article,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
       Topic root,
-      int groupCount});
+      int groupCount,
+      @JsonKey(name: 'article_detail') Article articleDetail});
 
   @override
   $TopicCopyWith<$Res> get root;
+  @override
+  $ArticleCopyWith<$Res> get articleDetail;
 }
 
 /// @nodoc
@@ -176,10 +206,12 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
     Object active = freezed,
     Object parent = freezed,
     Object description = freezed,
+    Object article = freezed,
     Object approved = freezed,
     Object creator = freezed,
     Object root = freezed,
     Object groupCount = freezed,
+    Object articleDetail = freezed,
   }) {
     return _then(_Topic(
       id: id == freezed ? _value.id : id as int,
@@ -189,10 +221,14 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
       parent: parent == freezed ? _value.parent : parent as int,
       description:
           description == freezed ? _value.description : description as String,
+      article: article == freezed ? _value.article : article as int,
       approved: approved == freezed ? _value.approved : approved as bool,
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
       groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      articleDetail: articleDetail == freezed
+          ? _value.articleDetail
+          : articleDetail as Article,
     ));
   }
 }
@@ -208,10 +244,12 @@ class _$_Topic implements _Topic {
       @JsonKey(name: 'is_active') this.active,
       this.parent,
       this.description,
+      this.article,
       @JsonKey(name: 'is_approved') this.approved,
       this.creator,
       this.root,
-      this.groupCount});
+      this.groupCount,
+      @JsonKey(name: 'article_detail') this.articleDetail});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
       _$_$_TopicFromJson(json);
@@ -230,6 +268,8 @@ class _$_Topic implements _Topic {
   @override
   final String description;
   @override
+  final int article;
+  @override
   @JsonKey(name: 'is_approved')
   final bool approved;
   @override
@@ -238,10 +278,13 @@ class _$_Topic implements _Topic {
   final Topic root;
   @override
   final int groupCount;
+  @override
+  @JsonKey(name: 'article_detail')
+  final Article articleDetail;
 
   @override
   String toString() {
-    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount)';
+    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, article: $article, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount, articleDetail: $articleDetail)';
   }
 
   @override
@@ -261,6 +304,9 @@ class _$_Topic implements _Topic {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.article, article) ||
+                const DeepCollectionEquality()
+                    .equals(other.article, article)) &&
             (identical(other.approved, approved) ||
                 const DeepCollectionEquality()
                     .equals(other.approved, approved)) &&
@@ -271,7 +317,10 @@ class _$_Topic implements _Topic {
                 const DeepCollectionEquality().equals(other.root, root)) &&
             (identical(other.groupCount, groupCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.groupCount, groupCount)));
+                    .equals(other.groupCount, groupCount)) &&
+            (identical(other.articleDetail, articleDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.articleDetail, articleDetail)));
   }
 
   @override
@@ -283,10 +332,12 @@ class _$_Topic implements _Topic {
       const DeepCollectionEquality().hash(active) ^
       const DeepCollectionEquality().hash(parent) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(article) ^
       const DeepCollectionEquality().hash(approved) ^
       const DeepCollectionEquality().hash(creator) ^
       const DeepCollectionEquality().hash(root) ^
-      const DeepCollectionEquality().hash(groupCount);
+      const DeepCollectionEquality().hash(groupCount) ^
+      const DeepCollectionEquality().hash(articleDetail);
 
   @JsonKey(ignore: true)
   @override
@@ -307,10 +358,12 @@ abstract class _Topic implements Topic {
       @JsonKey(name: 'is_active') bool active,
       int parent,
       String description,
+      int article,
       @JsonKey(name: 'is_approved') bool approved,
       String creator,
       Topic root,
-      int groupCount}) = _$_Topic;
+      int groupCount,
+      @JsonKey(name: 'article_detail') Article articleDetail}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
 
@@ -328,6 +381,8 @@ abstract class _Topic implements Topic {
   @override
   String get description;
   @override
+  int get article;
+  @override
   @JsonKey(name: 'is_approved')
   bool get approved;
   @override
@@ -336,6 +391,9 @@ abstract class _Topic implements Topic {
   Topic get root;
   @override
   int get groupCount;
+  @override
+  @JsonKey(name: 'article_detail')
+  Article get articleDetail;
   @override
   @JsonKey(ignore: true)
   _$TopicCopyWith<_Topic> get copyWith;
