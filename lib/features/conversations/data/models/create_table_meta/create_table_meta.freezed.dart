@@ -15,10 +15,13 @@ class _$CreateTableMetaTearOff {
 
 // ignore: unused_element
   _CreateTableMeta call(
-      {List<MeetingInterest> interests, MeetingConfig config}) {
+      {List<MeetingInterest> interests,
+      MeetingConfig config,
+      List<DateTime> timeSlots}) {
     return _CreateTableMeta(
       interests: interests,
       config: config,
+      timeSlots: timeSlots,
     );
   }
 }
@@ -31,6 +34,7 @@ const $CreateTableMeta = _$CreateTableMetaTearOff();
 mixin _$CreateTableMeta {
   List<MeetingInterest> get interests;
   MeetingConfig get config;
+  List<DateTime> get timeSlots;
 
   @JsonKey(ignore: true)
   $CreateTableMetaCopyWith<CreateTableMeta> get copyWith;
@@ -41,7 +45,10 @@ abstract class $CreateTableMetaCopyWith<$Res> {
   factory $CreateTableMetaCopyWith(
           CreateTableMeta value, $Res Function(CreateTableMeta) then) =
       _$CreateTableMetaCopyWithImpl<$Res>;
-  $Res call({List<MeetingInterest> interests, MeetingConfig config});
+  $Res call(
+      {List<MeetingInterest> interests,
+      MeetingConfig config,
+      List<DateTime> timeSlots});
 }
 
 /// @nodoc
@@ -57,12 +64,15 @@ class _$CreateTableMetaCopyWithImpl<$Res>
   $Res call({
     Object interests = freezed,
     Object config = freezed,
+    Object timeSlots = freezed,
   }) {
     return _then(_value.copyWith(
       interests: interests == freezed
           ? _value.interests
           : interests as List<MeetingInterest>,
       config: config == freezed ? _value.config : config as MeetingConfig,
+      timeSlots:
+          timeSlots == freezed ? _value.timeSlots : timeSlots as List<DateTime>,
     ));
   }
 }
@@ -74,7 +84,10 @@ abstract class _$CreateTableMetaCopyWith<$Res>
           _CreateTableMeta value, $Res Function(_CreateTableMeta) then) =
       __$CreateTableMetaCopyWithImpl<$Res>;
   @override
-  $Res call({List<MeetingInterest> interests, MeetingConfig config});
+  $Res call(
+      {List<MeetingInterest> interests,
+      MeetingConfig config,
+      List<DateTime> timeSlots});
 }
 
 /// @nodoc
@@ -92,28 +105,33 @@ class __$CreateTableMetaCopyWithImpl<$Res>
   $Res call({
     Object interests = freezed,
     Object config = freezed,
+    Object timeSlots = freezed,
   }) {
     return _then(_CreateTableMeta(
       interests: interests == freezed
           ? _value.interests
           : interests as List<MeetingInterest>,
       config: config == freezed ? _value.config : config as MeetingConfig,
+      timeSlots:
+          timeSlots == freezed ? _value.timeSlots : timeSlots as List<DateTime>,
     ));
   }
 }
 
 /// @nodoc
 class _$_CreateTableMeta implements _CreateTableMeta {
-  _$_CreateTableMeta({this.interests, this.config});
+  _$_CreateTableMeta({this.interests, this.config, this.timeSlots});
 
   @override
   final List<MeetingInterest> interests;
   @override
   final MeetingConfig config;
+  @override
+  final List<DateTime> timeSlots;
 
   @override
   String toString() {
-    return 'CreateTableMeta(interests: $interests, config: $config)';
+    return 'CreateTableMeta(interests: $interests, config: $config, timeSlots: $timeSlots)';
   }
 
   @override
@@ -124,14 +142,18 @@ class _$_CreateTableMeta implements _CreateTableMeta {
                 const DeepCollectionEquality()
                     .equals(other.interests, interests)) &&
             (identical(other.config, config) ||
-                const DeepCollectionEquality().equals(other.config, config)));
+                const DeepCollectionEquality().equals(other.config, config)) &&
+            (identical(other.timeSlots, timeSlots) ||
+                const DeepCollectionEquality()
+                    .equals(other.timeSlots, timeSlots)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(interests) ^
-      const DeepCollectionEquality().hash(config);
+      const DeepCollectionEquality().hash(config) ^
+      const DeepCollectionEquality().hash(timeSlots);
 
   @JsonKey(ignore: true)
   @override
@@ -142,12 +164,15 @@ class _$_CreateTableMeta implements _CreateTableMeta {
 abstract class _CreateTableMeta implements CreateTableMeta {
   factory _CreateTableMeta(
       {List<MeetingInterest> interests,
-      MeetingConfig config}) = _$_CreateTableMeta;
+      MeetingConfig config,
+      List<DateTime> timeSlots}) = _$_CreateTableMeta;
 
   @override
   List<MeetingInterest> get interests;
   @override
   MeetingConfig get config;
+  @override
+  List<DateTime> get timeSlots;
   @override
   @JsonKey(ignore: true)
   _$CreateTableMetaCopyWith<_CreateTableMeta> get copyWith;

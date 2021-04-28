@@ -95,6 +95,22 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
+  Future<Either<Failure, List<Topic>>> getAllArticleTopics() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllArticleTopicsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, Conversation>> retreiveConversation(int id) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
@@ -171,6 +187,40 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getAllConversationOptinsByDateFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DateTime>>>
+      getInstantConversationTimeSlots() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getInstantConversationTimeSlotsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Conversation>> postCreateInstantConversation(
+      Conversation conversation) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postCreateInstantConversationToRemote(conversation);
       return Right(response);
     } on ServerException catch (error) {
       final message =

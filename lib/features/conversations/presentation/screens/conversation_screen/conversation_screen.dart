@@ -6,8 +6,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/article/domain/entity/article_entity/article_entity.dart';
 import 'package:worknetwork/features/conversations/data/models/conversation_failures/conversation_failures.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -144,7 +147,10 @@ class _RoundTableLoaded extends HookWidget {
                 Text(startDateFormat.format(table.start.toLocal()),
                     style: dateStyle),
                 const SizedBox(height: AppInsets.l),
-                EditableTextField(text: table.topicDetail.description),
+                if (table.topicDetail.articleDetail != null)
+                  _ArticleDetailCard(article: table.topicDetail.articleDetail),
+                if (table.topicDetail.articleDetail == null)
+                  EditableTextField(text: table.topicDetail.description),
                 const SizedBox(height: AppInsets.xl),
                 Text(
                     AppLocalizations.of(context)
@@ -330,12 +336,12 @@ class _SpeakersListWithIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    if (table.host != null) {
-      children.add(_SpeakerWithIntro(
-        user: table.hostDetail,
-        authUserPk: authUserPk,
-      ));
-    }
+    // if (table.host != null) {
+    //   children.add(_SpeakerWithIntro(
+    //     user: table.hostDetail,
+    //     authUserPk: authUserPk,
+    //   ));
+    // }
 
     if (table.speakersDetailList != null &&
         table.speakersDetailList.isNotEmpty) {
@@ -402,6 +408,70 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ArticleDetailCard extends StatelessWidget {
+  final Article article;
+
+  const _ArticleDetailCard({
+    Key key,
+    @required this.article,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 14.00,
+          fontWeight: FontWeight.w500,
+        );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
+      child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8.00)),
+          side: BorderSide(width: 2.00, color: Colors.grey[300]),
+        ),
+        color: Colors.white,
+        type: MaterialType.card,
+        child: InkWell(
+          onTap: () {
+            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppInsets.l,
+              horizontal: AppInsets.l,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    BaseNetworkImage(
+                      imageUrl: article.articleSourceDetail.image,
+                      defaultImage: AppImageAssets.videoPlaceholder,
+                      imagebuilder: (context, imageProvider) => CircleAvatar(
+                        backgroundImage: imageProvider,
+                        radius: 12.00,
+                      ),
+                    ),
+                    const SizedBox(width: AppInsets.l),
+                    Text(article.articleSourceDetail.name,
+                        style: sourceLabelStyle),
+                  ],
+                ),
+                const SizedBox(height: AppInsets.l),
+                Text(
+                  article.description,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -22,6 +22,7 @@ import 'features/community/presentation/screens/post_screen.dart';
 import 'features/conversations/domain/entity/topic_entity/topic_entity.dart';
 import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import 'features/meeting/domain/entity/meeting_config_entity.dart';
 import 'features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -302,6 +303,7 @@ class Router extends RouterBase {
         builder: (context) => CreateConversationScreen(
           key: args.key,
           topic: args.topic,
+          type: args.type,
         ),
         settings: data,
       );
@@ -449,10 +451,12 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushCreateConversationScreen({
     Key key,
     @required Topic topic,
+    @required ConversationType type,
   }) =>
       push<dynamic>(
         Routes.createConversationScreen,
-        arguments: CreateConversationScreenArguments(key: key, topic: topic),
+        arguments: CreateConversationScreenArguments(
+            key: key, topic: topic, type: type),
       );
 }
 
@@ -527,7 +531,9 @@ class PackagePurchaseScreenArguments {
 class CreateConversationScreenArguments {
   final Key key;
   final Topic topic;
-  CreateConversationScreenArguments({this.key, @required this.topic});
+  final ConversationType type;
+  CreateConversationScreenArguments(
+      {this.key, @required this.topic, @required this.type});
 }
 
 /// ProfileIntroScreen arguments holder class

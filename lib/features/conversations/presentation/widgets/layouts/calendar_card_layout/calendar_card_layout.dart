@@ -58,6 +58,7 @@ class CalendarCardLayout extends StatelessWidget {
               children: [
                 if (heading != null)
                   DefaultTextStyle(style: titleStyle, child: heading),
+                const SizedBox(height: AppInsets.sm),
                 if (subHeading != null)
                   DefaultTextStyle(style: subheadStyle, child: subHeading),
                 Container(

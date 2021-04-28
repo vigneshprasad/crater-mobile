@@ -6,6 +6,20 @@ import '../topic_entity/topic_entity.dart';
 part 'conversation_entity.freezed.dart';
 part 'conversation_entity.g.dart';
 
+enum ConversationPrivacy {
+  @JsonValue(0)
+  public,
+  @JsonValue(1)
+  private,
+}
+
+enum ConversationMedium {
+  @JsonValue(0)
+  audio,
+  @JsonValue(1)
+  audioVideo,
+}
+
 @freezed
 abstract class Conversation with _$Conversation {
   factory Conversation({
@@ -18,8 +32,8 @@ abstract class Conversation with _$Conversation {
     DateTime start,
     DateTime end,
     @JsonKey(name: 'max_speakers') int maxSpeakers,
-    int privacy,
-    int medium,
+    ConversationPrivacy privacy,
+    ConversationMedium medium,
     bool closed,
     int relevancy,
     @JsonKey(name: 'closed_at') DateTime closedAt,

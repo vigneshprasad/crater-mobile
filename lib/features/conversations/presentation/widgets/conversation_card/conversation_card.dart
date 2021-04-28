@@ -6,6 +6,7 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 
@@ -76,14 +77,77 @@ class ConversationCard extends StatelessWidget {
         ],
       ),
       border: _border,
-      child: Row(
+      child: Column(
         children: [
-          Text("Relevancy: ${conversation.relevancy}%", style: subheadStyle),
-          Expanded(
-            child:
-                _SpeakersAvatarList(speakers: conversation.speakersDetailList),
+          if (conversation.topicDetail.articleDetail != null)
+            _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
+          Row(
+            children: [
+              Text("Relevancy: ${conversation.relevancy}%",
+                  style: subheadStyle),
+              Expanded(
+                child: _SpeakersAvatarList(
+                    speakers: conversation.speakersDetailList),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ArticleDetailCard extends StatelessWidget {
+  final Article article;
+
+  const _ArticleDetailCard({
+    Key key,
+    @required this.article,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 14.00,
+          fontWeight: FontWeight.w500,
+        );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
+      child: Material(
+        borderRadius: const BorderRadius.all(Radius.circular(8.00)),
+        color: Colors.white,
+        type: MaterialType.card,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppInsets.l,
+            horizontal: AppInsets.l,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  BaseNetworkImage(
+                    imageUrl: article.articleSourceDetail.image,
+                    defaultImage: AppImageAssets.videoPlaceholder,
+                    imagebuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundImage: imageProvider,
+                      radius: 12.00,
+                    ),
+                  ),
+                  const SizedBox(width: AppInsets.l),
+                  Text(article.articleSourceDetail.name,
+                      style: sourceLabelStyle),
+                ],
+              ),
+              const SizedBox(height: AppInsets.l),
+              Text(
+                article.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

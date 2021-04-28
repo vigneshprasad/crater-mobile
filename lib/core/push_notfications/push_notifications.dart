@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
 import '../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
@@ -80,7 +81,8 @@ class PushNotificationsImpl implements PushNotifications {
       _navigatorKey.currentState.push(CreateConversationSheet()).then(
         (value) {
           if (value != null && value is Topic) {
-            ExtendedNavigator.root.pushCreateConversationScreen(topic: value);
+            ExtendedNavigator.root.pushCreateConversationScreen(
+                topic: value, type: ConversationType.curated);
           }
         },
       );

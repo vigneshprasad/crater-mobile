@@ -18,8 +18,9 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
         json['start'] == null ? null : DateTime.parse(json['start'] as String),
     end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
     maxSpeakers: json['max_speakers'] as int,
-    privacy: json['privacy'] as int,
-    medium: json['medium'] as int,
+    privacy:
+        _$enumDecodeNullable(_$ConversationPrivacyEnumMap, json['privacy']),
+    medium: _$enumDecodeNullable(_$ConversationMediumEnumMap, json['medium']),
     closed: json['closed'] as bool,
     relevancy: json['relevancy'] as int,
     closedAt: json['closed_at'] == null
@@ -58,8 +59,8 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'start': instance.start?.toIso8601String(),
       'end': instance.end?.toIso8601String(),
       'max_speakers': instance.maxSpeakers,
-      'privacy': instance.privacy,
-      'medium': instance.medium,
+      'privacy': _$ConversationPrivacyEnumMap[instance.privacy],
+      'medium': _$ConversationMediumEnumMap[instance.medium],
       'closed': instance.closed,
       'relevancy': instance.relevancy,
       'closed_at': instance.closedAt?.toIso8601String(),
@@ -70,6 +71,48 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'is_speaker': instance.isSpeaker,
       'is_past': instance.isPast,
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$ConversationPrivacyEnumMap = {
+  ConversationPrivacy.public: 0,
+  ConversationPrivacy.private: 1,
+};
+
+const _$ConversationMediumEnumMap = {
+  ConversationMedium.audio: 0,
+  ConversationMedium.audioVideo: 1,
+};
 
 _$_ConversationUser _$_$_ConversationUserFromJson(Map<String, dynamic> json) {
   return _$_ConversationUser(

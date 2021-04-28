@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/data/models/conversation_exceptions/conversation_exceptions.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -12,6 +11,7 @@ import '../../domain/entity/conversation_request_entity/conversation_request_ent
 import '../../domain/entity/conversation_rtc_info_entity/conversation_rtc_info_entity.dart';
 import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/topic_entity/topic_entity.dart';
+import '../models/conversation_exceptions/conversation_exceptions.dart';
 import '../services/conversation_api_service/conversation_api_service.dart';
 import '../services/rtc_api_service/rtc_api_service.dart';
 
@@ -24,6 +24,11 @@ abstract class ConversationRemoteDatasource {
   /// filter based on [parent] topic id.
   /// Throws [ServerException]
   Future<List<Topic>> getAllTopicsFromRemote(int parent);
+
+  /// Get List of All Topcics with Articles from Remote server
+  /// filter based on [parent] topic id.
+  /// Throws [ServerException]
+  Future<List<Topic>> getAllArticleTopicsFromRemote();
 
   /// Get All Conversation for user from start to end date
   /// Throws [ServerException] on error
@@ -64,6 +69,15 @@ abstract class ConversationRemoteDatasource {
   // Get All Options for user for future week by date
   /// Throws [ServerException]
   Future<List<OptinsByDate>> getAllConversationOptinsByDateFromRemote();
+
+  // Get List of DateTimes for instant conversations
+  /// Throws [ServerException]
+  Future<List<DateTime>> getInstantConversationTimeSlotsFromRemote();
+
+  // Post an instant conversation to remote server
+  /// Throws [ServerException]
+  Future<Conversation> postCreateInstantConversationToRemote(
+      Conversation conversation);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -75,6 +89,20 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   Future<List<Topic>> getAllTopicsFromRemote(int parent) async {
     final response =
         await read(conversationApiServiceProvider).getAllTopics(parent);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((topic) => Topic.fromJson(topic as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Topic>> getAllArticleTopicsFromRemote() async {
+    final response =
+        await read(conversationApiServiceProvider).getAllArticleTopics();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -203,6 +231,32 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       return jsonList
           .map((optin) => OptinsByDate.fromJson(optin as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<DateTime>> getInstantConversationTimeSlotsFromRemote() async {
+    final response = await read(conversationApiServiceProvider)
+        .getInstantConversationTimeSlots();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList.map((slot) => DateTime.parse(slot as String)).toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Conversation> postCreateInstantConversationToRemote(
+      Conversation conversation) async {
+    final body = conversation.toJson();
+    final response = await read(conversationApiServiceProvider)
+        .postInstantConversation(body);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return Conversation.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

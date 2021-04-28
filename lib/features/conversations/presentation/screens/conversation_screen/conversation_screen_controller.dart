@@ -96,14 +96,14 @@ class ConversationScreenController extends ChangeNotifier {
 
   List<RtcUser> intializeSpeakers(Conversation table) {
     List<RtcUser> initial = [];
-    if (table.host != null) {
-      initial.add(RtcUser(
-        userInfo: table.hostDetail,
-        pk: table.hostDetail.pk,
-        online: false,
-        muted: false,
-      ));
-    }
+    // if (table.host != null) {
+    //   initial.add(RtcUser(
+    //     userInfo: table.hostDetail,
+    //     pk: table.hostDetail.pk,
+    //     online: false,
+    //     muted: false,
+    //   ));
+    // }
 
     initial.addAll(table.speakersDetailList.map(
       (speaker) => RtcUser(

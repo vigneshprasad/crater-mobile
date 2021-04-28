@@ -43,6 +43,13 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getAllArticleTopics() {
+    final $url = '/groups/topic/articles/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getAllRootTopicsForConversations() {
     final $url = '/groups/topic/for_groups/';
     final $request = Request('GET', $url, client.baseUrl);
@@ -68,6 +75,21 @@ class _$ConversationApiService extends ConversationApiService {
   @override
   Future<Response<dynamic>> retrieveConversation(int id) {
     final $url = '/groups/groups/$id/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postInstantConversation(Map<String, dynamic> body) {
+    final $url = '/groups/groups/instant/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getInstantConversationTimeSlots() {
+    final $url = '/groups/groups/instant_time_slots/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
