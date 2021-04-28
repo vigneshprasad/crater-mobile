@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -16,6 +17,10 @@ import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
 import '../datasources/meetings_remote_datasource.dart';
 import '../models/meeting_rsvp_model.dart';
+
+final meetingRepositoryProvider = Provider<MeetingRepository>((ref) =>
+    MeetingRepositoryImpl(
+        remoteDatasource: ref.read(meetingRemoteDatasourceProvider)));
 
 class MeetingRepositoryImpl implements MeetingRepository {
   final MeetingRemoteDatasource remoteDatasource;

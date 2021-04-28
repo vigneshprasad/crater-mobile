@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -21,6 +22,9 @@ import '../models/meeting_rsvp_model.dart';
 import '../models/meetings_by_date_model.dart';
 import '../models/reschedule_request_model.dart';
 import '../models/user_meeting_preference_model.dart';
+
+final meetingRemoteDatasourceProvider = Provider<MeetingRemoteDatasource>(
+    (ref) => MeetingRemoteDatasourceImpl(ref.read(meetsApiServiceProvider)));
 
 abstract class MeetingRemoteDatasource {
   Future<MeetingConfig> getMeetingConfigFromRemote();

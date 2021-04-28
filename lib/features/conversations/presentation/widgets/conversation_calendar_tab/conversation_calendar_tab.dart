@@ -9,6 +9,7 @@ import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../utils/app_localizations.dart';
+import '../../../../meeting/presentation/widgets/oneonone_cart.dart';
 import '../conversation_card/conversation_card.dart';
 import '../conversation_tab_shimmer/conversation_tab_shimmer.dart';
 import '../optin_card/optin_card.dart';
@@ -70,6 +71,34 @@ class _LoadedConversationTab extends HookWidget {
     ));
 
     for (final week in weeks) {
+      /// Add 1:1 Meetings
+      for (final date in week.meetings) {
+        children.addAll([
+          SliverStickyHeader.builder(
+            overlapsContent: true,
+            builder: (context, state) {
+              return _DateLabel(date: date.date);
+            },
+            sliver: SliverPadding(
+              padding: const EdgeInsets.only(
+                left: kLeftPaddingForDate,
+                bottom: AppInsets.xl,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return OneOnOneCard(meeting: date.meetings[index]);
+                  },
+                  childCount: date.meetings.length,
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Divider(color: Colors.grey[300]),
+          ),
+        ]);
+      }
       if (!week.future) {
         /// Add Conversations
         for (final date in week.conversations) {
