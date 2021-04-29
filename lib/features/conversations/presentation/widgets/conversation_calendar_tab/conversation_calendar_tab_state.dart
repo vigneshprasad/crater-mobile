@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meetings_by_date_entity.dart';
-import 'package:worknetwork/features/meeting/domain/repository/meeting_repository.dart';
 
 import '../../../../../core/error/failures/failures.dart';
+import '../../../../meeting/domain/entity/meetings_by_date_entity.dart';
+import '../../../../meeting/domain/repository/meeting_repository.dart';
 import '../../../data/models/calendar_week_data/calendar_week_data.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';

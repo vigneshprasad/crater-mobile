@@ -7,7 +7,6 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../features/article/presentation/widgets/articles_tab.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
@@ -26,7 +25,7 @@ final homeScreenScrollController =
 });
 
 class HomeScreen extends HookWidget {
-  final String tab;
+  final int tab;
 
   static const List<Widget> _tabs = [
     Tab(text: "All Conversations"),
@@ -42,7 +41,8 @@ class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _scrollController = useProvider(homeScreenScrollController);
-    final _tabController = useTabController(initialLength: _tabs.length);
+    final _tabController =
+        useTabController(initialLength: _tabs.length, initialIndex: tab ?? 0);
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w700,

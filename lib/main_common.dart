@@ -5,12 +5,12 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 
 import 'core/config_reader/config_reader.dart';
 import 'core/environments/environments.dart';
 import 'core/local_storage/local_storage.dart';
 import 'core/logger/logger.dart';
+import 'core/push_notfications/push_notifications.dart';
 import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
 import 'utils/simple_bloc_observer.dart';

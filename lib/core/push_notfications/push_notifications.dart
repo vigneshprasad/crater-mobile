@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
 import '../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import '../../features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import '../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../routes.gr.dart';
 import '../config_reader/config_reader.dart';
@@ -79,14 +79,7 @@ class PushNotificationsImpl implements PushNotifications {
         _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
       }
     } else if (type == PushType.createConversation) {
-      _navigatorKey.currentState.push(CreateConversationSheet()).then(
-        (value) {
-          if (value != null && value is Topic) {
-            ExtendedNavigator.root.pushCreateConversationScreen(
-                topic: value, type: ConversationType.curated);
-          }
-        },
-      );
+      ExtendedNavigator.root.push(Routes.homeScreen(tab: 1));
     }
   }
 

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/article_topic_card/article_topic_card.dart';
-
+import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
+import '../../../domain/entity/topic_entity/topic_entity.dart';
+import '../../screens/create_conversation_screen/create_conversation_state.dart';
+import '../article_topic_card/article_topic_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'topics_tab_state.dart';
 

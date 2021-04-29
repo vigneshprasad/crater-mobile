@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/data/models/conversation_exceptions/conversation_exceptions.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -17,6 +16,7 @@ import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/topic_entity/topic_entity.dart';
 import '../../domain/repository/conversation_repository.dart';
 import '../datasources/conversation_remote_datasource.dart';
+import '../models/conversation_exceptions/conversation_exceptions.dart';
 import '../models/conversation_failures/conversation_failures.dart';
 
 final conversationRepositoryProvider = Provider<ConversationRepository>(

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:worknetwork/features/article/domain/entity/article_entity/article_entity.dart';
+
+import '../../../../article/domain/entity/article_entity/article_entity.dart';
 
 part 'topic_entity.freezed.dart';
 part 'topic_entity.g.dart';

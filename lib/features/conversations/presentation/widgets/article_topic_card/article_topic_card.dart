@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
+import '../../screens/create_conversation_screen/create_conversation_state.dart';
 
 class ArticleTopicCard extends StatelessWidget {
   final Topic topic;
@@ -56,7 +56,8 @@ class ArticleTopicCard extends StatelessWidget {
                     horizontal: AppInsets.xl,
                     vertical: AppInsets.xl,
                   ),
-                  child: Text(topic.name, style: headingStyle),
+                  child: Text(topic.articleDetail.description,
+                      style: headingStyle),
                 ),
                 _ArticleContent(article: topic.articleDetail),
                 Align(
@@ -139,7 +140,7 @@ class _ArticleContent extends StatelessWidget {
             ),
             const SizedBox(height: AppInsets.sm),
             Text(
-              article.description,
+              article.title,
               style: descriptionStyle,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,

@@ -144,8 +144,7 @@ class Router extends RouterBase {
     },
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            HomeScreen(tab: data.pathParams['tab'].stringValue),
+        builder: (context) => HomeScreen(tab: data.pathParams['tab'].intValue),
         settings: data,
       );
     },

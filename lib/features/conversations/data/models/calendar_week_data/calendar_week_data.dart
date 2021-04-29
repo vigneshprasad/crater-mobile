@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meetings_by_date_entity.dart';
 
+import '../../../../meeting/domain/entity/meetings_by_date_entity.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/optin_entity/optin_entity.dart';
 
