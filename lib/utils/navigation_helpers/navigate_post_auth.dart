@@ -21,6 +21,6 @@ void navigatePostAuth(User user, {UserProfile profile}) {
   } else {
     _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
 
-    KiwiContainer().resolve<PushNotifications>().initSdk();
+    KiwiContainer().resolve<PushNotifications>().setEventHandlers();
   }
 }

@@ -29,6 +29,7 @@ class DateTimePicker extends HookWidget {
                 .map((slot) => _Slot(
                       slot: slot,
                       selected: selected.value == slot,
+                      isNow: slots.indexOf(slot) == 0,
                       onPressed: (value) {
                         selected.value = value;
                         if (onChanged != null) {
@@ -47,10 +48,12 @@ class DateTimePicker extends HookWidget {
 class _Slot extends StatelessWidget {
   final DateTime slot;
   final bool selected;
+  final bool isNow;
   final ValueChanged<DateTime> onPressed;
 
   const _Slot({
     Key key,
+    @required this.isNow,
     @required this.slot,
     @required this.selected,
     @required this.onPressed,
@@ -76,6 +79,7 @@ class _Slot extends StatelessWidget {
           fontWeight: FontWeight.w500,
           color: textColor,
         );
+    final label = isNow ? "Now" : timeFormat.format(slot);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.sm),
       child: Material(
@@ -95,7 +99,7 @@ class _Slot extends StatelessWidget {
             ),
             child: Center(
                 child: Text(
-              timeFormat.format(slot),
+              label,
               style: labelStyle,
             )),
           ),

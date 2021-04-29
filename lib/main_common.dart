@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 
 import 'core/config_reader/config_reader.dart';
 import 'core/environments/environments.dart';
@@ -41,6 +42,7 @@ Future<void> mainCommon(String configPath, String env) async {
   KiwiContainer().resolve<LocalStorage>().registerAdapters();
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   final Logger logger = KiwiContainer().resolve<Logger>();
+  KiwiContainer().resolve<PushNotifications>().initSdk();
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

@@ -18,6 +18,7 @@ abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
   Future<String> getPushToken();
+  void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
   void handleNotificationReceived(OSNotification notification);
@@ -108,21 +109,25 @@ class PushNotificationsImpl implements PushNotifications {
       OneSignal.shared.consentGranted(true);
     }
 
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
-
-    OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
-
-    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
-
-    OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
   }
 
   @override
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes) {
     // TODO: implement subscriptionsChangeHandler
+  }
+
+  @override
+  void setEventHandlers() {
+    OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
+
+    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
+
+    OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
   }
 }
