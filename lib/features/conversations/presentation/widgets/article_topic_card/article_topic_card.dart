@@ -6,8 +6,10 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
+import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../../screens/create_conversation_screen/create_conversation_state.dart';
 
@@ -39,9 +41,20 @@ class ArticleTopicCard extends StatelessWidget {
         child: InkWell(
           borderRadius: borderRadius,
           onTap: () {
-            ExtendedNavigator.of(context).push(Routes.createConversationScreen,
-                arguments: CreateConversationScreenArguments(
-                    topic: topic, type: ConversationType.instant));
+            ExtendedNavigator.of(context)
+                .push(Routes.createConversationScreen,
+                    arguments: CreateConversationScreenArguments(
+                        topic: topic, type: ConversationType.instant))
+                .then(
+              (value) {
+                if (value is Conversation) {
+                  HomeTabControllerProvider.of(context).controller.animateTo(1);
+                  ExtendedNavigator.of(context)
+                      .push(Routes.conversationScreen(id: value.id));
+                }
+              },
+            );
+            ;
           },
           child: Container(
             decoration: BoxDecoration(

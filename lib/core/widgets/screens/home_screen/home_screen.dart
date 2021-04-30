@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
+import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -28,8 +31,8 @@ class HomeScreen extends HookWidget {
   final int tab;
 
   static const List<Widget> _tabs = [
-    Tab(text: "All Conversations"),
     Tab(text: "Topics"),
+    Tab(text: "All Conversations"),
     Tab(text: "My Conversations"),
     Tab(text: "Inbox"),
   ];
@@ -65,6 +68,7 @@ class HomeScreen extends HookWidget {
     });
 
     return Scaffold(
+      drawer: AppDrawer(),
       body: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -76,6 +80,9 @@ class HomeScreen extends HookWidget {
                 floating: true,
                 pinned: true,
                 elevation: 0,
+                leading: IconButton(
+                    icon: const Icon(WorkNetIcons.menu),
+                    onPressed: () => Scaffold.of(context).openDrawer()),
                 actions: [
                   UserProfileNavItem(
                     onPressed: () {
@@ -108,20 +115,23 @@ class HomeScreen extends HookWidget {
           ];
         },
         body: DefaultStickyHeaderController(
-          child: TabBarView(
+          child: HomeTabControllerProvider(
             controller: _tabController,
-            children: [
-              ConversationCalendarTab(
-                type: ConversationTabType.all,
-                controller: _scrollController,
-              ),
-              TopicsTab(),
-              ConversationCalendarTab(
-                type: ConversationTabType.my,
-                controller: _scrollController,
-              ),
-              InboxTab(),
-            ],
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                TopicsTab(),
+                ConversationCalendarTab(
+                  type: ConversationTabType.all,
+                  controller: _scrollController,
+                ),
+                ConversationCalendarTab(
+                  type: ConversationTabType.my,
+                  controller: _scrollController,
+                ),
+                InboxTab(),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
+import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
@@ -171,9 +173,15 @@ class _TopicGridCard extends StatelessWidget {
         borderRadius: cardRadius,
         splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
         onTap: () {
-          ExtendedNavigator.of(context).push(Routes.createConversationScreen,
-              arguments: CreateConversationScreenArguments(
-                  topic: topic, type: ConversationType.curated));
+          ExtendedNavigator.of(context)
+              .push(Routes.createConversationScreen,
+                  arguments: CreateConversationScreenArguments(
+                      topic: topic, type: ConversationType.curated))
+              .then((value) {
+            if (value is Optin) {
+              HomeTabControllerProvider.of(context).controller.animateTo(2);
+            }
+          });
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
