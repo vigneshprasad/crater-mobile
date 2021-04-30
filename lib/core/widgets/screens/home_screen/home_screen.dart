@@ -142,10 +142,10 @@ class HomeScreen extends HookWidget {
 
   Widget _getFloatinActionButton(
       BuildContext context, int index, TabController controller) {
-    if (index == 0 || index == 2) {
+    if (index == 1 || index == 2) {
       return FloatingActionButton.extended(
         onPressed: () {
-          controller.animateTo(1);
+          controller.animateTo(0);
         },
         label: Text("Schedule New"),
         icon: Icon(Icons.add),

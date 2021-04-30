@@ -19,6 +19,7 @@ class TopicsTab extends HookWidget {
     final topicsState = useProvider(topicsStateProvider.state);
     final articlesState = useProvider(articleTopicsStateProiver.state);
     return RefreshIndicator(
+      displacement: 96.00,
       onRefresh: () {
         final futures = [
           context.read(topicsStateProvider).getTopicsList(),
