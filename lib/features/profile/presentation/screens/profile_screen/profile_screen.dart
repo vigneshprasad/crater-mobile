@@ -61,6 +61,13 @@ class ProfileScreen extends HookWidget {
                       if (state.interests != null && state.objectives != null)
                         _MeetingPreferenceInfo(
                             state.interests, state.objectives),
+                      _UserConnections([
+                        state.profile,
+                        state.profile,
+                        state.profile,
+                        state.profile,
+                        state.profile
+                      ]),
                     ],
                   ),
                 ),
@@ -117,6 +124,10 @@ class _ProfileBody extends HookWidget {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
+              if (profile.generatedIntroduction != null)
+                Text(
+                  profile.generatedIntroduction,
+                ),
               Text(
                 profile.introduction,
               )
@@ -174,6 +185,44 @@ class _ProfileBody extends HookWidget {
         ),
       ),
     );
+  }
+}
+
+class _ConnectionProfile extends HookWidget {
+  final String photoUrl;
+  final double size;
+
+  const _ConnectionProfile({
+    this.photoUrl,
+    this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (photoUrl != null) {
+      return CachedNetworkImage(
+        imageUrl: photoUrl,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: size,
+            width: size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50.0),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.0),
+          image: const DecorationImage(image: AppImageAssets.defaultAvatar),
+        ),
+      );
+    }
   }
 }
 
@@ -244,6 +293,74 @@ class _MeetingPreferenceInfo extends HookWidget {
         children: interests
             .map((interest) => _ChipItem(
                   text: interest.name,
+                ))
+            .toList(),
+      )
+    ];
+  }
+}
+
+class _UserConnections extends HookWidget {
+  final List<Profile> connections;
+
+  const _UserConnections(this.connections);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ..._buildConnections(context),
+      ],
+    );
+  }
+
+  List<Widget> _buildConnections(BuildContext context) {
+    const introLabel = "Connections:";
+    final labelStyle = Theme.of(context)
+        .textTheme
+        .subtitle1
+        .copyWith(fontWeight: FontWeight.bold);
+    if (connections.isEmpty) {
+      return [];
+    }
+
+    const showMaxConnections = 5;
+    final width =
+        MediaQuery.of(context).size.width / showMaxConnections - AppInsets.xxl;
+
+    return [
+      const SizedBox(height: AppInsets.xxl),
+      Text(
+        introLabel,
+        style: labelStyle,
+      ),
+      const SizedBox(
+        height: AppInsets.med,
+        width: double.infinity,
+      ),
+      Wrap(
+        spacing: 12,
+        children: connections
+            .take(showMaxConnections)
+            .map((user) => InkWell(
+                  onTap: () => ExtendedNavigator.of(context).push(
+                      Routes.profileScreen(userId: user.pk, allowEdit: false)),
+                  child: SizedBox(
+                    width: width,
+                    child: Column(
+                      children: [
+                        _ConnectionProfile(
+                          photoUrl: user.photo,
+                          size: width,
+                        ),
+                        Text(
+                          user.name,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
                 ))
             .toList(),
       )

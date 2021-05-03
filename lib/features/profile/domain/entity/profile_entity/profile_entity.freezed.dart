@@ -21,6 +21,7 @@ class _$ProfileTearOff {
       {int pk,
       String name,
       String introduction,
+      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
       @JsonKey(name: 'tag_list') List<Tag> tag,
       @JsonKey(name: 'linkedin_url') String linkedIn,
       String photo}) {
@@ -28,6 +29,7 @@ class _$ProfileTearOff {
       pk: pk,
       name: name,
       introduction: introduction,
+      generatedIntroduction: generatedIntroduction,
       tag: tag,
       linkedIn: linkedIn,
       photo: photo,
@@ -49,6 +51,8 @@ mixin _$Profile {
   int get pk;
   String get name;
   String get introduction;
+  @JsonKey(name: 'generated_introduction')
+  String get generatedIntroduction;
   @JsonKey(name: 'tag_list')
   List<Tag> get tag;
   @JsonKey(name: 'linkedin_url')
@@ -68,6 +72,7 @@ abstract class $ProfileCopyWith<$Res> {
       {int pk,
       String name,
       String introduction,
+      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
       @JsonKey(name: 'tag_list') List<Tag> tag,
       @JsonKey(name: 'linkedin_url') String linkedIn,
       String photo});
@@ -86,6 +91,7 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
     Object pk = freezed,
     Object name = freezed,
     Object introduction = freezed,
+    Object generatedIntroduction = freezed,
     Object tag = freezed,
     Object linkedIn = freezed,
     Object photo = freezed,
@@ -96,6 +102,9 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
       introduction: introduction == freezed
           ? _value.introduction
           : introduction as String,
+      generatedIntroduction: generatedIntroduction == freezed
+          ? _value.generatedIntroduction
+          : generatedIntroduction as String,
       tag: tag == freezed ? _value.tag : tag as List<Tag>,
       linkedIn: linkedIn == freezed ? _value.linkedIn : linkedIn as String,
       photo: photo == freezed ? _value.photo : photo as String,
@@ -112,6 +121,7 @@ abstract class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       {int pk,
       String name,
       String introduction,
+      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
       @JsonKey(name: 'tag_list') List<Tag> tag,
       @JsonKey(name: 'linkedin_url') String linkedIn,
       String photo});
@@ -131,6 +141,7 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
     Object pk = freezed,
     Object name = freezed,
     Object introduction = freezed,
+    Object generatedIntroduction = freezed,
     Object tag = freezed,
     Object linkedIn = freezed,
     Object photo = freezed,
@@ -141,6 +152,9 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
       introduction: introduction == freezed
           ? _value.introduction
           : introduction as String,
+      generatedIntroduction: generatedIntroduction == freezed
+          ? _value.generatedIntroduction
+          : generatedIntroduction as String,
       tag: tag == freezed ? _value.tag : tag as List<Tag>,
       linkedIn: linkedIn == freezed ? _value.linkedIn : linkedIn as String,
       photo: photo == freezed ? _value.photo : photo as String,
@@ -156,6 +170,7 @@ class _$_Profile implements _Profile {
       {this.pk,
       this.name,
       this.introduction,
+      @JsonKey(name: 'generated_introduction') this.generatedIntroduction,
       @JsonKey(name: 'tag_list') this.tag,
       @JsonKey(name: 'linkedin_url') this.linkedIn,
       this.photo});
@@ -170,6 +185,9 @@ class _$_Profile implements _Profile {
   @override
   final String introduction;
   @override
+  @JsonKey(name: 'generated_introduction')
+  final String generatedIntroduction;
+  @override
   @JsonKey(name: 'tag_list')
   final List<Tag> tag;
   @override
@@ -180,7 +198,7 @@ class _$_Profile implements _Profile {
 
   @override
   String toString() {
-    return 'Profile(pk: $pk, name: $name, introduction: $introduction, tag: $tag, linkedIn: $linkedIn, photo: $photo)';
+    return 'Profile(pk: $pk, name: $name, introduction: $introduction, generatedIntroduction: $generatedIntroduction, tag: $tag, linkedIn: $linkedIn, photo: $photo)';
   }
 
   @override
@@ -194,6 +212,9 @@ class _$_Profile implements _Profile {
             (identical(other.introduction, introduction) ||
                 const DeepCollectionEquality()
                     .equals(other.introduction, introduction)) &&
+            (identical(other.generatedIntroduction, generatedIntroduction) ||
+                const DeepCollectionEquality().equals(
+                    other.generatedIntroduction, generatedIntroduction)) &&
             (identical(other.tag, tag) ||
                 const DeepCollectionEquality().equals(other.tag, tag)) &&
             (identical(other.linkedIn, linkedIn) ||
@@ -209,6 +230,7 @@ class _$_Profile implements _Profile {
       const DeepCollectionEquality().hash(pk) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(introduction) ^
+      const DeepCollectionEquality().hash(generatedIntroduction) ^
       const DeepCollectionEquality().hash(tag) ^
       const DeepCollectionEquality().hash(linkedIn) ^
       const DeepCollectionEquality().hash(photo);
@@ -229,6 +251,7 @@ abstract class _Profile implements Profile {
       {int pk,
       String name,
       String introduction,
+      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
       @JsonKey(name: 'tag_list') List<Tag> tag,
       @JsonKey(name: 'linkedin_url') String linkedIn,
       String photo}) = _$_Profile;
@@ -241,6 +264,9 @@ abstract class _Profile implements Profile {
   String get name;
   @override
   String get introduction;
+  @override
+  @JsonKey(name: 'generated_introduction')
+  String get generatedIntroduction;
   @override
   @JsonKey(name: 'tag_list')
   List<Tag> get tag;
