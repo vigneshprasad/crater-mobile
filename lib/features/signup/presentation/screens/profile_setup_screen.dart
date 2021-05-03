@@ -98,16 +98,32 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: AppInsets.xxl),
-                                  child: BaseLargeButton(
-                                    text: next,
-                                    onPressed: _onPressedSubmit,
+                              Column(
+                                children: [
+                                  Spacer(),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: AppInsets.xxl),
+                                      child: BaseLargeButton(
+                                        text: next,
+                                        onPressed: _onPressedSubmit,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: AppInsets.xxl),
+                                      child: FlatButton(
+                                        child: Text('skip'),
+                                        onPressed: _onPressedSkip,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
@@ -182,5 +198,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         linkedinUrl: _linkedInController.text,
       ));
     }
+  }
+
+  void _onPressedSkip() {
+    _bloc.add(PostProfileRequestStarted(
+      linkedinUrl: '',
+    ));
   }
 }
