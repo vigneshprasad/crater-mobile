@@ -1,5 +1,15 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/ui/base/social_auth_button/social_auth_button.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -12,6 +22,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
+  AuthBloc _authBloc;
   TabController _tabController;
   int _activeIndex;
 
@@ -58,6 +69,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
+
+    _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
 
@@ -76,22 +89,97 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children: _tabs,
-          ),
-          Positioned(
-            bottom: 56,
-            child: _buildViewContent(context),
-          ),
-        ],
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthStateSuccess) {
+          navigatePostAuth(state.user, profile: state.profile);
+        } else if (state is AuthRequestFailure) {
+          _handleRequestError(state);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                TabBarView(
+                  controller: _tabController,
+                  children: _tabs,
+                ),
+                Positioned(
+                  bottom: 56,
+                  child: _buildViewContent(context),
+                ),
+                if (state.isSubmitting != null && state.isSubmitting)
+                  _buildOverlay(context)
+              ],
+            );
+          },
+        ),
       ),
     );
+  }
+
+  Widget _buildOverlay(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.black.withOpacity(0.7),
+      child: Center(
+        child: Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 32,
+                width: 32,
+                child: CircularProgressIndicator(),
+              ),
+              const SizedBox(height: AppInsets.xl),
+              const Text("Loading..."),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _handleRequestError(AuthRequestFailure state) {
+    final failure = state.error as ServerFailure;
+    if (failure.message != null) {
+      final json = jsonDecode(failure.message.toString());
+      showDialog(
+        context: context,
+        builder: (context) {
+          final title =
+              AppLocalizations.of(context).translate("auth:login_fail_title");
+          final dismiss =
+              AppLocalizations.of(context).translate("dismiss").toUpperCase();
+          return AlertDialog(
+            title: Text(title),
+            content: Text(json["non_field_errors"][0] as String),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  ExtendedNavigator.of(context).pop();
+                },
+                child: Text(dismiss),
+              )
+            ],
+          );
+        },
+      );
+    } else {
+      Fluttertoast.showToast(msg: failure.message as String);
+    }
   }
 
   Widget _buildViewContent(BuildContext context) {
@@ -105,33 +193,42 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             activeIndex: _activeIndex,
           ),
           const SizedBox(height: AppInsets.xxl),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 48,
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: RaisedButton(
-                  color: Colors.white,
-                  textColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    _openSignupAuthScreen(false, context);
-                  },
-                  child: Text('Sign in'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 220,
+                  child: SocialAuthButton(
+                    provider: SocialAuthProviders.linkedin,
+                    isLarge: true,
+                    onPressed: () => _authBloc.add(const AuthSocialPressed(
+                        provider: SocialAuthProviders.linkedin)),
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppInsets.xl),
-              SizedBox(
-                height: 48,
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: RaisedButton(
-                  onPressed: () {
-                    _openSignupAuthScreen(true, context);
-                  },
-                  child: Text('Sign up'),
+                const SizedBox(height: AppInsets.med),
+                SizedBox(
+                  width: 220,
+                  child: SocialAuthButton(
+                    provider: SocialAuthProviders.apple,
+                    isLarge: true,
+                    onPressed: () => _authBloc.add(const AuthSocialPressed(
+                        provider: SocialAuthProviders.apple)),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: AppInsets.med),
+                SizedBox(
+                  height: 40,
+                  child: FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      _openSignupAuthScreen(false, context);
+                    },
+                    child: Text('Already have an account? Sign in'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -169,7 +266,7 @@ class _ImageSlide extends StatelessWidget {
           color: Colors.grey[700],
         );
     return Container(
-      padding: const EdgeInsets.only(top: 40.0, bottom: 200),
+      padding: const EdgeInsets.only(top: 40.0, bottom: 260),
       child: Column(children: [
         const Spacer(),
         Image(
