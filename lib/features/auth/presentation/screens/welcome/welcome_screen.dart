@@ -183,6 +183,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   Widget _buildViewContent(BuildContext context) {
+    final footerText =
+        '${AppLocalizations.of(context).translate('auth:signin_text')} ${AppLocalizations.of(context).translate('auth:signin')}';
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -198,7 +201,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             child: Column(
               children: [
                 SizedBox(
-                  width: 220,
+                  width: 240,
                   child: SocialAuthButton(
                     provider: SocialAuthProviders.linkedin,
                     isLarge: true,
@@ -208,7 +211,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
                 const SizedBox(height: AppInsets.med),
                 SizedBox(
-                  width: 220,
+                  width: 240,
                   child: SocialAuthButton(
                     provider: SocialAuthProviders.apple,
                     isLarge: true,
@@ -218,13 +221,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
                 const SizedBox(height: AppInsets.med),
                 SizedBox(
-                  height: 40,
+                  height: 30,
                   child: FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     onPressed: () {
                       _openSignupAuthScreen(false, context);
                     },
-                    child: Text('Already have an account? Sign in'),
+                    child: Text(footerText),
                   ),
                 ),
               ],

@@ -62,14 +62,16 @@ class SocialAuthButton extends StatelessWidget {
       final name = _nameForProvider(provider);
 
       _child = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         child: Row(children: [
           _child,
           const SizedBox(width: 8),
+          const Spacer(),
           Text(
             'Sign up with $name',
-            style: TextStyle(color: Colors.white),
-          )
+            style: const TextStyle(color: Colors.white, fontSize: 17),
+          ),
+          const Spacer()
         ]),
       );
     }
