@@ -6,15 +6,16 @@ import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/profile_entity/profile_entity.dart';
 import '../services/profile_api_services/profile_api_service.dart';
 
-final profileRemoteDatasourceProvider = Provider<ProfileRemoteDatasource>((ref) {
+final profileRemoteDatasourceProvider =
+    Provider<ProfileRemoteDatasource>((ref) {
   final apiService = ref.read(profileApiServiceProvider);
   return ProfileRemoteImpl(apiService);
 });
 
 abstract class ProfileRemoteDatasource {
-
   /// TODO: PUT COMMENTS
   Future<Profile> retrieveProfileFromRemote(String profileId);
+  Future<List<Profile>> retrieveConnectionsFromRemote(String profileId);
 }
 
 class ProfileRemoteImpl implements ProfileRemoteDatasource {
@@ -28,6 +29,18 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Profile.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Profile>> retrieveConnectionsFromRemote(String profileId) async {
+    final response = await apiService.getUserConnections(profileId);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+
+      return List<Profile>();
     } else {
       throw ServerException(response.error);
     }

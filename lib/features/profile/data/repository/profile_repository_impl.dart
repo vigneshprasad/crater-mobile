@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -23,9 +22,24 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<Either<Failure, Profile>> retrieveProfile(String profileId) async {
     try {
-      final response = await remoteDatasource.retrieveProfileFromRemote(profileId);
+      final response =
+          await remoteDatasource.retrieveProfileFromRemote(profileId);
       return Right(response);
-    } on ServerException catch(error) {
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    } on SocketException {
+      return Left(ServerFailure("No internet"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Profile>>> retrieveConnections(
+      String profileId) async {
+    try {
+      final response =
+          await remoteDatasource.retrieveConnectionsFromRemote(profileId);
+      return Right(response);
+    } on ServerException catch (error) {
       return Left(ServerFailure(error));
     } on SocketException {
       return Left(ServerFailure("No internet"));

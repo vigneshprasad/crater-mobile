@@ -1,5 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../api/interceptors/authorized_interceptor.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -22,4 +22,7 @@ abstract class ProfileApiService extends ChopperService {
 
   @Get(path: 'network/{profileId}/')
   Future<Response> retrieveProfile(@Path() String profileId);
+
+  @Get(path: 'profile/connections/')
+  Future<Response> getUserConnections(@Path() String profileId);
 }

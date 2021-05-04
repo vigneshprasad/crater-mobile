@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/profile/data/services/profile_api_services/profile_api_service.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -31,6 +32,7 @@ class ProfileScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId).state);
+
     const fabHeroTag = Object();
     return Scaffold(
         appBar: BaseAppBar(),
@@ -61,13 +63,7 @@ class ProfileScreen extends HookWidget {
                       if (state.interests != null && state.objectives != null)
                         _MeetingPreferenceInfo(
                             state.interests, state.objectives),
-                      _UserConnections([
-                        state.profile,
-                        state.profile,
-                        state.profile,
-                        state.profile,
-                        state.profile
-                      ]),
+                      _UserConnections(state.connections),
                     ],
                   ),
                 ),
