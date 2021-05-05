@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_participant_entity.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../routes.gr.dart';
+import '../../../conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
 import '../../domain/entity/meeting_entity.dart';
+import '../../domain/entity/meeting_participant_entity.dart';
 
 class OneOnOneCard extends StatelessWidget {
   final Meeting meeting;

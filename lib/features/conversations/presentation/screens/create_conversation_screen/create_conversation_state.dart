@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/repository/meeting_repository.dart';
 import '../../../data/models/create_table_meta/create_table_meta.dart';
+import '../../../data/repository/conversation_repository_impl.dart';
 
 part 'create_conversation_state.freezed.dart';
 

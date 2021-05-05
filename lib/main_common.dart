@@ -10,6 +10,7 @@ import 'core/config_reader/config_reader.dart';
 import 'core/environments/environments.dart';
 import 'core/local_storage/local_storage.dart';
 import 'core/logger/logger.dart';
+import 'core/push_notfications/push_notifications.dart';
 import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
 import 'utils/simple_bloc_observer.dart';
@@ -41,6 +42,7 @@ Future<void> mainCommon(String configPath, String env) async {
   KiwiContainer().resolve<LocalStorage>().registerAdapters();
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   final Logger logger = KiwiContainer().resolve<Logger>();
+  KiwiContainer().resolve<PushNotifications>().initSdk();
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

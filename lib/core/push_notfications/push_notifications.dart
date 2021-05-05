@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
 import '../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import '../../features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import '../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../routes.gr.dart';
 import '../config_reader/config_reader.dart';
@@ -18,6 +18,7 @@ abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
   Future<String> getPushToken();
+  void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
   void handleNotificationReceived(OSNotification notification);
@@ -78,14 +79,7 @@ class PushNotificationsImpl implements PushNotifications {
         _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
       }
     } else if (type == PushType.createConversation) {
-      _navigatorKey.currentState.push(CreateConversationSheet()).then(
-        (value) {
-          if (value != null && value is Topic) {
-            ExtendedNavigator.root.pushCreateConversationScreen(
-                topic: value, type: ConversationType.curated);
-          }
-        },
-      );
+      ExtendedNavigator.root.push(Routes.homeScreen(tab: 1));
     }
   }
 
@@ -108,21 +102,25 @@ class PushNotificationsImpl implements PushNotifications {
       OneSignal.shared.consentGranted(true);
     }
 
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
-
-    OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
-
-    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
-
-    OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
   }
 
   @override
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes) {
     // TODO: implement subscriptionsChangeHandler
+  }
+
+  @override
+  void setEventHandlers() {
+    OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
+
+    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
+
+    OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
   }
 }

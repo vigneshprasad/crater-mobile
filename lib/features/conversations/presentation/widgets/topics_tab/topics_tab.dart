@@ -2,13 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
+import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/article_topic_card/article_topic_card.dart';
-
+import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
+import '../../../domain/entity/topic_entity/topic_entity.dart';
+import '../../screens/create_conversation_screen/create_conversation_state.dart';
+import '../article_topic_card/article_topic_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'topics_tab_state.dart';
 
@@ -18,6 +20,7 @@ class TopicsTab extends HookWidget {
     final topicsState = useProvider(topicsStateProvider.state);
     final articlesState = useProvider(articleTopicsStateProiver.state);
     return RefreshIndicator(
+      displacement: 96.00,
       onRefresh: () {
         final futures = [
           context.read(topicsStateProvider).getTopicsList(),
@@ -31,6 +34,30 @@ class TopicsTab extends HookWidget {
           SliverObstructionInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
+          topicsState.maybeWhen(
+            data: (data) {
+              Widget child;
+              if (data.isNotEmpty) {
+                child = Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.xxl,
+                    vertical: AppInsets.xl,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .translate("topic_tab:suggested_topic_heading"),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                );
+              }
+              return SliverToBoxAdapter(
+                child: child,
+              );
+            },
+            orElse: () => const SliverToBoxAdapter(),
+          ),
           topicsState.when(
             loading: () => _SliverLoader(child: Container()),
             error: (err, st) => _SliverLoader(child: Container()),
@@ -38,7 +65,7 @@ class TopicsTab extends HookWidget {
               topics: topics,
             ),
           ),
-          const SliverPadding(padding: EdgeInsets.only(top: AppInsets.xl)),
+          const SliverPadding(padding: EdgeInsets.only(top: AppInsets.med)),
           articlesState.maybeWhen(
             data: (topics) {
               Widget child = Container();
@@ -49,7 +76,8 @@ class TopicsTab extends HookWidget {
                     vertical: AppInsets.xl,
                   ),
                   child: Text(
-                    "Trending Topics",
+                    AppLocalizations.of(context)
+                        .translate("topic_tab:article_topic_headings"),
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -172,9 +200,15 @@ class _TopicGridCard extends StatelessWidget {
         borderRadius: cardRadius,
         splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
         onTap: () {
-          ExtendedNavigator.of(context).push(Routes.createConversationScreen,
-              arguments: CreateConversationScreenArguments(
-                  topic: topic, type: ConversationType.curated));
+          ExtendedNavigator.of(context)
+              .push(Routes.createConversationScreen,
+                  arguments: CreateConversationScreenArguments(
+                      topic: topic, type: ConversationType.curated))
+              .then((value) {
+            if (value is Optin) {
+              HomeTabControllerProvider.of(context).controller.animateTo(2);
+            }
+          });
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),

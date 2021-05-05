@@ -8,20 +8,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
-import 'package:worknetwork/core/error/failures/failures.dart';
-import 'package:worknetwork/features/article/domain/entity/article_entity/article_entity.dart';
-import 'package:worknetwork/features/conversations/data/models/conversation_failures/conversation_failures.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/error/failures/failures.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
+import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../data/models/conversation_failures/conversation_failures.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
@@ -114,6 +114,9 @@ class _RoundTableLoaded extends HookWidget {
         );
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+    final heading = table.topicDetail.articleDetail != null
+        ? table.topicDetail.articleDetail.description
+        : table.topicDetail.name;
 
     // Controller
     final rtcController =
@@ -142,7 +145,7 @@ class _RoundTableLoaded extends HookWidget {
               children: [
                 if (table.topicDetail.root != null)
                   Text(table.topicDetail.root.name, style: categoryStyle),
-                Text(table.topicDetail.name, style: agendaStyle),
+                Text(heading, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(table.start.toLocal()),
                     style: dateStyle),
@@ -447,6 +450,7 @@ class _ArticleDetailCard extends StatelessWidget {
               horizontal: AppInsets.l,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -465,7 +469,7 @@ class _ArticleDetailCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppInsets.l),
                 Text(
-                  article.description,
+                  article.title,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
