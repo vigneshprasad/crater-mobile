@@ -143,14 +143,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _profileSetupBlocListener(
       BuildContext context, ProfileSetupState state) {
     if (state is PostUserProfileRequestLoaded) {
-      final bloc = BlocProvider.of<AuthBloc>(context)
-        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-      if (bloc.state.user.phoneNumberVerified) {
-        ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
-      } else {
-        ExtendedNavigator.of(context)
-            .popAndPush(Routes.phoneVerificationScreen);
-      }
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _goToNextScreen();
     }
   }
 
@@ -201,8 +196,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   void _onPressedSkip() {
-    _bloc.add(PostProfileRequestStarted(
-      linkedinUrl: '',
-    ));
+    _goToNextScreen();
+  }
+
+  void _goToNextScreen() {
+    final bloc = BlocProvider.of<AuthBloc>(context);
+    if (bloc.state.user.phoneNumberVerified) {
+      ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+    } else {
+      ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
+    }
   }
 }
