@@ -9,9 +9,11 @@ enum AuthProvider { google, facebook, linkedin }
 
 class SocialAuthButton extends StatelessWidget {
   final SocialAuthProviders provider;
+  final bool isLarge;
   final VoidCallback onPressed;
 
-  const SocialAuthButton({Key key, @required this.provider, this.onPressed})
+  const SocialAuthButton(
+      {Key key, @required this.provider, this.onPressed, this.isLarge = false})
       : super(key: key);
 
   @override
@@ -56,8 +58,26 @@ class SocialAuthButton extends StatelessWidget {
       _buttonColor = Colors.grey[900];
     }
 
+    if (isLarge) {
+      final name = _nameForProvider(provider);
+
+      _child = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+        child: Row(children: [
+          _child,
+          const SizedBox(width: 8),
+          const Spacer(),
+          Text(
+            'Sign up with $name',
+            style: const TextStyle(color: Colors.white, fontSize: 17),
+          ),
+          const Spacer()
+        ]),
+      );
+    }
+
     return RawMaterialButton(
-      constraints: const BoxConstraints(
+      constraints: BoxConstraints(
         minWidth: 72,
       ),
       fillColor: _buttonColor,
@@ -68,5 +88,24 @@ class SocialAuthButton extends StatelessWidget {
       onPressed: onPressed,
       child: _child,
     );
+  }
+
+  String _nameForProvider(SocialAuthProviders provider) {
+    switch (provider) {
+      case SocialAuthProviders.linkedin:
+        return "LinkedIn";
+        break;
+      case SocialAuthProviders.apple:
+        return "Apple";
+        break;
+      case SocialAuthProviders.facebook:
+        return "Facebook";
+        break;
+      case SocialAuthProviders.google:
+        return "Google";
+        break;
+      default:
+        return "";
+    }
   }
 }
