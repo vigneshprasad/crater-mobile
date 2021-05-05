@@ -12,6 +12,7 @@ class CalendarCardLayout extends StatelessWidget {
   final BoxBorder border;
   final Color background;
   final VoidCallback onPressed;
+  final EdgeInsets padding;
 
   const CalendarCardLayout({
     Key key,
@@ -22,6 +23,10 @@ class CalendarCardLayout extends StatelessWidget {
     this.border,
     this.background,
     this.onPressed,
+    this.padding = const EdgeInsets.symmetric(
+      vertical: AppInsets.l,
+      horizontal: AppInsets.xl,
+    ),
   }) : super(key: key);
 
   @override
@@ -52,17 +57,17 @@ class CalendarCardLayout extends StatelessWidget {
               borderRadius:
                   const BorderRadius.all(Radius.circular(kCardBorderRadius)),
             ),
-            padding: const EdgeInsets.all(AppInsets.xl),
+            padding: padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (heading != null)
                   DefaultTextStyle(style: titleStyle, child: heading),
-                const SizedBox(height: AppInsets.sm),
+                if (heading != null) const SizedBox(height: AppInsets.sm),
                 if (subHeading != null)
                   DefaultTextStyle(style: subheadStyle, child: subHeading),
                 Container(
-                  constraints: BoxConstraints(minHeight: 32.00),
+                  constraints: const BoxConstraints(minHeight: 32.00),
                   child: child,
                 ),
               ],

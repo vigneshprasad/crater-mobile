@@ -33,6 +33,7 @@ class ArticleTopicCard extends StatelessWidget {
       width: 2.00,
       color: Colors.grey[200],
     );
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.med),
       child: Material(
@@ -64,14 +65,15 @@ class ArticleTopicCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppInsets.xl,
-                    vertical: AppInsets.xl,
+                if (topic.articleDetail.description.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppInsets.xl,
+                      vertical: AppInsets.xl,
+                    ),
+                    child: Text(topic.articleDetail.description,
+                        style: headingStyle),
                   ),
-                  child: Text(topic.articleDetail.description,
-                      style: headingStyle),
-                ),
                 _ArticleContent(article: topic.articleDetail),
                 Align(
                   alignment: Alignment.bottomRight,

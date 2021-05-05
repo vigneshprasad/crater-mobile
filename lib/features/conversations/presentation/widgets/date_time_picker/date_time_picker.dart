@@ -29,7 +29,7 @@ class DateTimePicker extends HookWidget {
                 .map((slot) => _Slot(
                       slot: slot,
                       selected: selected.value == slot,
-                      isNow: slots.indexOf(slot) == 0,
+                      isNow: false,
                       onPressed: (value) {
                         selected.value = value;
                         if (onChanged != null) {

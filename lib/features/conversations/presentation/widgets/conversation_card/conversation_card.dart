@@ -62,15 +62,25 @@ class ConversationCard extends StatelessWidget {
       }
     }
 
-    final heading = conversation.topicDetail.articleDetail != null
-        ? conversation.topicDetail.articleDetail.description
-        : conversation.topicDetail.name;
+    final article = conversation.topicDetail.articleDetail;
+
+    final heading =
+        article != null ? article.description : conversation.topicDetail.name;
+    final padding = article != null && article.description.isEmpty
+        ? const EdgeInsets.symmetric(
+            horizontal: AppInsets.xl,
+          )
+        : const EdgeInsets.symmetric(
+            vertical: AppInsets.xl,
+            horizontal: AppInsets.xl,
+          );
 
     return CalendarCardLayout(
       onPressed: () {
         ExtendedNavigator.of(context)
             .push(Routes.conversationScreen(id: conversation.id));
       },
+      padding: padding,
       background: background,
       heading: Text(heading),
       subHeading: Row(

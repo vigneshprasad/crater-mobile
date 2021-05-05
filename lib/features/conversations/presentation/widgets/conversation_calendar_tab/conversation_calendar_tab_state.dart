@@ -38,7 +38,7 @@ class ConversationCalendarStateNofier
 
     if (type == ConversationTabType.all) {
       final futures = [
-        read(conversationRepositoryProvider).getMyConversations(_start, _end),
+        read(conversationRepositoryProvider).getAllConversations(_start, _end),
         KiwiContainer()
             .resolve<MeetingRepository>()
             .getMeetingsByDate(past: false),

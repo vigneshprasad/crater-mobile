@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
@@ -33,6 +34,30 @@ class TopicsTab extends HookWidget {
           SliverObstructionInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
+          topicsState.maybeWhen(
+            data: (data) {
+              Widget child;
+              if (data.isNotEmpty) {
+                child = Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.xxl,
+                    vertical: AppInsets.xl,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .translate("topic_tab:suggested_topic_heading"),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                );
+              }
+              return SliverToBoxAdapter(
+                child: child,
+              );
+            },
+            orElse: () => const SliverToBoxAdapter(),
+          ),
           topicsState.when(
             loading: () => _SliverLoader(child: Container()),
             error: (err, st) => _SliverLoader(child: Container()),
@@ -40,7 +65,7 @@ class TopicsTab extends HookWidget {
               topics: topics,
             ),
           ),
-          const SliverPadding(padding: EdgeInsets.only(top: AppInsets.xl)),
+          const SliverPadding(padding: EdgeInsets.only(top: AppInsets.med)),
           articlesState.maybeWhen(
             data: (topics) {
               Widget child = Container();
@@ -51,7 +76,8 @@ class TopicsTab extends HookWidget {
                     vertical: AppInsets.xl,
                   ),
                   child: Text(
-                    "Trending Topics",
+                    AppLocalizations.of(context)
+                        .translate("topic_tab:article_topic_headings"),
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
