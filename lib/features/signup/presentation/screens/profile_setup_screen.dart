@@ -98,16 +98,32 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: AppInsets.xxl),
-                                  child: BaseLargeButton(
-                                    text: next,
-                                    onPressed: _onPressedSubmit,
+                              Column(
+                                children: [
+                                  Spacer(),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: AppInsets.xxl),
+                                      child: BaseLargeButton(
+                                        text: next,
+                                        onPressed: _onPressedSubmit,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: AppInsets.xxl),
+                                      child: FlatButton(
+                                        child: Text('skip'),
+                                        onPressed: _onPressedSkip,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
@@ -127,14 +143,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _profileSetupBlocListener(
       BuildContext context, ProfileSetupState state) {
     if (state is PostUserProfileRequestLoaded) {
-      final bloc = BlocProvider.of<AuthBloc>(context)
-        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-      if (bloc.state.user.phoneNumberVerified) {
-        ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
-      } else {
-        ExtendedNavigator.of(context)
-            .popAndPush(Routes.phoneVerificationScreen);
-      }
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _goToNextScreen();
     }
   }
 
@@ -181,6 +192,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       _bloc.add(PostProfileRequestStarted(
         linkedinUrl: _linkedInController.text,
       ));
+    }
+  }
+
+  void _onPressedSkip() {
+    _goToNextScreen();
+  }
+
+  void _goToNextScreen() {
+    final bloc = BlocProvider.of<AuthBloc>(context);
+    if (bloc.state.user.phoneNumberVerified) {
+      ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+    } else {
+      ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
     }
   }
 }

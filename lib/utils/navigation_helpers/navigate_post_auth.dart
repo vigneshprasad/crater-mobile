@@ -8,14 +8,9 @@ import '../../routes.gr.dart';
 
 void navigatePostAuth(User user, {UserProfile profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
-  // if (user.objectives.isEmpty) {
-  // _navigator.currentState.popAndPushNamed(Routes.objectivesScreen);
-  // } else
   if (profile == null || profile.educationLevel == null) {
     _navigator.currentState
         .popAndPushNamed(Routes.profileIntroScreen(editMode: false));
-  } else if (user.linkedinUrl == null) {
-    _navigator.currentState.popAndPushNamed(Routes.profileSetupScreen);
   } else if (user.phoneNumberVerified == false) {
     _navigator.currentState.popAndPushNamed(Routes.phoneVerificationScreen);
   } else {

@@ -57,12 +57,7 @@ class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
     yield const ProfileSetupRequestLoading();
     final Map<String, dynamic> body = {
       "linkedin_url": event.linkedinUrl,
-      // "photo_url": event.photoUrl,
-      // "tags": event.userTags.map((e) => e.pk).toList(),
     };
-    // if (event.name.trim().isNotEmpty) {
-    //   body["name"] = event.name;
-    // }
     final profileOrError =
         await postUserProfile(PostUserProfileParams(body: body));
 
@@ -71,8 +66,6 @@ class ProfileSetupBloc extends Bloc<ProfileSetupEvent, ProfileSetupState> {
       (profile) {
         final properties = {
           "linkedin_url": profile.linkedinUrl,
-          // "name": profile.name,
-          // "user_tags": event.userTags.map((e) => e.name).toList(),
         };
         analytics.identify(properties: properties);
         analytics.trackEvent(

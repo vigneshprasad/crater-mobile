@@ -34,6 +34,7 @@ class GetProfileNotifier
     final response = await Future.wait([
       _repository.retrieveProfile(_profileId),
       _meetingRepository.getMeetingPreference(),
+      _repository.retrieveConnections(_profileId),
     ]);
 
     for (int i = 0; i < response.length; i++) {
@@ -48,10 +49,13 @@ class GetProfileNotifier
     final Profile _profile = response[0].getOrElse(null) as Profile;
     final UserMeetingPreference _preference =
         response[1].getOrElse(null) as UserMeetingPreference;
+    final connections = response[2].getOrElse(null) as List<Profile>;
     final _ProfileScreenState _profileScreenState = _ProfileScreenState(
-        _profile,
-        _preference != null ? _preference.interests : [],
-        _preference != null ? _preference.objectives : []);
+      profile: _profile,
+      interests: _preference != null ? _preference.interests : [],
+      objectives: _preference != null ? _preference.objectives : [],
+      connections: connections,
+    );
     state = AsyncValue<_ProfileScreenState>.data(_profileScreenState);
   }
 }
@@ -60,8 +64,10 @@ class _ProfileScreenState extends Equatable {
   final Profile profile;
   final List<MeetingInterest> interests;
   final List<MeetingObjective> objectives;
+  final List<Profile> connections;
 
-  const _ProfileScreenState(this.profile, this.interests, this.objectives);
+  const _ProfileScreenState(
+      {this.profile, this.interests, this.objectives, this.connections});
 
   @override
   List<Object> get props => [profile, interests, objectives];
