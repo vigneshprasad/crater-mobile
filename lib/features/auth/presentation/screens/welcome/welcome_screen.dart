@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -210,15 +211,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
                 const SizedBox(height: AppInsets.med),
-                SizedBox(
-                  width: 240,
-                  child: SocialAuthButton(
-                    provider: SocialAuthProviders.apple,
-                    isLarge: true,
-                    onPressed: () => _authBloc.add(const AuthSocialPressed(
-                        provider: SocialAuthProviders.apple)),
+                if (Platform.isIOS)
+                  SizedBox(
+                    width: 240,
+                    child: SocialAuthButton(
+                      provider: SocialAuthProviders.apple,
+                      isLarge: true,
+                      onPressed: () => _authBloc.add(const AuthSocialPressed(
+                          provider: SocialAuthProviders.apple)),
+                    ),
                   ),
-                ),
                 const SizedBox(height: AppInsets.med),
                 SizedBox(
                   height: 30,
