@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
@@ -36,24 +38,28 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     ),
     _ImageSlide(
       image: AppImageAssets.splashTopic,
+      imageWidth: 240,
       heading: "01.\nPick a conversation topic",
       subheading:
           "Simply choose a topic that is relevant to\nyou or your business.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashPeople,
+      imageWidth: 240,
       heading: "02.\nChoose whom to meet",
       subheading:
           "Simply choose the profession of the person you want to converse with",
     ),
     _ImageSlide(
       image: AppImageAssets.splashAI,
+      imageWidth: 240,
       heading: "03.\nOur AI goes to work",
       subheading:
           "Our AI engine will search for the best possible match for you.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashConversation,
+      imageWidth: 240,
       heading: "04.\nYour conversation is set up",
       subheading:
           "You will be matched with 1 or more people\nfor the conversation",
@@ -70,7 +76,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
-
+    LinkedInLogin.initialize(
+      context,
+      clientId: ConfigReader.getLinkedInClientId(),
+      clientSecret: ConfigReader.getLinkedInSecret(),
+      redirectUri: ConfigReader.getLinkedInRedirect(),
+    );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
@@ -102,20 +113,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         backgroundColor: Colors.white,
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            return Stack(
-              fit: StackFit.expand,
-              children: [
-                TabBarView(
-                  controller: _tabController,
-                  children: _tabs,
-                ),
-                Positioned(
-                  bottom: 56,
-                  child: _buildViewContent(context),
-                ),
-                if (state.isSubmitting != null && state.isSubmitting)
-                  _buildOverlay(context)
-              ],
+            return SafeArea(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  TabBarView(
+                    controller: _tabController,
+                    children: _tabs,
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    child: _buildViewContent(context),
+                  ),
+                  if (state.isSubmitting != null && state.isSubmitting)
+                    _buildOverlay(context)
+                ],
+              ),
             );
           },
         ),
@@ -179,7 +192,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         },
       );
     } else {
-      Fluttertoast.showToast(msg: failure.message as String);
+      Fluttertoast.showToast(msg: 'Some error occurred');
     }
   }
 
@@ -196,7 +209,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             length: _tabs.length,
             activeIndex: _activeIndex,
           ),
-          const SizedBox(height: AppInsets.xxl),
+          const SizedBox(height: AppInsets.med),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
             child: Column(
@@ -250,12 +263,14 @@ class _ImageSlide extends StatelessWidget {
   final ImageProvider image;
   final String heading;
   final String subheading;
+  final double imageWidth;
 
   const _ImageSlide({
     Key key,
     @required this.image,
     @required this.heading,
     @required this.subheading,
+    this.imageWidth = double.infinity,
   }) : super(key: key);
 
   @override
@@ -271,11 +286,12 @@ class _ImageSlide extends StatelessWidget {
           color: Colors.grey[700],
         );
     return Container(
-      padding: const EdgeInsets.only(top: 40.0, bottom: 260),
+      padding: const EdgeInsets.only(bottom: 200),
       child: Column(children: [
         const Spacer(),
         Image(
           image: image,
+          width: imageWidth,
         ),
         const Spacer(),
         Padding(
