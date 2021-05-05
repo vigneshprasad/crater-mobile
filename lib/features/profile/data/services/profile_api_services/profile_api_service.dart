@@ -23,6 +23,6 @@ abstract class ProfileApiService extends ChopperService {
   @Get(path: 'network/{profileId}/')
   Future<Response> retrieveProfile(@Path() String profileId);
 
-  @Get(path: 'profile/connections/')
+  @Get(path: 'profile/{profileId}/connections/')
   Future<Response> getUserConnections(@Path() String profileId);
 }

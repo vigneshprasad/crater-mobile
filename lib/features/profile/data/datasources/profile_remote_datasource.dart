@@ -38,9 +38,11 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId) async {
     final response = await apiService.getUserConnections(profileId);
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
 
-      return List<Profile>();
+      return jsonList
+          .map((json) => Profile.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }

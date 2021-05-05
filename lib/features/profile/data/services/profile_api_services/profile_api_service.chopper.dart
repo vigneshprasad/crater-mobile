@@ -25,7 +25,7 @@ class _$ProfileApiService extends ProfileApiService {
 
   @override
   Future<Response<dynamic>> getUserConnections(String profileId) {
-    final $url = '/user/auth/profile/connections/';
+    final $url = '/user/auth/profile/$profileId/connections/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
