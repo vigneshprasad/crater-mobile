@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 
@@ -66,6 +67,9 @@ class HomeScreen extends HookWidget {
         _tabController.removeListener(_tabChangeListener);
       };
     });
+
+    final popupManager = useProvider(popupManagerProvider);
+    popupManager.showPopup(PopupType.signupComplete, context);
 
     return Scaffold(
       drawer: AppDrawer(),
