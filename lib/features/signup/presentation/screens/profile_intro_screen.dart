@@ -242,6 +242,12 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
       final bloc = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserUpdateRecieved(user: state.user))
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+
+      if (widget.editMode == true) {
+        ExtendedNavigator.of(context).pop();
+        return;
+      }
+
       if (state.user.linkedinUrl == null) {
         ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
       } else {

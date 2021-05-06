@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/profile/data/services/profile_api_services/profile_api_service.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -91,9 +90,12 @@ class _ProfileBody extends HookWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _buildImage(),
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _buildImage(),
+          ),
         ),
         Text(
           profile.name,
@@ -105,7 +107,8 @@ class _ProfileBody extends HookWidget {
             style: Theme.of(context).textTheme.bodyText1,
           ),
         if (profile.linkedIn != null) _buildLinkedInButton(),
-        if (profile.introduction != null)
+        if (profile.introduction != null ||
+            profile.generatedIntroduction != null)
           SizedBox(
             width: double.infinity,
             child:
@@ -121,8 +124,11 @@ class _ProfileBody extends HookWidget {
                 ),
               ),
               if (profile.generatedIntroduction != null)
-                Text(
-                  profile.generatedIntroduction,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    profile.generatedIntroduction,
+                  ),
                 ),
               Text(
                 profile.introduction,
@@ -322,8 +328,7 @@ class _UserConnections extends HookWidget {
     }
 
     const showMaxConnections = 5;
-    final width =
-        MediaQuery.of(context).size.width / showMaxConnections - AppInsets.xxl;
+    final width = MediaQuery.of(context).size.width / showMaxConnections;
 
     return [
       const SizedBox(height: AppInsets.xxl),
@@ -335,30 +340,34 @@ class _UserConnections extends HookWidget {
         height: AppInsets.med,
         width: double.infinity,
       ),
-      Wrap(
-        spacing: 12,
-        children: connections
-            .take(showMaxConnections)
-            .map((user) => InkWell(
-                  onTap: () => ExtendedNavigator.of(context).push(
-                      Routes.profileScreen(userId: user.pk, allowEdit: false)),
-                  child: SizedBox(
-                    width: width,
-                    child: Column(
-                      children: [
-                        _ConnectionProfile(
-                          photoUrl: user.photo,
-                          size: width,
-                        ),
-                        Text(
-                          user.name,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 12,
+          children: connections
+              .take(showMaxConnections)
+              .map((user) => InkWell(
+                    onTap: () => ExtendedNavigator.of(context).push(
+                        Routes.profileScreen(
+                            userId: user.pk, allowEdit: false)),
+                    child: SizedBox(
+                      width: width,
+                      child: Column(
+                        children: [
+                          _ConnectionProfile(
+                            photoUrl: user.photo,
+                            size: width,
+                          ),
+                          Text(
+                            user.name,
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ))
-            .toList(),
+                  ))
+              .toList(),
+        ),
       )
     ];
   }
