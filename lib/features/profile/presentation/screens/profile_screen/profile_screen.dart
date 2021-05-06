@@ -94,7 +94,7 @@ class _ProfileBody extends HookWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: _buildImage(),
+            child: Center(child: _buildImage()),
           ),
         ),
         Text(
