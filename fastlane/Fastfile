@@ -30,15 +30,49 @@ platform :android do
     # You can also use other beta testing services here
   end
 
-  desc "Deploy a new version to the AppCenter"
-  lane :appcenter do
+  desc "Deploy a new Prod version to the AppCenter"
+  lane :appcenter_prod do
     # gradle(task: "clean assembleRelease")
     sh "flutter build apk -t lib/main_prod.dart"
     
     appcenter_upload(
       api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
       owner_name: 'WorkNetwork',
+      app_name: "Worknetwork-Prod-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+  end
+
+
+  desc "Deploy a new PreProd version to the AppCenter"
+  lane :appcenter_preprod do
+    # gradle(task: "clean assembleRelease")
+    sh "flutter build apk -t lib/main_preprod.dart"
+    
+    appcenter_upload(
+      api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
+      owner_name: 'WorkNetwork',
       app_name: "WorkNetwork-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+  end
+
+
+  desc "Deploy a new Dev version to the AppCenter"
+  lane :appcenter_dev do
+    # gradle(task: "clean assembleRelease")
+    sh "flutter build apk -t lib/main_dev.dart"
+    
+    appcenter_upload(
+      api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
+      owner_name: 'WorkNetwork',
+      app_name: "Worknetwork-Dev-1",
       destinations: "PublicLink",
       destination_type: "group",
       file: "./build/app/outputs/flutter-apk/app-release.apk"
@@ -56,16 +90,44 @@ end
 
 # iOS Lanes
 platform :ios do
-  desc "Description of what the lane does"
-  lane :appcenter do
+
+  desc "Deploy a new Prod version to the AppCenter"
+  lane :appcenter_prod do
     # add actions here: https://docs.fastlane.tools/actions
     
     # sh "flutter build ios -t lib/main_prod.dart"
 
     build_app(
       workspace: "ios/Runner.xcworkspace",
+      configuration: "Release",
       output_directory: "./build/ios/flutter-ipa/",
-      output_name: "app-release.ipa",
+      output_name: "app-prod.ipa",
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+
+    appcenter_upload(
+      api_token: 'e3a3e8773e4e09550ed962bf5b63068a0142f17e',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-Prod",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/ios/flutter-ipa/app-prod.ipa"
+    )
+  end
+
+  desc "Deploy a new PreProd version to the AppCenter"
+  lane :appcenter_preprod do
+    # add actions here: https://docs.fastlane.tools/actions
+    
+    # sh "flutter build ios -t lib/main_prod.dart"
+
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      configuration: "ReleasePreProd",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-preprod.ipa",
       export_options: {
         method: "ad-hoc",
       }
@@ -77,7 +139,35 @@ platform :ios do
       app_name: "WorkNetwork",
       destinations: "PublicLink",
       destination_type: "group",
-      file: "./build/ios/flutter-ipa/app-release.ipa"
+      file: "./build/ios/flutter-ipa/app-preprod.ipa"
     )
   end
+
+  desc "Deploy a new Dev version to the AppCenter"
+  lane :appcenter_dev do
+    # add actions here: https://docs.fastlane.tools/actions
+    
+    # sh "flutter build ios -t lib/main_prod.dart"
+
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      configuration: "ReleaseDev",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-dev.ipa",
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+
+    appcenter_upload(
+      api_token: 'e3a3e8773e4e09550ed962bf5b63068a0142f17e',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-Dev",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/ios/flutter-ipa/app-dev.ipa"
+    )
+  end
+
+
 end
