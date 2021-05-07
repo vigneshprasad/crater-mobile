@@ -71,9 +71,8 @@
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8B6339DFF88AA13CB20AEF68 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		8E2EAFF9AFFA90E318E81B61 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
-		942F4D81053C41138350E270 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; sourceTree = "<group>"; };
+		7B3EB1F514D40D2D4E4E4F4D /* Pods-Runner.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.releasedev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.releasedev.xcconfig"; sourceTree = "<group>"; };
+		86FDE61451DBF3CD961E62AE /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,9 +80,11 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		99CDD7D1BCCB15D3D7392D46 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		C7C5D49E34F95137E8F16326 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D885678814DFEC377F0EE11A /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A43B7A20D611D87C650751BC /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF449D593FD5554C4D0F16BB /* Pods-OneSignalNotificationServiceExtension.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.releasedev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.releasedev.xcconfig"; sourceTree = "<group>"; };
+		B80F31E799D01815C8F8AFB2 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		EA8993BC849BE9EB60504AFB /* Pods-OneSignalNotificationServiceExtension.releasepreprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.releasepreprod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.releasepreprod.xcconfig"; sourceTree = "<group>"; };
+		EDD34233B5FDB1490CA93FD6 /* Pods-Runner.releasepreprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.releasepreprod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.releasepreprod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,12 +136,16 @@
 		918B682CA958E16CAF8DAB5D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3826DEA879904FBF29EC2597 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				8B6339DFF88AA13CB20AEF68 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
-				942F4D81053C41138350E270 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */,
-				0C911E26FB16AF4BF2C6E514 /* Pods-Runner.debug.xcconfig */,
-				99CDD7D1BCCB15D3D7392D46 /* Pods-Runner.release.xcconfig */,
-				8E2EAFF9AFFA90E318E81B61 /* Pods-Runner.profile.xcconfig */,
+				86FDE61451DBF3CD961E62AE /* Pods-Runner.debug.xcconfig */,
+				B80F31E799D01815C8F8AFB2 /* Pods-Runner.release.xcconfig */,
+				55F11CD714225CB1148B36A0 /* Pods-Runner.profile.xcconfig */,
+				443E30438ADB4CDF7324E54D /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				690A678673343E47B7E7C36B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				1685439BEAEDE7E80CBF7E36 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */,
+				EA8993BC849BE9EB60504AFB /* Pods-OneSignalNotificationServiceExtension.releasepreprod.xcconfig */,
+				AF449D593FD5554C4D0F16BB /* Pods-OneSignalNotificationServiceExtension.releasedev.xcconfig */,
+				EDD34233B5FDB1490CA93FD6 /* Pods-Runner.releasepreprod.xcconfig */,
+				7B3EB1F514D40D2D4E4E4F4D /* Pods-Runner.releasedev.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -561,7 +566,7 @@
 		};
 		212DFAE02644EF2B00C454EC /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 690A678673343E47B7E7C36B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = AF449D593FD5554C4D0F16BB /* Pods-OneSignalNotificationServiceExtension.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -683,7 +688,7 @@
 		};
 		212DFAE32644EF4700C454EC /* ReleasePreProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 690A678673343E47B7E7C36B /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = EA8993BC849BE9EB60504AFB /* Pods-OneSignalNotificationServiceExtension.releasepreprod.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

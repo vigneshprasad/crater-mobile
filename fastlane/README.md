@@ -16,35 +16,45 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android test
+### android prod
 ```
-fastlane android test
+fastlane android prod
 ```
-Runs all the tests
-### android beta
+Deploy a new PROD version to the AppCenter
+### android preprod
 ```
-fastlane android beta
+fastlane android preprod
 ```
-Submit a new Beta Build to Crashlytics Beta
-### android appcenter
+Deploy a new PREPROD version to the AppCenter
+### android dev
 ```
-fastlane android appcenter
+fastlane android dev
 ```
-Deploy a new version to the AppCenter
-### android deploy
+Deploy a new DEV version to the AppCenter
+### android apks
 ```
-fastlane android deploy
+fastlane android apks
 ```
-Deploy a new version to the Google Play
+Generate split apks for PlayStore Upload
 
 ----
 
 ## iOS
-### ios appcenter
+### ios prod
 ```
-fastlane ios appcenter
+fastlane ios prod
 ```
-Description of what the lane does
+Deploy a new PROD version to the AppCenter
+### ios preprod
+```
+fastlane ios preprod
+```
+Deploy a new PREPROD version to the AppCenter
+### ios dev
+```
+fastlane ios dev
+```
+Deploy a new DEV version to the AppCenter
 
 ----
 
