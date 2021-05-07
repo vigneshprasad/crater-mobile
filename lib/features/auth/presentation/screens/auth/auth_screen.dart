@@ -118,7 +118,7 @@ class _AuthScreenState extends State<AuthScreen> {
         },
       );
     } else {
-      Fluttertoast.showToast(msg: failure.message as String);
+      Fluttertoast.showToast(msg: 'Some error occurred.');
     }
   }
 

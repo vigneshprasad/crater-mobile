@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
-import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../meeting/presentation/widgets/oneonone_card.dart';
 import '../conversation_card/conversation_card.dart';
@@ -62,9 +61,6 @@ class _LoadedConversationTab extends HookWidget {
     final weeks = useProvider(conversationCalendarStateProvider(type).state);
 
     final List<Widget> children = [];
-
-    final popupManager = useProvider(popupManagerProvider);
-    popupManager.showPopup(PopupType.signupComplete, context);
 
     children.add(SliverObstructionInjector(
       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
