@@ -327,8 +327,10 @@ class _UserConnections extends HookWidget {
       return [];
     }
 
-    const showMaxConnections = 5;
-    final width = MediaQuery.of(context).size.width / showMaxConnections;
+    const itemsInRow = 5;
+    const itemHeight = 150;
+    final gridViewHeight =
+        itemHeight * (connections.length / itemsInRow).ceilToDouble();
 
     return [
       const SizedBox(height: AppInsets.xxl),
@@ -340,27 +342,29 @@ class _UserConnections extends HookWidget {
         height: AppInsets.med,
         width: double.infinity,
       ),
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Wrap(
-          spacing: 12,
+      SizedBox(
+        height: gridViewHeight,
+        child: GridView.count(
+          crossAxisCount: itemsInRow,
+          childAspectRatio: 0.7,
+          physics: const NeverScrollableScrollPhysics(),
           children: connections
-              .take(showMaxConnections)
               .map((user) => InkWell(
                     onTap: () => ExtendedNavigator.of(context).push(
                         Routes.profileScreen(
-                            userId: user.pk, allowEdit: false)),
-                    child: SizedBox(
-                      width: width,
+                            userId: user.uuid, allowEdit: false)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
                       child: Column(
                         children: [
                           _ConnectionProfile(
                             photoUrl: user.photo,
-                            size: width,
+                            size: 50,
                           ),
                           Text(
                             user.name,
                             textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 13),
                           )
                         ],
                       ),
@@ -368,7 +372,7 @@ class _UserConnections extends HookWidget {
                   ))
               .toList(),
         ),
-      )
+      ),
     ];
   }
 }
