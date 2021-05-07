@@ -158,7 +158,7 @@ platform :ios do
       workspace: "ios/Runner.xcworkspace",
       configuration: "ReleasePreProd",
       output_directory: "./build/ios/flutter-ipa/",
-      output_name: "app-preprod.ipa",,
+      output_name: "app-preprod.ipa",
       include_symbols: false, # dSYM generation
       export_options: {
         method: "ad-hoc",
@@ -196,7 +196,7 @@ platform :ios do
       workspace: "ios/Runner.xcworkspace",
       configuration: "ReleaseDev",
       output_directory: "./build/ios/flutter-ipa/",
-      output_name: "app-dev.ipa",,
+      output_name: "app-dev.ipa",
       include_symbols: false, # dSYM generation
       export_options: {
         method: "ad-hoc",
