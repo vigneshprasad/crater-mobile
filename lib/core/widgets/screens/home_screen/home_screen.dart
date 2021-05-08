@@ -73,6 +73,7 @@ class HomeScreen extends HookWidget {
 
     return Scaffold(
       drawer: AppDrawer(),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -105,13 +106,13 @@ class HomeScreen extends HookWidget {
                     left: AppInsets.med,
                     right: AppInsets.med,
                   ),
-                  labelColor: Colors.grey[800],
-                  unselectedLabelColor: Colors.grey[400],
+                  // labelColor: Colors.grey[800],
+                  // unselectedLabelColor: Colors.grey[400],
                   isScrollable: true,
                   labelStyle: labelStyle,
                   controller: _tabController,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  indicatorWeight: 4.0,
+                  indicatorColor: Colors.transparent,
+                  // indicatorWeight: 1.0,
                   tabs: _tabs,
                 ),
               ),

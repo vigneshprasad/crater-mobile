@@ -116,6 +116,6 @@
     "popup:conversation_leave_title": "Are you sure?",
     "popup:conversation_leave_message": "People usually drop into a conversation few minutes in.",
     "popup:conversation_leave_button_title": "Explore other conversations",
-     "topic_tab:article_topic_headings": "Trending Group Topics",
-     "topic_tab:suggested_topic_heading": "Suggested 1:1 Topics"
+     "topic_tab:article_topic_headings": "Group Topics",
+     "topic_tab:suggested_topic_heading": "1:1 Topics"
 }

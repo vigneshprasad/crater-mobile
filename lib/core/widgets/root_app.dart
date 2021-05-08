@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/color/color.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -76,7 +77,20 @@ class RootApp extends HookWidget {
             ],
             builder: (context, child) {
               return Theme(
-                data: AppTheme.lightTheme,
+                data: AppTheme.darkTheme.copyWith(
+                  backgroundColor: HexColor.fromHex('#283950'),
+                  canvasColor: HexColor.fromHex('#121823'),
+                  appBarTheme: AppBarTheme(
+                    color: HexColor.fromHex('#283950'),
+                  ),
+                  buttonTheme: ButtonThemeData(
+                    buttonColor: HexColor.fromHex('#121823'),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black, width: 0.5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
                 child: child,
               );
             },

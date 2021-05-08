@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/color/color.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -30,14 +31,14 @@ class ArticleTopicCard extends StatelessWidget {
           fontWeight: FontWeight.w500,
         );
     final border = Border.all(
-      width: 2.00,
+      // width: 1.00,
       color: Colors.grey[200],
     );
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.med),
       child: Material(
-        color: canvas,
+        // color: canvas,
         borderRadius: borderRadius,
         child: InkWell(
           borderRadius: borderRadius,
@@ -59,9 +60,9 @@ class ArticleTopicCard extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              border: border,
-            ),
+                // borderRadius: borderRadius,
+                // border: border,
+                ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -74,18 +75,23 @@ class ArticleTopicCard extends StatelessWidget {
                     child: Text(topic.articleDetail.description,
                         style: headingStyle),
                   ),
-                _ArticleContent(article: topic.articleDetail),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                  child: _ArticleContent(article: topic.articleDetail),
+                ),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: FlatButton(
-                    onPressed: null,
+                  child: RaisedButton(
+                    elevation: 5,
+                    onPressed: () {},
                     child: Text(
                       "Start a conversation",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontSize: 14.00,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                      // style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      //       fontSize: 14.00,
+                      //       fontWeight: FontWeight.w700,
+                      //       color: Theme.of(context).primaryColor,
+                      //     ),
                     ),
                   ),
                 ),
@@ -107,14 +113,18 @@ class _ArticleContent extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFFD5EFFF);
+    final backgroundColor = HexColor.fromHex('#DDE9FD');
     final headingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 15.00,
           fontWeight: FontWeight.w700,
+          color: Theme.of(context).canvasColor,
         );
-    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith();
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          color: Theme.of(context).canvasColor,
+        );
     return Material(
       color: backgroundColor,
+      borderRadius: BorderRadius.circular(10),
       child: Padding(
         padding: const EdgeInsets.only(
           top: AppInsets.l,

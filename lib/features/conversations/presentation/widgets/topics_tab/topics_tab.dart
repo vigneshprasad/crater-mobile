@@ -194,7 +194,7 @@ class _TopicGridCard extends StatelessWidget {
         );
     return Material(
       borderRadius: cardRadius,
-      color: background,
+      // color: background,
       child: InkWell(
         highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
         borderRadius: cardRadius,
