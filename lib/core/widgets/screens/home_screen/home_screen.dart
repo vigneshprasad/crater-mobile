@@ -34,7 +34,7 @@ class HomeScreen extends HookWidget {
   static const List<Widget> _tabs = [
     Tab(text: "Topics"),
     Tab(text: "All Conversations"),
-    Tab(text: "My Conversations"),
+    // Tab(text: "My Conversations"),
     Tab(text: "Inbox"),
   ];
 
@@ -73,7 +73,20 @@ class HomeScreen extends HookWidget {
 
     return Scaffold(
       drawer: AppDrawer(),
-      backgroundColor: Theme.of(context).backgroundColor,
+      // backgroundColor: Theme.of(context).backgroundColor,
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.search), label: 'Explore'),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.people_alt_outlined), label: 'Conversations'),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.inbox_outlined), label: 'Inbox')
+        ],
+        onTap: (int index) {
+          _tabController.index = index;
+        },
+      ),
       body: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -81,7 +94,13 @@ class HomeScreen extends HookWidget {
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
-                expandedHeight: 120.00,
+                // expandedHeight: 120.00,
+                title: Column(
+                  children: [
+                    Text('Hi Vignesh'),
+                  ],
+                ),
+                centerTitle: true,
                 floating: true,
                 pinned: true,
                 elevation: 0,
@@ -101,20 +120,20 @@ class HomeScreen extends HookWidget {
                   ),
                   const SizedBox(width: AppInsets.l),
                 ],
-                bottom: TabBar(
-                  indicatorPadding: const EdgeInsets.only(
-                    left: AppInsets.med,
-                    right: AppInsets.med,
-                  ),
-                  // labelColor: Colors.grey[800],
-                  // unselectedLabelColor: Colors.grey[400],
-                  isScrollable: true,
-                  labelStyle: labelStyle,
-                  controller: _tabController,
-                  indicatorColor: Colors.transparent,
-                  // indicatorWeight: 1.0,
-                  tabs: _tabs,
-                ),
+                //   bottom: TabBar(
+                //     indicatorPadding: const EdgeInsets.only(
+                //       left: AppInsets.med,
+                //       right: AppInsets.med,
+                //     ),
+                //     // labelColor: Colors.grey[800],
+                //     // unselectedLabelColor: Colors.grey[400],
+                //     isScrollable: true,
+                //     labelStyle: labelStyle,
+                //     controller: _tabController,
+                //     indicatorColor: Colors.transparent,
+                //     // indicatorWeight: 1.0,
+                //     tabs: _tabs,
+                //   ),
               ),
             ),
           ];
@@ -130,10 +149,10 @@ class HomeScreen extends HookWidget {
                   type: ConversationTabType.all,
                   controller: _scrollController,
                 ),
-                ConversationCalendarTab(
-                  type: ConversationTabType.my,
-                  controller: _scrollController,
-                ),
+                // ConversationCalendarTab(
+                //   type: ConversationTabType.my,
+                //   controller: _scrollController,
+                // ),
                 InboxTab(),
               ],
             ),

@@ -34,6 +34,14 @@ class TopicsTab extends HookWidget {
           SliverObstructionInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
+          SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'What would you like to discuss today ?',
+              textAlign: TextAlign.center,
+            ),
+          )),
           topicsState.maybeWhen(
             data: (data) {
               Widget child;
