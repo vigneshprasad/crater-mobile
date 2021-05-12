@@ -65,7 +65,7 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
               vertical: AppInsets.l, horizontal: AppInsets.sm),
           isDense: true,
           filled: true,
-          fillColor: Colors.grey[200],
+          // fillColor: Colors.grey[200],
           enabledBorder: OutlineInputBorder(
             borderRadius: borderRadius,
             borderSide: const BorderSide(

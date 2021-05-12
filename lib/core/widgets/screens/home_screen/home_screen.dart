@@ -54,6 +54,8 @@ class HomeScreen extends HookWidget {
         );
     final _activeTab = useState(0);
 
+    final name = BlocProvider.of<AuthBloc>(context).state.user.name;
+
     useEffect(() {
       void _tabChangeListener() {
         if (!_tabController.indexIsChanging) {
@@ -73,8 +75,9 @@ class HomeScreen extends HookWidget {
 
     return Scaffold(
       drawer: AppDrawer(),
-      // backgroundColor: Theme.of(context).backgroundColor,
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        selectedItemColor: Colors.white,
         items: [
           const BottomNavigationBarItem(
               icon: Icon(Icons.search), label: 'Explore'),
@@ -97,7 +100,7 @@ class HomeScreen extends HookWidget {
                 // expandedHeight: 120.00,
                 title: Column(
                   children: [
-                    Text('Hi Vignesh'),
+                    Text('Hi $name'),
                   ],
                 ),
                 centerTitle: true,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -67,24 +68,26 @@ class _AuthScreenState extends State<AuthScreen> {
       child: Scaffold(
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            return Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                AuthScreenBody(
-                  content: Column(
-                    children: <Widget>[
-                      _socialAuthRow(context),
-                      const SizedBox(height: 32),
-                      // LoginForm()
-                      if (_formIndex == 0) SignupForm() else LoginForm()
-                    ],
+            return ScaffoldContainer(
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  AuthScreenBody(
+                    content: Column(
+                      children: <Widget>[
+                        _socialAuthRow(context),
+                        const SizedBox(height: 32),
+                        // LoginForm()
+                        if (_formIndex == 0) SignupForm() else LoginForm()
+                      ],
+                    ),
+                    footer: _buildFooter(context),
+                    // onTapPlayButton: _onTapPlayButton,
                   ),
-                  footer: _buildFooter(context),
-                  // onTapPlayButton: _onTapPlayButton,
-                ),
-                if (state.isSubmitting != null && state.isSubmitting)
-                  _buildOverlay(context)
-              ],
+                  if (state.isSubmitting != null && state.isSubmitting)
+                    _buildOverlay(context)
+                ],
+              ),
             );
           },
         ),
@@ -164,31 +167,34 @@ class _AuthScreenState extends State<AuthScreen> {
     );
     final bodyText = AppLocalizations.of(context).translate(bodyTextKey);
     final clickText = AppLocalizations.of(context).translate(clickTextKey);
-    return Container(
-      height: AppTheme.appBarHeight.height,
-      color: Colors.grey[200],
-      child: Center(
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(text: bodyText, style: bodyStyle),
-              TextSpan(
-                text: " $clickText",
-                style: clickStyle,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    if (_formIndex == 0) {
-                      setState(() {
-                        _formIndex = 1;
-                      });
-                    } else {
-                      setState(() {
-                        _formIndex = 0;
-                      });
-                    }
-                  },
-              ),
-            ],
+    return SafeArea(
+      top: false,
+      child: Container(
+        height: AppTheme.appBarHeight.height,
+        color: Theme.of(context).canvasColor,
+        child: Center(
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: bodyText, style: bodyStyle),
+                TextSpan(
+                  text: " $clickText",
+                  style: clickStyle,
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      if (_formIndex == 0) {
+                        setState(() {
+                          _formIndex = 1;
+                        });
+                      } else {
+                        setState(() {
+                          _formIndex = 0;
+                        });
+                      }
+                    },
+                ),
+              ],
+            ),
           ),
         ),
       ),

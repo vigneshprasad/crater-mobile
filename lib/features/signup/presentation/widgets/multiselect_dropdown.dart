@@ -67,7 +67,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
       child: Container(
         decoration: BoxDecoration(
           border: border,
-          color: Colors.grey[200],
+          color: Colors.white10,
           borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
         ),
         child: Stack(

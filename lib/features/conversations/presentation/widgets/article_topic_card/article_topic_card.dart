@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/color/color.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -36,66 +37,86 @@ class ArticleTopicCard extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.med),
-      child: Material(
-        // color: canvas,
-        borderRadius: borderRadius,
-        child: InkWell(
+      padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
+      child: BaseContainer(
+        radius: 8,
+        child: Material(
+          // color: canvas,
           borderRadius: borderRadius,
-          onTap: () {
-            ExtendedNavigator.of(context)
-                .push(Routes.createConversationScreen,
-                    arguments: CreateConversationScreenArguments(
-                        topic: topic, type: ConversationType.instant))
-                .then(
-              (value) {
-                if (value is Conversation) {
-                  HomeTabControllerProvider.of(context).controller.animateTo(1);
-                  ExtendedNavigator.of(context)
-                      .push(Routes.conversationScreen(id: value.id));
-                }
-              },
-            );
-            ;
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                // borderRadius: borderRadius,
-                // border: border,
-                ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (topic.articleDetail.description.isNotEmpty)
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: () {
+              ExtendedNavigator.of(context)
+                  .push(Routes.createConversationScreen,
+                      arguments: CreateConversationScreenArguments(
+                          topic: topic, type: ConversationType.instant))
+                  .then(
+                (value) {
+                  if (value is Conversation) {
+                    HomeTabControllerProvider.of(context)
+                        .controller
+                        .animateTo(1);
+                    ExtendedNavigator.of(context)
+                        .push(Routes.conversationScreen(id: value.id));
+                  }
+                },
+              );
+              ;
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  // borderRadius: borderRadius,
+                  // border: border,
+                  ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (topic.articleDetail.description.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppInsets.xl,
+                        vertical: AppInsets.xl,
+                      ),
+                      child: Text(topic.articleDetail.description,
+                          style: headingStyle),
+                    ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xl,
-                      vertical: AppInsets.xl,
-                    ),
-                    child: Text(topic.articleDetail.description,
-                        style: headingStyle),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                    child: _ArticleContent(article: topic.articleDetail),
                   ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-                  child: _ArticleContent(article: topic.articleDetail),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: RaisedButton(
-                    elevation: 5,
-                    onPressed: () {},
-                    child: Text(
-                      "Start a conversation",
-                      // style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      //       fontSize: 14.00,
-                      //       fontWeight: FontWeight.w700,
-                      //       color: Theme.of(context).primaryColor,
-                      //     ),
+                  Padding(
+                    padding: const EdgeInsets.all(AppInsets.xl),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: BaseContainer(
+                        radius: 30,
+                        child: RaisedButton(
+                          // elevation: 0,
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Text(
+                              "Start a conversation",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                    fontSize: 14.00,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -122,55 +143,58 @@ class _ArticleContent extends StatelessWidget {
     final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           color: Theme.of(context).canvasColor,
         );
-    return Material(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(10),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: AppInsets.l,
-          right: AppInsets.l,
-          left: AppInsets.xl,
-          bottom: AppInsets.xxl,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                BaseNetworkImage(
-                  imageUrl: article.articleSourceDetail.image,
-                  defaultImage: AppImageAssets.articleDefault,
-                  imagebuilder: (context, imageProvider) => CircleAvatar(
-                    radius: 14.00,
-                    backgroundImage: imageProvider,
+    return BaseContainer(
+      radius: 10,
+      child: Material(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: AppInsets.l,
+            right: AppInsets.l,
+            left: AppInsets.xl,
+            bottom: AppInsets.xxl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  BaseNetworkImage(
+                    imageUrl: article.articleSourceDetail.image,
+                    defaultImage: AppImageAssets.articleDefault,
+                    imagebuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 14.00,
+                      backgroundImage: imageProvider,
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppInsets.l),
-                Text(article.articleSourceDetail.name, style: headingStyle),
-                const Spacer(),
-                IconButton(
-                  splashRadius: 22.00,
-                  icon: Icon(
-                    Icons.launch,
-                    size: 20.00,
-                    color: Colors.grey[800].withOpacity(0.3),
+                  const SizedBox(width: AppInsets.l),
+                  Text(article.articleSourceDetail.name, style: headingStyle),
+                  const Spacer(),
+                  IconButton(
+                    splashRadius: 22.00,
+                    icon: Icon(
+                      Icons.launch,
+                      size: 20.00,
+                      color: Colors.grey[800].withOpacity(0.3),
+                    ),
+                    onPressed: () {
+                      KiwiContainer()
+                          .resolve<CustomTabs>()
+                          .openLink(article.websiteUrl);
+                    },
                   ),
-                  onPressed: () {
-                    KiwiContainer()
-                        .resolve<CustomTabs>()
-                        .openLink(article.websiteUrl);
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: AppInsets.sm),
-            Text(
-              article.title,
-              style: descriptionStyle,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: AppInsets.sm),
+              Text(
+                article.title,
+                style: descriptionStyle,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );

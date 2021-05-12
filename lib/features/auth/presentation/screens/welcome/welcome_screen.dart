@@ -8,6 +8,7 @@ import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 import 'package:worknetwork/ui/base/social_auth_button/social_auth_button.dart';
@@ -110,24 +111,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            return SafeArea(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  TabBarView(
-                    controller: _tabController,
-                    children: _tabs,
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    child: _buildViewContent(context),
-                  ),
-                  if (state.isSubmitting != null && state.isSubmitting)
-                    _buildOverlay(context)
-                ],
+            return ScaffoldContainer(
+              child: SafeArea(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    TabBarView(
+                      controller: _tabController,
+                      children: _tabs,
+                    ),
+                    Positioned(
+                      bottom: 20,
+                      child: _buildViewContent(context),
+                    ),
+                    if (state.isSubmitting != null && state.isSubmitting)
+                      _buildOverlay(context)
+                  ],
+                ),
               ),
             );
           },
@@ -278,12 +281,12 @@ class _ImageSlide extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w500,
           fontSize: 22,
-          color: Colors.grey[700],
+          // color: Colors.grey[700],
         );
     final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 16,
-          color: Colors.grey[700],
+          // color: Colors.grey[700],
         );
     return Container(
       padding: const EdgeInsets.only(bottom: 200),
@@ -342,7 +345,7 @@ class _SlideIndicator extends StatelessWidget {
 
     for (int index = 0; index < list.length; index++) {
       final primaryColor = Theme.of(context).primaryColor;
-      final color = index == activeIndex ? primaryColor : Colors.grey[200];
+      final color = index == activeIndex ? primaryColor : Colors.white24;
       final isLast = index == length - 1;
 
       items.add(

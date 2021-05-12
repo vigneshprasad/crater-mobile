@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/color/color.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -81,7 +82,7 @@ class ConversationCard extends StatelessWidget {
             .push(Routes.conversationScreen(id: conversation.id));
       },
       padding: padding,
-      background: background,
+      background: Theme.of(context).canvasColor,
       heading: Text(heading),
       subHeading: Row(
         children: [
@@ -123,13 +124,14 @@ class _ArticleDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
+          color: Colors.black,
           fontWeight: FontWeight.w500,
         );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-        color: Colors.white,
+        color: HexColor.fromHex('#DDE9FD'),
         type: MaterialType.card,
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -157,6 +159,7 @@ class _ArticleDetailCard extends StatelessWidget {
               const SizedBox(height: AppInsets.l),
               Text(
                 article.title,
+                style: TextStyle(color: Colors.black),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

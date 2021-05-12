@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -53,17 +54,20 @@ class ProfileScreen extends HookWidget {
                       ),
                       child: const Icon(WorkNetIcons.message),
                     ),
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      _ProfileBody(state.profile),
-                      if (state.interests != null && state.objectives != null)
-                        _MeetingPreferenceInfo(
-                            state.interests, state.objectives),
-                      _UserConnections(state.connections),
-                    ],
+              body: ScaffoldContainer(
+                child: SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        _ProfileBody(state.profile),
+                        if (state.interests != null && state.objectives != null)
+                          _MeetingPreferenceInfo(
+                              state.interests, state.objectives),
+                        _UserConnections(state.connections),
+                      ],
+                    ),
                   ),
                 ),
               )),

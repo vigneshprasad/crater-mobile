@@ -12,8 +12,8 @@ class ConversationTabShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300],
-      highlightColor: Colors.grey[200],
+      baseColor: Theme.of(context).canvasColor,
+      highlightColor: Theme.of(context).scaffoldBackgroundColor,
       child: CustomScrollView(
         slivers: [
           SliverObstructionInjector(

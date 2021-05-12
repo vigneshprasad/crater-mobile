@@ -18,10 +18,10 @@ class BaseLargeButton extends StatelessWidget {
     final buttonWidth = MediaQuery.of(context).size.width * 0.6;
     const buttonHeight = 48.00;
     final textStyle = Theme.of(context).textTheme.button.copyWith(
-          color: Colors.white,
+          color: Colors.black,
         );
     final fillColor =
-        onPressed == null ? Colors.grey : Theme.of(context).primaryColor;
+        onPressed == null ? Colors.grey : Theme.of(context).buttonColor;
     return SizedBox(
       width: buttonWidth,
       height: buttonHeight,

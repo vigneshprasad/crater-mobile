@@ -78,21 +78,20 @@ class RootApp extends HookWidget {
             builder: (context, child) {
               return Theme(
                 data: AppTheme.darkTheme.copyWith(
-                  // backgroundColor: HexColor.fromHex('#283950'),
-                  scaffoldBackgroundColor: HexColor.fromHex('#283950'),
-                  canvasColor: HexColor.fromHex('#121823'),
-                  appBarTheme: AppBarTheme(
-                      color: HexColor.fromHex('#283950'),
-                      actionsIconTheme: IconThemeData(color: Colors.white)),
-                  buttonTheme: ButtonThemeData(
-                    buttonColor: HexColor.fromHex('#121823'),
-                    colorScheme: ColorScheme.dark(),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.black, width: 0.5),
-                      borderRadius: BorderRadius.circular(20),
+                    // backgroundColor: HexColor.fromHex('#283950'),
+                    primaryColor: Colors.white,
+                    scaffoldBackgroundColor: HexColor.fromHex('#283950'),
+                    canvasColor: HexColor.fromHex('#121823'),
+                    appBarTheme: AppBarTheme(
+                        color: HexColor.fromHex('#283950'),
+                        actionsIconTheme: IconThemeData(color: Colors.white)),
+                    buttonTheme: ButtonThemeData(
+                      buttonColor: HexColor.fromHex('#121823'),
+                      colorScheme: ColorScheme.dark(),
                     ),
-                  ),
-                ),
+                    buttonColor: Colors.white,
+                    floatingActionButtonTheme: FloatingActionButtonThemeData(
+                        backgroundColor: Colors.white)),
                 child: child,
               );
             },

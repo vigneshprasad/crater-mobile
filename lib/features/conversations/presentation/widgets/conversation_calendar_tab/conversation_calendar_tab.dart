@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -30,12 +31,14 @@ class ConversationCalendarTab extends HookWidget {
   Widget build(BuildContext context) {
     final intialState = useProvider(initialStateProvider(type));
 
-    return intialState.when(
-      loading: () => ConversationTabShimmer(),
-      data: (results) => _LoadedConversationTab(
-        type: type,
+    return ScaffoldContainer(
+      child: intialState.when(
+        loading: () => ConversationTabShimmer(),
+        data: (results) => _LoadedConversationTab(
+          type: type,
+        ),
+        error: (err, st) => _Loader(),
       ),
-      error: (err, st) => _Loader(),
     );
   }
 }
@@ -229,7 +232,7 @@ class _DateLabel extends StatelessWidget {
           fontSize: 14.00,
         );
 
-    final primaryColor = Theme.of(context).primaryColor;
+    final primaryColor = Theme.of(context).canvasColor;
     final now = DateTime.now().toUtc();
     final isToday = now.isSameDate(date);
     final decoration = BoxDecoration(

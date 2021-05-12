@@ -20,6 +20,7 @@ class SocialAuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget _child;
     Color _buttonColor;
+    Color _textColor = Colors.white;
     const _iconSize = 20.0;
 
     if (provider == SocialAuthProviders.google) {
@@ -27,7 +28,8 @@ class SocialAuthButton extends StatelessWidget {
         AppSvgAssets.googleColored,
         height: _iconSize,
       );
-      _buttonColor = Colors.white70;
+      _textColor = Colors.white;
+      _buttonColor = Colors.white;
     }
 
     if (provider == SocialAuthProviders.linkedin) {
@@ -52,10 +54,11 @@ class SocialAuthButton extends StatelessWidget {
     if (provider == SocialAuthProviders.apple) {
       _child = SvgPicture.asset(
         AppSvgAssets.apple,
-        color: Colors.white,
+        color: Colors.black,
         height: _iconSize,
       );
-      _buttonColor = Colors.grey[900];
+      _buttonColor = Colors.white;
+      _textColor = Colors.black;
     }
 
     if (isLarge) {
@@ -69,7 +72,7 @@ class SocialAuthButton extends StatelessWidget {
           const Spacer(),
           Text(
             'Sign up with $name',
-            style: const TextStyle(color: Colors.white, fontSize: 17),
+            style: TextStyle(color: _textColor, fontSize: 17),
           ),
           const Spacer()
         ]),
