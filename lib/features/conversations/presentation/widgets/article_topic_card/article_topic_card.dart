@@ -61,62 +61,56 @@ class ArticleTopicCard extends StatelessWidget {
                   }
                 },
               );
-              ;
             },
-            child: Container(
-              decoration: BoxDecoration(
-                  // borderRadius: borderRadius,
-                  // border: border,
-                  ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (topic.articleDetail.description.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppInsets.xl,
-                        vertical: AppInsets.xl,
-                      ),
-                      child: Text(topic.articleDetail.description,
-                          style: headingStyle),
-                    ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-                    child: _ArticleContent(article: topic.articleDetail),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(AppInsets.xl),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: BaseContainer(
-                        radius: 30,
-                        child: RaisedButton(
-                          // elevation: 0,
-                          onPressed: () {},
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: Text(
-                              "Start a conversation",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                    fontSize: 14.00,
-                                    fontWeight: FontWeight.w700,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                (topic.articleDetail.description.isNotEmpty)
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppInsets.xl,
+                          vertical: AppInsets.xl,
+                        ),
+                        child: Text(topic.articleDetail.description,
+                            style: headingStyle),
+                      )
+                    : const SizedBox(height: AppInsets.xxl),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                  child: _ArticleContent(article: topic.articleDetail),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(AppInsets.xl),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: BaseContainer(
+                      radius: 30,
+                      child: RaisedButton(
+                        // elevation: 0,
+                        onPressed: () {},
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Text(
+                            "Start a conversation",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                  fontSize: 14.00,
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
