@@ -7,32 +7,22 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:share/share.dart';
-import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
-import '../../../../../core/error/failures/failures.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
-import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../data/models/conversation_failures/conversation_failures.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../../widgets/editable_text_field/editable_text_field.dart';
+import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speakers_table/speakers_table.dart';
-import 'conversation_screen_controller.dart';
-
-part 'conversation_screen_error.dart';
-
-const kSpacingList = 24.00;
-const kListBottomPadding = 124.00;
+import 'conversation_screen_state.dart';
 
 class ConversationScreen extends HookWidget {
   final int id;
@@ -43,31 +33,20 @@ class ConversationScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(getRoundTableNotifier(id).state);
-
+    final conversationState = useProvider(conversationStateProvider(id).state);
+    final speakers = useProvider(conversationSpeakersState(id).state);
+    final connectionProvider = useProvider(rtcConnectionProvider(id));
     return Scaffold(
-      appBar: BaseAppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _onShare,
-          ),
-        ],
-      ),
-      body: state.when(
+      appBar: BaseAppBar(),
+      body: conversationState.when(
         loading: () => _Loader(),
-        data: (table) => _RoundTableLoaded(
-          table: table,
+        data: (conversation) => _ConversationLoaded(
+          conversation: conversation,
+          speakers: speakers,
+          connection: connectionProvider.connection,
         ),
-        error: (error, st) => _ConversationError(failure: error),
+        error: (err, st) => _Loader(),
       ),
-    );
-  }
-
-  void _onShare() {
-    Share.share(
-      AppConstants.defaultShareText,
-      subject: "Know any relevant people?",
     );
   }
 }
@@ -75,22 +54,22 @@ class ConversationScreen extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        width: 24,
-        height: 24,
-        child: CircularProgressIndicator(),
-      ),
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 }
 
-class _RoundTableLoaded extends HookWidget {
-  final Conversation table;
+class _ConversationLoaded extends StatelessWidget {
+  final Conversation conversation;
+  final List<RtcUser> speakers;
+  final RtcConnection connection;
 
-  const _RoundTableLoaded({
+  const _ConversationLoaded({
     Key key,
-    this.table,
+    this.conversation,
+    this.speakers,
+    this.connection,
   }) : super(key: key);
 
   @override
@@ -115,23 +94,18 @@ class _RoundTableLoaded extends HookWidget {
         );
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
-    final heading = table.topicDetail.articleDetail != null
-        ? table.topicDetail.articleDetail.description
-        : table.topicDetail.name;
+    final heading = conversation.topicDetail.articleDetail != null
+        ? conversation.topicDetail.articleDetail.description
+        : conversation.topicDetail.name;
 
-    // Controller
-    final rtcController =
-        useProvider(conversationScreenControllerProvider(table));
-
-    useEffect(() {
-      rtcController.hideOverlayEntry();
-      return;
-    }, []);
+    // Providers
 
     return WillPopScope(
       onWillPop: () async {
-        if (rtcController.connectionState != RtcConnectionState.disconnected) {
-          // rtcController.showOverlayEntry(context);
+        if (connection != RtcConnection.disconnected) {
+          context
+              .read(conversationStateProvider(conversation.id))
+              .createAudioCallOverlay(context);
         }
         return true;
       },
@@ -144,36 +118,38 @@ class _RoundTableLoaded extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (table.topicDetail.root != null)
-                  Text(table.topicDetail.root.name, style: categoryStyle),
+                if (conversation.topicDetail.root != null)
+                  Text(conversation.topicDetail.root.name,
+                      style: categoryStyle),
                 Text(heading, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
-                Text(startDateFormat.format(table.start.toLocal()),
+                Text(startDateFormat.format(conversation.start.toLocal()),
                     style: dateStyle),
                 const SizedBox(height: AppInsets.l),
-                if (table.topicDetail.articleDetail != null)
-                  _ArticleDetailCard(article: table.topicDetail.articleDetail),
-                if (table.topicDetail.articleDetail == null)
-                  EditableTextField(text: table.topicDetail.description),
+                if (conversation.topicDetail.articleDetail != null)
+                  _ArticleDetailCard(
+                      article: conversation.topicDetail.articleDetail),
+                if (conversation.topicDetail.articleDetail == null)
+                  Text(conversation.topicDetail.description),
                 const SizedBox(height: AppInsets.xl),
                 Text(
                     AppLocalizations.of(context)
                         .translate("conversations:speakers_label"),
                     style: pageLabelStyle),
-                if (table.isSpeaker) const SizedBox(height: AppInsets.l),
-                if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
-                if (rtcController.showConnectionBar)
-                  SpeakersTable(
-                      speakers: rtcController.speakers,
-                      chairSize: 60,
-                      isLive: rtcController.connectionState ==
-                          RtcConnectionState.connected),
-                if (!rtcController.showConnectionBar)
+                if (conversation.isSpeaker) const SizedBox(height: AppInsets.l),
+                if (!conversation.isSpeaker)
+                  const SizedBox(height: AppInsets.xl),
+                if (connection == RtcConnection.disconnected)
                   _SpeakersListWithIntro(
-                    table: table,
+                    speakers: speakers,
                     authUserPk: authUserPK,
+                  )
+                else
+                  SpeakersTable(
+                    speakers: speakers,
+                    chairSize: 60,
+                    isLive: connection == RtcConnection.connected,
                   ),
-                const SizedBox(height: kListBottomPadding),
               ],
             ),
           )),
@@ -184,7 +160,62 @@ class _RoundTableLoaded extends HookWidget {
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 fit: StackFit.expand,
-                children: _buildActionButton(context, rtcController),
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.white,
+                          Colors.white.withOpacity(0.0),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (connection == RtcConnection.disconnected)
+                    if (conversation.isSpeaker)
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+                          child: BaseLargeButton(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            onPressed: () {
+                              context
+                                  .read(conversationStateProvider(
+                                      conversation.id))
+                                  .connectToAudioCall();
+                            },
+                            child: Text(AppLocalizations.of(context).translate(
+                                "conversation_screen:go_live_label")),
+                          ),
+                        ),
+                      )
+                    else
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: AppInsets.xxl),
+                          child: BaseLargeButton(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            onPressed: () {
+                              _requestJoinGroup(context);
+                            },
+                            child: Text(AppLocalizations.of(context)
+                                .translate("conversations:join_button_label")),
+                          ),
+                        ),
+                      )
+                  else
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RtcConnectionBar(
+                        table: conversation,
+                        connection: connection,
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -193,165 +224,42 @@ class _RoundTableLoaded extends HookWidget {
     );
   }
 
-  List<Widget> _buildActionButton(
-      BuildContext context, ConversationScreenController controller) {
-    final bool showConnectionBar = controller.showConnectionBar;
-    final List<Widget> items = [];
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+  Future<void> _requestJoinGroup(BuildContext context) async {
+    final response = await context
+        .read(conversationStateProvider(conversation.id))
+        .postRequestToJoinGroup();
 
-    final overlay = Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            Colors.white,
-            Colors.white.withOpacity(0.0),
-          ],
-        ),
-      ),
-    );
-
-    if (showConnectionBar) {
-      items.add(overlay);
-      items.add(Align(
-        alignment: Alignment.bottomCenter,
-        child: RtcConnectionBar(
-          table: table,
-        ),
-      ));
-    } else if (!table.isPast) {
-      if (table.isSpeaker) {
-        final label = AppLocalizations.of(context)
-            .translate("conversation_screen:go_live_label");
-        items.add(overlay);
-
-        items.add(
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  _joinRoundTableChannel(context, user, controller);
-                },
-                child: Text(label),
-              ),
-            ),
-          ),
-        );
-      } else {
-        items.add(overlay);
-
-        items.add(
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  postRequestToJoinGroup(context, controller, table.id);
-                },
-                child: Text(AppLocalizations.of(context)
-                    .translate("conversations:join_button_label")),
-              ),
-            ),
-          ),
-        );
-      }
-    }
-
-    return items;
-  }
-
-  void _joinRoundTableChannel(BuildContext context, User user,
-      ConversationScreenController controller) {
-    if (!controller.hasOngoingMeeting()) {
-      controller.joinRoundTableChannel(user);
-      return;
-    }
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Leave Ongoing RoundTable"),
-          content: Text("Confirm to leave the roundtable discussion."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.joinRoundTableChannel(user);
-                Navigator.pop(context);
-              },
-              child: Text('LEAVE'),
-            ),
-          ],
-        );
-      },
+    response.fold(
+      (failure) => Fluttertoast.showToast(msg: failure.message),
+      (request) => _updateConversation(context),
     );
   }
 
-  Future<void> postRequestToJoinGroup(BuildContext context,
-      ConversationScreenController controller, int group) async {
-    final _overlay = _buildLoaderOverlay();
-    Overlay.of(context).insert(_overlay);
-    final response = await controller.requestToJoinGroup(group);
+  Future<void> _updateConversation(BuildContext context) async {
+    final response = await context
+        .read(conversationStateProvider(conversation.id))
+        .retrieveConversation();
 
     response.fold(
       (failure) {
-        _overlay.remove();
         Fluttertoast.showToast(msg: failure.message);
       },
-      (result) {
-        final tableId = result.groupDetail.id;
-        _overlay.remove();
-        _updatedTableAndShowPopup(context, tableId);
-      },
-    );
-  }
-
-  Future<void> _updatedTableAndShowPopup(
-      BuildContext context, int tableId) async {
-    final response = await context
-        .read(getRoundTableNotifier(tableId))
-        .getTableInfo(tableId);
-
-    response.fold(
-      (l) {},
       (group) {
-        context
-            .read(popupManagerProvider)
-            .showPopup(PopupType.conversationJoin, context);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container();
+        print(group);
       },
     );
   }
 }
 
 class _SpeakersListWithIntro extends StatelessWidget {
-  final Conversation table;
+  final List<RtcUser> speakers;
   final String authUserPk;
   const _SpeakersListWithIntro({
     Key key,
-    this.table,
+    this.speakers,
     @required this.authUserPk,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
@@ -362,14 +270,11 @@ class _SpeakersListWithIntro extends StatelessWidget {
     //   ));
     // }
 
-    if (table.speakersDetailList != null &&
-        table.speakersDetailList.isNotEmpty) {
-      for (final speaker in table.speakersDetailList) {
-        children.add(_SpeakerWithIntro(
-          user: speaker,
-          authUserPk: authUserPk,
-        ));
-      }
+    for (final speaker in speakers) {
+      children.add(_SpeakerWithIntro(
+        user: speaker.userInfo,
+        authUserPk: authUserPk,
+      ));
     }
 
     return Column(
@@ -396,8 +301,9 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
-          userId: user.pk, allowEdit: authUserPk == user.pk)),
+      onTap: () => ExtendedNavigator.of(context).push(
+        Routes.profileScreen(userId: user.pk, allowEdit: authUserPk == user.pk),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(

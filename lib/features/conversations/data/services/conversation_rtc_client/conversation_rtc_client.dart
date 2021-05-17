@@ -1,22 +1,13 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/config_reader/config_reader.dart';
 
-final roundTableRtcClientProvider = Provider<RoundTableRtcClient>((ref) {
-  final client = RoundTableRtcClient();
-  ref.onDispose(() {
-    client.dispose();
-  });
-  return client;
-});
+final conversationRtcClient = Provider((_) => ConversationRtcClient());
 
-class RoundTableRtcClient {
+class ConversationRtcClient {
   RtcEngine _engine;
-
-  RoundTableRtcClient();
 
   RtcEngine get engine => _engine;
 
@@ -34,7 +25,7 @@ class RoundTableRtcClient {
     _engine = await RtcEngine.create(ConfigReader.getAgoraAppId());
   }
 
-  Future<void> joinRoundTableChannel(
+  Future<void> joinAudioCall(
     String channelName,
     String token,
     String account,
@@ -56,14 +47,6 @@ class RoundTableRtcClient {
 
   void setEventHandler(RtcEngineEventHandler handler) {
     _engine.setEventHandler(handler);
-  }
-
-  Future<void> renewToken(String token) async {
-    await _engine.renewToken(token);
-  }
-
-  Future<void> muteLocalAudio({@required bool muted}) async {
-    await _engine.muteLocalAudioStream(muted);
   }
 
   Future<void> dispose() async {

@@ -378,17 +378,17 @@ class ConversationScreenController extends ChangeNotifier {
     notifyListeners();
   }
 
-  OverlayEntry _createOverlayEntry() {
-    return OverlayEntry(builder: (context) {
-      return ConversationOverlayIndicator(table: table);
-    });
-  }
+  // OverlayEntry _createOverlayEntry() {
+  //   return OverlayEntry(builder: (context) {
+  //     return ConversationOverlayIndicator(table: table);
+  //   });
+  // }
 
-  void showOverlayEntry(BuildContext context) {
-    final entry = _createOverlayEntry();
-    read(groupOverlayControllerProvider)
-        .createOverlayEntry(context, entry, table);
-  }
+  // void showOverlayEntry(BuildContext context) {
+  //   final entry = _createOverlayEntry();
+  //   read(groupOverlayControllerProvider)
+  //       .createOverlayEntry(context, entry, table);
+  // }
 
   void hideOverlayEntry() {
     final _groupOverlayController = read(groupOverlayControllerProvider);

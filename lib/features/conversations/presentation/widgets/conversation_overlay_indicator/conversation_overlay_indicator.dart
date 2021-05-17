@@ -4,19 +4,18 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../routes.gr.dart';
-import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../../screens/conversation_screen/conversation_screen_controller.dart';
+import '../../screens/conversation_screen_2/conversation_screen_state.dart';
 
 class ConversationOverlayIndicator extends HookWidget {
-  final Conversation table;
+  final int tableId;
 
-  const ConversationOverlayIndicator({@required this.table});
+  const ConversationOverlayIndicator({@required this.tableId});
 
   @override
   Widget build(BuildContext context) {
     const radius = 30.0;
     const width = radius * 2;
-    final controller = useProvider(conversationScreenControllerProvider(table));
+    final controller = useProvider(conversationStateProvider(tableId));
     return Align(
         alignment: Alignment.centerRight,
         child: Padding(
@@ -29,7 +28,7 @@ class ConversationOverlayIndicator extends HookWidget {
                 child: InkWell(
                     onTap: () {
                       ExtendedNavigator.of(context)
-                          .push(Routes.conversationScreen(id: table.id));
+                          .push(Routes.conversationScreen(id: tableId));
                     },
                     borderRadius: BorderRadius.circular(radius),
                     child: const SizedBox(
