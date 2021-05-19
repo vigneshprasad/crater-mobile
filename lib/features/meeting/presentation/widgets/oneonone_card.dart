@@ -33,14 +33,14 @@ class OneOnOneCard extends StatelessWidget {
     final dateFormat = DateFormat.jm();
 
     BoxBorder _border;
-    Color background;
+    Color background = Theme.of(context).backgroundColor;
 
     if (meeting.isPast) {
       _border = Border.all(
         color: Colors.grey[200],
         width: 2.00,
       );
-      background = Colors.grey[100];
+      // background = Colors.grey[100];
     } else {
       _border = Border.all(
         color: AppTheme.blueAccentDark,
@@ -48,7 +48,7 @@ class OneOnOneCard extends StatelessWidget {
       );
 
       if (isSoon) {
-        background = AppTheme.blueAccent;
+        // background = AppTheme.blueAccent;
       }
     }
 

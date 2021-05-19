@@ -12,10 +12,11 @@ class ScaffoldContainer extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment(0.0, 0.0),
-              end: Alignment(0.0, 1.0),
+              begin: const Alignment(0.0, -1.0),
+              end: const Alignment(0.0, 0.0),
               colors: [
-            Theme.of(context).scaffoldBackgroundColor,
+            // Theme.of(context).scaffoldBackgroundColor,
+            Theme.of(context).canvasColor,
             Theme.of(context).canvasColor,
           ])),
       child: child,

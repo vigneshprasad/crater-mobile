@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/theme.dart';
 
@@ -18,7 +19,7 @@ class DateTimePicker extends HookWidget {
     final selected = useState<DateTime>(null);
     final dateFormat = DateFormat.yMMMMd('en_US');
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Date: ${dateFormat.format(slots[0])}"),
         const SizedBox(height: AppInsets.med),
@@ -63,45 +64,46 @@ class _Slot extends StatelessWidget {
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
     final timeFormat = DateFormat.jm();
-    final width = MediaQuery.of(context).size.width / 2 - 32;
+    final width = MediaQuery.of(context).size.width / 2 - AppInsets.xxl * 4;
 
     final primaryColor = Theme.of(context).primaryColor;
-    final background = selected ? primaryColor : Colors.grey[200];
-    final borderColor = selected ? primaryColor : Colors.grey[300];
-    final textColor = selected ? Colors.white : primaryColor;
+    final background = Theme.of(context).canvasColor;
+    final borderColor = selected ? primaryColor : Colors.transparent;
+    final textColor = !selected ? Colors.white : primaryColor;
     final border = Border.all(
       color: borderColor,
-      width: 2.00,
+      width: 1.00,
     );
 
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
-          fontWeight: FontWeight.w500,
           color: textColor,
         );
     final label = isNow ? "Now" : timeFormat.format(slot);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.sm),
-      child: Material(
-        color: background,
-        borderRadius: borderRadius,
-        child: InkWell(
+      padding: const EdgeInsets.all(AppInsets.xxl),
+      child: BaseContainer(
+        child: Material(
+          color: background,
           borderRadius: borderRadius,
-          onTap: () {
-            onPressed(slot);
-          },
-          child: Container(
-            height: 40,
-            width: width,
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              border: border,
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: () {
+              onPressed(slot);
+            },
+            child: Container(
+              height: 44,
+              width: width,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                border: border,
+              ),
+              child: Center(
+                  child: Text(
+                label,
+                style: labelStyle,
+              )),
             ),
-            child: Center(
-                child: Text(
-              label,
-              style: labelStyle,
-            )),
           ),
         ),
       ),

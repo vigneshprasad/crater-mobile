@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../ui/base/base_error_text/base_error_text.dart';
@@ -59,10 +60,11 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 160,
+      height: 200,
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: _buildHeaderTabs(context),
           ),
           const SizedBox(height: AppInsets.xxl),
@@ -204,16 +206,16 @@ class _TimeSlotTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = DateFormat("E, dd MMM");
+    final formatter = DateFormat("dd");
+    final weekFormatter = DateFormat("E");
     final dateParsed = DateTime.parse(date);
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          color: selected ? Theme.of(context).primaryColor : Colors.grey[400],
+          color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
     final border = selected
-        ? Border(
-            bottom: BorderSide(width: 2, color: Theme.of(context).primaryColor),
-          )
+        ? Border.all(width: 1, color: Theme.of(context).primaryColor)
         : null;
+    final color = Theme.of(context).canvasColor;
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.xl),
       child: Material(
@@ -226,12 +228,31 @@ class _TimeSlotTab extends StatelessWidget {
               horizontal: AppInsets.l,
               vertical: AppInsets.med,
             ),
-            decoration: BoxDecoration(
-              border: border,
-            ),
-            child: Text(
-              formatter.format(dateParsed),
-              style: labelStyle,
+            child: Column(
+              children: [
+                Text(
+                  weekFormatter.format(dateParsed),
+                  style: labelStyle,
+                ),
+                SizedBox(height: 12),
+                BaseContainer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: BorderRadius.circular(8),
+                      border: border,
+                    ),
+                    width: 44,
+                    height: 44,
+                    child: Center(
+                      child: Text(
+                        formatter.format(dateParsed),
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -261,33 +282,36 @@ class _TimeSlot extends StatelessWidget {
     final label = timeFormatter.format(startTime.toLocal());
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 13,
-          color: selected ? Colors.white : Colors.grey[700],
+          color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
     final border = selected
-        ? Border.all(color: Theme.of(context).primaryColor, width: 2)
-        : Border.all(color: Colors.grey[300], width: 2);
+        ? Border.all(color: Theme.of(context).primaryColor, width: 1)
+        : null;
     return Container(
-      margin: const EdgeInsets.only(right: AppInsets.med, bottom: AppInsets.xl),
-      child: Material(
-        color: selected ? Theme.of(context).primaryColor : Colors.grey[100],
-        borderRadius: borderRadius,
-        child: InkWell(
+      padding: const EdgeInsets.all(AppInsets.xxl),
+      child: BaseContainer(
+        radius: 12,
+        child: Material(
+          color: Theme.of(context).canvasColor,
           borderRadius: borderRadius,
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppInsets.xl,
-              vertical: AppInsets.l,
-            ),
-            decoration: BoxDecoration(
-              border: border,
-              borderRadius: borderRadius,
-            ),
-            child: Text(
-              label,
-              style: labelStyle,
-              textAlign: TextAlign.center,
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: onTap,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppInsets.xl,
+                vertical: AppInsets.xl,
+              ),
+              decoration: BoxDecoration(
+                border: border,
+                borderRadius: borderRadius,
+              ),
+              child: Text(
+                label,
+                style: labelStyle,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),

@@ -1,37 +1,87 @@
 import 'package:flutter/material.dart';
 
-class BaseContainer extends StatelessWidget {
+class BaseContainer extends StatefulWidget {
   final Widget child;
   final double radius;
+  final Color color;
 
-  const BaseContainer({Key key, this.child, this.radius = 8}) : super(key: key);
+  const BaseContainer({Key key, this.child, this.radius = 8, this.color})
+      : super(key: key);
+
+  @override
+  _BaseContainerState createState() => _BaseContainerState();
+}
+
+class _BaseContainerState extends State<BaseContainer> {
+  bool _isPressed = false;
+
+  void _onPointerDown(PointerDownEvent event) {
+    setState(() {
+      _isPressed = true;
+    });
+  }
+
+  void _onPointerUp(PointerUpEvent event) {
+    setState(() {
+      _isPressed = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: child,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //     begin: Alignment(-1.0, -4.0),
-          //     end: Alignment(1.0, 4.0),
-          //     colors: [
-          //       Color(0xFF5bc6ff),
-          //       Color(0xFF4da7db),
-          //     ]),
-          borderRadius: BorderRadius.all(Radius.circular(radius)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black38,
-                offset: Offset(5.0, 5.0),
-                blurRadius: 5.0,
-                spreadRadius: 1.0),
-            BoxShadow(
-                color: Colors.white12,
-                offset: Offset(-5.0, -5.0),
-                blurRadius: 5.0,
-                spreadRadius: 1.0),
-          ]),
-    );
+    Color color = widget.color ?? Theme.of(context).backgroundColor;
+    return Listener(
+        onPointerDown: _onPointerDown,
+        onPointerUp: _onPointerUp,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          // clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              color: color,
+              // gradient: LinearGradient(
+              //     begin: Alignment(-1.0, -4.0),
+              //     end: Alignment(1.0, 4.0),
+              //     colors: [
+              //       Theme.of(context).backgroundColor.mix(Colors.black, 0.3),
+              //       Theme.of(context).backgroundColor.mix(Colors.white, 0.1),
+              //     ]),
+              // gradient: LinearGradient(
+              //     begin: Alignment.topLeft,
+              //     end: Alignment.bottomRight,
+              //     colors: [
+              //       _isPressed ? color : color.mix(Colors.black, .1),
+              //       _isPressed ? color.mix(Colors.black, .05) : color,
+              //       _isPressed ? color.mix(Colors.black, .05) : color,
+              //       color.mix(Colors.white, _isPressed ? .1 : .2),
+              //     ],
+              //     stops: [
+              //       0.0,
+              //       .3,
+              //       .6,
+              //       1.0,
+              //     ]),
+              borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+              boxShadow: _isPressed
+                  ? null
+                  : [
+                      const BoxShadow(
+                          color: Colors.black38,
+                          offset: Offset(5.0, 5.0),
+                          blurRadius: 5.0,
+                          spreadRadius: 1.0),
+                      const BoxShadow(
+                          color: Colors.white10,
+                          offset: Offset(-5.0, -5.0),
+                          blurRadius: 5.0,
+                          spreadRadius: 1.0),
+                    ]),
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(widget.radius))),
+            child: widget.child,
+          ),
+        ));
   }
 }
 

@@ -49,7 +49,8 @@ class BaseLargeButton extends MaterialButton {
         width: width ?? MediaQuery.of(context).size.width,
         height: buttonHeight,
         child: RawMaterialButton(
-          fillColor: buttonThemeData.getFillColor(this),
+          // fillColor: Theme.of(context)
+              // .buttonColor, // buttonThemeData.getFillColor(this),
           splashColor: buttonThemeData.getSplashColor(this),
           focusColor: buttonThemeData.getFocusColor(this),
           highlightColor: buttonThemeData.getHighlightColor(this),
@@ -57,8 +58,8 @@ class BaseLargeButton extends MaterialButton {
             borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
           ),
           textStyle: theme.textTheme.button.copyWith(
-            color: textColor ?? buttonThemeData.getTextColor(this),
-          ),
+              // color: Colors.black // ?? buttonThemeData.getTextColor(this),
+              ),
           onPressed: onPressed,
           child: child,
         ),

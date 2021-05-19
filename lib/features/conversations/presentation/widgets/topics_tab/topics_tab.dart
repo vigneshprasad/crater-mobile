@@ -18,10 +18,15 @@ import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'topics_tab_state.dart';
 
 class TopicsTab extends HookWidget {
+  final String name;
+
+  const TopicsTab({@required this.name});
+
   @override
   Widget build(BuildContext context) {
     final topicsState = useProvider(topicsStateProvider.state);
     final articlesState = useProvider(articleTopicsStateProiver.state);
+
     return RefreshIndicator(
       displacement: 96.00,
       onRefresh: () {
@@ -41,9 +46,19 @@ class TopicsTab extends HookWidget {
             SliverToBoxAdapter(
                 child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'What would you like to discuss today ?',
-                textAlign: TextAlign.center,
+              child: Column(
+                children: [
+                  Text(
+                    'Hi $name',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'What would you like to discuss today ?',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             )),
             topicsState.maybeWhen(
@@ -59,7 +74,7 @@ class TopicsTab extends HookWidget {
                       AppLocalizations.of(context)
                           .translate("topic_tab:suggested_topic_heading"),
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontWeight: FontWeight.w700,
+                          // fontWeight: FontWeight.w700,
                           ),
                     ),
                   );
@@ -91,7 +106,7 @@ class TopicsTab extends HookWidget {
                       AppLocalizations.of(context)
                           .translate("topic_tab:article_topic_headings"),
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontWeight: FontWeight.w700,
+                          // fontWeight: FontWeight.w700,
                           ),
                     ),
                   );
@@ -211,10 +226,10 @@ class _TopicGridCard extends StatelessWidget {
       child: Material(
         borderRadius: cardRadius,
         // color: background,
-        child: InkWell(
-          highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
-          borderRadius: cardRadius,
-          splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
+        child: GestureDetector(
+          // highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
+          // borderRadius: cardRadius,
+          // splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
           onTap: () {
             ExtendedNavigator.of(context)
                 .push(Routes.createConversationScreen,
@@ -234,7 +249,7 @@ class _TopicGridCard extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  child: Image.network(topic.image),
+                      child: (topic.image!=null) ? Image.network(topic.image, width: 60, height:double.infinity, fit: BoxFit.cover,) : Container(),
                 ),
               ),
               SizedBox(width: 8),

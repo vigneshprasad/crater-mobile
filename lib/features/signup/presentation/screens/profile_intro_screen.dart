@@ -5,7 +5,9 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_large_button/base_large_button.dart';
@@ -108,82 +110,87 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
               listener: _blocListener,
               builder: (context, state) {
                 return Scaffold(
-                    extendBody: true,
-                    extendBodyBehindAppBar: true,
-                    appBar: AppBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                    body: ScaffoldContainer(
-                      child: SingleChildScrollView(
-                        child: SafeArea(
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                widget.editMode == false
-                                    ? Column(
-                                        children: [
-                                          Text(title,
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6),
-                                          Text(info,
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1)
-                                        ],
-                                      )
-                                    : Container(),
-                                Container(height: 20),
-                                Center(
-                                    child: ProfilePhotoPicker(
-                                  photoUrl: _photoUrl,
-                                  onChoosePhoto: (photo) => _photo = photo,
-                                )),
-                                Container(height: 20),
-                                Form(
-                                  key: _formKey,
-                                  child: ProfileInlineQuestion(
-                                    elements: _elements,
-                                    values: _values,
-                                    animateText: widget.editMode == false,
-                                    onValuesChange: (id, value) {
-                                      _values[id] = value;
+                  extendBody: true,
+                  extendBodyBehindAppBar: true,
+                  appBar: BaseAppBar(
+                    // backgroundColor: Colors.transparent,
+                    // elevation: 0,
+                  ),
+                  body: ScaffoldContainer(
+                    child: SingleChildScrollView(
+                      child: SafeArea(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              widget.editMode == false
+                                  ? Column(
+                                      children: [
+                                        Text(title,
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6),
+                                        Text(info,
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1)
+                                      ],
+                                    )
+                                  : Container(),
+                              Container(height: 20),
+                              Center(
+                                  child: ProfilePhotoPicker(
+                                photoUrl: _photoUrl,
+                                onChoosePhoto: (photo) => _photo = photo,
+                              )),
+                              Container(height: 20),
+                              Form(
+                                key: _formKey,
+                                child: ProfileInlineQuestion(
+                                  elements: _elements,
+                                  values: _values,
+                                  animateText: widget.editMode == false,
+                                  onValuesChange: (id, value) {
+                                    _values[id] = value;
 
-                                      if (!editedFieldIds.contains(id)) {
-                                        editedFieldIds.add(id);
-                                        showNextQuestion();
-                                      }
-                                    },
-                                  ),
+                                    if (!editedFieldIds.contains(id)) {
+                                      editedFieldIds.add(id);
+                                      showNextQuestion();
+                                    }
+                                  },
                                 ),
-                                Container(height: 20),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 40),
+                              Container(
+                                  color: Colors.transparent,
+                                  height: 80,
+                                  child: _showSubmit
+                                      ? Center(
+                                          child: SizedBox(
+                                            width: 200,
+                                            child: BaseContainer(
+                                              radius: 30,
+                                              child: BaseLargeButton(
+                                                  onPressed: submitAnswers,
+                                                  child: Text(submit)),
+                                            ),
+                                          ),
+                                        )
+                                      : Container()),
+                              Container(height: 20),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    bottomNavigationBar: SafeArea(
-                      child: Container(
-                          color: Colors.transparent,
-                          height: 80,
-                          child: _showSubmit
-                              ? Center(
-                                  child: SizedBox(
-                                    width: 200,
-                                    child: BaseLargeButton(
-                                        onPressed: submitAnswers,
-                                        child: Text(submit)),
-                                  ),
-                                )
-                              : Container()),
-                    ));
+                  ),
+                );
+                // bottomNavigationBar: SafeArea(
+                // child:                     ));
               }));
     });
   }

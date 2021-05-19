@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
@@ -86,10 +87,17 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
     final IconData icon = useCloseButton ? Icons.close : Icons.arrow_back;
-    return IconButton(
-      icon: Icon(icon),
-      color: color,
-      onPressed: () => ExtendedNavigator.of(context).maybePop(),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: BaseContainer(
+        radius: 30,
+        color: Theme.of(context).backgroundColor,
+        child: IconButton(
+          icon: Icon(icon),
+          color: color,
+          onPressed: () => ExtendedNavigator.of(context).maybePop(),
+        ),
+      ),
     );
   }
 }

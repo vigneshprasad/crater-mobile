@@ -76,22 +76,32 @@ class RootApp extends HookWidget {
               SegmentObserver(),
             ],
             builder: (context, child) {
+              final lightBlue = HexColor.fromHex('#283950');
+              final darkBlue = HexColor.fromHex('#121823');
+              final buttonColor = HexColor.fromHex('#C67F70');
               return Theme(
                 data: AppTheme.darkTheme.copyWith(
-                    // backgroundColor: HexColor.fromHex('#283950'),
-                    primaryColor: Colors.white,
-                    scaffoldBackgroundColor: HexColor.fromHex('#283950'),
-                    canvasColor: HexColor.fromHex('#121823'),
-                    appBarTheme: AppBarTheme(
-                        color: HexColor.fromHex('#283950'),
-                        actionsIconTheme: IconThemeData(color: Colors.white)),
-                    buttonTheme: ButtonThemeData(
-                      buttonColor: HexColor.fromHex('#121823'),
-                      colorScheme: ColorScheme.dark(),
-                    ),
-                    buttonColor: Colors.white,
-                    floatingActionButtonTheme: FloatingActionButtonThemeData(
-                        backgroundColor: Colors.white)),
+                  backgroundColor: darkBlue,
+                  splashFactory: const NoSplashFactory(),
+                  highlightColor: Colors.transparent,
+                  primaryColor: buttonColor,
+                  scaffoldBackgroundColor: darkBlue,
+                  canvasColor: darkBlue,
+                  appBarTheme: AppBarTheme(
+                      iconTheme: IconThemeData(color: buttonColor),
+                      color: darkBlue,
+                      elevation: 0,
+                      actionsIconTheme: IconThemeData(color: buttonColor)),
+                  buttonTheme: ButtonThemeData(
+                    buttonColor: darkBlue,
+                    colorScheme: const ColorScheme.dark(),
+                  ),
+                  buttonColor: buttonColor,
+                  dialogBackgroundColor: lightBlue,
+                  floatingActionButtonTheme: FloatingActionButtonThemeData(
+                      backgroundColor: buttonColor),
+                  accentColor: buttonColor,
+                ),
                 child: child,
               );
             },
@@ -100,4 +110,43 @@ class RootApp extends HookWidget {
       ),
     );
   }
+}
+
+class NoSplashFactory extends InteractiveInkFeatureFactory {
+  const NoSplashFactory();
+
+  @override
+  InteractiveInkFeature create({
+    MaterialInkController controller,
+    RenderBox referenceBox,
+    Offset position,
+    Color color,
+    TextDirection textDirection,
+    bool containedInkWell = false,
+    Rect Function() rectCallback,
+    BorderRadius borderRadius,
+    ShapeBorder customBorder,
+    double radius,
+    VoidCallback onRemoved,
+  }) {
+    return NoSplash(
+      controller: controller,
+      referenceBox: referenceBox,
+    );
+  }
+}
+
+class NoSplash extends InteractiveInkFeature {
+  NoSplash({
+    @required MaterialInkController controller,
+    @required RenderBox referenceBox,
+  })  : assert(controller != null),
+        assert(referenceBox != null),
+        super(
+          controller: controller,
+          referenceBox: referenceBox,
+        );
+
+  @override
+  void paintFeature(Canvas canvas, Matrix4 transform) {}
 }

@@ -43,7 +43,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
           return SingleChildScrollView(
             controller: scrollController,
             child: Material(
-              color: Colors.white,
+              // color: Colors.white,
               shape: AppTheme.bottomSheetShape,
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(

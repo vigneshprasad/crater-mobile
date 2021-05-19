@@ -6,7 +6,7 @@ import '../../../../../constants/theme.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 
 const kCardBorderRadius = 8.00;
-const kLeftPaddingForDate = 72.00;
+const kLeftPaddingForDate = 20.00;
 
 class ConversationTabShimmer extends StatelessWidget {
   @override
@@ -28,11 +28,12 @@ class ConversationTabShimmer extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: kLeftPaddingForDate,
                   right: AppInsets.xl,
+                  top: 60,
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => _CardShimmer(),
-                    childCount: 2,
+                    childCount: 4,
                   ),
                 ),
               ),
@@ -49,13 +50,13 @@ class _DateShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(AppInsets.l),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Container(
-          height: 48.00,
-          width: 48.00,
+          height: 30.00,
+          width: 200.0,
           decoration: BoxDecoration(
             color: Colors.white,
-            shape: BoxShape.circle,
+            // shape: BoxShape.circle,
           ),
         ),
       ),
@@ -69,7 +70,7 @@ class _CardShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.med),
       child: Container(
-        height: 112,
+        height: 200,
         color: Colors.white,
       ),
     );

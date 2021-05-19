@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -111,7 +112,7 @@ class _InterestItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: selected
-                        ? Border.all(color: primaryColor, width: 3)
+                        ? Border.all(color: primaryColor, width: 1)
                         : null,
                   ),
                   child: Center(
@@ -148,6 +149,7 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
     FormFieldSetter<List<MeetingInterest>> onSaved,
     FormFieldValidator<List<MeetingInterest>> validator,
     List<MeetingInterest> initialValue = const [],
+    Key key,
     AutovalidateMode autovalidateMode = AutovalidateMode.always,
     @required this.options,
   }) : super(
@@ -155,6 +157,7 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
           autovalidateMode: autovalidateMode,
           validator: validator,
           initialValue: initialValue,
+          key: key,
           builder: (state) {
             return Column(
               mainAxisSize: MainAxisSize.min,

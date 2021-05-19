@@ -7,6 +7,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 
@@ -54,7 +55,8 @@ class HomeScreen extends HookWidget {
         );
     final _activeTab = useState(0);
 
-    final name = BlocProvider.of<AuthBloc>(context).state.user.name;
+    final name =
+        BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -73,97 +75,138 @@ class HomeScreen extends HookWidget {
     final popupManager = useProvider(popupManagerProvider);
     popupManager.showPopup(PopupType.signupComplete, context);
 
+    const icons = [
+      Icons.search,
+      Icons.people_alt_outlined,
+      Icons.inbox_outlined
+    ];
+
+    const labels = [
+      'Explore',
+      'Conversations',
+      'My Conversations',
+    ];
+
     return Scaffold(
       drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
-        selectedItemColor: Colors.white,
-        items: [
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.search), label: 'Explore'),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.people_alt_outlined), label: 'Conversations'),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.inbox_outlined), label: 'Inbox')
-        ],
+        iconSize: 28,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        items: [0, 1, 2]
+            .map((index) => BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: BaseContainer(
+                    radius: 30,
+                    color: Theme.of(context).backgroundColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(icons[index]),
+                    ),
+                  ),
+                ),
+                label: labels[index]))
+            .toList(),
         onTap: (int index) {
           _tabController.index = index;
         },
       ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                // expandedHeight: 120.00,
-                title: Column(
-                  children: [
-                    Text('Hi $name'),
-                  ],
-                ),
-                centerTitle: true,
-                floating: true,
-                pinned: true,
-                elevation: 0,
-                leading: IconButton(
-                    icon: const Icon(WorkNetIcons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer()),
-                actions: [
-                  UserProfileNavItem(
-                    onPressed: () {
-                      final user =
-                          BlocProvider.of<AuthBloc>(context).state?.user;
-                      if (user != null) {
-                        ExtendedNavigator.of(context).push(Routes.profileScreen(
-                            userId: user.pk, allowEdit: true));
-                      }
-                    },
+      body: SafeArea(
+        child: NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  floating: true,
+                  // pinned: true,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BaseContainer(
+                      radius: 30,
+                      color: Theme.of(context).backgroundColor,
+                      child: IconButton(
+                          icon: const Icon(
+                            WorkNetIcons.menu,
+                          ),
+                          onPressed: () => Scaffold.of(context).openDrawer()),
+                    ),
                   ),
-                  const SizedBox(width: AppInsets.l),
-                ],
-                //   bottom: TabBar(
-                //     indicatorPadding: const EdgeInsets.only(
-                //       left: AppInsets.med,
-                //       right: AppInsets.med,
-                //     ),
-                //     // labelColor: Colors.grey[800],
-                //     // unselectedLabelColor: Colors.grey[400],
-                //     isScrollable: true,
-                //     labelStyle: labelStyle,
-                //     controller: _tabController,
-                //     indicatorColor: Colors.transparent,
-                //     // indicatorWeight: 1.0,
-                //     tabs: _tabs,
-                //   ),
-              ),
-            ),
-          ];
-        },
-        body: DefaultStickyHeaderController(
-          child: HomeTabControllerProvider(
-            controller: _tabController,
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                TopicsTab(),
-                ConversationCalendarTab(
-                  type: ConversationTabType.all,
-                  controller: _scrollController,
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BaseContainer(
+                        color: Theme.of(context).backgroundColor,
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: UserProfileNavItem(
+                            onPressed: () {
+                              final user = BlocProvider.of<AuthBloc>(context)
+                                  .state
+                                  ?.user;
+                              if (user != null) {
+                                ExtendedNavigator.of(context).push(
+                                    Routes.profileScreen(
+                                        userId: user.pk, allowEdit: true));
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppInsets.l),
+                  ],
+                  //   bottom: TabBar(
+                  //     indicatorPadding: const EdgeInsets.only(
+                  //       left: AppInsets.med,
+                  //       right: AppInsets.med,
+                  //     ),
+                  //     // labelColor: Colors.grey[800],
+                  //     // unselectedLabelColor: Colors.grey[400],
+                  //     isScrollable: true,
+                  //     labelStyle: labelStyle,
+                  //     controller: _tabController,
+                  //     indicatorColor: Colors.transparent,
+                  //     // indicatorWeight: 1.0,
+                  //     tabs: _tabs,
+                  //   ),
                 ),
-                // ConversationCalendarTab(
-                //   type: ConversationTabType.my,
-                //   controller: _scrollController,
-                // ),
-                InboxTab(),
-              ],
+              ),
+            ];
+          },
+          body: DefaultStickyHeaderController(
+            child: HomeTabControllerProvider(
+              controller: _tabController,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  TopicsTab(name: name),
+                  ConversationCalendarTab(
+                    type: ConversationTabType.all,
+                    controller: _scrollController,
+                    name: name,
+                    onSchedulePressed: ()=> _tabController.animateTo(0),
+                  ),
+                  ConversationCalendarTab(
+                    type: ConversationTabType.my,
+                    controller: _scrollController,
+                    name: name,
+                    onSchedulePressed: ()=> _tabController.animateTo(0),
+                  ),
+                  // InboxTab(),
+                ],
+              ),
             ),
           ),
         ),
       ),
-      floatingActionButton:
-          _getFloatinActionButton(context, _activeTab.value, _tabController),
+      // floatingActionButton:
+          // _getFloatinActionButton(context, _activeTab.value, _tabController),
     );
   }
 

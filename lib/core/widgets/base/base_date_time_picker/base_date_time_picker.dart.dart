@@ -143,8 +143,8 @@ class _DateSlotPickerBody<T> extends StatelessWidget {
       padding: const EdgeInsets.all(AppInsets.med),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 20.0,
+        mainAxisSpacing: 20.0,
         childAspectRatio: 3.8,
       ),
       itemBuilder: (context, index) => _TimeSlot<T>(
@@ -178,7 +178,7 @@ class _TimeSlot<T> extends StatelessWidget {
     final timeformat = DateFormat('hh:mm a');
     final primaryColor = Theme.of(context).primaryColor;
     final textStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          color: active ? primaryColor : Colors.grey[700],
+          color: active ? primaryColor : Colors.white,
         );
     final borderRadius = BorderRadius.circular(6.0);
     return Material(
@@ -206,6 +206,7 @@ class _TimeSlot<T> extends StatelessWidget {
             children: [
               Checkbox(
                 value: active,
+                checkColor: Theme.of(context).backgroundColor,
                 onChanged: (_) {
                   onPressed(value);
                 },
@@ -276,13 +277,16 @@ class _DateTab extends StatelessWidget {
     );
     final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
-          color: active ? Colors.white : Colors.grey[500],
+          // color: active ? Colors.white : Colors.grey[500],
         );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppInsets.sm),
-      child: Material(
-        color: active ? Theme.of(context).primaryColor : Colors.grey[300],
+      child:Container(
+        decoration: BoxDecoration(
+        // color:  Theme.of(context).dialogBackgroundColor,
         borderRadius: borerRadius,
+        border: active ? Border.all(color: Theme.of(context).buttonColor): null,
+        ),
         child: InkWell(
           onTap: () {
             onPressed(date);

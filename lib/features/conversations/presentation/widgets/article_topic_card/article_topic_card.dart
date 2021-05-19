@@ -17,10 +17,12 @@ import '../../screens/create_conversation_screen/create_conversation_state.dart'
 
 class ArticleTopicCard extends StatelessWidget {
   final Topic topic;
+  final bool enabled;
 
   const ArticleTopicCard({
     Key key,
     @required this.topic,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class ArticleTopicCard extends StatelessWidget {
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16.00,
-          fontWeight: FontWeight.w500,
+          // fontWeight: FontWeight.w500,
         );
     final border = Border.all(
       // width: 1.00,
@@ -38,83 +40,90 @@ class ArticleTopicCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
-      child: BaseContainer(
-        radius: 8,
-        child: Material(
-          // color: canvas,
-          borderRadius: borderRadius,
-          child: InkWell(
+      child: GestureDetector(
+        // borderRadius: borderRadius,
+        onTap: () => onTap(context),
+        child: BaseContainer(
+          radius: 8,
+          child: Material(
+            // color: canvas,
             borderRadius: borderRadius,
-            onTap: () {
-              ExtendedNavigator.of(context)
-                  .push(Routes.createConversationScreen,
-                      arguments: CreateConversationScreenArguments(
-                          topic: topic, type: ConversationType.instant))
-                  .then(
-                (value) {
-                  if (value is Conversation) {
-                    HomeTabControllerProvider.of(context)
-                        .controller
-                        .animateTo(1);
-                    ExtendedNavigator.of(context)
-                        .push(Routes.conversationScreen(id: value.id));
-                  }
-                },
-              );
-            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 (topic.articleDetail.description.isNotEmpty)
                     ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppInsets.xl,
-                          vertical: AppInsets.xl,
+                        padding: const EdgeInsets.only(
+                          top: AppInsets.xl,
+                          left: AppInsets.xl,
+                          right: AppInsets.xl,
                         ),
                         child: Text(topic.articleDetail.description,
                             style: headingStyle),
                       )
                     : const SizedBox(height: AppInsets.xxl),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                  padding: const EdgeInsets.all(AppInsets.xxl),
                   child: _ArticleContent(article: topic.articleDetail),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(AppInsets.xl),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: BaseContainer(
-                      radius: 30,
-                      child: RaisedButton(
-                        // elevation: 0,
-                        onPressed: () {},
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(
-                            "Start a conversation",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                  fontSize: 14.00,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                if (enabled)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: AppInsets.xxl,
+                        right: AppInsets.xl,
+                        left: AppInsets.xl),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: BaseContainer(
+                        radius: 30,
+                        color: Theme.of(context).backgroundColor,
+                        child: GestureDetector(
+                          // elevation: 0,
+                          onTap: () => onTap(context),
+                          // shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(30),
+                          // ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 16.0, horizontal: 20),
+                            child: Text(
+                              "Start a conversation",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                    fontSize: 14.00,
+                                  ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void onTap(BuildContext context) {
+    if (!enabled) {
+      return;
+    }
+    ExtendedNavigator.of(context)
+        .push(Routes.createConversationScreen,
+            arguments: CreateConversationScreenArguments(
+                topic: topic, type: ConversationType.instant))
+        .then(
+      (value) {
+        if (value is Conversation) {
+          HomeTabControllerProvider.of(context).controller.animateTo(1);
+          ExtendedNavigator.of(context)
+              .push(Routes.conversationScreen(id: value.id));
+        }
+      },
     );
   }
 }

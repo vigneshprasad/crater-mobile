@@ -8,6 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/article_topic_card/article_topic_card.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -47,9 +50,12 @@ class ConversationScreen extends HookWidget {
     return Scaffold(
       appBar: BaseAppBar(
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _onShare,
+          BaseContainer(
+            radius: 30,
+            child: IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: _onShare,
+            ),
           ),
         ],
       ),
@@ -98,20 +104,15 @@ class _RoundTableLoaded extends HookWidget {
     final primaryColor = Theme.of(context).primaryColor;
     final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
-          color: primaryColor,
         );
     final agendaStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 22,
         );
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          color: Colors.grey,
+        // color: Colors.grey,
         );
-    final pageLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-          color: primaryColor,
-          fontWeight: FontWeight.w700,
-        );
+    final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
     final heading = table.topicDetail.articleDetail != null
@@ -136,54 +137,61 @@ class _RoundTableLoaded extends HookWidget {
       },
       child: Stack(
         children: [
-          SingleChildScrollView(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl, vertical: AppInsets.l),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (table.topicDetail.root != null)
-                  Text(table.topicDetail.root.name, style: categoryStyle),
-                Text(heading, style: agendaStyle),
-                const SizedBox(height: AppInsets.sm),
-                Text(startDateFormat.format(table.start.toLocal()),
-                    style: dateStyle),
-                const SizedBox(height: AppInsets.l),
-                if (table.topicDetail.articleDetail != null)
-                  _ArticleDetailCard(article: table.topicDetail.articleDetail),
-                if (table.topicDetail.articleDetail == null)
-                  EditableTextField(text: table.topicDetail.description),
-                const SizedBox(height: AppInsets.xl),
-                Text(
-                    AppLocalizations.of(context)
-                        .translate("conversations:speakers_label"),
-                    style: pageLabelStyle),
-                if (table.isSpeaker) const SizedBox(height: AppInsets.l),
-                if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
-                if (rtcController.showConnectionBar)
-                  SpeakersTable(
-                      speakers: rtcController.speakers,
-                      chairSize: 60,
-                      isLive: rtcController.connectionState ==
-                          RtcConnectionState.connected),
-                if (!rtcController.showConnectionBar)
-                  _SpeakersListWithIntro(
-                    table: table,
-                    authUserPk: authUserPK,
+          ScaffoldContainer(
+            child: SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppInsets.xl, vertical: AppInsets.xxl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (table.topicDetail.root != null)
+                    Chip(
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        visualDensity: VisualDensity.compact,
+                        label: Text(table.topicDetail.root.name,
+                            style: categoryStyle)),
+                  Text(startDateFormat.format(table.start.toLocal()),
+                      style: dateStyle),
+                  ArticleTopicCard(topic: table.topicDetail, enabled: false),
+                  const SizedBox(height: AppInsets.l),
+                  if (table.topicDetail.articleDetail == null)
+                    EditableTextField(text: table.topicDetail.description),
+                  const SizedBox(height: AppInsets.xl),
+                  Center(
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("conversations:speakers_label"),
+                        style: pageLabelStyle),
                   ),
-                const SizedBox(height: kListBottomPadding),
-              ],
-            ),
-          )),
+                  if (table.isSpeaker) const SizedBox(height: AppInsets.l),
+                  if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
+                  if (rtcController.showConnectionBar)
+                    SpeakersTable(
+                        speakers: rtcController.speakers,
+                        chairSize: 60,
+                        isLive: rtcController.connectionState ==
+                            RtcConnectionState.connected),
+                  if (!rtcController.showConnectionBar)
+                    _SpeakersListWithIntro(
+                      table: table,
+                      authUserPk: authUserPK,
+                    ),
+                  const SizedBox(height: kListBottomPadding),
+                ],
+              ),
+            )),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                fit: StackFit.expand,
-                children: _buildActionButton(context, rtcController),
+            child: SafeArea(
+              child: SizedBox(
+                height: 120,
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: _buildActionButton(context, rtcController),
+                ),
               ),
             ),
           ),
@@ -212,7 +220,7 @@ class _RoundTableLoaded extends HookWidget {
     );
 
     if (showConnectionBar) {
-      items.add(overlay);
+      // items.add(overlay);
       items.add(Align(
         alignment: Alignment.bottomCenter,
         child: RtcConnectionBar(
@@ -224,38 +232,44 @@ class _RoundTableLoaded extends HookWidget {
       if (table.isSpeaker) {
         final label = AppLocalizations.of(context)
             .translate("conversation_screen:go_live_label");
-        items.add(overlay);
+        // items.add(overlay);
 
         items.add(
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  _joinRoundTableChannel(context, user, controller);
-                },
-                child: Text(label),
+              child: BaseContainer(
+                radius: 30,
+                child: BaseLargeButton(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  onPressed: () {
+                    _joinRoundTableChannel(context, user, controller);
+                  },
+                  child: Text(label),
+                ),
               ),
             ),
           ),
         );
       } else {
-        items.add(overlay);
+        // items.add(overlay);
 
         items.add(
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  postRequestToJoinGroup(context, controller, table.id);
-                },
-                child: Text(AppLocalizations.of(context)
-                    .translate("conversations:join_button_label")),
+              child: BaseContainer(
+                radius: 30,
+                child: BaseLargeButton(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  onPressed: () {
+                    postRequestToJoinGroup(context, controller, table.id);
+                  },
+                  child: Text(AppLocalizations.of(context)
+                      .translate("conversations:join_button_label")),
+                ),
               ),
             ),
           ),
@@ -377,8 +391,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
         );
-    final bodyStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
+    final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
       onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
           userId: user.pk, allowEdit: authUserPk == user.pk)),
@@ -433,47 +446,51 @@ class _ArticleDetailCard extends StatelessWidget {
         );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-          side: BorderSide(width: 2.00, color: Colors.grey[300]),
-        ),
-        color: Colors.white,
-        type: MaterialType.card,
-        child: InkWell(
-          onTap: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppInsets.l,
-              horizontal: AppInsets.l,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BaseNetworkImage(
-                      imageUrl: article.articleSourceDetail.image,
-                      defaultImage: AppImageAssets.videoPlaceholder,
-                      imagebuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 12.00,
+      child: BaseContainer(
+        child: Material(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: const BorderRadius.all(Radius.circular(8.00)),
+          //   side: BorderSide(width: 2.00, color: Colors.grey[300]),
+          // ),
+          color: Theme.of(context).canvasColor,
+          type: MaterialType.card,
+          child: InkWell(
+            onTap: () {
+              KiwiContainer()
+                  .resolve<CustomTabs>()
+                  .openLink(article.websiteUrl);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppInsets.l,
+                horizontal: AppInsets.l,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      BaseNetworkImage(
+                        imageUrl: article.articleSourceDetail.image,
+                        defaultImage: AppImageAssets.videoPlaceholder,
+                        imagebuilder: (context, imageProvider) => CircleAvatar(
+                          backgroundImage: imageProvider,
+                          radius: 12.00,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: AppInsets.l),
-                    Text(article.articleSourceDetail.name,
-                        style: sourceLabelStyle),
-                  ],
-                ),
-                const SizedBox(height: AppInsets.l),
-                Text(
-                  article.title,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                      const SizedBox(width: AppInsets.l),
+                      Text(article.articleSourceDetail.name,
+                          style: sourceLabelStyle),
+                    ],
+                  ),
+                  const SizedBox(height: AppInsets.l),
+                  Text(
+                    article.title,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

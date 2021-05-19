@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:worknetwork/core/widgets/base/base_card_button/base_card_button.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../constants/theme.dart';
 
@@ -27,19 +29,12 @@ class RedeemButton extends MaterialButton {
     return SizedBox(
       width: width ?? MediaQuery.of(context).size.width * 0.9,
       height: buttonHeight,
-      child: RawMaterialButton(
-        fillColor: buttonThemeData.getFillColor(this),
-        splashColor: buttonThemeData.getSplashColor(this),
-        focusColor: buttonThemeData.getFocusColor(this),
-        highlightColor: buttonThemeData.getHighlightColor(this),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
+      child: BaseContainer(
+        radius: buttonHeight / 2,
+        child: FlatButton(
+          onPressed: onPressed,
+          child: child,
         ),
-        textStyle: theme.textTheme.button.copyWith(
-          color: textColor ?? buttonThemeData.getTextColor(this),
-        ),
-        onPressed: onPressed,
-        child: child,
       ),
     );
   }

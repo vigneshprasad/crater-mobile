@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -16,15 +18,19 @@ import '../optin_card/optin_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'conversation_calendar_tab_state.dart';
 
-const kLeftPaddingForDate = 72.00;
+const kLeftPaddingForDate = 20.00;
 
 class ConversationCalendarTab extends HookWidget {
   final ConversationTabType type;
   final ScrollController controller;
+  final String name;
+  final VoidCallback onSchedulePressed;
 
   const ConversationCalendarTab({
     @required this.type,
     @required this.controller,
+    @required this.name,
+    @required this.onSchedulePressed,
   });
 
   @override
@@ -36,6 +42,8 @@ class ConversationCalendarTab extends HookWidget {
         loading: () => ConversationTabShimmer(),
         data: (results) => _LoadedConversationTab(
           type: type,
+          name: name,
+          onSchedulePressed: onSchedulePressed,
         ),
         error: (err, st) => _Loader(),
       ),
@@ -52,10 +60,14 @@ class _Loader extends StatelessWidget {
 
 class _LoadedConversationTab extends HookWidget {
   final ConversationTabType type;
+  final String name;
+  final VoidCallback onSchedulePressed;
 
   const _LoadedConversationTab({
     Key key,
     @required this.type,
+    @required this.name,
+    @required this.onSchedulePressed,
   }) : super(key: key);
 
   @override
@@ -68,6 +80,27 @@ class _LoadedConversationTab extends HookWidget {
     children.add(SliverObstructionInjector(
       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
     ));
+
+    if (type == ConversationTabType.all) {
+      children.add(SliverToBoxAdapter(
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text(
+              'Hi $name',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'What would you like to discuss today ?',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      )));
+    }
 
     for (final week in weeks) {
       /// Add 1:1 Meetings
@@ -82,6 +115,7 @@ class _LoadedConversationTab extends HookWidget {
               padding: const EdgeInsets.only(
                 left: kLeftPaddingForDate,
                 bottom: AppInsets.xl,
+                top: 60,
               ),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -93,9 +127,9 @@ class _LoadedConversationTab extends HookWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Divider(color: Colors.grey[300]),
-          ),
+          // SliverToBoxAdapter(
+          //   child: Divider(color: Colors.grey[300]),
+          // ),
         ]);
       }
       if (!week.future) {
@@ -111,6 +145,7 @@ class _LoadedConversationTab extends HookWidget {
                 padding: const EdgeInsets.only(
                   left: kLeftPaddingForDate,
                   bottom: AppInsets.xl,
+                  top: 60,
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -123,9 +158,9 @@ class _LoadedConversationTab extends HookWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Divider(color: Colors.grey[300]),
-            ),
+            // SliverToBoxAdapter(
+            //   child: Divider(color: Colors.grey[300]),
+            // ),
           ]);
         }
       } else {
@@ -143,6 +178,7 @@ class _LoadedConversationTab extends HookWidget {
                   padding: const EdgeInsets.only(
                     left: kLeftPaddingForDate,
                     bottom: AppInsets.xl,
+                    top: 60,
                   ),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -160,6 +196,18 @@ class _LoadedConversationTab extends HookWidget {
         }
       }
     }
+
+    children.add(SliverToBoxAdapter(
+      child: Center(
+        child: BaseContainer(
+          radius: 30,
+          child: BaseLargeButton(
+            onPressed: onSchedulePressed,
+            text: 'Schedule New',
+          ),
+        ),
+      ),
+    ));
 
     return RefreshIndicator(
       displacement: 96.00,
@@ -227,35 +275,36 @@ class _DateLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weekDayFormat = DateFormat("EEE");
-    final dateFormat = DateFormat("d");
+    final dateFormat = DateFormat("d MMM - yyyy");
     final weekdayLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
         );
 
-    final primaryColor = Theme.of(context).canvasColor;
+    final primaryColor = Theme.of(context).scaffoldBackgroundColor;
     final now = DateTime.now().toUtc();
     final isToday = now.isSameDate(date);
     final decoration = BoxDecoration(
-      color: isToday ? primaryColor : Colors.transparent,
-      shape: BoxShape.circle,
-    );
+        color: primaryColor, borderRadius: BorderRadius.circular(20)
+        // shape: BoxShape.circle,
+        );
     final dateLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: isToday ? 16.00 : 18.00,
-          fontWeight: FontWeight.w700,
-          color: isToday ? Colors.white : Colors.grey[800],
+          // fontWeight: FontWeight.w700,
+          color: isToday ? Colors.white : Colors.white70,
         );
     return Padding(
       padding: const EdgeInsets.all(AppInsets.xl),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Column(
           children: [
-            Text(weekDayFormat.format(date.toLocal()),
-                style: weekdayLabelStyle),
-            const SizedBox(height: AppInsets.sm),
+            // Text(weekDayFormat.format(date.toLocal()),
+            // style: weekdayLabelStyle),
+            // const SizedBox(height: AppInsets.sm),
+
             Container(
-              height: 32.00,
-              width: 32.00,
+              height: 30.00,
+              width: 200.00,
               decoration: decoration,
               child: Center(
                 child: Text(dateFormat.format(date), style: dateLabelStyle),

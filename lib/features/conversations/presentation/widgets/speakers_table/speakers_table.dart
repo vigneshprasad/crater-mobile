@@ -35,9 +35,10 @@ class SpeakersTable extends StatelessWidget {
             Container(
               margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: primaryColor),
-                  color: Colors.blue[50]),
+                borderRadius: BorderRadius.circular(20),
+                // border: Border.all(color: primaryColor),
+                color: Colors.black,
+              ),
             ),
             Column(
               children: [

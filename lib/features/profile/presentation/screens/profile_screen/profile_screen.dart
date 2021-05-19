@@ -117,16 +117,16 @@ class _ProfileBody extends HookWidget {
             width: double.infinity,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'About me:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //   child: Text(
+              //     'About me:',
+              //     style: Theme.of(context)
+              //         .textTheme
+              //         .subtitle1
+              //         .copyWith(fontWeight: FontWeight.bold),
+              //   ),
+              // ),
               if (profile.generatedIntroduction != null)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -208,6 +208,8 @@ class _ConnectionProfile extends HookWidget {
     if (photoUrl != null) {
       return CachedNetworkImage(
         imageUrl: photoUrl,
+        width: size,
+        height: size,
         imageBuilder: (context, imageProvider) {
           return Container(
             height: size,
@@ -225,7 +227,8 @@ class _ConnectionProfile extends HookWidget {
         width: size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50.0),
-          image: const DecorationImage(image: AppImageAssets.defaultAvatar),
+          image: const DecorationImage(
+              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
         ),
       );
     }
@@ -241,7 +244,7 @@ class _MeetingPreferenceInfo extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ..._buildObjectives(context),
         ..._buildInterests(context),
@@ -275,11 +278,8 @@ class _MeetingPreferenceInfo extends HookWidget {
   }
 
   List<Widget> _buildInterests(BuildContext context) {
-    const introLabel = "Looking to meet:";
-    final labelStyle = Theme.of(context)
-        .textTheme
-        .subtitle1
-        .copyWith(fontWeight: FontWeight.bold);
+    const introLabel = "Interests";
+    final labelStyle = Theme.of(context).textTheme.headline6;
     if (interests.isEmpty) {
       return [];
     }
@@ -291,16 +291,23 @@ class _MeetingPreferenceInfo extends HookWidget {
         style: labelStyle,
       ),
       const SizedBox(
-        height: AppInsets.med,
+        height: AppInsets.xxl,
         width: double.infinity,
       ),
-      Wrap(
-        spacing: 12,
-        children: interests
-            .map((interest) => _ChipItem(
-                  text: interest.name,
-                ))
-            .toList(),
+      SizedBox(
+        height: 120,
+        child: GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 4,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          physics: const NeverScrollableScrollPhysics(),
+          children: interests
+              .map((interest) => _ChipItem(
+                    text: interest.name,
+                  ))
+              .toList(),
+        ),
       )
     ];
   }
@@ -322,35 +329,34 @@ class _UserConnections extends HookWidget {
   }
 
   List<Widget> _buildConnections(BuildContext context) {
-    const introLabel = "Connections:";
-    final labelStyle = Theme.of(context)
-        .textTheme
-        .subtitle1
-        .copyWith(fontWeight: FontWeight.bold);
+    const introLabel = "Connections";
+    final labelStyle = Theme.of(context).textTheme.headline6;
     if (connections.isEmpty) {
       return [];
     }
 
-    const itemsInRow = 5;
-    const itemHeight = 150;
+    const itemsInRow = 4;
+    const itemHeight = 156;
     final gridViewHeight =
         itemHeight * (connections.length / itemsInRow).ceilToDouble();
 
     return [
       const SizedBox(height: AppInsets.xxl),
-      Text(
-        introLabel,
-        style: labelStyle,
+      Center(
+        child: Text(
+          introLabel,
+          style: labelStyle,
+        ),
       ),
       const SizedBox(
-        height: AppInsets.med,
+        height: AppInsets.xxl,
         width: double.infinity,
       ),
       SizedBox(
         height: gridViewHeight,
         child: GridView.count(
           crossAxisCount: itemsInRow,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.6,
           physics: const NeverScrollableScrollPhysics(),
           children: connections
               .map((user) => InkWell(
@@ -363,8 +369,9 @@ class _UserConnections extends HookWidget {
                         children: [
                           _ConnectionProfile(
                             photoUrl: user.photo,
-                            size: 50,
+                            size: 70,
                           ),
+                          SizedBox(height: 8),
                           Text(
                             user.name,
                             textAlign: TextAlign.center,
@@ -427,14 +434,19 @@ class _ChipItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText1;
-    return Chip(
-        backgroundColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.transparent,
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            side: BorderSide()),
-        label: Text(
-          text,
-          style: textStyle,
+            border: Border.all(
+              // width: 1,
+              color: Colors.white,
+            )),
+        child: Center(
+          child: Text(
+            text,
+            style: textStyle,
+          ),
         ));
   }
 }

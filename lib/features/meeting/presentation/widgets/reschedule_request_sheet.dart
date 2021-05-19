@@ -42,7 +42,7 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
     final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
           fontSize: 22,
           fontWeight: FontWeight.w500,
-          color: Colors.grey[800],
+          // color: Colors.grey[800],
         );
     final heading = AppLocalizations.of(context)
         .translate("meeting_reschedule:request_heading");

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/core/color/color.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -25,6 +26,7 @@ class ConversationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 13.00,
+          color: Colors.white70,
         );
     final isFull = conversation.speakers.length >= conversation.maxSpeakers;
     final now = DateTime.now();
@@ -38,10 +40,10 @@ class ConversationCard extends StatelessWidget {
     Color background;
 
     if (conversation.isPast) {
-      _border = Border.all(
-        color: Colors.grey[200],
-        width: 2.00,
-      );
+      // _border = Border.all(
+      //   color: Colors.grey[200],
+      //   width: 2.00,
+      // );
       background = Colors.grey[100];
     } else {
       if (conversation.isSpeaker) {
@@ -86,7 +88,6 @@ class ConversationCard extends StatelessWidget {
       heading: Text(heading),
       subHeading: Row(
         children: [
-          Text(dateFormat.format(conversation.start.toLocal())),
           const Spacer(),
           if (isSoon) Text(startTime, style: subheadStyle),
         ],
@@ -98,12 +99,31 @@ class ConversationCard extends StatelessWidget {
             _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
           Row(
             children: [
-              Text("Relevancy: ${conversation.relevancy}%",
-                  style: subheadStyle),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(dateFormat.format(conversation.start.toLocal())),
+                  Text("Relevancy: ${conversation.relevancy}%",
+                      style: subheadStyle),
+                ],
+              ),
               Expanded(
                 child: _SpeakersAvatarList(
                     speakers: conversation.speakersDetailList),
               ),
+              SizedBox(width: 20),
+              BaseContainer(
+                  radius: 30,
+                  child: Container(
+                    color: Theme.of(context).canvasColor,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward),
+                      // color: Theme.of(context).wh,
+
+                      onPressed: () => ExtendedNavigator.of(context)
+                          .push(Routes.conversationScreen(id: conversation.id)),
+                    ),
+                  )),
             ],
           ),
         ],
