@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -43,6 +44,10 @@ class ConversationRtcClient {
         AudioProfile.MusicHighQuality, AudioScenario.GameStreaming);
     await _engine.joinChannelWithUserAccount(token, channelName, account);
     await _engine.renewToken(token);
+  }
+
+  Future<void> muteLocalAudio({@required bool muted}) async {
+    await _engine.muteLocalAudioStream(muted);
   }
 
   void setEventHandler(RtcEngineEventHandler handler) {

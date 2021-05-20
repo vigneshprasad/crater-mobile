@@ -15,7 +15,10 @@ class ConversationOverlayIndicator extends HookWidget {
   Widget build(BuildContext context) {
     const radius = 30.0;
     const width = radius * 2;
-    final controller = useProvider(conversationStateProvider(tableId));
+    final conversationController =
+        useProvider(conversationStateProvider(tableId));
+    final speakersController = useProvider(conversationSpeakersState(tableId));
+    final rtcController = useProvider(rtcConnectionProvider(tableId));
     return Align(
         alignment: Alignment.centerRight,
         child: Padding(

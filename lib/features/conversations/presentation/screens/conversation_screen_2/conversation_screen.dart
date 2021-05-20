@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -36,6 +37,16 @@ class ConversationScreen extends HookWidget {
     final conversationState = useProvider(conversationStateProvider(id).state);
     final speakers = useProvider(conversationSpeakersState(id).state);
     final connectionProvider = useProvider(rtcConnectionProvider(id));
+    final overlayProvider = useProvider(conversationOverlayProvider);
+
+    useEffect(() {
+      if (overlayProvider.entry != null) {
+        overlayProvider.removeOverlayEntry();
+      }
+
+      return;
+    });
+
     return Scaffold(
       appBar: BaseAppBar(),
       body: conversationState.when(
@@ -54,7 +65,7 @@ class ConversationScreen extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }
@@ -97,8 +108,6 @@ class _ConversationLoaded extends StatelessWidget {
     final heading = conversation.topicDetail.articleDetail != null
         ? conversation.topicDetail.articleDetail.description
         : conversation.topicDetail.name;
-
-    // Providers
 
     return WillPopScope(
       onWillPop: () async {

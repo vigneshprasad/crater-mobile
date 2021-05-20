@@ -73,6 +73,8 @@ class RtcConnectionBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText1;
+    final localUser =
+        useProvider(conversationSpeakersState(table.id)).localUser;
     return Container(
       height: kconnectionBarHeight,
       width: MediaQuery.of(context).size.width,
@@ -101,10 +103,11 @@ class RtcConnectionBar extends HookWidget {
               ),
             if (connection == RtcConnection.connected)
               _MicrophoneButton(
-                muted: false,
+                muted: localUser.muted,
                 onPressed: () {
-                  // controller.muteLocalAudioStream(
-                  //     muted: !controller.locaRtclUser.muted);
+                  context
+                      .read(conversationStateProvider(table.id))
+                      .muteLocalAudio(muted: !localUser.muted);
                 },
               ),
             if (connection == RtcConnection.connected)

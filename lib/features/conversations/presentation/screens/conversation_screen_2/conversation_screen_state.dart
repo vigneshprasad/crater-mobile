@@ -109,6 +109,14 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     }
   }
 
+  Future<void> muteLocalAudio({@required bool muted}) async {
+    final user = read(conversationSpeakersState(_groupId)).localUser;
+    await read(conversationRtcClient).muteLocalAudio(muted: muted);
+
+    read(conversationSpeakersState(_groupId))
+        .toggleMutedState(user.pk, muted: !user.muted);
+  }
+
   void createAudioCallOverlay(BuildContext context) {
     final entry = _createOverlayEntry();
     read(conversationOverlayProvider)
@@ -129,6 +137,8 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
       joinChannelSuccess: (channel, uid, elapsed) =>
           _onJoinChannelSuccess(channel, uid, elapsed, localUser.pk),
       userJoined: (uid, elapsed) => _onRemoteUserJoined(uid, elapsed),
+      localAudioStateChanged: (state, error) =>
+          _onLocalAudioStateChanged(state, error),
       audioVolumeIndication: (speakers, totalVolume) =>
           _onAudioVolumeIndicationChange(speakers, totalVolume),
       userOffline: (uid, reason) => _onRemoteUserOffline(uid, reason),
@@ -272,12 +282,31 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
           .toggleOnlineState(pk, online: true);
     }
   }
+
+  Future<void> _onLocalAudioStateChanged(
+      AudioLocalState state, AudioLocalError error) async {
+    final localUser = read(conversationSpeakersState(_groupId)).localUser;
+    if (error == AudioLocalError.Ok) {
+      if (state == AudioLocalState.Stopped) {
+        read(conversationSpeakersState(_groupId))
+            .toggleMutedState(localUser.pk, muted: true);
+      } else if (state == AudioLocalState.Recording) {
+        read(conversationSpeakersState(_groupId))
+            .toggleMutedState(localUser.pk);
+      }
+    }
+  }
 }
 
 class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
   final Reader read;
 
   ConversationSpeakersState(this.read) : super(<RtcUser>[]);
+
+  RtcUser get localUser {
+    final user = KiwiContainer().resolve<AuthBloc>().state.user;
+    return state.firstWhere((element) => element.pk == user.pk);
+  }
 
   void setInitialSpeakers(List<ConversationUser> speakers) {
     state = [
