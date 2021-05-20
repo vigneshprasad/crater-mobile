@@ -11,9 +11,10 @@ class SocialAuthButton extends StatelessWidget {
   final SocialAuthProviders provider;
   final bool isLarge;
   final VoidCallback onPressed;
+  final bool isSignUp;
 
   const SocialAuthButton(
-      {Key key, @required this.provider, this.onPressed, this.isLarge = false})
+      {Key key, @required this.provider, this.onPressed, this.isLarge = false, this.isSignUp = false})
       : super(key: key);
 
   @override
@@ -28,7 +29,7 @@ class SocialAuthButton extends StatelessWidget {
         AppSvgAssets.googleColored,
         height: _iconSize,
       );
-      _textColor = Colors.white;
+      _textColor = Colors.black;
       _buttonColor = Colors.white;
     }
 
@@ -63,7 +64,7 @@ class SocialAuthButton extends StatelessWidget {
 
     if (isLarge) {
       final name = _nameForProvider(provider);
-
+      final prefix = isSignUp ? 'Sign up' : 'Sign in';
       _child = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         child: Row(children: [
@@ -71,7 +72,7 @@ class SocialAuthButton extends StatelessWidget {
           const SizedBox(width: 8),
           const Spacer(),
           Text(
-            'Sign up with $name',
+            '$prefix with $name',
             style: TextStyle(color: _textColor, fontSize: 17),
           ),
           const Spacer()

@@ -2,15 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:custom_rounded_rectangle_border/custom_rounded_rectangle_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/core/widgets/base/base_bottom_sheet_route/base_bottom_sheet_route.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/social_auth_button/social_auth_button.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
@@ -200,52 +204,32 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   Widget _buildViewContent(BuildContext context) {
-    final footerText =
-        '${AppLocalizations.of(context).translate('auth:signin_text')} ${AppLocalizations.of(context).translate('auth:signin')}';
-
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           _SlideIndicator(
             length: _tabs.length,
             activeIndex: _activeIndex,
           ),
-          const SizedBox(height: AppInsets.med),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-            child: Column(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 240,
-                  child: SocialAuthButton(
-                    provider: SocialAuthProviders.linkedin,
-                    isLarge: true,
-                    onPressed: () => _authBloc.add(const AuthSocialPressed(
-                        provider: SocialAuthProviders.linkedin)),
+                  width: 150,
+                  child: BaseLargeButton(
+                    text: 'Login',
+                    onPressed: () => openBottomSheet(context, isSignUp: false),
                   ),
                 ),
-                const SizedBox(height: AppInsets.med),
-                if (Platform.isIOS)
-                  SizedBox(
-                    width: 240,
-                    child: SocialAuthButton(
-                      provider: SocialAuthProviders.apple,
-                      isLarge: true,
-                      onPressed: () => _authBloc.add(const AuthSocialPressed(
-                          provider: SocialAuthProviders.apple)),
-                    ),
-                  ),
-                const SizedBox(height: AppInsets.med),
+                SizedBox(width: 40),
                 SizedBox(
-                  height: 30,
-                  child: FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      _openSignupAuthScreen(false, context);
-                    },
-                    child: Text(footerText),
+                  width: 150,
+                  child: BaseLargeButton(
+                    text: 'Get Started',
+                    onPressed: () => openBottomSheet(context),
                   ),
                 ),
               ],
@@ -254,6 +238,142 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         ],
       ),
     );
+  }
+
+  void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
+    //  Navigator.push(
+    //   context,
+    //   BaseBottomSheetRoute(
+    //     initialHeightRatio: 0.6,
+
+    //     child:_popup(context, isSignUp: isSignUp),
+    //   ),
+    // ).then((value) {
+    // });
+
+    // r
+    // eturn;
+    //
+    showModalBottomSheet(
+      // showBottomSheet(
+      elevation: 10,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return _popup(context, isSignUp: isSignUp);
+      },
+    );
+  }
+
+  Widget _popup(BuildContext context, {bool isSignUp = true}) {
+    final footerText = isSignUp ? 'Sign up with Email' : 'Sign in with Email';
+    return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+          ),
+          padding: const EdgeInsets.all(40),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: AppInsets.med),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
+                  child: Wrap(
+                    direction: Axis.vertical,
+                    spacing: 30,
+                    children: [
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 240,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.linkedin,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () => _authBloc.add(
+                                const AuthSocialPressed(
+                                    provider: SocialAuthProviders.linkedin)),
+                          ),
+                        ),
+                      ),
+                      if (Platform.isIOS)
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 240,
+                            child: SocialAuthButton(
+                              provider: SocialAuthProviders.apple,
+                              isLarge: true,
+                              isSignUp: isSignUp,
+                              onPressed: () => _authBloc.add(
+                                  const AuthSocialPressed(
+                                      provider: SocialAuthProviders.apple)),
+                            ),
+                          ),
+                        ),
+                      if (!isSignUp)
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 240,
+                            child: SocialAuthButton(
+                              provider: SocialAuthProviders.facebook,
+                              isLarge: true,
+                              isSignUp: isSignUp,
+                              onPressed: () => _authBloc.add(
+                                  const AuthSocialPressed(
+                                      provider: SocialAuthProviders.facebook)),
+                            ),
+                          ),
+                        ),
+                      if (!isSignUp)
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 240,
+                            child: SocialAuthButton(
+                              provider: SocialAuthProviders.google,
+                              isLarge: true,
+                              isSignUp: isSignUp,
+                              onPressed: () => _authBloc.add(
+                                  const AuthSocialPressed(
+                                      provider: SocialAuthProviders.google)),
+                            ),
+                          ),
+                        ),
+                      if (!isSignUp)
+                        BaseContainer(
+                          child: RawMaterialButton(
+                            constraints: const BoxConstraints(
+                              minWidth: 240,
+                              minHeight: 52,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: AppInsets.l,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            onPressed: () {
+                              _openSignupAuthScreen(false, context);
+                            },
+                            child: Text(
+                              footerText,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {

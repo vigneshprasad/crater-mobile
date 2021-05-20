@@ -75,13 +75,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   AuthScreenBody(
                     content: Column(
                       children: <Widget>[
-                        _socialAuthRow(context),
+                        // _socialAuthRow(context),
                         const SizedBox(height: 32),
                         // LoginForm()
                         if (_formIndex == 0) SignupForm() else LoginForm()
                       ],
                     ),
-                    footer: _buildFooter(context),
+                    // footer: _buildFooter(context),
                     // onTapPlayButton: _onTapPlayButton,
                   ),
                   if (state.isSubmitting != null && state.isSubmitting)
