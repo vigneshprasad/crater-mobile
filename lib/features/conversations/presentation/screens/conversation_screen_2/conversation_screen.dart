@@ -42,10 +42,15 @@ class ConversationScreen extends HookWidget {
     useEffect(() {
       if (overlayProvider.entry != null) {
         overlayProvider.removeOverlayEntry();
+        if (overlayProvider.groupId != id) {
+          context
+              .read(conversationStateProvider(overlayProvider.groupId))
+              .leaveAudioCall();
+        }
       }
 
       return;
-    });
+    }, []);
 
     return Scaffold(
       appBar: BaseAppBar(),
@@ -254,7 +259,17 @@ class _ConversationLoaded extends StatelessWidget {
         Fluttertoast.showToast(msg: failure.message);
       },
       (group) {
-        print(group);
+        final now = DateTime.now().toLocal();
+        final start = group.start.toLocal();
+        final end = group.end.toLocal();
+
+        print(now.isAfter(start));
+
+        if (now.isAfter(start) && now.isBefore(end)) {
+          context
+              .read(conversationStateProvider(conversation.id))
+              .connectToAudioCall();
+        }
       },
     );
   }
