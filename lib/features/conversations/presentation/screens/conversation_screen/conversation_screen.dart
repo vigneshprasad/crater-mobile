@@ -11,6 +11,7 @@ import 'package:share/share.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/article_topic_card/article_topic_card.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -147,13 +148,22 @@ class _RoundTableLoaded extends HookWidget {
                 children: [
                   if (table.topicDetail.root != null)
                     Chip(
-                        backgroundColor: Theme.of(context).backgroundColor,
+                        backgroundColor:
+                            Theme.of(context).dialogBackgroundColor,
                         visualDensity: VisualDensity.compact,
-                        label: Text(table.topicDetail.root.name,
-                            style: categoryStyle)),
-                  Text(startDateFormat.format(table.start.toLocal()),
-                      style: dateStyle),
-                  ArticleTopicCard(topic: table.topicDetail, enabled: false),
+                        label: Text(
+                          table.topicDetail.root.name,
+                        )),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(startDateFormat.format(table.start.toLocal()),
+                        style: dateStyle),
+                  ),
+                  ConversationCard(
+                    conversation: table,
+                    hideFooter: true,
+                    onCardPressed: (_) {},
+                  ),
                   const SizedBox(height: AppInsets.l),
                   if (table.topicDetail.articleDetail == null)
                     EditableTextField(text: table.topicDetail.description),

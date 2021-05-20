@@ -15,11 +15,13 @@ import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
   final ValueChanged<Conversation> onCardPressed;
+  final bool hideFooter;
 
   const ConversationCard({
     Key key,
     @required this.conversation,
     this.onCardPressed,
+    this.hideFooter,
   }) : super(key: key);
 
   @override
@@ -80,8 +82,12 @@ class ConversationCard extends StatelessWidget {
 
     return CalendarCardLayout(
       onPressed: () {
-        ExtendedNavigator.of(context)
-            .push(Routes.conversationScreen(id: conversation.id));
+        if (onCardPressed != null) {
+          onCardPressed(conversation);
+        } else {
+          ExtendedNavigator.of(context)
+              .push(Routes.conversationScreen(id: conversation.id));
+        }
       },
       padding: padding,
       background: Theme.of(context).canvasColor,
@@ -97,35 +103,36 @@ class ConversationCard extends StatelessWidget {
         children: [
           if (conversation.topicDetail.articleDetail != null)
             _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(dateFormat.format(conversation.start.toLocal())),
-                  Text("Relevancy: ${conversation.relevancy}%",
-                      style: subheadStyle),
-                ],
-              ),
-              Expanded(
-                child: _SpeakersAvatarList(
-                    speakers: conversation.speakersDetailList),
-              ),
-              SizedBox(width: 20),
-              BaseContainer(
-                  radius: 30,
-                  child: Container(
-                    color: Theme.of(context).canvasColor,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      // color: Theme.of(context).wh,
+          if (hideFooter != true)
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(dateFormat.format(conversation.start.toLocal())),
+                    Text("Relevancy: ${conversation.relevancy}%",
+                        style: subheadStyle),
+                  ],
+                ),
+                Expanded(
+                  child: _SpeakersAvatarList(
+                      speakers: conversation.speakersDetailList),
+                ),
+                SizedBox(width: 20),
+                BaseContainer(
+                    radius: 30,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        // color: Theme.of(context).wh,
 
-                      onPressed: () => ExtendedNavigator.of(context)
-                          .push(Routes.conversationScreen(id: conversation.id)),
-                    ),
-                  )),
-            ],
-          ),
+                        onPressed: () => ExtendedNavigator.of(context).push(
+                            Routes.conversationScreen(id: conversation.id)),
+                      ),
+                    )),
+              ],
+            ),
         ],
       ),
     );
