@@ -29,7 +29,7 @@ part 'profile_intro_state.dart';
 
 class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
   final UCGetProfileIntroQuestions getProfileIntroQuestions;
-  final UCGetUserTags getUserTags;
+  // final UCGetUserTags getUserTags;
   final UCGetProfileIntroCompanies getProfileIntroCompanies;
   final UCGetProfileIntroEducations getProfileIntroEducations;
   final UCGetProfileIntroExperiences getProfileIntroExperiences;
@@ -40,7 +40,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
   ProfileIntroBloc({
     @required this.getProfileIntroQuestions,
-    @required this.getUserTags,
+    // @required this.getUserTags,
     @required this.getProfileIntroCompanies,
     @required this.getProfileIntroEducations,
     @required this.getProfileIntroExperiences,
@@ -49,7 +49,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
     @required this.patchUser,
     @required this.analytics,
   })  : assert(getProfileIntroQuestions != null),
-        assert(getUserTags != null),
+        // assert(getUserTags != null),
         assert(getProfileIntroCompanies != null),
         assert(getProfileIntroEducations != null),
         assert(getProfileIntroExperiences != null),
@@ -74,11 +74,12 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       GetProfileIntroRequestStarted event) async* {
     yield const ProfileIntroRequestLoading();
 
-    final questionsOrError = await getProfileIntroQuestions(NoParams());
+    final questionsOrError =
+        await getProfileIntroQuestions(PatchUserParams(user: event.user));
 
     // Get Tags
-    final tagsResponse = await getUserTags(NoParams());
-    final tags = tagsResponse.getOrElse(null);
+    // final tagsResponse = await getUserTags(NoParams());
+    // final tags = tagsResponse.getOrElse(null);
 
     // Get Companies
     final companyResponse = await getProfileIntroCompanies(NoParams());
@@ -101,7 +102,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       (questions) => ProfileIntroRequestLoaded(
           questions: element(
         questions,
-        tags,
+        // tags,
         experiences,
         sectors,
         companies,
@@ -112,7 +113,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
   List<ProfileIntroQuestion> element(
     List<String> questions,
-    List<UserTag> tags,
+    // List<UserTag> tags,
     List<ProfileIntroMeta> experiences,
     List<ProfileIntroMeta> sectors,
     List<ProfileIntroMeta> companies,
@@ -142,12 +143,12 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
               lines = 7;
               optional = true;
               break;
-            case ProfileIntroElement.tags:
-              type = ProfileIntroElementType.multiselect;
-              options = tags
-                  .map((e) => ProfileIntroMeta(value: e.pk, name: e.name))
-                  .toList();
-              break;
+            // case ProfileIntroElement.tags:
+            //   type = ProfileIntroElementType.multiselect;
+            //   options = tags
+            //       .map((e) => ProfileIntroMeta(value: e.pk, name: e.name))
+            //       .toList();
+            //   break;
             case ProfileIntroElement.yearsOfExperience:
               options = experiences;
               break;
@@ -190,24 +191,14 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
     yield const ProfileIntroRequestLoading();
 
     // Update Profile
-    Map<String, dynamic> body = Map.from(event.values);
-    final tags = body[ProfileIntroElement.tags] as List<ProfileIntroMeta>;
-    final tagIds = tags.map((e) => e.value).toList();
-    body[ProfileIntroElement.tags] = tagIds;
     final updateOrError = await postUserProfile(
-        UCPostUserProfileIntroParams(body: body, photo: event.photo));
-
-    // Update User
-    final user =
-        UserModel(name: event.values[ProfileIntroElement.name].toString());
-    final patchOrError = await patchUser(PatchUserParams(user: user));
-    final updatedUser = patchOrError.getOrElse(() => null);
+        UCPostUserProfileIntroParams(body: event.values, photo: event.photo));
 
     yield updateOrError.fold(
       (failure) => ProfileIntroRequestError(error: failure),
       (updatedProfile) {
         final properties = {
-          "name": updatedProfile.name,
+          // "name": updatedProfile.name,
           "user_tags": updatedProfile.tagList.map((e) => e.name).toList(),
         };
 
@@ -215,8 +206,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
         analytics.trackEvent(
             eventName: AnalyticsEvents.signUpBasicProfile,
             properties: properties);
-        return PatchProfileIntroRequestLoaded(
-            user: updatedUser, profile: updatedProfile);
+        return PatchProfileIntroRequestLoaded(profile: updatedProfile);
       },
     );
   }

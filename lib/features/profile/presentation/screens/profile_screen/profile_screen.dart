@@ -7,12 +7,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../constants/work_net_icons_icons.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
@@ -43,7 +43,7 @@ class ProfileScreen extends HookWidget {
                   ? FloatingActionButton(
                       heroTag: fabHeroTag,
                       onPressed: () => ExtendedNavigator.of(context)
-                          .push(Routes.profileIntroScreen(editMode: true)),
+                          .push(Routes.profileBasicScreen(editMode: true)),
                       child: const Icon(WorkNetIcons.newpost),
                     )
                   : FloatingActionButton(

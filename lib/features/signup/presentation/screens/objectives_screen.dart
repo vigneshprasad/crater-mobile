@@ -21,11 +21,15 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   ObjectivesBloc _bloc;
   List<UserObjective> _objectives;
   List<UserObjective> _selectedObjectives;
+  List<UserObjective> _interests;
+  List<UserObjective> _selectedInterests;
 
   @override
   void initState() {
     _selectedObjectives = [];
     _objectives = [];
+    _selectedInterests = [];
+    _interests = [];
     _bloc = KiwiContainer().resolve<ObjectivesBloc>()
       ..add(const GetObjectivesRequestStarted());
     super.initState();
@@ -41,15 +45,15 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading;
+        String heading = 'And about your interests';
         final next =
             AppLocalizations.of(context).translate("next").toUpperCase();
         final user = authState.user;
-        if (user.name.trim().isEmpty) {
-          heading = "Hey, who would you like us to introduce you to?";
-        } else {
-          heading = "${user.name}, who would you like us to introduce you to?";
-        }
+        // if (user.name.trim().isEmpty) {
+        //   heading = "Hey, who would you like us to introduce you to?";
+        // } else {
+        //   heading = "${user.name}, who would you like us to introduce you to?";
+        // }
 
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
@@ -80,13 +84,31 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
                                 child: Text(
                                   heading,
                                   style: headingStyle,
-                                  textAlign: TextAlign.center,
+                                  // textAlign: TextAlign.center,
                                 ),
                               ),
                               const SizedBox(height: AppInsets.xxl),
+                              Text('I like to converse about',
+                                  // textAlign: TextAlign.start,
+                                  style: Theme.of(context).textTheme.subtitle1),
+                              const SizedBox(height: AppInsets.xxl),
+                              if (_interests.isNotEmpty)
+                                ObjectivesPicker(
+                                  objectives: _interests
+                                      .map((e) => PickerItem(name: e.name))
+                                      .toList(),
+                                  onPressedItem: _onPressedInterestItem,
+                                ),
+                              const SizedBox(height: AppInsets.xxl),
+                              Text('My professional objectives',
+                                  // textAlign: TextAlign.start,
+                                  style: Theme.of(context).textTheme.subtitle1),
+                              const SizedBox(height: AppInsets.xxl),
                               if (_objectives.isNotEmpty)
                                 ObjectivesPicker(
-                                  objectives: _objectives,
+                                  objectives: _objectives
+                                      .map((e) => PickerItem(name: e.name))
+                                      .toList(),
                                   onPressedItem: _onPressedObjectiveItem,
                                 ),
                             ],
@@ -123,15 +145,19 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
         _objectives = state.objectives;
       });
     } else if (state is PatchObjectivesRequestLoaded) {
-      final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-      final updatedUser =
-          _authBloc.state.user.copyWith(objectives: state.user.objectives);
-      _authBloc.add(AuthUserUpdateRecieved(user: updatedUser));
-      if (updatedUser.linkedinUrl == null) {
-        ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
-      } else {
-        ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
-      }
+      // final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+      // final updatedUser =
+      //     _authBloc.state.user.copyWith(objectives: state.user.objectives);
+      // _authBloc.add(AuthUserUpdateRecieved(user: updatedUser));
+
+      ExtendedNavigator.of(context)
+          .popAndPush(Routes.profileImageScreen(editMode: true));
+
+      // if (updatedUser.linkedinUrl == null) {
+      //   ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
+      // } else {
+      //   ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+      // }
     }
   }
 
@@ -139,14 +165,28 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
     _bloc.add(PostObjectivesRequestStarted(objectives: _selectedObjectives));
   }
 
-  void _onPressedObjectiveItem(UserObjective item, bool isSelected) {
+  void _onPressedObjectiveItem(PickerItem item, bool isSelected) {
+    final objective = _objectives.firstWhere((e) => e.name == item.name);
     if (isSelected) {
       setState(() {
-        _selectedObjectives = (_selectedObjectives..add(item));
+        _selectedObjectives = (_selectedObjectives..add(objective));
       });
     } else {
       setState(() {
-        _selectedObjectives = (_selectedObjectives..remove(item));
+        _selectedObjectives = (_selectedObjectives..remove(objective));
+      });
+    }
+  }
+
+  void _onPressedInterestItem(PickerItem item, bool isSelected) {
+    final interest = _interests.firstWhere((e) => e.name == item.name);
+    if (isSelected) {
+      setState(() {
+        _selectedInterests = (_selectedInterests..add(interest));
+      });
+    } else {
+      setState(() {
+        _selectedInterests = (_selectedInterests..remove(interest));
       });
     }
   }

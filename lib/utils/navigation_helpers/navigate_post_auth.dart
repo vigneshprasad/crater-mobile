@@ -9,12 +9,14 @@ import '../../routes.gr.dart';
 void navigatePostAuth(User user, {UserProfile profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   if (profile == null || profile.educationLevel == null) {
-    _navigator.currentState
-        .popAndPushNamed(Routes.profileIntroScreen(editMode: false));
+    _navigator.currentState.pushNamedAndRemoveUntil(
+        Routes.profileBasicScreen(editMode: false), (route) => false);
   } else if (user.phoneNumberVerified == false) {
-    _navigator.currentState.popAndPushNamed(Routes.phoneVerificationScreen);
+    _navigator.currentState.pushNamedAndRemoveUntil(
+        Routes.phoneVerificationScreen, (route) => false);
   } else {
-    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
+    _navigator.currentState
+        .pushNamedAndRemoveUntil(Routes.homeScreen(tab: 0), (route) => false);
 
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();
   }

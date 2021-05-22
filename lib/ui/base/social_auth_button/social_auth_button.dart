@@ -22,15 +22,14 @@ class SocialAuthButton extends StatelessWidget {
     Widget _child;
     Color _buttonColor;
     Color _textColor = Colors.white;
-    const _iconSize = 20.0;
+    double _iconSize = isLarge ? 24.0 : 20.0;
 
     if (provider == SocialAuthProviders.google) {
       _child = SvgPicture.asset(
         AppSvgAssets.googleColored,
         height: _iconSize,
       );
-      _textColor = Colors.black;
-      _buttonColor = Colors.white;
+      _buttonColor =  Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.linkedin) {
@@ -39,27 +38,37 @@ class SocialAuthButton extends StatelessWidget {
         height: _iconSize,
       );
 
-      _buttonColor = AppTheme.linkedInColor;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.facebook) {
       _child = SvgPicture.asset(
         AppSvgAssets.facebook,
-        color: Colors.white,
+        color: AppTheme.facebookColor,
         height: _iconSize,
       );
 
-      _buttonColor = AppTheme.facebookColor;
+      _buttonColor =  Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.apple) {
       _child = SvgPicture.asset(
         AppSvgAssets.apple,
-        color: Colors.black,
+        color: Colors.white,
         height: _iconSize,
       );
-      _buttonColor = Colors.white;
-      _textColor = Colors.black;
+      _buttonColor = Theme.of(context).backgroundColor;
+      _textColor = Colors.white;
+    }
+
+    if (provider == SocialAuthProviders.email) {
+      _child = Icon(
+        Icons.email,
+        color: Colors.white,
+        size: _iconSize,
+      );
+      _buttonColor = Theme.of(context).backgroundColor;
+      _textColor = Colors.white;
     }
 
     if (isLarge) {
@@ -67,16 +76,20 @@ class SocialAuthButton extends StatelessWidget {
       final prefix = isSignUp ? 'Sign up' : 'Sign in';
       _child = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-        child: Row(children: [
-          _child,
-          const SizedBox(width: 8),
-          const Spacer(),
-          Text(
-            '$prefix with $name',
-            style: TextStyle(color: _textColor, fontSize: 17),
-          ),
-          const Spacer()
-        ]),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            _child,
+            const SizedBox(height: 16),
+            Text(
+              '$name',
+              style: TextStyle(color: _textColor, fontSize: 17),
+            ),
+            // const Spacer()
+          ]),
+        ),
       );
     }
 
@@ -107,6 +120,9 @@ class SocialAuthButton extends StatelessWidget {
         break;
       case SocialAuthProviders.google:
         return "Google";
+        break;
+      case SocialAuthProviders.email:
+        return "Email";
         break;
       default:
         return "";

@@ -267,7 +267,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   Widget _popup(BuildContext context, {bool isSignUp = true}) {
-    final footerText = isSignUp ? 'Sign up with Email' : 'Sign in with Email';
+    final footerText = 'Email';
+    final headerText = isSignUp ? 'Create a new account' : 'Sign in';
+    final subHeaderText = !isSignUp
+        ? 'To continue conversing & growing your network.'
+        : 'Have conversations & grow your network.';
+
+    final buttonWidth = MediaQuery.of(context).size.width / 2 - 55;
     return ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
@@ -283,93 +289,97 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: AppInsets.med),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-                  child: Wrap(
-                    direction: Axis.vertical,
-                    spacing: 30,
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Column(
                     children: [
+                      Text(
+                        headerText,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(fontSize: 17),
+                      ),
+                      SizedBox(height: 8),
+                      Text(subHeaderText),
+                    ],
+                  ),
+                ),
+                Wrap(
+                  spacing: 30,
+                  runSpacing: 30,
+                  children: [
+                    if (!isSignUp)
                       BaseContainer(
                         child: SizedBox(
-                          width: 240,
+                          width: double.infinity,
                           child: SocialAuthButton(
-                            provider: SocialAuthProviders.linkedin,
+                            provider: SocialAuthProviders.google,
                             isLarge: true,
                             isSignUp: isSignUp,
                             onPressed: () => _authBloc.add(
                                 const AuthSocialPressed(
-                                    provider: SocialAuthProviders.linkedin)),
+                                    provider: SocialAuthProviders.google)),
                           ),
                         ),
                       ),
-                      if (Platform.isIOS)
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 240,
-                            child: SocialAuthButton(
-                              provider: SocialAuthProviders.apple,
-                              isLarge: true,
-                              isSignUp: isSignUp,
-                              onPressed: () => _authBloc.add(
-                                  const AuthSocialPressed(
-                                      provider: SocialAuthProviders.apple)),
-                            ),
+                    if (Platform.isIOS)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.apple,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () => _authBloc.add(
+                                const AuthSocialPressed(
+                                    provider: SocialAuthProviders.apple)),
                           ),
                         ),
-                      if (!isSignUp)
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 240,
-                            child: SocialAuthButton(
-                              provider: SocialAuthProviders.facebook,
-                              isLarge: true,
-                              isSignUp: isSignUp,
-                              onPressed: () => _authBloc.add(
-                                  const AuthSocialPressed(
-                                      provider: SocialAuthProviders.facebook)),
-                            ),
+                      ),
+                    BaseContainer(
+                      child: SizedBox(
+                        width: buttonWidth,
+                        child: SocialAuthButton(
+                          provider: SocialAuthProviders.linkedin,
+                          isLarge: true,
+                          isSignUp: isSignUp,
+                          onPressed: () => _authBloc.add(
+                              const AuthSocialPressed(
+                                  provider: SocialAuthProviders.linkedin)),
+                        ),
+                      ),
+                    ),
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.facebook,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () => _authBloc.add(
+                                const AuthSocialPressed(
+                                    provider: SocialAuthProviders.facebook)),
                           ),
                         ),
-                      if (!isSignUp)
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 240,
-                            child: SocialAuthButton(
-                              provider: SocialAuthProviders.google,
-                              isLarge: true,
-                              isSignUp: isSignUp,
-                              onPressed: () => _authBloc.add(
-                                  const AuthSocialPressed(
-                                      provider: SocialAuthProviders.google)),
-                            ),
+                      ),
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.email,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () =>
+                                _openSignupAuthScreen(false, context),
                           ),
                         ),
-                      if (!isSignUp)
-                        BaseContainer(
-                          child: RawMaterialButton(
-                            constraints: const BoxConstraints(
-                              minWidth: 240,
-                              minHeight: 52,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: AppInsets.l,
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            onPressed: () {
-                              _openSignupAuthScreen(false, context);
-                            },
-                            child: Text(
-                              footerText,
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

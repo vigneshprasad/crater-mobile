@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/objectives_picker.dart';
 
 import '../../../../constants/theme.dart';
 import '../../domain/entity/user_objective_entity.dart';
 
 typedef ObjectiveCellCallback = void Function(
-  UserObjective item,
+  PickerItem item,
   bool isSelected,
 );
 
 class ObjectiveCell extends StatefulWidget {
-  final UserObjective item;
+  final PickerItem item;
   final ObjectiveCellCallback onPressedItem;
 
   const ObjectiveCell({
@@ -30,7 +31,7 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
 
   @override
   void initState() {
-    isSelected = false;
+    isSelected = widget.item.selected;
     super.initState();
   }
 
@@ -47,13 +48,12 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
         );
     return Container(
       margin: const EdgeInsets.all(AppInsets.med),
-      height: 96,
+      height: 50,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: borderRadius,
-          color: backgroundColor,
-          boxShadow: kElevationToShadow[2],
+          border: Border.all(color: backgroundColor),
         ),
         child: Material(
           color: Colors.transparent,
@@ -78,12 +78,10 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
                       color: iconColor,
                       height: 28,
                     ),
-                  const SizedBox(height: AppInsets.med),
                   Text(
                     widget.item.name,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: labelStyle,
                     maxLines: 2,
                   )
                 ],

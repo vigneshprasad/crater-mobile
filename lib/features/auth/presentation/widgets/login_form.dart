@@ -48,61 +48,63 @@ class _LoginFormState extends State<LoginForm> {
         }
         return Form(
           child: Expanded(
-            child: Column(
-              children: <Widget>[
-                BaseFormInput(
-                  enabled: isEnabled,
-                  controller: _emailController,
-                  label: email,
-                  validator: (text) {
-                    if (text.isEmpty) return null;
-                    if (state.isEmailValid == null) return null;
-                    return !state.isEmailValid ? 'Invalid Email' : null;
-                  },
-                ),
-                const SizedBox(height: AppPadding.med),
-                BaseFormInput(
-                  controller: _passwordController,
-                  enabled: isEnabled,
-                  label: password,
-                  obscureText: true,
-                  maxLines: 1,
-                  validator: (text) {
-                    if (text.isEmpty) return null;
-                    return !state.isPasswordValid ? 'Invalid Password' : null;
-                  },
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppInsets.l,
-                      horizontal: AppInsets.med,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        ExtendedNavigator.of(context)
-                            .push(Routes.forgotPasswordScreen)
-                            .then((value) {
-                          if (value != null) {
-                            _emailController.text = value as String;
-                          }
-                        });
-                      },
-                      child: Text(
-                        forgotPassword,
-                        style: forgotPasswordStyle,
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  BaseFormInput(
+                    enabled: isEnabled,
+                    controller: _emailController,
+                    label: email,
+                    validator: (text) {
+                      if (text.isEmpty) return null;
+                      if (state.isEmailValid == null) return null;
+                      return !state.isEmailValid ? 'Invalid Email' : null;
+                    },
+                  ),
+                  const SizedBox(height: AppPadding.med),
+                  BaseFormInput(
+                    controller: _passwordController,
+                    enabled: isEnabled,
+                    label: password,
+                    obscureText: true,
+                    maxLines: 1,
+                    validator: (text) {
+                      if (text.isEmpty) return null;
+                      return !state.isPasswordValid ? 'Invalid Password' : null;
+                    },
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppInsets.l,
+                        horizontal: AppInsets.med,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          ExtendedNavigator.of(context)
+                              .push(Routes.forgotPasswordScreen)
+                              .then((value) {
+                            if (value != null) {
+                              _emailController.text = value as String;
+                            }
+                          });
+                        },
+                        child: Text(
+                          forgotPassword,
+                          style: forgotPasswordStyle,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                BaseLargeButton(
-                  onPressed: _onLoginEmailPressed,
-                  text: "login",
-                ),
-                const SizedBox(height: AppInsets.xxl),
-              ],
+                  const Spacer(),
+                  BaseLargeButton(
+                    onPressed: _onLoginEmailPressed,
+                    text: "login",
+                  ),
+                  const SizedBox(height: AppInsets.xxl),
+                ],
+              ),
             ),
           ),
         );

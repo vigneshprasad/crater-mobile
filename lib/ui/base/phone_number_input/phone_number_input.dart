@@ -102,7 +102,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
             ? Border.all(width: 2, color: Theme.of(context).primaryColor)
             : Border.all(width: 2, color: Colors.transparent);
     return BoxDecoration(
-      color: Colors.grey[200],
+      color: Theme.of(context).dialogBackgroundColor,
       border: border,
       borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
     );
