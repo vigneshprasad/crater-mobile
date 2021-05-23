@@ -41,28 +41,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     ),
     _ImageSlide(
       image: AppImageAssets.splashTopic,
-      imageWidth: 240,
       heading: "01.\nPick a conversation topic",
       subheading:
           "Simply choose a topic that is relevant to\nyou or your business.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashPeople,
-      imageWidth: 240,
       heading: "02.\nChoose whom to meet",
       subheading:
           "Simply choose the profession of the person you want to converse with",
     ),
     _ImageSlide(
       image: AppImageAssets.splashAI,
-      imageWidth: 240,
       heading: "03.\nOur AI goes to work",
       subheading:
           "Our AI engine will search for the best possible match for you.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashConversation,
-      imageWidth: 240,
       heading: "04.\nYour conversation is set up",
       subheading:
           "You will be matched with 1 or more people\nfor the conversation",
