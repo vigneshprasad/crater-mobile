@@ -49,7 +49,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String heading = 'A bit about your past...';
+    String heading = 'Lets get started';
 
     final next = AppLocalizations.of(context).translate("next");
     return BlocProvider.value(

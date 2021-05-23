@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -33,46 +34,37 @@ class ProfileScreen extends HookWidget {
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId).state);
 
-    const fabHeroTag = Object();
     return Scaffold(
-        appBar: BaseAppBar(),
+        appBar: BaseAppBar(
+          actions: [
+            if (allowEdit != null && allowEdit)
+              BaseContainer(
+                radius: 30,
+                child: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => ExtendedNavigator.of(context)
+                        .push(Routes.profileBasicScreen(editMode: true))),
+              ),
+          ],
+        ),
         extendBodyBehindAppBar: true,
         body: profileState.when(
-          data: (state) => Scaffold(
-              floatingActionButton: allowEdit != null && allowEdit
-                  ? FloatingActionButton(
-                      heroTag: fabHeroTag,
-                      onPressed: () => ExtendedNavigator.of(context)
-                          .push(Routes.profileBasicScreen(editMode: true)),
-                      child: const Icon(WorkNetIcons.newpost),
-                    )
-                  : FloatingActionButton(
-                      heroTag: fabHeroTag,
-                      onPressed: () => ExtendedNavigator.of(context).push(
-                        Routes.chatScreen,
-                        arguments: ChatScreenArguments(recieverId: userId),
-                      ),
-                      child: const Icon(WorkNetIcons.message),
-                    ),
-              body: ScaffoldContainer(
-                child: SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 80),
-                  child: SafeArea(
-                    child: Column(
-                      children: [
-                        _ProfileBody(state.profile),
-                        if (state.interests != null && state.objectives != null)
-                          _MeetingPreferenceInfo(
-                              state.interests, state.objectives),
-                        _UserConnections(state.connections),
-                      ],
-                    ),
-                  ),
-                ),
-              )),
-          loading: () => Scaffold(
-            body: SingleChildScrollView(
+          data: (state) => ScaffoldContainer(
+              child: SingleChildScrollView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  _ProfileBody(state.profile),
+                  if (state.interests != null && state.objectives != null)
+                    _MeetingPreferenceInfo(state.interests, state.objectives),
+                  _UserConnections(state.connections),
+                ],
+              ),
+            ),
+          )),
+          loading: () => SingleChildScrollView(
+            child: SafeArea(
               child: Column(
                 children: [
                   const LinearProgressIndicator(),

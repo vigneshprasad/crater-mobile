@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -68,6 +69,8 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       },
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: BaseAppBar(),
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             return ScaffoldContainer(

@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 
@@ -88,6 +89,7 @@ class HomeScreen extends HookWidget {
     ];
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
@@ -190,13 +192,13 @@ class HomeScreen extends HookWidget {
                     type: ConversationTabType.all,
                     controller: _scrollController,
                     name: name,
-                    onSchedulePressed: ()=> _tabController.animateTo(0),
+                    onSchedulePressed: () => _tabController.animateTo(0),
                   ),
                   ConversationCalendarTab(
                     type: ConversationTabType.my,
                     controller: _scrollController,
                     name: name,
-                    onSchedulePressed: ()=> _tabController.animateTo(0),
+                    onSchedulePressed: () => _tabController.animateTo(0),
                   ),
                   // InboxTab(),
                 ],
@@ -206,7 +208,7 @@ class HomeScreen extends HookWidget {
         ),
       ),
       // floatingActionButton:
-          // _getFloatinActionButton(context, _activeTab.value, _tabController),
+      // _getFloatinActionButton(context, _activeTab.value, _tabController),
     );
   }
 

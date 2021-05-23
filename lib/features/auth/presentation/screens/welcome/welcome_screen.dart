@@ -2,26 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:custom_rounded_rectangle_border/custom_rounded_rectangle_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/core/widgets/base/base_bottom_sheet_route/base_bottom_sheet_route.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/ui/base/social_auth_button/social_auth_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/config_reader/config_reader.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../../ui/base/base_large_button/base_large_button.dart';
+import '../../../../../ui/base/social_auth_button/social_auth_button.dart';
+import '../../../../../utils/app_localizations.dart';
+import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
+import '../../../../social_auth/domain/usecase/get_social_auth_token.dart';
+import '../../bloc/auth_bloc.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -115,7 +113,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         }
       },
       child: Scaffold(
-        // backgroundColor: Colors.white,
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             return ScaffoldContainer(
@@ -153,7 +150,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           width: 120,
           height: 120,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).dialogBackgroundColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Column(
@@ -224,7 +221,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     onPressed: () => openBottomSheet(context, isSignUp: false),
                   ),
                 ),
-                SizedBox(width: 40),
+                const SizedBox(width: 40),
                 SizedBox(
                   width: 150,
                   child: BaseLargeButton(
@@ -241,21 +238,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
-    //  Navigator.push(
-    //   context,
-    //   BaseBottomSheetRoute(
-    //     initialHeightRatio: 0.6,
-
-    //     child:_popup(context, isSignUp: isSignUp),
-    //   ),
-    // ).then((value) {
-    // });
-
-    // r
-    // eturn;
-    //
     showModalBottomSheet(
-      // showBottomSheet(
       elevation: 10,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -267,7 +250,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   Widget _popup(BuildContext context, {bool isSignUp = true}) {
-    final footerText = 'Email';
     final headerText = isSignUp ? 'Create a new account' : 'Sign in';
     final subHeaderText = !isSignUp
         ? 'To continue conversing & growing your network.'
@@ -300,7 +282,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             .bodyText1
                             .copyWith(fontSize: 17),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(subHeaderText),
                     ],
                   ),
@@ -317,9 +299,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             provider: SocialAuthProviders.google,
                             isLarge: true,
                             isSignUp: isSignUp,
-                            onPressed: () => _authBloc.add(
-                                const AuthSocialPressed(
-                                    provider: SocialAuthProviders.google)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.google));
+                            },
                           ),
                         ),
                       ),
@@ -331,9 +315,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             provider: SocialAuthProviders.apple,
                             isLarge: true,
                             isSignUp: isSignUp,
-                            onPressed: () => _authBloc.add(
-                                const AuthSocialPressed(
-                                    provider: SocialAuthProviders.apple)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.apple));
+                            },
                           ),
                         ),
                       ),
@@ -344,9 +330,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           provider: SocialAuthProviders.linkedin,
                           isLarge: true,
                           isSignUp: isSignUp,
-                          onPressed: () => _authBloc.add(
-                              const AuthSocialPressed(
-                                  provider: SocialAuthProviders.linkedin)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _authBloc.add(const AuthSocialPressed(
+                                provider: SocialAuthProviders.linkedin));
+                          },
                         ),
                       ),
                     ),
@@ -358,9 +346,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             provider: SocialAuthProviders.facebook,
                             isLarge: true,
                             isSignUp: isSignUp,
-                            onPressed: () => _authBloc.add(
-                                const AuthSocialPressed(
-                                    provider: SocialAuthProviders.facebook)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.facebook));
+                            },
                           ),
                         ),
                       ),
@@ -372,8 +362,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             provider: SocialAuthProviders.email,
                             isLarge: true,
                             isSignUp: isSignUp,
-                            onPressed: () =>
-                                _openSignupAuthScreen(false, context),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _openSignupAuthScreen(false, context);
+                            },
                           ),
                         ),
                       ),
@@ -411,12 +403,10 @@ class _ImageSlide extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w500,
           fontSize: 22,
-          // color: Colors.grey[700],
         );
     final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 16,
-          // color: Colors.grey[700],
         );
     return Container(
       padding: const EdgeInsets.only(bottom: 200),

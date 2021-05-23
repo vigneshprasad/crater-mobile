@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../ui/base/base_form_input/base_form_input.dart';
@@ -44,6 +45,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           listener: _blocListener,
           builder: (context, state) {
             return Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: BaseAppBar(),
               body: AuthScreenBody(
                 content: Form(
                   key: _formKey,
@@ -86,42 +89,44 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           color: Colors.grey[500],
         );
 
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Text(
-            forgotPassword,
-            textAlign: TextAlign.center,
-            style: headingStyle,
-          ),
-          const SizedBox(height: AppInsets.l),
-          Text(
-            desc,
-            textAlign: TextAlign.center,
-            style: descStyle,
-          ),
-          const SizedBox(height: AppInsets.xl),
-          BaseFormInput(
-            autovalidate: false,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            label: "Email address",
-            validator: (value) {
-              if (value.isEmpty) return "Please enter an email address";
-              return !state.isEmailValid
-                  ? "Please enter a valid email address"
-                  : null;
-            },
-          ),
-          const Spacer(),
-          BaseLargeButton(
-            enabled: !state.isSubmitting,
-            onPressed: _submitForm,
-            text: "Submit",
-          ),
-          const SizedBox(height: AppInsets.xxl),
-        ],
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Text(
+              forgotPassword,
+              textAlign: TextAlign.center,
+              style: headingStyle,
+            ),
+            const SizedBox(height: AppInsets.l),
+            Text(
+              desc,
+              textAlign: TextAlign.center,
+              style: descStyle,
+            ),
+            const SizedBox(height: AppInsets.xl),
+            BaseFormInput(
+              autovalidate: false,
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              label: "Email address",
+              validator: (value) {
+                if (value.isEmpty) return "Please enter an email address";
+                return !state.isEmailValid
+                    ? "Please enter a valid email address"
+                    : null;
+              },
+            ),
+            const Spacer(),
+            BaseLargeButton(
+              enabled: !state.isSubmitting,
+              onPressed: _submitForm,
+              text: "Submit",
+            ),
+            const SizedBox(height: AppInsets.xxl),
+          ],
+        ),
       ),
     );
   }

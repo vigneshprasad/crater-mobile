@@ -42,10 +42,10 @@ class RootApp extends HookWidget {
       value: const SystemUiOverlayStyle(
         // For Android.
         // Use [light] for white status bar and [dark] for black status bar.
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
         // For iOS.
         // Use [dark] for white status bar and [light] for black status bar.
-        statusBarBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
       child: RootProvider(
         child: MaterialApp(

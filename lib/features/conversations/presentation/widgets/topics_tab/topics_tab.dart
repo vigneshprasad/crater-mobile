@@ -55,7 +55,7 @@ class TopicsTab extends HookWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'What would you like to discuss today ?',
+                    'Pick a topic you want to converse about',
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -249,7 +249,14 @@ class _TopicGridCard extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                      child: (topic.image!=null) ? Image.network(topic.image, width: 60, height:double.infinity, fit: BoxFit.cover,) : Container(),
+                  child: (topic.image != null)
+                      ? Image.network(
+                          topic.image,
+                          width: 56,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(),
                 ),
               ),
               SizedBox(width: 8),

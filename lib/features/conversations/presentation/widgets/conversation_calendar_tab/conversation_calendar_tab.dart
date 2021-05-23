@@ -88,19 +88,21 @@ class _LoadedConversationTab extends HookWidget {
         child: Column(
           children: [
             Text(
-              'Hi $name',
+              '$name',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 8),
             Text(
-              'What would you like to discuss today ?',
+              'You can join upcoming conversations here',
               textAlign: TextAlign.center,
             ),
           ],
         ),
       )));
     }
+
+    bool emptyStateAdded = false;
 
     for (final week in weeks) {
       /// Add 1:1 Meetings
@@ -165,7 +167,10 @@ class _LoadedConversationTab extends HookWidget {
         }
       } else {
         if (week.optins.isEmpty) {
-          children.add(_EmptyOptinsState());
+          if (emptyStateAdded == false) {
+            children.add(_EmptyOptinsState());
+            emptyStateAdded = true;
+          }
         } else {
           for (final date in week.optins) {
             children.addAll([

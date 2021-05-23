@@ -30,6 +30,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   ProfileTagsBloc _bloc;
   List<UserTag> tags;
   List<UserTag> selectedTags;
+  List<PickerItem> items;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
 
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
     selectedTags = user?.tagList ?? [];
+
     super.initState();
   }
 
@@ -50,9 +52,15 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    items = tags
+        .map((e) => PickerItem(
+              name: e.name,
+              selected: selectedTags.contains(e),
+            ))
+        .toList();
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'A bit about your present';
+        String heading = 'Currently you are a';
 
         return BlocProvider.value(
           value: _bloc,
@@ -71,12 +79,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
                         ProfileHeader(title: heading),
                         if (tags.isNotEmpty)
                           ObjectivesPicker(
-                            objectives: tags
-                                .map((e) => PickerItem(
-                                      name: e.name,
-                                      selected: selectedTags.contains(e),
-                                    ))
-                                .toList(),
+                            objectives: items,
                             onPressedItem: _onPressedObjectiveItem,
                           ),
                         const SizedBox(height: AppInsets.xxl),
@@ -117,13 +120,18 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   void _onPressedObjectiveItem(PickerItem item, bool isSelected) {
     final tag = tags.firstWhere((element) => element.name == item.name);
     if (isSelected) {
-      setState(() {
-        selectedTags = (selectedTags..add(tag));
-      });
+      selectedTags = [tag];
     } else {
-      setState(() {
-        selectedTags = (selectedTags..remove(tag));
-      });
+      selectedTags = [];
     }
+
+    setState(() {
+      items = tags
+          .map((e) => PickerItem(
+                name: e.name,
+                selected: selectedTags.contains(e),
+              ))
+          .toList();
+    });
   }
 }

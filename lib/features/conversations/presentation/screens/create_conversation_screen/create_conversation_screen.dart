@@ -94,12 +94,13 @@ class CreateConversationScreen extends HookWidget {
                                     topic: topic,
                                     enabled: false,
                                   )
-                                  : BaseContainer(
-                                    radius:8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                : BaseContainer(
+                                    radius: 8,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             topic.name,
@@ -113,8 +114,8 @@ class CreateConversationScreen extends HookWidget {
                                             ),
                                         ],
                                       ),
+                                    ),
                                   ),
-                                ),
                             const SizedBox(height: AppInsets.xxl * 2),
                             IndexedStack(index: _formStep.value, children: [
                               Column(
@@ -206,12 +207,16 @@ class CreateConversationScreen extends HookWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: AppInsets.xxl),
                       child: BaseLargeButton(
-                        text: AppLocalizations.of(context)
-                            .translate(_formStep.value == 0 ? 'next' : "confirm"),
+                        text: AppLocalizations.of(context).translate(
+                            _formStep.value == 0 ? 'next' : "confirm"),
                         onPressed: () {
                           if (_formStep.value == 0) {
                             if (_interestFormFieldKey.currentState.validate()) {
-                              _formStep.value = 1;
+                              _scrollControiler.animateTo(0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.ease);
+                              Future.delayed(Duration(milliseconds: 300))
+                                  .then((value) => _formStep.value = 1);
                             }
                           } else if (_formKey.currentState.validate()) {
                             if (type == ConversationType.curated) {
