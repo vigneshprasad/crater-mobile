@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:worknetwork/features/signup/presentation/bloc/profile_intro/profile_intro_bloc.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/profile_intro_question.dart';
+import '../bloc/profile_intro/profile_intro_bloc.dart';
 import '../widgets/profile_footer.dart';
 import '../widgets/profile_header.dart';
 
@@ -58,7 +57,6 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
     String subHeading =
         'A detailed bio = 50% increase in the relevancy of professional connections';
 
-    final next = AppLocalizations.of(context).translate("next");
     return BlocProvider.value(
       value: _bloc,
       child: BlocConsumer<ProfileIntroBloc, ProfileIntroState>(
@@ -126,7 +124,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
               child: FlatButton(
                   onPressed: () async {
                     try {
-                      final status =
+                      final _ =
                           await launch('linkedin://in/me/detail/contact-info/');
                     } catch (e) {
                       await launch(

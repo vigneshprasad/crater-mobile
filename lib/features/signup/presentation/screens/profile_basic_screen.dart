@@ -8,7 +8,6 @@ import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/profile_basic/profile_basic_bloc.dart';
 import '../widgets/profile_footer.dart';
@@ -51,7 +50,6 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   Widget build(BuildContext context) {
     String heading = 'Lets get started';
 
-    final next = AppLocalizations.of(context).translate("next");
     return BlocProvider.value(
       value: _bloc,
       child: BlocConsumer<ProfileBasicBloc, ProfileBasicState>(

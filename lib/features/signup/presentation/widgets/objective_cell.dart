@@ -26,11 +26,8 @@ class ObjectiveCell extends StatefulWidget {
 }
 
 class _ObjectiveCellState extends State<ObjectiveCell> {
-  // bool isSelected;
-
   @override
   void initState() {
-    // isSelected = widget.item.selected;
     super.initState();
   }
 
@@ -42,10 +39,6 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
         widget.item.selected ? selectedColor : unselectedColor;
     const borderRadius = BorderRadius.all(Radius.circular(12.0));
     final iconColor = widget.item.selected ? Colors.white : selectedColor;
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          height: 1.2,
-          color: widget.item.selected ? Colors.white : Colors.grey[800],
-        );
     return Container(
       margin: const EdgeInsets.all(AppInsets.med),
       height: 50,

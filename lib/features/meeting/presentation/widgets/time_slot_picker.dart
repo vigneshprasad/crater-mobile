@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../ui/base/base_error_text/base_error_text.dart';
 import '../../domain/entity/time_slot_entity.dart';
 
@@ -58,7 +58,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 200,
       child: Column(
@@ -161,7 +161,9 @@ class TimeSlotFormField extends FormField<List<TimeSlot>> {
           initialValue: initialValue,
           onSaved: onSaved,
           validator: validator,
-          autovalidate: autovalidate,
+          autovalidateMode: autovalidate
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           builder: (FormFieldState<List<TimeSlot>> state) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -234,7 +236,7 @@ class _TimeSlotTab extends StatelessWidget {
                   weekFormatter.format(dateParsed),
                   style: labelStyle,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 BaseContainer(
                   child: Container(
                     decoration: BoxDecoration(
@@ -276,7 +278,6 @@ class _TimeSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(12);
-    const placeholderDate = "2020-01-01";
     final timeFormatter = DateFormat("hh:mm a");
     final startTime = slot.start;
     final label = timeFormatter.format(startTime.toLocal());

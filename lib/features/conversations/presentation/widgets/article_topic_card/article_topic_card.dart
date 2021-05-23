@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/color/color.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
@@ -27,26 +27,18 @@ class ArticleTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canvas = Theme.of(context).canvasColor;
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16.00,
-          // fontWeight: FontWeight.w500,
         );
-    final border = Border.all(
-      // width: 1.00,
-      color: Colors.grey[200],
-    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
       child: GestureDetector(
-        // borderRadius: borderRadius,
         onTap: () => onTap(context),
         child: BaseContainer(
           radius: 8,
           child: Material(
-            // color: canvas,
             borderRadius: borderRadius,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,11 +70,7 @@ class ArticleTopicCard extends StatelessWidget {
                         radius: 30,
                         color: Theme.of(context).backgroundColor,
                         child: GestureDetector(
-                          // elevation: 0,
                           onTap: () => onTap(context),
-                          // shape: RoundedRectangleBorder(
-                          // borderRadius: BorderRadius.circular(30),
-                          // ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 20),

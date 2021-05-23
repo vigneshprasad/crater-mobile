@@ -2,15 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
-import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
-import 'package:worknetwork/features/conversations/domain/entity/optin_entity/optin_entity.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../../utils/app_localizations.dart';
+import '../../../domain/entity/optin_entity/optin_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../../screens/create_conversation_screen/create_conversation_state.dart';
 import '../article_topic_card/article_topic_card.dart';
@@ -73,9 +72,7 @@ class TopicsTab extends HookWidget {
                     child: Text(
                       AppLocalizations.of(context)
                           .translate("topic_tab:suggested_topic_heading"),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          // fontWeight: FontWeight.w700,
-                          ),
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   );
                 }
@@ -105,9 +102,7 @@ class TopicsTab extends HookWidget {
                     child: Text(
                       AppLocalizations.of(context)
                           .translate("topic_tab:article_topic_headings"),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          // fontWeight: FontWeight.w700,
-                          ),
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   );
                 }
@@ -216,20 +211,14 @@ class _TopicGridCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const cardRadius = BorderRadius.all(Radius.circular(8.00));
-    final background = AppTheme.blueAccent;
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 15.00,
-          // fontWeight: FontWeight.w700,
         );
     return BaseContainer(
       radius: 8,
       child: Material(
         borderRadius: cardRadius,
-        // color: background,
         child: GestureDetector(
-          // highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
-          // borderRadius: cardRadius,
-          // splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
           onTap: () {
             ExtendedNavigator.of(context)
                 .push(Routes.createConversationScreen,
@@ -259,7 +248,7 @@ class _TopicGridCard extends StatelessWidget {
                       : Container(),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               SizedBox(
                 width: 100,
                 child: Text(

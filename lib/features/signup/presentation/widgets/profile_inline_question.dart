@@ -75,7 +75,7 @@ class ProfileInlineQuestion extends StatelessWidget {
               break;
 
             case ProfileIntroElementType.newline:
-              return Container(width: double.infinity, height: 40);
+              return const SizedBox(width: double.infinity, height: 40);
               break;
 
             default:

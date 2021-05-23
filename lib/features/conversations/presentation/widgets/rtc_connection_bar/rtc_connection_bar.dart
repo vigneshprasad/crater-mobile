@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../screens/conversation_screen/conversation_screen_controller.dart';
 
@@ -43,7 +43,7 @@ class RtcConnectionBar extends HookWidget {
                 ),
               ),
             ),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             BaseContainer(
               radius: 30,
               child: Padding(
@@ -91,9 +91,7 @@ class RtcConnectionBar extends HookWidget {
     return Container(
       height: kconnectionBarHeight,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        // color: Colors.white,
-        // boxShadow: kElevationToShadow[3],
+      decoration: const BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: kbarBorderRadius,
           topRight: kbarBorderRadius,

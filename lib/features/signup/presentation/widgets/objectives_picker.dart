@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entity/user_objective_entity.dart';
 import 'objective_cell.dart';
 
 class PickerItem {
@@ -14,7 +13,7 @@ class PickerItem {
 class ObjectivesPicker extends StatelessWidget {
   final List<PickerItem> objectives;
   final ObjectiveCellCallback onPressedItem;
-  final int column = 2;
+  static const column = 2;
 
   const ObjectivesPicker({
     Key key,

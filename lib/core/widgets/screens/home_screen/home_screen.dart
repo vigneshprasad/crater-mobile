@@ -5,21 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
-import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
-import 'package:worknetwork/ui/components/app_drawer/app_drawer.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
-import '../../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/components/app_drawer/app_drawer.dart';
+import '../../../features/popup_manager/popup_manager.dart';
+import '../../base/base_container/base_container.dart';
+import 'home_tab_controller_provider.dart';
 
 final homeScreenScrollController =
     Provider.autoDispose<ScrollController>((ref) {
@@ -33,11 +31,16 @@ final homeScreenScrollController =
 class HomeScreen extends HookWidget {
   final int tab;
 
-  static const List<Widget> _tabs = [
-    Tab(text: "Topics"),
-    Tab(text: "All Conversations"),
-    // Tab(text: "My Conversations"),
-    Tab(text: "Inbox"),
+  static const icons = [
+    Icons.search,
+    Icons.people_alt_outlined,
+    Icons.inbox_outlined
+  ];
+
+  static const labels = [
+    'Explore',
+    'Conversations',
+    'My Conversations',
   ];
 
   const HomeScreen({
@@ -48,12 +51,8 @@ class HomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final _scrollController = useProvider(homeScreenScrollController);
     final _tabController =
-        useTabController(initialLength: _tabs.length, initialIndex: tab ?? 0);
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: Colors.grey[800],
-        );
+        useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
+
     final _activeTab = useState(0);
 
     final name =
@@ -75,18 +74,6 @@ class HomeScreen extends HookWidget {
 
     final popupManager = useProvider(popupManagerProvider);
     popupManager.showPopup(PopupType.signupComplete, context);
-
-    const icons = [
-      Icons.search,
-      Icons.people_alt_outlined,
-      Icons.inbox_outlined
-    ];
-
-    const labels = [
-      'Explore',
-      'Conversations',
-      'My Conversations',
-    ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -163,20 +150,6 @@ class HomeScreen extends HookWidget {
                     ),
                     const SizedBox(width: AppInsets.l),
                   ],
-                  //   bottom: TabBar(
-                  //     indicatorPadding: const EdgeInsets.only(
-                  //       left: AppInsets.med,
-                  //       right: AppInsets.med,
-                  //     ),
-                  //     // labelColor: Colors.grey[800],
-                  //     // unselectedLabelColor: Colors.grey[400],
-                  //     isScrollable: true,
-                  //     labelStyle: labelStyle,
-                  //     controller: _tabController,
-                  //     indicatorColor: Colors.transparent,
-                  //     // indicatorWeight: 1.0,
-                  //     tabs: _tabs,
-                  //   ),
                 ),
               ),
             ];
@@ -200,29 +173,12 @@ class HomeScreen extends HookWidget {
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
-                  // InboxTab(),
                 ],
               ),
             ),
           ),
         ),
       ),
-      // floatingActionButton:
-      // _getFloatinActionButton(context, _activeTab.value, _tabController),
     );
-  }
-
-  Widget _getFloatinActionButton(
-      BuildContext context, int index, TabController controller) {
-    if (index == 1 || index == 2) {
-      return FloatingActionButton.extended(
-        onPressed: () {
-          controller.animateTo(0);
-        },
-        label: Text("Schedule New"),
-        icon: Icon(Icons.add),
-      );
-    }
-    return null;
   }
 }

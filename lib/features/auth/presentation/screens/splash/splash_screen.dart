@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
 
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/logo/logo.dart';
 import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
@@ -25,9 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: listenAuthState,
-      child: Scaffold(
+      child: const Scaffold(
         body: ScaffoldContainer(
-          child: const Center(
+          child: Center(
             child: Logo(),
           ),
         ),

@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/color/color.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
@@ -39,15 +39,8 @@ class ConversationCard extends StatelessWidget {
     final dateFormat = DateFormat.jm();
 
     BoxBorder _border;
-    Color background;
 
-    if (conversation.isPast) {
-      // _border = Border.all(
-      //   color: Colors.grey[200],
-      //   width: 2.00,
-      // );
-      background = Colors.grey[100];
-    } else {
+    if (!conversation.isPast) {
       if (conversation.isSpeaker) {
         _border = Border.all(
           color: AppTheme.blueAccentDark,
@@ -60,10 +53,6 @@ class ConversationCard extends StatelessWidget {
             width: 2.00,
           );
         }
-      }
-
-      if (isSoon) {
-        background = AppTheme.blueAccent;
       }
     }
 
@@ -118,15 +107,13 @@ class ConversationCard extends StatelessWidget {
                   child: _SpeakersAvatarList(
                       speakers: conversation.speakersDetailList),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 BaseContainer(
                     radius: 30,
                     child: Container(
                       color: Theme.of(context).canvasColor,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_forward),
-                        // color: Theme.of(context).wh,
-
+                        icon: const Icon(Icons.arrow_forward),
                         onPressed: () => ExtendedNavigator.of(context).push(
                             Routes.conversationScreen(id: conversation.id)),
                       ),
@@ -186,7 +173,7 @@ class _ArticleDetailCard extends StatelessWidget {
               const SizedBox(height: AppInsets.l),
               Text(
                 article.title,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

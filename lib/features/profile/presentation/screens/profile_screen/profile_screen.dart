@@ -7,12 +7,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../constants/work_net_icons_icons.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -109,16 +108,6 @@ class _ProfileBody extends HookWidget {
             width: double.infinity,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-              //   child: Text(
-              //     'About me:',
-              //     style: Theme.of(context)
-              //         .textTheme
-              //         .subtitle1
-              //         .copyWith(fontWeight: FontWeight.bold),
-              //   ),
-              // ),
               if (profile.generatedIntroduction != null)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -236,7 +225,6 @@ class _MeetingPreferenceInfo extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ..._buildObjectives(context),
         ..._buildInterests(context),
@@ -363,7 +351,7 @@ class _UserConnections extends HookWidget {
                             photoUrl: user.photo,
                             size: 70,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
                             user.name,
                             textAlign: TextAlign.center,
@@ -429,9 +417,8 @@ class _ChipItem extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             color: Colors.transparent,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(
-              // width: 1,
               color: Colors.white,
             )),
         child: Center(

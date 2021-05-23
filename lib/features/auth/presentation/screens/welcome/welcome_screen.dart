@@ -380,7 +380,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
-    ExtendedNavigator.of(context).popAndPush(Routes.authScreen(state: state));
+    ExtendedNavigator.of(context).push(Routes.authScreen(state: state));
   }
 }
 

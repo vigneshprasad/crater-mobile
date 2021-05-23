@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
 import '../entity/profile_intro_meta.dart';
 

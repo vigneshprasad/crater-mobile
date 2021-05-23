@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/code_input/code_input.dart';
 import '../../../../ui/base/phone_number_input/phone_number_input.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/phone_verify/phone_verify_bloc.dart';
+import '../widgets/profile_header.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   @override
@@ -47,10 +47,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
-          fontSize: 22,
-          fontWeight: FontWeight.w500,
-        );
     final verify = 'Submit';
     const heading = "You are all done!!";
     const subtitle = 'Verify your account';
@@ -59,7 +55,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          // color: Colors.grey[600],
         );
     final statusStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
@@ -81,7 +76,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        ProfileHeader(
+                        const ProfileHeader(
                           title: heading,
                           subtitle: subtitle,
                         ),

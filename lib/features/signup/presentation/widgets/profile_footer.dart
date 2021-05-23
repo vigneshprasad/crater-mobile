@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
+import '../../../../ui/base/base_large_button/base_large_button.dart';
+import '../../../../utils/app_localizations.dart';
 
 class ProfileFooter extends StatelessWidget {
   final VoidCallback onSkip;
@@ -25,7 +25,7 @@ class ProfileFooter extends StatelessWidget {
                 child: Text('skip for now'),
                 onPressed: onSkip,
               ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: 120,
               child: BaseLargeButton(

@@ -58,7 +58,7 @@ class _CodeInputState extends State<CodeInput> {
                 controller: _controller,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(widget.length),
-                  WhitelistingTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.digitsOnly
                 ],
                 style: const TextStyle(
                   color: Colors.transparent,

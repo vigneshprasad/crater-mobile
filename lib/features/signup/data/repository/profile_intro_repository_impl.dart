@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../auth/data/datasources/auth_local_datasource.dart';
 import '../../../auth/data/models/user_profile_model.dart';
+import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
 import '../../domain/entity/profile_intro_meta.dart';
 import '../../domain/entity/profile_intro_question.dart';

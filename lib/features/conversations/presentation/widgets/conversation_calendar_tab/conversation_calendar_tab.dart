@@ -3,13 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../meeting/presentation/widgets/oneonone_card.dart';
 import '../conversation_card/conversation_card.dart';
@@ -88,7 +88,7 @@ class _LoadedConversationTab extends HookWidget {
         child: Column(
           children: [
             Text(
-              '$name',
+              name,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline6,
             ),
@@ -129,9 +129,6 @@ class _LoadedConversationTab extends HookWidget {
               ),
             ),
           ),
-          // SliverToBoxAdapter(
-          //   child: Divider(color: Colors.grey[300]),
-          // ),
         ]);
       }
       if (!week.future) {
@@ -160,9 +157,6 @@ class _LoadedConversationTab extends HookWidget {
                 ),
               ),
             ),
-            // SliverToBoxAdapter(
-            //   child: Divider(color: Colors.grey[300]),
-            // ),
           ]);
         }
       } else {
@@ -279,34 +273,21 @@ class _DateLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekDayFormat = DateFormat("EEE");
     final dateFormat = DateFormat("d MMM - yyyy");
-    final weekdayLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14.00,
-        );
-
     final primaryColor = Theme.of(context).scaffoldBackgroundColor;
     final now = DateTime.now().toUtc();
     final isToday = now.isSameDate(date);
     final decoration = BoxDecoration(
-        color: primaryColor, borderRadius: BorderRadius.circular(20)
-        // shape: BoxShape.circle,
-        );
+        color: primaryColor, borderRadius: BorderRadius.circular(20));
     final dateLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: isToday ? 16.00 : 18.00,
-          // fontWeight: FontWeight.w700,
           color: isToday ? Colors.white : Colors.white70,
         );
     return Padding(
       padding: const EdgeInsets.all(AppInsets.xl),
       child: Align(
-        alignment: Alignment.center,
         child: Column(
           children: [
-            // Text(weekDayFormat.format(date.toLocal()),
-            // style: weekdayLabelStyle),
-            // const SizedBox(height: AppInsets.sm),
-
             Container(
               height: 30.00,
               width: 200.00,

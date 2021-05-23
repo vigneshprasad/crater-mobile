@@ -5,13 +5,13 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/signup/presentation/bloc/profile_intro/profile_intro_bloc.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../bloc/profile_intro/profile_intro_bloc.dart';
 import '../widgets/profile_footer.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_photo_picker.dart';

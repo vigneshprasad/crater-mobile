@@ -50,13 +50,11 @@ class _DateShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(AppInsets.l),
       child: Align(
-        alignment: Alignment.center,
         child: Container(
           height: 30.00,
           width: 200.0,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            // shape: BoxShape.circle,
           ),
         ),
       ),

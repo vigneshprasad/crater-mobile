@@ -16,7 +16,6 @@ class BaseBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      // color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
           vertical: AppInsets.xxl, horizontal: AppInsets.xl),

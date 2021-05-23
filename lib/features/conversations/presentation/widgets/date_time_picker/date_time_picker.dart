@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 
 class DateTimePicker extends HookWidget {
   final List<DateTime> slots;
@@ -19,7 +19,6 @@ class DateTimePicker extends HookWidget {
     final selected = useState<DateTime>(null);
     final dateFormat = DateFormat.yMMMMd('en_US');
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("Date: ${dateFormat.format(slots[0])}"),
         const SizedBox(height: AppInsets.med),
@@ -72,7 +71,6 @@ class _Slot extends StatelessWidget {
     final textColor = !selected ? Colors.white : primaryColor;
     final border = Border.all(
       color: borderColor,
-      width: 1.00,
     );
 
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(

@@ -14,7 +14,11 @@ class SocialAuthButton extends StatelessWidget {
   final bool isSignUp;
 
   const SocialAuthButton(
-      {Key key, @required this.provider, this.onPressed, this.isLarge = false, this.isSignUp = false})
+      {Key key,
+      @required this.provider,
+      this.onPressed,
+      this.isLarge = false,
+      this.isSignUp = false})
       : super(key: key);
 
   @override
@@ -22,14 +26,14 @@ class SocialAuthButton extends StatelessWidget {
     Widget _child;
     Color _buttonColor;
     Color _textColor = Colors.white;
-    double _iconSize = isLarge ? 24.0 : 20.0;
+    final _iconSize = isLarge ? 24.0 : 20.0;
 
     if (provider == SocialAuthProviders.google) {
       _child = SvgPicture.asset(
         AppSvgAssets.googleColored,
         height: _iconSize,
       );
-      _buttonColor =  Theme.of(context).backgroundColor;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.linkedin) {
@@ -48,7 +52,7 @@ class SocialAuthButton extends StatelessWidget {
         height: _iconSize,
       );
 
-      _buttonColor =  Theme.of(context).backgroundColor;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.apple) {
@@ -73,18 +77,16 @@ class SocialAuthButton extends StatelessWidget {
 
     if (isLarge) {
       final name = _nameForProvider(provider);
-      final prefix = isSignUp ? 'Sign up' : 'Sign in';
       _child = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             _child,
             const SizedBox(height: 16),
             Text(
-              '$name',
+              name,
               style: TextStyle(color: _textColor, fontSize: 17),
             ),
             // const Spacer()
@@ -94,7 +96,7 @@ class SocialAuthButton extends StatelessWidget {
     }
 
     return RawMaterialButton(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 72,
       ),
       fillColor: _buttonColor,

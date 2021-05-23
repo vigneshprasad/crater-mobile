@@ -18,13 +18,9 @@ class BaseLargeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonWidth = MediaQuery.of(context).size.width * 0.6;
     const buttonHeight = 48.00;
-    final textStyle = Theme.of(context).textTheme.button.copyWith(
-          // color: Colors.black,
-        );
-    final fillColor =
-        onPressed == null ? Colors.grey : Theme.of(context).buttonColor;
-        return BaseContainer(
-          radius: AppBorderRadius.largeButton,
+    final textStyle = Theme.of(context).textTheme.button;
+    return BaseContainer(
+      radius: AppBorderRadius.largeButton,
       child: SizedBox(
         width: buttonWidth,
         height: buttonHeight,
@@ -32,7 +28,6 @@ class BaseLargeButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
           ),
-          // fillColor: fillColor,
           onPressed: enabled ? onPressed : null,
           child: Text(
             text.toUpperCase(),

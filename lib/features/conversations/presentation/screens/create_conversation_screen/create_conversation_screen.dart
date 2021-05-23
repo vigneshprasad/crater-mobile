@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/article_topic_card/article_topic_card.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
@@ -20,6 +19,7 @@ import '../../../../meeting/presentation/widgets/time_slot_picker.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
+import '../../widgets/article_topic_card/article_topic_card.dart';
 import '../../widgets/date_time_picker/date_time_picker.dart';
 import '../../widgets/meeting_interest_picker/meeting_interest_picker.dart';
 import 'create_conversation_state.dart';
@@ -46,11 +46,9 @@ class CreateConversationScreen extends HookWidget {
     final _timeslots = useState<List<TimeSlot>>();
     final _instantTimeSlot = useState<DateTime>();
     final _formStep = useState<int>(0);
-    final primaryColor = Theme.of(context).primaryColor;
     final descriptionStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white70);
     final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          // color: primaryColor,
           fontSize: 14,
         );
 
@@ -138,14 +136,6 @@ class CreateConversationScreen extends HookWidget {
                                     options: meta.interests,
                                     onSaved: (value) {
                                       _interests.value = value;
-                                      if (_interests.value.length >= 3) {
-                                        // _scrollControiler.animateTo(
-                                        //     _scrollControiler
-                                        //         .position.maxScrollExtent,
-                                        //     duration:
-                                        //         const Duration(milliseconds: 200),
-                                        //     curve: Curves.easeIn);
-                                      }
                                     },
                                     validator: (value) {
                                       if (value.length < 3) {
@@ -213,9 +203,9 @@ class CreateConversationScreen extends HookWidget {
                           if (_formStep.value == 0) {
                             if (_interestFormFieldKey.currentState.validate()) {
                               _scrollControiler.animateTo(0,
-                                  duration: Duration(milliseconds: 300),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.ease);
-                              Future.delayed(Duration(milliseconds: 300))
+                              Future.delayed(const Duration(milliseconds: 300))
                                   .then((value) => _formStep.value = 1);
                             }
                           } else if (_formKey.currentState.validate()) {
@@ -336,7 +326,6 @@ class _FormLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
-          // fontWeight: FontWeight.w700,
         );
     final subheadingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
@@ -344,7 +333,6 @@ class _FormLabel extends StatelessWidget {
         );
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           heading,

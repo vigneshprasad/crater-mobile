@@ -414,7 +414,6 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   Widget _buildHeader(BuildContext context) {
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
-          // color: Colors.grey[600],
         );
     final label = meeting.isPast
         ? AppLocalizations.of(context)
@@ -575,7 +574,6 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
     final introStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
           height: 1.4,
-          // color: Colors.grey[700],
         );
     return [
       Text(

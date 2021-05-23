@@ -62,7 +62,7 @@ class AppDrawer extends StatelessWidget {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: DrawerHeader(
             margin: const EdgeInsets.all(0),

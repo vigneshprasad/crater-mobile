@@ -277,15 +277,14 @@ class _DateTab extends StatelessWidget {
     );
     final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
-          // color: active ? Colors.white : Colors.grey[500],
         );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppInsets.sm),
-      child:Container(
+      child: Container(
         decoration: BoxDecoration(
-        // color:  Theme.of(context).dialogBackgroundColor,
-        borderRadius: borerRadius,
-        border: active ? Border.all(color: Theme.of(context).buttonColor): null,
+          borderRadius: borerRadius,
+          border:
+              active ? Border.all(color: Theme.of(context).buttonColor) : null,
         ),
         child: InkWell(
           onTap: () {

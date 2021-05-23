@@ -9,10 +9,8 @@ import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/usecase/aysnc_usecase.dart';
-import '../../../../auth/data/models/user_model.dart';
 import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/domain/entity/user_profile_entity.dart';
-import '../../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../../auth/domain/usecase/patch_user_usecase.dart';
 import '../../../domain/entity/profile_intro_meta.dart';
 import '../../../domain/entity/profile_intro_question.dart';
@@ -21,7 +19,6 @@ import '../../../domain/usecase/get_profile_intro_educations.dart';
 import '../../../domain/usecase/get_profile_intro_experiences.dart';
 import '../../../domain/usecase/get_profile_intro_questions.dart';
 import '../../../domain/usecase/get_profile_intro_sectors.dart';
-import '../../../domain/usecase/get_user_tags_usecase.dart';
 import '../../../domain/usecase/post_user_profile_intro.dart';
 
 part 'profile_intro_event.dart';
@@ -29,7 +26,6 @@ part 'profile_intro_state.dart';
 
 class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
   final UCGetProfileIntroQuestions getProfileIntroQuestions;
-  // final UCGetUserTags getUserTags;
   final UCGetProfileIntroCompanies getProfileIntroCompanies;
   final UCGetProfileIntroEducations getProfileIntroEducations;
   final UCGetProfileIntroExperiences getProfileIntroExperiences;
@@ -40,7 +36,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
   ProfileIntroBloc({
     @required this.getProfileIntroQuestions,
-    // @required this.getUserTags,
     @required this.getProfileIntroCompanies,
     @required this.getProfileIntroEducations,
     @required this.getProfileIntroExperiences,
@@ -49,7 +44,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
     @required this.patchUser,
     @required this.analytics,
   })  : assert(getProfileIntroQuestions != null),
-        // assert(getUserTags != null),
         assert(getProfileIntroCompanies != null),
         assert(getProfileIntroEducations != null),
         assert(getProfileIntroExperiences != null),
@@ -77,10 +71,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
     final questionsOrError =
         await getProfileIntroQuestions(PatchUserParams(user: event.user));
 
-    // Get Tags
-    // final tagsResponse = await getUserTags(NoParams());
-    // final tags = tagsResponse.getOrElse(null);
-
     // Get Companies
     final companyResponse = await getProfileIntroCompanies(NoParams());
     final companies = companyResponse.getOrElse(null);
@@ -102,7 +92,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       (questions) => ProfileIntroRequestLoaded(
           questions: element(
         questions,
-        // tags,
         experiences,
         sectors,
         companies,
@@ -113,7 +102,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
   List<ProfileIntroQuestion> element(
     List<String> questions,
-    // List<UserTag> tags,
     List<ProfileIntroMeta> experiences,
     List<ProfileIntroMeta> sectors,
     List<ProfileIntroMeta> companies,
@@ -143,12 +131,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
               lines = 7;
               optional = true;
               break;
-            // case ProfileIntroElement.tags:
-            //   type = ProfileIntroElementType.multiselect;
-            //   options = tags
-            //       .map((e) => ProfileIntroMeta(value: e.pk, name: e.name))
-            //       .toList();
-            //   break;
             case ProfileIntroElement.yearsOfExperience:
               options = experiences;
               break;
@@ -198,7 +180,6 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       (failure) => ProfileIntroRequestError(error: failure),
       (updatedProfile) {
         final properties = {
-          // "name": updatedProfile.name,
           "user_tags": updatedProfile.tagList.map((e) => e.name).toList(),
         };
 

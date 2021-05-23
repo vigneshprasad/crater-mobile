@@ -48,12 +48,6 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
         String heading = 'And about your interests';
         final next =
             AppLocalizations.of(context).translate("next").toUpperCase();
-        final user = authState.user;
-        // if (user.name.trim().isEmpty) {
-        //   heading = "Hey, who would you like us to introduce you to?";
-        // } else {
-        //   heading = "${user.name}, who would you like us to introduce you to?";
-        // }
 
         final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
               fontSize: 22,
@@ -66,7 +60,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
             builder: (context, state) {
               return Scaffold(
                 body: SafeArea(
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
                       fit: StackFit.expand,
@@ -84,12 +78,10 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
                                 child: Text(
                                   heading,
                                   style: headingStyle,
-                                  // textAlign: TextAlign.center,
                                 ),
                               ),
                               const SizedBox(height: AppInsets.xxl),
                               Text('I like to converse about',
-                                  // textAlign: TextAlign.start,
                                   style: Theme.of(context).textTheme.subtitle1),
                               const SizedBox(height: AppInsets.xxl),
                               if (_interests.isNotEmpty)
@@ -101,7 +93,6 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
                                 ),
                               const SizedBox(height: AppInsets.xxl),
                               Text('My professional objectives',
-                                  // textAlign: TextAlign.start,
                                   style: Theme.of(context).textTheme.subtitle1),
                               const SizedBox(height: AppInsets.xxl),
                               if (_objectives.isNotEmpty)
@@ -145,19 +136,8 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
         _objectives = state.objectives;
       });
     } else if (state is PatchObjectivesRequestLoaded) {
-      // final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-      // final updatedUser =
-      //     _authBloc.state.user.copyWith(objectives: state.user.objectives);
-      // _authBloc.add(AuthUserUpdateRecieved(user: updatedUser));
-
       ExtendedNavigator.of(context)
           .popAndPush(Routes.profileImageScreen(editMode: true));
-
-      // if (updatedUser.linkedinUrl == null) {
-      //   ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
-      // } else {
-      //   ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
-      // }
     }
   }
 

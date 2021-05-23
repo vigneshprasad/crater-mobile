@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/widgets/base/base_card_button/base_card_button.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-
-import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_container/base_container.dart';
 
 class RedeemButton extends MaterialButton {
   final double width;
@@ -22,8 +19,6 @@ class RedeemButton extends MaterialButton {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final buttonThemeData = buttonTheme ?? Theme.of(context).buttonTheme;
     const buttonHeight = 48.00;
 
     return SizedBox(
