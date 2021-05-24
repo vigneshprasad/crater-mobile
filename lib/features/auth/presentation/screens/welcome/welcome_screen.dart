@@ -198,6 +198,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget _buildViewContent(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
+      height: 100,
       child: Column(
         children: [
           _SlideIndicator(
@@ -205,20 +206,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             activeIndex: _activeIndex,
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+            child: Flex(
+              direction: Axis.horizontal,
               children: [
-                SizedBox(
-                  width: 150,
+                Flexible(
+                  flex: 5,
                   child: BaseLargeButton(
                     text: 'Login',
                     onPressed: () => openBottomSheet(context, isSignUp: false),
                   ),
                 ),
-                const SizedBox(width: 40),
-                SizedBox(
-                  width: 150,
+                Flexible(
+                  child: Container(),
+                ),
+                Flexible(
+                  flex: 5,
                   child: BaseLargeButton(
                     text: 'Get Started',
                     onPressed: () => openBottomSheet(context),
