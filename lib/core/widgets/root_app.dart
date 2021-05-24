@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/color/color.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -41,10 +42,10 @@ class RootApp extends HookWidget {
       value: const SystemUiOverlayStyle(
         // For Android.
         // Use [light] for white status bar and [dark] for black status bar.
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
         // For iOS.
         // Use [dark] for white status bar and [light] for black status bar.
-        statusBarBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
       child: RootProvider(
         child: MaterialApp(
@@ -75,8 +76,32 @@ class RootApp extends HookWidget {
               SegmentObserver(),
             ],
             builder: (context, child) {
+              final lightBlue = HexColor.fromHex('#283950');
+              final darkBlue = HexColor.fromHex('#121823');
+              final buttonColor = HexColor.fromHex('#C67F70');
               return Theme(
-                data: AppTheme.lightTheme,
+                data: AppTheme.darkTheme.copyWith(
+                  backgroundColor: darkBlue,
+                  splashFactory: const NoSplashFactory(),
+                  highlightColor: Colors.transparent,
+                  primaryColor: buttonColor,
+                  scaffoldBackgroundColor: darkBlue,
+                  canvasColor: darkBlue,
+                  appBarTheme: AppBarTheme(
+                      iconTheme: IconThemeData(color: buttonColor),
+                      color: darkBlue,
+                      elevation: 0,
+                      actionsIconTheme: IconThemeData(color: buttonColor)),
+                  buttonTheme: ButtonThemeData(
+                    buttonColor: darkBlue,
+                    colorScheme: const ColorScheme.dark(),
+                  ),
+                  buttonColor: buttonColor,
+                  dialogBackgroundColor: lightBlue,
+                  floatingActionButtonTheme: FloatingActionButtonThemeData(
+                      backgroundColor: buttonColor),
+                  accentColor: buttonColor,
+                ),
                 child: child,
               );
             },
@@ -85,4 +110,43 @@ class RootApp extends HookWidget {
       ),
     );
   }
+}
+
+class NoSplashFactory extends InteractiveInkFeatureFactory {
+  const NoSplashFactory();
+
+  @override
+  InteractiveInkFeature create({
+    MaterialInkController controller,
+    RenderBox referenceBox,
+    Offset position,
+    Color color,
+    TextDirection textDirection,
+    bool containedInkWell = false,
+    Rect Function() rectCallback,
+    BorderRadius borderRadius,
+    ShapeBorder customBorder,
+    double radius,
+    VoidCallback onRemoved,
+  }) {
+    return NoSplash(
+      controller: controller,
+      referenceBox: referenceBox,
+    );
+  }
+}
+
+class NoSplash extends InteractiveInkFeature {
+  NoSplash({
+    @required MaterialInkController controller,
+    @required RenderBox referenceBox,
+  })  : assert(controller != null),
+        assert(referenceBox != null),
+        super(
+          controller: controller,
+          referenceBox: referenceBox,
+        );
+
+  @override
+  void paintFeature(Canvas canvas, Matrix4 transform) {}
 }

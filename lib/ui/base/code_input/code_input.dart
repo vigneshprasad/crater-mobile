@@ -58,7 +58,7 @@ class _CodeInputState extends State<CodeInput> {
                 controller: _controller,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(widget.length),
-                  WhitelistingTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.digitsOnly
                 ],
                 style: const TextStyle(
                   color: Colors.transparent,
@@ -128,7 +128,7 @@ class _CodeInputState extends State<CodeInput> {
       height: 48,
       margin: const EdgeInsets.only(right: AppInsets.med, top: AppInsets.med),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Theme.of(context).dialogBackgroundColor,
         borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
         border: border,
       ),

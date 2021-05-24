@@ -5,12 +5,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/code_input/code_input.dart';
 import '../../../../ui/base/phone_number_input/phone_number_input.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/phone_verify/phone_verify_bloc.dart';
+import '../widgets/profile_header.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   @override
@@ -44,18 +47,14 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
-          fontSize: 22,
-          fontWeight: FontWeight.w500,
-        );
-    final verify = AppLocalizations.of(context).translate("verify");
-    const heading = "And lastly, could we have your phone number?";
+    final verify = 'Submit';
+    const heading = "You are all done!!";
+    const subtitle = 'Verify your account';
     final enterOtp =
         AppLocalizations.of(context).translate("phone_verify:enter_otp");
     final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: Colors.grey[600],
         );
     final statusStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 14,
@@ -72,88 +71,86 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
               final sendOtp = AppLocalizations.of(context)
                   .translate("phone_verify:send_otp");
               return Scaffold(
+                appBar: BaseAppBar(),
                 body: SafeArea(
                   child: SingleChildScrollView(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: Flex(
-                        direction: Axis.vertical,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Center(
-                              child: Text(
-                                heading,
-                                style: headingStyle,
-                                textAlign: TextAlign.center,
+                    child: Column(
+                      children: [
+                        const ProfileHeader(
+                          title: heading,
+                          subtitle: subtitle,
+                        ),
+                        const SizedBox(height: 40),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppInsets.xl),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PhoneNumberInput(
+                                onValidChange: _onValidPhoneNumber,
+                                initalCountry: "IN",
+                                onChange: (value) {
+                                  setState(() {
+                                    if (value != _phoneNumber) {
+                                      _showSmsCodeInput = false;
+                                    }
+                                    _phoneNumber = value;
+                                  });
+                                },
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: AppInsets.xl),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              const SizedBox(height: AppInsets.xl),
+                              Row(
                                 children: [
-                                  PhoneNumberInput(
-                                    onValidChange: _onValidPhoneNumber,
-                                    initalCountry: "IN",
-                                    onChange: (value) {
-                                      setState(() {
-                                        if (value != _phoneNumber) {
-                                          _showSmsCodeInput = false;
-                                        }
-                                        _phoneNumber = value;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: AppInsets.xl),
-                                  Row(
-                                    children: [
-                                      RaisedButton(
-                                        onPressed: _validPhoneNumber &&
-                                                !_showSmsCodeInput
+                                  RaisedButton(
+                                    onPressed:
+                                        _validPhoneNumber && !_showSmsCodeInput
                                             ? _postNewPhoneNumber
                                             : null,
-                                        child: Text(sendOtp),
-                                      ),
-                                      const SizedBox(width: AppInsets.l),
-                                      if (otpResponse.isNotEmpty)
-                                        Text(otpResponse, style: statusStyle)
-                                    ],
+                                    child: Text(sendOtp),
                                   ),
-                                  const SizedBox(height: AppInsets.xl),
-                                  if (_showSmsCodeInput)
-                                    Text(enterOtp, style: labelStyle),
-                                  if (_showSmsCodeInput)
-                                    CodeInput(
-                                      length: 4,
-                                      onChange: (value) {
-                                        setState(() {
-                                          _smsCode = value;
-                                        });
-                                      },
-                                      onValidChange: (isValid) {
-                                        setState(() {
-                                          _validOtp = isValid;
-                                        });
-                                      },
-                                    ),
-                                  if (_showSmsCodeInput)
-                                    RaisedButton(
-                                      onPressed:
-                                          _validOtp ? _postSmsCode : null,
-                                      child: Text(verify),
-                                    ),
+                                  const SizedBox(width: AppInsets.l),
+                                  if (otpResponse.isNotEmpty)
+                                    Text(otpResponse, style: statusStyle)
                                 ],
                               ),
-                            ),
-                          )
-                        ],
-                      ),
+                              const SizedBox(height: AppInsets.xl),
+                              if (_showSmsCodeInput)
+                                Text(enterOtp, style: labelStyle),
+                              if (_showSmsCodeInput)
+                                CodeInput(
+                                  length: 4,
+                                  onChange: (value) {
+                                    setState(() {
+                                      _smsCode = value;
+                                    });
+                                  },
+                                  onValidChange: (isValid) {
+                                    setState(() {
+                                      _validOtp = isValid;
+                                    });
+                                  },
+                                ),
+                              const SizedBox(height: 80),
+                              if (_showSmsCodeInput)
+                                Center(
+                                  child: BaseContainer(
+                                    radius: 30,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: FlatButton(
+                                        onPressed:
+                                            _validOtp ? _postSmsCode : null,
+                                        child: Text(verify),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),

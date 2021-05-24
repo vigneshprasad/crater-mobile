@@ -53,11 +53,9 @@ class ProfileIntroRequestLoaded extends ProfileIntroState {
 }
 
 class PatchProfileIntroRequestLoaded extends ProfileIntroState {
-  final User user;
   final UserProfile profile;
 
   const PatchProfileIntroRequestLoaded({
-    @required this.user,
     @required this.profile,
   }) : super(
           loading: false,
@@ -65,5 +63,5 @@ class PatchProfileIntroRequestLoaded extends ProfileIntroState {
         );
 
   @override
-  List<Object> get props => [loading, error, user, profile];
+  List<Object> get props => [loading, error, profile];
 }

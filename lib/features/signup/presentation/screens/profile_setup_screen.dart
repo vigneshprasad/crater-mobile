@@ -1,17 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/profile_setup/profile_setup_bloc.dart';
+import '../widgets/profile_footer.dart';
+import '../widgets/profile_header.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   @override
@@ -26,8 +30,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   void initState() {
-    _bloc = KiwiContainer().resolve<ProfileSetupBloc>()
-      ..add(const GetUserTagsRequestStarted());
+    _bloc = KiwiContainer().resolve<ProfileSetupBloc>();
+
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    _linkedInController.text = user.linkedinUrl;
 
     super.initState();
   }
@@ -44,92 +50,32 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = AppLocalizations.of(context)
-            .translate('a_little_about_your_online_presence');
-        String subHeading = AppLocalizations.of(context)
-            .translate('providing_your_linkedin_will_improve_your_matches');
+        String heading = 'Want to grow your influence?';
+        String subHeading =
+            'Enable your matches to discover you on other platforms';
         final user = authState.user;
-        final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
-            );
-        final subHeadingStyle = Theme.of(context).textTheme.headline6.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            );
 
-        final next = AppLocalizations.of(context).translate("next");
         return BlocProvider.value(
           value: _bloc,
           child: BlocConsumer<ProfileSetupBloc, ProfileSetupState>(
             listener: _profileSetupBlocListener,
             builder: (context, state) {
               return Scaffold(
+                appBar: BaseAppBar(),
                 body: SafeArea(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            child: Center(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text(
-                                    heading,
-                                    style: headingStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    subHeading,
-                                    style: subHeadingStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ])),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: _buildProfileForm(context, user),
-                        ),
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Column(
-                                children: [
-                                  Spacer(),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: AppInsets.xxl),
-                                      child: BaseLargeButton(
-                                        text: next,
-                                        onPressed: _onPressedSubmit,
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: AppInsets.xxl),
-                                      child: FlatButton(
-                                        child: Text('skip'),
-                                        onPressed: _onPressedSkip,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      ProfileHeader(
+                        title: heading,
+                        subtitle: subHeading,
+                      ),
+                      _buildProfileForm(context, user),
+                      const Spacer(),
+                      ProfileFooter(
+                        onSkip: _onPressedSkip,
+                        onSave: _onPressedSubmit,
+                      )
+                    ],
                   ),
                 ),
               );
@@ -165,20 +111,31 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               controller: _linkedInController,
               autovalidate: false,
               label: linkedinLabel,
+              icon: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SvgPicture.asset(
+                  AppSvgAssets.linkedinFilled,
+                  height: 12,
+                  width: 12,
+                ),
+              ),
               validator: (value) =>
                   value.isEmpty ? "This field is required" : null,
             ),
-            FlatButton(
-                onPressed: () async {
-                  try {
-                    final status =
-                        await launch('linkedin://in/me/detail/contact-info/');
-                  } catch (e) {
-                    await launch(
-                        'https://www.linkedin.com/in/me/detail/contact-info/');
-                  }
-                },
-                child: Text('Copy From LinkedIn')),
+            Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                  onPressed: () async {
+                    try {
+                      final _ =
+                          await launch('linkedin://in/me/detail/contact-info/');
+                    } catch (e) {
+                      await launch(
+                          'https://www.linkedin.com/in/me/detail/contact-info/');
+                    }
+                  },
+                  child: Text('Copy From LinkedIn')),
+            ),
             const SizedBox(height: AppInsets.xxl),
           ],
         ),
@@ -202,9 +159,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _goToNextScreen() {
     final bloc = BlocProvider.of<AuthBloc>(context);
     if (bloc.state.user.phoneNumberVerified) {
-      ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+      ExtendedNavigator.of(context).push(Routes.homeScreen(tab: 0));
     } else {
-      ExtendedNavigator.of(context).popAndPush(Routes.phoneVerificationScreen);
+      ExtendedNavigator.of(context).push(Routes.phoneVerificationScreen);
     }
   }
 }

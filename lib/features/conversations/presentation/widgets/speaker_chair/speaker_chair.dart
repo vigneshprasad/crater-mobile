@@ -32,7 +32,7 @@ class SpeakerChair extends StatelessWidget {
     const borderWidth = 3;
     const padding = 2;
     final iconSize = avtarSize - (borderWidth + padding) * 2;
-    final primaryColor = Theme.of(context).primaryColor;
+    final primaryColor = Theme.of(context).backgroundColor;
     final borderSide = BorderSide(color: primaryColor, width: 3);
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
 
@@ -95,8 +95,9 @@ class SpeakerChair extends StatelessWidget {
                   width: iconSize,
                   height: iconSize,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.blue[200]),
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).dialogBackgroundColor,
+                  ),
                 ),
     );
   }

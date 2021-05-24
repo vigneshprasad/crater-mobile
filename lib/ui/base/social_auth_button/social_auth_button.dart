@@ -11,23 +11,29 @@ class SocialAuthButton extends StatelessWidget {
   final SocialAuthProviders provider;
   final bool isLarge;
   final VoidCallback onPressed;
+  final bool isSignUp;
 
   const SocialAuthButton(
-      {Key key, @required this.provider, this.onPressed, this.isLarge = false})
+      {Key key,
+      @required this.provider,
+      this.onPressed,
+      this.isLarge = false,
+      this.isSignUp = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget _child;
     Color _buttonColor;
-    const _iconSize = 20.0;
+    Color _textColor = Colors.white;
+    final _iconSize = isLarge ? 24.0 : 20.0;
 
     if (provider == SocialAuthProviders.google) {
       _child = SvgPicture.asset(
         AppSvgAssets.googleColored,
         height: _iconSize,
       );
-      _buttonColor = Colors.white70;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.linkedin) {
@@ -36,17 +42,17 @@ class SocialAuthButton extends StatelessWidget {
         height: _iconSize,
       );
 
-      _buttonColor = AppTheme.linkedInColor;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.facebook) {
       _child = SvgPicture.asset(
         AppSvgAssets.facebook,
-        color: Colors.white,
+        color: AppTheme.facebookColor,
         height: _iconSize,
       );
 
-      _buttonColor = AppTheme.facebookColor;
+      _buttonColor = Theme.of(context).backgroundColor;
     }
 
     if (provider == SocialAuthProviders.apple) {
@@ -55,29 +61,42 @@ class SocialAuthButton extends StatelessWidget {
         color: Colors.white,
         height: _iconSize,
       );
-      _buttonColor = Colors.grey[900];
+      _buttonColor = Theme.of(context).backgroundColor;
+      _textColor = Colors.white;
+    }
+
+    if (provider == SocialAuthProviders.email) {
+      _child = Icon(
+        Icons.email,
+        color: Colors.white,
+        size: _iconSize,
+      );
+      _buttonColor = Theme.of(context).backgroundColor;
+      _textColor = Colors.white;
     }
 
     if (isLarge) {
       final name = _nameForProvider(provider);
-
       _child = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-        child: Row(children: [
-          _child,
-          const SizedBox(width: 8),
-          const Spacer(),
-          Text(
-            'Sign up with $name',
-            style: const TextStyle(color: Colors.white, fontSize: 17),
-          ),
-          const Spacer()
-        ]),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            _child,
+            const SizedBox(height: 16),
+            Text(
+              name,
+              style: TextStyle(color: _textColor, fontSize: 17),
+            ),
+            // const Spacer()
+          ]),
+        ),
       );
     }
 
     return RawMaterialButton(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 72,
       ),
       fillColor: _buttonColor,
@@ -103,6 +122,9 @@ class SocialAuthButton extends StatelessWidget {
         break;
       case SocialAuthProviders.google:
         return "Google";
+        break;
+      case SocialAuthProviders.email:
+        return "Email";
         break;
       default:
         return "";

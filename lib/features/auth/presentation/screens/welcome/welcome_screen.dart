@@ -6,17 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
-import 'package:worknetwork/ui/base/social_auth_button/social_auth_button.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/config_reader/config_reader.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../../ui/base/base_large_button/base_large_button.dart';
+import '../../../../../ui/base/social_auth_button/social_auth_button.dart';
+import '../../../../../utils/app_localizations.dart';
+import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
+import '../../../../social_auth/domain/usecase/get_social_auth_token.dart';
+import '../../bloc/auth_bloc.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -32,42 +35,37 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   final List<Widget> _tabs = const [
     _ImageSlide(
       image: AppImageAssets.splashDiscover,
-      heading: "00.\nDiscover & converse with relevant professionals",
+      heading: "A new kind of professional social network",
       subheading:
-          "Exchange knowledge, explore synergies, and advance your career & business by conversing with relevant professionals",
+          "We enable you to discover & converse with relevant professionals, to discuss your professional objectives & trending topics. Powered by AI",
     ),
     _ImageSlide(
       image: AppImageAssets.splashTopic,
-      imageWidth: 240,
-      heading: "01.\nPick a conversation topic",
-      subheading:
-          "Simply choose a topic that is relevant to\nyou or your business.",
+      heading: "Step 1: Pick a topic",
+      subheading: "Pick an objective or a trending topic you wish to discuss",
     ),
     _ImageSlide(
       image: AppImageAssets.splashPeople,
-      imageWidth: 240,
-      heading: "02.\nChoose whom to meet",
+      heading: "Step 2: Choose whom to meet & when",
       subheading:
-          "Simply choose the profession of the person you want to converse with",
+          "Simply choose the profession of the person you want to converse with & when",
     ),
     _ImageSlide(
       image: AppImageAssets.splashAI,
-      imageWidth: 240,
-      heading: "03.\nOur AI goes to work",
-      subheading:
-          "Our AI engine will search for the best possible match for you.",
+      heading: "Our AI goes to work",
+      subheading: "Our AI will search for the post possible match for you",
     ),
     _ImageSlide(
       image: AppImageAssets.splashConversation,
-      imageWidth: 240,
-      heading: "04.\nYour conversation is set up",
+      heading: "Your 1:1 or group conversation is set up",
       subheading:
-          "You will be matched with 1 or more people\nfor the conversation",
+          "You will be matched with 1 or more people, for a conversation.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashVirtual,
-      heading: "05.\nConverse virtually ",
-      subheading: "All you have to do is join the meeting at\nthe meeting time",
+      heading: "Step 3: Join the call",
+      subheading:
+          "All you have to do is join the call & start conversing & networking.",
     ),
   ];
 
@@ -110,24 +108,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            return SafeArea(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  TabBarView(
-                    controller: _tabController,
-                    children: _tabs,
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    child: _buildViewContent(context),
-                  ),
-                  if (state.isSubmitting != null && state.isSubmitting)
-                    _buildOverlay(context)
-                ],
+            return ScaffoldContainer(
+              child: SafeArea(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    TabBarView(
+                      controller: _tabController,
+                      children: _tabs,
+                    ),
+                    Positioned(
+                      bottom: 20,
+                      child: _buildViewContent(context),
+                    ),
+                    if (state.isSubmitting != null && state.isSubmitting)
+                      _buildOverlay(context)
+                  ],
+                ),
               ),
             );
           },
@@ -146,7 +145,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           width: 120,
           height: 120,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).dialogBackgroundColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Column(
@@ -197,52 +196,35 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   Widget _buildViewContent(BuildContext context) {
-    final footerText =
-        '${AppLocalizations.of(context).translate('auth:signin_text')} ${AppLocalizations.of(context).translate('auth:signin')}';
-
     return SizedBox(
       width: MediaQuery.of(context).size.width,
+      height: 100,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           _SlideIndicator(
             length: _tabs.length,
             activeIndex: _activeIndex,
           ),
-          const SizedBox(height: AppInsets.med),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppInsets.xxl),
-            child: Column(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+            child: Flex(
+              direction: Axis.horizontal,
               children: [
-                SizedBox(
-                  width: 240,
-                  child: SocialAuthButton(
-                    provider: SocialAuthProviders.linkedin,
-                    isLarge: true,
-                    onPressed: () => _authBloc.add(const AuthSocialPressed(
-                        provider: SocialAuthProviders.linkedin)),
+                Flexible(
+                  flex: 5,
+                  child: BaseLargeButton(
+                    text: 'Login',
+                    onPressed: () => openBottomSheet(context, isSignUp: false),
                   ),
                 ),
-                const SizedBox(height: AppInsets.med),
-                if (Platform.isIOS)
-                  SizedBox(
-                    width: 240,
-                    child: SocialAuthButton(
-                      provider: SocialAuthProviders.apple,
-                      isLarge: true,
-                      onPressed: () => _authBloc.add(const AuthSocialPressed(
-                          provider: SocialAuthProviders.apple)),
-                    ),
-                  ),
-                const SizedBox(height: AppInsets.med),
-                SizedBox(
-                  height: 30,
-                  child: FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      _openSignupAuthScreen(false, context);
-                    },
-                    child: Text(footerText),
+                Flexible(
+                  child: Container(),
+                ),
+                Flexible(
+                  flex: 5,
+                  child: BaseLargeButton(
+                    text: 'Get Started',
+                    onPressed: () => openBottomSheet(context),
                   ),
                 ),
               ],
@@ -253,9 +235,150 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 
+  void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
+    showModalBottomSheet(
+      elevation: 10,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return _popup(context, isSignUp: isSignUp);
+      },
+    );
+  }
+
+  Widget _popup(BuildContext context, {bool isSignUp = true}) {
+    final headerText = isSignUp ? 'Create a new account' : 'Sign in';
+    final subHeaderText = !isSignUp
+        ? 'To continue conversing & growing your network.'
+        : 'Have conversations & grow your network.';
+
+    final buttonWidth = MediaQuery.of(context).size.width / 2 - 55;
+    return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+          ),
+          padding: const EdgeInsets.all(40),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        headerText,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(fontSize: 17),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(subHeaderText),
+                    ],
+                  ),
+                ),
+                Wrap(
+                  spacing: 30,
+                  runSpacing: 30,
+                  children: [
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.google,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.google));
+                            },
+                          ),
+                        ),
+                      ),
+                    if (Platform.isIOS)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.apple,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.apple));
+                            },
+                          ),
+                        ),
+                      ),
+                    BaseContainer(
+                      child: SizedBox(
+                        width: buttonWidth,
+                        child: SocialAuthButton(
+                          provider: SocialAuthProviders.linkedin,
+                          isLarge: true,
+                          isSignUp: isSignUp,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _authBloc.add(const AuthSocialPressed(
+                                provider: SocialAuthProviders.linkedin));
+                          },
+                        ),
+                      ),
+                    ),
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.facebook,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _authBloc.add(const AuthSocialPressed(
+                                  provider: SocialAuthProviders.facebook));
+                            },
+                          ),
+                        ),
+                      ),
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.email,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _openSignupAuthScreen(false, context);
+                            },
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ));
+  }
+
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
-    ExtendedNavigator.of(context).popAndPush(Routes.authScreen(state: state));
+    ExtendedNavigator.of(context).push(Routes.authScreen(state: state));
   }
 }
 
@@ -278,12 +401,10 @@ class _ImageSlide extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w500,
           fontSize: 22,
-          color: Colors.grey[700],
         );
     final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 16,
-          color: Colors.grey[700],
         );
     return Container(
       padding: const EdgeInsets.only(bottom: 200),
@@ -342,7 +463,7 @@ class _SlideIndicator extends StatelessWidget {
 
     for (int index = 0; index < list.length; index++) {
       final primaryColor = Theme.of(context).primaryColor;
-      final color = index == activeIndex ? primaryColor : Colors.grey[200];
+      final color = index == activeIndex ? primaryColor : Colors.white24;
       final isLast = index == length - 1;
 
       items.add(

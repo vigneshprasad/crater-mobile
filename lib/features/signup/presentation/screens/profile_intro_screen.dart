@@ -7,15 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/app_constants.dart';
-import '../../../../core/widgets/base/base_large_button/base_large_button.dart';
+import '../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../routes.gr.dart';
-import '../../../../utils/app_localizations.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../domain/entity/profile_intro_meta.dart';
 import '../../domain/entity/profile_intro_question.dart';
 import '../bloc/profile_intro/profile_intro_bloc.dart';
+import '../widgets/profile_footer.dart';
+import '../widgets/profile_header.dart';
 import '../widgets/profile_inline_question.dart';
-import '../widgets/profile_photo_picker.dart';
 
 class ProfileIntroScreen extends StatefulWidget {
   final bool editMode;
@@ -49,28 +49,21 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     _values = {};
     _visibleQuestions = 0;
     _showSubmit = false;
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
     _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(const GetProfileIntroRequestStarted());
+      ..add(GetProfileIntroRequestStarted(user: user));
 
-    _name = BlocProvider.of<AuthBloc>(context).state.user.name;
-    _photoUrl = BlocProvider.of<AuthBloc>(context).state.user.photo;
+    _name = user.name;
+    _photoUrl = user.photo;
 
     // Prefill Values in Editing mode
-    _values[ProfileIntroElement.name] = _name;
-    if (widget.editMode == true) {
-      final profile = BlocProvider.of<AuthBloc>(context).state.profile;
-      _values[ProfileIntroElement.introduction] = profile.introduction;
+    final profile = BlocProvider.of<AuthBloc>(context).state.profile;
+    if (widget.editMode == true && profile != null) {
       _values[ProfileIntroElement.educationLevel] = profile.educationLevel;
       _values[ProfileIntroElement.yearsOfExperience] =
           profile.yearsOfExperience;
       _values[ProfileIntroElement.sector] = profile.sector;
       _values[ProfileIntroElement.companyType] = profile.companyType;
-      _values[ProfileIntroElement.tags] = BlocProvider.of<AuthBloc>(context)
-          .state
-          .profile
-          .tagList
-          .map((e) => ProfileIntroMeta(name: e.name, value: e.pk))
-          .toList();
     }
 
     if (_photoUrl == null) {
@@ -93,13 +86,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final user = authState.user;
-      final name = user.name;
-      final title = AppLocalizations.of(context)
-          .translate('how_would_you_describe_yourself');
-      final info = AppLocalizations.of(context)
-          .translate('just_the_basics_you_can_add_more_later');
-      final submit = AppLocalizations.of(context).translate('thats_accurate');
+      final title = 'A bit more about what you do';
 
       return BlocProvider.value(
           value: _bloc,
@@ -107,78 +94,49 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
               listener: _blocListener,
               builder: (context, state) {
                 return Scaffold(
-                    extendBody: true,
-                    extendBodyBehindAppBar: true,
-                    appBar: AppBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                    body: SingleChildScrollView(
+                  extendBody: true,
+                  extendBodyBehindAppBar: true,
+                  appBar: BaseAppBar(),
+                  body: ScaffoldContainer(
+                    child: SingleChildScrollView(
                       child: SafeArea(
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              widget.editMode == false
-                                  ? Column(
-                                      children: [
-                                        Text(title,
-                                            textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6),
-                                        Text(info,
-                                            textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1)
-                                      ],
-                                    )
-                                  : Container(),
-                              Container(height: 20),
-                              Center(
-                                  child: ProfilePhotoPicker(
-                                photoUrl: _photoUrl,
-                                onChoosePhoto: (photo) => _photo = photo,
-                              )),
-                              Container(height: 20),
-                              Form(
-                                key: _formKey,
-                                child: ProfileInlineQuestion(
-                                  elements: _elements,
-                                  values: _values,
-                                  animateText: widget.editMode == false,
-                                  onValuesChange: (id, value) {
-                                    _values[id] = value;
+                              ProfileHeader(title: title),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Form(
+                                  key: _formKey,
+                                  child: ProfileInlineQuestion(
+                                    elements: _elements,
+                                    values: _values,
+                                    animateText: widget.editMode == false,
+                                    onValuesChange: (id, value) {
+                                      _values[id] = value;
 
-                                    if (!editedFieldIds.contains(id)) {
-                                      editedFieldIds.add(id);
-                                      showNextQuestion();
-                                    }
-                                  },
+                                      if (!editedFieldIds.contains(id)) {
+                                        editedFieldIds.add(id);
+                                        showNextQuestion();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
-                              Container(height: 20),
+                              const SizedBox(height: 40),
+                              if (_showSubmit)
+                                ProfileFooter(onSave: submitAnswers)
                             ],
                           ),
                         ),
                       ),
                     ),
-                    bottomNavigationBar: Container(
-                        color: Colors.transparent,
-                        height: 80,
-                        child: _showSubmit
-                            ? Center(
-                                child: SizedBox(
-                                  width: 200,
-                                  child: BaseLargeButton(
-                                      onPressed: submitAnswers,
-                                      child: Text(submit)),
-                                ),
-                              )
-                            : Container()));
+                  ),
+                );
               }));
     });
   }
@@ -230,7 +188,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
         _allQuestions.forEach((element) {
           _elements.addAll(element.elements);
         });
-        Future.delayed(Duration(seconds: 1)).then((value) {
+        Future.delayed(const Duration(seconds: 1)).then((value) {
           setState(() {
             _showSubmit = true;
           });
@@ -239,20 +197,11 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
         showNextQuestion();
       }
     } else if (state is PatchProfileIntroRequestLoaded) {
-      final bloc = BlocProvider.of<AuthBloc>(context)
-        ..add(AuthUserUpdateRecieved(user: state.user))
+      final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
 
-      if (widget.editMode == true) {
-        ExtendedNavigator.of(context).pop();
-        return;
-      }
-
-      if (state.user.linkedinUrl == null) {
-        ExtendedNavigator.of(context).popAndPush(Routes.profileSetupScreen);
-      } else {
-        ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
-      }
+      ExtendedNavigator.of(context)
+          .push(Routes.profileImageScreen(editMode: widget.editMode));
     }
   }
 }

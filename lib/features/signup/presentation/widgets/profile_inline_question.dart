@@ -33,14 +33,17 @@ class ProfileInlineQuestion extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TyperAnimatedTextKit(
-                        totalRepeatCount: 1,
-                        repeatForever: false,
-                        speed: animateText == true
-                            ? const Duration(milliseconds: 40)
-                            : Duration.zero,
-                        text: [element.value],
-                        textStyle: Theme.of(context).textTheme.bodyText1),
+                    animateText == true
+                        ? TyperAnimatedTextKit(
+                            totalRepeatCount: 1,
+                            repeatForever: false,
+                            text: [element.value],
+                            textStyle: Theme.of(context).textTheme.bodyText1,
+                          )
+                        : Text(
+                            element.value,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
                   ],
                 ),
               );
@@ -72,7 +75,7 @@ class ProfileInlineQuestion extends StatelessWidget {
               break;
 
             case ProfileIntroElementType.newline:
-              return Container(width: double.infinity, height: 40);
+              return const SizedBox(width: double.infinity, height: 40);
               break;
 
             default:

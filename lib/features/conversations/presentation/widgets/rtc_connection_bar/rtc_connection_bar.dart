@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../screens/conversation_screen/conversation_screen_controller.dart';
 
@@ -30,23 +31,39 @@ class RtcConnectionBar extends HookWidget {
           title: Text("Leave RoundTable"),
           content: Text("Confirm to leave the roundtable discussion."),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
+            BaseContainer(
+              radius: 30,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('CANCEL'),
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () async {
-                controller.leaveRoundTableChannel();
+            const SizedBox(width: 4),
+            BaseContainer(
+              radius: 30,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextButton(
+                  onPressed: () async {
+                    controller.leaveRoundTableChannel();
 
-                final popupManager = context.read(popupManagerProvider);
-                await popupManager.showPopup(
-                    PopupType.conversationLeave, context);
+                    final popupManager = context.read(popupManagerProvider);
+                    await popupManager.showPopup(
+                        PopupType.conversationLeave, context);
 
-                Navigator.pop(context);
-              },
-              child: Text('LEAVE'),
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'LEAVE',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -74,9 +91,7 @@ class RtcConnectionBar extends HookWidget {
     return Container(
       height: kconnectionBarHeight,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: kElevationToShadow[3],
+      decoration: const BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: kbarBorderRadius,
           topRight: kbarBorderRadius,
@@ -98,19 +113,25 @@ class RtcConnectionBar extends HookWidget {
                 child: CircularProgressIndicator(strokeWidth: 3.0),
               ),
             if (connectionState == RtcConnectionState.connected)
-              _MicrophoneButton(
-                muted: controller.locaRtclUser.muted ?? false,
-                onPressed: () {
-                  controller.muteLocalAudioStream(
-                      muted: !controller.locaRtclUser.muted);
-                },
+              BaseContainer(
+                radius: 22,
+                child: _MicrophoneButton(
+                  muted: controller.locaRtclUser.muted ?? false,
+                  onPressed: () {
+                    controller.muteLocalAudioStream(
+                        muted: !controller.locaRtclUser.muted);
+                  },
+                ),
               ),
             if (connectionState == RtcConnectionState.connected)
-              const SizedBox(width: AppInsets.l),
+              const SizedBox(width: AppInsets.xxl),
             if (connectionState == RtcConnectionState.connected)
-              _LeaveButton(onPressed: () {
-                _leaveRoundTableChannel(context);
-              }),
+              BaseContainer(
+                radius: 22,
+                child: _LeaveButton(onPressed: () {
+                  _leaveRoundTableChannel(context);
+                }),
+              ),
           ],
         ),
       ),
@@ -177,8 +198,8 @@ class _MicrophoneButton extends StatelessWidget {
         highlightColor: color.withOpacity(0.4),
         onTap: onPressed,
         child: SizedBox(
-          height: 40,
-          width: 40,
+          height: 44,
+          width: 44,
           child: Center(
             child: Icon(icon, color: Colors.white),
           ),
@@ -205,8 +226,8 @@ class _LeaveButton extends StatelessWidget {
         customBorder: const CircleBorder(),
         onTap: onPressed,
         child: SizedBox(
-          height: 40,
-          width: 40,
+          height: 44,
+          width: 44,
           child: Center(
             child: Icon(Icons.exit_to_app, color: Colors.grey[700]),
           ),

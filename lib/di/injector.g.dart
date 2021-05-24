@@ -120,13 +120,20 @@ class _$SignupInjector extends SignupInjector {
         analytics: c<Analytics>()));
     container.registerFactory((c) => ProfileIntroBloc(
         getProfileIntroQuestions: c<UCGetProfileIntroQuestions>(),
-        getUserTags: c<UCGetUserTags>(),
         getProfileIntroCompanies: c<UCGetProfileIntroCompanies>(),
         getProfileIntroEducations: c<UCGetProfileIntroEducations>(),
         getProfileIntroExperiences: c<UCGetProfileIntroExperiences>(),
         getProfileIntroSectors: c<UCGetProfileIntroSectors>(),
         postUserProfile: c<UCPostUserProfileIntro>(),
         patchUser: c<UCPatchUser>(),
+        analytics: c<Analytics>()));
+    container.registerFactory((c) => ProfileBasicBloc(
+        postUserProfile: c<UCPostUserProfileIntro>(),
+        patchUser: c<UCPatchUser>(),
+        analytics: c<Analytics>()));
+    container.registerFactory((c) => ProfileTagsBloc(
+        getUserTags: c<UCGetUserTags>(),
+        postUserProfile: c<UCPostUserProfileIntro>(),
         analytics: c<Analytics>()));
     container.registerSingleton<SignupRepository>(
         (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));

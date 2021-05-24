@@ -46,7 +46,6 @@ class SuccessPopup extends ModalRoute<void> {
         );
     final descStyle = Theme.of(context).textTheme.bodyText2.copyWith(
           fontSize: 15,
-          color: Colors.grey[600],
         );
 
     return SafeArea(
@@ -60,14 +59,18 @@ class SuccessPopup extends ModalRoute<void> {
               margin: const EdgeInsets.all(40),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
               ),
               child: Column(
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image(image: iconAsset, height: 75),
+                      Image(
+                        image: iconAsset,
+                        height: 75,
+                        color: Theme.of(context).accentColor,
+                      ),
                       const SizedBox(height: 20),
                       Text(
                         title,
