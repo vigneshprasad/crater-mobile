@@ -53,9 +53,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String heading = 'Have a few achievements to share?';
+    String heading = 'Intro yourself';
     String subHeading =
-        'A detailed bio = 50% increase in the relevancy of professional connections';
+        'Your intro is a snapshot into you & it leads to a 30% increase in the relevancy of matches.';
 
     return BlocProvider.value(
       value: _bloc,

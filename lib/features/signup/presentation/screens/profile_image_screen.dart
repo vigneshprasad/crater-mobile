@@ -64,9 +64,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final title = 'A photo is worth a 1000 words';
-      final info =
-          'User with images see a 70% increase in people joining their group meetings';
+      final title = 'Want to add a photo?';
+      final info = 'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
           value: _bloc,

@@ -238,7 +238,7 @@ class _EmptyOptinsState extends StatelessWidget {
         );
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 640.00,
+        height: 480.00,
         child: Column(
           children: [
             const SizedBox(height: AppInsets.xxl),

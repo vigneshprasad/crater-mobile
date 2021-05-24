@@ -54,7 +54,7 @@ class TopicsTab extends HookWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Pick a topic you want to converse about',
+                    'Set up a 1:1 or group conversation by picking a topic',
                     textAlign: TextAlign.center,
                   ),
                 ],

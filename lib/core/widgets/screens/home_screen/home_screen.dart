@@ -38,7 +38,7 @@ class HomeScreen extends HookWidget {
   ];
 
   static const labels = [
-    'Explore',
+    'Topics',
     'Conversations',
     'My Conversations',
   ];

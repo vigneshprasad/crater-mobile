@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
@@ -109,6 +111,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               controller: _linkedInController,
               autovalidate: false,
               label: linkedinLabel,
+              icon: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SvgPicture.asset(
+                  AppSvgAssets.linkedinFilled,
+                  height: 12,
+                  width: 12,
+                ),
+              ),
               validator: (value) =>
                   value.isEmpty ? "This field is required" : null,
             ),

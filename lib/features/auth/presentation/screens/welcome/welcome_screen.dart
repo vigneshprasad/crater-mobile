@@ -35,38 +35,37 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   final List<Widget> _tabs = const [
     _ImageSlide(
       image: AppImageAssets.splashDiscover,
-      heading: "00.\nDiscover & converse with relevant professionals",
+      heading: "A new kind of professional social network",
       subheading:
-          "Exchange knowledge, explore synergies, and advance your career & business by conversing with relevant professionals",
+          "We enable you to discover & converse with relevant professionals, to discuss your professional objectives & trending topics. Powered by AI",
     ),
     _ImageSlide(
       image: AppImageAssets.splashTopic,
-      heading: "01.\nPick a conversation topic",
-      subheading:
-          "Simply choose a topic that is relevant to\nyou or your business.",
+      heading: "Step 1: Pick a topic",
+      subheading: "Pick an objective or a trending topic you wish to discuss",
     ),
     _ImageSlide(
       image: AppImageAssets.splashPeople,
-      heading: "02.\nChoose whom to meet",
+      heading: "Step 2: Choose whom to meet & when",
       subheading:
-          "Simply choose the profession of the person you want to converse with",
+          "Simply choose the profession of the person you want to converse with & when",
     ),
     _ImageSlide(
       image: AppImageAssets.splashAI,
-      heading: "03.\nOur AI goes to work",
-      subheading:
-          "Our AI engine will search for the best possible match for you.",
+      heading: "Our AI goes to work",
+      subheading: "Our AI will search for the post possible match for you",
     ),
     _ImageSlide(
       image: AppImageAssets.splashConversation,
-      heading: "04.\nYour conversation is set up",
+      heading: "Your 1:1 or group conversation is set up",
       subheading:
-          "You will be matched with 1 or more people\nfor the conversation",
+          "You will be matched with 1 or more people, for a conversation.",
     ),
     _ImageSlide(
       image: AppImageAssets.splashVirtual,
-      heading: "05.\nConverse virtually ",
-      subheading: "All you have to do is join the meeting at\nthe meeting time",
+      heading: "Step 3: Join the call",
+      subheading:
+          "All you have to do is join the call & start conversing & networking.",
     ),
   ];
 
