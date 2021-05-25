@@ -175,18 +175,6 @@ class _ConversationLoaded extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Colors.white,
-                          Colors.white.withOpacity(0.0),
-                        ],
-                      ),
-                    ),
-                  ),
                   if (connection == RtcConnection.disconnected)
                     if (conversation.isSpeaker)
                       Align(
@@ -376,6 +364,11 @@ class _ArticleDetailCard extends StatelessWidget {
     final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
           fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        );
+    final contentStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 12.0,
+          color: Colors.black54,
         );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
@@ -417,6 +410,7 @@ class _ArticleDetailCard extends StatelessWidget {
                 Text(
                   article.title,
                   maxLines: 3,
+                  style: contentStyle,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
