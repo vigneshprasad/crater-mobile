@@ -6,7 +6,7 @@ import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../../screens/conversation_screen/conversation_screen_controller.dart';
+import '../../screens/conversation_screen_2/conversation_screen_state.dart';
 
 const kconnectionBarHeight = 68.00;
 const kbarBorderRadius = Radius.circular(24.0);
@@ -14,11 +14,11 @@ const kconnectionIndicatorSize = 12.00;
 
 class RtcConnectionBar extends HookWidget {
   final Conversation table;
-  final ConversationScreenController controller;
+  final RtcConnection connection;
 
   const RtcConnectionBar({
     Key key,
-    this.controller,
+    this.connection,
     @required this.table,
   }) : super(key: key);
 
@@ -50,7 +50,10 @@ class RtcConnectionBar extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextButton(
                   onPressed: () async {
-                    controller.leaveRoundTableChannel();
+                    context
+                        .read(conversationStateProvider(table.id))
+                        .leaveAudioCall();
+                    // controller.leaveRoundTableChannel();
 
                     final popupManager = context.read(popupManagerProvider);
                     await popupManager.showPopup(
@@ -71,14 +74,14 @@ class RtcConnectionBar extends HookWidget {
     );
   }
 
-  String getLabel(RtcConnectionState state) {
+  String getLabel(RtcConnection state) {
     switch (state) {
-      case RtcConnectionState.connected:
+      case RtcConnection.connected:
         return "Connected";
-      case RtcConnectionState.connecting:
+      case RtcConnection.connecting:
         return "Connecting...";
-      case RtcConnectionState.disconnected:
-        return "DIsconnected";
+      case RtcConnection.disconnected:
+        return "Disconnected";
       default:
         return "Connecting...";
     }
@@ -86,8 +89,9 @@ class RtcConnectionBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final connectionState = controller.connectionState;
     final textStyle = Theme.of(context).textTheme.bodyText1;
+    final localUser =
+        useProvider(conversationSpeakersState(table.id)).localUser;
     return Container(
       height: kconnectionBarHeight,
       width: MediaQuery.of(context).size.width,
@@ -102,30 +106,31 @@ class RtcConnectionBar extends HookWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _StatusIndicator(state: connectionState),
+            _StatusIndicator(state: connection),
             const SizedBox(width: AppInsets.med),
-            Text(getLabel(connectionState), style: textStyle),
+            Text(getLabel(connection), style: textStyle),
             const Spacer(),
-            if (connectionState != RtcConnectionState.connected)
+            if (connection != RtcConnection.connected)
               const SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(strokeWidth: 3.0),
               ),
-            if (connectionState == RtcConnectionState.connected)
+            if (connection == RtcConnection.connected)
               BaseContainer(
                 radius: 22,
                 child: _MicrophoneButton(
-                  muted: controller.locaRtclUser.muted ?? false,
+                  muted: localUser.muted,
                   onPressed: () {
-                    controller.muteLocalAudioStream(
-                        muted: !controller.locaRtclUser.muted);
+                    context
+                        .read(conversationStateProvider(table.id))
+                        .muteLocalAudio(muted: !localUser.muted);
                   },
                 ),
               ),
-            if (connectionState == RtcConnectionState.connected)
-              const SizedBox(width: AppInsets.xxl),
-            if (connectionState == RtcConnectionState.connected)
+            if (connection == RtcConnection.connected)
+              const SizedBox(width: AppInsets.l),
+            if (connection == RtcConnection.connected)
               BaseContainer(
                 radius: 22,
                 child: _LeaveButton(onPressed: () {
@@ -140,7 +145,7 @@ class RtcConnectionBar extends HookWidget {
 }
 
 class _StatusIndicator extends StatelessWidget {
-  final RtcConnectionState state;
+  final RtcConnection state;
 
   const _StatusIndicator({
     Key key,
@@ -161,13 +166,13 @@ class _StatusIndicator extends StatelessWidget {
     );
   }
 
-  MaterialColor getIndicatorColor(RtcConnectionState state) {
+  MaterialColor getIndicatorColor(RtcConnection state) {
     switch (state) {
-      case RtcConnectionState.connected:
+      case RtcConnection.connected:
         return Colors.green;
-      case RtcConnectionState.connecting:
+      case RtcConnection.connecting:
         return Colors.orange;
-      case RtcConnectionState.disconnected:
+      case RtcConnection.disconnected:
         return Colors.red;
       default:
         return Colors.orange;

@@ -11,7 +11,7 @@ import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
-import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
+import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
 import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';

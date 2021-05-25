@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -119,7 +120,7 @@ class _RoundTableLoaded extends HookWidget {
     return WillPopScope(
       onWillPop: () async {
         if (rtcController.connectionState != RtcConnectionState.disconnected) {
-          rtcController.showOverlayEntry(context);
+          // rtcController.showOverlayEntry(context);
         }
         return true;
       },
@@ -208,7 +209,6 @@ class _RoundTableLoaded extends HookWidget {
         alignment: Alignment.bottomCenter,
         child: RtcConnectionBar(
           table: table,
-          controller: controller,
         ),
       ));
     } else if (!table.isPast) {
@@ -308,7 +308,23 @@ class _RoundTableLoaded extends HookWidget {
       (result) {
         final tableId = result.groupDetail.id;
         _overlay.remove();
-        context.read(getRoundTableNotifier(tableId)).getTableInfo(tableId);
+        _updatedTableAndShowPopup(context, tableId);
+      },
+    );
+  }
+
+  Future<void> _updatedTableAndShowPopup(
+      BuildContext context, int tableId) async {
+    final response = await context
+        .read(getRoundTableNotifier(tableId))
+        .getTableInfo(tableId);
+
+    response.fold(
+      (l) {},
+      (group) {
+        context
+            .read(popupManagerProvider)
+            .showPopup(PopupType.conversationJoin, context);
       },
     );
   }
