@@ -139,6 +139,8 @@ class AppImageAssets {
       AssetImage("assets/images/img_group_cards.png");
 
   static const onboardingHello = AssetImage("assets/images/img_hello.png");
+  static const onboardinCall =
+      AssetImage("assets/images/img_group_and_one_on_one.png");
 }
 
 class AppSvgAssets {

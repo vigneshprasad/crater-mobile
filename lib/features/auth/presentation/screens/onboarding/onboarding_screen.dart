@@ -29,7 +29,7 @@ class OnboardingScreen extends HookWidget {
       const OnboardingSlideContent(
         heading: "",
         subHeading: "You can meet people via 1-on-1 or group conversations",
-        image: AppImageAssets.splashVirtual,
+        image: AppImageAssets.onboardinCall,
       ),
       const OnboardingSlideContent(
         heading: "",
