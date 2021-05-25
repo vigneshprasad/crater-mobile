@@ -8,7 +8,11 @@ abstract class ProfileIntroEvent extends Equatable {
 }
 
 class GetProfileIntroRequestStarted extends ProfileIntroEvent {
-  const GetProfileIntroRequestStarted();
+  final User user;
+  const GetProfileIntroRequestStarted({@required this.user});
+
+  @override
+  List<Object> get props => [user];
 }
 
 class GetProfileIntroTagsRequestStarted extends ProfileIntroEvent {

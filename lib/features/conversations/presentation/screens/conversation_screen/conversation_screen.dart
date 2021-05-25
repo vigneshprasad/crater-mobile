@@ -14,6 +14,8 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/error/failures/failures.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
@@ -24,6 +26,7 @@ import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../data/models/conversation_failures/conversation_failures.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
+import '../../widgets/conversation_card/conversation_card.dart';
 import '../../widgets/editable_text_field/editable_text_field.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speakers_table/speakers_table.dart';
@@ -48,9 +51,12 @@ class ConversationScreen extends HookWidget {
     return Scaffold(
       appBar: BaseAppBar(
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _onShare,
+          BaseContainer(
+            radius: 30,
+            child: IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: _onShare,
+            ),
           ),
         ],
       ),
@@ -96,28 +102,11 @@ class _RoundTableLoaded extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // Styles
-    final primaryColor = Theme.of(context).primaryColor;
-    final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16,
-          color: primaryColor,
-        );
-    final agendaStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 22,
-        );
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
-    final dateStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          color: Colors.grey,
-        );
-    final pageLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-          color: primaryColor,
-          fontWeight: FontWeight.w700,
-        );
+    final dateStyle = Theme.of(context).textTheme.bodyText2;
+    final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
-    final heading = table.topicDetail.articleDetail != null
-        ? table.topicDetail.articleDetail.description
-        : table.topicDetail.name;
 
     // Controller
     final rtcController =
@@ -137,54 +126,70 @@ class _RoundTableLoaded extends HookWidget {
       },
       child: Stack(
         children: [
-          SingleChildScrollView(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl, vertical: AppInsets.l),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (table.topicDetail.root != null)
-                  Text(table.topicDetail.root.name, style: categoryStyle),
-                Text(heading, style: agendaStyle),
-                const SizedBox(height: AppInsets.sm),
-                Text(startDateFormat.format(table.start.toLocal()),
-                    style: dateStyle),
-                const SizedBox(height: AppInsets.l),
-                if (table.topicDetail.articleDetail != null)
-                  _ArticleDetailCard(article: table.topicDetail.articleDetail),
-                if (table.topicDetail.articleDetail == null)
-                  EditableTextField(text: table.topicDetail.description),
-                const SizedBox(height: AppInsets.xl),
-                Text(
-                    AppLocalizations.of(context)
-                        .translate("conversations:speakers_label"),
-                    style: pageLabelStyle),
-                if (table.isSpeaker) const SizedBox(height: AppInsets.l),
-                if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
-                if (rtcController.showConnectionBar)
-                  SpeakersTable(
-                      speakers: rtcController.speakers,
-                      chairSize: 60,
-                      isLive: rtcController.connectionState ==
-                          RtcConnectionState.connected),
-                if (!rtcController.showConnectionBar)
-                  _SpeakersListWithIntro(
-                    table: table,
-                    authUserPk: authUserPK,
+          ScaffoldContainer(
+            child: SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppInsets.xl, vertical: AppInsets.xxl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (table.topicDetail.root != null)
+                    Chip(
+                        backgroundColor:
+                            Theme.of(context).dialogBackgroundColor,
+                        visualDensity: VisualDensity.compact,
+                        label: Text(
+                          table.topicDetail.root.name,
+                        )),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(startDateFormat.format(table.start.toLocal()),
+                        style: dateStyle),
                   ),
-                const SizedBox(height: kListBottomPadding),
-              ],
-            ),
-          )),
+                  ConversationCard(
+                    conversation: table,
+                    hideFooter: true,
+                    onCardPressed: (_) {},
+                  ),
+                  const SizedBox(height: AppInsets.l),
+                  if (table.topicDetail.articleDetail == null)
+                    EditableTextField(text: table.topicDetail.description),
+                  const SizedBox(height: AppInsets.xl),
+                  Center(
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("conversations:speakers_label"),
+                        style: pageLabelStyle),
+                  ),
+                  if (table.isSpeaker) const SizedBox(height: AppInsets.l),
+                  if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
+                  if (rtcController.showConnectionBar)
+                    SpeakersTable(
+                        speakers: rtcController.speakers,
+                        chairSize: 60,
+                        isLive: rtcController.connectionState ==
+                            RtcConnectionState.connected),
+                  if (!rtcController.showConnectionBar)
+                    _SpeakersListWithIntro(
+                      table: table,
+                      authUserPk: authUserPK,
+                    ),
+                  const SizedBox(height: kListBottomPadding),
+                ],
+              ),
+            )),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                fit: StackFit.expand,
-                children: _buildActionButton(context, rtcController),
+            child: SafeArea(
+              child: SizedBox(
+                height: 120,
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: _buildActionButton(context, rtcController),
+                ),
               ),
             ),
           ),
@@ -199,21 +204,7 @@ class _RoundTableLoaded extends HookWidget {
     final List<Widget> items = [];
     final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-    final overlay = Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            Colors.white,
-            Colors.white.withOpacity(0.0),
-          ],
-        ),
-      ),
-    );
-
     if (showConnectionBar) {
-      items.add(overlay);
       items.add(Align(
         alignment: Alignment.bottomCenter,
         child: RtcConnectionBar(
@@ -224,38 +215,41 @@ class _RoundTableLoaded extends HookWidget {
       if (table.isSpeaker) {
         final label = AppLocalizations.of(context)
             .translate("conversation_screen:go_live_label");
-        items.add(overlay);
 
         items.add(
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  _joinRoundTableChannel(context, user, controller);
-                },
-                child: Text(label),
+              child: BaseContainer(
+                radius: 30,
+                child: BaseLargeButton(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  onPressed: () {
+                    _joinRoundTableChannel(context, user, controller);
+                  },
+                  child: Text(label),
+                ),
               ),
             ),
           ),
         );
       } else {
-        items.add(overlay);
-
         items.add(
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-              child: BaseLargeButton(
-                width: MediaQuery.of(context).size.width * 0.6,
-                onPressed: () {
-                  postRequestToJoinGroup(context, controller, table.id);
-                },
-                child: Text(AppLocalizations.of(context)
-                    .translate("conversations:join_button_label")),
+              child: BaseContainer(
+                radius: 30,
+                child: BaseLargeButton(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  onPressed: () {
+                    postRequestToJoinGroup(context, controller, table.id);
+                  },
+                  child: Text(AppLocalizations.of(context)
+                      .translate("conversations:join_button_label")),
+                ),
               ),
             ),
           ),
@@ -355,12 +349,6 @@ class _SpeakersListWithIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    // if (table.host != null) {
-    //   children.add(_SpeakerWithIntro(
-    //     user: table.hostDetail,
-    //     authUserPk: authUserPk,
-    //   ));
-    // }
 
     if (table.speakersDetailList != null &&
         table.speakersDetailList.isNotEmpty) {
@@ -393,8 +381,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
         );
-    final bodyStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
+    final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
       onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
           userId: user.pk, allowEdit: authUserPk == user.pk)),
@@ -449,47 +436,47 @@ class _ArticleDetailCard extends StatelessWidget {
         );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-          side: BorderSide(width: 2.00, color: Colors.grey[300]),
-        ),
-        color: Colors.white,
-        type: MaterialType.card,
-        child: InkWell(
-          onTap: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppInsets.l,
-              horizontal: AppInsets.l,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BaseNetworkImage(
-                      imageUrl: article.articleSourceDetail.image,
-                      defaultImage: AppImageAssets.videoPlaceholder,
-                      imagebuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 12.00,
+      child: BaseContainer(
+        child: Material(
+          color: Theme.of(context).canvasColor,
+          type: MaterialType.card,
+          child: InkWell(
+            onTap: () {
+              KiwiContainer()
+                  .resolve<CustomTabs>()
+                  .openLink(article.websiteUrl);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppInsets.l,
+                horizontal: AppInsets.l,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      BaseNetworkImage(
+                        imageUrl: article.articleSourceDetail.image,
+                        defaultImage: AppImageAssets.videoPlaceholder,
+                        imagebuilder: (context, imageProvider) => CircleAvatar(
+                          backgroundImage: imageProvider,
+                          radius: 12.00,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: AppInsets.l),
-                    Text(article.articleSourceDetail.name,
-                        style: sourceLabelStyle),
-                  ],
-                ),
-                const SizedBox(height: AppInsets.l),
-                Text(
-                  article.title,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                      const SizedBox(width: AppInsets.l),
+                      Text(article.articleSourceDetail.name,
+                          style: sourceLabelStyle),
+                    ],
+                  ),
+                  const SizedBox(height: AppInsets.l),
+                  Text(
+                    article.title,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

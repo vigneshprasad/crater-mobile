@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../constants/theme.dart';
+import '../../../../../../core/widgets/base/base_container/base_container.dart';
 
 const kCardBorderRadius = 8.00;
 
@@ -43,34 +44,37 @@ class CalendarCardLayout extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         top: AppInsets.xxl,
+        bottom: AppInsets.xxl,
         right: AppInsets.xl,
       ),
-      child: Material(
-        color: _background,
-        borderRadius:
-            const BorderRadius.all(Radius.circular(kCardBorderRadius)),
-        child: InkWell(
-          onTap: onPressed,
-          child: Container(
-            decoration: BoxDecoration(
-              border: border,
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(kCardBorderRadius)),
-            ),
-            padding: padding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (heading != null)
-                  DefaultTextStyle(style: titleStyle, child: heading),
-                if (heading != null) const SizedBox(height: AppInsets.sm),
-                if (subHeading != null)
-                  DefaultTextStyle(style: subheadStyle, child: subHeading),
-                Container(
-                  constraints: const BoxConstraints(minHeight: 32.00),
-                  child: child,
-                ),
-              ],
+      child: BaseContainer(
+        child: Material(
+          color: _background,
+          borderRadius:
+              const BorderRadius.all(Radius.circular(kCardBorderRadius)),
+          child: InkWell(
+            onTap: onPressed,
+            child: Container(
+              decoration: BoxDecoration(
+                border: border,
+                borderRadius:
+                    const BorderRadius.all(Radius.circular(kCardBorderRadius)),
+              ),
+              padding: padding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (heading != null)
+                    DefaultTextStyle(style: titleStyle, child: heading),
+                  if (heading != null) const SizedBox(height: AppInsets.sm),
+                  if (subHeading != null)
+                    DefaultTextStyle(style: subheadStyle, child: subHeading),
+                  Container(
+                    constraints: const BoxConstraints(minHeight: 32.00),
+                    child: child,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

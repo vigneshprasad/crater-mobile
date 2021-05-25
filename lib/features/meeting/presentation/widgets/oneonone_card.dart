@@ -33,23 +33,18 @@ class OneOnOneCard extends StatelessWidget {
     final dateFormat = DateFormat.jm();
 
     BoxBorder _border;
-    Color background;
+    final background = Theme.of(context).backgroundColor;
 
     if (meeting.isPast) {
       _border = Border.all(
         color: Colors.grey[200],
         width: 2.00,
       );
-      background = Colors.grey[100];
     } else {
       _border = Border.all(
         color: AppTheme.blueAccentDark,
         width: 2.00,
       );
-
-      if (isSoon) {
-        background = AppTheme.blueAccent;
-      }
     }
 
     return CalendarCardLayout(
@@ -69,7 +64,6 @@ class OneOnOneCard extends StatelessWidget {
       border: _border,
       child: Row(
         children: [
-          // Text("Relevancy: 70%", style: subheadStyle),
           Expanded(
             child: _SpeakersAvatarList(speakers: meeting.participants),
           ),

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/color/color.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
@@ -13,17 +15,20 @@ import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
   final ValueChanged<Conversation> onCardPressed;
+  final bool hideFooter;
 
   const ConversationCard({
     Key key,
     @required this.conversation,
     this.onCardPressed,
+    this.hideFooter,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 13.00,
+          color: Colors.white70,
         );
     final isFull = conversation.speakers.length >= conversation.maxSpeakers;
     final now = DateTime.now();
@@ -34,15 +39,8 @@ class ConversationCard extends StatelessWidget {
     final dateFormat = DateFormat.jm();
 
     BoxBorder _border;
-    Color background;
 
-    if (conversation.isPast) {
-      _border = Border.all(
-        color: Colors.grey[200],
-        width: 2.00,
-      );
-      background = Colors.grey[100];
-    } else {
+    if (!conversation.isPast) {
       if (conversation.isSpeaker) {
         _border = Border.all(
           color: AppTheme.blueAccentDark,
@@ -55,10 +53,6 @@ class ConversationCard extends StatelessWidget {
             width: 2.00,
           );
         }
-      }
-
-      if (isSoon) {
-        background = AppTheme.blueAccent;
       }
     }
 
@@ -77,15 +71,18 @@ class ConversationCard extends StatelessWidget {
 
     return CalendarCardLayout(
       onPressed: () {
-        ExtendedNavigator.of(context)
-            .push(Routes.conversationScreen(id: conversation.id));
+        if (onCardPressed != null) {
+          onCardPressed(conversation);
+        } else {
+          ExtendedNavigator.of(context)
+              .push(Routes.conversationScreen(id: conversation.id));
+        }
       },
       padding: padding,
-      background: background,
+      background: Theme.of(context).canvasColor,
       heading: Text(heading),
       subHeading: Row(
         children: [
-          Text(dateFormat.format(conversation.start.toLocal())),
           const Spacer(),
           if (isSoon) Text(startTime, style: subheadStyle),
         ],
@@ -95,16 +92,34 @@ class ConversationCard extends StatelessWidget {
         children: [
           if (conversation.topicDetail.articleDetail != null)
             _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
-          Row(
-            children: [
-              Text("Relevancy: ${conversation.relevancy}%",
-                  style: subheadStyle),
-              Expanded(
-                child: _SpeakersAvatarList(
-                    speakers: conversation.speakersDetailList),
-              ),
-            ],
-          ),
+          if (hideFooter != true)
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(dateFormat.format(conversation.start.toLocal())),
+                    Text("Relevancy: ${conversation.relevancy}%",
+                        style: subheadStyle),
+                  ],
+                ),
+                Expanded(
+                  child: _SpeakersAvatarList(
+                      speakers: conversation.speakersDetailList),
+                ),
+                const SizedBox(width: 20),
+                BaseContainer(
+                    radius: 30,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        onPressed: () => ExtendedNavigator.of(context).push(
+                            Routes.conversationScreen(id: conversation.id)),
+                      ),
+                    )),
+              ],
+            ),
         ],
       ),
     );
@@ -123,13 +138,14 @@ class _ArticleDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 14.00,
+          color: Colors.black,
           fontWeight: FontWeight.w500,
         );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
       child: Material(
         borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-        color: Colors.white,
+        color: HexColor.fromHex('#DDE9FD'),
         type: MaterialType.card,
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -157,6 +173,7 @@ class _ArticleDetailCard extends StatelessWidget {
               const SizedBox(height: AppInsets.l),
               Text(
                 article.title,
+                style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

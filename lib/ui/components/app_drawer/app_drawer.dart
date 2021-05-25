@@ -57,40 +57,33 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = BlocProvider.of<AuthBloc>(context).state;
     return Drawer(
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthStateSuccess) {
-            return Column(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: DrawerHeader(
+            margin: const EdgeInsets.all(0),
+            decoration: const BoxDecoration(
+              color: AppTheme.blueAccent,
+              image: DecorationImage(
+                  image: AppImageAssets.drawerBg, fit: BoxFit.cover),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  child: DrawerHeader(
-                    margin: const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.blueAccent,
-                      image: DecorationImage(
-                          image: AppImageAssets.drawerBg, fit: BoxFit.cover),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildInfoSection(context, state),
-                      ],
-                    ),
-                  ),
-                ),
-                _buildMenuItems(_items, state),
+                if (state is AuthStateSuccess)
+                  _buildInfoSection(context, state),
               ],
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
-    );
+            ),
+          ),
+        ),
+        _buildMenuItems(_items, state),
+      ],
+    ));
   }
 
   Widget _buildInfoSection(BuildContext context, AuthStateSuccess state) {
@@ -193,8 +186,8 @@ class AppDrawer extends StatelessWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context).pushAndRemoveUntil(
-        Routes.authScreen(state: "signin"), (route) => false);
+    ExtendedNavigator.of(context)
+        .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
   }
 
   Future<void> _openWhatsnewPage(BuildContext context) async {

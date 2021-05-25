@@ -1,4 +1,7 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_bio_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_tags_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -21,6 +24,7 @@ import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
@@ -31,8 +35,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
     MaterialRoute(page: WelcomeScreen, path: "/welcome"),
-    MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
-    MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
+    MaterialRoute(page: ObjectivesScreen, path: "/objectives/:editMode?"),
+    MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup/:editMode?"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
@@ -51,8 +55,13 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: ConversationScreen, path: "/roundtable/:id"),
     MaterialRoute(page: CreateConversationScreen, path: "/create-conversation"),
     MaterialRoute(page: ProfileIntroScreen, path: "/profile-intro/:editMode?"),
+    MaterialRoute(page: ProfileBasicScreen, path: "/profile-basic/:editMode?"),
+    MaterialRoute(page: ProfileTagsScreen, path: "/profile-tags/:editMode?"),
+    MaterialRoute(page: ProfileImageScreen, path: "/profile-image/:editMode?"),
+    MaterialRoute(page: ProfileBioScreen, path: "/profile-bio/:editMode?"),
     MaterialRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
-    MaterialRoute(page: ProfileScreen, path: "/profile/:userId/:allowEdit"),
+    MaterialRoute(
+        page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
   ],
 )
 class $Router {}
