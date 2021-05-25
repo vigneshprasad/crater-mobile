@@ -9,13 +9,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
-import '../../../features/popup_manager/popup_manager.dart';
 import '../../base/base_container/base_container.dart';
 import 'home_tab_controller_provider.dart';
 
@@ -53,7 +53,7 @@ class HomeScreen extends HookWidget {
     final _tabController =
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
-    final _activeTab = useState(0);
+    final _activeTab = useState(tab ?? 0);
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
@@ -66,6 +66,8 @@ class HomeScreen extends HookWidget {
       }
 
       _tabController.addListener(_tabChangeListener);
+
+      _navigateToHome(context);
 
       return () {
         _tabController.removeListener(_tabChangeListener);
@@ -177,5 +179,16 @@ class HomeScreen extends HookWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _navigateToHome(BuildContext context) async {
+    final onboarding = ProviderContainer().read(onboardingProvider);
+
+    final shown = await onboarding.getOnboardingKey();
+
+    if (!shown) {
+      ExtendedNavigator.of(context)
+          .pushAndRemoveUntil(Routes.onboardingScreen, (_) => false);
+    }
   }
 }

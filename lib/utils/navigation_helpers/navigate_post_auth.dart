@@ -17,20 +17,7 @@ void navigatePostAuth(User user, {UserProfile profile}) {
     _navigator.currentState.pushNamedAndRemoveUntil(
         Routes.phoneVerificationScreen, (route) => false);
   } else {
-    _navigateToHome(_navigator);
-
+    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();
-  }
-}
-
-Future<void> _navigateToHome(GlobalKey<NavigatorState> navigator) async {
-  final onboarding = ProviderContainer().read(onboardingProvider);
-
-  final shown = await onboarding.getOnboardingKey();
-
-  if (shown) {
-    navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
-  } else {
-    navigator.currentState.popAndPushNamed(Routes.onboardingScreen);
   }
 }

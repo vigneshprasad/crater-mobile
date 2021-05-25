@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -11,6 +10,7 @@ import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../bloc/auth_bloc.dart';
 import 'models/onboarding_slide_content.dart';
+import 'onboarding_screen_state.dart';
 
 const kHeaderFraction = 0.65;
 const kbottomBarHeight = 72.00;
@@ -96,7 +96,7 @@ class OnboardingScreen extends HookWidget {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
+              child: SizedBox(
                 height: kbottomBarHeight,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -138,14 +138,16 @@ class OnboardingScreen extends HookWidget {
           label: "Start a conversation",
           onTap: () {
             context.read(onboardingProvider).setOnboardingShown();
-            ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 0));
+            ExtendedNavigator.of(context).pushAndRemoveUntil(
+                Routes.homeScreen(tab: 0), (route) => false);
           },
         ),
         _ActionButton(
           label: "Join a conversation",
           onTap: () {
             context.read(onboardingProvider).setOnboardingShown();
-            ExtendedNavigator.of(context).popAndPush(Routes.homeScreen(tab: 1));
+            ExtendedNavigator.of(context).pushAndRemoveUntil(
+                Routes.homeScreen(tab: 1), (route) => false);
           },
         ),
       ];
