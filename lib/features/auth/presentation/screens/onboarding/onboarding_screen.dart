@@ -33,12 +33,12 @@ class OnboardingScreen extends HookWidget {
       ),
       const OnboardingSlideContent(
         heading: "",
-        subHeading: "Start by picking a topic that interests you & time",
+        subHeading: "Start by picking a topic that interests you",
         image: AppImageAssets.splashTopic,
       ),
       const OnboardingSlideContent(
         heading: "",
-        subHeading: "Pick whom you want to meet",
+        subHeading: "Pick whom you want to meet & at what time",
         image: AppImageAssets.splashPeople,
       ),
       const OnboardingSlideContent(

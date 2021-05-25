@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -91,28 +93,14 @@ class _ConversationLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Styles
-    final primaryColor = Theme.of(context).primaryColor;
-    final categoryStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16,
-          color: primaryColor,
-        );
-    final agendaStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 22,
+    final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+          fontSize: 14,
         );
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
-    final dateStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-          color: Colors.grey,
-        );
-    final pageLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-          color: primaryColor,
-          fontWeight: FontWeight.w700,
-        );
+    final dateStyle = Theme.of(context).textTheme.bodyText2;
+    final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
-    final heading = conversation.topicDetail.articleDetail != null
-        ? conversation.topicDetail.articleDetail.description
-        : conversation.topicDetail.name;
 
     return WillPopScope(
       onWillPop: () async {
@@ -132,24 +120,22 @@ class _ConversationLoaded extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (conversation.topicDetail.root != null)
-                  Text(conversation.topicDetail.root.name,
-                      style: categoryStyle),
-                Text(heading, style: agendaStyle),
                 const SizedBox(height: AppInsets.sm),
                 Text(startDateFormat.format(conversation.start.toLocal()),
                     style: dateStyle),
-                const SizedBox(height: AppInsets.l),
-                if (conversation.topicDetail.articleDetail != null)
-                  _ArticleDetailCard(
-                      article: conversation.topicDetail.articleDetail),
+                ConversationCard(
+                  conversation: conversation,
+                  hideFooter: true,
+                ),
                 if (conversation.topicDetail.articleDetail == null)
                   Text(conversation.topicDetail.description),
                 const SizedBox(height: AppInsets.xl),
-                Text(
-                    AppLocalizations.of(context)
-                        .translate("conversations:speakers_label"),
-                    style: pageLabelStyle),
+                Center(
+                  child: Text(
+                      AppLocalizations.of(context)
+                          .translate("conversations:speakers_label"),
+                      style: pageLabelStyle),
+                ),
                 if (conversation.isSpeaker) const SizedBox(height: AppInsets.l),
                 if (!conversation.isSpeaker)
                   const SizedBox(height: AppInsets.xl),
@@ -164,60 +150,74 @@ class _ConversationLoaded extends StatelessWidget {
                     chairSize: 60,
                     isLive: connection == RtcConnection.connected,
                   ),
+                const SizedBox(height: 120),
               ],
             ),
           )),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SizedBox(
+            child: Container(
+              color: Theme.of(context).backgroundColor,
               height: 120,
               width: MediaQuery.of(context).size.width,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  if (connection == RtcConnection.disconnected)
-                    if (conversation.isSpeaker)
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-                          child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            onPressed: () {
-                              context
-                                  .read(conversationStateProvider(
-                                      conversation.id))
-                                  .connectToAudioCall();
-                            },
-                            child: Text(AppLocalizations.of(context).translate(
-                                "conversation_screen:go_live_label")),
+              child: SafeArea(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (connection == RtcConnection.disconnected)
+                      if (conversation.isSpeaker)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: AppInsets.xl),
+                            child: BaseContainer(
+                              radius: 30,
+                              child: BaseLargeButton(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                onPressed: () {
+                                  context
+                                      .read(conversationStateProvider(
+                                          conversation.id))
+                                      .connectToAudioCall();
+                                },
+                                child: Text(AppLocalizations.of(context)
+                                    .translate(
+                                        "conversation_screen:go_live_label")),
+                              ),
+                            ),
                           ),
-                        ),
-                      )
+                        )
+                      else
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: AppInsets.xl),
+                            child: BaseContainer(
+                              radius: 30,
+                              child: BaseLargeButton(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                onPressed: () {
+                                  _requestJoinGroup(context);
+                                },
+                                child: Text(AppLocalizations.of(context)
+                                    .translate(
+                                        "conversations:join_button_label")),
+                              ),
+                            ),
+                          ),
+                        )
                     else
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-                          child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            onPressed: () {
-                              _requestJoinGroup(context);
-                            },
-                            child: Text(AppLocalizations.of(context)
-                                .translate("conversations:join_button_label")),
-                          ),
+                        child: RtcConnectionBar(
+                          table: conversation,
+                          connection: connection,
                         ),
-                      )
-                  else
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: RtcConnectionBar(
-                        table: conversation,
-                        connection: connection,
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -310,8 +310,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 16,
         );
-    final bodyStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
+    final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
       onTap: () => ExtendedNavigator.of(context).push(
         Routes.profileScreen(userId: user.pk, allowEdit: authUserPk == user.pk),

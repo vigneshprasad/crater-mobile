@@ -81,7 +81,7 @@ class CreateConversationScreen extends HookWidget {
                             if (topic.root != null)
                               Chip(
                                 backgroundColor:
-                                    Theme.of(context).backgroundColor,
+                                    Theme.of(context).dialogBackgroundColor,
                                 label: Text(
                                   topic.root.name,
                                   style: rootTopicStyle,
