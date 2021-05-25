@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route_annotations.dart';
-import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
-import 'package:worknetwork/features/signup/presentation/screens/profile_bio_screen.dart';
-import 'package:worknetwork/features/signup/presentation/screens/profile_tags_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
+import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -24,9 +22,12 @@ import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_basic_screen.dart';
+import 'features/signup/presentation/screens/profile_bio_screen.dart';
 import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
+import 'features/signup/presentation/screens/profile_tags_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 
 @MaterialAutoRouter(
@@ -40,6 +41,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
+    MaterialRoute(page: OnboardingScreen, path: "/onboarding"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),

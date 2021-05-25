@@ -6,9 +6,6 @@ import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
-import '../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import '../../features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import '../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../routes.gr.dart';
 import '../config_reader/config_reader.dart';
 import '../widgets/screens/home_screen/home_screen.dart';

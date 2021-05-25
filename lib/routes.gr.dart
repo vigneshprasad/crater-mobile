@@ -13,6 +13,7 @@ import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
+import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -60,6 +61,7 @@ class Routes {
   static const String _authScreen = '/auth/:state?';
   static String authScreen({dynamic state = ''}) => '/auth/$state';
   static const String forgotPasswordScreen = '/forgot-password';
+  static const String onboardingScreen = '/onboarding';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
@@ -105,6 +107,7 @@ class Routes {
     phoneVerificationScreen,
     _authScreen,
     forgotPasswordScreen,
+    onboardingScreen,
     createPostScreen,
     chatScreen,
     chatSearchScreen,
@@ -140,6 +143,7 @@ class Router extends RouterBase {
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes._authScreen, page: AuthScreen),
     RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
+    RouteDef(Routes.onboardingScreen, page: OnboardingScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
@@ -215,6 +219,12 @@ class Router extends RouterBase {
     ForgotPasswordScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ForgotPasswordScreen(),
+        settings: data,
+      );
+    },
+    OnboardingScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => OnboardingScreen(),
         settings: data,
       );
     },
@@ -433,6 +443,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushForgotPasswordScreen() =>
       push<dynamic>(Routes.forgotPasswordScreen);
+
+  Future<dynamic> pushOnboardingScreen() =>
+      push<dynamic>(Routes.onboardingScreen);
 
   Future<dynamic> pushCreatePostScreen() =>
       push<dynamic>(Routes.createPostScreen);

@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 import '../../../constants/theme.dart';
 import '../../../constants/work_net_icons_icons.dart';
+import '../../../core/widgets/base/base_container/base_container.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;

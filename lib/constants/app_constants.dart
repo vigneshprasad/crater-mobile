@@ -134,6 +134,11 @@ class AppImageAssets {
 
   static const groupNotFound =
       AssetImage("assets/images/img_meeting_not_found.png");
+
+  static const onboardingGroupCards =
+      AssetImage("assets/images/img_group_cards.png");
+
+  static const onboardingHello = AssetImage("assets/images/img_hello.png");
 }
 
 class AppSvgAssets {
