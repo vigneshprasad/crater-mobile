@@ -72,9 +72,6 @@ class HomeScreen extends HookWidget {
       };
     });
 
-    final popupManager = useProvider(popupManagerProvider);
-    popupManager.showPopup(PopupType.signupComplete, context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: AppDrawer(),

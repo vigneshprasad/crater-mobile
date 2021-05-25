@@ -78,15 +78,6 @@ class CreateConversationScreen extends HookWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (topic.root != null)
-                              Chip(
-                                backgroundColor:
-                                    Theme.of(context).backgroundColor,
-                                label: Text(
-                                  topic.root.name,
-                                  style: rootTopicStyle,
-                                ),
-                              ),
                             (topic.articleDetail != null)
                                 ? ArticleTopicCard(
                                     topic: topic,
