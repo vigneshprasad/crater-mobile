@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 
 import '../../../../../core/error/failures/failures.dart';
+import '../../../../meeting/domain/entity/meetings_by_date_entity.dart';
+import '../../../../meeting/domain/repository/meeting_repository.dart';
 import '../../../data/models/calendar_week_data/calendar_week_data.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
@@ -34,27 +37,47 @@ class ConversationCalendarStateNofier
     final _end = _start.add(const Duration(days: 7));
 
     if (type == ConversationTabType.all) {
-      final response = await read(conversationRepositoryProvider)
-          .getAllConversations(_start, _end);
+      final futures = [
+        read(conversationRepositoryProvider).getAllConversations(_start, _end),
+        KiwiContainer()
+            .resolve<MeetingRepository>()
+            .getMeetingsByDate(past: false),
+      ];
 
-      response.fold(
-        (failure) {
-          throw failure;
-        },
-        (data) {
-          final weekData = CalendarWeekData(
-            future: false,
-            start: _start,
-            end: _end,
-            conversations: data,
-          );
-          state = [weekData];
-        },
-      );
+      final response = await Future.wait(futures);
+
+      for (final result in response) {
+        if (result.isLeft()) {
+          throw result.getOrElse(() => null);
+        }
+      }
+
+      final conversations =
+          response[0].getOrElse(() => null) as List<ConversationByDate>;
+      final meetings =
+          response[1].getOrElse(() => null) as List<MeetingsByDate>;
+
+      state = [
+        CalendarWeekData(
+          future: false,
+          start: _start,
+          end: _end,
+          conversations: conversations,
+        ),
+        CalendarWeekData(
+          future: false,
+          start: _start,
+          end: _end,
+          meetings: meetings,
+        )
+      ];
     } else {
       final futures = [
         read(conversationRepositoryProvider).getMyConversations(_start, _end),
         read(conversationRepositoryProvider).getAllConversationOptinsByDate(),
+        KiwiContainer()
+            .resolve<MeetingRepository>()
+            .getMeetingsByDate(past: false),
       ];
 
       final response = await Future.wait(futures);
@@ -68,6 +91,8 @@ class ConversationCalendarStateNofier
       final conversations =
           response[0].getOrElse(() => null) as List<ConversationByDate>;
       final optins = response[1].getOrElse(() => null) as List<OptinsByDate>;
+      final meetings =
+          response[2].getOrElse(() => null) as List<MeetingsByDate>;
 
       state = [
         CalendarWeekData(
@@ -75,6 +100,12 @@ class ConversationCalendarStateNofier
           start: _start,
           end: _end,
           conversations: conversations,
+        ),
+        CalendarWeekData(
+          future: true,
+          start: _start,
+          end: _end,
+          meetings: meetings,
         ),
         CalendarWeekData(
           future: true,

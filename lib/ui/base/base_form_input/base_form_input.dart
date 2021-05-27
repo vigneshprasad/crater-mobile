@@ -4,6 +4,7 @@ import '../../../constants/theme.dart';
 
 class BaseFormInput extends StatelessWidget {
   final String label;
+  final Widget icon;
   final TextInputType keyboardType;
   final bool obscureText;
   final TextEditingController controller;
@@ -20,6 +21,7 @@ class BaseFormInput extends StatelessWidget {
   const BaseFormInput({
     Key key,
     @required this.label,
+    this.icon,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.controller,
@@ -41,7 +43,8 @@ class BaseFormInput extends StatelessWidget {
     );
     return TextFormField(
       enabled: enabled,
-      autovalidate: autovalidate,
+      autovalidateMode:
+          autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled,
       initialValue: initialValue,
       autocorrect: autocorrect,
       controller: controller,
@@ -54,6 +57,7 @@ class BaseFormInput extends StatelessWidget {
       onChanged: onChanged,
       style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
+          prefixIcon: icon,
           enabledBorder: const OutlineInputBorder(
             borderRadius: borderRadius,
             borderSide: BorderSide(

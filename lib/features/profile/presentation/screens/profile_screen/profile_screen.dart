@@ -10,8 +10,9 @@ import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../constants/work_net_icons_icons.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
@@ -31,42 +32,38 @@ class ProfileScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId).state);
-    const fabHeroTag = Object();
+
     return Scaffold(
-        appBar: BaseAppBar(),
+        appBar: BaseAppBar(
+          actions: [
+            if (allowEdit != null && allowEdit)
+              BaseContainer(
+                radius: 30,
+                child: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => ExtendedNavigator.of(context)
+                        .push(Routes.profileBasicScreen(editMode: true))),
+              ),
+          ],
+        ),
         extendBodyBehindAppBar: true,
         body: profileState.when(
-          data: (state) => Scaffold(
-              floatingActionButton: allowEdit != null && allowEdit
-                  ? FloatingActionButton(
-                      heroTag: fabHeroTag,
-                      onPressed: () => ExtendedNavigator.of(context)
-                          .push(Routes.profileIntroScreen(editMode: true)),
-                      child: const Icon(WorkNetIcons.newpost),
-                    )
-                  : FloatingActionButton(
-                      heroTag: fabHeroTag,
-                      onPressed: () => ExtendedNavigator.of(context).push(
-                        Routes.chatScreen,
-                        arguments: ChatScreenArguments(recieverId: userId),
-                      ),
-                      child: const Icon(WorkNetIcons.message),
-                    ),
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      _ProfileBody(state.profile),
-                      if (state.interests != null && state.objectives != null)
-                        _MeetingPreferenceInfo(
-                            state.interests, state.objectives),
-                    ],
-                  ),
-                ),
-              )),
-          loading: () => Scaffold(
-            body: SingleChildScrollView(
+          data: (state) => ScaffoldContainer(
+              child: SingleChildScrollView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  _ProfileBody(state.profile),
+                  if (state.interests != null && state.objectives != null)
+                    _MeetingPreferenceInfo(state.interests, state.objectives),
+                  _UserConnections(state.connections),
+                ],
+              ),
+            ),
+          )),
+          loading: () => SingleChildScrollView(
+            child: SafeArea(
               child: Column(
                 children: [
                   const LinearProgressIndicator(),
@@ -88,9 +85,12 @@ class _ProfileBody extends HookWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _buildImage(),
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(child: _buildImage()),
+          ),
         ),
         Text(
           profile.name,
@@ -102,21 +102,19 @@ class _ProfileBody extends HookWidget {
             style: Theme.of(context).textTheme.bodyText1,
           ),
         if (profile.linkedIn != null) _buildLinkedInButton(),
-        if (profile.introduction != null)
+        if (profile.introduction != null ||
+            profile.generatedIntroduction != null)
           SizedBox(
             width: double.infinity,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'About me:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+              if (profile.generatedIntroduction != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    profile.generatedIntroduction,
+                  ),
                 ),
-              ),
               Text(
                 profile.introduction,
               )
@@ -177,6 +175,47 @@ class _ProfileBody extends HookWidget {
   }
 }
 
+class _ConnectionProfile extends HookWidget {
+  final String photoUrl;
+  final double size;
+
+  const _ConnectionProfile({
+    this.photoUrl,
+    this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (photoUrl != null) {
+      return CachedNetworkImage(
+        imageUrl: photoUrl,
+        width: size,
+        height: size,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: size,
+            width: size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50.0),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.0),
+          image: const DecorationImage(
+              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
+        ),
+      );
+    }
+  }
+}
+
 class _MeetingPreferenceInfo extends HookWidget {
   final List<MeetingInterest> interests;
   final List<MeetingObjective> objectives;
@@ -186,7 +225,6 @@ class _MeetingPreferenceInfo extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ..._buildObjectives(context),
         ..._buildInterests(context),
@@ -220,11 +258,8 @@ class _MeetingPreferenceInfo extends HookWidget {
   }
 
   List<Widget> _buildInterests(BuildContext context) {
-    const introLabel = "Looking to meet:";
-    final labelStyle = Theme.of(context)
-        .textTheme
-        .subtitle1
-        .copyWith(fontWeight: FontWeight.bold);
+    const introLabel = "Interests";
+    final labelStyle = Theme.of(context).textTheme.headline6;
     if (interests.isEmpty) {
       return [];
     }
@@ -236,17 +271,99 @@ class _MeetingPreferenceInfo extends HookWidget {
         style: labelStyle,
       ),
       const SizedBox(
-        height: AppInsets.med,
+        height: AppInsets.xxl,
         width: double.infinity,
       ),
-      Wrap(
-        spacing: 12,
-        children: interests
-            .map((interest) => _ChipItem(
-                  text: interest.name,
-                ))
-            .toList(),
+      SizedBox(
+        height: 120,
+        child: GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 4,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          physics: const NeverScrollableScrollPhysics(),
+          children: interests
+              .map((interest) => _ChipItem(
+                    text: interest.name,
+                  ))
+              .toList(),
+        ),
       )
+    ];
+  }
+}
+
+class _UserConnections extends HookWidget {
+  final List<Profile> connections;
+
+  const _UserConnections(this.connections);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ..._buildConnections(context),
+      ],
+    );
+  }
+
+  List<Widget> _buildConnections(BuildContext context) {
+    const introLabel = "Connections";
+    final labelStyle = Theme.of(context).textTheme.headline6;
+    if (connections.isEmpty) {
+      return [];
+    }
+
+    const itemsInRow = 4;
+    const itemHeight = 156;
+    final gridViewHeight =
+        itemHeight * (connections.length / itemsInRow).ceilToDouble();
+
+    return [
+      const SizedBox(height: AppInsets.xxl),
+      Center(
+        child: Text(
+          introLabel,
+          style: labelStyle,
+        ),
+      ),
+      const SizedBox(
+        height: AppInsets.xxl,
+        width: double.infinity,
+      ),
+      SizedBox(
+        height: gridViewHeight,
+        child: GridView.count(
+          crossAxisCount: itemsInRow,
+          childAspectRatio: 0.6,
+          physics: const NeverScrollableScrollPhysics(),
+          children: connections
+              .map((user) => InkWell(
+                    onTap: () => ExtendedNavigator.of(context).push(
+                        Routes.profileScreen(
+                            userId: user.uuid, allowEdit: false)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        children: [
+                          _ConnectionProfile(
+                            photoUrl: user.photo,
+                            size: 70,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            user.name,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      ),
     ];
   }
 }
@@ -297,14 +414,18 @@ class _ChipItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText1;
-    return Chip(
-        backgroundColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            side: BorderSide()),
-        label: Text(
-          text,
-          style: textStyle,
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            border: Border.all(
+              color: Colors.white,
+            )),
+        child: Center(
+          child: Text(
+            text,
+            style: textStyle,
+          ),
         ));
   }
 }

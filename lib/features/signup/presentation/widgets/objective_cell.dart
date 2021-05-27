@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/theme.dart';
-import '../../domain/entity/user_objective_entity.dart';
+import 'objectives_picker.dart';
 
 typedef ObjectiveCellCallback = void Function(
-  UserObjective item,
+  PickerItem item,
   bool isSelected,
 );
 
 class ObjectiveCell extends StatefulWidget {
-  final UserObjective item;
+  final PickerItem item;
   final ObjectiveCellCallback onPressedItem;
 
   const ObjectiveCell({
@@ -26,11 +26,8 @@ class ObjectiveCell extends StatefulWidget {
 }
 
 class _ObjectiveCellState extends State<ObjectiveCell> {
-  bool isSelected;
-
   @override
   void initState() {
-    isSelected = false;
     super.initState();
   }
 
@@ -38,32 +35,25 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
   Widget build(BuildContext context) {
     final unselectedColor = Colors.grey[200];
     final selectedColor = Theme.of(context).primaryColor;
-    final backgroundColor = isSelected ? selectedColor : unselectedColor;
+    final backgroundColor =
+        widget.item.selected ? selectedColor : unselectedColor;
     const borderRadius = BorderRadius.all(Radius.circular(12.0));
-    final iconColor = isSelected ? Colors.white : selectedColor;
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          height: 1.2,
-          color: isSelected ? Colors.white : Colors.grey[800],
-        );
+    final iconColor = widget.item.selected ? Colors.white : selectedColor;
     return Container(
       margin: const EdgeInsets.all(AppInsets.med),
-      height: 96,
+      height: 50,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: borderRadius,
-          color: backgroundColor,
-          boxShadow: kElevationToShadow[2],
+          border: Border.all(color: backgroundColor),
         ),
         child: Material(
           color: Colors.transparent,
           borderRadius: borderRadius,
           child: InkWell(
             onTap: () {
-              setState(() {
-                isSelected = !isSelected;
-              });
-              widget.onPressedItem(widget.item, isSelected);
+              widget.onPressedItem(widget.item, !widget.item.selected);
             },
             borderRadius: borderRadius,
             splashColor: backgroundColor,
@@ -78,12 +68,10 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
                       color: iconColor,
                       height: 28,
                     ),
-                  const SizedBox(height: AppInsets.med),
                   Text(
                     widget.item.name,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: labelStyle,
                     maxLines: 2,
                   )
                 ],

@@ -20,6 +20,8 @@ abstract class ConversationRepository {
   Future<Either<Failure, ConversationRtcInfo>> getConversationRtcInfo(
       int tableId);
 
+  Future<Either<Failure, List<Topic>>> getAllArticleTopics();
+
   Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
 
   Future<Either<Failure, Optin>> postGroupOptin(
@@ -35,4 +37,9 @@ abstract class ConversationRepository {
   Future<Either<Failure, List<Optin>>> getAllConversationOptins();
 
   Future<Either<Failure, List<OptinsByDate>>> getAllConversationOptinsByDate();
+
+  Future<Either<Failure, List<DateTime>>> getInstantConversationTimeSlots();
+
+  Future<Either<Failure, Conversation>> postCreateInstantConversation(
+      Conversation conversation);
 }

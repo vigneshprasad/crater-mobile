@@ -38,11 +38,11 @@ Future<void> mainCommon(String configPath, String env) async {
 
   // Setup KiwiContainer (Dependency Injection Contianers)
   Di.setup();
-  await KiwiContainer().resolve<PushNotifications>().initSdk();
   await KiwiContainer().resolve<LocalStorage>().initSdk();
   KiwiContainer().resolve<LocalStorage>().registerAdapters();
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   final Logger logger = KiwiContainer().resolve<Logger>();
+  KiwiContainer().resolve<PushNotifications>().initSdk();
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

@@ -33,6 +33,9 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int parent);
 
+  @Get(path: 'topic/articles/')
+  Future<Response> getAllArticleTopics();
+
   @Get(path: 'topic/for_groups/')
   Future<Response> getAllRootTopicsForConversations();
 
@@ -44,6 +47,12 @@ abstract class ConversationApiService extends ChopperService {
 
   @Get(path: 'groups/{id}/')
   Future<Response> retrieveConversation(@Path() int id);
+
+  @Post(path: 'groups/instant/')
+  Future<Response> postInstantConversation(@Body() Map<String, dynamic> body);
+
+  @Get(path: 'groups/instant_time_slots/')
+  Future<Response> getInstantConversationTimeSlots();
 
   @Post(path: 'optin/')
   Future<Response> postConversationOptin(@Body() Map<String, dynamic> body);

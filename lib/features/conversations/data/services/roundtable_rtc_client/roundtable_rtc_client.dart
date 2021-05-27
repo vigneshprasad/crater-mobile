@@ -1,11 +1,17 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/config_reader/config_reader.dart';
 
-final roundTableRtcClientProvider = Provider((_) => RoundTableRtcClient());
+final roundTableRtcClientProvider = Provider<RoundTableRtcClient>((ref) {
+  final client = RoundTableRtcClient();
+  ref.onDispose(() {
+    client.dispose();
+  });
+  return client;
+});
 
 class RoundTableRtcClient {
   RtcEngine _engine;
@@ -61,8 +67,10 @@ class RoundTableRtcClient {
   }
 
   Future<void> dispose() async {
-    await _engine?.leaveChannel();
-    await _engine?.destroy();
-    _engine = null;
+    if (_engine != null) {
+      await _engine?.leaveChannel();
+      await _engine?.destroy();
+      _engine = null;
+    }
   }
 }

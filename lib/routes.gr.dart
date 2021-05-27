@@ -13,6 +13,7 @@ import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
+import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
@@ -20,8 +21,9 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
+import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import 'features/meeting/domain/entity/meeting_config_entity.dart';
 import 'features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -36,8 +38,12 @@ import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_basic_screen.dart';
+import 'features/signup/presentation/screens/profile_bio_screen.dart';
+import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
+import 'features/signup/presentation/screens/profile_tags_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 
 class Routes {
@@ -45,12 +51,17 @@ class Routes {
   static const String _homeScreen = '/home/:tab?';
   static String homeScreen({dynamic tab = ''}) => '/home/$tab';
   static const String welcomeScreen = '/welcome';
-  static const String objectivesScreen = '/objectives';
-  static const String profileSetupScreen = '/profile-setup';
+  static const String _objectivesScreen = '/objectives/:editMode?';
+  static String objectivesScreen({dynamic editMode = ''}) =>
+      '/objectives/$editMode';
+  static const String _profileSetupScreen = '/profile-setup/:editMode?';
+  static String profileSetupScreen({dynamic editMode = ''}) =>
+      '/profile-setup/$editMode';
   static const String phoneVerificationScreen = '/phone-verify';
   static const String _authScreen = '/auth/:state?';
   static String authScreen({dynamic state = ''}) => '/auth/$state';
   static const String forgotPasswordScreen = '/forgot-password';
+  static const String onboardingScreen = '/onboarding';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
@@ -68,22 +79,35 @@ class Routes {
   static const String _profileIntroScreen = '/profile-intro/:editMode?';
   static String profileIntroScreen({dynamic editMode = ''}) =>
       '/profile-intro/$editMode';
+  static const String _profileBasicScreen = '/profile-basic/:editMode?';
+  static String profileBasicScreen({dynamic editMode = ''}) =>
+      '/profile-basic/$editMode';
+  static const String _profileTagsScreen = '/profile-tags/:editMode?';
+  static String profileTagsScreen({dynamic editMode = ''}) =>
+      '/profile-tags/$editMode';
+  static const String _profileImageScreen = '/profile-image/:editMode?';
+  static String profileImageScreen({dynamic editMode = ''}) =>
+      '/profile-image/$editMode';
+  static const String _profileBioScreen = '/profile-bio/:editMode?';
+  static String profileBioScreen({dynamic editMode = ''}) =>
+      '/profile-bio/$editMode';
   static const String _newPasswordScreen = '/new-password/:params?';
   static String newPasswordScreen({dynamic params = ''}) =>
       '/new-password/$params';
-  static const String _profileScreen = '/profile/:userId/:allowEdit';
+  static const String _profileScreen = '/profile-detail/:userId/:allowEdit';
   static String profileScreen(
           {@required dynamic userId, @required dynamic allowEdit}) =>
-      '/profile/$userId/$allowEdit';
+      '/profile-detail/$userId/$allowEdit';
   static const all = <String>{
     splashScreen,
     _homeScreen,
     welcomeScreen,
-    objectivesScreen,
-    profileSetupScreen,
+    _objectivesScreen,
+    _profileSetupScreen,
     phoneVerificationScreen,
     _authScreen,
     forgotPasswordScreen,
+    onboardingScreen,
     createPostScreen,
     chatScreen,
     chatSearchScreen,
@@ -98,6 +122,10 @@ class Routes {
     _conversationScreen,
     createConversationScreen,
     _profileIntroScreen,
+    _profileBasicScreen,
+    _profileTagsScreen,
+    _profileImageScreen,
+    _profileBioScreen,
     _newPasswordScreen,
     _profileScreen,
   };
@@ -110,11 +138,12 @@ class Router extends RouterBase {
     RouteDef(Routes.splashScreen, page: SplashScreen),
     RouteDef(Routes._homeScreen, page: HomeScreen),
     RouteDef(Routes.welcomeScreen, page: WelcomeScreen),
-    RouteDef(Routes.objectivesScreen, page: ObjectivesScreen),
-    RouteDef(Routes.profileSetupScreen, page: ProfileSetupScreen),
+    RouteDef(Routes._objectivesScreen, page: ObjectivesScreen),
+    RouteDef(Routes._profileSetupScreen, page: ProfileSetupScreen),
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes._authScreen, page: AuthScreen),
     RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
+    RouteDef(Routes.onboardingScreen, page: OnboardingScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
@@ -129,6 +158,10 @@ class Router extends RouterBase {
     RouteDef(Routes._conversationScreen, page: ConversationScreen),
     RouteDef(Routes.createConversationScreen, page: CreateConversationScreen),
     RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
+    RouteDef(Routes._profileBasicScreen, page: ProfileBasicScreen),
+    RouteDef(Routes._profileTagsScreen, page: ProfileTagsScreen),
+    RouteDef(Routes._profileImageScreen, page: ProfileImageScreen),
+    RouteDef(Routes._profileBioScreen, page: ProfileBioScreen),
     RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
     RouteDef(Routes._profileScreen, page: ProfileScreen),
   ];
@@ -143,8 +176,7 @@ class Router extends RouterBase {
     },
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            HomeScreen(tab: data.pathParams['tab'].stringValue),
+        builder: (context) => HomeScreen(tab: data.pathParams['tab'].intValue),
         settings: data,
       );
     },
@@ -187,6 +219,12 @@ class Router extends RouterBase {
     ForgotPasswordScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ForgotPasswordScreen(),
+        settings: data,
+      );
+    },
+    OnboardingScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => OnboardingScreen(),
         settings: data,
       );
     },
@@ -302,6 +340,7 @@ class Router extends RouterBase {
         builder: (context) => CreateConversationScreen(
           key: args.key,
           topic: args.topic,
+          type: args.type,
         ),
         settings: data,
       );
@@ -312,6 +351,54 @@ class Router extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => ProfileIntroScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileBasicScreen: (data) {
+      final args = data.getArgs<ProfileBasicScreenArguments>(
+        orElse: () => ProfileBasicScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileBasicScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileTagsScreen: (data) {
+      final args = data.getArgs<ProfileTagsScreenArguments>(
+        orElse: () => ProfileTagsScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileTagsScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileImageScreen: (data) {
+      final args = data.getArgs<ProfileImageScreenArguments>(
+        orElse: () => ProfileImageScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileImageScreen(
+          key: args.key,
+          editMode: data.pathParams['editMode'].boolValue,
+        ),
+        settings: data,
+      );
+    },
+    ProfileBioScreen: (data) {
+      final args = data.getArgs<ProfileBioScreenArguments>(
+        orElse: () => ProfileBioScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileBioScreen(
           key: args.key,
           editMode: data.pathParams['editMode'].boolValue,
         ),
@@ -351,17 +438,14 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushWelcomeScreen() => push<dynamic>(Routes.welcomeScreen);
 
-  Future<dynamic> pushObjectivesScreen() =>
-      push<dynamic>(Routes.objectivesScreen);
-
-  Future<dynamic> pushProfileSetupScreen() =>
-      push<dynamic>(Routes.profileSetupScreen);
-
   Future<dynamic> pushPhoneVerificationScreen() =>
       push<dynamic>(Routes.phoneVerificationScreen);
 
   Future<dynamic> pushForgotPasswordScreen() =>
       push<dynamic>(Routes.forgotPasswordScreen);
+
+  Future<dynamic> pushOnboardingScreen() =>
+      push<dynamic>(Routes.onboardingScreen);
 
   Future<dynamic> pushCreatePostScreen() =>
       push<dynamic>(Routes.createPostScreen);
@@ -449,10 +533,12 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushCreateConversationScreen({
     Key key,
     @required Topic topic,
+    @required ConversationType type,
   }) =>
       push<dynamic>(
         Routes.createConversationScreen,
-        arguments: CreateConversationScreenArguments(key: key, topic: topic),
+        arguments: CreateConversationScreenArguments(
+            key: key, topic: topic, type: type),
       );
 }
 
@@ -527,13 +613,39 @@ class PackagePurchaseScreenArguments {
 class CreateConversationScreenArguments {
   final Key key;
   final Topic topic;
-  CreateConversationScreenArguments({this.key, @required this.topic});
+  final ConversationType type;
+  CreateConversationScreenArguments(
+      {this.key, @required this.topic, @required this.type});
 }
 
 /// ProfileIntroScreen arguments holder class
 class ProfileIntroScreenArguments {
   final Key key;
   ProfileIntroScreenArguments({this.key});
+}
+
+/// ProfileBasicScreen arguments holder class
+class ProfileBasicScreenArguments {
+  final Key key;
+  ProfileBasicScreenArguments({this.key});
+}
+
+/// ProfileTagsScreen arguments holder class
+class ProfileTagsScreenArguments {
+  final Key key;
+  ProfileTagsScreenArguments({this.key});
+}
+
+/// ProfileImageScreen arguments holder class
+class ProfileImageScreenArguments {
+  final Key key;
+  ProfileImageScreenArguments({this.key});
+}
+
+/// ProfileBioScreen arguments holder class
+class ProfileBioScreenArguments {
+  final Key key;
+  ProfileBioScreenArguments({this.key});
 }
 
 /// NewPasswordScreen arguments holder class

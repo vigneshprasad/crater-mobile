@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import '../../../../core/widgets/base/base_container/base_container.dart';
 
 class RedeemButton extends MaterialButton {
   final double width;
@@ -20,26 +20,17 @@ class RedeemButton extends MaterialButton {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final buttonThemeData = buttonTheme ?? Theme.of(context).buttonTheme;
     const buttonHeight = 48.00;
 
     return SizedBox(
       width: width ?? MediaQuery.of(context).size.width * 0.9,
       height: buttonHeight,
-      child: RawMaterialButton(
-        fillColor: buttonThemeData.getFillColor(this),
-        splashColor: buttonThemeData.getSplashColor(this),
-        focusColor: buttonThemeData.getFocusColor(this),
-        highlightColor: buttonThemeData.getHighlightColor(this),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
+      child: BaseContainer(
+        radius: buttonHeight / 2,
+        child: FlatButton(
+          onPressed: onPressed,
+          child: child,
         ),
-        textStyle: theme.textTheme.button.copyWith(
-          color: textColor ?? buttonThemeData.getTextColor(this),
-        ),
-        onPressed: onPressed,
-        child: child,
       ),
     );
   }

@@ -96,14 +96,14 @@ class ConversationScreenController extends ChangeNotifier {
 
   List<RtcUser> intializeSpeakers(Conversation table) {
     List<RtcUser> initial = [];
-    if (table.host != null) {
-      initial.add(RtcUser(
-        userInfo: table.hostDetail,
-        pk: table.hostDetail.pk,
-        online: false,
-        muted: false,
-      ));
-    }
+    // if (table.host != null) {
+    //   initial.add(RtcUser(
+    //     userInfo: table.hostDetail,
+    //     pk: table.hostDetail.pk,
+    //     online: false,
+    //     muted: false,
+    //   ));
+    // }
 
     initial.addAll(table.speakersDetailList.map(
       (speaker) => RtcUser(
@@ -378,17 +378,17 @@ class ConversationScreenController extends ChangeNotifier {
     notifyListeners();
   }
 
-  OverlayEntry _createOverlayEntry() {
-    return OverlayEntry(builder: (context) {
-      return ConversationOverlayIndicator(table: table);
-    });
-  }
+  // OverlayEntry _createOverlayEntry() {
+  //   return OverlayEntry(builder: (context) {
+  //     return ConversationOverlayIndicator(table: table);
+  //   });
+  // }
 
-  void showOverlayEntry(BuildContext context) {
-    final entry = _createOverlayEntry();
-    read(groupOverlayControllerProvider)
-        .createOverlayEntry(context, entry, table);
-  }
+  // void showOverlayEntry(BuildContext context) {
+  //   final entry = _createOverlayEntry();
+  //   read(groupOverlayControllerProvider)
+  //       .createOverlayEntry(context, entry, table);
+  // }
 
   void hideOverlayEntry() {
     final _groupOverlayController = read(groupOverlayControllerProvider);

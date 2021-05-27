@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/data/models/conversation_exceptions/conversation_exceptions.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -17,6 +16,7 @@ import '../../domain/entity/optin_entity/optin_entity.dart';
 import '../../domain/entity/topic_entity/topic_entity.dart';
 import '../../domain/repository/conversation_repository.dart';
 import '../datasources/conversation_remote_datasource.dart';
+import '../models/conversation_exceptions/conversation_exceptions.dart';
 import '../models/conversation_failures/conversation_failures.dart';
 
 final conversationRepositoryProvider = Provider<ConversationRepository>(
@@ -83,6 +83,22 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getAllTopicsFromRemote(parent);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Topic>>> getAllArticleTopics() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllArticleTopicsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       final message =
@@ -171,6 +187,40 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getAllConversationOptinsByDateFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DateTime>>>
+      getInstantConversationTimeSlots() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getInstantConversationTimeSlotsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Conversation>> postCreateInstantConversation(
+      Conversation conversation) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postCreateInstantConversationToRemote(conversation);
       return Right(response);
     } on ServerException catch (error) {
       final message =

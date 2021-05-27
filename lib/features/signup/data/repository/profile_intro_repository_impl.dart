@@ -6,6 +6,7 @@ import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../auth/data/datasources/auth_local_datasource.dart';
 import '../../../auth/data/models/user_profile_model.dart';
+import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/domain/entity/user_profile_entity.dart';
 import '../../domain/entity/profile_intro_meta.dart';
 import '../../domain/entity/profile_intro_question.dart';
@@ -19,18 +20,18 @@ class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
   ProfileIntroRepositoryImpl(this.remoteDatasource, this.localDataSource);
 
   @override
-  Future<Either<Failure, List<String>>> getProfileIntroQuestions() async {
+  Future<Either<Failure, List<String>>> getProfileIntroQuestions(
+      User user) async {
     try {
-      const questions = [
-        '{${ProfileIntroElement.name}} is a {${ProfileIntroElement.tags}}',
-        'with {${ProfileIntroElement.yearsOfExperience}} years of work experience.',
-        'Currently working with a {${ProfileIntroElement.companyType}} ,',
-        'in the {${ProfileIntroElement.sector}} sector.',
-        'Previously has completed a {${ProfileIntroElement.educationLevel}} degree.',
-        '\n About {${ProfileIntroElement.introduction}}'
+      final name = user?.name?.split(' ')?.first ?? '';
+      final questions = [
+        '$name is currently working with a {${ProfileIntroElement.companyType}} ,',
+        'operating in the {${ProfileIntroElement.sector}} sector.',
+        '$name has {${ProfileIntroElement.yearsOfExperience}} years of work experience',
+        'and has previously completed a {${ProfileIntroElement.educationLevel}} degree.',
       ];
 
-      return const Right(questions);
+      return Right(questions);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
     }

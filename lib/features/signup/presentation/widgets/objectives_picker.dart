@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entity/user_objective_entity.dart';
 import 'objective_cell.dart';
 
+class PickerItem {
+  final String name;
+  final String icon;
+  final bool selected;
+
+  PickerItem({this.name, this.icon, this.selected = false});
+}
+
 class ObjectivesPicker extends StatelessWidget {
-  final List<UserObjective> objectives;
+  final List<PickerItem> objectives;
   final ObjectiveCellCallback onPressedItem;
+  static const column = 2;
 
   const ObjectivesPicker({
     Key key,
@@ -16,16 +24,16 @@ class ObjectivesPicker extends StatelessWidget {
         super(key: key);
   @override
   Widget build(BuildContext context) {
-    final List<List<UserObjective>> rows = objectives.fold(
+    final List<List<PickerItem>> rows = objectives.fold(
       [[]],
-      (list, objective) => list.last.length == 3
+      (list, objective) => list.last.length == column
           ? (list..add([objective]))
           : (list..last.add(objective)),
     );
 
     rows.map((row) {
-      if (row.length < 3) {
-        final filler = List(3 - row.length);
+      if (row.length < column) {
+        final filler = List(column - row.length);
         row.addAll(filler.map((e) => null));
       }
     }).toList();

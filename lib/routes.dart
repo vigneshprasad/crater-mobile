@@ -4,13 +4,14 @@ import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
+import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
-import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
+import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
 import 'features/meeting/presentation/screens/meeting_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
@@ -21,8 +22,12 @@ import 'features/rewards/presentation/screens/package_detail_screen.dart';
 import 'features/rewards/presentation/screens/package_purchase_screen.dart';
 import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
+import 'features/signup/presentation/screens/profile_basic_screen.dart';
+import 'features/signup/presentation/screens/profile_bio_screen.dart';
+import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
+import 'features/signup/presentation/screens/profile_tags_screen.dart';
 import 'features/videos/presentation/screens/video_player_screen.dart';
 
 @MaterialAutoRouter(
@@ -31,11 +36,12 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
     MaterialRoute(page: WelcomeScreen, path: "/welcome"),
-    MaterialRoute(page: ObjectivesScreen, path: "/objectives"),
-    MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup"),
+    MaterialRoute(page: ObjectivesScreen, path: "/objectives/:editMode?"),
+    MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup/:editMode?"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
+    MaterialRoute(page: OnboardingScreen, path: "/onboarding"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),
@@ -51,8 +57,13 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: ConversationScreen, path: "/roundtable/:id"),
     MaterialRoute(page: CreateConversationScreen, path: "/create-conversation"),
     MaterialRoute(page: ProfileIntroScreen, path: "/profile-intro/:editMode?"),
+    MaterialRoute(page: ProfileBasicScreen, path: "/profile-basic/:editMode?"),
+    MaterialRoute(page: ProfileTagsScreen, path: "/profile-tags/:editMode?"),
+    MaterialRoute(page: ProfileImageScreen, path: "/profile-image/:editMode?"),
+    MaterialRoute(page: ProfileBioScreen, path: "/profile-bio/:editMode?"),
     MaterialRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
-    MaterialRoute(page: ProfileScreen, path: "/profile/:userId/:allowEdit"),
+    MaterialRoute(
+        page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
   ],
 )
 class $Router {}

@@ -7,16 +7,17 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../features/article/presentation/widgets/articles_tab.dart';
+import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
-import '../../../../features/chat_inbox/presentation/widgets/inbox_tab.dart';
-import '../../../../features/conversations/domain/entity/optin_entity/optin_entity.dart';
-import '../../../../features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import '../../../../features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
+import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
+import '../../../../ui/components/app_drawer/app_drawer.dart';
+import '../../base/base_container/base_container.dart';
+import 'home_tab_controller_provider.dart';
 
 final homeScreenScrollController =
     Provider.autoDispose<ScrollController>((ref) {
@@ -28,13 +29,18 @@ final homeScreenScrollController =
 });
 
 class HomeScreen extends HookWidget {
-  final String tab;
+  final int tab;
 
-  static const List<Widget> _tabs = [
-    Tab(text: "All Conversations"),
-    Tab(text: "My Conversations"),
-    Tab(text: "Inbox"),
-    Tab(text: "Articles"),
+  static const icons = [
+    Icons.search,
+    Icons.people_alt_outlined,
+    Icons.inbox_outlined
+  ];
+
+  static const labels = [
+    'Topics',
+    'Conversations',
+    'My Conversations',
   ];
 
   const HomeScreen({
@@ -44,13 +50,13 @@ class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _scrollController = useProvider(homeScreenScrollController);
-    final _tabController = useTabController(initialLength: _tabs.length);
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: Colors.grey[800],
-        );
-    final _activeTab = useState(0);
+    final _tabController =
+        useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
+
+    final _activeTab = useState(tab ?? 0);
+
+    final name =
+        BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -61,96 +67,128 @@ class HomeScreen extends HookWidget {
 
       _tabController.addListener(_tabChangeListener);
 
+      _navigateToHome(context);
+
       return () {
         _tabController.removeListener(_tabChangeListener);
       };
     });
 
     return Scaffold(
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                expandedHeight: 120.00,
-                floating: true,
-                pinned: true,
-                elevation: 0,
-                actions: [
-                  UserProfileNavItem(
-                    onPressed: () {
-                      final user =
-                          BlocProvider.of<AuthBloc>(context).state?.user;
-                      if (user != null) {
-                        ExtendedNavigator.of(context).push(Routes.profileScreen(
-                            userId: user.pk, allowEdit: true));
-                      }
-                    },
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: AppDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        iconSize: 28,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        items: [0, 1, 2]
+            .map((index) => BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: BaseContainer(
+                    radius: 30,
+                    color: Theme.of(context).backgroundColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(icons[index]),
+                    ),
                   ),
-                  const SizedBox(width: AppInsets.l),
-                ],
-                bottom: TabBar(
-                  labelColor: Colors.grey[800],
-                  unselectedLabelColor: Colors.grey[400],
-                  isScrollable: true,
-                  labelStyle: labelStyle,
-                  controller: _tabController,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  indicatorWeight: 4.0,
-                  tabs: _tabs,
+                ),
+                label: labels[index]))
+            .toList(),
+        onTap: (int index) {
+          _tabController.index = index;
+        },
+      ),
+      body: SafeArea(
+        child: NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  floating: true,
+                  // pinned: true,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BaseContainer(
+                      radius: 30,
+                      color: Theme.of(context).backgroundColor,
+                      child: IconButton(
+                          icon: const Icon(
+                            WorkNetIcons.menu,
+                          ),
+                          onPressed: () => Scaffold.of(context).openDrawer()),
+                    ),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BaseContainer(
+                        color: Theme.of(context).backgroundColor,
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: UserProfileNavItem(
+                            onPressed: () {
+                              final user = BlocProvider.of<AuthBloc>(context)
+                                  .state
+                                  ?.user;
+                              if (user != null) {
+                                ExtendedNavigator.of(context).push(
+                                    Routes.profileScreen(
+                                        userId: user.pk, allowEdit: true));
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppInsets.l),
+                  ],
                 ),
               ),
+            ];
+          },
+          body: DefaultStickyHeaderController(
+            child: HomeTabControllerProvider(
+              controller: _tabController,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  TopicsTab(name: name),
+                  ConversationCalendarTab(
+                    type: ConversationTabType.all,
+                    controller: _scrollController,
+                    name: name,
+                    onSchedulePressed: () => _tabController.animateTo(0),
+                  ),
+                  ConversationCalendarTab(
+                    type: ConversationTabType.my,
+                    controller: _scrollController,
+                    name: name,
+                    onSchedulePressed: () => _tabController.animateTo(0),
+                  ),
+                ],
+              ),
             ),
-          ];
-        },
-        body: DefaultStickyHeaderController(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              ConversationCalendarTab(
-                type: ConversationTabType.all,
-                controller: _scrollController,
-              ),
-              ConversationCalendarTab(
-                type: ConversationTabType.my,
-                controller: _scrollController,
-              ),
-              InboxTab(),
-              ArticlesTab(),
-            ],
           ),
         ),
       ),
-      floatingActionButton:
-          _getFloatinActionButton(context, _activeTab.value, _tabController),
     );
   }
 
-  Widget _getFloatinActionButton(
-      BuildContext context, int index, TabController controller) {
-    if (index == 0 || index == 1) {
-      return FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(CreateConversationSheet()).then(
-            (value) {
-              if (value != null && value is Topic) {
-                ExtendedNavigator.of(context)
-                    .pushCreateConversationScreen(topic: value)
-                    .then((value) {
-                  if (value is Optin) {
-                    controller.animateTo(1);
-                  }
-                });
-              }
-            },
-          );
-        },
-        label: Text("Schedule New"),
-        icon: Icon(Icons.add),
-      );
+  Future<void> _navigateToHome(BuildContext context) async {
+    final onboarding = ProviderContainer().read(onboardingProvider);
+
+    final shown = await onboarding.getOnboardingKey();
+
+    if (!shown) {
+      ExtendedNavigator.of(context)
+          .pushAndRemoveUntil(Routes.onboardingScreen, (_) => false);
     }
-    return null;
   }
 }

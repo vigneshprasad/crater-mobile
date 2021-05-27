@@ -217,6 +217,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         osId: osId,
       ));
 
+      final profileOrError = await getUserProfile(NoParams());
+      final profile = profileOrError.getOrElse(() => state.profile);
+
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
         (user) {
@@ -231,7 +234,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           analytics.initSdk();
           return AuthStateSuccess(
             user: user,
-            profile: state.profile,
+            profile: profile,
           );
         },
       );

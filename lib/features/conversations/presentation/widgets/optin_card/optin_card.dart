@@ -20,9 +20,10 @@ class OptinCard extends StatelessWidget {
     final dateFormat = DateFormat.jm();
     return CalendarCardLayout(
       heading: Text(optin.topicDetail.name),
-      subHeading: Text(dateFormat.format(optin.timeSlotList.first.start)),
+      subHeading:
+          Text(dateFormat.format(optin.timeSlotList.first.start.toLocal())),
       border: Border.all(
-        color: Color(0xFFFFCB77),
+        color: const Color(0xFFFFCB77),
         width: 2.00,
       ),
       child: Row(
