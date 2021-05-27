@@ -72,8 +72,7 @@ class ProfileTagsBloc extends Bloc<ProfileTagsEvent, ProfileTagsState> {
 
         analytics.identify(properties: properties);
         analytics.trackEvent(
-            eventName: AnalyticsEvents.signUpBasicProfile,
-            properties: properties);
+            eventName: AnalyticsEvents.signupTagsAdded, properties: properties);
         return PostProfileTagsRequestLoaded(user: updatedProfile);
       },
     );

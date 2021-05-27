@@ -180,13 +180,16 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       (failure) => ProfileIntroRequestError(error: failure),
       (updatedProfile) {
         final properties = {
+          "education_level": updatedProfile.educationLevel,
+          "sector": updatedProfile.sector,
+          "company_type": updatedProfile.companyType,
+          "years_of_experience": updatedProfile.yearsOfExperience,
           "user_tags": updatedProfile.tagList.map((e) => e.name).toList(),
         };
 
         analytics.identify(properties: properties);
         analytics.trackEvent(
-            eventName: AnalyticsEvents.signUpBasicProfile,
-            properties: properties);
+            eventName: AnalyticsEvents.signupBasicInfo, properties: properties);
         return PatchProfileIntroRequestLoaded(profile: updatedProfile);
       },
     );

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
@@ -166,6 +168,12 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   }
 
   void _onJoinChannelSuccess(String channel, int uid, int elapsed, String pk) {
+    final analytics = KiwiContainer().resolve<Analytics>();
+    analytics.trackEvent(
+        eventName: AnalyticsEvents.conversationGroupAttended,
+        properties: {
+          "id": _groupId,
+        });
     read(rtcConnectionProvider(_groupId)).connection = RtcConnection.connected;
     read(conversationSpeakersState(_groupId))
         .toggleOnlineState(pk, online: true);
