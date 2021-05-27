@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import '../../../constants/app_constants.dart';
 
 final shareManagerProvider = Provider<ShareManager>((_) => ShareManagerImpl());
@@ -34,6 +36,7 @@ class ShareManagerImpl implements ShareManager {
   Future<void> share(BuildContext context) async {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) => ShareBottomSheet(),
     );
   }
@@ -43,91 +46,150 @@ class ShareBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const iconSize = 44.0;
-    return Container(
-      height: 480,
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      width: double.infinity,
-      child: Column(
-        children: [
-          Text(
-            'Refer your friends',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            spacing: 8,
+    return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+        ),
+        child: Container(
+          color: Theme.of(context).dialogBackgroundColor,
+          height: 480,
+          width: double.infinity,
+          child: Column(
             children: [
-              IconButton(
-                  iconSize: iconSize,
-                  icon: Image.asset('assets/images/whatsapp.png'),
-                  onPressed: () {
-                    launch(
-                      whatsAppUrl,
-                      forceSafariVC: false,
-                      forceWebView: false,
-                    );
-                  }),
-              IconButton(
-                  iconSize: iconSize,
-                  icon: SvgPicture.asset(
-                    AppSvgAssets.linkedinFilled,
-                    height: iconSize,
-                    width: iconSize,
-                  ),
-                  onPressed: () {
-                    launch(
-                      linkedUrl,
-                      forceSafariVC: false,
-                      forceWebView: false,
-                    );
-                  }),
-              IconButton(
-                  iconSize: iconSize,
-                  icon: SvgPicture.asset(
-                    AppSvgAssets.twitter,
-                    height: iconSize,
-                    width: iconSize,
-                  ),
-                  onPressed: () {
-                    launch(
-                      twitterUrl,
-                      forceSafariVC: false,
-                      forceWebView: false,
-                    );
-                  }),
-              IconButton(
-                  iconSize: iconSize,
-                  icon: Image.asset('assets/images/facebook.png'),
-                  onPressed: () {
-                    launch(
-                      fbUrl,
-                      forceSafariVC: false,
-                      forceWebView: false,
-                    );
-                  }),
-              IconButton(
-                  iconSize: iconSize,
-                  icon: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.blue,
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Invite your friends & increase your score',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'By adding people to the network, your network strength increases & thereby, improves the quality of matches you get.',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Image.asset(
+                          'assets/images/meeting_scheduled.png',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ],
                     ),
-                    padding: const EdgeInsets.all(4),
-                    child: const Icon(
-                      Icons.more_horiz,
-                      size: iconSize - 8,
+                    const SizedBox(height: 20),
+                    BaseContainer(
+                      radius: 30,
+                      child: FlatButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/whatsapp.png',
+                                width: 24,
+                              ),
+                              const SizedBox(width: 8),
+                              Text('Invite via Whatsapp'),
+                            ],
+                          ),
+                          onPressed: () {
+                            launch(
+                              whatsAppUrl,
+                              forceSafariVC: false,
+                              forceWebView: false,
+                            );
+                          }),
                     ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+                  topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  color: Theme.of(context).backgroundColor,
+                  padding: const EdgeInsets.all(40),
+                  child: Wrap(
+                    spacing: 8,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      IconButton(
+                          iconSize: iconSize,
+                          icon: SvgPicture.asset(
+                            AppSvgAssets.linkedinFilled,
+                            height: iconSize,
+                            width: iconSize,
+                          ),
+                          onPressed: () {
+                            launch(
+                              linkedUrl,
+                              forceSafariVC: false,
+                              forceWebView: false,
+                            );
+                          }),
+                      IconButton(
+                          iconSize: iconSize,
+                          icon: SvgPicture.asset(
+                            AppSvgAssets.twitter,
+                            height: iconSize,
+                            width: iconSize,
+                          ),
+                          onPressed: () {
+                            launch(
+                              twitterUrl,
+                              forceSafariVC: false,
+                              forceWebView: false,
+                            );
+                          }),
+                      // IconButton(
+                      //     iconSize: iconSize,
+                      //     icon: Image.asset('assets/images/facebook.png'),
+                      //     onPressed: () {
+                      //       launch(
+                      //         fbUrl,
+                      //         forceSafariVC: false,
+                      //         forceWebView: false,
+                      //       );
+                      //     }),
+                      IconButton(
+                          iconSize: iconSize,
+                          icon: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.blue,
+                            ),
+                            padding: const EdgeInsets.all(8),
+                            child: const Icon(
+                              Icons.ios_share,
+                              size: iconSize - 16,
+                            ),
+                          ),
+                          onPressed: () {
+                            Share.share(
+                              AppConstants.defaultShareText,
+                            );
+                          }),
+                    ],
                   ),
-                  onPressed: () {
-                    Share.share(
-                      AppConstants.defaultShareText,
-                      subject: summary,
-                    );
-                  }),
+                ),
+              )
             ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

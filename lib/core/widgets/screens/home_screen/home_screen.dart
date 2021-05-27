@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -133,9 +135,8 @@ class HomeScreen extends HookWidget {
                         color: Theme.of(context).backgroundColor,
                         radius: 30,
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.share,
-                            size: 18,
+                          icon: SvgPicture.asset(
+                            AppSvgAssets.share,
                           ),
                           onPressed: () => shareManager.share(context),
                         ),

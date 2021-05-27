@@ -149,6 +149,7 @@ class AppSvgAssets {
   static const facebook = "assets/svg/facebook.svg";
   static const apple = "assets/svg/apple-logo.svg";
   static const twitter = "assets/svg/twitter.svg";
+  static const share = "assets/svg/share.svg";
 }
 
 class AppLottieAssets {

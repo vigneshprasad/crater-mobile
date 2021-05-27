@@ -254,6 +254,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         : 'Have conversations & grow your network.';
 
     final buttonWidth = MediaQuery.of(context).size.width / 2 - 55;
+    const buttonHeight = 112.0;
+
     return ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
@@ -293,6 +295,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       BaseContainer(
                         child: SizedBox(
                           width: double.infinity,
+                          height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.google,
                             isLarge: true,
@@ -309,6 +312,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       BaseContainer(
                         child: SizedBox(
                           width: buttonWidth,
+                          height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.apple,
                             isLarge: true,
@@ -324,6 +328,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     BaseContainer(
                       child: SizedBox(
                         width: buttonWidth,
+                        height: buttonHeight,
                         child: SocialAuthButton(
                           provider: SocialAuthProviders.linkedin,
                           isLarge: true,
@@ -340,6 +345,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       BaseContainer(
                         child: SizedBox(
                           width: buttonWidth,
+                          height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.facebook,
                             isLarge: true,
@@ -356,6 +362,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       BaseContainer(
                         child: SizedBox(
                           width: buttonWidth,
+                          height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.email,
                             isLarge: true,
@@ -369,7 +376,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       ),
                   ],
                 ),
-                const SizedBox(height: 20),
               ],
             ),
           ),
