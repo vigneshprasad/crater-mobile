@@ -16,6 +16,7 @@ import '../../../../features/conversations/presentation/widgets/conversation_cal
 import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
+import '../../../features/share_manager/share_manager.dart';
 import '../../base/base_container/base_container.dart';
 import 'home_tab_controller_provider.dart';
 
@@ -50,6 +51,7 @@ class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _scrollController = useProvider(homeScreenScrollController);
+    final shareManager = useProvider(shareManagerProvider);
     final _tabController =
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
@@ -125,6 +127,21 @@ class HomeScreen extends HookWidget {
                     ),
                   ),
                   actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BaseContainer(
+                        color: Theme.of(context).backgroundColor,
+                        radius: 30,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.share,
+                            size: 18,
+                          ),
+                          onPressed: () => shareManager.share(context),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppInsets.sm),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: BaseContainer(
