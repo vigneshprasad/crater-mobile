@@ -6,8 +6,10 @@ class AnalyticsEvents {
   static const objectivesAdded = "objectives_added";
   static const signUpBasicProfile = "signup_basic_profile";
   static const signupTagsAdded = "signup_tags_added";
-  static const signupBasicInfo = "signup_basic_info";
+  static const signupBasicInfo = "signup_basic_info_added";
+  static const signupPhotoAdded = "signup_photo_added";
   static const signUpPhoneVerified = "signup_phone_verified";
+  static const signupWalkthroughComplete = "singup_walkthrough_complete";
   static const postCreated = "post_created";
   static const meetingRegistrationButtonClick =
       "meeting_registration_button_click";

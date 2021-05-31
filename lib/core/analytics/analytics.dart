@@ -105,7 +105,7 @@ class AnalyticsImpl implements Analytics {
       try {
         await Segment.track(
             eventName: eventName, properties: properties, options: options);
-        await appsflyer.logEvent(eventName, properties);
+        await appsflyer.logEvent(eventName, properties ?? {});
       } catch (error) {
         throw AnalyticsException(error);
       }

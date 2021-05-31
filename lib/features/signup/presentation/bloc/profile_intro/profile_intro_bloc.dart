@@ -61,6 +61,8 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
       yield* _mapGetProfileIntroToState(event);
     } else if (event is PostProfileIntroRequestStarted) {
       yield* _mapPostProfileIntroToState(event);
+    } else if (event is ProfilePhotoRequestStarted) {
+      yield* _mapPostProfileImageToState(event);
     }
   }
 
@@ -190,6 +192,23 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
         analytics.identify(properties: properties);
         analytics.trackEvent(
             eventName: AnalyticsEvents.signupBasicInfo, properties: properties);
+        return PatchProfileIntroRequestLoaded(profile: updatedProfile);
+      },
+    );
+  }
+
+  Stream<ProfileIntroState> _mapPostProfileImageToState(
+      ProfilePhotoRequestStarted event) async* {
+    yield const ProfileIntroRequestLoading();
+
+    // Update Profile
+    final updateOrError = await postUserProfile(
+        UCPostUserProfileIntroParams(body: {}, photo: event.photo));
+
+    yield updateOrError.fold(
+      (failure) => ProfileIntroRequestError(error: failure),
+      (updatedProfile) {
+        analytics.trackEvent(eventName: AnalyticsEvents.signupPhotoAdded);
         return PatchProfileIntroRequestLoaded(profile: updatedProfile);
       },
     );
