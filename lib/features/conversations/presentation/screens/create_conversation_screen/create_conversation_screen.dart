@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
@@ -48,9 +50,6 @@ class CreateConversationScreen extends HookWidget {
     final _formStep = useState<int>(0);
     final descriptionStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white70);
-    final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-        );
 
     final _scrollControiler = useScrollController();
 
@@ -78,33 +77,34 @@ class CreateConversationScreen extends HookWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            (topic.articleDetail != null)
-                                ? ArticleTopicCard(
-                                    topic: topic,
-                                    enabled: false,
-                                  )
-                                : BaseContainer(
-                                    radius: 8,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            topic.name,
-                                            style: topicStyle,
-                                          ),
-                                          const SizedBox(height: AppInsets.l),
-                                          if (topic.description != null)
-                                            Text(
-                                              topic.description,
-                                              style: descriptionStyle,
-                                            ),
-                                        ],
+                            if (topic.articleDetail != null)
+                              ArticleTopicCard(
+                                topic: topic,
+                                enabled: false,
+                              )
+                            else
+                              BaseContainer(
+                                radius: 8,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        topic.name,
+                                        style: topicStyle,
                                       ),
-                                    ),
+                                      const SizedBox(height: AppInsets.l),
+                                      if (topic.description != null)
+                                        Text(
+                                          topic.description,
+                                          style: descriptionStyle,
+                                        ),
+                                    ],
                                   ),
+                                ),
+                              ),
                             const SizedBox(height: AppInsets.xxl * 2),
                             IndexedStack(index: _formStep.value, children: [
                               Column(
@@ -257,7 +257,12 @@ class CreateConversationScreen extends HookWidget {
       (conversation) {
         _overlay.remove();
 
-        ExtendedNavigator.of(context).pop(conversation);
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.groupMeetingCreation.toString()),
+          (_) => false,
+        );
+        // ExtendedNavigator.of(context).pop(conversation);
       },
     );
   }
@@ -283,10 +288,16 @@ class CreateConversationScreen extends HookWidget {
       (optin) async {
         _overlay.remove();
 
-        final popupManager = context.read(popupManagerProvider);
-        await popupManager.showPopup(PopupType.conversationOptIn, context);
+        // final popupManager = context.read(popupManagerProvider);
+        // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        ExtendedNavigator.of(context).pop(optin);
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.oneOnOneMeetingCreation.toString()),
+          (_) => false,
+        );
+
+        // ExtendedNavigator.of(context).pop(optin);
       },
     );
   }

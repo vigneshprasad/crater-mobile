@@ -1,10 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../routes.gr.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../screens/conversation_screen_2/conversation_screen_state.dart';
 
@@ -39,7 +42,7 @@ class RtcConnectionBar extends HookWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('CANCEL'),
+                  child: const Text('CANCEL'),
                 ),
               ),
             ),
@@ -55,13 +58,18 @@ class RtcConnectionBar extends HookWidget {
                         .leaveAudioCall();
                     // controller.leaveRoundTableChannel();
 
-                    final popupManager = context.read(popupManagerProvider);
-                    await popupManager.showPopup(
-                        PopupType.conversationLeave, context);
+                    // final popupManager = context.read(popupManagerProvider);
+                    // await popupManager.showPopup(
+                    //     PopupType.conversationLeave, context);
+                    // Navigator.pop(context);
 
-                    Navigator.pop(context);
+                    ExtendedNavigator.of(context).pushAndRemoveUntil(
+                      Routes.onboardingScreen(
+                          type: OnboardingType.meetingLeaving.toString()),
+                      (_) => false,
+                    );
                   },
-                  child: Text(
+                  child: const Text(
                     'LEAVE',
                     style: TextStyle(color: Colors.red),
                   ),

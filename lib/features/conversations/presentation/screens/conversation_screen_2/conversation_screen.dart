@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 
@@ -251,12 +252,16 @@ class _ConversationLoaded extends StatelessWidget {
         final start = group.start.toLocal();
         final end = group.end.toLocal();
 
-        print(now.isAfter(start));
-
         if (now.isAfter(start) && now.isBefore(end)) {
           context
               .read(conversationStateProvider(conversation.id))
               .connectToAudioCall();
+        } else {
+          ExtendedNavigator.of(context).pushAndRemoveUntil(
+            Routes.onboardingScreen(
+                type: OnboardingType.meetingJoining.toString()),
+            (_) => false,
+          );
         }
       },
     );
