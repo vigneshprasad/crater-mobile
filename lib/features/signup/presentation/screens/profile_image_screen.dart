@@ -65,7 +65,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
       final title = 'Want to add a photo?';
-      final info = 'Users with photos see a 70% increase in the number of people joining their group conversations';
+      final info =
+          'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
           value: _bloc,
@@ -78,28 +79,33 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
                   appBar: BaseAppBar(),
                   body: ScaffoldContainer(
                     child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ProfileHeader(
-                              title: title,
-                              subtitle: info,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ProfileHeader(
+                                    title: title,
+                                    subtitle: info,
+                                  ),
+                                  const SizedBox(height: 40),
+                                  Center(
+                                      child: ProfilePhotoPicker(
+                                    photoUrl: _photoUrl,
+                                    onChoosePhoto: (photo) => _photo = photo,
+                                  )),
+                                ],
+                              ),
                             ),
-                            const Spacer(),
-                            Center(
-                                child: ProfilePhotoPicker(
-                              photoUrl: _photoUrl,
-                              onChoosePhoto: (photo) => _photo = photo,
-                            )),
-                            const Spacer(),
-                            ProfileFooter(
-                              onSave: submitAnswers,
-                              onSkip: _onPressedSkip,
-                            ),
-                          ],
-                        ),
+                          ),
+                          ProfileFooter(
+                            onSave: submitAnswers,
+                            onSkip: _goToNextScreen,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -110,7 +116,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
 
   void submitAnswers() {
     _bloc.add(PostProfileIntroRequestStarted(
-      values: {},
+      values: const {},
       photo: _photo,
     ));
   }
@@ -118,10 +124,6 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   void _goToNextScreen() {
     ExtendedNavigator.of(context)
         .push(Routes.profileBioScreen(editMode: widget.editMode));
-  }
-
-  void _onPressedSkip() {
-    _goToNextScreen();
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {

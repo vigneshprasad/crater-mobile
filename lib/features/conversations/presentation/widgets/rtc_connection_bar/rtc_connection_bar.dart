@@ -11,7 +11,7 @@ import '../../../../../routes.gr.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../screens/conversation_screen_2/conversation_screen_state.dart';
 
-const kconnectionBarHeight = 68.00;
+const kconnectionBarHeight = 48.00;
 const kbarBorderRadius = Radius.circular(24.0);
 const kconnectionIndicatorSize = 12.00;
 
@@ -101,10 +101,10 @@ class RtcConnectionBar extends HookWidget {
     final localUser =
         useProvider(conversationSpeakersState(table.id)).localUser;
     return Container(
-      height: kconnectionBarHeight,
       width: MediaQuery.of(context).size.width,
+      height: kconnectionBarHeight,
       decoration: const BoxDecoration(
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           topLeft: kbarBorderRadius,
           topRight: kbarBorderRadius,
         ),
@@ -137,7 +137,7 @@ class RtcConnectionBar extends HookWidget {
                 ),
               ),
             if (connection == RtcConnection.connected)
-              const SizedBox(width: AppInsets.l),
+              const SizedBox(width: AppInsets.xxl),
             if (connection == RtcConnection.connected)
               BaseContainer(
                 radius: 22,

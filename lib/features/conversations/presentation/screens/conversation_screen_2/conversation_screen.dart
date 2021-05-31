@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -112,110 +113,95 @@ class _ConversationLoaded extends StatelessWidget {
         }
         return true;
       },
-      child: Stack(
+      child: Column(
         children: [
-          SingleChildScrollView(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl, vertical: AppInsets.l),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: AppInsets.sm),
-                Text(startDateFormat.format(conversation.start.toLocal()),
-                    style: dateStyle),
-                ConversationCard(
-                  conversation: conversation,
-                  hideFooter: true,
-                ),
-                if (conversation.topicDetail.articleDetail == null)
-                  Text(conversation.topicDetail.description),
-                const SizedBox(height: AppInsets.xl),
-                Center(
-                  child: Text(
-                      AppLocalizations.of(context)
-                          .translate("conversations:speakers_label"),
-                      style: pageLabelStyle),
-                ),
-                if (conversation.isSpeaker) const SizedBox(height: AppInsets.l),
-                if (!conversation.isSpeaker)
-                  const SizedBox(height: AppInsets.xl),
-                if (connection == RtcConnection.disconnected)
-                  _SpeakersListWithIntro(
-                    speakers: speakers,
-                    authUserPk: authUserPK,
-                  )
-                else
-                  SpeakersTable(
-                    speakers: speakers,
-                    chairSize: 60,
-                    isLive: connection == RtcConnection.connected,
+          Expanded(
+            child: SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppInsets.xl, vertical: AppInsets.l),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: AppInsets.sm),
+                  Text(startDateFormat.format(conversation.start.toLocal()),
+                      style: dateStyle),
+                  ConversationCard(
+                    conversation: conversation,
+                    hideFooter: true,
+                    onCardPressed: (_) => launch(
+                      conversation.topicDetail.articleDetail.websiteUrl,
+                      option: const CustomTabsOption(),
+                    ),
                   ),
-                const SizedBox(height: 120),
-              ],
-            ),
-          )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              color: Theme.of(context).backgroundColor,
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              child: SafeArea(
-                child: Stack(
-                  fit: StackFit.expand,
+                  if (conversation.topicDetail.articleDetail == null)
+                    Text(conversation.topicDetail.description),
+                  const SizedBox(height: AppInsets.xl),
+                  Center(
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("conversations:speakers_label"),
+                        style: pageLabelStyle),
+                  ),
+                  if (conversation.isSpeaker)
+                    const SizedBox(height: AppInsets.l),
+                  if (!conversation.isSpeaker)
+                    const SizedBox(height: AppInsets.xl),
+                  if (connection == RtcConnection.disconnected)
+                    _SpeakersListWithIntro(
+                      speakers: speakers,
+                      authUserPk: authUserPK,
+                    )
+                  else
+                    SpeakersTable(
+                      speakers: speakers,
+                      chairSize: 60,
+                      isLive: connection == RtcConnection.connected,
+                    ),
+                ],
+              ),
+            )),
+          ),
+          BaseContainer(
+            disableAnimation: true,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (connection == RtcConnection.disconnected)
                       if (conversation.isSpeaker)
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: AppInsets.xl),
-                            child: BaseContainer(
-                              radius: 30,
-                              child: BaseLargeButton(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                onPressed: () {
-                                  context
-                                      .read(conversationStateProvider(
-                                          conversation.id))
-                                      .connectToAudioCall();
-                                },
-                                child: Text(AppLocalizations.of(context)
-                                    .translate(
-                                        "conversation_screen:go_live_label")),
-                              ),
-                            ),
+                        BaseContainer(
+                          radius: 30,
+                          child: BaseLargeButton(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            onPressed: () {
+                              context
+                                  .read(conversationStateProvider(
+                                      conversation.id))
+                                  .connectToAudioCall();
+                            },
+                            child: Text(AppLocalizations.of(context).translate(
+                                "conversation_screen:go_live_label")),
                           ),
                         )
                       else
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: AppInsets.xl),
-                            child: BaseContainer(
-                              radius: 30,
-                              child: BaseLargeButton(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                onPressed: () {
-                                  _requestJoinGroup(context);
-                                },
-                                child: Text(AppLocalizations.of(context)
-                                    .translate(
-                                        "conversations:join_button_label")),
-                              ),
-                            ),
+                        BaseContainer(
+                          radius: 30,
+                          child: BaseLargeButton(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            onPressed: () {
+                              _requestJoinGroup(context);
+                            },
+                            child: Text(AppLocalizations.of(context)
+                                .translate("conversations:join_button_label")),
                           ),
                         )
                     else
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: RtcConnectionBar(
-                          table: conversation,
-                          connection: connection,
-                        ),
+                      RtcConnectionBar(
+                        table: conversation,
+                        connection: connection,
                       ),
                   ],
                 ),

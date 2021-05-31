@@ -119,15 +119,18 @@ class OnboardingScreen extends HookWidget {
           SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: kbottomBarHeight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: _buildActionButtons(
-                    context,
-                    pageController,
-                    currentPage.value,
-                    slideContent[currentPage.value].buttons,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(
+                  height: kbottomBarHeight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: _buildActionButtons(
+                      context,
+                      pageController,
+                      currentPage.value,
+                      slideContent[currentPage.value].buttons,
+                    ),
                   ),
                 ),
               ),
@@ -173,7 +176,11 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () async {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
-              await launch(
+
+              ExtendedNavigator.of(context).pushAndRemoveUntil(
+                  Routes.homeScreen(tab: 0), (route) => false);
+
+              launch(
                 'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user.email}',
                 option: const CustomTabsOption(
                   enableUrlBarHiding: true,
@@ -182,9 +189,6 @@ class OnboardingScreen extends HookWidget {
                   enableInstantApps: false,
                 ),
               );
-
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
             },
           );
           break;
@@ -308,10 +312,10 @@ class _ActionButton extends StatelessWidget {
         radius: 30.0,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: AppInsets.l,
-            horizontal: AppInsets.xxl,
+            vertical: AppInsets.xl,
+            horizontal: 40,
           ),
-          child: Text(label),
+          child: Text(label, style: Theme.of(context).textTheme.button),
         ),
       ),
     );
