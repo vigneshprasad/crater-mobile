@@ -18,26 +18,28 @@ class ProfileFooter extends StatelessWidget {
     final next = AppLocalizations.of(context).translate("next");
     return BaseContainer(
       disableAnimation: true,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              if (onSkip != null)
-                FlatButton(
-                  onPressed: onSkip,
-                  child: const Text('skip for now'),
+      child: SafeArea(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                if (onSkip != null)
+                  FlatButton(
+                    onPressed: onSkip,
+                    child: const Text('skip for now'),
+                  ),
+                const Spacer(),
+                SizedBox(
+                  width: 120,
+                  child: BaseLargeButton(
+                    text: next,
+                    onPressed: onSave,
+                  ),
                 ),
-              const Spacer(),
-              SizedBox(
-                width: 120,
-                child: BaseLargeButton(
-                  text: next,
-                  onPressed: onSave,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

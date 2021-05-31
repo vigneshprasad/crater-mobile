@@ -107,47 +107,41 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
               listener: _blocListener,
               builder: (context, state) {
                 return Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
                   appBar: BaseAppBar(),
                   body: ScaffoldContainer(
                     child: Column(
                       children: [
                         Expanded(
                           child: SingleChildScrollView(
-                            child: SafeArea(
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    ProfileHeader(title: title),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: Form(
-                                        key: _formKey,
-                                        child: ProfileInlineQuestion(
-                                          elements: _elements,
-                                          values: _values,
-                                          animateText: widget.editMode == false,
-                                          onValuesChange: (id, value) {
-                                            _values[id] = value;
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ProfileHeader(title: title),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: ProfileInlineQuestion(
+                                        elements: _elements,
+                                        values: _values,
+                                        animateText: widget.editMode == false,
+                                        onValuesChange: (id, value) {
+                                          _values[id] = value;
 
-                                            if (!editedFieldIds.contains(id)) {
-                                              editedFieldIds.add(id);
-                                              showNextQuestion();
-                                            }
-                                          },
-                                        ),
+                                          if (!editedFieldIds.contains(id)) {
+                                            editedFieldIds.add(id);
+                                            showNextQuestion();
+                                          }
+                                        },
                                       ),
                                     ),
-                                    const SizedBox(height: 40),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(height: 40),
+                                ],
                               ),
                             ),
                           ),

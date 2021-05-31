@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
@@ -243,11 +244,14 @@ class _ConversationLoaded extends StatelessWidget {
               .read(conversationStateProvider(conversation.id))
               .connectToAudioCall();
         } else {
-          ExtendedNavigator.of(context).pushAndRemoveUntil(
-            Routes.onboardingScreen(
-                type: OnboardingType.meetingJoining.toString()),
-            (_) => false,
-          );
+          context
+              .read(popupManagerProvider)
+              .showPopup(PopupType.conversationJoin, context);
+          // ExtendedNavigator.of(context).pushAndRemoveUntil(
+          //   Routes.onboardingScreen(
+          //       type: OnboardingType.meetingJoining.toString()),
+          //   (_) => false,
+          // );
         }
       },
     );

@@ -4,6 +4,7 @@ import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -55,142 +56,142 @@ class CreateConversationScreen extends HookWidget {
 
     return Scaffold(
       appBar: BaseAppBar(),
-      body: SafeArea(
-        child: ScaffoldContainer(
-          child: state.when(
-            loading: () => _Loader(),
-            emptyConfig: () => _NoConfig(),
-            data: (meta) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollControiler,
-                      child: Form(
-                        key: _formKey,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppInsets.xl,
-                            vertical: AppInsets.xxl,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (topic.articleDetail != null)
-                                ArticleTopicCard(
-                                  topic: topic,
-                                  showFooter: false,
-                                  onTap: () => launch(
-                                    topic.articleDetail.websiteUrl,
-                                    option: const CustomTabsOption(),
-                                  ),
-                                )
-                              else
-                                BaseContainer(
-                                  disableAnimation: true,
-                                  radius: 8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
+      body: ScaffoldContainer(
+        child: state.when(
+          loading: () => _Loader(),
+          emptyConfig: () => _NoConfig(),
+          data: (meta) {
+            return Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollControiler,
+                    child: Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppInsets.xl,
+                          vertical: AppInsets.xxl,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (topic.articleDetail != null)
+                              ArticleTopicCard(
+                                topic: topic,
+                                showFooter: false,
+                                onTap: () => launch(
+                                  topic.articleDetail.websiteUrl,
+                                  option: const CustomTabsOption(),
+                                ),
+                              )
+                            else
+                              BaseContainer(
+                                disableAnimation: true,
+                                radius: 8,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        topic.name,
+                                        style: topicStyle,
+                                      ),
+                                      const SizedBox(height: AppInsets.l),
+                                      if (topic.description != null)
                                         Text(
-                                          topic.name,
-                                          style: topicStyle,
+                                          topic.description,
+                                          style: descriptionStyle,
                                         ),
-                                        const SizedBox(height: AppInsets.l),
-                                        if (topic.description != null)
-                                          Text(
-                                            topic.description,
-                                            style: descriptionStyle,
-                                          ),
-                                      ],
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              const SizedBox(height: AppInsets.xxl * 2),
-                              IndexedStack(index: _formStep.value, children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: _FormLabel(
+                              ),
+                            const SizedBox(height: AppInsets.xxl * 2),
+                            IndexedStack(index: _formStep.value, children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: _FormLabel(
+                                      heading: AppLocalizations.of(context)
+                                          .translate(
+                                              "conversations:interests_label"),
+                                      subheading: "Pick atleast 3 options",
+                                    ),
+                                  ),
+                                  const SizedBox(height: AppInsets.xxl),
+                                  FormMeetingInterestPicker(
+                                    key: _interestFormFieldKey,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    options: meta.interests,
+                                    onSaved: (value) {
+                                      _interests.value = value;
+                                    },
+                                    validator: (value) {
+                                      if (value.length < 3) {
+                                        return "Please select atleast 3 types of people.";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(height: kBottomPadding)
+                                ],
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: AppInsets.xxl),
+                                  Center(
+                                    child: _FormLabel(
                                         heading: AppLocalizations.of(context)
                                             .translate(
-                                                "conversations:interests_label"),
-                                        subheading: "Pick atleast 3 options",
-                                      ),
-                                    ),
-                                    const SizedBox(height: AppInsets.xxl),
-                                    FormMeetingInterestPicker(
-                                      key: _interestFormFieldKey,
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      options: meta.interests,
-                                      onSaved: (value) {
-                                        _interests.value = value;
-                                      },
+                                                "conversations:time_slot_label")),
+                                  ),
+                                  const SizedBox(height: AppInsets.xl),
+                                  if (type == ConversationType.curated)
+                                    TimeSlotFormField(
+                                      initialValue: const [],
+                                      slots: meta.config.availableTimeSlots,
+                                      onChange: (slots) =>
+                                          _timeslots.value = slots,
                                       validator: (value) {
-                                        if (value.length < 3) {
-                                          return "Please select atleast 3 types of people.";
+                                        if (value.isEmpty) {
+                                          return "Please select atleast 1 slots.";
                                         }
                                         return null;
                                       },
                                     ),
-                                    const SizedBox(height: kBottomPadding)
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: AppInsets.xxl),
-                                    Center(
-                                      child: _FormLabel(
-                                          heading: AppLocalizations.of(context)
-                                              .translate(
-                                                  "conversations:time_slot_label")),
+                                  if (type == ConversationType.instant)
+                                    DateTimeFormField(
+                                      slots: meta.timeSlots,
+                                      onChanged: (value) =>
+                                          _instantTimeSlot.value = value,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return "Please select a timeslot";
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    const SizedBox(height: AppInsets.xl),
-                                    if (type == ConversationType.curated)
-                                      TimeSlotFormField(
-                                        initialValue: const [],
-                                        slots: meta.config.availableTimeSlots,
-                                        onChange: (slots) =>
-                                            _timeslots.value = slots,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "Please select atleast 1 slots.";
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    if (type == ConversationType.instant)
-                                      DateTimeFormField(
-                                        slots: meta.timeSlots,
-                                        onChanged: (value) =>
-                                            _instantTimeSlot.value = value,
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return "Please select a timeslot";
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                  ],
-                                )
-                              ]),
-                            ],
-                          ),
+                                ],
+                              )
+                            ]),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  BaseContainer(
-                    disableAnimation: true,
+                ),
+                BaseContainer(
+                  disableAnimation: true,
+                  child: SafeArea(
                     child: Padding(
                       padding:
                           const EdgeInsets.symmetric(vertical: AppInsets.xxl),
@@ -228,11 +229,11 @@ class CreateConversationScreen extends HookWidget {
                       ),
                     ),
                   ),
-                ],
-              );
-            },
-            error: (error, st) => Container(),
-          ),
+                ),
+              ],
+            );
+          },
+          error: (error, st) => Container(),
         ),
       ),
     );
@@ -268,12 +269,12 @@ class CreateConversationScreen extends HookWidget {
       (conversation) {
         _overlay.remove();
 
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
-          Routes.onboardingScreen(
-              type: OnboardingType.groupMeetingCreation.toString()),
-          (_) => false,
-        );
-        // ExtendedNavigator.of(context).pop(conversation);
+        // ExtendedNavigator.of(context).pushAndRemoveUntil(
+        //   Routes.onboardingScreen(
+        //       type: OnboardingType.groupMeetingCreation.toString()),
+        //   (_) => false,
+        // );
+        ExtendedNavigator.of(context).pop(conversation);
       },
     );
   }
@@ -299,16 +300,16 @@ class CreateConversationScreen extends HookWidget {
       (optin) async {
         _overlay.remove();
 
-        // final popupManager = context.read(popupManagerProvider);
-        // await popupManager.showPopup(PopupType.conversationOptIn, context);
+        final popupManager = context.read(popupManagerProvider);
+        await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
-          Routes.onboardingScreen(
-              type: OnboardingType.oneOnOneMeetingCreation.toString()),
-          (_) => false,
-        );
+        // ExtendedNavigator.of(context).pushAndRemoveUntil(
+        //   Routes.onboardingScreen(
+        //       type: OnboardingType.oneOnOneMeetingCreation.toString()),
+        //   (_) => false,
+        // );
 
-        // ExtendedNavigator.of(context).pop(optin);
+        ExtendedNavigator.of(context).pop(optin);
       },
     );
   }

@@ -313,7 +313,7 @@ class _ActionButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: AppInsets.xl,
-            horizontal: 40,
+            horizontal: 24,
           ),
           child: Text(label, style: Theme.of(context).textTheme.button),
         ),

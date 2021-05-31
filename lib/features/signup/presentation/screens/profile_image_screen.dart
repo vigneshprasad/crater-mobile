@@ -74,39 +74,35 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
               listener: _blocListener,
               builder: (context, state) {
                 return Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
                   appBar: BaseAppBar(),
                   body: ScaffoldContainer(
-                    child: SafeArea(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  ProfileHeader(
-                                    title: title,
-                                    subtitle: info,
-                                  ),
-                                  const SizedBox(height: 40),
-                                  Center(
-                                      child: ProfilePhotoPicker(
-                                    photoUrl: _photoUrl,
-                                    onChoosePhoto: (photo) => _photo = photo,
-                                  )),
-                                ],
-                              ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                ProfileHeader(
+                                  title: title,
+                                  subtitle: info,
+                                ),
+                                const SizedBox(height: 40),
+                                Center(
+                                    child: ProfilePhotoPicker(
+                                  photoUrl: _photoUrl,
+                                  onChoosePhoto: (photo) => _photo = photo,
+                                )),
+                              ],
                             ),
                           ),
-                          ProfileFooter(
-                            onSave: submitAnswers,
-                            onSkip: _goToNextScreen,
-                          ),
-                        ],
-                      ),
+                        ),
+                        ProfileFooter(
+                          onSave: submitAnswers,
+                          onSkip: _goToNextScreen,
+                        ),
+                      ],
                     ),
                   ),
                 );
