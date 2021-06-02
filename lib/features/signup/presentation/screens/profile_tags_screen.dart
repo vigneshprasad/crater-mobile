@@ -3,6 +3,9 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
@@ -31,6 +34,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   List<UserTag> tags;
   List<UserTag> selectedTags;
   List<PickerItem> items;
+  bool allowSkip = false;
 
   @override
   void initState() {
@@ -40,6 +44,17 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
 
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
     selectedTags = user?.tagList ?? [];
+
+    if (widget.editMode == false) {
+      SharedPreferences.getInstance().then((prefs) {
+        final provider = prefs.getString('AuthProvider');
+        if (provider == SocialAuthProviders.apple.toString()) {
+          setState(() {
+            allowSkip = true;
+          });
+        }
+      });
+    }
 
     super.initState();
   }
@@ -69,24 +84,33 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
             builder: (context, state) {
               return Scaffold(
                 appBar: BaseAppBar(),
-                body: SingleChildScrollView(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProfileHeader(title: heading),
-                        if (tags.isNotEmpty)
-                          ObjectivesPicker(
-                            objectives: items,
-                            onPressedItem: _onPressedObjectiveItem,
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProfileHeader(title: heading),
+                              if (tags.isNotEmpty)
+                                ObjectivesPicker(
+                                  objectives: items,
+                                  onPressedItem: _onPressedObjectiveItem,
+                                ),
+                              const SizedBox(height: AppInsets.xxl),
+                            ],
                           ),
-                        const SizedBox(height: AppInsets.xxl),
-                        ProfileFooter(onSave: _onPressSubmit),
-                      ],
+                        ),
+                      ),
                     ),
-                  ),
+                    ProfileFooter(
+                      onSave: _onPressSubmit,
+                      onSkip: allowSkip ? goToNextScreen : null,
+                    )
+                  ],
                 ),
               );
             },
@@ -104,9 +128,13 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     } else if (state is PostProfileTagsRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.user));
-      ExtendedNavigator.of(context)
-          .push(Routes.profileIntroScreen(editMode: widget.editMode));
+      goToNextScreen();
     }
+  }
+
+  void goToNextScreen() {
+    ExtendedNavigator.of(context)
+        .push(Routes.profileIntroScreen(editMode: widget.editMode));
   }
 
   void _onPressSubmit() {

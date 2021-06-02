@@ -34,7 +34,7 @@ final whatsAppUrl = 'https://api.whatsapp.com/send?text=$shareText';
 class ShareManagerImpl implements ShareManager {
   @override
   Future<void> share(BuildContext context) async {
-    showModalBottomSheet(
+    return showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => ShareBottomSheet(),
@@ -92,24 +92,25 @@ class ShareBottomSheet extends StatelessWidget {
                     BaseContainer(
                       radius: 30,
                       child: FlatButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/whatsapp.png',
-                                width: 24,
-                              ),
-                              const SizedBox(width: 8),
-                              Text('Invite via Whatsapp'),
-                            ],
-                          ),
-                          onPressed: () {
-                            launch(
-                              whatsAppUrl,
-                              forceSafariVC: false,
-                              forceWebView: false,
-                            );
-                          }),
+                        onPressed: () {
+                          launch(
+                            whatsAppUrl,
+                            forceSafariVC: false,
+                            forceWebView: false,
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/whatsapp.png',
+                              width: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('Invite via Whatsapp'),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),

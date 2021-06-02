@@ -7,6 +7,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -206,7 +207,7 @@ class HomeScreen extends HookWidget {
 
     if (!shown) {
       ExtendedNavigator.of(context)
-          .pushAndRemoveUntil(Routes.onboardingScreen, (_) => false);
+          .pushAndRemoveUntil(Routes.onboardingScreen(type: OnboardingType.signupComplete), (_) => false);
     }
   }
 }
