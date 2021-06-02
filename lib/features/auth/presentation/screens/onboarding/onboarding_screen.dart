@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/features/share_manager/share_manager.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/features/share_manager/share_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../bloc/auth_bloc.dart';
 import 'models/onboarding_slide_content.dart';
@@ -161,7 +161,6 @@ class OnboardingScreen extends HookWidget {
           break;
         case OnboardingSlideButtonType.invite:
           final shareManager = useProvider(shareManagerProvider);
-
           return _ActionButton(
             label: e.title,
             onTap: () async {

@@ -8,15 +8,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
+import '../../../../../core/features/popup_manager/popup_manager.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
@@ -24,8 +23,11 @@ import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
+import '../../widgets/conversation_card/conversation_card.dart';
+import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speakers_table/speakers_table.dart';
 import 'conversation_screen_state.dart';
@@ -221,7 +223,15 @@ class _ConversationLoaded extends StatelessWidget {
 
     response.fold(
       (failure) => Fluttertoast.showToast(msg: failure.message),
-      (request) => _updateConversation(context),
+      (request) {
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.conversationGroupJoined,
+            properties: {
+              "id": request.group,
+            });
+        _updateConversation(context);
+      },
     );
   }
 

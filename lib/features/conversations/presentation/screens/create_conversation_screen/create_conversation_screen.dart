@@ -4,10 +4,12 @@ import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
+import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
@@ -269,6 +271,14 @@ class CreateConversationScreen extends HookWidget {
       (conversation) {
         _overlay.remove();
 
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.conversationGroupCreated,
+            properties: {
+              "id": conversation.id,
+              "topic": conversation.topic,
+              "topic_name": conversation.topicDetail.name,
+            });
         ExtendedNavigator.of(context).pushAndRemoveUntil(
           Routes.onboardingScreen(
               type: OnboardingType.groupMeetingCreation.toString()),

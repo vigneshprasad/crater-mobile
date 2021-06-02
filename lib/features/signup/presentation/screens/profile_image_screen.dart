@@ -111,8 +111,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _bloc.add(PostProfileIntroRequestStarted(
-      values: const {},
+    _bloc.add(ProfilePhotoRequestStarted(
       photo: _photo,
     ));
   }
