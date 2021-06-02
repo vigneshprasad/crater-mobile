@@ -74,16 +74,6 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             ],
           ),
         ),
-        floatingActionButton: !loadingInfo
-            ? FloatingActionButton(
-                onPressed: () {
-                  ExtendedNavigator.of(context).push(Routes.chatScreen,
-                      arguments:
-                          ChatScreenArguments(recieverId: participant.pk));
-                },
-                child: const Icon(WorkNetIcons.message),
-              )
-            : null,
       ),
     );
   }

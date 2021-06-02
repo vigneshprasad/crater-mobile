@@ -41,7 +41,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
-    MaterialRoute(page: OnboardingScreen, path: "/onboarding"),
+    MaterialRoute(page: OnboardingScreen, path: "/onboarding/:type"),
     MaterialRoute(
         page: CreatePostScreen, path: "/create-post", fullscreenDialog: true),
     MaterialRoute(page: ChatScreen, path: "/chat/user"),

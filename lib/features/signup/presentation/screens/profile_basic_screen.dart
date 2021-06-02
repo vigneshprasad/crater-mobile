@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
@@ -32,6 +33,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   ProfileBasicBloc _bloc;
+  bool allowSkip = false;
 
   @override
   void initState() {
@@ -46,11 +48,9 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
     } else if (widget.editMode == false) {
       SharedPreferences.getInstance().then((prefs) {
         final provider = prefs.getString('AuthProvider');
-
         if (provider == SocialAuthProviders.apple.toString()) {
           setState(() {
-            _firstNameController.text = 'John';
-            _lastNameController.text = 'Doe';
+            allowSkip = true;
           });
         }
       });
@@ -70,20 +70,25 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
         builder: (context, state) {
           return Scaffold(
             appBar: BaseAppBar(),
-            body: SafeArea(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ProfileHeader(title: heading),
-                    _buildProfileForm(context),
-                    const Spacer(),
-                    ProfileFooter(onSave: _onPressedSubmit)
-                  ],
+            body: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ProfileHeader(title: heading),
+                      _buildProfileForm(context),
+                    ],
+                  ),
                 ),
-              ),
+                const Spacer(),
+                ProfileFooter(
+                  onSave: _onPressedSubmit,
+                  onSkip: allowSkip ? _goToNextScreen : null,
+                )
+              ],
             ),
           );
         },

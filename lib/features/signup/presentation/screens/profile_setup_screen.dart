@@ -62,21 +62,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             builder: (context, state) {
               return Scaffold(
                 appBar: BaseAppBar(),
-                body: SafeArea(
-                  child: Column(
-                    children: [
-                      ProfileHeader(
-                        title: heading,
-                        subtitle: subHeading,
-                      ),
-                      _buildProfileForm(context, user),
-                      const Spacer(),
-                      ProfileFooter(
-                        onSkip: _onPressedSkip,
-                        onSave: _onPressedSubmit,
-                      )
-                    ],
-                  ),
+                body: Column(
+                  children: [
+                    ProfileHeader(
+                      title: heading,
+                      subtitle: subHeading,
+                    ),
+                    _buildProfileForm(context, user),
+                    const Spacer(),
+                    ProfileFooter(
+                      onSkip: _onPressedSkip,
+                      onSave: _onPressedSubmit,
+                    )
+                  ],
                 ),
               );
             },
@@ -159,7 +157,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _goToNextScreen() {
     final bloc = BlocProvider.of<AuthBloc>(context);
     if (bloc.state.user.phoneNumberVerified) {
-      ExtendedNavigator.of(context).push(Routes.homeScreen(tab: 0));
+      ExtendedNavigator.of(context)
+          .pushAndRemoveUntil(Routes.homeScreen(tab: 0), (_) => false);
     } else {
       ExtendedNavigator.of(context).push(Routes.phoneVerificationScreen);
     }
