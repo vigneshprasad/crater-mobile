@@ -183,6 +183,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthRequestFailure(error: failure);
       },
       (user) async* {
+        analytics.initSdk();
         analytics.identify(properties: getUserTraitsFromModel(user));
         analytics.trackEvent(
           eventName: AnalyticsEvents.authSocial,
@@ -192,8 +193,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             "provider": provider.toString(),
           },
         );
-        analytics.initSdk();
-        saveProvider(provider.toString());
 
         final profileOrError = await getUserProfile(NoParams());
         yield profileOrError.fold(
@@ -231,6 +230,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
         (user) {
+          analytics.initSdk();
           analytics.identify(properties: getUserTraitsFromModel(user));
           analytics.trackEvent(
             eventName: AnalyticsEvents.signInemail,
@@ -239,7 +239,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               "intent": user.intent,
             },
           );
-          analytics.initSdk();
+
           return AuthStateSuccess(
             user: user,
             profile: profile,
@@ -264,6 +264,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield registerOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),
         (user) {
+          analytics.initSdk();
           analytics.identify(properties: getUserTraitsFromModel(user));
           analytics.trackEvent(
             eventName: AnalyticsEvents.signUpEmail,
@@ -272,7 +273,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               "intent": user.intent,
             },
           );
-          analytics.initSdk();
+
           return AuthStateSuccess(
             user: user,
             profile: state.profile,

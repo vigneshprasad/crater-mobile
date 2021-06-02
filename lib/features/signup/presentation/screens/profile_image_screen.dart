@@ -65,7 +65,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
       final title = 'Want to add a photo?';
-      final info = 'Users with photos see a 70% increase in the number of people joining their group conversations';
+      final info =
+          'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
           value: _bloc,
@@ -109,8 +110,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _bloc.add(PostProfileIntroRequestStarted(
-      values: {},
+    _bloc.add(ProfilePhotoRequestStarted(
       photo: _photo,
     ));
   }

@@ -34,3 +34,16 @@ class PostProfileIntroRequestStarted extends ProfileIntroEvent {
         photo,
       ];
 }
+
+class ProfilePhotoRequestStarted extends ProfileIntroEvent {
+  final File photo;
+
+  const ProfilePhotoRequestStarted({
+    @required this.photo,
+  });
+
+  @override
+  List<Object> get props => [
+        photo,
+      ];
+}
