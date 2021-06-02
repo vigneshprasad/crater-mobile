@@ -137,6 +137,7 @@ PODS:
   - Toast (4.0.0)
   - url_launcher (0.0.1):
     - Flutter
+  - UserLeapKit (4.2.1)
   - video_player (0.0.1):
     - Flutter
   - wakelock (0.0.1):
@@ -172,6 +173,7 @@ DEPENDENCIES:
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - UserLeapKit (~> 4.2.0)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -202,6 +204,7 @@ SPEC REPOS:
     - PromisesObjC
     - Segment-Amplitude
     - Toast
+    - UserLeapKit
 
 EXTERNAL SOURCES:
   agora_rtc_engine:
@@ -314,10 +317,11 @@ SPEC CHECKSUMS:
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  UserLeapKit: 58859c55f0b8fd568f23ff21ef5b96bb48920fb3
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
-PODFILE CHECKSUM: d23d284a2a8ef55cbcda6812607a25e35552cd23
+PODFILE CHECKSUM: cc3f13bd26d3b5ce8b4e64c32b6ee1174abff057
 
 COCOAPODS: 1.9.3
