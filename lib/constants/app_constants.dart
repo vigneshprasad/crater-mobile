@@ -141,6 +141,8 @@ class AppImageAssets {
   static const onboardingHello = AssetImage("assets/images/img_hello.png");
   static const onboardinCall =
       AssetImage("assets/images/img_group_and_one_on_one.png");
+
+  static const feedback = AssetImage("assets/images/feedback.png");
 }
 
 class AppSvgAssets {

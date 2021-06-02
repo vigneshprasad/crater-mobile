@@ -58,16 +58,16 @@ class RtcConnectionBar extends HookWidget {
                         .leaveAudioCall();
                     // controller.leaveRoundTableChannel();
 
-                    final popupManager = context.read(popupManagerProvider);
-                    await popupManager.showPopup(
-                        PopupType.conversationLeave, context);
-                    Navigator.pop(context);
+                    // final popupManager = context.read(popupManagerProvider);
+                    // await popupManager.showPopup(
+                    //     PopupType.conversationLeave, context);
+                    // Navigator.pop(context);
 
-                    // ExtendedNavigator.of(context).pushAndRemoveUntil(
-                    //   Routes.onboardingScreen(
-                    //       type: OnboardingType.meetingLeaving.toString()),
-                    //   (_) => false,
-                    // );
+                    ExtendedNavigator.of(context).pushAndRemoveUntil(
+                      Routes.onboardingScreen(
+                          type: OnboardingType.meetingLeaving.toString()),
+                      (_) => false,
+                    );
                   },
                   child: const Text(
                     'LEAVE',

@@ -247,11 +247,11 @@ class _ConversationLoaded extends StatelessWidget {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
-          // ExtendedNavigator.of(context).pushAndRemoveUntil(
-          //   Routes.onboardingScreen(
-          //       type: OnboardingType.meetingJoining.toString()),
-          //   (_) => false,
-          // );
+          ExtendedNavigator.of(context).pushAndRemoveUntil(
+            Routes.onboardingScreen(
+                type: OnboardingType.meetingJoining.toString()),
+            (_) => false,
+          );
         }
       },
     );

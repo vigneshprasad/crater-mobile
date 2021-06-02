@@ -383,17 +383,17 @@ const oneOnOneCreationSlides = [
     heading: "You are all set",
     subHeading:
         "Once your meeting is set up you will get notified & will receive an introduction to your match with the meeting link.",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashConversation,
   ),
   OnboardingSlideContent(
     heading: "View upcoming meetings",
     subHeading: "You can view your upcoming meetings in the my meetings tab",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.onboardingGroupCards,
   ),
   OnboardingSlideContent(
     heading: "Invite your friends",
     subHeading: "Would you like to invite others to the community",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
           title: 'Now now', type: OnboardingSlideButtonType.dismiss),
@@ -408,18 +408,18 @@ const groupCreationSlides = [
     heading: "You are all set",
     subHeading:
         "We will begin sending invites to relevant people to join your conversation.",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashAI,
   ),
   OnboardingSlideContent(
     heading: "All you have to do is join",
     subHeading:
         "At the meeting time, you will be notified & all you have to do is join the conversation",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashDiscover,
   ),
   OnboardingSlideContent(
     heading: "Invite your colleagues ?",
     subHeading: "You can also invite your friends to join the conversation ",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
           title: 'Now now', type: OnboardingSlideButtonType.dismiss),
@@ -434,12 +434,12 @@ const meetingJoiningSlides = [
     heading: "You are all set",
     subHeading:
         "Once the meeting starts all you have to do is join the conversation ",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashAI,
   ),
   OnboardingSlideContent(
     heading: "Invite your colleagues ?",
     subHeading: "You can also invite your friends to join the conversation",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
           title: 'Now now', type: OnboardingSlideButtonType.dismiss),
@@ -454,7 +454,7 @@ const meetingLeavingSlides = [
     heading: "How was your conversation?",
     subHeading:
         "You can share feedback on the conversation to improve future matches",
-    image: AppImageAssets.onboardingHello,
+    image: AppImageAssets.feedback,
     buttons: [
       OnboardingSlideButton(
           title: 'Now now', type: OnboardingSlideButtonType.dismiss),

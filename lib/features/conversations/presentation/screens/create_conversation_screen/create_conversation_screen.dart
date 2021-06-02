@@ -269,12 +269,12 @@ class CreateConversationScreen extends HookWidget {
       (conversation) {
         _overlay.remove();
 
-        // ExtendedNavigator.of(context).pushAndRemoveUntil(
-        //   Routes.onboardingScreen(
-        //       type: OnboardingType.groupMeetingCreation.toString()),
-        //   (_) => false,
-        // );
-        ExtendedNavigator.of(context).pop(conversation);
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.groupMeetingCreation.toString()),
+          (_) => false,
+        );
+        // ExtendedNavigator.of(context).pop(conversation);
       },
     );
   }
@@ -300,16 +300,16 @@ class CreateConversationScreen extends HookWidget {
       (optin) async {
         _overlay.remove();
 
-        final popupManager = context.read(popupManagerProvider);
-        await popupManager.showPopup(PopupType.conversationOptIn, context);
+        // final popupManager = context.read(popupManagerProvider);
+        // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        // ExtendedNavigator.of(context).pushAndRemoveUntil(
-        //   Routes.onboardingScreen(
-        //       type: OnboardingType.oneOnOneMeetingCreation.toString()),
-        //   (_) => false,
-        // );
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.oneOnOneMeetingCreation.toString()),
+          (_) => false,
+        );
 
-        ExtendedNavigator.of(context).pop(optin);
+        // ExtendedNavigator.of(context).pop(optin);
       },
     );
   }
