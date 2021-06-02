@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -137,6 +140,8 @@ class OnboardingScreen extends HookWidget {
         _ActionButton(
           label: "Start a conversation",
           onTap: () {
+            KiwiContainer().resolve<Analytics>().trackEvent(
+                eventName: AnalyticsEvents.signupWalkthroughComplete);
             context.read(onboardingProvider).setOnboardingShown();
             ExtendedNavigator.of(context).pushAndRemoveUntil(
                 Routes.homeScreen(tab: 0), (route) => false);
@@ -145,6 +150,8 @@ class OnboardingScreen extends HookWidget {
         _ActionButton(
           label: "Join a conversation",
           onTap: () {
+            KiwiContainer().resolve<Analytics>().trackEvent(
+                eventName: AnalyticsEvents.signupWalkthroughComplete);
             context.read(onboardingProvider).setOnboardingShown();
             ExtendedNavigator.of(context).pushAndRemoveUntil(
                 Routes.homeScreen(tab: 1), (route) => false);

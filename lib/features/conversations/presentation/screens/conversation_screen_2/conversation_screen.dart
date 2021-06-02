@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_card/conversation_card.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
@@ -233,7 +235,15 @@ class _ConversationLoaded extends StatelessWidget {
 
     response.fold(
       (failure) => Fluttertoast.showToast(msg: failure.message),
-      (request) => _updateConversation(context),
+      (request) {
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.conversationGroupJoined,
+            properties: {
+              "id": request.group,
+            });
+        _updateConversation(context);
+      },
     );
   }
 
@@ -250,8 +260,6 @@ class _ConversationLoaded extends StatelessWidget {
         final now = DateTime.now().toLocal();
         final start = group.start.toLocal();
         final end = group.end.toLocal();
-
-        print(now.isAfter(start));
 
         if (now.isAfter(start) && now.isBefore(end)) {
           context
