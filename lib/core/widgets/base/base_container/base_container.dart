@@ -46,9 +46,9 @@ class _BaseContainerState extends State<BaseContainer> {
                           offset: Offset(5.0, 5.0),
                           blurRadius: 5.0,
                           spreadRadius: 1.0),
-                      const BoxShadow(
-                          color: Colors.white10,
-                          offset: Offset(-5.0, -5.0),
+                      BoxShadow(
+                          color: Colors.white10.withAlpha(15),
+                          offset: const Offset(-5.0, -5.0),
                           blurRadius: 5.0,
                           spreadRadius: 1.0),
                     ]),

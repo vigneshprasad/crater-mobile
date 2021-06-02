@@ -3,6 +3,8 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
@@ -37,10 +39,21 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
     _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
 
-    if (user.name != null) {
+    if (user.name != null && user.name.trim().isNotEmpty) {
       final name = user.name.split(' ');
       _firstNameController.text = name.first;
       _lastNameController.text = name.last;
+    } else if (widget.editMode == false) {
+      SharedPreferences.getInstance().then((prefs) {
+        final provider = prefs.getString('AuthProvider');
+
+        if (provider == SocialAuthProviders.apple.toString()) {
+          setState(() {
+            _firstNameController.text = 'John';
+            _lastNameController.text = 'Doe';
+          });
+        }
+      });
     }
 
     super.initState();

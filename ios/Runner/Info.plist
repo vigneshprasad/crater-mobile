@@ -49,6 +49,8 @@
 	<string>562453967883820</string>
 	<key>FacebookDisplayName</key>
 	<string>WorkNetwork</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

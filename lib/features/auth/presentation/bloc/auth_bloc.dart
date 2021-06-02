@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/analytics/analytics.dart';
 import '../../../../core/analytics/anlytics_events.dart';
@@ -206,6 +207,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       },
     );
+  }
+
+  Future<void> saveProvider(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('AuthProvider', value);
   }
 
   Stream<AuthState> _mapLoginEmailToState(AuthLoginEmailPressed event) async* {
