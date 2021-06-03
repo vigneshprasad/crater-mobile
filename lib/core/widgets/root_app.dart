@@ -26,7 +26,6 @@ class RootApp extends HookWidget {
     StatusBarColor.setTheme(ThemeType.light);
 
     await userleapProvider.initSdk();
-    await userleapProvider.track("test-event");
     await deepLinkManager.handleDeepLink();
     await attributionProvider.intializeSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
