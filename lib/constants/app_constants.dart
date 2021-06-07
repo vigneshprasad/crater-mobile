@@ -141,6 +141,8 @@ class AppImageAssets {
   static const onboardingHello = AssetImage("assets/images/img_hello.png");
   static const onboardinCall =
       AssetImage("assets/images/img_group_and_one_on_one.png");
+
+  static const feedback = AssetImage("assets/images/feedback.png");
 }
 
 class AppSvgAssets {
@@ -148,6 +150,8 @@ class AppSvgAssets {
   static const linkedinFilled = "assets/svg/linkedin-fill.svg";
   static const facebook = "assets/svg/facebook.svg";
   static const apple = "assets/svg/apple-logo.svg";
+  static const twitter = "assets/svg/twitter.svg";
+  static const share = "assets/svg/share.svg";
 }
 
 class AppLottieAssets {

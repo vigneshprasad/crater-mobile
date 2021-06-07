@@ -53,8 +53,8 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String heading = 'Intro yourself';
-    String subHeading =
+    const heading = 'Intro yourself';
+    const subHeading =
         'Your intro is a snapshot into you & it leads to a 30% increase in the relevancy of matches.';
 
     return BlocProvider.value(
@@ -64,27 +64,25 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
         builder: (context, state) {
           return Scaffold(
             appBar: BaseAppBar(),
-            body: SafeArea(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: ProfileHeader(
-                      title: heading,
-                      subtitle: subHeading,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: _buildProfileForm(context),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: ProfileFooter(
-                      onSave: _onPressedSubmit,
-                      onSkip: _onPressedSkip,
-                    ),
-                  )
-                ],
-              ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      const ProfileHeader(
+                        title: heading,
+                        subtitle: subHeading,
+                      ),
+                      _buildProfileForm(context),
+                    ],
+                  )),
+                ),
+                ProfileFooter(
+                  onSave: _onPressedSubmit,
+                  onSkip: _onPressedSkip,
+                )
+              ],
             ),
           );
         },
@@ -100,7 +98,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   Widget _buildProfileForm(BuildContext context) {
-    final bioLabel =
+    const bioLabel =
         'A good bio talks about yout past & current professional achievements...';
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -131,7 +129,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                           'https://www.linkedin.com/in/me/detail/contact-info/');
                     }
                   },
-                  child: Text('Copy From LinkedIn')),
+                  child: const Text('Copy From LinkedIn')),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],

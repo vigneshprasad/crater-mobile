@@ -76,7 +76,7 @@ class SocialAuthButton extends StatelessWidget {
     }
 
     if (isLarge) {
-      final name = _nameForProvider(provider);
+      final name = _nameForProvider(provider, isSignUp);
       _child = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         child: Align(
@@ -109,13 +109,13 @@ class SocialAuthButton extends StatelessWidget {
     );
   }
 
-  String _nameForProvider(SocialAuthProviders provider) {
+  String _nameForProvider(SocialAuthProviders provider, bool isSignUp) {
     switch (provider) {
       case SocialAuthProviders.linkedin:
         return "LinkedIn";
         break;
       case SocialAuthProviders.apple:
-        return "Apple";
+        return isSignUp ? "Sign up with Apple" : "Sign in with Apple";
         break;
       case SocialAuthProviders.facebook:
         return "Facebook";

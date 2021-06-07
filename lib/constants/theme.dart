@@ -99,5 +99,5 @@ mixin AppInsets {
 mixin AppBorderRadius {
   static const textInput = 12.0;
   static const largeButton = 24.0;
-  static const bottomSheetRadius = 16.0;
+  static const bottomSheetRadius = 24.0;
 }

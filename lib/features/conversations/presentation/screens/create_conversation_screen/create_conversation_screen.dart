@@ -1,17 +1,22 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../core/features/popup_manager/popup_manager.dart';
+import '../../../../../core/analytics/analytics.dart';
+import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
+import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/time_slot_entity.dart';
@@ -48,24 +53,20 @@ class CreateConversationScreen extends HookWidget {
     final _formStep = useState<int>(0);
     final descriptionStyle =
         Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white70);
-    final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-        );
 
     final _scrollControiler = useScrollController();
 
     return Scaffold(
       appBar: BaseAppBar(),
-      body: SafeArea(
-        child: ScaffoldContainer(
-          child: state.when(
-            loading: () => _Loader(),
-            emptyConfig: () => _NoConfig(),
-            data: (meta) {
-              return Stack(
-                fit: StackFit.expand,
-                children: [
-                  SingleChildScrollView(
+      body: ScaffoldContainer(
+        child: state.when(
+          loading: () => _Loader(),
+          emptyConfig: () => _NoConfig(),
+          data: (meta) {
+            return Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
                     controller: _scrollControiler,
                     child: Form(
                       key: _formKey,
@@ -78,33 +79,39 @@ class CreateConversationScreen extends HookWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            (topic.articleDetail != null)
-                                ? ArticleTopicCard(
-                                    topic: topic,
-                                    enabled: false,
-                                  )
-                                : BaseContainer(
-                                    radius: 8,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            topic.name,
-                                            style: topicStyle,
-                                          ),
-                                          const SizedBox(height: AppInsets.l),
-                                          if (topic.description != null)
-                                            Text(
-                                              topic.description,
-                                              style: descriptionStyle,
-                                            ),
-                                        ],
+                            if (topic.articleDetail != null)
+                              ArticleTopicCard(
+                                topic: topic,
+                                showFooter: false,
+                                onTap: () => launch(
+                                  topic.articleDetail.websiteUrl,
+                                  option: const CustomTabsOption(),
+                                ),
+                              )
+                            else
+                              BaseContainer(
+                                disableAnimation: true,
+                                radius: 8,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        topic.name,
+                                        style: topicStyle,
                                       ),
-                                    ),
+                                      const SizedBox(height: AppInsets.l),
+                                      if (topic.description != null)
+                                        Text(
+                                          topic.description,
+                                          style: descriptionStyle,
+                                        ),
+                                    ],
                                   ),
+                                ),
+                              ),
                             const SizedBox(height: AppInsets.xxl * 2),
                             IndexedStack(index: _formStep.value, children: [
                               Column(
@@ -183,45 +190,52 @@ class CreateConversationScreen extends HookWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
+                ),
+                BaseContainer(
+                  disableAnimation: true,
+                  child: SafeArea(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: AppInsets.xxl),
-                      child: BaseLargeButton(
-                        text: AppLocalizations.of(context).translate(
-                            _formStep.value == 0 ? 'next' : "confirm"),
-                        onPressed: () {
-                          if (_formStep.value == 0) {
-                            if (_interestFormFieldKey.currentState.validate()) {
-                              _scrollControiler.animateTo(0,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.ease);
-                              Future.delayed(const Duration(milliseconds: 300))
-                                  .then((value) => _formStep.value = 1);
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppInsets.xxl),
+                      child: Center(
+                        child: BaseLargeButton(
+                          text: AppLocalizations.of(context).translate(
+                              _formStep.value == 0 ? 'next' : "confirm"),
+                          onPressed: () {
+                            if (_formStep.value == 0) {
+                              if (_interestFormFieldKey.currentState
+                                  .validate()) {
+                                _scrollControiler.animateTo(0,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease);
+                                Future.delayed(
+                                        const Duration(milliseconds: 300))
+                                    .then((value) => _formStep.value = 1);
+                              }
+                            } else if (_formKey.currentState.validate()) {
+                              if (type == ConversationType.curated) {
+                                _postGroupOptin(
+                                  context,
+                                  _interests.value,
+                                  _timeslots.value,
+                                  meta.config,
+                                  topic,
+                                );
+                              } else {
+                                _postInstantConversation(context,
+                                    _instantTimeSlot.value, _interests.value);
+                              }
                             }
-                          } else if (_formKey.currentState.validate()) {
-                            if (type == ConversationType.curated) {
-                              _postGroupOptin(
-                                context,
-                                _interests.value,
-                                _timeslots.value,
-                                meta.config,
-                                topic,
-                              );
-                            } else {
-                              _postInstantConversation(context,
-                                  _instantTimeSlot.value, _interests.value);
-                            }
-                          }
-                        },
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ],
-              );
-            },
-            error: (error, st) => Container(),
-          ),
+                ),
+              ],
+            );
+          },
+          error: (error, st) => Container(),
         ),
       ),
     );
@@ -257,7 +271,20 @@ class CreateConversationScreen extends HookWidget {
       (conversation) {
         _overlay.remove();
 
-        ExtendedNavigator.of(context).pop(conversation);
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.conversationGroupCreated,
+            properties: {
+              "id": conversation.id,
+              "topic": conversation.topic,
+              "topic_name": conversation.topicDetail.name,
+            });
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.groupMeetingCreation.toString()),
+          (_) => false,
+        );
+        // ExtendedNavigator.of(context).pop(conversation);
       },
     );
   }
@@ -283,10 +310,16 @@ class CreateConversationScreen extends HookWidget {
       (optin) async {
         _overlay.remove();
 
-        final popupManager = context.read(popupManagerProvider);
-        await popupManager.showPopup(PopupType.conversationOptIn, context);
+        // final popupManager = context.read(popupManagerProvider);
+        // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        ExtendedNavigator.of(context).pop(optin);
+        ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(
+              type: OnboardingType.oneOnOneMeetingCreation.toString()),
+          (_) => false,
+        );
+
+        // ExtendedNavigator.of(context).pop(optin);
       },
     );
   }

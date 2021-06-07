@@ -17,12 +17,14 @@ import '../../screens/create_conversation_screen/create_conversation_state.dart'
 
 class ArticleTopicCard extends StatelessWidget {
   final Topic topic;
-  final bool enabled;
+  final bool showFooter;
+  final VoidCallback onTap;
 
   const ArticleTopicCard({
     Key key,
     @required this.topic,
-    this.enabled = true,
+    this.showFooter = true,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class ArticleTopicCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
       child: GestureDetector(
-        onTap: () => onTap(context),
+        onTap: () => onTapCard(context),
         child: BaseContainer(
           radius: 8,
           child: Material(
@@ -43,22 +45,23 @@ class ArticleTopicCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                (topic.articleDetail.description.isNotEmpty)
-                    ? Padding(
-                        padding: const EdgeInsets.only(
-                          top: AppInsets.xl,
-                          left: AppInsets.xl,
-                          right: AppInsets.xl,
-                        ),
-                        child: Text(topic.articleDetail.description,
-                            style: headingStyle),
-                      )
-                    : const SizedBox(height: AppInsets.xxl),
+                if (topic.articleDetail.description.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: AppInsets.xl,
+                      left: AppInsets.xl,
+                      right: AppInsets.xl,
+                    ),
+                    child: Text(topic.articleDetail.description,
+                        style: headingStyle),
+                  )
+                else
+                  const SizedBox(height: AppInsets.xxl),
                 Padding(
                   padding: const EdgeInsets.all(AppInsets.xxl),
                   child: _ArticleContent(article: topic.articleDetail),
                 ),
-                if (enabled)
+                if (showFooter)
                   Padding(
                     padding: const EdgeInsets.only(
                         bottom: AppInsets.xxl,
@@ -70,7 +73,7 @@ class ArticleTopicCard extends StatelessWidget {
                         radius: 30,
                         color: Theme.of(context).backgroundColor,
                         child: GestureDetector(
-                          onTap: () => onTap(context),
+                          onTap: () => onTapCard(context),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 20),
@@ -96,10 +99,12 @@ class ArticleTopicCard extends StatelessWidget {
     );
   }
 
-  void onTap(BuildContext context) {
-    if (!enabled) {
+  void onTapCard(BuildContext context) {
+    if (onTap != null) {
+      onTap();
       return;
     }
+
     ExtendedNavigator.of(context)
         .push(Routes.createConversationScreen,
             arguments: CreateConversationScreenArguments(

@@ -43,4 +43,6 @@ abstract class ConfigReader {
   static String getAgoraAppId() => _config["AGORA_APP_ID"] as String;
 
   static String getAppsFlyerDevkey() => _config["APPSFLYER_DEV_KEY"] as String;
+
+  static String getUserLeapEnvKey() => _config["USERLEAP_ENV_ID"] as String;
 }

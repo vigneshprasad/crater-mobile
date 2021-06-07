@@ -5,6 +5,9 @@ import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -41,6 +44,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> editedFieldIds = [];
+  bool allowSkip = false;
 
   @override
   void initState() {
@@ -64,6 +68,15 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
           profile.yearsOfExperience;
       _values[ProfileIntroElement.sector] = profile.sector;
       _values[ProfileIntroElement.companyType] = profile.companyType;
+    } else if (widget.editMode == false) {
+      SharedPreferences.getInstance().then((prefs) {
+        final provider = prefs.getString('AuthProvider');
+        if (provider == SocialAuthProviders.apple.toString()) {
+          setState(() {
+            allowSkip = true;
+          });
+        }
+      });
     }
 
     if (_photoUrl == null) {
@@ -94,46 +107,51 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
               listener: _blocListener,
               builder: (context, state) {
                 return Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
                   appBar: BaseAppBar(),
                   body: ScaffoldContainer(
-                    child: SingleChildScrollView(
-                      child: SafeArea(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ProfileHeader(title: title),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Form(
-                                  key: _formKey,
-                                  child: ProfileInlineQuestion(
-                                    elements: _elements,
-                                    values: _values,
-                                    animateText: widget.editMode == false,
-                                    onValuesChange: (id, value) {
-                                      _values[id] = value;
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ProfileHeader(title: title),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: ProfileInlineQuestion(
+                                        elements: _elements,
+                                        values: _values,
+                                        animateText: widget.editMode == false,
+                                        onValuesChange: (id, value) {
+                                          _values[id] = value;
 
-                                      if (!editedFieldIds.contains(id)) {
-                                        editedFieldIds.add(id);
-                                        showNextQuestion();
-                                      }
-                                    },
+                                          if (!editedFieldIds.contains(id)) {
+                                            editedFieldIds.add(id);
+                                            showNextQuestion();
+                                          }
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 40),
+                                ],
                               ),
-                              const SizedBox(height: 40),
-                              if (_showSubmit)
-                                ProfileFooter(onSave: submitAnswers)
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                        if (_showSubmit || allowSkip)
+                          ProfileFooter(
+                            onSave: submitAnswers,
+                            onSkip: allowSkip ? goToNextScreen : null,
+                          )
+                      ],
                     ),
                   ),
                 );
@@ -200,8 +218,12 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
 
-      ExtendedNavigator.of(context)
-          .push(Routes.profileImageScreen(editMode: widget.editMode));
+      goToNextScreen();
     }
+  }
+
+  void goToNextScreen() {
+    ExtendedNavigator.of(context)
+        .push(Routes.profileImageScreen(editMode: widget.editMode));
   }
 }

@@ -61,7 +61,9 @@ class Routes {
   static const String _authScreen = '/auth/:state?';
   static String authScreen({dynamic state = ''}) => '/auth/$state';
   static const String forgotPasswordScreen = '/forgot-password';
-  static const String onboardingScreen = '/onboarding';
+  static const String _onboardingScreen = '/onboarding/:type';
+  static String onboardingScreen({@required dynamic type}) =>
+      '/onboarding/$type';
   static const String createPostScreen = '/create-post';
   static const String chatScreen = '/chat/user';
   static const String chatSearchScreen = '/chat/search';
@@ -107,7 +109,7 @@ class Routes {
     phoneVerificationScreen,
     _authScreen,
     forgotPasswordScreen,
-    onboardingScreen,
+    _onboardingScreen,
     createPostScreen,
     chatScreen,
     chatSearchScreen,
@@ -143,7 +145,7 @@ class Router extends RouterBase {
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes._authScreen, page: AuthScreen),
     RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
-    RouteDef(Routes.onboardingScreen, page: OnboardingScreen),
+    RouteDef(Routes._onboardingScreen, page: OnboardingScreen),
     RouteDef(Routes.createPostScreen, page: CreatePostScreen),
     RouteDef(Routes.chatScreen, page: ChatScreen),
     RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
@@ -224,7 +226,8 @@ class Router extends RouterBase {
     },
     OnboardingScreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => OnboardingScreen(),
+        builder: (context) =>
+            OnboardingScreen(data.pathParams['type'].stringValue),
         settings: data,
       );
     },
@@ -443,9 +446,6 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
 
   Future<dynamic> pushForgotPasswordScreen() =>
       push<dynamic>(Routes.forgotPasswordScreen);
-
-  Future<dynamic> pushOnboardingScreen() =>
-      push<dynamic>(Routes.onboardingScreen);
 
   Future<dynamic> pushCreatePostScreen() =>
       push<dynamic>(Routes.createPostScreen);
