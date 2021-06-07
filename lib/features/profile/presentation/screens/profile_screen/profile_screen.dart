@@ -12,9 +12,7 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/meeting_objective_entity.dart';
 import '../../../domain/entity/profile_entity/profile_entity.dart';
@@ -29,50 +27,73 @@ class ProfileScreen extends HookWidget {
     @PathParam('allowEdit') this.allowEdit,
   });
 
+  Size _textSize(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: text, style: style),
+        maxLines: 0,
+        textDirection: TextDirection.ltr)
+      ..layout(minWidth: 200, maxWidth: 300);
+    return textPainter.size;
+  }
+
+  Widget _appBar(BuildContext context, Profile profile) {
+    final size =
+        _textSize(profile.introduction, Theme.of(context).textTheme.bodyText1);
+
+    return SliverAppBar(
+      expandedHeight: size.height,
+      flexibleSpace: _ProfileBody(profile),
+      pinned: true,
+      actions: [
+        if (allowEdit != null && allowEdit)
+          BaseContainer(
+            radius: 30,
+            child: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => ExtendedNavigator.of(context)
+                    .push(Routes.profileBasicScreen(editMode: true))),
+          ),
+      ],
+      bottom: const TabBar(
+        tabs: [
+          Tab(text: 'Snapshot'),
+          Tab(text: 'Inerests'),
+          Tab(text: 'Connections'),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId).state);
 
-    return Scaffold(
-        appBar: BaseAppBar(
-          actions: [
-            if (allowEdit != null && allowEdit)
-              BaseContainer(
-                radius: 30,
-                child: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => ExtendedNavigator.of(context)
-                        .push(Routes.profileBasicScreen(editMode: true))),
-              ),
-          ],
-        ),
-        extendBodyBehindAppBar: true,
-        body: profileState.when(
-          data: (state) => ScaffoldContainer(
-              child: SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  _ProfileBody(state.profile),
-                  if (state.interests != null && state.objectives != null)
-                    _MeetingPreferenceInfo(state.interests, state.objectives),
-                  _UserConnections(state.connections),
-                ],
-              ),
-            ),
-          )),
-          loading: () => SingleChildScrollView(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  const LinearProgressIndicator(),
-                ],
-              ),
-            ),
+    return profileState.when(
+      data: (state) => Scaffold(
+        body: DefaultTabController(
+            length: 3,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                _appBar(context, state.profile),
+              ],
+              body: TabBarView(children: [
+                _SnapShot(state.profile, state.objectives),
+                _Interests(state.interests),
+                _UserConnections(state.connections),
+              ]),
+            )),
+      ),
+      loading: () => SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: const [
+              LinearProgressIndicator(),
+            ],
           ),
-          error: (error, stackTrace) => Container(color: Colors.red),
-        ));
+        ),
+      ),
+      error: (error, stackTrace) => Container(color: Colors.red),
+    );
   }
 }
 
@@ -85,41 +106,73 @@ class _ProfileBody extends HookWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
+        SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(child: _buildImage()),
-          ),
-        ),
-        Text(
-          profile.name,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        if (profile.tag.isNotEmpty)
-          Text(
-            profile.tag[0].name,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-        if (profile.linkedIn != null) _buildLinkedInButton(),
-        if (profile.introduction != null ||
-            profile.generatedIntroduction != null)
-          SizedBox(
-            width: double.infinity,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              if (profile.generatedIntroduction != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    profile.generatedIntroduction,
-                  ),
+            padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Column(
+                  children: [
+                    BaseContainer(
+                      disableAnimation: true,
+                      radius: 20,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        // height: 150,
+                        child: Column(
+                          children: [
+                            if (profile.introduction != null ||
+                                profile.generatedIntroduction != null)
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (profile.generatedIntroduction != null)
+                                      Text(
+                                        profile.generatedIntroduction,
+                                      ),
+                                    Text(
+                                      profile.introduction,
+                                    )
+                                  ]),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Spacer(),
+                                if (profile.linkedIn != null)
+                                  _buildLinkedInButton(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                  ],
                 ),
-              Text(
-                profile.introduction,
-              )
-            ]),
+                Column(
+                  children: [
+                    Center(
+                        child: BaseContainer(
+                      radius: 50,
+                      child: _buildImage(),
+                    )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      profile.name,
+                      style: Theme.of(context).textTheme.headline6,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
+        ),
       ],
     );
   }
@@ -146,7 +199,8 @@ class _ProfileBody extends HookWidget {
         width: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50.0),
-          image: const DecorationImage(image: AppImageAssets.defaultAvatar),
+          image: const DecorationImage(
+              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
         ),
       );
     }
@@ -216,18 +270,46 @@ class _ConnectionProfile extends HookWidget {
   }
 }
 
-class _MeetingPreferenceInfo extends HookWidget {
-  final List<MeetingInterest> interests;
+class _SnapShot extends HookWidget {
+  final Profile profile;
   final List<MeetingObjective> objectives;
 
-  const _MeetingPreferenceInfo(this.interests, this.objectives);
+  const _SnapShot(this.profile, this.objectives);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About',
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          if (profile.tag.isNotEmpty)
+            Text(
+              profile.tag[0].name,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          _Objectives(objectives)
+        ],
+      ),
+    );
+  }
+}
+
+class _Objectives extends HookWidget {
+  final List<MeetingObjective> objectives;
+
+  const _Objectives(this.objectives);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ..._buildObjectives(context),
-        ..._buildInterests(context),
       ],
     );
   }
@@ -256,6 +338,25 @@ class _MeetingPreferenceInfo extends HookWidget {
           .toList(),
     ];
   }
+}
+
+class _Interests extends HookWidget {
+  final List<MeetingInterest> interests;
+
+  const _Interests(this.interests);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ..._buildInterests(context),
+        ],
+      ),
+    );
+  }
 
   List<Widget> _buildInterests(BuildContext context) {
     const introLabel = "Interests";
@@ -263,6 +364,8 @@ class _MeetingPreferenceInfo extends HookWidget {
     if (interests.isEmpty) {
       return [];
     }
+
+    final width = MediaQuery.of(context).size.width / 2 - 30;
 
     return [
       const SizedBox(height: AppInsets.xxl),
@@ -274,20 +377,20 @@ class _MeetingPreferenceInfo extends HookWidget {
         height: AppInsets.xxl,
         width: double.infinity,
       ),
-      SizedBox(
-        height: 120,
-        child: GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: 4,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          physics: const NeverScrollableScrollPhysics(),
-          children: interests
-              .map((interest) => _ChipItem(
-                    text: interest.name,
-                  ))
-              .toList(),
-        ),
+      Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        // crossAxisCount: 2,
+        // childAspectRatio: 4,
+        // mainAxisSpacing: 20,
+        // crossAxisSpacing: 20,
+        // physics: const NeverScrollableScrollPhysics(),
+        children: interests
+            .map((interest) => _ChipItem(
+                  text: interest.name,
+                  width: width,
+                ))
+            .toList(),
       )
     ];
   }
@@ -300,46 +403,20 @@ class _UserConnections extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ..._buildConnections(context),
-      ],
-    );
-  }
-
-  List<Widget> _buildConnections(BuildContext context) {
-    const introLabel = "Connections";
-    final labelStyle = Theme.of(context).textTheme.headline6;
     if (connections.isEmpty) {
-      return [];
+      return Container();
     }
 
     const itemsInRow = 4;
-    const itemHeight = 156;
-    final gridViewHeight =
-        itemHeight * (connections.length / itemsInRow).ceilToDouble();
+    final itemWidth = MediaQuery.of(context).size.width / itemsInRow - 10;
 
-    return [
-      const SizedBox(height: AppInsets.xxl),
-      Center(
-        child: Text(
-          introLabel,
-          style: labelStyle,
-        ),
-      ),
-      const SizedBox(
-        height: AppInsets.xxl,
-        width: double.infinity,
-      ),
-      SizedBox(
-        height: gridViewHeight,
-        child: GridView.count(
-          crossAxisCount: itemsInRow,
-          childAspectRatio: 0.6,
-          physics: const NeverScrollableScrollPhysics(),
-          children: connections
-              .map((user) => InkWell(
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Wrap(
+        children: connections
+            .map((user) => SizedBox(
+                  width: itemWidth,
+                  child: InkWell(
                     onTap: () => ExtendedNavigator.of(context).push(
                         Routes.profileScreen(
                             userId: user.uuid, allowEdit: false)),
@@ -360,11 +437,11 @@ class _UserConnections extends HookWidget {
                         ],
                       ),
                     ),
-                  ))
-              .toList(),
-        ),
+                  ),
+                ))
+            .toList(),
       ),
-    ];
+    );
   }
 }
 
@@ -405,16 +482,17 @@ class _ListItem extends StatelessWidget {
 
 class _ChipItem extends StatelessWidget {
   final String text;
+  final double width;
 
-  const _ChipItem({
-    Key key,
-    @required this.text,
-  }) : super(key: key);
+  const _ChipItem({Key key, @required this.text, this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText1;
     return Container(
+        width: width,
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
             color: Colors.transparent,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -424,6 +502,7 @@ class _ChipItem extends StatelessWidget {
         child: Center(
           child: Text(
             text,
+            textAlign: TextAlign.center,
             style: textStyle,
           ),
         ));
