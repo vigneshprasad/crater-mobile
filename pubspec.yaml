@@ -80,6 +80,7 @@ dependencies:
   uuid: ^2.2.2
   video_player: ^0.10.12
   web_socket_channel: ^1.1.0
+  intercom_flutter: ^2.3.3
 
 dev_dependencies:
   flutter_test:
