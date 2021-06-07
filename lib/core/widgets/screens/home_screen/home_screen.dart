@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../constants/theme.dart';
@@ -47,6 +49,12 @@ class HomeScreen extends HookWidget {
     'My Conversations',
   ];
 
+  static const analyticsLabels = [
+    "topics_tab_viewed",
+    "all_conversations_tab_viewed",
+    "my_conversations_tab_viewed",
+  ];
+
   const HomeScreen({
     @PathParam() this.tab,
   });
@@ -67,6 +75,9 @@ class HomeScreen extends HookWidget {
       void _tabChangeListener() {
         if (!_tabController.indexIsChanging) {
           _activeTab.value = _tabController.index;
+          KiwiContainer()
+              .resolve<Analytics>()
+              .trackEvent(eventName: analyticsLabels[_activeTab.value]);
         }
       }
 
@@ -206,8 +217,9 @@ class HomeScreen extends HookWidget {
     final shown = await onboarding.getOnboardingKey();
 
     if (!shown) {
-      ExtendedNavigator.of(context)
-          .pushAndRemoveUntil(Routes.onboardingScreen(type: OnboardingType.signupComplete), (_) => false);
+      ExtendedNavigator.of(context).pushAndRemoveUntil(
+          Routes.onboardingScreen(type: OnboardingType.signupComplete),
+          (_) => false);
     }
   }
 }

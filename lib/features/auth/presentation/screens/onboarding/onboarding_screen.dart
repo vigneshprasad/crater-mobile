@@ -395,7 +395,7 @@ const oneOnOneCreationSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Now now', type: OnboardingSlideButtonType.dismiss),
+          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
       OnboardingSlideButton(
           title: 'Invite', type: OnboardingSlideButtonType.invite),
     ],
@@ -421,7 +421,7 @@ const groupCreationSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Now now', type: OnboardingSlideButtonType.dismiss),
+          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
       OnboardingSlideButton(
           title: 'Invite', type: OnboardingSlideButtonType.invite),
     ],
@@ -441,7 +441,7 @@ const meetingJoiningSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Now now', type: OnboardingSlideButtonType.dismiss),
+          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
       OnboardingSlideButton(
           title: 'Invite', type: OnboardingSlideButtonType.invite),
     ],
@@ -456,7 +456,7 @@ const meetingLeavingSlides = [
     image: AppImageAssets.feedback,
     buttons: [
       OnboardingSlideButton(
-          title: 'Now now', type: OnboardingSlideButtonType.dismiss),
+          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
       OnboardingSlideButton(
           title: 'Share Feedback', type: OnboardingSlideButtonType.feedback),
     ],

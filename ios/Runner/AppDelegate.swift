@@ -9,7 +9,13 @@ import FirebaseDynamicLinks
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
         GeneratedPluginRegistrant.register(with: self)
+        
+        if let registrar = self.registrar(forPlugin: "SwiftUserleapFlutterPlugin") {
+            SwiftUserleapFlutterPlugin.register(with: registrar)
+        }
+        
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
