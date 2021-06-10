@@ -35,7 +35,8 @@ class ArticleTopicCard extends StatelessWidget {
         );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
+      padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.xxl, horizontal: AppInsets.xl),
       child: GestureDetector(
         onTap: () => onTapCard(context),
         child: BaseContainer(

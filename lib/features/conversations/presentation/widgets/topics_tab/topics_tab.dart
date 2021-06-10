@@ -2,18 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../utils/app_localizations.dart';
 import '../../../domain/entity/optin_entity/optin_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../../screens/create_conversation_screen/create_conversation_state.dart';
 import '../article_topic_card/article_topic_card.dart';
-import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'topics_tab_state.dart';
 
 class TopicsTab extends HookWidget {
@@ -23,29 +22,17 @@ class TopicsTab extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(topicsStateProvider.state);
     final articlesState = useProvider(articleTopicsStateProiver.state);
 
-    return RefreshIndicator(
-      displacement: 96.00,
-      onRefresh: () {
-        final futures = [
-          context.read(topicsStateProvider).getTopicsList(),
-          context.read(articleTopicsStateProiver).getAllArticleTopcs(),
-        ];
-
-        return Future.wait(futures);
-      },
+    return DefaultTabController(
+      length: 2,
       child: ScaffoldContainer(
-        child: CustomScrollView(
-          slivers: [
-            SliverObstructionInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            ),
-            SliverToBoxAdapter(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              title: Column(
                 children: [
                   Text(
                     'Hi $name',
@@ -54,89 +41,57 @@ class TopicsTab extends HookWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Set up a 1:1 or group conversation by picking a topic',
+                    'Set up a 1:1 or group conversation',
+                    maxLines: 2,
                     textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),
-            )),
-            topicsState.maybeWhen(
-              data: (data) {
-                Widget child;
-                if (data.isNotEmpty) {
-                  child = Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xxl,
-                      vertical: AppInsets.xl,
+              automaticallyImplyLeading: false,
+              bottom: PreferredSize(
+                preferredSize: const Size(300, 90),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: BaseContainer(
+                    radius: 30,
+                    child: TabBar(
+                      labelColor: Theme.of(context).buttonColor,
+                      unselectedLabelColor: Colors.white70,
+                      indicatorColor: Theme.of(context).buttonColor,
+                      tabs: const [
+                        Tab(text: '1:1'),
+                        Tab(text: 'Group'),
+                      ],
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate("topic_tab:suggested_topic_heading"),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  );
-                }
-                return SliverToBoxAdapter(
-                  child: child,
-                );
-              },
-              orElse: () => const SliverToBoxAdapter(),
-            ),
-            topicsState.when(
-              loading: () => _SliverLoader(child: Container()),
-              error: (err, st) => _SliverLoader(child: Container()),
-              data: (topics) => _TopicsGrid(
-                topics: topics,
+                  ),
+                ),
               ),
             ),
-            const SliverPadding(padding: EdgeInsets.only(top: AppInsets.med)),
-            articlesState.maybeWhen(
-              data: (topics) {
-                Widget child = Container();
-                if (topics.isNotEmpty) {
-                  child = Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xxl,
-                      vertical: AppInsets.xl,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate("topic_tab:article_topic_headings"),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  );
-                }
-                return SliverToBoxAdapter(
-                  child: child,
-                );
-              },
-              orElse: () => const SliverToBoxAdapter(),
-            ),
-            articlesState.when(
-              loading: () => _SliverLoader(child: Container()),
-              error: (err, st) => _SliverLoader(child: Container()),
-              data: (topics) => _ArticleTopicList(topics: topics),
-            ),
-            const SliverPadding(padding: EdgeInsets.only(top: 112.00)),
           ],
+          body: TabBarView(
+            children: [
+              TopicsList(),
+              RefreshIndicator(
+                  onRefresh: () {
+                    final futures = [
+                      context
+                          .read(articleTopicsStateProiver)
+                          .getAllArticleTopcs(),
+                    ];
+
+                    return Future.wait(futures);
+                  },
+                  child: articlesState.when(
+                    loading: () => Container(),
+                    error: (err, st) => Container(),
+                    data: (topics) => _ArticleTopicList(topics: topics),
+                  )),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _SliverLoader extends StatelessWidget {
-  final Widget child;
-
-  const _SliverLoader({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: child,
     );
   }
 }
@@ -186,17 +141,9 @@ class _ArticleTopicList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.only(
-        left: AppInsets.xl,
-        right: AppInsets.xl,
-      ),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => ArticleTopicCard(topic: topics[index]),
-          childCount: topics.length,
-        ),
-      ),
+    return ListView.builder(
+      itemBuilder: (context, index) => ArticleTopicCard(topic: topics[index]),
+      itemCount: topics.length,
     );
   }
 }
