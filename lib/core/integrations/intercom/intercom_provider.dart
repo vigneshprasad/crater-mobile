@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../config_reader/config_reader.dart';
 
@@ -18,6 +19,9 @@ class IntercomProvider {
 
   Future<void> show(String email) async {
     await Intercom.registerIdentifiedUser(email: email);
+    final sub = await OneSignal.shared.getPermissionSubscriptionState();
+    final token = sub.subscriptionStatus.pushToken;
+    await Intercom.sendTokenToIntercom(token);
     await Intercom.displayMessenger();
   }
 }
