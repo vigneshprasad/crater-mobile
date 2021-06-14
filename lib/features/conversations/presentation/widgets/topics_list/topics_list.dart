@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
@@ -40,21 +42,26 @@ class TopicsList extends HookWidget {
 
 class _TopicCard extends StatelessWidget {
   final Topic topic;
-  final bool showFooter;
   final VoidCallback onTap;
 
   const _TopicCard({
     Key key,
     @required this.topic,
-    this.showFooter = true,
     this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
-    final headingStyle = Theme.of(context).textTheme.headline6;
-
+    final backgroundColor = HexColor.fromHex('#DDE9FD');
+    final headingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          fontSize: 15.00,
+          fontWeight: FontWeight.w700,
+          color: Theme.of(context).canvasColor,
+        );
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          color: Theme.of(context).canvasColor,
+        );
     return Padding(
       padding: const EdgeInsets.symmetric(
           vertical: AppInsets.xxl, horizontal: AppInsets.xl),
@@ -68,74 +75,77 @@ class _TopicCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: const EdgeInsets.only(
-                      top: AppInsets.xl,
-                      left: AppInsets.xl,
-                      right: AppInsets.xl,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8)),
-                          clipBehavior: Clip.antiAlias,
-                          child: BaseNetworkImage(
-                            imageUrl: topic.image,
-                            defaultImage: AppImageAssets.articleDefault,
-                            imagebuilder: (context, imageProvider) => Image(
-                              image: imageProvider,
-                              width: 100,
-                            ),
-                          ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: BaseContainer(
+                    radius: 10,
+                    child: Material(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: AppInsets.l,
+                          right: AppInsets.l,
+                          left: AppInsets.xl,
+                          bottom: AppInsets.xxl,
                         ),
-                        const SizedBox(width: AppInsets.xl),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(topic.name, style: headingStyle),
-                              const SizedBox(height: AppInsets.sm),
-                              Text(
-                                topic.description,
-                                maxLines: 4,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )),
-                const SizedBox(height: AppInsets.xxl),
-                if (showFooter)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: AppInsets.xxl,
-                        right: AppInsets.xl,
-                        left: AppInsets.xl),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: BaseContainer(
-                        radius: 30,
-                        color: Theme.of(context).backgroundColor,
-                        child: GestureDetector(
-                          onTap: () => onTapCard(context),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 20),
-                            child: Text(
-                              "Start a conversation",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                    fontSize: 14.00,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                BaseNetworkImage(
+                                  imageUrl: topic.image,
+                                  defaultImage: AppImageAssets.articleDefault,
+                                  imagebuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    radius: 14.00,
+                                    backgroundImage: imageProvider,
                                   ),
+                                ),
+                                const SizedBox(width: AppInsets.l),
+                                Text(topic.name, style: headingStyle),
+                              ],
                             ),
+                            const SizedBox(height: AppInsets.xl),
+                            Text(
+                              topic.description,
+                              style: descriptionStyle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: AppInsets.xxl,
+                      right: AppInsets.xl,
+                      left: AppInsets.xl),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: BaseContainer(
+                      radius: 30,
+                      color: Theme.of(context).backgroundColor,
+                      child: GestureDetector(
+                        onTap: () => onTapCard(context),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 20),
+                          child: Text(
+                            "Start a conversation",
+                            style:
+                                Theme.of(context).textTheme.bodyText1.copyWith(
+                                      fontSize: 14.00,
+                                    ),
                           ),
                         ),
                       ),
                     ),
                   ),
+                ),
               ],
             ),
           ),

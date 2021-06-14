@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 
 import '../../../../../constants/theme.dart';
@@ -32,62 +33,80 @@ class TopicsTab extends HookWidget {
             SliverAppBar(
               pinned: true,
               floating: true,
-              title: Column(
-                children: [
-                  Text(
-                    'Hi $name',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Set up a 1:1 or group conversation',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ],
-              ),
+              elevation: 0.5,
+              forceElevated: true,
+              shadowColor: Colors.grey,
+              toolbarHeight: 0,
               automaticallyImplyLeading: false,
-              bottom: PreferredSize(
-                preferredSize: const Size(300, 90),
+              bottom: const PreferredSize(
+                preferredSize: Size(300, 50),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: BaseContainer(
-                    radius: 30,
-                    child: TabBar(
-                      labelColor: Theme.of(context).buttonColor,
-                      unselectedLabelColor: Colors.white70,
-                      indicatorColor: Theme.of(context).buttonColor,
-                      tabs: const [
-                        Tab(text: '1:1'),
-                        Tab(text: 'Group'),
-                      ],
-                    ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  child: TabBar(
+                    tabs: [
+                      Tab(text: 'Group topics'),
+                      Tab(text: '1:1 topics'),
+                    ],
                   ),
                 ),
               ),
             ),
           ],
-          body: TabBarView(
+          body: Column(
             children: [
-              TopicsList(),
-              RefreshIndicator(
-                  onRefresh: () {
-                    final futures = [
-                      context
-                          .read(articleTopicsStateProiver)
-                          .getAllArticleTopcs(),
-                    ];
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'What type of conversation\nwould you like to have?',
+                        maxLines: 2,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    RefreshIndicator(
+                        onRefresh: () {
+                          final futures = [
+                            context
+                                .read(articleTopicsStateProiver)
+                                .getAllArticleTopcs(),
+                          ];
 
-                    return Future.wait(futures);
-                  },
-                  child: articlesState.when(
-                    loading: () => Container(),
-                    error: (err, st) => Container(),
-                    data: (topics) => _ArticleTopicList(topics: topics),
-                  )),
+                          return Future.wait(futures);
+                        },
+                        child: articlesState.when(
+                          loading: () => Container(),
+                          error: (err, st) => Container(),
+                          data: (topics) => Column(
+                            children: [
+                              Expanded(
+                                  child: _ArticleTopicList(topics: topics)),
+                            ],
+                          ),
+                        )),
+                    TopicsList(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

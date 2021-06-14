@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -37,9 +38,9 @@ class HomeScreen extends HookWidget {
   final int tab;
 
   static const icons = [
-    Icons.search,
-    Icons.people_alt_outlined,
-    Icons.inbox_outlined
+    Icons.home,
+    Icons.people_alt,
+    Icons.alarm1,
   ];
 
   static const labels = [
@@ -83,29 +84,22 @@ class HomeScreen extends HookWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: AppDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _tabController.index,
-        iconSize: 28,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        items: [0, 1, 2]
-            .map((index) => BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: BaseContainer(
-                    radius: 30,
-                    color: Theme.of(context).backgroundColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(icons[index]),
-                    ),
-                  ),
-                ),
-                label: labels[index]))
-            .toList(),
-        onTap: (int index) {
-          _tabController.index = index;
-        },
+      bottomNavigationBar: BaseContainer(
+        radius: 0,
+        disableAnimation: true,
+        child: BottomNavigationBar(
+          currentIndex: _tabController.index,
+          iconSize: 28,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          items: [0, 1, 2]
+              .map((index) => BottomNavigationBarItem(
+                  icon: Icon(icons[index]), label: labels[index]))
+              .toList(),
+          onTap: (int index) {
+            _tabController.index = index;
+          },
+        ),
       ),
       body: SafeArea(
         child: NestedScrollView(
@@ -118,18 +112,11 @@ class HomeScreen extends HookWidget {
                 sliver: SliverAppBar(
                   floating: true,
                   // pinned: true,
-                  leading: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BaseContainer(
-                      radius: 30,
-                      color: Theme.of(context).backgroundColor,
-                      child: IconButton(
-                          icon: const Icon(
-                            WorkNetIcons.menu,
-                          ),
-                          onPressed: () => Scaffold.of(context).openDrawer()),
-                    ),
-                  ),
+                  leading: IconButton(
+                      icon: const Icon(
+                        WorkNetIcons.menu,
+                      ),
+                      onPressed: () => Scaffold.of(context).openDrawer()),
                   actions: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),

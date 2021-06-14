@@ -29,10 +29,10 @@ class ProfileScreen extends HookWidget {
 
   Size _textSize(String text, TextStyle style) {
     final TextPainter textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
-        maxLines: 0,
-        textDirection: TextDirection.ltr)
-      ..layout(minWidth: 200, maxWidth: 300);
+      text: TextSpan(text: text, style: style),
+      maxLines: 100,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 200, maxWidth: 300);
     return textPainter.size;
   }
 
@@ -41,9 +41,12 @@ class ProfileScreen extends HookWidget {
         _textSize(profile.introduction, Theme.of(context).textTheme.bodyText1);
 
     return SliverAppBar(
-      expandedHeight: size.height,
+      expandedHeight: size.height + 350,
       flexibleSpace: _ProfileBody(profile),
       pinned: true,
+      elevation: 0.5,
+      shadowColor: Colors.grey,
+      forceElevated: true,
       actions: [
         if (allowEdit != null && allowEdit)
           BaseContainer(
@@ -288,6 +291,7 @@ class _SnapShot extends HookWidget {
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.headline6,
           ),
+          const SizedBox(height: AppInsets.l),
           if (profile.tag.isNotEmpty)
             Text(
               profile.tag[0].name,
@@ -408,11 +412,13 @@ class _UserConnections extends HookWidget {
     }
 
     const itemsInRow = 4;
-    final itemWidth = MediaQuery.of(context).size.width / itemsInRow - 10;
+    final itemWidth = MediaQuery.of(context).size.width / itemsInRow - 18;
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Wrap(
+        spacing: 8,
+        runSpacing: 20,
         children: connections
             .map((user) => SizedBox(
                   width: itemWidth,
