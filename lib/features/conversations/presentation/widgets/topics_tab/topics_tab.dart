@@ -32,20 +32,25 @@ class TopicsTab extends HookWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
               pinned: true,
-              floating: true,
-              elevation: 0.5,
-              forceElevated: true,
-              shadowColor: Colors.grey,
+              // floating: true,
+              // elevation: 0.5,
+              // forceElevated: true,
+              // shadowColor: Colors.grey,
               toolbarHeight: 0,
               automaticallyImplyLeading: false,
-              bottom: const PreferredSize(
-                preferredSize: Size(300, 50),
+              bottom: PreferredSize(
+                preferredSize: Size(300, 60),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                  child: TabBar(
-                    tabs: [
-                      Tab(text: 'Group topics'),
-                      Tab(text: '1:1 topics'),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      const TabBar(
+                        tabs: [
+                          Tab(text: 'Group topics'),
+                          Tab(text: '1:1 topics'),
+                        ],
+                      ),
+                      const Divider(height: 0.5)
                     ],
                   ),
                 ),
@@ -56,19 +61,21 @@ class TopicsTab extends HookWidget {
             children: [
               SizedBox(
                 width: double.infinity,
+                height: 60,
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         name,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.headline6,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Text(
-                        'What type of conversation\nwould you like to have?',
+                        'What type of conversation would you like to have?',
                         maxLines: 2,
                         textAlign: TextAlign.start,
                         style: Theme.of(context)
@@ -115,6 +122,25 @@ class TopicsTab extends HookWidget {
   }
 }
 
+class _ArticleTopicList extends StatelessWidget {
+  final List<Topic> topics;
+
+  const _ArticleTopicList({
+    Key key,
+    @required this.topics,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.all(AppInsets.xxl),
+          child: ArticleTopicCard(topic: topics[index])),
+      itemCount: topics.length,
+    );
+  }
+}
+
 class _TopicsGrid extends StatelessWidget {
   final List<Topic> topics;
 
@@ -150,23 +176,6 @@ class _TopicsGrid extends StatelessWidget {
   }
 }
 
-class _ArticleTopicList extends StatelessWidget {
-  final List<Topic> topics;
-
-  const _ArticleTopicList({
-    Key key,
-    @required this.topics,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => ArticleTopicCard(topic: topics[index]),
-      itemCount: topics.length,
-    );
-  }
-}
-
 class _TopicGridCard extends StatelessWidget {
   final Topic topic;
   const _TopicGridCard({
@@ -176,12 +185,13 @@ class _TopicGridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cardRadius = BorderRadius.all(Radius.circular(8.00));
+    const radius = 20.0;
+    const cardRadius = BorderRadius.all(Radius.circular(radius));
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           fontSize: 15.00,
         );
     return BaseContainer(
-      radius: 8,
+      radius: radius,
       child: Material(
         borderRadius: cardRadius,
         child: GestureDetector(

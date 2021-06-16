@@ -86,12 +86,14 @@ class ProfileScreen extends HookWidget {
               ]),
             )),
       ),
-      loading: () => SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: const [
-              LinearProgressIndicator(),
-            ],
+      loading: () => BaseContainer(
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              children: const [
+                LinearProgressIndicator(),
+              ],
+            ),
           ),
         ),
       ),
