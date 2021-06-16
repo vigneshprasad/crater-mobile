@@ -57,7 +57,7 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
         : AppLocalizations.of(context).translate("meeting:empty_scheduled");
     if (widget.upcoming.isEmpty) {
       slivers.add(SliverToBoxAdapter(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
           child: Center(
             child: Column(

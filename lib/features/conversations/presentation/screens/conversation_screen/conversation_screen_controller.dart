@@ -15,7 +15,6 @@ import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/conversation_request_entity/conversation_request_entity.dart';
 import '../../../domain/entity/conversation_rtc_info_entity/conversation_rtc_info_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
-import '../../widgets/conversation_overlay_indicator/conversation_overlay_indicator.dart';
 import 'conversation_overlay_controller.dart';
 
 enum RtcConnectionState { connected, connecting, disconnected }
@@ -294,7 +293,7 @@ class ConversationScreenController extends ChangeNotifier {
         }
         notifyListeners();
       } catch (error) {
-        print(error);
+        debugPrint(error.toString());
       }
     }
   }

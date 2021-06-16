@@ -8,8 +8,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -36,11 +36,12 @@ final homeScreenScrollController =
 
 class HomeScreen extends HookWidget {
   final int tab;
+  final int topic;
 
   static const icons = [
     Icons.home,
     Icons.people_alt,
-    Icons.alarm1,
+    Icons.inbox,
   ];
 
   static const labels = [
@@ -50,7 +51,8 @@ class HomeScreen extends HookWidget {
   ];
 
   const HomeScreen({
-    @PathParam() this.tab,
+    @PathParam() this.tab = 0,
+    @PathParam() this.topic = 0,
   });
 
   @override
@@ -92,6 +94,7 @@ class HomeScreen extends HookWidget {
           iconSize: 28,
           selectedFontSize: 10,
           unselectedFontSize: 10,
+          unselectedItemColor: HexColor.fromHex("#72675B"),
           items: [0, 1, 2]
               .map((index) => BottomNavigationBarItem(
                   icon: Icon(icons[index]), label: labels[index]))
@@ -166,7 +169,10 @@ class HomeScreen extends HookWidget {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TopicsTab(name: name),
+                  TopicsTab(
+                    name: name,
+                    topic: topic,
+                  ),
                   ConversationCalendarTab(
                     type: ConversationTabType.all,
                     controller: _scrollController,

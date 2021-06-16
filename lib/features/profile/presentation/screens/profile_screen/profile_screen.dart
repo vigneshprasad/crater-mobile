@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -27,18 +28,19 @@ class ProfileScreen extends HookWidget {
     @PathParam('allowEdit') this.allowEdit,
   });
 
-  Size _textSize(String text, TextStyle style) {
+  Size _textSize(String text, TextStyle style, BuildContext context) {
+    final maxWidth = MediaQuery.of(context).size.width;
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       maxLines: 100,
       textDirection: TextDirection.ltr,
-    )..layout(minWidth: 200, maxWidth: 300);
+    )..layout(minWidth: 200, maxWidth: maxWidth - 100);
     return textPainter.size;
   }
 
   Widget _appBar(BuildContext context, Profile profile) {
-    final size =
-        _textSize(profile.introduction, Theme.of(context).textTheme.bodyText1);
+    final size = _textSize(
+        profile.introduction, Theme.of(context).textTheme.bodyText1, context);
 
     return SliverAppBar(
       expandedHeight: size.height + 350,
@@ -49,20 +51,32 @@ class ProfileScreen extends HookWidget {
       forceElevated: true,
       actions: [
         if (allowEdit != null && allowEdit)
-          BaseContainer(
-            radius: 30,
-            child: IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => ExtendedNavigator.of(context)
-                    .push(Routes.profileBasicScreen(editMode: true))),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: BaseContainer(
+              radius: 30,
+              child: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => ExtendedNavigator.of(context)
+                      .push(Routes.profileBasicScreen(editMode: true))),
+            ),
           ),
+        const SizedBox(
+          width: 20,
+        )
       ],
-      bottom: const TabBar(
-        tabs: [
-          Tab(text: 'Snapshot'),
-          Tab(text: 'Inerests'),
-          Tab(text: 'Connections'),
-        ],
+      bottom: PreferredSize(
+        preferredSize: const Size(double.infinity, 50),
+        child: Container(
+          color: Theme.of(context).backgroundColor,
+          child: const TabBar(
+            tabs: [
+              Tab(text: 'Snapshot'),
+              Tab(text: 'Inerests'),
+              Tab(text: 'Connections'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -80,14 +94,15 @@ class ProfileScreen extends HookWidget {
                 _appBar(context, state.profile),
               ],
               body: TabBarView(children: [
-                _SnapShot(state.profile, state.objectives),
+                _SnapShot(state.profile, state.objectives, state.meta),
                 _Interests(state.interests),
                 _UserConnections(state.connections),
               ]),
             )),
       ),
-      loading: () => BaseContainer(
-        child: SingleChildScrollView(
+      loading: () => Scaffold(
+        appBar: BaseAppBar(),
+        body: SingleChildScrollView(
           child: SafeArea(
             child: Column(
               children: const [
@@ -121,7 +136,7 @@ class _ProfileBody extends HookWidget {
                   children: [
                     BaseContainer(
                       disableAnimation: true,
-                      radius: 20,
+                      radius: AppInsets.l,
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(20),
@@ -146,7 +161,9 @@ class _ProfileBody extends HookWidget {
                               children: [
                                 const Spacer(),
                                 if (profile.linkedIn != null)
-                                  _buildLinkedInButton(),
+                                  _buildLinkedInButton()
+                                else
+                                  const SizedBox(height: 50),
                               ],
                             ),
                           ],
@@ -278,8 +295,9 @@ class _ConnectionProfile extends HookWidget {
 class _SnapShot extends HookWidget {
   final Profile profile;
   final List<MeetingObjective> objectives;
+  final Map<String, String> meta;
 
-  const _SnapShot(this.profile, this.objectives);
+  const _SnapShot(this.profile, this.objectives, this.meta);
 
   @override
   Widget build(BuildContext context) {
@@ -288,17 +306,26 @@ class _SnapShot extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'About',
-            textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.headline6,
-          ),
           const SizedBox(height: AppInsets.l),
-          if (profile.tag.isNotEmpty)
-            Text(
-              profile.tag[0].name,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
+          if (meta != null && meta.isNotEmpty)
+            Column(
+                children: meta.entries
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                child: Text(e.key),
+                              ),
+                              Text(
+                                e.value,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList()),
           _Objectives(objectives)
         ],
       ),

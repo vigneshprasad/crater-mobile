@@ -197,7 +197,7 @@ class OnboardingScreen extends HookWidget {
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
               ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+                  Routes.topicListScreen(topic: 1), (route) => false);
             },
           );
           break;
@@ -207,7 +207,7 @@ class OnboardingScreen extends HookWidget {
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
               ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+                  Routes.topicListScreen(topic: 0), (route) => false);
             },
           );
           break;

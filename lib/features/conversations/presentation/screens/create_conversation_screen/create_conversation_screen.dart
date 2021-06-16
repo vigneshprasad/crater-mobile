@@ -91,7 +91,6 @@ class CreateConversationScreen extends HookWidget {
                             else
                               BaseContainer(
                                 disableAnimation: true,
-                                radius: 8,
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Column(

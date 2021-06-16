@@ -16,9 +16,7 @@ class VideoTab extends StatefulWidget {
 }
 
 class _VideoTabState extends State<VideoTab> {
-  bool _fromCache;
   int _currentPage;
-  int _pages;
   List<Video> _videos;
   Completer<void> _completer;
   VideoBloc _bloc;
@@ -26,10 +24,8 @@ class _VideoTabState extends State<VideoTab> {
 
   @override
   void initState() {
-    _fromCache = false;
     _currentPage = 1;
     _videos = [];
-    _pages = 1;
     _completer = Completer<void>();
     _bloc = BlocProvider.of<VideoBloc>(context)
       ..add(
@@ -73,8 +69,6 @@ class _VideoTabState extends State<VideoTab> {
       _completer = Completer<void>();
       setState(() {
         _currentPage = state.currentPage;
-        _fromCache = state.fromCache;
-        _pages = state.pages;
         _videos = [..._videos, ...state.videos];
       });
     }

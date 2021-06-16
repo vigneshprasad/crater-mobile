@@ -64,8 +64,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final title = 'Want to add a photo?';
-      final info =
+      const title = 'Want to add a photo?';
+      const info =
           'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
@@ -84,7 +84,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                ProfileHeader(
+                                const ProfileHeader(
                                   title: title,
                                   subtitle: info,
                                 ),

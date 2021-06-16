@@ -154,7 +154,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
               keyboardType: TextInputType.phone,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(15),
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly
               ],
             ),
           ),

@@ -33,17 +33,18 @@ class ProfileInlineQuestion extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    animateText == true
-                        ? TyperAnimatedTextKit(
-                            totalRepeatCount: 1,
-                            repeatForever: false,
-                            text: [element.value],
-                            textStyle: Theme.of(context).textTheme.bodyText1,
-                          )
-                        : Text(
-                            element.value,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
+                    if (animateText == true)
+                      TyperAnimatedTextKit(
+                        totalRepeatCount: 1,
+                        repeatForever: false,
+                        text: [element.value],
+                        textStyle: Theme.of(context).textTheme.bodyText1,
+                      )
+                    else
+                      Text(
+                        element.value,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                   ],
                 ),
               );

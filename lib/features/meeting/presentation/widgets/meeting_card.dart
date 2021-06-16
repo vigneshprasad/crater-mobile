@@ -118,7 +118,7 @@ class MeetingCard extends StatelessWidget {
                         MeetingDetailScreenArguments(meetingId: meeting.pk))
                 .then((value) => onRefresh());
           },
-          child: Text('Details'),
+          child: const Text('Details'),
         )
       ],
     );

@@ -45,7 +45,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'And about your interests';
+        const heading = 'And about your interests';
         final next =
             AppLocalizations.of(context).translate("next").toUpperCase();
 

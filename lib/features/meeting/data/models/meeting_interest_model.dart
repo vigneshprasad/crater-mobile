@@ -13,7 +13,7 @@ class MeetingInterestModel extends MeetingInterest {
   final String name;
   final String icon;
 
-  MeetingInterestModel({
+  const MeetingInterestModel({
     this.pk,
     this.name,
     this.icon,

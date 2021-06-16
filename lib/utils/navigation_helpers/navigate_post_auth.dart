@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 
 import '../../core/push_notfications/push_notifications.dart';
 import '../../features/auth/domain/entity/user_entity.dart';

@@ -137,7 +137,7 @@ class MeetingPreferencesCard extends StatelessWidget {
   }
 
   MeetingObjective _getSelectedObjective() {
-    return MeetingObjective();
+    return const MeetingObjective();
   }
 
   List<MeetingInterest> _getSelectedInterests() {

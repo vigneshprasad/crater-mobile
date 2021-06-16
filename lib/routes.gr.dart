@@ -50,6 +50,8 @@ class Routes {
   static const String splashScreen = '/';
   static const String _homeScreen = '/home/:tab?';
   static String homeScreen({dynamic tab = ''}) => '/home/$tab';
+  static const String _topicListScreen = '/topic-list/:topic?';
+  static String topicListScreen({dynamic topic = ''}) => '/topic-list/$topic';
   static const String welcomeScreen = '/welcome';
   static const String _objectivesScreen = '/objectives/:editMode?';
   static String objectivesScreen({dynamic editMode = ''}) =>
@@ -103,6 +105,7 @@ class Routes {
   static const all = <String>{
     splashScreen,
     _homeScreen,
+    _topicListScreen,
     welcomeScreen,
     _objectivesScreen,
     _profileSetupScreen,
@@ -139,6 +142,7 @@ class Router extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.splashScreen, page: SplashScreen),
     RouteDef(Routes._homeScreen, page: HomeScreen),
+    RouteDef(Routes._topicListScreen, page: HomeScreen),
     RouteDef(Routes.welcomeScreen, page: WelcomeScreen),
     RouteDef(Routes._objectivesScreen, page: ObjectivesScreen),
     RouteDef(Routes._profileSetupScreen, page: ProfileSetupScreen),
@@ -178,7 +182,10 @@ class Router extends RouterBase {
     },
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeScreen(tab: data.pathParams['tab'].intValue),
+        builder: (context) => HomeScreen(
+          tab: data.pathParams['tab'].intValue ?? 0,
+          topic: data.pathParams['topic'].intValue ?? 0,
+        ),
         settings: data,
       );
     },

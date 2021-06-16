@@ -54,9 +54,9 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
             ),
             const SizedBox(height: AppInsets.xxl),
             if (_loading)
-              Container(
+              const SizedBox(
                 height: 240,
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(),
                 ),
               ),

@@ -35,6 +35,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
   routes: <AutoRoute>[
     MaterialRoute(page: SplashScreen, initial: true),
     MaterialRoute(page: HomeScreen, path: "/home/:tab?"),
+    MaterialRoute(
+        page: HomeScreen, path: "/topic-list/:topic?", name: "topicListScreen"),
     MaterialRoute(page: WelcomeScreen, path: "/welcome"),
     MaterialRoute(page: ObjectivesScreen, path: "/objectives/:editMode?"),
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup/:editMode?"),

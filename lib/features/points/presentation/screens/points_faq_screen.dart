@@ -34,7 +34,7 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
       listener: _blocListener,
       child: Scaffold(
         appBar: BaseAppBar(
-          title: Text("Points Faq's"),
+          title: const Text("Points Faq's"),
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(

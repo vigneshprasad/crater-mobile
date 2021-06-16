@@ -45,7 +45,7 @@ class _CodeInputState extends State<CodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 72,
       child: Stack(
         alignment: Alignment.bottomCenter,

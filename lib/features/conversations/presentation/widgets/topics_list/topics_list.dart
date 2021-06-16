@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +10,6 @@ import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab_state.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../routes.gr.dart';
@@ -68,7 +66,6 @@ class _TopicCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTapCard(context),
         child: BaseContainer(
-          radius: 8,
           child: Material(
             borderRadius: borderRadius,
             child: Column(

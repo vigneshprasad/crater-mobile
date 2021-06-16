@@ -166,7 +166,7 @@ class _PointsBadge extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(
+          child: const Icon(
             WorkNetIcons.starfill,
             color: Colors.white,
             size: 20,

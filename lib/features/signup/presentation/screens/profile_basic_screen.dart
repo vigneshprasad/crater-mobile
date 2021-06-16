@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
@@ -61,7 +60,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String heading = 'Lets get started';
+    const heading = 'Lets get started';
 
     return BlocProvider.value(
       value: _bloc,
@@ -78,7 +77,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ProfileHeader(title: heading),
+                      const ProfileHeader(title: heading),
                       _buildProfileForm(context),
                     ],
                   ),
@@ -105,8 +104,8 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   }
 
   Widget _buildProfileForm(BuildContext context) {
-    final firstnameLabel = 'Your first name';
-    final lastnameLabel = 'Your last name';
+    const firstnameLabel = 'Your first name';
+    const lastnameLabel = 'Your last name';
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppInsets.xxl, vertical: AppInsets.l),

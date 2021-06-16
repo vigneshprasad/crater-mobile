@@ -141,14 +141,14 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
+            children: const [
+              SizedBox(
                 height: 32,
                 width: 32,
                 child: CircularProgressIndicator(),
               ),
-              const SizedBox(height: AppInsets.xl),
-              const Text("Loading..."),
+              SizedBox(height: AppInsets.xl),
+              Text("Loading..."),
             ],
           ),
         ),

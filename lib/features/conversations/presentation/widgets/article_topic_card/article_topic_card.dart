@@ -40,7 +40,6 @@ class ArticleTopicCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTapCard(context),
         child: BaseContainer(
-          radius: 8,
           child: Material(
             borderRadius: borderRadius,
             child: Column(
