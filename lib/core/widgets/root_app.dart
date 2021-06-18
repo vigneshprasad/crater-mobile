@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -21,8 +22,10 @@ class RootApp extends HookWidget {
   Future<void> initApp(BuildContext context) async {
     final deepLinkManager = context.read(deepLinkManagerProvider);
     final attributionProvider = context.read(attributionManagerProvider);
+    final userleapProvider = context.read(userLeapProvider);
     StatusBarColor.setTheme(ThemeType.light);
 
+    await userleapProvider.initSdk();
     await deepLinkManager.handleDeepLink();
     await attributionProvider.intializeSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/config_reader/config_reader.dart';
@@ -63,6 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSuccess) {
+          context.read(userLeapProvider).setUserData(state.user);
           navigatePostAuth(state.user, profile: state.profile);
         } else if (state is AuthRequestFailure) {
           _handleRequestError(state);

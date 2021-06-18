@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/attribution/attribution_manager.dart';
+import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../features/auth/data/datasources/auth_local_datasource.dart';
 import '../error/exceptions.dart';
@@ -100,12 +101,14 @@ class AnalyticsImpl implements Analytics {
   }) async {
     final isConnected = await networkInfo.isConnected;
     final appsflyer = ProviderContainer().read(attributionManagerProvider);
+    final userleap = ProviderContainer().read(userLeapProvider);
 
     if (isConnected) {
       try {
         await Segment.track(
             eventName: eventName, properties: properties, options: options);
         await appsflyer.logEvent(eventName, properties ?? {});
+        await userleap.track(eventName);
       } catch (error) {
         throw AnalyticsException(error);
       }

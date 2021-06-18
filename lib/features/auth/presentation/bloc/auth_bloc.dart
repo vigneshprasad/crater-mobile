@@ -183,6 +183,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthRequestFailure(error: failure);
       },
       (user) async* {
+        saveProvider(provider.toString());
         analytics.initSdk();
         analytics.identify(properties: getUserTraitsFromModel(user));
         analytics.trackEvent(
