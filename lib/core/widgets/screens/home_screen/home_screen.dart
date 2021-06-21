@@ -38,15 +38,17 @@ class HomeScreen extends HookWidget {
   final int tab;
 
   static const icons = [
-    Icons.search,
+    Icons.home,
     Icons.people_alt_outlined,
-    Icons.inbox_outlined
+    Icons.inbox_outlined,
+    Icons.search,
   ];
 
   static const labels = [
     'Topics',
     'Conversations',
     'My Conversations',
+    'All Users',
   ];
 
   static const analyticsLabels = [
@@ -96,9 +98,10 @@ class HomeScreen extends HookWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
         iconSize: 28,
+        type: BottomNavigationBarType.fixed,
         selectedFontSize: 10,
         unselectedFontSize: 10,
-        items: [0, 1, 2]
+        items: [0, 1, 2, 3]
             .map((index) => BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -202,6 +205,7 @@ class HomeScreen extends HookWidget {
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
+                  Container(),
                 ],
               ),
             ),
