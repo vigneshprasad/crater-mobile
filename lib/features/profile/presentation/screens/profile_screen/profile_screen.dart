@@ -116,7 +116,7 @@ class _ProfileBody extends HookWidget {
                   ),
                 ),
               Text(
-                profile.introduction,
+                profile.introduction ?? "",
               )
             ]),
           ),

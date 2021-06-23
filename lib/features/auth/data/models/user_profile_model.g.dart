@@ -44,13 +44,20 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       yearsOfExperience: fields[24] as int,
       companyType: fields[25] as int,
       sector: fields[26] as int,
+      tags: (fields[27] as List)?.cast<int>(),
+      numberOfEmployees: fields[28] as int,
+      projectType: fields[29] as int,
+      stageOfCompany: fields[30] as int,
+      aspiration: fields[31] as int,
+      profileIntroUpdated: fields[32] as bool,
+      companyName: fields[33] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(34)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -104,7 +111,21 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(25)
       ..write(obj.companyType)
       ..writeByte(26)
-      ..write(obj.sector);
+      ..write(obj.sector)
+      ..writeByte(27)
+      ..write(obj.tags)
+      ..writeByte(28)
+      ..write(obj.numberOfEmployees)
+      ..writeByte(29)
+      ..write(obj.projectType)
+      ..writeByte(30)
+      ..write(obj.stageOfCompany)
+      ..writeByte(31)
+      ..write(obj.aspiration)
+      ..writeByte(32)
+      ..write(obj.profileIntroUpdated)
+      ..writeByte(33)
+      ..write(obj.companyName);
   }
 
   @override
@@ -154,6 +175,13 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
     yearsOfExperience: json['years_of_experience'] as int,
     companyType: json['company_type'] as int,
     sector: json['sector'] as int,
+    tags: (json['tags'] as List)?.map((e) => e as int)?.toList(),
+    numberOfEmployees: json['number_of_employees'] as int,
+    projectType: json['project_type'] as int,
+    stageOfCompany: json['stage_of_company'] as int,
+    aspiration: json['aspiration'] as int,
+    profileIntroUpdated: json['profile_intro_updated'] as bool,
+    companyName: json['company_name'] as String,
   );
 }
 
@@ -186,4 +214,11 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'years_of_experience': instance.yearsOfExperience,
       'company_type': instance.companyType,
       'sector': instance.sector,
+      'tags': instance.tags,
+      'number_of_employees': instance.numberOfEmployees,
+      'project_type': instance.projectType,
+      'stage_of_company': instance.stageOfCompany,
+      'aspiration': instance.aspiration,
+      'profile_intro_updated': instance.profileIntroUpdated,
+      'company_name': instance.companyName,
     };

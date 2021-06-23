@@ -111,9 +111,15 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _bloc.add(ProfilePhotoRequestStarted(
-      photo: _photo,
-    ));
+    if (_photo == null) {
+      _bloc.add(PostProfileIntroRequestStarted(values: {
+        'photo_url': _photoUrl,
+      }));
+    } else {
+      _bloc.add(ProfilePhotoRequestStarted(
+        photo: _photo,
+      ));
+    }
   }
 
   void _goToNextScreen() {
@@ -123,6 +129,11 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
 
   void _blocListener(BuildContext context, ProfileIntroState state) {
     if (state is ProfileIntroRequestLoaded) {
+    } else if (state is PatchProfileIntroRequestLoaded) {
+      final _ = BlocProvider.of<AuthBloc>(context)
+        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+
+      _goToNextScreen();
     } else if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
