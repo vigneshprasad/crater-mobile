@@ -10,6 +10,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -48,7 +49,7 @@ class HomeScreen extends HookWidget {
     'Topics',
     'Conversations',
     'My Conversations',
-    'All Users',
+    'Users',
   ];
 
   static const analyticsLabels = [
@@ -205,7 +206,7 @@ class HomeScreen extends HookWidget {
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
-                  Container(),
+                  ConnectionTab(),
                 ],
               ),
             ),

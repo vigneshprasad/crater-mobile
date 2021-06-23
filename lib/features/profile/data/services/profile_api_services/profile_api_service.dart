@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route_annotations.dart';
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,6 +20,14 @@ abstract class ProfileApiService extends ChopperService {
     );
     return _$ProfileApiService(client);
   }
+
+  @Get(path: 'network/')
+  Future<Response> retrieveProfiles(
+    @Query() String tags,
+    @Query() String search,
+    @Query() String page,
+    @Query('page_size') String pageSize,
+  );
 
   @Get(path: 'network/{profileId}/')
   Future<Response> retrieveProfile(@Path() String profileId);

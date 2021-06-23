@@ -15,6 +15,7 @@ final profileRemoteDatasourceProvider =
 abstract class ProfileRemoteDatasource {
   /// TODO: PUT COMMENTS
   Future<Profile> retrieveProfileFromRemote(String profileId);
+  Future<List<Profile>> retrieveProfilesFromRemote(String tags);
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId);
 }
 
@@ -29,6 +30,21 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Profile.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Profile>> retrieveProfilesFromRemote(String tags) async {
+    final response = await apiService.retrieveProfiles(tags, '', '1', '100');
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = json['results'] as List;
+
+      return jsonList
+          .map((json) => Profile.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }
