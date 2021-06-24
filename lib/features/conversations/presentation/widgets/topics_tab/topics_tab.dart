@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+import 'package:worknetwork/ui/base/base_input/base_input.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
@@ -13,42 +16,50 @@ class TopicsTab extends HookWidget {
   final String name;
   final int topic;
 
-  const TopicsTab({
+  TopicsTab({
     @required this.name,
     this.topic = 0,
   });
 
+  final titles = [
+    'What would you like to speak about?',
+    'Pick a 1:1 topic you wish to discuss',
+    'On what would you like to host an AMA?'
+  ];
+
   @override
   Widget build(BuildContext context) {
     final articlesState = useProvider(articleTopicsStateProiver.state);
-
+    final _tabController =
+        useTabController(initialLength: titles.length, initialIndex: topic);
+    final index = useState(topic ?? 0);
+    final _textController = useTextEditingController();
+    final _topicSuggestion = useState('');
     return DefaultTabController(
-      length: 2,
       initialIndex: topic,
+      length: 3,
       child: ScaffoldContainer(
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
               pinned: true,
-              // floating: true,
-              // elevation: 0.5,
-              // forceElevated: true,
-              // shadowColor: Colors.grey,
               toolbarHeight: 0,
               automaticallyImplyLeading: false,
               bottom: PreferredSize(
-                preferredSize: const Size(300, 60),
+                preferredSize: const Size(300, 50),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: const [
-                      TabBar(
-                        tabs: [
-                          Tab(text: 'Group topics'),
-                          Tab(text: '1:1 topics'),
-                        ],
-                      ),
-                      Divider(height: 0.5)
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  child: TabBar(
+                    controller: _tabController,
+                    onTap: (value) {
+                      index.value = value;
+                      _tabController.animateTo(value);
+                    },
+                    tabs: const [
+                      Tab(text: 'Round Table'),
+                      Tab(text: '1:1'),
+                      Tab(text: 'AMA'),
                     ],
                   ),
                 ),
@@ -59,7 +70,7 @@ class TopicsTab extends HookWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: 60,
+                height: 140,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -73,7 +84,7 @@ class TopicsTab extends HookWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'What type of conversation would you like to have?',
+                        titles[index.value],
                         maxLines: 2,
                         textAlign: TextAlign.start,
                         style: Theme.of(context)
@@ -81,12 +92,45 @@ class TopicsTab extends HookWidget {
                             .bodyText2
                             .copyWith(color: Colors.grey),
                       ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: SizedBox(
+                          height: 50,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: BaseFormInput(
+                                  label: 'Suggest a topic',
+                                  controller: _textController,
+                                  onChanged: (text) =>
+                                      _topicSuggestion.value = text,
+                                ),
+                              ),
+                              if (_topicSuggestion.value.isNotEmpty)
+                                SizedBox(
+                                  width: 80,
+                                  child: MaterialButton(
+                                    child: Text('Submit'),
+                                    onPressed: () {
+                                      context
+                                          .read(topicSuggestionStateProvider)
+                                          .postTopicSuggestion(
+                                              _topicSuggestion.value);
+                                    },
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
               Expanded(
                 child: TabBarView(
+                  controller: _tabController,
                   children: [
                     RefreshIndicator(
                         onRefresh: () {
@@ -108,6 +152,7 @@ class TopicsTab extends HookWidget {
                             ],
                           ),
                         )),
+                    TopicsList(),
                     TopicsList(),
                   ],
                 ),

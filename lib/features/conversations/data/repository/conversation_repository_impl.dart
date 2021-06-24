@@ -231,4 +231,20 @@ class ConversationRepositoryImpl implements ConversationRepository {
       return Left(NetworkFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Topic>> postTopicSuggestion(String topic) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postTopicSuggestionToRemote(topic);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
 }

@@ -11,6 +11,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../constants/theme.dart';
@@ -43,13 +44,17 @@ class HomeScreen extends HookWidget {
   static const icons = [
     Icons.home,
     Icons.people_alt,
+    Icons.add,
     Icons.inbox,
+    Icons.search,
   ];
 
   static const labels = [
     'Topics',
     'Conversations',
-    'My Conversations',
+    '',
+    'My',
+    'Community',
   ];
 
   static const analyticsLabels = [
@@ -71,6 +76,7 @@ class HomeScreen extends HookWidget {
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
     final _activeTab = useState(tab ?? 0);
+    final _activeTopic = useState(0);
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
@@ -106,11 +112,31 @@ class HomeScreen extends HookWidget {
           selectedFontSize: 10,
           unselectedFontSize: 10,
           unselectedItemColor: HexColor.fromHex("#72675B"),
-          items: [0, 1, 2]
+          type: BottomNavigationBarType.fixed,
+          items: [0, 1, 2, 3, 4]
               .map((index) => BottomNavigationBarItem(
-                  icon: Icon(icons[index]), label: labels[index]))
+                  icon: Container(
+                    decoration: index == 2
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.black,
+                          )
+                        : null,
+                    child: Icon(
+                      icons[index],
+                      size: index == 2 ? 50 : null,
+                    ),
+                  ),
+                  label: labels[index]))
               .toList(),
-          onTap: (int index) {
+          onTap: (int index) async {
+            if (index == 2) {
+              final value = await _startConversation(context, _activeTopic);
+              _tabController.animateTo(0);
+              _activeTopic.value = value;
+              return;
+            }
+
             _tabController.index = index;
           },
         ),
@@ -180,22 +206,21 @@ class HomeScreen extends HookWidget {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TopicsTab(
-                    name: name,
-                    topic: topic,
-                  ),
+                  TopicsTab(name: name, topic: _activeTopic.value),
                   ConversationCalendarTab(
                     type: ConversationTabType.all,
                     controller: _scrollController,
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
+                  Container(),
                   ConversationCalendarTab(
                     type: ConversationTabType.my,
                     controller: _scrollController,
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
+                  Container(),
                 ],
               ),
             ),
@@ -203,6 +228,84 @@ class HomeScreen extends HookWidget {
         ),
       ),
     );
+  }
+
+  Future<int> _startConversation(
+      BuildContext context, ValueNotifier<int> _activeTopic) {
+    return showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+                topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+              ),
+              child: Container(
+                color: Theme.of(context).backgroundColor,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 30,
+                      runSpacing: 30,
+                      children: [
+                        Text(
+                          'Start a conversation',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          'What type of conversation would you like to have?',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text(
+                                'Round\nTable',
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop(0);
+                              },
+                            ),
+                          ),
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text('1:1'),
+                              onPressed: () {
+                                Navigator.of(context).pop(1);
+                              },
+                            ),
+                          ),
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text('AMA'),
+                              onPressed: () {
+                                Navigator.of(context).pop(2);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ));
+        });
   }
 
   Future<void> _navigateToHome(BuildContext context) async {

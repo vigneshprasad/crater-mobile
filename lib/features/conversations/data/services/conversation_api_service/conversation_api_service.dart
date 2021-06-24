@@ -65,4 +65,8 @@ abstract class ConversationApiService extends ChopperService {
 
   @Post(path: 'requests/')
   Future<Response> postConversationRequest(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'topic/')
+  Future<Response> postTopicSuggestionRequest(
+      @Body() Map<String, dynamic> body);
 }
