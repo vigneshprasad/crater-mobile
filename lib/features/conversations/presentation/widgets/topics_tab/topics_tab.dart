@@ -1,12 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 import 'package:worknetwork/ui/base/base_input/base_input.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../article_topic_card/article_topic_card.dart';
@@ -111,12 +116,10 @@ class TopicsTab extends HookWidget {
                                   width: 80,
                                   child: MaterialButton(
                                     child: Text('Submit'),
-                                    onPressed: () {
-                                      context
-                                          .read(topicSuggestionStateProvider)
-                                          .postTopicSuggestion(
-                                              _topicSuggestion.value);
-                                    },
+                                    onPressed: () => _postTopicSuggestion(
+                                      context,
+                                      _topicSuggestion.value,
+                                    ),
                                   ),
                                 )
                             ],
@@ -160,6 +163,52 @@ class TopicsTab extends HookWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Theme.of(context).backgroundColor.withOpacity(0.8),
+          child: _Loader(),
+        );
+      },
+    );
+  }
+
+  Future<void> _postTopicSuggestion(
+    BuildContext context,
+    String topic,
+  ) async {
+    final _overlay = _buildLoaderOverlay();
+
+    Overlay.of(context).insert(_overlay);
+    final response = await context
+        .read(conversationRepositoryProvider)
+        .postTopicSuggestion(topic);
+
+    response.fold(
+      (failure) {
+        _overlay.remove();
+        Fluttertoast.showToast(msg: failure.message);
+      },
+      (conversation) {
+        _overlay.remove();
+      },
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(),
       ),
     );
   }

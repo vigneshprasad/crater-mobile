@@ -12,9 +12,6 @@ final topicsStateProvider =
 final articleTopicsStateProiver =
     StateNotifierProvider((ref) => ArticleTopicsStateNotifier(ref));
 
-final topicSuggestionStateProvider =
-    StateNotifierProvider((ref) => TopicSuggestionStateNotifier(ref));
-
 class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
   final ProviderReference ref;
 
@@ -32,28 +29,6 @@ class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
     state = response.fold(
       (failure) => ApiResult<List<Topic>>.error(failure),
       (topics) => ApiResult<List<Topic>>.data(topics),
-    );
-
-    return response;
-  }
-}
-
-class TopicSuggestionStateNotifier extends StateNotifier<ApiResult<Topic>> {
-  final ProviderReference ref;
-
-  TopicSuggestionStateNotifier(
-    this.ref,
-  ) : super(ApiResult<Topic>.data(null));
-
-  Future<Either<Failure, Topic>> postTopicSuggestion(String topic) async {
-    state = ApiResult<Topic>.loading();
-    final response = await ref
-        .read(conversationRepositoryProvider)
-        .postTopicSuggestion(topic);
-
-    state = response.fold(
-      (failure) => ApiResult<Topic>.error(failure),
-      (topic) => ApiResult<Topic>.data(topic),
     );
 
     return response;

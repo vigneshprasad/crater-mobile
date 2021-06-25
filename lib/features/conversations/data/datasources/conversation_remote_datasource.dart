@@ -268,7 +268,7 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
 
   @override
   Future<Topic> postTopicSuggestionToRemote(String topic) async {
-    final body = {'topic': topic};
+    final body = {'name': topic};
     final response = await read(conversationApiServiceProvider)
         .postTopicSuggestionRequest(body);
     if (response.statusCode == 201) {

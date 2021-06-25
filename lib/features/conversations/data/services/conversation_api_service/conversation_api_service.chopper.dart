@@ -127,7 +127,7 @@ class _$ConversationApiService extends ConversationApiService {
   @override
   Future<Response<dynamic>> postTopicSuggestionRequest(
       Map<String, dynamic> body) {
-    final $url = '/groups/topic/';
+    final $url = '/groups/topic/suggest/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
