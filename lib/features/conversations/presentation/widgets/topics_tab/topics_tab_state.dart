@@ -43,7 +43,7 @@ class TopicSuggestionStateNotifier extends StateNotifier<ApiResult<Topic>> {
 
   TopicSuggestionStateNotifier(
     this.ref,
-  ) : super(ApiResult<Topic>.data(null)) {}
+  ) : super(ApiResult<Topic>.data(null));
 
   Future<Either<Failure, Topic>> postTopicSuggestion(String topic) async {
     state = ApiResult<Topic>.loading();
