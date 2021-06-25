@@ -42,5 +42,5 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, Conversation>> postCreateInstantConversation(
       Conversation conversation);
-  Future<Either<Failure, Topic>> postTopicSuggestion(String topic);
+  Future<Either<Failure, void>> postTopicSuggestion(String topic);
 }

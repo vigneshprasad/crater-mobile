@@ -81,7 +81,7 @@ abstract class ConversationRemoteDatasource {
 
   // Post an instant conversation to remote server
   /// Throws [ServerException]
-  Future<Topic> postTopicSuggestionToRemote(String topic);
+  Future<void> postTopicSuggestionToRemote(String topic);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -267,13 +267,13 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<Topic> postTopicSuggestionToRemote(String topic) async {
-    final body = {'name': topic};
+  Future<void> postTopicSuggestionToRemote(String topic) async {
+    final body = {'topic': topic};
     final response = await read(conversationApiServiceProvider)
         .postTopicSuggestionRequest(body);
     if (response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return Topic.fromJson(json);
+      return;
     } else {
       throw ServerException(response.error);
     }

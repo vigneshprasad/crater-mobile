@@ -115,11 +115,15 @@ class TopicsTab extends HookWidget {
                                 SizedBox(
                                   width: 80,
                                   child: MaterialButton(
-                                    child: Text('Submit'),
-                                    onPressed: () => _postTopicSuggestion(
-                                      context,
-                                      _topicSuggestion.value,
-                                    ),
+                                    onPressed: () async {
+                                      final result = await _postTopicSuggestion(
+                                          context, _topicSuggestion.value);
+                                      if (result) {
+                                        _textController.text = '';
+                                        _topicSuggestion.value = '';
+                                      }
+                                    },
+                                    child: const Text('Submit'),
                                   ),
                                 )
                             ],
@@ -178,7 +182,7 @@ class TopicsTab extends HookWidget {
     );
   }
 
-  Future<void> _postTopicSuggestion(
+  Future<bool> _postTopicSuggestion(
     BuildContext context,
     String topic,
   ) async {
@@ -189,13 +193,18 @@ class TopicsTab extends HookWidget {
         .read(conversationRepositoryProvider)
         .postTopicSuggestion(topic);
 
-    response.fold(
+    return response.fold(
       (failure) {
         _overlay.remove();
         Fluttertoast.showToast(msg: failure.message);
+        return false;
       },
-      (conversation) {
+      (result) {
         _overlay.remove();
+        Fluttertoast.showToast(
+            msg:
+                'Thanks for your suggestion. Worknetwork team will review and update topics.');
+        return true;
       },
     );
   }
