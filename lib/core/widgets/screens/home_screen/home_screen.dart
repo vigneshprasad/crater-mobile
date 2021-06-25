@@ -49,7 +49,7 @@ class HomeScreen extends HookWidget {
     'Topics',
     'Conversations',
     'My Conversations',
-    'Users',
+    'Community',
   ];
 
   static const analyticsLabels = [

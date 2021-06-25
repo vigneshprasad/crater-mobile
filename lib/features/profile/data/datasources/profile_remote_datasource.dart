@@ -37,7 +37,7 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
 
   @override
   Future<List<Profile>> retrieveProfilesFromRemote(String tags) async {
-    final response = await apiService.retrieveProfiles(tags, '', '1', '100');
+    final response = await apiService.retrieveProfiles(tags, '', 1, 100);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as List;

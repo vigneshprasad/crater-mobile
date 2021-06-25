@@ -18,7 +18,7 @@ class _$ProfileApiService extends ProfileApiService {
 
   @override
   Future<Response<dynamic>> retrieveProfiles(
-      String tags, String search, String page, String pageSize) {
+      String tags, String search, int page, int pageSize) {
     final $url = '/user/auth/network/';
     final $params = <String, dynamic>{
       'tags': tags,
