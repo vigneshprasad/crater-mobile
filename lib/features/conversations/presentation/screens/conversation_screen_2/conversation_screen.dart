@@ -132,7 +132,8 @@ class _ConversationLoaded extends StatelessWidget {
                       option: const CustomTabsOption(),
                     ),
                   ),
-                  if (conversation.topicDetail.articleDetail == null)
+                  if (conversation.topicDetail.articleDetail == null &&
+                      conversation.topicDetail.description != null)
                     Text(conversation.topicDetail.description),
                   const SizedBox(height: AppInsets.xl),
                   Center(

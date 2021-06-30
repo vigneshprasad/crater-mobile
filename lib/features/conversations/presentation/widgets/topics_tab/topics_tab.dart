@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 import 'package:worknetwork/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
@@ -13,6 +16,7 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../routes.gr.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../article_topic_card/article_topic_card.dart';
 import 'topics_tab_state.dart';
@@ -117,7 +121,10 @@ class TopicsTab extends HookWidget {
                                   child: MaterialButton(
                                     onPressed: () async {
                                       final result = await _postTopicSuggestion(
-                                          context, _topicSuggestion.value);
+                                        context,
+                                        _topicSuggestion.value,
+                                        typeForIndex(index.value),
+                                      );
                                       if (result) {
                                         _textController.text = '';
                                         _topicSuggestion.value = '';
@@ -171,6 +178,22 @@ class TopicsTab extends HookWidget {
     );
   }
 
+  ConversationType typeForIndex(int index) {
+    switch (index) {
+      case 0:
+        return ConversationType.instant;
+        break;
+      case 1:
+        return ConversationType.curated;
+        break;
+      case 2:
+        return ConversationType.ama;
+        break;
+      default:
+        return ConversationType.instant;
+    }
+  }
+
   OverlayEntry _buildLoaderOverlay() {
     return OverlayEntry(
       builder: (context) {
@@ -185,6 +208,7 @@ class TopicsTab extends HookWidget {
   Future<bool> _postTopicSuggestion(
     BuildContext context,
     String topic,
+    ConversationType type,
   ) async {
     final _overlay = _buildLoaderOverlay();
 
@@ -199,11 +223,23 @@ class TopicsTab extends HookWidget {
         Fluttertoast.showToast(msg: failure.message);
         return false;
       },
-      (result) {
+      (topic) {
         _overlay.remove();
-        Fluttertoast.showToast(
-            msg:
-                'Thanks for your suggestion. Worknetwork team will review and update topics.');
+
+        ExtendedNavigator.of(context)
+            .push(Routes.createConversationScreen,
+                arguments:
+                    CreateConversationScreenArguments(topic: topic, type: type))
+            .then(
+          (value) {
+            if (value is Conversation) {
+              HomeTabControllerProvider.of(context).controller.animateTo(1);
+              ExtendedNavigator.of(context)
+                  .push(Routes.conversationScreen(id: value.id));
+            }
+          },
+        );
+
         return true;
       },
     );

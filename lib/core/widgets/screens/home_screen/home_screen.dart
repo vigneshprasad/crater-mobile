@@ -44,7 +44,7 @@ class HomeScreen extends HookWidget {
   static const icons = [
     Icons.home,
     Icons.people_alt,
-    Icons.add,
+    null,
     Icons.inbox,
     Icons.search,
   ];
@@ -60,7 +60,9 @@ class HomeScreen extends HookWidget {
   static const analyticsLabels = [
     "topics_tab_viewed",
     "all_conversations_tab_viewed",
+    'create_conversations_tab_viewed',
     "my_conversations_tab_viewed",
+    'community_tab_viewed',
   ];
 
   const HomeScreen({
@@ -103,6 +105,22 @@ class HomeScreen extends HookWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final value = await _startConversation(context, _activeTopic);
+          if (value == null) {
+            return;
+          }
+          _tabController.animateTo(0);
+          _activeTopic.value = value;
+        },
+        backgroundColor: Colors.black,
+        foregroundColor: HexColor.fromHex("#72675B"),
+        tooltip: 'Create a Conversation',
+        elevation: 4.0,
+        child: const Icon(Icons.add, size: 36),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BaseContainer(
         radius: 0,
         disableAnimation: true,
@@ -115,25 +133,13 @@ class HomeScreen extends HookWidget {
           type: BottomNavigationBarType.fixed,
           items: [0, 1, 2, 3, 4]
               .map((index) => BottomNavigationBarItem(
-                  icon: Container(
-                    decoration: index == 2
-                        ? BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.black,
-                          )
-                        : null,
-                    child: Icon(
-                      icons[index],
-                      size: index == 2 ? 50 : null,
-                    ),
+                  icon: Icon(
+                    icons[index],
                   ),
                   label: labels[index]))
               .toList(),
-          onTap: (int index) async {
+          onTap: (int index) {
             if (index == 2) {
-              final value = await _startConversation(context, _activeTopic);
-              _tabController.animateTo(0);
-              _activeTopic.value = value;
               return;
             }
 
