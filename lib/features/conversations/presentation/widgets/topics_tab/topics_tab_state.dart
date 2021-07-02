@@ -9,6 +9,9 @@ import '../../../domain/entity/topic_entity/topic_entity.dart';
 final topicsStateProvider =
     StateNotifierProvider((ref) => TopicsStateNotifier(ref));
 
+final amaTopicsStateProvider =
+    StateNotifierProvider((ref) => AMATopicsStateNotifier(ref));
+
 final articleTopicsStateProiver =
     StateNotifierProvider((ref) => ArticleTopicsStateNotifier(ref));
 
@@ -25,6 +28,29 @@ class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
     state = ApiResult<List<Topic>>.loading();
     final response =
         await ref.read(conversationRepositoryProvider).getAllTopics(null);
+
+    state = response.fold(
+      (failure) => ApiResult<List<Topic>>.error(failure),
+      (topics) => ApiResult<List<Topic>>.data(topics),
+    );
+
+    return response;
+  }
+}
+
+class AMATopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
+  final ProviderReference ref;
+
+  AMATopicsStateNotifier(
+    this.ref,
+  ) : super(ApiResult<List<Topic>>.loading()) {
+    getTopicsList();
+  }
+
+  Future<Either<Failure, List<Topic>>> getTopicsList() async {
+    state = ApiResult<List<Topic>>.loading();
+    final response =
+        await ref.read(conversationRepositoryProvider).getAllAMATopics();
 
     state = response.fold(
       (failure) => ApiResult<List<Topic>>.error(failure),

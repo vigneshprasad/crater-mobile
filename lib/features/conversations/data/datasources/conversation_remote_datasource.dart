@@ -25,6 +25,10 @@ abstract class ConversationRemoteDatasource {
   /// Throws [ServerException]
   Future<List<Topic>> getAllTopicsFromRemote(int parent);
 
+  /// Get List of All AMA Topics from Remote server
+  /// Throws [ServerException]
+  Future<List<Topic>> getAllAMATopicsFromRemote();
+
   /// Get List of All Topcics with Articles from Remote server
   /// filter based on [parent] topic id.
   /// Throws [ServerException]
@@ -81,7 +85,7 @@ abstract class ConversationRemoteDatasource {
 
   // Post an instant conversation to remote server
   /// Throws [ServerException]
-  Future<Topic> postTopicSuggestionToRemote(String topic);
+  Future<Topic> postTopicSuggestionToRemote(Topic topic);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -93,6 +97,20 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   Future<List<Topic>> getAllTopicsFromRemote(int parent) async {
     final response =
         await read(conversationApiServiceProvider).getAllTopics(parent);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((topic) => Topic.fromJson(topic as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Topic>> getAllAMATopicsFromRemote() async {
+    final response =
+        await read(conversationApiServiceProvider).getAllAMATopics();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -267,8 +285,11 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<Topic> postTopicSuggestionToRemote(String topic) async {
-    final body = {'topic': topic};
+  Future<Topic> postTopicSuggestionToRemote(Topic topic) async {
+    final body = {
+      'topic': topic.name,
+      'type': topic.type == TopicType.group ? 0 : 1,
+    };
     final response = await read(conversationApiServiceProvider)
         .postTopicSuggestionRequest(body);
     if (response.statusCode == 200 || response.statusCode == 201) {

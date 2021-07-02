@@ -79,7 +79,7 @@ class TopicsTab extends HookWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: 140,
+                height: (index.value != 1) ? 140 : 50,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -101,43 +101,49 @@ class TopicsTab extends HookWidget {
                             .bodyText2
                             .copyWith(color: Colors.grey),
                       ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: SizedBox(
-                          height: 50,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: BaseFormInput(
-                                  label: 'Suggest a topic',
-                                  controller: _textController,
-                                  onChanged: (text) =>
-                                      _topicSuggestion.value = text,
+                      if (index.value != 1)
+                        Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            Center(
+                              child: SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: BaseFormInput(
+                                        label: 'Suggest a topic',
+                                        controller: _textController,
+                                        onChanged: (text) =>
+                                            _topicSuggestion.value = text,
+                                      ),
+                                    ),
+                                    if (_topicSuggestion.value.isNotEmpty)
+                                      SizedBox(
+                                        width: 80,
+                                        child: MaterialButton(
+                                          onPressed: () async {
+                                            final result =
+                                                await _postTopicSuggestion(
+                                              context,
+                                              _topicSuggestion.value,
+                                              typeForIndex(index.value),
+                                            );
+                                            if (result) {
+                                              _textController.text = '';
+                                              _topicSuggestion.value = '';
+                                            }
+                                          },
+                                          child: const Text('Submit'),
+                                        ),
+                                      )
+                                  ],
                                 ),
                               ),
-                              if (_topicSuggestion.value.isNotEmpty)
-                                SizedBox(
-                                  width: 80,
-                                  child: MaterialButton(
-                                    onPressed: () async {
-                                      final result = await _postTopicSuggestion(
-                                        context,
-                                        _topicSuggestion.value,
-                                        typeForIndex(index.value),
-                                      );
-                                      if (result) {
-                                        _textController.text = '';
-                                        _topicSuggestion.value = '';
-                                      }
-                                    },
-                                    child: const Text('Submit'),
-                                  ),
-                                )
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -167,7 +173,7 @@ class TopicsTab extends HookWidget {
                           ),
                         )),
                     TopicsList(),
-                    TopicsList(),
+                    AMATopicsList(),
                   ],
                 ),
               ),
@@ -178,19 +184,16 @@ class TopicsTab extends HookWidget {
     );
   }
 
-  ConversationType typeForIndex(int index) {
+  TopicType typeForIndex(int index) {
     switch (index) {
       case 0:
-        return ConversationType.instant;
-        break;
-      case 1:
-        return ConversationType.curated;
+        return TopicType.group;
         break;
       case 2:
-        return ConversationType.ama;
+        return TopicType.ama;
         break;
       default:
-        return ConversationType.instant;
+        return TopicType.group;
     }
   }
 
@@ -208,14 +211,18 @@ class TopicsTab extends HookWidget {
   Future<bool> _postTopicSuggestion(
     BuildContext context,
     String topic,
-    ConversationType type,
+    TopicType type,
   ) async {
     final _overlay = _buildLoaderOverlay();
 
     Overlay.of(context).insert(_overlay);
+
     final response = await context
         .read(conversationRepositoryProvider)
-        .postTopicSuggestion(topic);
+        .postTopicSuggestion(Topic(
+          name: topic,
+          type: type,
+        ));
 
     return response.fold(
       (failure) {
@@ -226,10 +233,13 @@ class TopicsTab extends HookWidget {
       (topic) {
         _overlay.remove();
 
+        ConversationType conversationType = type == TopicType.ama
+            ? ConversationType.instant
+            : ConversationType.ama;
         ExtendedNavigator.of(context)
             .push(Routes.createConversationScreen,
-                arguments:
-                    CreateConversationScreenArguments(topic: topic, type: type))
+                arguments: CreateConversationScreenArguments(
+                    topic: topic, type: conversationType))
             .then(
           (value) {
             if (value is Conversation) {

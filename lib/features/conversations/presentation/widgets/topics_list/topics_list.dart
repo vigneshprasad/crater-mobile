@@ -40,6 +40,29 @@ class TopicsList extends HookWidget {
   }
 }
 
+class AMATopicsList extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final topicsState = useProvider(amaTopicsStateProvider.state);
+    return RefreshIndicator(
+        onRefresh: () {
+          final futures = [
+            context.read(amaTopicsStateProvider).getTopicsList(),
+          ];
+
+          return Future.wait(futures);
+        },
+        child: topicsState.when(
+          loading: () => Container(),
+          error: (err, st) => Container(),
+          data: (topics) => ListView.builder(
+            itemBuilder: (context, index) => _TopicCard(topic: topics[index]),
+            itemCount: topics.length,
+          ),
+        ));
+  }
+}
+
 class _TopicCard extends StatelessWidget {
   final Topic topic;
   final VoidCallback onTap;

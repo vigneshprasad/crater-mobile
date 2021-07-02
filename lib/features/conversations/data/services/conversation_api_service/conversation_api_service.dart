@@ -33,6 +33,9 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int parent);
 
+  @Get(path: 'topic/ama/')
+  Future<Response> getAllAMATopics();
+
   @Get(path: 'topic/articles/')
   Future<Response> getAllArticleTopics();
 

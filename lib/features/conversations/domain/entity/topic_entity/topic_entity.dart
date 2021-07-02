@@ -5,6 +5,8 @@ import '../../../../article/domain/entity/article_entity/article_entity.dart';
 part 'topic_entity.freezed.dart';
 part 'topic_entity.g.dart';
 
+enum TopicType { group, ama }
+
 @freezed
 abstract class Topic with _$Topic {
   factory Topic({
@@ -19,6 +21,7 @@ abstract class Topic with _$Topic {
     String creator,
     Topic root,
     int groupCount,
+    TopicType type,
     @JsonKey(name: "article_detail") Article articleDetail,
   }) = _Topic;
 
