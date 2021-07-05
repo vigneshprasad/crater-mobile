@@ -2,20 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
-import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
-import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab_state.dart';
-import 'package:worknetwork/ui/base/base_input/base_input.dart';
-import 'package:worknetwork/utils/app_localizations.dart';
 
+import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
+import '../../../../../core/color/color.dart';
+import '../../../../../core/widgets/base/base_container/base_container.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
+import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
+import '../../screens/create_conversation_screen/create_conversation_state.dart';
+import '../topics_tab/topics_tab_state.dart';
 
 class TopicsList extends HookWidget {
   @override
