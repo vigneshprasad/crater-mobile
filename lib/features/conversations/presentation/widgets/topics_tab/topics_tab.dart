@@ -44,6 +44,10 @@ class TopicsTab extends HookWidget {
     final index = useState(topic ?? 0);
     final _textController = useTextEditingController();
     final _topicSuggestion = useState('');
+
+    Future.delayed(const Duration(milliseconds: 100))
+        .then((value) => _tabController.animateTo(topic ?? 0));
+
     return DefaultTabController(
       initialIndex: topic,
       length: 3,
