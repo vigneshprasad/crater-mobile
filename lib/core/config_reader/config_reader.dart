@@ -45,9 +45,4 @@ abstract class ConfigReader {
   static String getAppsFlyerDevkey() => _config["APPSFLYER_DEV_KEY"] as String;
 
   static String getUserLeapEnvKey() => _config["USERLEAP_ENV_ID"] as String;
-
-  static String getIntercomiOSEnvKey() =>
-      _config["INTERCOM_IOS_ENV_ID"] as String;
-  static String getIntercomAndroidEnvKey() =>
-      _config["INTERCOM_ANDROID_ENV_ID"] as String;
 }
