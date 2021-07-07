@@ -31,6 +31,9 @@ class BaseInput extends StatelessWidget {
       style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
         enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppBorderRadius.textInput),
+          ),
           borderSide: BorderSide(
             color: Colors.transparent,
           ),

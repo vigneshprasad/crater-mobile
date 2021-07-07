@@ -40,6 +40,7 @@ import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_basic_screen.dart';
 import 'features/signup/presentation/screens/profile_bio_screen.dart';
+import 'features/signup/presentation/screens/profile_extra_info_screen/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
@@ -59,6 +60,7 @@ class Routes {
   static const String _profileSetupScreen = '/profile-setup/:editMode?';
   static String profileSetupScreen({dynamic editMode = ''}) =>
       '/profile-setup/$editMode';
+  static const String profileExtraInfoScreen = '/profile-extra-info';
   static const String phoneVerificationScreen = '/phone-verify';
   static const String _authScreen = '/auth/:state?';
   static String authScreen({dynamic state = ''}) => '/auth/$state';
@@ -109,6 +111,7 @@ class Routes {
     welcomeScreen,
     _objectivesScreen,
     _profileSetupScreen,
+    profileExtraInfoScreen,
     phoneVerificationScreen,
     _authScreen,
     forgotPasswordScreen,
@@ -146,6 +149,7 @@ class Router extends RouterBase {
     RouteDef(Routes.welcomeScreen, page: WelcomeScreen),
     RouteDef(Routes._objectivesScreen, page: ObjectivesScreen),
     RouteDef(Routes._profileSetupScreen, page: ProfileSetupScreen),
+    RouteDef(Routes.profileExtraInfoScreen, page: ProfileExtraInfoScreen),
     RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
     RouteDef(Routes._authScreen, page: AuthScreen),
     RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
@@ -204,6 +208,12 @@ class Router extends RouterBase {
     ProfileSetupScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ProfileSetupScreen(),
+        settings: data,
+      );
+    },
+    ProfileExtraInfoScreen: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileExtraInfoScreen(),
         settings: data,
       );
     },
@@ -447,6 +457,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
   Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
 
   Future<dynamic> pushWelcomeScreen() => push<dynamic>(Routes.welcomeScreen);
+
+  Future<dynamic> pushProfileExtraInfoScreen() =>
+      push<dynamic>(Routes.profileExtraInfoScreen);
 
   Future<dynamic> pushPhoneVerificationScreen() =>
       push<dynamic>(Routes.phoneVerificationScreen);
