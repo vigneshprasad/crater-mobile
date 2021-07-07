@@ -6,13 +6,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:share/share.dart';
 import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -21,7 +19,6 @@ import '../../../../../core/widgets/base/base_network_image/base_network_image.d
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
-import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../data/models/conversation_failures/conversation_failures.dart';
@@ -272,21 +269,21 @@ class _RoundTableLoaded extends HookWidget {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text("Leave Ongoing RoundTable"),
-          content: Text("Confirm to leave the roundtable discussion."),
+          title: const Text("Leave Ongoing RoundTable"),
+          content: const Text("Confirm to leave the roundtable discussion."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
+              child: const Text('CANCEL', style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
               onPressed: () {
                 controller.joinRoundTableChannel(user);
                 Navigator.pop(context);
               },
-              child: Text('LEAVE'),
+              child: const Text('LEAVE'),
             ),
           ],
         );
@@ -414,71 +411,6 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleDetailCard extends StatelessWidget {
-  final Article article;
-
-  const _ArticleDetailCard({
-    Key key,
-    @required this.article,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14.00,
-          fontWeight: FontWeight.w500,
-        );
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: BaseContainer(
-        child: Material(
-          color: Theme.of(context).canvasColor,
-          type: MaterialType.card,
-          child: InkWell(
-            onTap: () {
-              KiwiContainer()
-                  .resolve<CustomTabs>()
-                  .openLink(article.websiteUrl);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: AppInsets.l,
-                horizontal: AppInsets.l,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      BaseNetworkImage(
-                        imageUrl: article.articleSourceDetail.image,
-                        defaultImage: AppImageAssets.videoPlaceholder,
-                        imagebuilder: (context, imageProvider) => CircleAvatar(
-                          backgroundImage: imageProvider,
-                          radius: 12.00,
-                        ),
-                      ),
-                      const SizedBox(width: AppInsets.l),
-                      Text(article.articleSourceDetail.name,
-                          style: sourceLabelStyle),
-                    ],
-                  ),
-                  const SizedBox(height: AppInsets.l),
-                  Text(
-                    article.title,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
       ),
     );

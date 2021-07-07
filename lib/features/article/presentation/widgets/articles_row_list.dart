@@ -46,7 +46,7 @@ class _ArticlesRowListState extends State<ArticlesRowList> {
     return BlocConsumer<ArticleBloc, ArticleState>(
       listener: _blocListener,
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           height: 200,
           child: state.loading ? _buildShimmerLayout() : _buildArticlesList(),
         );

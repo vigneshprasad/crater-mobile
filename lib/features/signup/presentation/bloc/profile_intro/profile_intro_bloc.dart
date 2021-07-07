@@ -203,7 +203,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
     // Update Profile
     final updateOrError = await postUserProfile(
-        UCPostUserProfileIntroParams(body: {}, photo: event.photo));
+        UCPostUserProfileIntroParams(body: const {}, photo: event.photo));
 
     yield updateOrError.fold(
       (failure) => ProfileIntroRequestError(error: failure),

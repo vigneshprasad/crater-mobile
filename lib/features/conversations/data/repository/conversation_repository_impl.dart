@@ -95,6 +95,22 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
+  Future<Either<Failure, List<Topic>>> getAllAMATopics() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllAMATopicsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Topic>>> getAllArticleTopics() async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
@@ -225,6 +241,22 @@ class ConversationRepositoryImpl implements ConversationRepository {
     } on ServerException catch (error) {
       final message =
           jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postTopicSuggestionToRemote(topic);
+      return Right(response);
+    } on ServerException catch (error) {
+      // final message =
+      // jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {

@@ -47,7 +47,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final verify = 'Submit';
+    const verify = 'Submit';
     const heading = "You are all done!!";
     const subtitle = 'Verify your account';
     final enterOtp =
@@ -142,7 +142,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                       child: FlatButton(
                                         onPressed:
                                             _validOtp ? _postSmsCode : null,
-                                        child: Text(verify),
+                                        child: const Text(verify),
                                       ),
                                     ),
                                   ),

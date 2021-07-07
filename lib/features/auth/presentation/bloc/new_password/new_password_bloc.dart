@@ -35,7 +35,7 @@ class NewPasswordBloc extends Bloc<NewPasswordEvent, NewPasswordState> {
       NewPasswordRequestStarted event) async* {
     yield state.loading();
 
-    Map<String, String> body = Map.from(
+    final Map<String, String> body = Map.from(
         Uri.parse('http://worknetwork.in/?${event.query}').queryParameters);
 
     body['new_password'] = event.password;

@@ -143,7 +143,7 @@ class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
               ),
               Positioned(
                 bottom: 0,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 56,
                   child: tabbar,

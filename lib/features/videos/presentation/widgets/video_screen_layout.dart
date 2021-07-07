@@ -49,7 +49,7 @@ class VideoScreenLayout extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(
             vertical: AppInsets.l, horizontal: AppInsets.xl),
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: RichText(
             overflow: TextOverflow.ellipsis,

@@ -29,7 +29,6 @@ class SpeakerAvatar extends HookWidget {
 
   Future<void> _showVoiceIndicator(
       AnimationController controller, ValueNotifier<bool> visible) async {
-    print("hello");
     try {
       visible.value = true;
       await controller.forward().orCancel;
@@ -45,11 +44,6 @@ class SpeakerAvatar extends HookWidget {
       duration: const Duration(milliseconds: 100),
       vsync: ticker,
     );
-    final opacity = isLive
-        ? user.online
-            ? 1.0
-            : 0.4
-        : 1.0;
     final showVoiceActivity = useState(false);
     useEffect(() {
       if (user.online) {

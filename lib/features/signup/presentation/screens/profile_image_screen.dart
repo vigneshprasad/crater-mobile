@@ -64,8 +64,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final title = 'Want to add a photo?';
-      final info =
+      const title = 'Want to add a photo?';
+      const info =
           'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
@@ -84,7 +84,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                ProfileHeader(
+                                const ProfileHeader(
                                   title: title,
                                   subtitle: info,
                                 ),
@@ -111,9 +111,15 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _bloc.add(ProfilePhotoRequestStarted(
-      photo: _photo,
-    ));
+    if (_photo == null) {
+      _bloc.add(PostProfileIntroRequestStarted(values: {
+        'photo_url': _photoUrl,
+      }));
+    } else {
+      _bloc.add(ProfilePhotoRequestStarted(
+        photo: _photo,
+      ));
+    }
   }
 
   void _goToNextScreen() {
@@ -123,6 +129,11 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
 
   void _blocListener(BuildContext context, ProfileIntroState state) {
     if (state is ProfileIntroRequestLoaded) {
+    } else if (state is PatchProfileIntroRequestLoaded) {
+      final _ = BlocProvider.of<AuthBloc>(context)
+        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+
+      _goToNextScreen();
     } else if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));

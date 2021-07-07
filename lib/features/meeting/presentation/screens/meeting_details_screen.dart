@@ -10,13 +10,11 @@ import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
-import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/widgets/base/base_bottom_sheet_route/base_bottom_sheet_route.dart';
 import '../../../../core/widgets/base/base_large_icon_button/base_large_icon_button.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../utils/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -354,7 +352,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         style: labelStyle,
       ),
       const SizedBox(height: AppInsets.l),
-      Container(
+      SizedBox(
         height: 78,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

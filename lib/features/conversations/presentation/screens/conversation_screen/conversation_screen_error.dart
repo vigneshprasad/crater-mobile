@@ -31,10 +31,10 @@ class _ConversationError extends StatelessWidget {
                 ),
                 const SizedBox(height: AppInsets.xl),
                 RaisedButton(
-                  child: Text("Return Home"),
                   onPressed: () {
                     ExtendedNavigator.of(context).maybePop();
                   },
+                  child: const Text("Return Home"),
                 )
               ],
             ),

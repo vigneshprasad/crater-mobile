@@ -43,6 +43,13 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getAllAMATopics() {
+    final $url = '/groups/topic/ama/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getAllArticleTopics() {
     final $url = '/groups/topic/articles/';
     final $request = Request('GET', $url, client.baseUrl);
@@ -119,6 +126,15 @@ class _$ConversationApiService extends ConversationApiService {
   @override
   Future<Response<dynamic>> postConversationRequest(Map<String, dynamic> body) {
     final $url = '/groups/requests/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postTopicSuggestionRequest(
+      Map<String, dynamic> body) {
+    final $url = '/groups/topic/suggest/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
