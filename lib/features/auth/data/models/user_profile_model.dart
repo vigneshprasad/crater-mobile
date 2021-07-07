@@ -111,6 +111,32 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: 'sector')
   final int sector;
 
+  @HiveField(27)
+  final List<int> tags;
+
+  @HiveField(28)
+  @JsonKey(name: 'number_of_employees')
+  final int numberOfEmployees;
+
+  @HiveField(29)
+  @JsonKey(name: 'project_type')
+  final int projectType;
+
+  @HiveField(30)
+  @JsonKey(name: 'stage_of_company')
+  final int stageOfCompany;
+
+  @HiveField(31)
+  final int aspiration;
+
+  @HiveField(32)
+  @JsonKey(name: 'profile_intro_updated')
+  final bool profileIntroUpdated;
+
+  @HiveField(33)
+  @JsonKey(name: 'company_name')
+  final String companyName;
+
   UserProfileModel({
     this.pk,
     this.additionalInformation,
@@ -139,6 +165,13 @@ class UserProfileModel extends UserProfile {
     this.yearsOfExperience,
     this.companyType,
     this.sector,
+    this.tags,
+    this.numberOfEmployees,
+    this.projectType,
+    this.stageOfCompany,
+    this.aspiration,
+    this.profileIntroUpdated,
+    this.companyName,
   }) : super(
           pk: pk,
           additionalInformation: additionalInformation,
@@ -167,6 +200,13 @@ class UserProfileModel extends UserProfile {
           yearsOfExperience: yearsOfExperience,
           companyType: companyType,
           sector: sector,
+          tags: tags,
+          numberOfEmployees: numberOfEmployees,
+          projectType: projectType,
+          stageOfCompany: stageOfCompany,
+          aspiration: aspiration,
+          profileIntroUpdated: profileIntroUpdated,
+          companyName: companyName,
         );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>

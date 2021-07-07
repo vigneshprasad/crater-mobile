@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../bloc/profile_tags/profile_tags_bloc.dart';
 import '../widgets/objectives_picker.dart';
 import '../widgets/profile_footer.dart';
@@ -133,8 +132,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   }
 
   void goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileIntroScreen(editMode: widget.editMode));
+    ExtendedNavigator.of(context).push(Routes.profileExtraInfoScreen);
   }
 
   void _onPressSubmit() {

@@ -24,6 +24,7 @@ import 'features/signup/presentation/screens/objectives_screen.dart';
 import 'features/signup/presentation/screens/phone_verification_screen.dart';
 import 'features/signup/presentation/screens/profile_basic_screen.dart';
 import 'features/signup/presentation/screens/profile_bio_screen.dart';
+import 'features/signup/presentation/screens/profile_extra_info_screen/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_image_screen.dart';
 import 'features/signup/presentation/screens/profile_intro_screen.dart';
 import 'features/signup/presentation/screens/profile_setup_screen.dart';
@@ -38,6 +39,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     MaterialRoute(page: WelcomeScreen, path: "/welcome"),
     MaterialRoute(page: ObjectivesScreen, path: "/objectives/:editMode?"),
     MaterialRoute(page: ProfileSetupScreen, path: "/profile-setup/:editMode?"),
+    MaterialRoute(page: ProfileExtraInfoScreen, path: "/profile-extra-info"),
     MaterialRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     MaterialRoute(page: AuthScreen, path: "/auth/:state?"),
     MaterialRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
