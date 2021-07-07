@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../constants/theme.dart';
@@ -24,13 +23,11 @@ class RootApp extends HookWidget {
     final deepLinkManager = context.read(deepLinkManagerProvider);
     final attributionProvider = context.read(attributionManagerProvider);
     final userleapProvider = context.read(userLeapProvider);
-    final interComProvider = context.read(intercomProvider);
     StatusBarColor.setTheme(ThemeType.light);
 
     await userleapProvider.initSdk();
     await deepLinkManager.handleDeepLink();
     await attributionProvider.intializeSdk();
-    await interComProvider.initSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 

@@ -2,16 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
-import 'package:worknetwork/core/local_storage/local_storage.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -63,14 +58,6 @@ class ProfileScreen extends HookWidget {
                   if (state.interests != null && state.objectives != null)
                     _MeetingPreferenceInfo(state.interests, state.objectives),
                   _UserConnections(state.connections),
-                  if (allowEdit != null && allowEdit)
-                    Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: BaseLargeButton(
-                        text: 'Logout',
-                        onPressed: () => _handleLogout(context),
-                      ),
-                    )
                 ],
               ),
             ),
@@ -86,15 +73,6 @@ class ProfileScreen extends HookWidget {
           ),
           error: (error, stackTrace) => Container(color: Colors.red),
         ));
-  }
-
-  Future<void> _handleLogout(BuildContext context) async {
-    BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
-    await KiwiContainer().resolve<Analytics>().reset();
-    await KiwiContainer().resolve<LocalStorage>().deleteStorage();
-    await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context)
-        .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
   }
 }
 
