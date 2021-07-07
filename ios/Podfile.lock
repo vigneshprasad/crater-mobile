@@ -96,6 +96,10 @@ PODS:
     - GTMSessionFetcher/Core (= 1.5.0)
   - image_picker (0.0.1):
     - Flutter
+  - Intercom (7.1.3)
+  - "intercom_flutter (2.2.0+1)":
+    - Flutter
+    - Intercom (~> 7.1.0)
   - libphonenumber (0.0.1):
     - Flutter
     - libPhoneNumber-iOS
@@ -160,6 +164,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - intercom_flutter (from `.symlinks/plugins/intercom_flutter/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - OneSignal (< 3.0, >= 2.9.4)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
@@ -197,6 +202,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - Intercom
     - libPhoneNumber-iOS
     - nanopb
     - OneSignal
@@ -235,6 +241,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  intercom_flutter:
+    :path: ".symlinks/plugins/intercom_flutter/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   onesignal_flutter:
@@ -298,6 +306,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  Intercom: e44b10bbc38ccf6494c76f9bee4e2e3d7d007153
+  intercom_flutter: 8b168f7cad88366708aa1972a395e6195205fc3a
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
@@ -324,4 +334,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: cc3f13bd26d3b5ce8b4e64c32b6ee1174abff057
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

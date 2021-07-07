@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../constants/theme.dart';
@@ -70,6 +71,7 @@ class HomeScreen extends HookWidget {
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
+    final email = BlocProvider.of<AuthBloc>(context).state.user.email;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -92,7 +94,6 @@ class HomeScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
         iconSize: 28,
@@ -131,13 +132,13 @@ class HomeScreen extends HookWidget {
                   leading: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: BaseContainer(
-                      radius: 30,
                       color: Theme.of(context).backgroundColor,
+                      radius: 30,
                       child: IconButton(
-                          icon: const Icon(
-                            WorkNetIcons.menu,
-                          ),
-                          onPressed: () => Scaffold.of(context).openDrawer()),
+                        icon: const Icon(Icons.help),
+                        onPressed: () =>
+                            context.read(intercomProvider).show(email),
+                      ),
                     ),
                   ),
                   actions: [
