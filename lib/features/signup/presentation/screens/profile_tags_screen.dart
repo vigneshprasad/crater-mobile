@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
@@ -74,7 +75,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
         .toList();
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'Currently you are a';
+        const heading = 'Currently you are a';
 
         return BlocProvider.value(
           value: _bloc,
@@ -93,7 +94,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ProfileHeader(title: heading),
+                              const ProfileHeader(title: heading),
                               if (tags.isNotEmpty)
                                 ObjectivesPicker(
                                   objectives: items,

@@ -75,8 +75,7 @@ class RenderSliverObstructionInjector extends RenderSliverOverlapInjector {
   void performLayout() {
     _currentLayoutExtent = handle.layoutExtent;
     _currentMaxExtent = handle.layoutExtent;
-    geometry = new SliverGeometry(
-      scrollExtent: 0.0,
+    geometry = SliverGeometry(
       paintExtent: _currentLayoutExtent,
       maxPaintExtent: _currentMaxExtent,
     );

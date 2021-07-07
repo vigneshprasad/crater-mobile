@@ -76,7 +76,7 @@ class _TimeSlots extends StatelessWidget {
             onPressed(slot);
           },
           child: AnimatedContainer(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 vertical: AppInsets.l, horizontal: AppInsets.xl),
             duration: const Duration(milliseconds: 400),
             child: Center(

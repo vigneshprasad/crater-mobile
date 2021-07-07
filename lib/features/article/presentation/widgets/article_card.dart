@@ -18,7 +18,7 @@ class ArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
+      child: SizedBox(
         width: 180,
         child: InkWell(
           onTap: () {

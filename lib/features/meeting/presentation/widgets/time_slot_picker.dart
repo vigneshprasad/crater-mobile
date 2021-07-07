@@ -214,9 +214,8 @@ class _TimeSlotTab extends StatelessWidget {
     final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
           color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
-    final border = selected
-        ? Border.all(width: 1, color: Theme.of(context).primaryColor)
-        : null;
+    final border =
+        selected ? Border.all(color: Theme.of(context).primaryColor) : null;
     final color = Theme.of(context).canvasColor;
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.xl),
@@ -285,9 +284,8 @@ class _TimeSlot extends StatelessWidget {
           fontSize: 13,
           color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
-    final border = selected
-        ? Border.all(color: Theme.of(context).primaryColor, width: 1)
-        : null;
+    final border =
+        selected ? Border.all(color: Theme.of(context).primaryColor) : null;
     return Container(
       padding: const EdgeInsets.all(AppInsets.xxl),
       child: BaseContainer(

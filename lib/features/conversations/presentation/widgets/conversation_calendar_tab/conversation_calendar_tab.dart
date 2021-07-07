@@ -93,7 +93,7 @@ class _LoadedConversationTab extends HookWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'You can join upcoming conversations here',
               textAlign: TextAlign.center,
             ),

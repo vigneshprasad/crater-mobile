@@ -14,6 +14,7 @@ part 'create_conversation_state.freezed.dart';
 enum ConversationType {
   curated,
   instant,
+  ama,
 }
 
 final getCreateTableMetaNotifier = StateNotifierProvider.autoDispose

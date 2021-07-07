@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 enum OnboardingSlideButtonType {
   next,
-  startConversation,
+  start1on1Conversation,
+  startGroupConversation,
   joinConversation,
   dismiss,
   invite,

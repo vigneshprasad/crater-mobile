@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -99,7 +98,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final title = 'A bit more about what you do';
+      const title = 'A bit more about what you do';
 
       return BlocProvider.value(
           value: _bloc,
@@ -119,7 +118,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  ProfileHeader(title: title),
+                                  const ProfileHeader(title: title),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),

@@ -63,10 +63,10 @@ class ChatInputBar extends StatelessWidget {
               splashColor: AppTheme.primarySwatch.shade700,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               onTap: onSubmitPress,
-              child: Container(
+              child: const SizedBox(
                 width: 48,
                 height: 44,
-                child: const Center(
+                child: Center(
                   child: Icon(
                     WorkNetIcons.send,
                     color: Colors.white,

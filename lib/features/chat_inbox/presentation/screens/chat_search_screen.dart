@@ -24,7 +24,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
   ChatSearchBloc _chatSearchBloc;
   bool _showEmptyState = false;
   Timer _debounce;
-  int _page = 1;
+  final _page = 1;
 
   @override
   void initState() {

@@ -46,7 +46,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
     );
     final minVal = currency.format(0);
     final maxVal = currency.format(widget.maxDiscount);
-    return Container(
+    return SizedBox(
       height: 172,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

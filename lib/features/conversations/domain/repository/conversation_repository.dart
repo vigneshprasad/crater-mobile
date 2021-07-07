@@ -22,6 +22,8 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, List<Topic>>> getAllArticleTopics();
 
+  Future<Either<Failure, List<Topic>>> getAllAMATopics();
+
   Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
 
   Future<Either<Failure, Optin>> postGroupOptin(
@@ -42,4 +44,5 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, Conversation>> postCreateInstantConversation(
       Conversation conversation);
+  Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
 }
