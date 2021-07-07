@@ -94,16 +94,18 @@ class ProfileScreen extends HookWidget {
       data: (state) => Scaffold(
         body: DefaultTabController(
             length: 3,
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                _appBar(context, state.profile),
-              ],
-              body: TabBarView(children: [
-                _SnapShot(state.profile, state.objectives, state.meta,
-                    allowEdit != null && allowEdit),
-                _Interests(state.interests),
-                _UserConnections(state.connections),
-              ]),
+            child: SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  _appBar(context, state.profile),
+                ],
+                body: TabBarView(children: [
+                  _SnapShot(state.profile, state.objectives, state.meta,
+                      allowEdit != null && allowEdit),
+                  _Interests(state.interests),
+                  _UserConnections(state.connections),
+                ]),
+              ),
             )),
       ),
       loading: () => Scaffold(
@@ -158,9 +160,10 @@ class _ProfileBody extends HookWidget {
                                       Text(
                                         profile.generatedIntroduction,
                                       ),
-                                    Text(
-                                      profile.introduction,
-                                    )
+                                    if (profile.introduction != null)
+                                      Text(
+                                        profile.introduction,
+                                      )
                                   ]),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -334,9 +337,9 @@ class _SnapShot extends HookWidget {
                         ))
                     .toList()),
           _Objectives(objectives),
+          const Spacer(),
           if (showLogout)
-            Padding(
-              padding: const EdgeInsets.all(40.0),
+            Center(
               child: BaseLargeButton(
                 text: 'Logout',
                 onPressed: () => _handleLogout(context),

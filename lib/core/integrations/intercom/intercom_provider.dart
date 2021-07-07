@@ -21,7 +21,9 @@ class IntercomProvider {
     await Intercom.registerIdentifiedUser(email: email);
     final sub = await OneSignal.shared.getPermissionSubscriptionState();
     final token = sub.subscriptionStatus.pushToken;
-    await Intercom.sendTokenToIntercom(token);
+    if (token != null) {
+      await Intercom.sendTokenToIntercom(token);
+    }
     await Intercom.displayMessenger();
   }
 }
