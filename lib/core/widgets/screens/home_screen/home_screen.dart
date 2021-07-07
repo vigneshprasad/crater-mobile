@@ -11,12 +11,12 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
@@ -83,6 +83,7 @@ class HomeScreen extends HookWidget {
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
+    final email = BlocProvider.of<AuthBloc>(context).state.user.email;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -159,11 +160,18 @@ class HomeScreen extends HookWidget {
                 sliver: SliverAppBar(
                   floating: true,
                   // pinned: true,
-                  leading: IconButton(
-                      icon: const Icon(
-                        WorkNetIcons.menu,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BaseContainer(
+                      color: Theme.of(context).backgroundColor,
+                      radius: 30,
+                      child: IconButton(
+                        icon: const Icon(Icons.help),
+                        onPressed: () =>
+                            context.read(intercomProvider).show(email),
                       ),
-                      onPressed: () => Scaffold.of(context).openDrawer()),
+                    ),
+                  ),
                   actions: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -51,8 +52,15 @@ class PushNotificationsImpl implements PushNotifications {
   }
 
   @override
-  void handleNotificationsPressed(OSNotificationOpenedResult result) {
+  void handleNotificationsPressed(OSNotificationOpenedResult result) async {
     if (result.notification.payload.additionalData == null) {
+      return;
+    }
+
+    final isIntercomPush =
+        await Intercom.isIntercomPush(result.notification.payload.rawPayload);
+    if (isIntercomPush) {
+      await Intercom.handlePush(result.notification.payload.rawPayload);
       return;
     }
 
