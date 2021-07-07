@@ -17,6 +17,20 @@ class _$ProfileApiService extends ProfileApiService {
   final definitionType = ProfileApiService;
 
   @override
+  Future<Response<dynamic>> retrieveProfiles(
+      String tags, String search, int page, int pageSize) {
+    final $url = '/user/auth/network/';
+    final $params = <String, dynamic>{
+      'tags': tags,
+      'search': search,
+      'page': page,
+      'page_size': pageSize
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> retrieveProfile(String profileId) {
     final $url = '/user/auth/network/$profileId/';
     final $request = Request('GET', $url, client.baseUrl);

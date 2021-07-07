@@ -13,6 +13,7 @@ import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../constants/work_net_icons_icons.dart';
@@ -226,7 +227,7 @@ class HomeScreen extends HookWidget {
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
-                  Container(),
+                  ConnectionTab(),
                 ],
               ),
             ),

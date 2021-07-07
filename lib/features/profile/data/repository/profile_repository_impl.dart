@@ -33,6 +33,18 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<Either<Failure, List<Profile>>> retrieveProfiles(String tags) async {
+    try {
+      final response = await remoteDatasource.retrieveProfilesFromRemote(tags);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    } on SocketException {
+      return Left(ServerFailure("No internet"));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Profile>>> retrieveConnections(
       String profileId) async {
     try {
