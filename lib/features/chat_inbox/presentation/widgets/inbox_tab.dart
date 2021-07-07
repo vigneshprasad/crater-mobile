@@ -17,7 +17,7 @@ class InboxTab extends StatefulWidget {
 class _InboxTabState extends State<InboxTab> {
   ChatInboxBloc _inboxBloc;
   List<ChatUser> _users = [];
-  String _filter = "all";
+  final _filter = "all";
   int _currentPage = 1;
   int _pages = 1;
   Completer<void> _completer;

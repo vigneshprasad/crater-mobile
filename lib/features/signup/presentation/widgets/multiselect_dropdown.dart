@@ -194,7 +194,9 @@ class MultiSelectDropdownFormField<T> extends FormField<List<T>> {
             initialValue: initialValue,
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
             builder: (state) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

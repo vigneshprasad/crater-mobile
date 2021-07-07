@@ -110,9 +110,7 @@ class _InterestItem extends StatelessWidget {
                   padding: const EdgeInsets.all(AppInsets.sm),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: selected
-                        ? Border.all(color: primaryColor, width: 1)
-                        : null,
+                    border: selected ? Border.all(color: primaryColor) : null,
                   ),
                   child: Center(
                     child: Container(

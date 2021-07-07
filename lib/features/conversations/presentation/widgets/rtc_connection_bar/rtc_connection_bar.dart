@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 
 import '../../../../../constants/theme.dart';
-import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
@@ -31,8 +30,8 @@ class RtcConnectionBar extends HookWidget {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text("Leave RoundTable"),
-          content: Text("Confirm to leave the roundtable discussion."),
+          title: const Text("Leave RoundTable"),
+          content: const Text("Confirm to leave the roundtable discussion."),
           actions: [
             BaseContainer(
               radius: 30,

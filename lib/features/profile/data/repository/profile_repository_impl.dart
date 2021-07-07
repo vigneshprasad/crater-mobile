@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -24,6 +24,18 @@ class ProfileRepositoryImpl implements ProfileRepository {
     try {
       final response =
           await remoteDatasource.retrieveProfileFromRemote(profileId);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    } on SocketException {
+      return Left(ServerFailure("No internet"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Profile>>> retrieveProfiles(String tags) async {
+    try {
+      final response = await remoteDatasource.retrieveProfilesFromRemote(tags);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

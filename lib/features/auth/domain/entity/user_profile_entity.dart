@@ -24,12 +24,19 @@ class UserProfile extends HiveObject {
   final bool publicProfile;
   final String role;
   final String tagLine;
+  final List<int> tags;
   final List<UserTag> tagList;
   final String uuid;
   final int educationLevel;
   final int yearsOfExperience;
   final int companyType;
   final int sector;
+  final int numberOfEmployees;
+  final int projectType;
+  final int stageOfCompany;
+  final int aspiration;
+  final bool profileIntroUpdated;
+  final String companyName;
 
   UserProfile({
     this.pk,
@@ -52,6 +59,7 @@ class UserProfile extends HiveObject {
     this.publicIntroduction,
     this.publicProfile,
     this.role,
+    this.tags,
     this.tagLine,
     this.tagList,
     this.uuid,
@@ -59,5 +67,11 @@ class UserProfile extends HiveObject {
     this.yearsOfExperience,
     this.companyType,
     this.sector,
+    this.numberOfEmployees,
+    this.projectType,
+    this.stageOfCompany,
+    this.aspiration,
+    this.profileIntroUpdated,
+    this.companyName,
   });
 }

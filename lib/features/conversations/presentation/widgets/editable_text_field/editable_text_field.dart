@@ -34,7 +34,6 @@ class EditableTextField extends HookWidget {
           Flexible(
             fit: FlexFit.tight,
             child: BaseInput(
-              maxLines: null,
               focusNode: _textInputFocus,
               controller: _textController,
               label: null,
@@ -95,7 +94,7 @@ class _ToggleButton extends StatelessWidget {
         customBorder: const CircleBorder(),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Icon(icon, color: iconColor),
           ),
         ),

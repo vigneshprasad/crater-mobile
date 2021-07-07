@@ -13,7 +13,6 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
-import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
@@ -21,7 +20,6 @@ import '../../../../../core/widgets/base/base_network_image/base_network_image.d
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
-import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
@@ -98,9 +96,6 @@ class _ConversationLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Styles
-    final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-        );
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.bodyText2;
     final pageLabelStyle = Theme.of(context).textTheme.headline6;
@@ -137,7 +132,8 @@ class _ConversationLoaded extends StatelessWidget {
                       option: const CustomTabsOption(),
                     ),
                   ),
-                  if (conversation.topicDetail.articleDetail == null)
+                  if (conversation.topicDetail.articleDetail == null &&
+                      conversation.topicDetail.description != null)
                     Text(conversation.topicDetail.description),
                   const SizedBox(height: AppInsets.xl),
                   Center(
@@ -280,12 +276,6 @@ class _SpeakersListWithIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    // if (table.host != null) {
-    //   children.add(_SpeakerWithIntro(
-    //     user: table.hostDetail,
-    //     authUserPk: authUserPk,
-    //   ));
-    // }
 
     for (final speaker in speakers) {
       children.add(_SpeakerWithIntro(
@@ -349,77 +339,6 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleDetailCard extends StatelessWidget {
-  final Article article;
-
-  const _ArticleDetailCard({
-    Key key,
-    @required this.article,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14.00,
-          fontWeight: FontWeight.w500,
-          color: Colors.black87,
-        );
-    final contentStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 12.0,
-          color: Colors.black54,
-        );
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-          side: BorderSide(width: 2.00, color: Colors.grey[300]),
-        ),
-        color: Colors.white,
-        type: MaterialType.card,
-        child: InkWell(
-          onTap: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppInsets.l,
-              horizontal: AppInsets.l,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BaseNetworkImage(
-                      imageUrl: article.articleSourceDetail.image,
-                      defaultImage: AppImageAssets.videoPlaceholder,
-                      imagebuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 12.00,
-                      ),
-                    ),
-                    const SizedBox(width: AppInsets.l),
-                    Text(article.articleSourceDetail.name,
-                        style: sourceLabelStyle),
-                  ],
-                ),
-                const SizedBox(height: AppInsets.l),
-                Text(
-                  article.title,
-                  maxLines: 3,
-                  style: contentStyle,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,12 +9,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
+import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../constants/work_net_icons_icons.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
@@ -37,27 +40,35 @@ final homeScreenScrollController =
 
 class HomeScreen extends HookWidget {
   final int tab;
+  final int topic;
 
   static const icons = [
+    Icons.home,
+    Icons.people_alt,
+    null,
+    Icons.inbox,
     Icons.search,
-    Icons.people_alt_outlined,
-    Icons.inbox_outlined
   ];
 
   static const labels = [
     'Topics',
     'Conversations',
-    'My Conversations',
+    '',
+    'My',
+    'Community',
   ];
 
   static const analyticsLabels = [
     "topics_tab_viewed",
     "all_conversations_tab_viewed",
+    'create_conversations_tab_viewed',
     "my_conversations_tab_viewed",
+    'community_tab_viewed',
   ];
 
   const HomeScreen({
-    @PathParam() this.tab,
+    @PathParam() this.tab = 0,
+    @PathParam() this.topic = 0,
   });
 
   @override
@@ -68,6 +79,7 @@ class HomeScreen extends HookWidget {
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
     final _activeTab = useState(tab ?? 0);
+    final _activeTopic = useState(0);
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
@@ -94,29 +106,48 @@ class HomeScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _tabController.index,
-        iconSize: 28,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        items: [0, 1, 2]
-            .map((index) => BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: BaseContainer(
-                    radius: 30,
-                    color: Theme.of(context).backgroundColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(icons[index]),
-                    ),
-                  ),
-                ),
-                label: labels[index]))
-            .toList(),
-        onTap: (int index) {
-          _tabController.index = index;
+      drawer: AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final value = await _startConversation(context, _activeTopic);
+          if (value == null) {
+            return;
+          }
+          _tabController.animateTo(0);
+          _activeTopic.value = value;
         },
+        backgroundColor: Colors.black,
+        foregroundColor: HexColor.fromHex("#72675B"),
+        tooltip: 'Create a Conversation',
+        elevation: 4.0,
+        child: const Icon(Icons.add, size: 36),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BaseContainer(
+        radius: 0,
+        disableAnimation: true,
+        child: BottomNavigationBar(
+          currentIndex: _tabController.index,
+          iconSize: 28,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          unselectedItemColor: HexColor.fromHex("#72675B"),
+          type: BottomNavigationBarType.fixed,
+          items: [0, 1, 2, 3, 4]
+              .map((index) => BottomNavigationBarItem(
+                  icon: Icon(
+                    icons[index],
+                  ),
+                  label: labels[index]))
+              .toList(),
+          onTap: (int index) {
+            if (index == 2) {
+              return;
+            }
+
+            _tabController.index = index;
+          },
+        ),
       ),
       body: SafeArea(
         child: NestedScrollView(
@@ -190,19 +221,21 @@ class HomeScreen extends HookWidget {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TopicsTab(name: name),
+                  TopicsTab(name: name, topic: _activeTopic.value),
                   ConversationCalendarTab(
                     type: ConversationTabType.all,
                     controller: _scrollController,
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
+                  Container(),
                   ConversationCalendarTab(
                     type: ConversationTabType.my,
                     controller: _scrollController,
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
+                  ConnectionTab(),
                 ],
               ),
             ),
@@ -210,6 +243,84 @@ class HomeScreen extends HookWidget {
         ),
       ),
     );
+  }
+
+  Future<int> _startConversation(
+      BuildContext context, ValueNotifier<int> _activeTopic) {
+    return showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+                topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+              ),
+              child: Container(
+                color: Theme.of(context).backgroundColor,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 30,
+                      runSpacing: 30,
+                      children: [
+                        Text(
+                          'Start a conversation',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          'What type of conversation would you like to have?',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text(
+                                'Round\nTable',
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop(0);
+                              },
+                            ),
+                          ),
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text('1:1'),
+                              onPressed: () {
+                                Navigator.of(context).pop(1);
+                              },
+                            ),
+                          ),
+                        ),
+                        BaseContainer(
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: BaseLargeButton(
+                              child: Text('AMA'),
+                              onPressed: () {
+                                Navigator.of(context).pop(2);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ));
+        });
   }
 
   Future<void> _navigateToHome(BuildContext context) async {

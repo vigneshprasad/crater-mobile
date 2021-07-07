@@ -67,7 +67,7 @@ class _BaseDateTimePickerState<T> extends State<BaseDateTimePicker<T>>
   @override
   Widget build(BuildContext context) {
     final selectedLength = _value.length;
-    return Container(
+    return SizedBox(
       height: widget.height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -240,7 +240,7 @@ class _DatesTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

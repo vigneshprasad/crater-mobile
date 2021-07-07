@@ -81,7 +81,7 @@ class _TabItem extends StatelessWidget {
         ),
         child: Center(
           child: InkWell(
-            borderRadius: BorderRadius.all(Radius.circular(24.00)),
+            borderRadius: const BorderRadius.all(Radius.circular(24.00)),
             onTap: () {},
             child: Padding(
               padding: const EdgeInsets.symmetric(

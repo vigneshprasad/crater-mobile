@@ -1,9 +1,12 @@
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/config_reader/config_reader.dart';
 import '../interceptors/authorized_interceptor.dart';
 
 part 'user_api_service.chopper.dart';
+
+final userApiServiceProvider = Provider((_) => UserApiService.create());
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class UserApiService extends ChopperService {

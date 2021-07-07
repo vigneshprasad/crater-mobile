@@ -84,6 +84,8 @@ class RootApp extends HookWidget {
             builder: (context, child) {
               final lightBlue = HexColor.fromHex('#283950');
               final darkBlue = HexColor.fromHex('#121823');
+              final black = darkBlue;
+              //HexColor.fromHex("#10141C");
               final buttonColor = HexColor.fromHex('#C67F70');
               return Theme(
                 data: AppTheme.darkTheme.copyWith(
@@ -93,14 +95,21 @@ class RootApp extends HookWidget {
                   primaryColor: buttonColor,
                   scaffoldBackgroundColor: darkBlue,
                   canvasColor: darkBlue,
+                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                    backgroundColor: black,
+                  ),
                   appBarTheme: AppBarTheme(
                       iconTheme: IconThemeData(color: buttonColor),
-                      color: darkBlue,
+                      color: black,
                       elevation: 0,
                       actionsIconTheme: IconThemeData(color: buttonColor)),
                   buttonTheme: ButtonThemeData(
                     buttonColor: darkBlue,
                     colorScheme: const ColorScheme.dark(),
+                  ),
+                  indicatorColor: Colors.transparent,
+                  tabBarTheme: const TabBarTheme(
+                    indicatorSize: TabBarIndicatorSize.label,
                   ),
                   buttonColor: buttonColor,
                   dialogBackgroundColor: lightBlue,

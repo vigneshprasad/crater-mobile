@@ -29,6 +29,7 @@ class _$TopicTearOff {
       String creator,
       Topic root,
       int groupCount,
+      TopicType type,
       @JsonKey(name: 'article_detail') Article articleDetail}) {
     return _Topic(
       id: id,
@@ -42,6 +43,7 @@ class _$TopicTearOff {
       creator: creator,
       root: root,
       groupCount: groupCount,
+      type: type,
       articleDetail: articleDetail,
     );
   }
@@ -71,6 +73,7 @@ mixin _$Topic {
   String get creator;
   Topic get root;
   int get groupCount;
+  TopicType get type;
   @JsonKey(name: 'article_detail')
   Article get articleDetail;
 
@@ -95,6 +98,7 @@ abstract class $TopicCopyWith<$Res> {
       String creator,
       Topic root,
       int groupCount,
+      TopicType type,
       @JsonKey(name: 'article_detail') Article articleDetail});
 
   $TopicCopyWith<$Res> get root;
@@ -122,6 +126,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
     Object creator = freezed,
     Object root = freezed,
     Object groupCount = freezed,
+    Object type = freezed,
     Object articleDetail = freezed,
   }) {
     return _then(_value.copyWith(
@@ -137,6 +142,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
       groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      type: type == freezed ? _value.type : type as TopicType,
       articleDetail: articleDetail == freezed
           ? _value.articleDetail
           : articleDetail as Article,
@@ -181,6 +187,7 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
       String creator,
       Topic root,
       int groupCount,
+      TopicType type,
       @JsonKey(name: 'article_detail') Article articleDetail});
 
   @override
@@ -211,6 +218,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
     Object creator = freezed,
     Object root = freezed,
     Object groupCount = freezed,
+    Object type = freezed,
     Object articleDetail = freezed,
   }) {
     return _then(_Topic(
@@ -226,6 +234,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
       creator: creator == freezed ? _value.creator : creator as String,
       root: root == freezed ? _value.root : root as Topic,
       groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      type: type == freezed ? _value.type : type as TopicType,
       articleDetail: articleDetail == freezed
           ? _value.articleDetail
           : articleDetail as Article,
@@ -249,6 +258,7 @@ class _$_Topic implements _Topic {
       this.creator,
       this.root,
       this.groupCount,
+      this.type,
       @JsonKey(name: 'article_detail') this.articleDetail});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
@@ -279,12 +289,14 @@ class _$_Topic implements _Topic {
   @override
   final int groupCount;
   @override
+  final TopicType type;
+  @override
   @JsonKey(name: 'article_detail')
   final Article articleDetail;
 
   @override
   String toString() {
-    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, article: $article, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount, articleDetail: $articleDetail)';
+    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, article: $article, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount, type: $type, articleDetail: $articleDetail)';
   }
 
   @override
@@ -318,6 +330,8 @@ class _$_Topic implements _Topic {
             (identical(other.groupCount, groupCount) ||
                 const DeepCollectionEquality()
                     .equals(other.groupCount, groupCount)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.articleDetail, articleDetail) ||
                 const DeepCollectionEquality()
                     .equals(other.articleDetail, articleDetail)));
@@ -337,6 +351,7 @@ class _$_Topic implements _Topic {
       const DeepCollectionEquality().hash(creator) ^
       const DeepCollectionEquality().hash(root) ^
       const DeepCollectionEquality().hash(groupCount) ^
+      const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(articleDetail);
 
   @JsonKey(ignore: true)
@@ -363,6 +378,7 @@ abstract class _Topic implements Topic {
       String creator,
       Topic root,
       int groupCount,
+      TopicType type,
       @JsonKey(name: 'article_detail') Article articleDetail}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
@@ -391,6 +407,8 @@ abstract class _Topic implements Topic {
   Topic get root;
   @override
   int get groupCount;
+  @override
+  TopicType get type;
   @override
   @JsonKey(name: 'article_detail')
   Article get articleDetail;

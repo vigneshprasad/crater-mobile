@@ -50,8 +50,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'Want to grow your influence?';
-        String subHeading =
+        const heading = 'Want to grow your influence?';
+        const subHeading =
             'Enable your matches to discover you on other platforms';
         final user = authState.user;
 
@@ -64,7 +64,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 appBar: BaseAppBar(),
                 body: Column(
                   children: [
-                    ProfileHeader(
+                    const ProfileHeader(
                       title: heading,
                       subtitle: subHeading,
                     ),
@@ -132,7 +132,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           'https://www.linkedin.com/in/me/detail/contact-info/');
                     }
                   },
-                  child: Text('Copy From LinkedIn')),
+                  child: const Text('Copy From LinkedIn')),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],

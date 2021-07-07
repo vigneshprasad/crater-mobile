@@ -111,7 +111,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           color: Colors.grey[500],
         );
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
