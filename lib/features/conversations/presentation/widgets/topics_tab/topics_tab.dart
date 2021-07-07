@@ -34,14 +34,14 @@ class TopicsTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final articlesState = useProvider(articleTopicsStateProiver.state);
-    final _tabController =
-        useTabController(initialLength: titles.length, initialIndex: topic);
     final index = useState(topic ?? 0);
+    final _tabController = useTabController(
+        initialLength: titles.length, initialIndex: index.value);
     final _textController = useTextEditingController();
     final _topicSuggestion = useState('');
 
-    Future.delayed(const Duration(milliseconds: 100))
-        .then((value) => _tabController.animateTo(topic ?? 0));
+    // Future.delayed(const Duration(milliseconds: 300))
+    //     .then((value) => _tabController.animateTo(index.value));
 
     return DefaultTabController(
       initialIndex: topic,
@@ -61,8 +61,7 @@ class TopicsTab extends HookWidget {
                   child: TabBar(
                     controller: _tabController,
                     onTap: (value) {
-                      index.value = value;
-                      _tabController.animateTo(value);
+                      // index.value = value;
                     },
                     tabs: const [
                       Tab(text: 'Round Table'),
