@@ -26,17 +26,17 @@ class TopicsTab extends HookWidget {
   });
 
   final titles = [
-    'What would you like to speak about?',
     'Pick a 1:1 topic you wish to discuss',
-    'On what would you like to host an AMA?'
+    'On what would you like to host an AMA?',
+    'What would you like to speak about?',
   ];
 
   @override
   Widget build(BuildContext context) {
     final articlesState = useProvider(articleTopicsStateProiver.state);
     final index = useState(topic ?? 0);
-    final _tabController = useTabController(
-        initialLength: titles.length, initialIndex: index.value);
+    final _tabController =
+        useTabController(initialLength: titles.length, initialIndex: topic);
     final _textController = useTextEditingController();
     final _topicSuggestion = useState('');
 
@@ -61,12 +61,12 @@ class TopicsTab extends HookWidget {
                   child: TabBar(
                     controller: _tabController,
                     onTap: (value) {
-                      // index.value = value;
+                      index.value = value;
                     },
                     tabs: const [
-                      Tab(text: 'Round Table'),
                       Tab(text: '1:1'),
                       Tab(text: 'AMA'),
+                      Tab(text: 'Round Table'),
                     ],
                   ),
                 ),
@@ -77,7 +77,7 @@ class TopicsTab extends HookWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: (index.value != 1) ? 140 : 50,
+                height: (index.value != 0) ? 140 : 50,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -99,7 +99,7 @@ class TopicsTab extends HookWidget {
                             .bodyText2
                             .copyWith(color: Colors.grey),
                       ),
-                      if (index.value != 1)
+                      if (index.value != 0)
                         Column(
                           children: [
                             const SizedBox(height: 20),
@@ -150,6 +150,8 @@ class TopicsTab extends HookWidget {
                 child: TabBarView(
                   controller: _tabController,
                   children: [
+                    TopicsList(),
+                    AMATopicsList(),
                     RefreshIndicator(
                         onRefresh: () {
                           final futures = [
@@ -170,8 +172,6 @@ class TopicsTab extends HookWidget {
                             ],
                           ),
                         )),
-                    TopicsList(),
-                    AMATopicsList(),
                   ],
                 ),
               ),
@@ -184,11 +184,11 @@ class TopicsTab extends HookWidget {
 
   TopicType typeForIndex(int index) {
     switch (index) {
-      case 0:
-        return TopicType.group;
+      case 1:
+        return TopicType.ama;
         break;
       case 2:
-        return TopicType.ama;
+        return TopicType.group;
         break;
       default:
         return TopicType.group;

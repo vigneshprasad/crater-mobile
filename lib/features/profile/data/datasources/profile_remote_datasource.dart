@@ -15,7 +15,7 @@ final profileRemoteDatasourceProvider =
 abstract class ProfileRemoteDatasource {
   /// TODO: PUT COMMENTS
   Future<Profile> retrieveProfileFromRemote(String profileId);
-  Future<List<Profile>> retrieveProfilesFromRemote(String tags);
+  Future<List<Profile>> retrieveProfilesFromRemote(String tags, int page);
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId);
 }
 
@@ -36,8 +36,18 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
   }
 
   @override
-  Future<List<Profile>> retrieveProfilesFromRemote(String tags) async {
-    final response = await apiService.retrieveProfiles(tags, '', 1, 100);
+  Future<List<Profile>> retrieveProfilesFromRemote(
+    String tags,
+    int page,
+  ) async {
+    const pageSize = 10;
+    const searchKeyword = '';
+    final response = await apiService.retrieveProfiles(
+      tags,
+      searchKeyword,
+      page,
+      pageSize,
+    );
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as List;
