@@ -109,7 +109,7 @@ class HomeScreen extends HookWidget {
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final value = await _startConversation(context, _activeTopic);
+          final value = await _startConversation(context);
           if (value == null) {
             return;
           }
@@ -245,8 +245,7 @@ class HomeScreen extends HookWidget {
     );
   }
 
-  Future<int> _startConversation(
-      BuildContext context, ValueNotifier<int> _activeTopic) {
+  Future<int> _startConversation(BuildContext context) {
     return showModalBottomSheet(
         elevation: 10,
         backgroundColor: Colors.transparent,
@@ -281,10 +280,7 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text(
-                                'Round\nTable',
-                                textAlign: TextAlign.center,
-                              ),
+                              child: Text('1:1'),
                               onPressed: () {
                                 Navigator.of(context).pop(0);
                               },
@@ -296,7 +292,7 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text('1:1'),
+                              child: Text('AMA'),
                               onPressed: () {
                                 Navigator.of(context).pop(1);
                               },
@@ -308,7 +304,10 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text('AMA'),
+                              child: Text(
+                                'Round\nTable',
+                                textAlign: TextAlign.center,
+                              ),
                               onPressed: () {
                                 Navigator.of(context).pop(2);
                               },

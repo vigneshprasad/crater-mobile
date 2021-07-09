@@ -33,9 +33,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Failure, List<Profile>>> retrieveProfiles(String tags) async {
+  Future<Either<Failure, List<Profile>>> retrieveProfiles(
+      String tags, int page) async {
     try {
-      final response = await remoteDatasource.retrieveProfilesFromRemote(tags);
+      final response =
+          await remoteDatasource.retrieveProfilesFromRemote(tags, page);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

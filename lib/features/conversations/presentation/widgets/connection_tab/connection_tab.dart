@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
-import 'package:worknetwork/features/auth/domain/entity/user_tag_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab_state.dart';
-import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
+import '../../../../../constants/app_constants.dart';
+import '../../../../../constants/theme.dart';
+import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
+import '../../../../auth/domain/entity/user_tag_entity.dart';
+import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
+import 'connection_tab_state.dart';
 
 class ConnectionTab extends HookWidget {
   UserTag allTag = UserTag(name: 'All');
@@ -19,6 +19,17 @@ class ConnectionTab extends HookWidget {
   Widget build(BuildContext context) {
     final topicsState = useProvider(connectionStateProvider.state);
     final tagsState = useProvider(tagStateProvider.state);
+
+    final _controller = useScrollController();
+    _controller.addListener(() {
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        context
+            .read(connectionStateProvider)
+            .getNextPageProfileList(selectedTag.pk?.toString() ?? '');
+      }
+    });
     return RefreshIndicator(
       displacement: 96.00,
       onRefresh: () {
@@ -77,6 +88,7 @@ class ConnectionTab extends HookWidget {
             data: (profiles) => Expanded(
               child: ListView.builder(
                 itemCount: profiles.length,
+                controller: _controller,
                 itemBuilder: (BuildContext context, int index) {
                   return _Connection(
                     user: profiles[index],

@@ -28,6 +28,13 @@ abstract class ProfileApiService extends ChopperService {
     @Query('page_size') int pageSize,
   );
 
+  @Get(path: 'network/')
+  Future<Response> retrieveAllProfiles(
+    @Query() String search,
+    @Query() int page,
+    @Query('page_size') int pageSize,
+  );
+
   @Get(path: 'network/{profileId}/')
   Future<Response> retrieveProfile(@Path() String profileId);
 
