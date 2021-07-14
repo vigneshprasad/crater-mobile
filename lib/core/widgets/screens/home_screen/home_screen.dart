@@ -8,25 +8,25 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
-import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
+import '../../../../features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
+import '../../../analytics/analytics.dart';
+import '../../../color/color.dart';
 import '../../../features/share_manager/share_manager.dart';
+import '../../../integrations/intercom/intercom_provider.dart';
 import '../../base/base_container/base_container.dart';
+import '../../base/base_large_button/base_large_button.dart';
 import 'home_tab_controller_provider.dart';
 
 final homeScreenScrollController =
@@ -79,7 +79,7 @@ class HomeScreen extends HookWidget {
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
     final _activeTab = useState(tab ?? 0);
-    final _activeTopic = useState(0);
+    final _activeTopic = useState(topic ?? 0);
 
     final name =
         BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
@@ -221,7 +221,7 @@ class HomeScreen extends HookWidget {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TopicsTab(name: name, topic: _activeTopic.value),
+                  TopicsTab(name: name, topic: _activeTopic),
                   ConversationCalendarTab(
                     type: ConversationTabType.all,
                     controller: _scrollController,
