@@ -18,11 +18,11 @@ import 'topics_tab_state.dart';
 
 class TopicsTab extends HookWidget {
   final String name;
-  final int topic;
+  final ValueNotifier<int> topic;
 
   TopicsTab({
     @required this.name,
-    this.topic = 0,
+    @required this.topic,
   });
 
   final titles = [
@@ -34,17 +34,20 @@ class TopicsTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final articlesState = useProvider(articleTopicsStateProiver.state);
-    final index = useState(topic ?? 0);
-    final _tabController =
-        useTabController(initialLength: titles.length, initialIndex: topic);
+    final _tabController = useTabController(
+        initialLength: titles.length, initialIndex: topic.value);
     final _textController = useTextEditingController();
     final _topicSuggestion = useState('');
 
-    // Future.delayed(const Duration(milliseconds: 300))
-    //     .then((value) => _tabController.animateTo(index.value));
+    useEffect(() {
+      _tabController.index = topic.value;
+      return;
+    });
 
+    _tabController.addListener(() {
+      topic.value = _tabController.index;
+    });
     return DefaultTabController(
-      initialIndex: topic,
       length: 3,
       child: ScaffoldContainer(
         child: NestedScrollView(
@@ -61,7 +64,7 @@ class TopicsTab extends HookWidget {
                   child: TabBar(
                     controller: _tabController,
                     onTap: (value) {
-                      index.value = value;
+                      topic.value = value;
                     },
                     tabs: const [
                       Tab(text: '1:1'),
@@ -77,7 +80,7 @@ class TopicsTab extends HookWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                height: (index.value != 0) ? 140 : 50,
+                height: (topic.value != 0) ? 140 : 50,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -91,7 +94,7 @@ class TopicsTab extends HookWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        titles[index.value],
+                        titles[topic.value],
                         maxLines: 2,
                         textAlign: TextAlign.start,
                         style: Theme.of(context)
@@ -99,7 +102,7 @@ class TopicsTab extends HookWidget {
                             .bodyText2
                             .copyWith(color: Colors.grey),
                       ),
-                      if (index.value != 0)
+                      if (topic.value != 0)
                         Column(
                           children: [
                             const SizedBox(height: 20),
@@ -125,7 +128,7 @@ class TopicsTab extends HookWidget {
                                                 await _postTopicSuggestion(
                                               context,
                                               _topicSuggestion.value,
-                                              typeForIndex(index.value),
+                                              typeForIndex(topic.value),
                                             );
                                             if (result) {
                                               _textController.text = '';

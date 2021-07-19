@@ -87,9 +87,15 @@ class ConnectionTab extends HookWidget {
             ),
             data: (profiles) => Expanded(
               child: ListView.builder(
-                itemCount: profiles.length,
+                itemCount: profiles.length + 1,
                 controller: _controller,
                 itemBuilder: (BuildContext context, int index) {
+                  if (index == profiles.length) {
+                    return const Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
                   return _Connection(
                     user: profiles[index],
                     authUserPk: "1",
@@ -129,12 +135,15 @@ class _Connection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
-            BaseNetworkImage(
-              imageUrl: user.photo,
-              defaultImage: AppImageAssets.defaultAvatar,
-              imagebuilder: (context, imageProvider) => CircleAvatar(
-                backgroundImage: imageProvider,
-                radius: 36,
+            SizedBox(
+              width: 72,
+              child: BaseNetworkImage(
+                imageUrl: user.photo,
+                defaultImage: AppImageAssets.defaultAvatar,
+                imagebuilder: (context, imageProvider) => CircleAvatar(
+                  backgroundImage: imageProvider,
+                  radius: 36,
+                ),
               ),
             ),
             const SizedBox(width: AppInsets.xl),
