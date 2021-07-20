@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+// import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
@@ -44,12 +43,12 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     _formIndex = widget.state == "signup" ? 0 : 1;
-    LinkedInLogin.initialize(
-      context,
-      clientId: ConfigReader.getLinkedInClientId(),
-      clientSecret: ConfigReader.getLinkedInSecret(),
-      redirectUri: ConfigReader.getLinkedInRedirect(),
-    );
+    // LinkedInLogin.initialize(
+    //   context,
+    //   clientId: ConfigReader.getLinkedInClientId(),
+    //   clientSecret: ConfigReader.getLinkedInSecret(),
+    //   redirectUri: ConfigReader.getLinkedInRedirect(),
+    // );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
@@ -114,9 +113,9 @@ class _AuthScreenState extends State<AuthScreen> {
             title: Text(title),
             content: Text(json["non_field_errors"][0] as String),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 },
                 child: Text(dismiss),
               )

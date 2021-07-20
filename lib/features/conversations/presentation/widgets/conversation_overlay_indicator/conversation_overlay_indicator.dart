@@ -30,7 +30,7 @@ class ConversationOverlayIndicator extends HookWidget {
                     borderRadius: BorderRadius.circular(radius)),
                 child: InkWell(
                     onTap: () {
-                      ExtendedNavigator.of(context)
+                      AutoRouter.of(context)
                           .push(Routes.conversationScreen(id: tableId));
                     },
                     borderRadius: BorderRadius.circular(radius),

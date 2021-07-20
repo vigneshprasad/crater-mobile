@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -165,8 +164,8 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () async {
               await shareManager.share(context);
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(Routes.homeScreen(tab: 0),
+                  predicate: (route) => false);
             },
           );
           break;
@@ -176,12 +175,12 @@ class OnboardingScreen extends HookWidget {
             onTap: () async {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(Routes.homeScreen(tab: 0),
+                  predicate: (route) => false);
 
               launch(
                 'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user.email}',
-                option: const CustomTabsOption(
+                customTabsOption: const CustomTabsOption(
                   enableUrlBarHiding: true,
                   extraCustomTabs: [],
                   showPageTitle: false,
@@ -196,8 +195,9 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.topicListScreen(topic: 1), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(
+                  Routes.topicListScreen(topic: 1),
+                  predicate: (route) => false);
             },
           );
           break;
@@ -206,8 +206,9 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.topicListScreen(topic: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(
+                  Routes.topicListScreen(topic: 0),
+                  predicate: (route) => false);
             },
           );
           break;
@@ -216,8 +217,8 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 1), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(Routes.homeScreen(tab: 1),
+                  predicate: (route) => false);
             },
           );
           break;
@@ -225,8 +226,8 @@ class OnboardingScreen extends HookWidget {
           return _ActionButton(
             label: e.title,
             onTap: () {
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(Routes.homeScreen(tab: 0),
+                  predicate: (route) => false);
             },
           );
       }

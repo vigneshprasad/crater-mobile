@@ -49,7 +49,7 @@ class OneOnOneCard extends StatelessWidget {
 
     return CalendarCardLayout(
       onPressed: () {
-        ExtendedNavigator.of(context).push(Routes.meetingDetailScreen,
+        AutoRouter.of(context).push(Routes.meetingDetailScreen,
             arguments: MeetingDetailScreenArguments(meetingId: meeting.pk));
       },
       background: background,

@@ -74,7 +74,7 @@ class RootApp extends HookWidget {
             return supportedLocales.first;
           },
           debugShowCheckedModeBanner: false,
-          builder: ExtendedNavigator.builder<Router>(
+          builder: AutoRouter.builder<Router>(
             router: Router(),
             initialRoute: "/",
             navigatorKey: _navigatorKey,

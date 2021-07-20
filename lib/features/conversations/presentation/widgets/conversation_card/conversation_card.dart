@@ -74,7 +74,7 @@ class ConversationCard extends StatelessWidget {
         if (onCardPressed != null) {
           onCardPressed(conversation);
         } else {
-          ExtendedNavigator.of(context)
+          AutoRouter.of(context)
               .push(Routes.conversationScreen(id: conversation.id));
         }
       },
@@ -114,7 +114,7 @@ class ConversationCard extends StatelessWidget {
                       color: Theme.of(context).canvasColor,
                       child: IconButton(
                         icon: const Icon(Icons.arrow_forward),
-                        onPressed: () => ExtendedNavigator.of(context).push(
+                        onPressed: () => AutoRouter.of(context).push(
                             Routes.conversationScreen(id: conversation.id)),
                       ),
                     )),

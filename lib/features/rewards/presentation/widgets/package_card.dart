@@ -80,7 +80,7 @@ class PackageCard extends StatelessWidget {
   }
 
   void _onTapCard(BuildContext context) {
-    ExtendedNavigator.of(context).push(
+    AutoRouter.of(context).push(
       Routes.packageDetailScreen,
       arguments: PackageDetailScreenArguments(packageId: package.pk),
     );

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -380,7 +379,7 @@ class _SpeakerWithIntro extends StatelessWidget {
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(Routes.profileScreen(
+      onTap: () => AutoRouter.of(context).push(Routes.profileScreen(
           userId: user.pk, allowEdit: authUserPk == user.pk)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

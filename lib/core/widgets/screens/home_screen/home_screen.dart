@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
@@ -200,7 +199,7 @@ class HomeScreen extends HookWidget {
                                   .state
                                   ?.user;
                               if (user != null) {
-                                ExtendedNavigator.of(context).push(
+                                AutoRouter.of(context).push(
                                     Routes.profileScreen(
                                         userId: user.pk, allowEdit: true));
                               }
@@ -328,7 +327,7 @@ class HomeScreen extends HookWidget {
     final shown = await onboarding.getOnboardingKey();
 
     if (!shown) {
-      ExtendedNavigator.of(context).pushAndRemoveUntil(
+      AutoRouter.of(context).pushAndRemoveUntil(
           Routes.onboardingScreen(type: OnboardingType.signupComplete),
           (_) => false);
     }

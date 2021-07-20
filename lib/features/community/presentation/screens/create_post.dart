@@ -58,7 +58,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           child: BlocListener<CreatePostBloc, CreatePostState>(
             listener: (context, state) {
               if (state is CreatPostRequestSuccessLoaded) {
-                ExtendedNavigator.of(context).pop(state.post);
+                AutoRouter.of(context).pop(state.post);
               }
             },
             child: Scaffold(

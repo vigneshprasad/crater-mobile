@@ -180,7 +180,7 @@ class _TopicCard extends StatelessWidget {
       return;
     }
 
-    ExtendedNavigator.of(context)
+    AutoRouter.of(context)
         .push(Routes.createConversationScreen,
             arguments: CreateConversationScreenArguments(
                 topic: topic, type: ConversationType.instant))
@@ -188,8 +188,7 @@ class _TopicCard extends StatelessWidget {
       (value) {
         if (value is Conversation) {
           HomeTabControllerProvider.of(context).controller.animateTo(1);
-          ExtendedNavigator.of(context)
-              .push(Routes.conversationScreen(id: value.id));
+          AutoRouter.of(context).push(Routes.conversationScreen(id: value.id));
         }
       },
     );

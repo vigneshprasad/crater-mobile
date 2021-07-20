@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
@@ -123,7 +122,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void _goToNextScreen() {
-    ExtendedNavigator.of(context)
+    AutoRouter.of(context)
         .push(Routes.profileBioScreen(editMode: widget.editMode));
   }
 

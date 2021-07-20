@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+// import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -75,11 +75,11 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   @override
   Future<AccessToken> getLinkedInAccessToken() async {
     try {
-      final token = await LinkedInLogin.loginForAccessToken(
-          appBar: BaseAppBar(
-        title: const Text("LinkedIn Auth"),
-      ));
-      return AccessToken(token);
+      // final token = await LinkedInLogin.loginForAccessToken(
+      //     appBar: BaseAppBar(
+      //   title: const Text("LinkedIn Auth"),
+      // ));
+      // return AccessToken(token);
     } catch (error) {
       throw ServerException();
     }

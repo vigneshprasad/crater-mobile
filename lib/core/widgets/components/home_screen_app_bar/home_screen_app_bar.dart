@@ -35,14 +35,14 @@ class HomeScreenAppBar extends StatelessWidget {
         //   color: Colors.black87,
         //   icon: const Icon(WorkNetIcons.notification),
         //   onPressed: () {
-        //     ExtendedNavigator.of(context).push(Routes.notificationsScreen);
+        //     AutoRouter.of(context).push(Routes.notificationsScreen);
         //   },
         // ),
         UserProfileNavItem(
           onPressed: () {
             final user = BlocProvider.of<AuthBloc>(context).state?.user;
             if (user != null) {
-              ExtendedNavigator.of(context)
+              AutoRouter.of(context)
                   .push(Routes.profileScreen(userId: user.pk, allowEdit: true));
             }
           },

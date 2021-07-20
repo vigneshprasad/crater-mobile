@@ -26,8 +26,8 @@ class PushNotificationsImpl implements PushNotifications {
   @override
   Future<String> getSubscriptionToken() async {
     final Completer<String> _completer = Completer();
-    final sub = await OneSignal.shared.getPermissionSubscriptionState();
-    final userId = sub.subscriptionStatus.userId;
+    final device = await OneSignal.shared.getDeviceState();
+    final userId = device.userId;
     if (userId == null) {
       OneSignal.shared.setSubscriptionObserver((changes) {
         if (changes.to.userId != null) {
@@ -42,8 +42,9 @@ class PushNotificationsImpl implements PushNotifications {
 
   @override
   Future<String> getPushToken() async {
-    final sub = await OneSignal.shared.getPermissionSubscriptionState();
-    return sub.subscriptionStatus.pushToken;
+    final device = await OneSignal.shared.getDeviceState();
+
+    return device.pushToken;
   }
 
   @override
@@ -53,19 +54,19 @@ class PushNotificationsImpl implements PushNotifications {
 
   @override
   void handleNotificationsPressed(OSNotificationOpenedResult result) async {
-    if (result.notification.payload.additionalData == null) {
+    if (result.notification.additionalData == null) {
       return;
     }
 
     final isIntercomPush =
-        await Intercom.isIntercomPush(result.notification.payload.rawPayload);
+        await Intercom.isIntercomPush(result.notification.rawPayload);
     if (isIntercomPush) {
-      await Intercom.handlePush(result.notification.payload.rawPayload);
+      await Intercom.handlePush(result.notification.rawPayload);
       return;
     }
 
-    final objTyp = result.notification.payload.additionalData["obj_type"];
-    final json = result.notification.payload.additionalData;
+    final objTyp = result.notification.additionalData["obj_type"];
+    final json = result.notification.additionalData;
 
     final PushType type = enumFromType(objTyp);
     final _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
@@ -84,7 +85,7 @@ class PushNotificationsImpl implements PushNotifications {
         _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
       }
     } else if (type == PushType.createConversation) {
-      ExtendedNavigator.root.push(Routes.homeScreen(tab: 1));
+      AutoRouter.root.push(Routes.homeScreen(tab: 1));
     }
   }
 
@@ -95,20 +96,22 @@ class PushNotificationsImpl implements PushNotifications {
       OSiOSSettings.inAppLaunchUrl: false,
     };
 
-    await OneSignal.shared.init(
-      ConfigReader.getOneSignalAppId(),
-      iOSSettings: settings,
-    );
+    OneSignal.shared.setAppId(ConfigReader.getOneSignalAppId());
 
-    await OneSignal.shared.setSubscription(true);
+    // await OneSignal.shared.init(
+    //   ,
+    //   iOSSettings: settings,
+    // );
+
+    // await OneSignal.shared.setSubscription(true);
 
     final consent = await OneSignal.shared.requiresUserPrivacyConsent();
     if (consent) {
       OneSignal.shared.consentGranted(true);
     }
 
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+    // OneSignal.shared
+    //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
@@ -124,7 +127,7 @@ class PushNotificationsImpl implements PushNotifications {
   void setEventHandlers() {
     OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
 
-    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
+    // OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
 
     OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
   }

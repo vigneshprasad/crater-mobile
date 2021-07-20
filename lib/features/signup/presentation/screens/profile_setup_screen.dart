@@ -157,10 +157,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _goToNextScreen() {
     final bloc = BlocProvider.of<AuthBloc>(context);
     if (bloc.state.user.phoneNumberVerified) {
-      ExtendedNavigator.of(context)
+      AutoRouter.of(context)
           .pushAndRemoveUntil(Routes.homeScreen(tab: 0), (_) => false);
     } else {
-      ExtendedNavigator.of(context).push(Routes.phoneVerificationScreen);
+      AutoRouter.of(context).push(Routes.phoneVerificationScreen);
     }
   }
 }

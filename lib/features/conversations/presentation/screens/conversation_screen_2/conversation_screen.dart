@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -253,7 +252,7 @@ class _ConversationLoaded extends StatelessWidget {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
-          ExtendedNavigator.of(context).pushAndRemoveUntil(
+          AutoRouter.of(context).pushAndRemoveUntil(
             Routes.onboardingScreen(
                 type: OnboardingType.meetingJoining.toString()),
             (_) => false,
@@ -307,7 +306,7 @@ class _SpeakerWithIntro extends StatelessWidget {
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(
+      onTap: () => AutoRouter.of(context).push(
         Routes.profileScreen(userId: user.pk, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(

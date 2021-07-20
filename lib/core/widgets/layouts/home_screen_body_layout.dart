@@ -42,8 +42,7 @@ class HomeScreenBodyLayout extends StatelessWidget {
                       color: Colors.black87,
                       icon: const Icon(WorkNetIcons.notification),
                       onPressed: () {
-                        ExtendedNavigator.of(context)
-                            .push(Routes.notificationsScreen);
+                        AutoRouter.of(context).push(Routes.notificationsScreen);
                       },
                     )
                   ],

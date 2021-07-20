@@ -237,7 +237,7 @@ class TopicsTab extends HookWidget {
         ConversationType conversationType = type == TopicType.ama
             ? ConversationType.instant
             : ConversationType.ama;
-        ExtendedNavigator.of(context)
+        AutoRouter.of(context)
             .push(Routes.createConversationScreen,
                 arguments: CreateConversationScreenArguments(
                     topic: topic, type: conversationType))
@@ -245,7 +245,7 @@ class TopicsTab extends HookWidget {
           (value) {
             if (value is Conversation) {
               HomeTabControllerProvider.of(context).controller.animateTo(1);
-              ExtendedNavigator.of(context)
+              AutoRouter.of(context)
                   .push(Routes.conversationScreen(id: value.id));
             }
           },

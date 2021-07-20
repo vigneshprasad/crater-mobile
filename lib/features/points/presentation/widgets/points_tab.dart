@@ -39,7 +39,7 @@ class _PointsTabState extends State<PointsTab> {
     final descStyle = Theme.of(context).textTheme.bodyText2;
     final recognizer = TapGestureRecognizer()
       ..onTap = () {
-        ExtendedNavigator.of(context).push(Routes.pointsFaqScreen);
+        AutoRouter.of(context).push(Routes.pointsFaqScreen);
       };
     final pointsDescText =
         AppLocalizations.of(context).translate("rewards:tab_desc");

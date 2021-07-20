@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -88,7 +87,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
-      ExtendedNavigator.of(context).pop(password);
+      AutoRouter.of(context).pop(password);
     } else if (state is NewPasswordFailure) {
       Fluttertoast.showToast(
         msg: state.error.toString(),

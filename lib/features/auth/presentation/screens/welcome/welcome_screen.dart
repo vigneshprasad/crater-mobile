@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+// import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -74,12 +74,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
-    LinkedInLogin.initialize(
-      context,
-      clientId: ConfigReader.getLinkedInClientId(),
-      clientSecret: ConfigReader.getLinkedInSecret(),
-      redirectUri: ConfigReader.getLinkedInRedirect(),
-    );
+    // LinkedInLogin.initialize(
+    //   context,
+    //   clientId: ConfigReader.getLinkedInClientId(),
+    //   clientSecret: ConfigReader.getLinkedInSecret(),
+    //   redirectUri: ConfigReader.getLinkedInRedirect(),
+    // );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
@@ -180,9 +180,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             title: Text(title),
             content: Text(json["non_field_errors"][0] as String),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 },
                 child: Text(dismiss),
               )
@@ -384,7 +384,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
-    ExtendedNavigator.of(context).push(Routes.authScreen(state: state));
+    AutoRouter.of(context).push(Routes.authScreen(state: state));
   }
 }
 

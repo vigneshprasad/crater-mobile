@@ -208,6 +208,6 @@ class PopupManagerImpl implements PopupManager {
                 Navigator.of(context).pop(true);
               }),
         )
-        .then((value) => ExtendedNavigator.of(context).popUntilRoot());
+        .then((value) => AutoRouter.of(context).popUntilRoot());
   }
 }

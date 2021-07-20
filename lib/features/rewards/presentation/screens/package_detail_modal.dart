@@ -59,7 +59,7 @@ class PackageDetailModal extends ModalRoute<void> {
     return SafeArea(
       child: NotificationListener<DraggableScrollableNotification>(
         onNotification: (notification) {
-          final _navigator = ExtendedNavigator.of(context);
+          final _navigator = AutoRouter.of(context);
           if (notification.extent <= 0.25 && _navigator.canPop()) {
             _navigator.popUntilPath(Routes.packageDetailScreen);
             return true;
@@ -114,7 +114,7 @@ class _PackageDetailView extends StatelessWidget {
                   textTheme: ButtonTextTheme.primary,
                 ),
                 onPressed: () {
-                  ExtendedNavigator.of(context).popAndPush(
+                  AutoRouter.of(context).popAndPush(
                     Routes.packagePurchaseScreen,
                     arguments: PackagePurchaseScreenArguments(package: package),
                   );
@@ -142,7 +142,7 @@ class _PackageDetailView extends StatelessWidget {
                   delegate: _ModalAppBar(
                     package: package,
                     onPressedClose: () {
-                      ExtendedNavigator.of(context).pop();
+                      AutoRouter.of(context).pop();
                     },
                   ),
                 ),

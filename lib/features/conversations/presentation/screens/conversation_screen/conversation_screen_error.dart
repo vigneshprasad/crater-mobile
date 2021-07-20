@@ -32,7 +32,7 @@ class _ConversationError extends StatelessWidget {
                 const SizedBox(height: AppInsets.xl),
                 RaisedButton(
                   onPressed: () {
-                    ExtendedNavigator.of(context).maybePop();
+                    AutoRouter.of(context).maybePop();
                   },
                   child: const Text("Return Home"),
                 )

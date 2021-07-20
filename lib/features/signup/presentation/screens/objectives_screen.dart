@@ -136,7 +136,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
         _objectives = state.objectives;
       });
     } else if (state is PatchObjectivesRequestLoaded) {
-      ExtendedNavigator.of(context)
+      AutoRouter.of(context)
           .popAndPush(Routes.profileImageScreen(editMode: true));
     }
   }

@@ -82,7 +82,7 @@ class SpeakerChair extends StatelessWidget {
                     )
                   : InkWell(
                       onTap: () {
-                        ExtendedNavigator.of(context).push(Routes.profileScreen(
+                        AutoRouter.of(context).push(Routes.profileScreen(
                             userId: speaker.pk,
                             allowEdit: speaker.pk == authUserPK));
                       },

@@ -102,8 +102,7 @@ class _ProflieIntroLoaded extends HookWidget {
         Fluttertoast.showToast(msg: failure.message);
       },
       (profile) {
-        ExtendedNavigator.of(context)
-            .push(Routes.profileImageScreen(editMode: false));
+        AutoRouter.of(context).push(Routes.profileImageScreen(editMode: false));
       },
     );
   }

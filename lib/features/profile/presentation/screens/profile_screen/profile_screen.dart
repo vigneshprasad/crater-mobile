@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +61,7 @@ class ProfileScreen extends HookWidget {
               radius: 30,
               child: IconButton(
                   icon: const Icon(Icons.edit),
-                  onPressed: () => ExtendedNavigator.of(context)
+                  onPressed: () => AutoRouter.of(context)
                       .push(Routes.profileBasicScreen(editMode: true))),
             ),
           ),
@@ -355,7 +354,7 @@ class _SnapShot extends HookWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context)
+    AutoRouter.of(context)
         .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
   }
 }
@@ -479,7 +478,7 @@ class _UserConnections extends HookWidget {
             .map((user) => SizedBox(
                   width: itemWidth,
                   child: InkWell(
-                    onTap: () => ExtendedNavigator.of(context).push(
+                    onTap: () => AutoRouter.of(context).push(
                         Routes.profileScreen(
                             userId: user.uuid, allowEdit: false)),
                     child: Padding(

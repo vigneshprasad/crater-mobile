@@ -95,7 +95,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: IconButton(
           icon: Icon(icon),
           color: color,
-          onPressed: () => ExtendedNavigator.of(context).maybePop(),
+          onPressed: () => AutoRouter.of(context).maybePop(),
         ),
       ),
     );

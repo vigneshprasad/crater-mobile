@@ -234,7 +234,7 @@ class _CommunityTabState extends State<CommunityTab> {
   }
 
   void _onCommentPostPressed(int postId) {
-    ExtendedNavigator.of(context)
+    AutoRouter.of(context)
         .push(Routes.postScreen, arguments: PostScreenArguments(postId: postId))
         .then((value) {
       _onRefreshList();

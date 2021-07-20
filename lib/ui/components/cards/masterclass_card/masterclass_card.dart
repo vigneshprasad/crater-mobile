@@ -26,7 +26,7 @@ class MasterclassCard extends StatelessWidget {
         splashColor: Colors.grey[200],
         onTap: () {
           if (item.thumbnail != null) {
-            ExtendedNavigator.of(context).push(
+            AutoRouter.of(context).push(
               Routes.videoPlayerScreen,
               arguments: VideoPlayerScreenArguments(videoId: item.pk),
             );

@@ -118,7 +118,7 @@ class _MeetingTabState extends State<MeetingTab>
                     child: RegisterMeetingButton(
                       label: "Opt-in for a meeting",
                       onPressed: () {
-                        ExtendedNavigator.of(context)
+                        AutoRouter.of(context)
                             .push(
                               Routes.registerMeetingScreen,
                               arguments: RegisterMeetingScreenArguments(

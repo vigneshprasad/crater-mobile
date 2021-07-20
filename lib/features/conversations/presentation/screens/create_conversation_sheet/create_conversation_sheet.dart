@@ -185,7 +185,7 @@ class _SheetContent extends HookWidget {
       },
       (topics) {
         if (topics.isEmpty) {
-          ExtendedNavigator.of(context).pop(topic);
+          AutoRouter.of(context).pop(topic);
         }
       },
     );

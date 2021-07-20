@@ -170,7 +170,7 @@ class AppDrawer extends StatelessWidget {
         _handleLogout(context);
         break;
       case DrawerItemKeys.account:
-        ExtendedNavigator.of(context).push(
+        AutoRouter.of(context).push(
             Routes.profileScreen(userId: authState.user.pk, allowEdit: true));
         break;
       case DrawerItemKeys.whatsnew:
@@ -186,7 +186,7 @@ class AppDrawer extends StatelessWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context)
+    AutoRouter.of(context)
         .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
   }
 

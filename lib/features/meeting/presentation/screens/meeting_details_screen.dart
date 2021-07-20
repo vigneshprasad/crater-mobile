@@ -319,7 +319,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
                 },
               ).then((value) {
                 if (value != null && value == true) {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 }
               });
             },

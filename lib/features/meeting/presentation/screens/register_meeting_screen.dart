@@ -74,12 +74,12 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
         return BlocConsumer<MeetingBloc, MeetingState>(
           listener: (context, state) {
             if (state is PostMeetingPreferencesLoaded) {
-              ExtendedNavigator.of(context).pop();
+              AutoRouter.of(context).pop();
             } else if (state is PostMeetingPreferenceError) {
               Fluttertoast.showToast(
                 msg: state.error as String,
               );
-              ExtendedNavigator.of(context).pop();
+              AutoRouter.of(context).pop();
             } else if (state is MeetingGetPastPreferencesLoaded) {
               final UserMeetingPreference pastPrefs = state.pastPreferences;
               if (pastPrefs != null) {

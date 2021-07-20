@@ -278,12 +278,12 @@ class CreateConversationScreen extends HookWidget {
               "topic": conversation.topic,
               "topic_name": conversation.topicDetail.name,
             });
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
+        AutoRouter.of(context).pushAndRemoveUntil(
           Routes.onboardingScreen(
               type: OnboardingType.groupMeetingCreation.toString()),
           (_) => false,
         );
-        // ExtendedNavigator.of(context).pop(conversation);
+        // AutoRouter.of(context).pop(conversation);
       },
     );
   }
@@ -312,13 +312,13 @@ class CreateConversationScreen extends HookWidget {
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
+        AutoRouter.of(context).pushAndRemoveUntil(
           Routes.onboardingScreen(
               type: OnboardingType.oneOnOneMeetingCreation.toString()),
           (_) => false,
         );
 
-        // ExtendedNavigator.of(context).pop(optin);
+        // AutoRouter.of(context).pop(optin);
       },
     );
   }

@@ -112,7 +112,7 @@ class MeetingCard extends StatelessWidget {
         const Spacer(),
         BaseCardButton(
           onPressed: () {
-            ExtendedNavigator.of(context)
+            AutoRouter.of(context)
                 .push(Routes.meetingDetailScreen,
                     arguments:
                         MeetingDetailScreenArguments(meetingId: meeting.pk))

@@ -72,7 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
-      ExtendedNavigator.of(context).pop(email);
+      AutoRouter.of(context).pop(email);
     }
   }
 

@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void listenAuthState(BuildContext context, AuthState state) {
     if (state is AuthStateFailure) {
-      ExtendedNavigator.of(context).popAndPush(Routes.welcomeScreen);
+      AutoRouter.of(context).popAndPush(Routes.welcomeScreen);
     }
 
     if (state is AuthStateSuccess) {

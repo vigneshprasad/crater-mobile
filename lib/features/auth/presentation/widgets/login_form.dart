@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          ExtendedNavigator.of(context)
+                          AutoRouter.of(context)
                               .push(Routes.forgotPasswordScreen)
                               .then((value) {
                             if (value != null) {

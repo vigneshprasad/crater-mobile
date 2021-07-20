@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../core/features/websocket/data/models/ws_request.dart';

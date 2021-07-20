@@ -77,7 +77,7 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
                   Navigator.of(context).pop(true);
                 }),
           )
-          .then((value) => ExtendedNavigator.of(context).popUntilRoot());
+          .then((value) => AutoRouter.of(context).popUntilRoot());
     }
   }
 

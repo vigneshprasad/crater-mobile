@@ -453,7 +453,7 @@ class Router extends RouterBase {
 /// Navigation helper methods extension
 /// *************************************************************************
 
-extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
+extension RouterAutoRouterStateX on AutoRouterState {
   Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
 
   Future<dynamic> pushWelcomeScreen() => push<dynamic>(Routes.welcomeScreen);

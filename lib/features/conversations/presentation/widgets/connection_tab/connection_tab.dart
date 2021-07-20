@@ -127,7 +127,7 @@ class _Connection extends StatelessWidget {
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(
+      onTap: () => AutoRouter.of(context).push(
         Routes.profileScreen(
             userId: user.uuid, allowEdit: authUserPk == user.pk),
       ),

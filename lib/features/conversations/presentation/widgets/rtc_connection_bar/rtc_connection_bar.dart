@@ -62,7 +62,7 @@ class RtcConnectionBar extends HookWidget {
                     //     PopupType.conversationLeave, context);
                     // Navigator.pop(context);
 
-                    ExtendedNavigator.of(context).pushAndRemoveUntil(
+                    AutoRouter.of(context).pushAndRemoveUntil(
                       Routes.onboardingScreen(
                           type: OnboardingType.meetingLeaving.toString()),
                       (_) => false,

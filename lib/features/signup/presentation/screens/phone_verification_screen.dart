@@ -178,7 +178,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         fontSize: 14,
       );
       Future.delayed(const Duration(seconds: 1), () {
-        ExtendedNavigator.of(context)
+        AutoRouter.of(context)
             .pushAndRemoveUntil(Routes.homeScreen(tab: 0), (_) => false);
       });
     }

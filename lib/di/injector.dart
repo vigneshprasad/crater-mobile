@@ -460,7 +460,8 @@ class Di {
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
-    container.registerInstance(SentryClient(dsn: ConfigReader.getSentryDsn()));
+    container.registerInstance(
+        SentryClient(SentryOptions(dsn: ConfigReader.getSentryDsn())));
     container.registerInstance(FacebookLogin());
     container.registerInstance(GlobalKey<NavigatorState>());
   }
