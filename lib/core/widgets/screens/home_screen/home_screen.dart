@@ -219,6 +219,7 @@ class HomeScreen extends HookWidget {
             child: HomeTabControllerProvider(
               controller: _tabController,
               child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: [
                   TopicsTab(name: name, topic: _activeTopic),
