@@ -66,19 +66,19 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
     // Get Companies
     final companyResponse = await getProfileIntroCompanies(NoParams());
-    final companies = companyResponse.getOrElse(null);
+    final companies = companyResponse.getOrElse(() => []);
 
     // Get Experiences
     final experienceResponse = await getProfileIntroExperiences(NoParams());
-    final experiences = experienceResponse.getOrElse(null);
+    final experiences = experienceResponse.getOrElse(() => []);
 
     // Get Sectors
     final sectorResponse = await getProfileIntroSectors(NoParams());
-    final sectors = sectorResponse.getOrElse(null);
+    final sectors = sectorResponse.getOrElse(() => []);
 
     // Get Educations
     final educationResponse = await getProfileIntroEducations(NoParams());
-    final educations = educationResponse.getOrElse(null);
+    final educations = educationResponse.getOrElse(() => []);
 
     yield questionsOrError.fold(
       (failure) => ProfileIntroRequestError(error: failure),

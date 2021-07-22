@@ -13,7 +13,7 @@ class _$CoreInjector extends CoreInjector {
     container
       ..registerSingleton<CustomTabs>((c) => CustomTabImpl())
       ..registerSingleton<NetworkInfo>(
-          (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()))
+          (c) => NetworkInfoImpl(connectionChecker: c<dynamic>()))
       ..registerSingleton<PushNotifications>((c) => PushNotificationsImpl())
       ..registerSingleton<LocalStorage>((c) => LocalStorageImpl())
       ..registerSingleton<Analytics>((c) => AnalyticsImpl(
@@ -172,9 +172,7 @@ class _$SocialAuthInjector extends SocialAuthInjector {
       ..registerSingleton<SocialAuthRepository>(
           (c) => SocialAuthRepositoryImpl(c<SocialAuthRemoteDataSource>()))
       ..registerSingleton<SocialAuthRemoteDataSource>((c) =>
-          SocialAuthRemoteDataSourceImpl(
-              googleSignIn: c<GoogleSignIn>(),
-              facebookLogin: c<FacebookLogin>()));
+          SocialAuthRemoteDataSourceImpl(googleSignIn: c<GoogleSignIn>()));
   }
 }
 

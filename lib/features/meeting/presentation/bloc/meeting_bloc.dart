@@ -106,7 +106,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (config) => MeetingGetConfigLoaded(config: config),
+      (config) => MeetingGetConfigLoaded(config: config!),
     );
   }
 
@@ -117,7 +117,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (prefs) => MeetingGetPreferencesLoaded(preference: prefs),
+      (prefs) => MeetingGetPreferencesLoaded(preference: prefs!),
     );
   }
 
@@ -167,7 +167,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs),
+      (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs!),
     );
   }
 

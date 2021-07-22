@@ -11,7 +11,7 @@ import '../entity/post_entity.dart';
 abstract class CommunityRepository {
   Future<Either<Failure, PageApiResponse<Post>>> getPostsPage(
       int pageSize, int page);
-  Future<Either<Failure, Post>> getPost(int postId);
+  Future<Either<Failure, Post?>> getPost(int postId);
   Future<Either<Failure, int>> deletePost(int postId);
   Future<Either<Failure, Post>> createPost(String message, List<File> images);
   Future<Either<Failure, Like>> createLikeForPost(int postId, String userId);

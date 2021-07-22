@@ -55,7 +55,7 @@ class ProfileBasicBloc extends Bloc<ProfileBasicEvent, ProfileBasicState> {
     // Update User
     final user = UserModel(name: event.name);
     final patchOrError = await patchUser(PatchUserParams(user: user));
-    final updatedUser = patchOrError.getOrElse(() => null);
+    final updatedUser = patchOrError.getOrElse(() => user);
 
     yield updateOrError.fold(
       (failure) => ProfileBasicRequestError(error: failure),

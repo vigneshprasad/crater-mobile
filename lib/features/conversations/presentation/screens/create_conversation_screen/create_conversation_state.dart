@@ -66,14 +66,13 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     for (final result in response) {
       if (result.isLeft()) {
-        final failure = result.getOrElse(() => null) as Failure;
+        final failure = result.getOrElse(() => []) as Failure;
         state = TableMetaState.error(failure);
         return;
       }
     }
 
-    final interests =
-        response[0].getOrElse(() => null) as List<MeetingInterest>;
+    final interests = response[0].getOrElse(() => []) as List<MeetingInterest>;
     final slots = response[1].getOrElse(() => <DateTime>[]) as List<DateTime>;
 
     state = TableMetaState.data(CreateTableMeta(
@@ -90,15 +89,14 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     for (final result in response) {
       if (result.isLeft()) {
-        final failure = result.getOrElse(() => null) as Failure;
-        state = TableMetaState.error(failure);
+        final failure = result.getOrElse(() => []) as Failure?;
+        state = TableMetaState.error(failure!);
         return;
       }
     }
 
-    final interests =
-        response[0].getOrElse(() => null) as List<MeetingInterest>;
-    final config = response[1].getOrElse(() => null) as MeetingConfig?;
+    final interests = response[0].getOrElse(() => []) as List<MeetingInterest>?;
+    final config = response[1].getOrElse(() => []) as MeetingConfig?;
 
     if (config == null) {
       state = TableMetaState.emptyConfig();

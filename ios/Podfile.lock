@@ -18,16 +18,6 @@ PODS:
   - AppsFlyerFramework/Main (6.2.4)
   - device_info (0.0.1):
     - Flutter
-  - FBSDKCoreKit (5.15.1):
-    - FBSDKCoreKit/Basics (= 5.15.1)
-    - FBSDKCoreKit/Core (= 5.15.1)
-  - FBSDKCoreKit/Basics (5.15.1)
-  - FBSDKCoreKit/Core (5.15.1):
-    - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (5.15.1):
-    - FBSDKLoginKit/Login (= 5.15.1)
-  - FBSDKLoginKit/Login (5.15.1):
-    - FBSDKCoreKit (~> 5.0)
   - Firebase/CoreOnly (8.3.0):
     - FirebaseCore (= 8.3.0)
   - Firebase/DynamicLinks (8.3.0):
@@ -54,16 +44,10 @@ PODS:
   - Flutter (1.0.0)
   - flutter_custom_tabs (0.0.1):
     - Flutter
-  - flutter_facebook_login (0.0.1):
-    - FBSDKCoreKit (~> 5.5)
-    - FBSDKLoginKit (~> 5.5)
-    - Flutter
   - flutter_segment (0.0.1):
     - Analytics (= 3.7.0)
     - Flutter
     - Segment-Amplitude (= 3.0.1)
-  - flutter_statusbarcolor (0.0.1):
-    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -151,9 +135,7 @@ DEPENDENCIES:
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
-  - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
-  - flutter_statusbarcolor (from `.symlinks/plugins/flutter_statusbarcolor/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -182,8 +164,6 @@ SPEC REPOS:
     - Analytics
     - AppAuth
     - AppsFlyerFramework
-    - FBSDKCoreKit
-    - FBSDKLoginKit
     - Firebase
     - FirebaseCore
     - FirebaseCoreDiagnostics
@@ -220,12 +200,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_custom_tabs:
     :path: ".symlinks/plugins/flutter_custom_tabs/ios"
-  flutter_facebook_login:
-    :path: ".symlinks/plugins/flutter_facebook_login/ios"
   flutter_segment:
     :path: ".symlinks/plugins/flutter_segment/ios"
-  flutter_statusbarcolor:
-    :path: ".symlinks/plugins/flutter_statusbarcolor/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
@@ -272,8 +248,6 @@ SPEC CHECKSUMS:
   appsflyer_sdk: 1a363cc261ccbf1daffe10ea55558823be769859
   AppsFlyerFramework: f3f0e978cfb8e7dc09a3ab90da316f52cd9c56fe
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
-  FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
@@ -282,9 +256,7 @@ SPEC CHECKSUMS:
   FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
-  flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
-  flutter_statusbarcolor: 8afb1071ed8c58be929f1e32b36c629771fd2259
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
@@ -320,6 +292,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: a2691f7bbe0df903ded8e716e57e52647236e93b
+PODFILE CHECKSUM: 908fd77593ac026bfbbf44f16d3bf49250205727
 
 COCOAPODS: 1.10.1

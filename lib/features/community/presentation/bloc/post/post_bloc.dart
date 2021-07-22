@@ -42,7 +42,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     yield responseOrError.fold(
       (failure) => PostRequestError(error: failure),
-      (post) => PostResponseLoaded(post: post),
+      (post) => PostResponseLoaded(post: post!),
     );
   }
 

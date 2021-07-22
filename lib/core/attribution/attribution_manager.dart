@@ -60,7 +60,7 @@ class AttributionManagerImpl implements AttributionManager {
     _appsflyerSdk ??= await _initializeAppsFlyerSdk();
 
     try {
-      return await _appsflyerSdk!.logEvent(eventName, eventDetails);
+      return await _appsflyerSdk?.logEvent(eventName, eventDetails) ?? false;
     } on Exception catch (e) {
       throw Exception(e);
     }

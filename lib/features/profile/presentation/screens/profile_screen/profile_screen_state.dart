@@ -67,40 +67,50 @@ class GetProfileNotifier
     for (int i = 0; i < response.length; i++) {
       final data = response[i];
       if (data.isLeft()) {
-        final Failure error = data.getOrElse(null) as Failure;
-        state = AsyncValue<_ProfileScreenState>.error(error);
+        final error = data.getOrElse(() => null) as Failure?;
+        state = AsyncValue<_ProfileScreenState>.error(error!);
         return;
       }
     }
 
-    final Profile _profile = response[0].getOrElse(null) as Profile;
+    final _profile = response[0].getOrElse(() => null) as Profile?;
     final UserMeetingPreference? _preference =
-        response[1].getOrElse(null) as UserMeetingPreference?;
-    final connections = response[2].getOrElse(null) as List<Profile>;
+        response[1].getOrElse(() => null) as UserMeetingPreference?;
+    final connections = response[2].getOrElse(() => null) as List<Profile>?;
 
-    final companies = response[3].getOrElse(null) as List<ProfileIntroMeta>;
-    final educations = response[4].getOrElse(null) as List<ProfileIntroMeta>;
-    final experiences = response[5].getOrElse(null) as List<ProfileIntroMeta>;
-    final sectors = response[6].getOrElse(null) as List<ProfileIntroMeta>;
-    final user = response[7].getOrElse(null) as UserProfile;
+    final companies =
+        response[3].getOrElse(() => null) as List<ProfileIntroMeta>?;
+    final educations =
+        response[4].getOrElse(() => null) as List<ProfileIntroMeta>?;
+    final experiences =
+        response[5].getOrElse(() => null) as List<ProfileIntroMeta>?;
+    final sectors =
+        response[6].getOrElse(() => null) as List<ProfileIntroMeta>?;
+    final user = response[7].getOrElse(() => null) as UserProfile?;
 
     final Map<String, String> meta = {
-      'Profession': _profile.tag!.first.name,
-      'Sector':
-          sectors.firstWhere((element) => element.value == user.sector).name!,
+      'Profession': _profile?.tag?.first.name ?? '',
+      'Sector': sectors
+              ?.firstWhere((element) => element.value == user?.sector)
+              .name ??
+          '',
       'Working with': companies
-          .firstWhere((element) => element.value == user.companyType)
-          .name!,
+              ?.firstWhere((element) => element.value == user?.companyType)
+              .name ??
+          '',
       'Years of experience': experiences
-          .firstWhere((element) => element.value == user.yearsOfExperience)
-          .name!,
+              ?.firstWhere(
+                  (element) => element.value == user?.yearsOfExperience)
+              .name ??
+          '',
       'Level of education': educations
-          .firstWhere((element) => element.value == user.educationLevel)
-          .name!,
+              ?.firstWhere((element) => element.value == user?.educationLevel)
+              .name ??
+          '',
     };
 
     final _ProfileScreenState _profileScreenState = _ProfileScreenState(
-      profile: _profile,
+      profile: _profile!,
       interests: _preference != null ? _preference.interests : [],
       objectives: _preference != null ? _preference.objectives! : [],
       connections: connections,

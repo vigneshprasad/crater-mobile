@@ -12,7 +12,7 @@ class UCGetPost implements AsyncUseCase<Post, GetPostParams> {
   UCGetPost(this.repository);
 
   @override
-  Future<Either<Failure, Post>> call(GetPostParams params) {
+  Future<Either<Failure, Post?>> call(GetPostParams params) {
     return repository.getPost(params.postId);
   }
 }

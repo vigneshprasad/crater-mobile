@@ -33,7 +33,11 @@ class PointsRepositoryImpl implements PointsRepository {
       }
     } else {
       try {
-        return Right(localDatasource.getSelfUserPointsFromCache());
+        if (localDatasource.getSelfUserPointsFromCache() != null) {
+          return Right(localDatasource.getSelfUserPointsFromCache()!);
+        } else {
+          return Left(CacheFailure());
+        }
       } on CacheException {
         return Left(CacheFailure());
       }

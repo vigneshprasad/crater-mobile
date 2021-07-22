@@ -13,7 +13,7 @@ import '../entity/time_slot_entity.dart';
 import '../entity/user_meeting_preference_entity.dart';
 
 abstract class MeetingRepository {
-  Future<Either<Failure, MeetingConfig>> getMeetingsCoonfigs();
+  Future<Either<Failure, MeetingConfig?>> getMeetingsCoonfigs();
   Future<Either<Failure, UserMeetingPreference>> postUserMeetingPreferences(
     List<MeetingInterest> interests,
     MeetingConfig config,
@@ -23,8 +23,8 @@ abstract class MeetingRepository {
   Future<Either<Failure, List<Meeting>>> getMeetings();
   Future<Either<Failure, List<MeetingObjective>>> getMeetingObjectives();
   Future<Either<Failure, List<MeetingInterest>>> getMeetingInterests();
-  Future<Either<Failure, UserMeetingPreference>> getMeetingPreference();
-  Future<Either<Failure, UserMeetingPreference>> getPastMeetingPreference();
+  Future<Either<Failure, UserMeetingPreference?>> getMeetingPreference();
+  Future<Either<Failure, UserMeetingPreference?>> getPastMeetingPreference();
   Future<Either<Failure, List<MeetingsByDate>>> getMeetingsByDate({bool past});
   Future<Either<Failure, Meeting>> retrieveMeetingDetails(int meetingId);
   Future<Either<Failure, MeetingRsvp>> postRsvpStatusUpdate(

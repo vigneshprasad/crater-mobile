@@ -215,7 +215,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ));
 
       final profileOrError = await getUserProfile(NoParams());
-      final profile = profileOrError.getOrElse(() => state.profile);
+      final profile = profileOrError.getOrElse(() => state.profile!);
 
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),

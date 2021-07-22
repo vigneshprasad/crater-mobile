@@ -56,7 +56,8 @@ class RewardsRepositoryImpl implements RewardsRepository {
     } else {
       try {
         final package = localDatasource.getPackageFromCache(packageId);
-        return Right(package);
+        if (package != null) return Right(package);
+        return Left(CacheFailure());
       } on CacheException catch (error) {
         return Left(CacheFailure(error));
       }

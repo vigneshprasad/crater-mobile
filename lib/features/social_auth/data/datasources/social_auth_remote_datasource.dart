@@ -1,4 +1,4 @@
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 // import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -16,11 +16,11 @@ abstract class SocialAuthRemoteDataSource {
 
 class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   final GoogleSignIn googleSignIn;
-  final FacebookLogin facebookLogin;
+  // final FacebookLogin facebookLogin;
 
   SocialAuthRemoteDataSourceImpl({
     required this.googleSignIn,
-    required this.facebookLogin,
+    // required this.facebookLogin,
   });
 
   @override
@@ -44,15 +44,15 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
 
   @override
   Future<AccessToken> getFacebookAccessToken() async {
-    facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
-    try {
-      await facebookLogin.logOut();
-      final result = await facebookLogin.logIn(["email"]);
-      final token = result.accessToken.token;
-      return AccessToken(token);
-    } catch (error) {
-      throw ServerException(error);
-    }
+    // facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
+    // try {
+    //   await facebookLogin.logOut();
+    //   final result = await facebookLogin.logIn(["email"]);
+    //   final token = result.accessToken.token;
+    //   return AccessToken(token);
+    // } catch (error) {
+    throw ServerException();
+    // }
   }
 
   @override

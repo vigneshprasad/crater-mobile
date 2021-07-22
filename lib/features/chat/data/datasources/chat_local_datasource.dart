@@ -100,7 +100,7 @@ class ChatLocalDataSourceImpl implements ChatLocalDataSource {
       page: page ?? 1,
       pages: pages ?? 1,
       unreadCount: unreadCount ?? 0,
-      messages: messgesList ?? HiveList(_chatMessagesBox, objects: []),
+      messages: messgesList,
     );
 
     if (persistedChat != null) {

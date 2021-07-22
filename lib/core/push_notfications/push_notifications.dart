@@ -52,7 +52,8 @@ class PushNotificationsImpl implements PushNotifications {
   }
 
   @override
-  void handleNotificationsPressed(OSNotificationOpenedResult result) async {
+  Future<void> handleNotificationsPressed(
+      OSNotificationOpenedResult result) async {
     if (result.notification.additionalData == null) {
       return;
     }

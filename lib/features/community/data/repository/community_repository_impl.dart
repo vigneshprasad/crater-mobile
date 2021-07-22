@@ -54,7 +54,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
   }
 
   @override
-  Future<Either<Failure, Post>> getPost(int postId) async {
+  Future<Either<Failure, Post?>> getPost(int postId) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
