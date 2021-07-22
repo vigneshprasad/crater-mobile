@@ -12,12 +12,15 @@ part 'user_tag_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.userTag)
 @JsonSerializable()
 class UserTagModel extends UserTag {
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
   final int pk;
 
   UserTagModel({
-    this.name,
-    this.pk,
+    required this.name,
+    required this.pk,
   }) : super(
           name: name,
           pk: pk,

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import '../../../../api/rewards/rewards_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/package_entity.dart';
@@ -24,7 +22,7 @@ class RewardsRemoteDatasourceImpl implements RewardsRemoteDatasource {
   final RewardsApiService apiService;
 
   RewardsRemoteDatasourceImpl({
-    @required this.apiService,
+    required this.apiService,
   });
 
   @override

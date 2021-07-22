@@ -6,9 +6,9 @@ part 'conversation_rtc_info_entity.g.dart';
 @freezed
 abstract class ConversationRtcInfo with _$ConversationRtcInfo {
   factory ConversationRtcInfo({
-    String token,
-    @JsonKey(name: "channel_name") String channelName,
-    @JsonKey(name: "rtc_uid") String rtcUid,
+    required String token,
+    @JsonKey(name: "channel_name") required String channelName,
+    @JsonKey(name: "rtc_uid") required String rtcUid,
   }) = _ConversationRtcInfo;
 
   factory ConversationRtcInfo.fromJson(Map<String, dynamic> json) =>

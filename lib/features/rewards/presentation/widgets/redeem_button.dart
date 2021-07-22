@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/base/base_container/base_container.dart';
 
 class RedeemButton extends MaterialButton {
-  final double width;
-  final ButtonThemeData buttonTheme;
+  final double? width;
+  final ButtonThemeData? buttonTheme;
 
   const RedeemButton({
-    @required Widget child,
-    @required VoidCallback onPressed,
-    Color textColor,
+    required Widget child,
+    required VoidCallback onPressed,
+    Color? textColor,
     this.width,
     this.buttonTheme,
   }) : super(
@@ -27,9 +27,9 @@ class RedeemButton extends MaterialButton {
       height: buttonHeight,
       child: BaseContainer(
         radius: buttonHeight / 2,
-        child: FlatButton(
+        child: TextButton(
           onPressed: onPressed,
-          child: child,
+          child: child!,
         ),
       ),
     );

@@ -23,7 +23,7 @@ class PostSmsCodeParams extends Equatable {
   final String smsCode;
 
   const PostSmsCodeParams({
-    this.smsCode,
+    required this.smsCode,
   });
 
   @override

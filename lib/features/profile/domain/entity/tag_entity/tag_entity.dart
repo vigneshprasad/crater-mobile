@@ -6,8 +6,8 @@ part 'tag_entity.g.dart';
 @freezed
 abstract class Tag with _$Tag {
   factory Tag({
-    int pk,
-    String name,
+    required int pk,
+    required String name,
   }) = _Tag;
 
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);

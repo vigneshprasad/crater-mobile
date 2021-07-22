@@ -14,8 +14,8 @@ class MeetingsByDateModel extends MeetingsByDate {
   final List<MeetingModel> meetings;
 
   MeetingsByDateModel({
-    this.date,
-    this.meetings,
+    required this.date,
+    required this.meetings,
   }) : super(
           date: date,
           meetings: meetings,

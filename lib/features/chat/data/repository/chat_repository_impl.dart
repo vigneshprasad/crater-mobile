@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -19,9 +18,9 @@ class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remoteDataSource;
 
   ChatRepositoryImpl({
-    @required this.repository,
-    @required this.localDataSource,
-    @required this.remoteDataSource,
+    required this.repository,
+    required this.localDataSource,
+    required this.remoteDataSource,
   });
 
   @override

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'profile_entity.dart';
 
@@ -8,6 +8,10 @@ part of 'profile_entity.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Profile _$ProfileFromJson(Map<String, dynamic> json) {
   return _Profile.fromJson(json);
 }
@@ -16,16 +20,15 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 class _$ProfileTearOff {
   const _$ProfileTearOff();
 
-// ignore: unused_element
   _Profile call(
-      {int pk,
-      String uuid,
-      String name,
-      String introduction,
-      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
-      @JsonKey(name: 'tag_list') List<Tag> tag,
-      @JsonKey(name: 'linkedin_url') String linkedIn,
-      String photo}) {
+      {required int pk,
+      String? uuid,
+      String? name,
+      String? introduction,
+      @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
+      @JsonKey(name: "tag_list") List<Tag>? tag,
+      @JsonKey(name: "linkedin_url") String? linkedIn,
+      String? photo}) {
     return _Profile(
       pk: pk,
       uuid: uuid,
@@ -38,33 +41,31 @@ class _$ProfileTearOff {
     );
   }
 
-// ignore: unused_element
   Profile fromJson(Map<String, Object> json) {
     return Profile.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Profile = _$ProfileTearOff();
 
 /// @nodoc
 mixin _$Profile {
-  int get pk;
-  String get uuid;
-  String get name;
-  String get introduction;
+  int get pk => throw _privateConstructorUsedError;
+  String? get uuid => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get introduction => throw _privateConstructorUsedError;
   @JsonKey(name: 'generated_introduction')
-  String get generatedIntroduction;
-  @JsonKey(name: 'tag_list')
-  List<Tag> get tag;
-  @JsonKey(name: 'linkedin_url')
-  String get linkedIn;
-  String get photo;
+  String? get generatedIntroduction => throw _privateConstructorUsedError;
+  @JsonKey(name: "tag_list")
+  List<Tag>? get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: "linkedin_url")
+  String? get linkedIn => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ProfileCopyWith<Profile> get copyWith;
+  $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -73,13 +74,13 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res>;
   $Res call(
       {int pk,
-      String uuid,
-      String name,
-      String introduction,
-      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
-      @JsonKey(name: 'tag_list') List<Tag> tag,
-      @JsonKey(name: 'linkedin_url') String linkedIn,
-      String photo});
+      String? uuid,
+      String? name,
+      String? introduction,
+      @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
+      @JsonKey(name: "tag_list") List<Tag>? tag,
+      @JsonKey(name: "linkedin_url") String? linkedIn,
+      String? photo});
 }
 
 /// @nodoc
@@ -92,28 +93,48 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object uuid = freezed,
-    Object name = freezed,
-    Object introduction = freezed,
-    Object generatedIntroduction = freezed,
-    Object tag = freezed,
-    Object linkedIn = freezed,
-    Object photo = freezed,
+    Object? pk = freezed,
+    Object? uuid = freezed,
+    Object? name = freezed,
+    Object? introduction = freezed,
+    Object? generatedIntroduction = freezed,
+    Object? tag = freezed,
+    Object? linkedIn = freezed,
+    Object? photo = freezed,
   }) {
     return _then(_value.copyWith(
-      pk: pk == freezed ? _value.pk : pk as int,
-      uuid: uuid == freezed ? _value.uuid : uuid as String,
-      name: name == freezed ? _value.name : name as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      uuid: uuid == freezed
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
       introduction: introduction == freezed
           ? _value.introduction
-          : introduction as String,
+          : introduction // ignore: cast_nullable_to_non_nullable
+              as String?,
       generatedIntroduction: generatedIntroduction == freezed
           ? _value.generatedIntroduction
-          : generatedIntroduction as String,
-      tag: tag == freezed ? _value.tag : tag as List<Tag>,
-      linkedIn: linkedIn == freezed ? _value.linkedIn : linkedIn as String,
-      photo: photo == freezed ? _value.photo : photo as String,
+          : generatedIntroduction // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tag: tag == freezed
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as List<Tag>?,
+      linkedIn: linkedIn == freezed
+          ? _value.linkedIn
+          : linkedIn // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: photo == freezed
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -125,13 +146,13 @@ abstract class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @override
   $Res call(
       {int pk,
-      String uuid,
-      String name,
-      String introduction,
-      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
-      @JsonKey(name: 'tag_list') List<Tag> tag,
-      @JsonKey(name: 'linkedin_url') String linkedIn,
-      String photo});
+      String? uuid,
+      String? name,
+      String? introduction,
+      @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
+      @JsonKey(name: "tag_list") List<Tag>? tag,
+      @JsonKey(name: "linkedin_url") String? linkedIn,
+      String? photo});
 }
 
 /// @nodoc
@@ -145,44 +166,63 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object uuid = freezed,
-    Object name = freezed,
-    Object introduction = freezed,
-    Object generatedIntroduction = freezed,
-    Object tag = freezed,
-    Object linkedIn = freezed,
-    Object photo = freezed,
+    Object? pk = freezed,
+    Object? uuid = freezed,
+    Object? name = freezed,
+    Object? introduction = freezed,
+    Object? generatedIntroduction = freezed,
+    Object? tag = freezed,
+    Object? linkedIn = freezed,
+    Object? photo = freezed,
   }) {
     return _then(_Profile(
-      pk: pk == freezed ? _value.pk : pk as int,
-      uuid: uuid == freezed ? _value.uuid : uuid as String,
-      name: name == freezed ? _value.name : name as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      uuid: uuid == freezed
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
       introduction: introduction == freezed
           ? _value.introduction
-          : introduction as String,
+          : introduction // ignore: cast_nullable_to_non_nullable
+              as String?,
       generatedIntroduction: generatedIntroduction == freezed
           ? _value.generatedIntroduction
-          : generatedIntroduction as String,
-      tag: tag == freezed ? _value.tag : tag as List<Tag>,
-      linkedIn: linkedIn == freezed ? _value.linkedIn : linkedIn as String,
-      photo: photo == freezed ? _value.photo : photo as String,
+          : generatedIntroduction // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tag: tag == freezed
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as List<Tag>?,
+      linkedIn: linkedIn == freezed
+          ? _value.linkedIn
+          : linkedIn // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: photo == freezed
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Profile implements _Profile {
   _$_Profile(
-      {this.pk,
+      {required this.pk,
       this.uuid,
       this.name,
       this.introduction,
       @JsonKey(name: 'generated_introduction') this.generatedIntroduction,
-      @JsonKey(name: 'tag_list') this.tag,
-      @JsonKey(name: 'linkedin_url') this.linkedIn,
+      @JsonKey(name: "tag_list") this.tag,
+      @JsonKey(name: "linkedin_url") this.linkedIn,
       this.photo});
 
   factory _$_Profile.fromJson(Map<String, dynamic> json) =>
@@ -191,22 +231,22 @@ class _$_Profile implements _Profile {
   @override
   final int pk;
   @override
-  final String uuid;
+  final String? uuid;
   @override
-  final String name;
+  final String? name;
   @override
-  final String introduction;
+  final String? introduction;
   @override
   @JsonKey(name: 'generated_introduction')
-  final String generatedIntroduction;
+  final String? generatedIntroduction;
   @override
-  @JsonKey(name: 'tag_list')
-  final List<Tag> tag;
+  @JsonKey(name: "tag_list")
+  final List<Tag>? tag;
   @override
-  @JsonKey(name: 'linkedin_url')
-  final String linkedIn;
+  @JsonKey(name: "linkedin_url")
+  final String? linkedIn;
   @override
-  final String photo;
+  final String? photo;
 
   @override
   String toString() {
@@ -263,37 +303,38 @@ class _$_Profile implements _Profile {
 
 abstract class _Profile implements Profile {
   factory _Profile(
-      {int pk,
-      String uuid,
-      String name,
-      String introduction,
-      @JsonKey(name: 'generated_introduction') String generatedIntroduction,
-      @JsonKey(name: 'tag_list') List<Tag> tag,
-      @JsonKey(name: 'linkedin_url') String linkedIn,
-      String photo}) = _$_Profile;
+      {required int pk,
+      String? uuid,
+      String? name,
+      String? introduction,
+      @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
+      @JsonKey(name: "tag_list") List<Tag>? tag,
+      @JsonKey(name: "linkedin_url") String? linkedIn,
+      String? photo}) = _$_Profile;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
   @override
-  int get pk;
+  int get pk => throw _privateConstructorUsedError;
   @override
-  String get uuid;
+  String? get uuid => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String? get name => throw _privateConstructorUsedError;
   @override
-  String get introduction;
+  String? get introduction => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'generated_introduction')
-  String get generatedIntroduction;
+  String? get generatedIntroduction => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'tag_list')
-  List<Tag> get tag;
+  @JsonKey(name: "tag_list")
+  List<Tag>? get tag => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'linkedin_url')
-  String get linkedIn;
+  @JsonKey(name: "linkedin_url")
+  String? get linkedIn => throw _privateConstructorUsedError;
   @override
-  String get photo;
+  String? get photo => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ProfileCopyWith<_Profile> get copyWith;
+  _$ProfileCopyWith<_Profile> get copyWith =>
+      throw _privateConstructorUsedError;
 }

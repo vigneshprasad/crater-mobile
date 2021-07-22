@@ -14,52 +14,52 @@ part 'package_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.package)
 class PackageModel extends Package {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
   @JsonKey(name: 'max_price')
-  final int maxPrice;
+  final int? maxPrice;
 
   @HiveField(2)
   @JsonKey(name: 'max_discount')
-  final int maxDiscount;
+  final int? maxDiscount;
 
   @HiveField(3)
   @JsonKey(name: 'max_discount_points')
-  final int maxDiscountPoints;
+  final int? maxDiscountPoints;
 
   @HiveField(4)
-  final String title;
+  final String? title;
 
   @HiveField(5)
   @JsonKey(name: 'short_desc')
-  final String shortDesc;
+  final String? shortDesc;
 
   @HiveField(6)
   @JsonKey(name: 'list_image')
-  final String listImage;
+  final String? listImage;
 
   @HiveField(7)
   @JsonKey(name: 'cover_image')
-  final String coverImage;
+  final String? coverImage;
 
   @HiveField(8)
-  final String color;
+  final String? color;
 
   @HiveField(9)
-  final PackageProviderModel provider;
+  final PackageProviderModel? provider;
 
   @HiveField(10)
   @JsonKey(name: 'long_desc')
-  final String longDesc;
+  final String? longDesc;
 
   @HiveField(11)
   @JsonKey(name: 'points_conversion')
-  final double pointsConversion;
+  final double? pointsConversion;
 
   @HiveField(12)
   @JsonKey(name: 'is_dark')
-  final bool isDark;
+  final bool? isDark;
 
   PackageModel({
     this.pk,

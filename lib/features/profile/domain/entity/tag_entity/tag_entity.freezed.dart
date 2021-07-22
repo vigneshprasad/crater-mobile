@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'tag_entity.dart';
 
@@ -8,6 +8,10 @@ part of 'tag_entity.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Tag _$TagFromJson(Map<String, dynamic> json) {
   return _Tag.fromJson(json);
 }
@@ -16,32 +20,29 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 class _$TagTearOff {
   const _$TagTearOff();
 
-// ignore: unused_element
-  _Tag call({int pk, String name}) {
+  _Tag call({required int pk, required String name}) {
     return _Tag(
       pk: pk,
       name: name,
     );
   }
 
-// ignore: unused_element
   Tag fromJson(Map<String, Object> json) {
     return Tag.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Tag = _$TagTearOff();
 
 /// @nodoc
 mixin _$Tag {
-  int get pk;
-  String get name;
+  int get pk => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TagCopyWith<Tag> get copyWith;
+  $TagCopyWith<Tag> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -61,12 +62,18 @@ class _$TagCopyWithImpl<$Res> implements $TagCopyWith<$Res> {
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object name = freezed,
+    Object? pk = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      pk: pk == freezed ? _value.pk : pk as int,
-      name: name == freezed ? _value.name : name as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -90,21 +97,26 @@ class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object name = freezed,
+    Object? pk = freezed,
+    Object? name = freezed,
   }) {
     return _then(_Tag(
-      pk: pk == freezed ? _value.pk : pk as int,
-      name: name == freezed ? _value.name : name as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Tag implements _Tag {
-  _$_Tag({this.pk, this.name});
+  _$_Tag({required this.pk, required this.name});
 
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$_$_TagFromJson(json);
 
@@ -146,15 +158,15 @@ class _$_Tag implements _Tag {
 }
 
 abstract class _Tag implements Tag {
-  factory _Tag({int pk, String name}) = _$_Tag;
+  factory _Tag({required int pk, required String name}) = _$_Tag;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
   @override
-  int get pk;
+  int get pk => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$TagCopyWith<_Tag> get copyWith;
+  _$TagCopyWith<_Tag> get copyWith => throw _privateConstructorUsedError;
 }

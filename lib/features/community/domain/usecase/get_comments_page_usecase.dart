@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
@@ -28,9 +27,9 @@ class GetCommentPageParams extends Equatable {
   final int pageSize;
 
   const GetCommentPageParams({
-    @required this.postId,
-    @required this.page,
-    @required this.pageSize,
+    required this.postId,
+    required this.page,
+    required this.pageSize,
   });
 
   @override

@@ -18,7 +18,8 @@ enum ConversationType {
 }
 
 final getCreateTableMetaNotifier = StateNotifierProvider.autoDispose
-    .family<GetCreatTableMetaNotifier, ConversationType>((ref, type) {
+    .family<GetCreatTableMetaNotifier, TableMetaState, ConversationType>(
+        (ref, type) {
   final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
   return GetCreatTableMetaNotifier(meetingRepository, type, ref.read);
 });
@@ -27,7 +28,7 @@ final getCreateTableMetaNotifier = StateNotifierProvider.autoDispose
 abstract class TableMetaState with _$TableMetaState {
   factory TableMetaState.loading() = _TableMetaStateLoading;
   factory TableMetaState.data(CreateTableMeta meta) = _TableMetaStateData;
-  factory TableMetaState.error(Failure error, [StackTrace stackTrace]) =
+  factory TableMetaState.error(Failure error, [StackTrace? stackTrace]) =
       _TableMetaStateError;
   factory TableMetaState.emptyConfig() = _TableMetaStateNoConfig;
 }
@@ -97,7 +98,7 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     final interests =
         response[0].getOrElse(() => null) as List<MeetingInterest>;
-    final config = response[1].getOrElse(() => null) as MeetingConfig;
+    final config = response[1].getOrElse(() => null) as MeetingConfig?;
 
     if (config == null) {
       state = TableMetaState.emptyConfig();

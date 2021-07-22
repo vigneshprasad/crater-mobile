@@ -2,18 +2,15 @@ part of 'video_bloc.dart';
 
 abstract class VideoState extends Equatable {
   final bool loading;
-  final dynamic error;
+  final Object? error;
 
   const VideoState({
-    @required this.loading,
-    @required this.error,
+    required this.loading,
+    required this.error,
   });
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-      ];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class VideoInitial extends VideoState {
@@ -34,20 +31,20 @@ class VideoRequestLoading extends VideoState {
 
 class VideoRequestError extends VideoState {
   const VideoRequestError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(loading: false, error: error);
 }
 
 class VideoPageResponseLoaded extends VideoState {
-  final List<Video> videos;
-  final int pages;
-  final int currentPage;
+  final List<Video>? videos;
+  final int? pages;
+  final int? currentPage;
   final bool fromCache;
 
   const VideoPageResponseLoaded({
-    @required this.videos,
-    @required this.pages,
-    @required this.currentPage,
-    @required this.fromCache,
+    this.videos,
+    this.pages,
+    this.currentPage,
+    required this.fromCache,
   }) : super(loading: false, error: null);
 }

@@ -11,7 +11,7 @@ class GetPostRequestStarted extends PostEvent {
   final int postId;
 
   const GetPostRequestStarted({
-    @required this.postId,
+    required this.postId,
   });
 
   @override
@@ -24,9 +24,9 @@ class GetPostCommentsRequest extends PostEvent {
   final int pageSize;
 
   const GetPostCommentsRequest({
-    @required this.postId,
-    @required this.page,
-    @required this.pageSize,
+    required this.postId,
+    required this.page,
+    required this.pageSize,
   });
 
   @override
@@ -43,9 +43,9 @@ class CreatePostRequestStarted extends PostEvent {
   final int postId;
 
   const CreatePostRequestStarted({
-    this.creator,
-    this.message,
-    this.postId,
+    required this.creator,
+    required this.message,
+    required this.postId,
   });
 
   @override

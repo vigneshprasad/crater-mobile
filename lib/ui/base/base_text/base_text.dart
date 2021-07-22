@@ -5,9 +5,9 @@ class BaseText extends StatelessWidget {
   final TextStyle style;
 
   const BaseText({
-    Key key,
-    @required this.text,
-    @required this.style,
+    Key? key,
+    required this.text,
+    required this.style,
   }) : super(key: key);
 
   @override

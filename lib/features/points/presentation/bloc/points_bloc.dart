@@ -20,13 +20,10 @@ class PointsBloc extends Bloc<PointsEvent, PointsState> {
   final UCGetPointsRules pointsRules;
 
   PointsBloc({
-    @required this.getPoints,
-    @required this.getPointsFaq,
-    @required this.pointsRules,
-  })  : assert(getPoints != null),
-        assert(getPointsFaq != null),
-        assert(pointsRules != null),
-        super(const PointsInitial());
+    required this.getPoints,
+    required this.getPointsFaq,
+    required this.pointsRules,
+  }) : super(const PointsInitial());
 
   @override
   Stream<PointsState> mapEventToState(

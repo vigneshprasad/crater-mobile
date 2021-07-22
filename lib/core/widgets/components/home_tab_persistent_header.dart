@@ -5,13 +5,13 @@ import 'home_screen_app_bar/home_screen_app_bar.dart';
 
 class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
-  final Color color;
-  final String heading;
-  final String subHeading;
-  final List<Widget> appBarActions;
+  final Color? color;
+  final String? heading;
+  final String? subHeading;
+  final List<Widget>? appBarActions;
 
   HomeTabPersistentHeader({
-    @required this.expandedHeight,
+    required this.expandedHeight,
     this.color,
     this.heading,
     this.subHeading,
@@ -56,12 +56,12 @@ class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
                           children: [
                             if (heading != null)
                               Text(
-                                heading,
+                                heading!,
                                 textAlign: TextAlign.start,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline5
-                                    .copyWith(
+                                    ?.copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 24,
                                     ),
@@ -69,11 +69,11 @@ class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
                             const SizedBox(height: AppPadding.tiny),
                             if (subHeading != null)
                               Text(
-                                subHeading,
+                                subHeading!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1
-                                    .copyWith(
+                                    ?.copyWith(
                                       color: Colors.grey[500],
                                     ),
                                 maxLines: 1,
@@ -92,7 +92,7 @@ class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
                     opacity: shrinkOffset / maxExtent > 0.4
                         ? 1
                         : shrinkOffset / maxExtent,
-                    child: Text(heading, style: AppTheme.appBarTitle),
+                    child: Text(heading ?? '', style: AppTheme.appBarTitle),
                   ),
                 ),
               ),

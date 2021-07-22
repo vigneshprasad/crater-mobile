@@ -23,7 +23,7 @@ abstract class ConversationRemoteDatasource {
   /// Get List of All Topcics from Remote server
   /// filter based on [parent] topic id.
   /// Throws [ServerException]
-  Future<List<Topic>> getAllTopicsFromRemote(int parent);
+  Future<List<Topic>> getAllTopicsFromRemote(int? parent);
 
   /// Get List of All AMA Topics from Remote server
   /// Throws [ServerException]
@@ -94,7 +94,7 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   ConversationRemoteDatasourceImpl(this.read);
 
   @override
-  Future<List<Topic>> getAllTopicsFromRemote(int parent) async {
+  Future<List<Topic>> getAllTopicsFromRemote(int? parent) async {
     final response =
         await read(conversationApiServiceProvider).getAllTopics(parent);
     if (response.statusCode == 200) {

@@ -2,18 +2,20 @@ part of 'create_post_bloc.dart';
 
 abstract class CreatePostState extends Equatable {
   final bool loading;
-  final dynamic error;
+  final Object? error;
 
   const CreatePostState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-      ];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+        ]
+      : [loading];
 }
 
 class CreatePostInitial extends CreatePostState {
@@ -34,7 +36,7 @@ class CreatePostRequestLoading extends CreatePostState {
 
 class CreatePostRequestError extends CreatePostState {
   const CreatePostRequestError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -44,16 +46,21 @@ class CreatePostRequestError extends CreatePostState {
 class CreatPostRequestSuccessLoaded extends CreatePostState {
   final Post post;
   const CreatPostRequestSuccessLoaded({
-    this.post,
+    required this.post,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-        post,
-      ];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+          post,
+        ]
+      : [
+          loading,
+          post,
+        ];
 }

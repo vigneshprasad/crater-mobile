@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,8 +55,6 @@ class PopupManagerImpl implements PopupManager {
       case PopupType.paymentComplete:
         key = paymentCompleteKey;
         break;
-      default:
-        key = null;
     }
     return key;
   }
@@ -116,17 +115,17 @@ class PopupManagerImpl implements PopupManager {
 
   Future<void> onSignupCompleted(BuildContext context) async {
     final title =
-        AppLocalizations.of(context).translate('popup:signup_complete_title');
-    final message =
-        AppLocalizations.of(context).translate('popup:signup_complete_message');
+        AppLocalizations.of(context)?.translate('popup:signup_complete_title');
+    final message = AppLocalizations.of(context)
+        ?.translate('popup:signup_complete_message');
     final buttonTitle = AppLocalizations.of(context)
-        .translate('popup:signup_complete_button_title');
+        ?.translate('popup:signup_complete_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
     await Navigator.of(context).push(SuccessPopup(
-        title: title,
-        message: message,
-        buttonTitle: buttonTitle,
+        title: title!,
+        message: message!,
+        buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.signupComplete,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
@@ -134,18 +133,18 @@ class PopupManagerImpl implements PopupManager {
   }
 
   Future<void> onConversionJoined(BuildContext context) async {
-    final title =
-        AppLocalizations.of(context).translate('popup:conversation_join_title');
+    final title = AppLocalizations.of(context)
+        ?.translate('popup:conversation_join_title');
     final message = AppLocalizations.of(context)
-        .translate('popup:conversation_join_message');
+        ?.translate('popup:conversation_join_message');
     final buttonTitle = AppLocalizations.of(context)
-        .translate('popup:conversation_join_button_title');
+        ?.translate('popup:conversation_join_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
     await Navigator.of(context).push(SuccessPopup(
-        title: title,
-        message: message,
-        buttonTitle: buttonTitle,
+        title: title!,
+        message: message!,
+        buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationJoin,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
@@ -154,17 +153,17 @@ class PopupManagerImpl implements PopupManager {
 
   Future<void> onConversationOptin(BuildContext context) async {
     final title = AppLocalizations.of(context)
-        .translate('popup:conversation_optin_title');
+        ?.translate('popup:conversation_optin_title');
     final message = AppLocalizations.of(context)
-        .translate('popup:conversation_optin_message');
+        ?.translate('popup:conversation_optin_message');
     final buttonTitle = AppLocalizations.of(context)
-        .translate('popup:conversation_optin_button_title');
+        ?.translate('popup:conversation_optin_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
     await Navigator.of(context).push(SuccessPopup(
-        title: title,
-        message: message,
-        buttonTitle: buttonTitle,
+        title: title!,
+        message: message!,
+        buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationOptin,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
@@ -173,18 +172,18 @@ class PopupManagerImpl implements PopupManager {
 
   Future<void> onLeaveConversation(BuildContext context) async {
     final title = AppLocalizations.of(context)
-        .translate('popup:conversation_leave_title');
+        ?.translate('popup:conversation_leave_title');
     final message = AppLocalizations.of(context)
-        .translate('popup:conversation_leave_message');
+        ?.translate('popup:conversation_leave_message');
     final buttonTitle = AppLocalizations.of(context)
-        .translate('popup:conversation_leave_button_title');
+        ?.translate('popup:conversation_leave_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
 
     await Navigator.of(context).push(SuccessPopup(
-        title: title,
-        message: message,
-        buttonTitle: buttonTitle,
+        title: title!,
+        message: message!,
+        buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationLeave,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
@@ -193,16 +192,16 @@ class PopupManagerImpl implements PopupManager {
 
   Future<void> onPaymentCompleted(BuildContext context) async {
     final successText =
-        AppLocalizations.of(context).translate('rewards:succes_text');
+        AppLocalizations.of(context)?.translate('rewards:succes_text');
     final successDesc =
-        AppLocalizations.of(context).translate('rewards:success_desc');
-    final buttonText = AppLocalizations.of(context).translate("got_it");
+        AppLocalizations.of(context)?.translate('rewards:success_desc');
+    final buttonText = AppLocalizations.of(context)?.translate("got_it");
     await Navigator.of(context)
         .push(
           SuccessPopup(
-              title: successText,
-              message: successDesc,
-              buttonTitle: buttonText,
+              title: successText!,
+              message: successDesc!,
+              buttonTitle: buttonText!,
               iconAsset: AppImageAssets.packageSuccess,
               onButtonClicked: () {
                 Navigator.of(context).pop(true);

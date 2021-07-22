@@ -4,20 +4,20 @@ import 'time_slot_entity.dart';
 
 class MeetingConfig extends HiveObject {
   final int pk;
-  final String title;
+  final String? title;
   final String weekStartDate;
-  final String weekEndDate;
-  final bool isRegistrationOpen;
-  final bool isActive;
+  final String? weekEndDate;
+  final bool? isRegistrationOpen;
+  final bool? isActive;
   final Map<String, List<TimeSlot>> availableTimeSlots;
 
   MeetingConfig({
-    this.pk,
+    required this.pk,
     this.title,
-    this.weekStartDate,
+    required this.weekStartDate,
     this.weekEndDate,
     this.isRegistrationOpen,
     this.isActive,
-    this.availableTimeSlots,
+    required this.availableTimeSlots,
   });
 }

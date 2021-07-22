@@ -4,29 +4,29 @@ import '../../data/models/meeting_model.dart';
 import 'meeting_participant_entity.dart';
 
 class Meeting extends HiveObject {
-  final int config;
+  final int? config;
   final DateTime end;
-  final bool isCanceled;
+  final bool? isCanceled;
   final bool isPast;
-  final String link;
-  final List<MeetingParticipant> participants;
+  final String? link;
+  final List<MeetingParticipant>? participants;
   final int pk;
   final DateTime start;
-  final int timeSlot;
+  final int? timeSlot;
   final MeetingStatus status;
-  final MeetingParticipant participantDetail;
+  final MeetingParticipant? participantDetail;
 
   Meeting({
     this.config,
-    this.end,
+    required this.end,
     this.isCanceled,
-    this.isPast,
+    required this.isPast,
     this.link,
     this.participants,
-    this.pk,
-    this.start,
+    required this.pk,
+    required this.start,
     this.timeSlot,
-    this.status,
+    required this.status,
     this.participantDetail,
   });
 }

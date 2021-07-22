@@ -15,7 +15,7 @@ class SetChatWithUserStarted extends ChatEvent {
   final String recieverId;
 
   const SetChatWithUserStarted({
-    this.recieverId,
+    required this.recieverId,
   });
 
   @override
@@ -30,7 +30,7 @@ class ReceivedSetChatUserResponse extends ChatEvent {
   final SetChatUserResponse response;
 
   const ReceivedSetChatUserResponse({
-    @required this.response,
+    required this.response,
   });
 
   @override
@@ -41,7 +41,7 @@ class SendChatMessageStarted extends ChatEvent {
   final String message;
 
   const SendChatMessageStarted({
-    this.message,
+    required this.message,
   });
 
   @override
@@ -53,8 +53,8 @@ class ReceivedChatMessageResponse extends ChatEvent {
   final ChatMessage message;
 
   const ReceivedChatMessageResponse({
-    @required this.chatKey,
-    @required this.message,
+    required this.chatKey,
+    required this.message,
   });
 }
 

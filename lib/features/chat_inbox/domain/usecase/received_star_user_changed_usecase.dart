@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -12,7 +11,7 @@ class UCReceivedStarUserChanged
   final ChatInboxRepository repository;
 
   UCReceivedStarUserChanged({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -29,8 +28,8 @@ class ReceivedStarUserParams extends Equatable {
   final bool isStarred;
 
   const ReceivedStarUserParams({
-    this.user,
-    this.isStarred,
+    required this.user,
+    required this.isStarred,
   });
 
   @override

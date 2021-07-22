@@ -16,7 +16,8 @@ import '../../../domain/entity/profile_entity/profile_entity.dart';
 import '../../../domain/repository/profile_repository.dart';
 
 final getProfileNotifierProvider = StateNotifierProvider.autoDispose
-    .family<GetProfileNotifier, String>((ref, profileId) {
+    .family<GetProfileNotifier, AsyncValue<_ProfileScreenState>, String>(
+        (ref, profileId) {
   final repository = ref.read(profileRepositoryProvider);
   final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
   final authRepository = KiwiContainer().resolve<AuthRepository>();
@@ -73,8 +74,8 @@ class GetProfileNotifier
     }
 
     final Profile _profile = response[0].getOrElse(null) as Profile;
-    final UserMeetingPreference _preference =
-        response[1].getOrElse(null) as UserMeetingPreference;
+    final UserMeetingPreference? _preference =
+        response[1].getOrElse(null) as UserMeetingPreference?;
     final connections = response[2].getOrElse(null) as List<Profile>;
 
     final companies = response[3].getOrElse(null) as List<ProfileIntroMeta>;
@@ -84,24 +85,24 @@ class GetProfileNotifier
     final user = response[7].getOrElse(null) as UserProfile;
 
     final Map<String, String> meta = {
-      'Profession': _profile.tag.first.name,
+      'Profession': _profile.tag!.first.name,
       'Sector':
-          sectors.firstWhere((element) => element.value == user.sector).name,
+          sectors.firstWhere((element) => element.value == user.sector).name!,
       'Working with': companies
           .firstWhere((element) => element.value == user.companyType)
-          .name,
+          .name!,
       'Years of experience': experiences
           .firstWhere((element) => element.value == user.yearsOfExperience)
-          .name,
+          .name!,
       'Level of education': educations
           .firstWhere((element) => element.value == user.educationLevel)
-          .name,
+          .name!,
     };
 
     final _ProfileScreenState _profileScreenState = _ProfileScreenState(
       profile: _profile,
       interests: _preference != null ? _preference.interests : [],
-      objectives: _preference != null ? _preference.objectives : [],
+      objectives: _preference != null ? _preference.objectives! : [],
       connections: connections,
       meta: meta,
     );
@@ -113,15 +114,15 @@ class _ProfileScreenState extends Equatable {
   final Profile profile;
   final List<MeetingInterest> interests;
   final List<MeetingObjective> objectives;
-  final List<Profile> connections;
+  final List<Profile>? connections;
   final Map<String, String> meta;
 
   const _ProfileScreenState({
-    this.profile,
-    this.interests,
-    this.objectives,
+    required this.profile,
+    required this.interests,
+    required this.objectives,
     this.connections,
-    this.meta,
+    required this.meta,
   });
 
   @override

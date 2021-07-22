@@ -10,8 +10,8 @@ class AuthResponseModel {
   final UserModel user;
 
   AuthResponseModel({
-    this.token,
-    this.user,
+    required this.token,
+    required this.user,
   });
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) =>

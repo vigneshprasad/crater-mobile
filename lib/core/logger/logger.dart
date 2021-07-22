@@ -9,7 +9,7 @@ import '../config_reader/config_reader.dart';
 abstract class Logger {
   Future<void> captureException({
     dynamic exception,
-    StackTrace stackTrace,
+    StackTrace? stackTrace,
   });
 }
 
@@ -34,8 +34,8 @@ class LoggerImpl implements Logger {
   }
 
   Future<SentryEvent> getSentryEvent({
-    SentryException exception,
-    SentryStackTrace stackTrace,
+    SentryException? exception,
+    SentryStackTrace? stackTrace,
   }) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

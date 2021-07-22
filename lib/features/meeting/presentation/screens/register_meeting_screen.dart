@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +17,6 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meeting_interest_entity.dart';
 import '../../domain/entity/meeting_objective_entity.dart';
-import '../../domain/entity/number_of_meetings_entity.dart';
 import '../../domain/entity/time_slot_entity.dart';
 import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../bloc/meeting_bloc.dart';
@@ -29,11 +29,11 @@ class RegisterMeetingScreen extends StatefulWidget {
   final List<MeetingInterest> interests;
 
   const RegisterMeetingScreen({
-    Key key,
-    @required this.config,
-    @required this.preference,
-    @required this.objectives,
-    @required this.interests,
+    Key? key,
+    required this.config,
+    required this.preference,
+    required this.objectives,
+    required this.interests,
   }) : super(key: key);
 
   @override
@@ -42,20 +42,20 @@ class RegisterMeetingScreen extends StatefulWidget {
 
 class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final List<NumberOfMeetings> _monthlyMeetingOptions = [
-    const NumberOfMeetings(label: "Ask me every week", value: 0),
-    const NumberOfMeetings(label: "One meeting per month", value: 1),
-    const NumberOfMeetings(label: "Bi-weekly meetings", value: 2),
-    const NumberOfMeetings(label: "One meeting every week'", value: 4),
-  ];
-  List<MeetingObjective> lookingFor;
-  List<MeetingObjective> lookingTo;
+  // final List<NumberOfMeetings> _monthlyMeetingOptions = [
+  //   const NumberOfMeetings(label: "Ask me every week", value: 0),
+  //   const NumberOfMeetings(label: "One meeting per month", value: 1),
+  //   const NumberOfMeetings(label: "Bi-weekly meetings", value: 2),
+  //   const NumberOfMeetings(label: "One meeting every week'", value: 4),
+  // ];
+  late List<MeetingObjective> lookingFor;
+  late List<MeetingObjective> lookingTo;
   List<TimeSlot> _selectedSlots = [];
   List<MeetingObjective> _selectedLookingFor = [];
   List<MeetingInterest> _selectedInterests = [];
-  String _introduction = "";
-  String _linkedinUrl = "";
-  MeetingBloc _bloc;
+  // String _introduction = "";
+  // String _linkedinUrl = "";
+  late MeetingBloc _bloc;
 
   @override
   void initState() {
@@ -77,11 +77,11 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               AutoRouter.of(context).pop();
             } else if (state is PostMeetingPreferenceError) {
               Fluttertoast.showToast(
-                msg: state.error as String,
+                msg: state.error as String? ?? '',
               );
               AutoRouter.of(context).pop();
             } else if (state is MeetingGetPastPreferencesLoaded) {
-              final UserMeetingPreference pastPrefs = state.pastPreferences;
+              final pastPrefs = state.pastPreferences;
               if (pastPrefs != null) {
                 final List<TimeSlot> slots = [];
                 _selectedInterests = pastPrefs.interests;
@@ -93,7 +93,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   }
                 });
                 setState(() {
-                  _selectedLookingFor = pastPrefs.objectives
+                  _selectedLookingFor = pastPrefs.objectives!
                       .where(
                           (element) => element.type == ObjectiveType.lookingFor)
                       .toList();
@@ -112,7 +112,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: !meetingState.loading
-                          ? _buildForm(context, user, profile)
+                          ? _buildForm(context, user!, profile)
                           : null,
                     ),
                   ),
@@ -144,7 +144,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
             child: Text(
               "Register",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button.copyWith(
+              style: Theme.of(context).textTheme.button?.copyWith(
                     color: Colors.white,
                   ),
             ),
@@ -155,11 +155,11 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   }
 
   Widget _buildHeader(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
+    final headingStyle = Theme.of(context).textTheme.headline5?.copyWith(
           fontWeight: FontWeight.w700,
           fontSize: 24,
         );
-    final subheadStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           color: Colors.grey[500],
           height: 1.6,
         );
@@ -188,9 +188,9 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
     );
   }
 
-  Widget _buildForm(BuildContext context, User user, UserProfile profile) {
+  Widget _buildForm(BuildContext context, User user, UserProfile? profile) {
     final linkedinLabel =
-        AppLocalizations.of(context).translate("linkedin:placeholder");
+        AppLocalizations.of(context)?.translate("linkedin:placeholder");
     return Form(
       key: _formKey,
       child: Padding(
@@ -209,7 +209,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                 initialValue: _selectedLookingFor,
                 maxLength: 0,
                 validator: (value) {
-                  if (value.length < 2) {
+                  if (value == null || value.length < 2) {
                     return "Please select two objectives";
                   }
                   return null;
@@ -230,7 +230,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                 initialValue: _selectedInterests,
                 maxLength: 0,
                 validator: (value) {
-                  if (value.length < 2) {
+                  if (value == null || value.length < 2) {
                     return "Please select two objectives";
                   }
                   return null;
@@ -246,7 +246,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               label: "Available times?",
               child: TimeSlotFormField(
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Please select two time slots";
                   } else if (value.length < 2) {
                     return "Please select atleast two time slots";
@@ -262,17 +262,18 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                 },
               ),
             ),
-            if (user.linkedinUrl == null && profile.linkedinUrl == null)
+            if (user.linkedinUrl == null && profile?.linkedinUrl == null)
               BaseFormField(
                 label: linkedinLabel,
                 child: BaseFormInput(
                   autovalidate: false,
-                  label: linkedinLabel,
-                  validator: (value) =>
-                      value.isEmpty ? "This field is required" : null,
+                  label: linkedinLabel!,
+                  validator: (value) => value == null || value.isEmpty
+                      ? "This field is required"
+                      : null,
                   onChanged: (value) {
                     setState(() {
-                      _linkedinUrl = value;
+                      // _linkedinUrl = value;
                     });
                   },
                 ),
@@ -285,12 +286,13 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 4,
                   minLines: 4,
-                  validator: (value) =>
-                      value.isEmpty ? "Please provide an introduction" : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Please provide an introduction"
+                      : null,
                   label: "How would you like to be introduced?",
                   onChanged: (value) {
                     setState(() {
-                      _introduction = value;
+                      // _introduction = value;
                     });
                   },
                 ),
@@ -317,9 +319,9 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
   }
 
   void submit() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState?.validate();
 
-    if (isValid) {
+    if (isValid ?? false) {
       _bloc.add(PostMeetingPreferencesStarted(
         config: widget.config,
         interests: _selectedInterests,

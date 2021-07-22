@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
@@ -12,7 +11,7 @@ import '../models/points_model.dart';
 import '../models/points_rule_model.dart';
 
 abstract class PointsLocalDatasource {
-  Points getSelfUserPointsFromCache();
+  Points? getSelfUserPointsFromCache();
   Future<void> persistSelfUserPointsToCache(Points points);
   List<PointsRule> getPointsRulesFromCache();
   List<PointsFaq> getPointsFaqFromCache();
@@ -30,11 +29,11 @@ class PointsLocalDatasourceImpl implements PointsLocalDatasource {
       Hive.box<PointsFaqModel>(AppHiveBoxes.pointFaqBox);
 
   PointsLocalDatasourceImpl({
-    @required this.authLocalDataSource,
+    required this.authLocalDataSource,
   });
 
   @override
-  Points getSelfUserPointsFromCache() {
+  Points? getSelfUserPointsFromCache() {
     if (_box.isEmpty) throw CacheException("Empty points data from cache.");
     try {
       final user = authLocalDataSource.getUserFromCache();

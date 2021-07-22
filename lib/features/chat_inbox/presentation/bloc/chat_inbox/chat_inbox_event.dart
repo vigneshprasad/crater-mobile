@@ -19,9 +19,9 @@ class GetAllChatUsersRequest extends ChatInboxEvent {
   final String search;
 
   const GetAllChatUsersRequest({
-    @required this.filter,
-    @required this.page,
-    @required this.search,
+    required this.filter,
+    required this.page,
+    required this.search,
   });
 
   @override
@@ -36,7 +36,7 @@ class AllChatUsersReceived extends ChatInboxEvent {
   final GetAllUsersResponse response;
 
   const AllChatUsersReceived({
-    @required this.response,
+    required this.response,
   });
 
   @override
@@ -48,8 +48,8 @@ class StarUserRequestStarted extends ChatInboxEvent {
   final bool isStarred;
 
   const StarUserRequestStarted({
-    @required this.user,
-    @required this.isStarred,
+    required this.user,
+    required this.isStarred,
   });
 
   @override
@@ -61,8 +61,8 @@ class StarUserChangeRecieved extends ChatInboxEvent {
   final bool isStarred;
 
   const StarUserChangeRecieved({
-    this.user,
-    this.isStarred,
+    required this.user,
+    required this.isStarred,
   });
 
   @override

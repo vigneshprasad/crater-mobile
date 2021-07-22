@@ -33,15 +33,14 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
 
 @MaterialAutoRouter(
   preferRelativeImports: true,
-  replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: SplashScreen, initial: true),
+    AutoRoute(page: SplashScreen, initial: true, path: "/"),
     AutoRoute(page: HomeScreen, path: "/home/:tab?"),
     AutoRoute(
         page: HomeScreen, path: "/topic-list/:topic?", name: "topicListScreen"),
     AutoRoute(page: WelcomeScreen, path: "/welcome"),
-    AutoRoute(page: ObjectivesScreen, path: "/objectives/:editMode?"),
-    AutoRoute(page: ProfileSetupScreen, path: "/profile-setup/:editMode?"),
+    AutoRoute(page: ObjectivesScreen, path: "/objectives"),
+    AutoRoute(page: ProfileSetupScreen, path: "/profile-setup"),
     AutoRoute(page: ProfileExtraInfoScreen, path: "/profile-extra-info"),
     AutoRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     AutoRoute(page: AuthScreen, path: "/auth/:state?"),

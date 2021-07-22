@@ -35,8 +35,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationsByDatefromRemote(start, end);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -52,8 +51,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getMyConversationsByDatefromRemote(start, end);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -69,8 +67,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postGroupOptinToRemote(interests, timeslots, config, topic);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -79,14 +76,13 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Topic>>> getAllTopics(int parent) async {
+  Future<Either<Failure, List<Topic>>> getAllTopics(int? parent) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getAllTopicsFromRemote(parent);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -101,8 +97,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllAMATopicsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -117,8 +112,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllArticleTopicsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -133,8 +127,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .retrieveConversationFromRemote(id);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on GroupNotFoundException {
@@ -172,8 +165,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getConversationRtcInfoFromRemote(tableId);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -188,8 +180,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationOptinsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -205,8 +196,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationOptinsByDateFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -222,8 +212,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getInstantConversationTimeSlotsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -239,8 +228,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postCreateInstantConversationToRemote(conversation);
       return Right(response);
     } on ServerException catch (error) {
-      final message =
-          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -255,8 +243,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postTopicSuggestionToRemote(topic);
       return Right(response);
     } on ServerException catch (error) {
-      // final message =
-      // jsonDecode(error.message as String) as Map<String, dynamic>;
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {

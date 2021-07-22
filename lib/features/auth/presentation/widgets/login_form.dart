@@ -9,7 +9,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AuthBloc _authBloc;
+  late AuthBloc _authBloc;
 
   @override
   void initState() {
@@ -28,13 +28,11 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final String email =
-        AppLocalizations.of(context).translate("input_label_email");
-    final String password =
-        AppLocalizations.of(context).translate("input_password");
-    final String forgotPassword =
-        AppLocalizations.of(context).translate("auth:forgot_password");
-    final forgotPasswordStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final email = AppLocalizations.of(context)?.translate("input_label_email");
+    final password = AppLocalizations.of(context)?.translate("input_password");
+    final forgotPassword =
+        AppLocalizations.of(context)?.translate("auth:forgot_password");
+    final forgotPasswordStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           color: Theme.of(context).primaryColor,
         );
 
@@ -44,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
         if (state.isSubmitting == null) {
           isEnabled = true;
         } else {
-          isEnabled = !state.isSubmitting;
+          isEnabled = !state.isSubmitting!;
         }
         return Form(
           child: Expanded(
@@ -54,22 +52,22 @@ class _LoginFormState extends State<LoginForm> {
                   BaseFormInput(
                     enabled: isEnabled,
                     controller: _emailController,
-                    label: email,
+                    label: email!,
                     validator: (text) {
-                      if (text.isEmpty) return null;
+                      if (text == null || text.isEmpty) return null;
                       if (state.isEmailValid == null) return null;
-                      return !state.isEmailValid ? 'Invalid Email' : null;
+                      return !state.isEmailValid! ? 'Invalid Email' : null;
                     },
                   ),
                   const SizedBox(height: AppPadding.med),
                   BaseFormInput(
                     controller: _passwordController,
                     enabled: isEnabled,
-                    label: password,
+                    label: password!,
                     obscureText: true,
                     maxLines: 1,
                     validator: (text) {
-                      if (text.isEmpty) return null;
+                      if (text == null || text.isEmpty) return null;
                       return !state.isPasswordValid ? 'Invalid Password' : null;
                     },
                   ),
@@ -83,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
                       child: GestureDetector(
                         onTap: () {
                           AutoRouter.of(context)
-                              .push(Routes.forgotPasswordScreen)
+                              .push(const ForgotPasswordScreenRoute())
                               .then((value) {
                             if (value != null) {
                               _emailController.text = value as String;
@@ -91,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
                           });
                         },
                         child: Text(
-                          forgotPassword,
+                          forgotPassword!,
                           style: forgotPasswordStyle,
                         ),
                       ),

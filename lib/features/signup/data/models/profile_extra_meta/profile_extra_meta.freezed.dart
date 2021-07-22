@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'profile_extra_meta.dart';
 
@@ -8,6 +8,10 @@ part of 'profile_extra_meta.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Option _$OptionFromJson(Map<String, dynamic> json) {
   return _Option.fromJson(json);
 }
@@ -16,32 +20,29 @@ Option _$OptionFromJson(Map<String, dynamic> json) {
 class _$OptionTearOff {
   const _$OptionTearOff();
 
-// ignore: unused_element
-  _Option call({String name, int value}) {
+  _Option call({required String name, required int value}) {
     return _Option(
       name: name,
       value: value,
     );
   }
 
-// ignore: unused_element
   Option fromJson(Map<String, Object> json) {
     return Option.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Option = _$OptionTearOff();
 
 /// @nodoc
 mixin _$Option {
-  String get name;
-  int get value;
+  String get name => throw _privateConstructorUsedError;
+  int get value => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $OptionCopyWith<Option> get copyWith;
+  $OptionCopyWith<Option> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -61,12 +62,18 @@ class _$OptionCopyWithImpl<$Res> implements $OptionCopyWith<$Res> {
 
   @override
   $Res call({
-    Object name = freezed,
-    Object value = freezed,
+    Object? name = freezed,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
-      value: value == freezed ? _value.value : value as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -90,21 +97,26 @@ class __$OptionCopyWithImpl<$Res> extends _$OptionCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object value = freezed,
+    Object? name = freezed,
+    Object? value = freezed,
   }) {
     return _then(_Option(
-      name: name == freezed ? _value.name : name as String,
-      value: value == freezed ? _value.value : value as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Option implements _Option {
-  _$_Option({this.name, this.value});
+  _$_Option({required this.name, required this.value});
 
   factory _$_Option.fromJson(Map<String, dynamic> json) =>
       _$_$_OptionFromJson(json);
@@ -147,17 +159,17 @@ class _$_Option implements _Option {
 }
 
 abstract class _Option implements Option {
-  factory _Option({String name, int value}) = _$_Option;
+  factory _Option({required String name, required int value}) = _$_Option;
 
   factory _Option.fromJson(Map<String, dynamic> json) = _$_Option.fromJson;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  int get value;
+  int get value => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$OptionCopyWith<_Option> get copyWith;
+  _$OptionCopyWith<_Option> get copyWith => throw _privateConstructorUsedError;
 }
 
 FormFieldData _$FormFieldDataFromJson(Map<String, dynamic> json) {
@@ -168,9 +180,11 @@ FormFieldData _$FormFieldDataFromJson(Map<String, dynamic> json) {
 class _$FormFieldDataTearOff {
   const _$FormFieldDataTearOff();
 
-// ignore: unused_element
   _FormFieldData call(
-      {FieldType type, List<Option> options, String label, bool blank}) {
+      {required FieldType type,
+      required List<Option> options,
+      required String label,
+      required bool blank}) {
     return _FormFieldData(
       type: type,
       options: options,
@@ -179,26 +193,25 @@ class _$FormFieldDataTearOff {
     );
   }
 
-// ignore: unused_element
   FormFieldData fromJson(Map<String, Object> json) {
     return FormFieldData.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $FormFieldData = _$FormFieldDataTearOff();
 
 /// @nodoc
 mixin _$FormFieldData {
-  FieldType get type;
-  List<Option> get options;
-  String get label;
-  bool get blank;
+  FieldType get type => throw _privateConstructorUsedError;
+  List<Option> get options => throw _privateConstructorUsedError;
+  String get label => throw _privateConstructorUsedError;
+  bool get blank => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $FormFieldDataCopyWith<FormFieldData> get copyWith;
+  $FormFieldDataCopyWith<FormFieldData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -220,16 +233,28 @@ class _$FormFieldDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object type = freezed,
-    Object options = freezed,
-    Object label = freezed,
-    Object blank = freezed,
+    Object? type = freezed,
+    Object? options = freezed,
+    Object? label = freezed,
+    Object? blank = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed ? _value.type : type as FieldType,
-      options: options == freezed ? _value.options : options as List<Option>,
-      label: label == freezed ? _value.label : label as String,
-      blank: blank == freezed ? _value.blank : blank as bool,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as FieldType,
+      options: options == freezed
+          ? _value.options
+          : options // ignore: cast_nullable_to_non_nullable
+              as List<Option>,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      blank: blank == freezed
+          ? _value.blank
+          : blank // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -257,25 +282,40 @@ class __$FormFieldDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object type = freezed,
-    Object options = freezed,
-    Object label = freezed,
-    Object blank = freezed,
+    Object? type = freezed,
+    Object? options = freezed,
+    Object? label = freezed,
+    Object? blank = freezed,
   }) {
     return _then(_FormFieldData(
-      type: type == freezed ? _value.type : type as FieldType,
-      options: options == freezed ? _value.options : options as List<Option>,
-      label: label == freezed ? _value.label : label as String,
-      blank: blank == freezed ? _value.blank : blank as bool,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as FieldType,
+      options: options == freezed
+          ? _value.options
+          : options // ignore: cast_nullable_to_non_nullable
+              as List<Option>,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      blank: blank == freezed
+          ? _value.blank
+          : blank // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_FormFieldData implements _FormFieldData {
-  _$_FormFieldData({this.type, this.options, this.label, this.blank});
+  _$_FormFieldData(
+      {required this.type,
+      required this.options,
+      required this.label,
+      required this.blank});
 
   factory _$_FormFieldData.fromJson(Map<String, dynamic> json) =>
       _$_$_FormFieldDataFromJson(json);
@@ -330,25 +370,26 @@ class _$_FormFieldData implements _FormFieldData {
 
 abstract class _FormFieldData implements FormFieldData {
   factory _FormFieldData(
-      {FieldType type,
-      List<Option> options,
-      String label,
-      bool blank}) = _$_FormFieldData;
+      {required FieldType type,
+      required List<Option> options,
+      required String label,
+      required bool blank}) = _$_FormFieldData;
 
   factory _FormFieldData.fromJson(Map<String, dynamic> json) =
       _$_FormFieldData.fromJson;
 
   @override
-  FieldType get type;
+  FieldType get type => throw _privateConstructorUsedError;
   @override
-  List<Option> get options;
+  List<Option> get options => throw _privateConstructorUsedError;
   @override
-  String get label;
+  String get label => throw _privateConstructorUsedError;
   @override
-  bool get blank;
+  bool get blank => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$FormFieldDataCopyWith<_FormFieldData> get copyWith;
+  _$FormFieldDataCopyWith<_FormFieldData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 ProfileExtraMeta _$ProfileExtraMetaFromJson(Map<String, dynamic> json) {
@@ -359,32 +400,31 @@ ProfileExtraMeta _$ProfileExtraMetaFromJson(Map<String, dynamic> json) {
 class _$ProfileExtraMetaTearOff {
   const _$ProfileExtraMetaTearOff();
 
-// ignore: unused_element
-  _ProfileExtraMeta call({String question, Map<String, FormFieldData> meta}) {
+  _ProfileExtraMeta call(
+      {required String question, required Map<String, FormFieldData> meta}) {
     return _ProfileExtraMeta(
       question: question,
       meta: meta,
     );
   }
 
-// ignore: unused_element
   ProfileExtraMeta fromJson(Map<String, Object> json) {
     return ProfileExtraMeta.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ProfileExtraMeta = _$ProfileExtraMetaTearOff();
 
 /// @nodoc
 mixin _$ProfileExtraMeta {
-  String get question;
-  Map<String, FormFieldData> get meta;
+  String get question => throw _privateConstructorUsedError;
+  Map<String, FormFieldData> get meta => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ProfileExtraMetaCopyWith<ProfileExtraMeta> get copyWith;
+  $ProfileExtraMetaCopyWith<ProfileExtraMeta> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -406,12 +446,18 @@ class _$ProfileExtraMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object question = freezed,
-    Object meta = freezed,
+    Object? question = freezed,
+    Object? meta = freezed,
   }) {
     return _then(_value.copyWith(
-      question: question == freezed ? _value.question : question as String,
-      meta: meta == freezed ? _value.meta : meta as Map<String, FormFieldData>,
+      question: question == freezed
+          ? _value.question
+          : question // ignore: cast_nullable_to_non_nullable
+              as String,
+      meta: meta == freezed
+          ? _value.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as Map<String, FormFieldData>,
     ));
   }
 }
@@ -439,21 +485,26 @@ class __$ProfileExtraMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object question = freezed,
-    Object meta = freezed,
+    Object? question = freezed,
+    Object? meta = freezed,
   }) {
     return _then(_ProfileExtraMeta(
-      question: question == freezed ? _value.question : question as String,
-      meta: meta == freezed ? _value.meta : meta as Map<String, FormFieldData>,
+      question: question == freezed
+          ? _value.question
+          : question // ignore: cast_nullable_to_non_nullable
+              as String,
+      meta: meta == freezed
+          ? _value.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as Map<String, FormFieldData>,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_ProfileExtraMeta implements _ProfileExtraMeta {
-  _$_ProfileExtraMeta({this.question, this.meta});
+  _$_ProfileExtraMeta({required this.question, required this.meta});
 
   factory _$_ProfileExtraMeta.fromJson(Map<String, dynamic> json) =>
       _$_$_ProfileExtraMetaFromJson(json);
@@ -498,16 +549,18 @@ class _$_ProfileExtraMeta implements _ProfileExtraMeta {
 
 abstract class _ProfileExtraMeta implements ProfileExtraMeta {
   factory _ProfileExtraMeta(
-      {String question, Map<String, FormFieldData> meta}) = _$_ProfileExtraMeta;
+      {required String question,
+      required Map<String, FormFieldData> meta}) = _$_ProfileExtraMeta;
 
   factory _ProfileExtraMeta.fromJson(Map<String, dynamic> json) =
       _$_ProfileExtraMeta.fromJson;
 
   @override
-  String get question;
+  String get question => throw _privateConstructorUsedError;
   @override
-  Map<String, FormFieldData> get meta;
+  Map<String, FormFieldData> get meta => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ProfileExtraMetaCopyWith<_ProfileExtraMeta> get copyWith;
+  _$ProfileExtraMetaCopyWith<_ProfileExtraMeta> get copyWith =>
+      throw _privateConstructorUsedError;
 }

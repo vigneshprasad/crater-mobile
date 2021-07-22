@@ -5,11 +5,11 @@ import '../../../utils/app_localizations.dart';
 
 class BaseTextExpand extends StatefulWidget {
   final String data;
-  final TextStyle style;
+  final TextStyle? style;
 
   const BaseTextExpand(
     this.data, {
-    Key key,
+    Key? key,
     this.style,
   }) : super(key: key);
 
@@ -22,11 +22,11 @@ class _BaseTextExpandState extends State<BaseTextExpand> {
   static const defaultLines = 2;
   @override
   Widget build(BuildContext context) {
-    final label = AppLocalizations.of(context).translate('read_more');
+    final label = AppLocalizations.of(context)?.translate('read_more');
     final labelStyle = Theme.of(context)
         .textTheme
         .button
-        .copyWith(color: Theme.of(context).primaryColor);
+        ?.copyWith(color: Theme.of(context).primaryColor);
     return LayoutBuilder(builder: (context, size) {
       final span = TextSpan(text: widget.data, style: widget.style);
       final tp = TextPainter(
@@ -50,7 +50,7 @@ class _BaseTextExpandState extends State<BaseTextExpand> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: AppInsets.sm),
                   child: Text(
-                    label,
+                    label!,
                     style: labelStyle,
                   ),
                 ),

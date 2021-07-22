@@ -8,10 +8,10 @@ import 'multiselect_dropdown.dart';
 
 class AutoSizeMultiSelectDropdown extends StatelessWidget {
   const AutoSizeMultiSelectDropdown(
-      {Key key,
-      @required this.element,
-      @required this.onValuesChange,
-      @required this.initialValue})
+      {Key? key,
+      required this.element,
+      required this.onValuesChange,
+      required this.initialValue})
       : super(key: key);
 
   static const charWidth = 8;
@@ -24,13 +24,13 @@ class AutoSizeMultiSelectDropdown extends StatelessWidget {
   double getWidthOfLargestOption(List<ProfileIntroMeta> items) {
     final options = items.cast<ProfileIntroMeta>();
     final ProfileIntroMeta largestOption = options.reduce((value, element) {
-      return (element.name.length > value.name.length) ? element : value;
+      return (element.name!.length > value.name!.length) ? element : value;
     });
-    final itemWidth = largestOption.name.length * charWidth + padding;
+    final itemWidth = largestOption.name!.length * charWidth + padding;
     int characters = 0;
-    initialValue.forEach((element) {
-      characters += element.name.length;
-    });
+    for (final element in initialValue) {
+      characters += element.name!.length;
+    }
     final selectedWidth =
         characters * charWidth + padding + (initialValue.length * 44);
 
@@ -40,19 +40,19 @@ class AutoSizeMultiSelectDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: getWidthOfLargestOption(element.options),
+      width: getWidthOfLargestOption(element.options!),
       margin: const EdgeInsets.only(right: 4),
       child: MultiSelectDropdown<ProfileIntroMeta>(
-          key: Key(element.id),
+          key: Key(element.id!),
           initialValue: initialValue,
-          items: element.options,
-          labelGetter: (lbl) => lbl.name,
+          items: element.options!,
+          labelGetter: (lbl) => lbl.name ?? '',
           label: '',
           // validator: (value) {
           //   return value == null ? 'Select a value' : null;
           // },
           onChangeItems: (value) {
-            onValuesChange(element.id, value);
+            onValuesChange(element.id!, value);
           }),
     );
   }

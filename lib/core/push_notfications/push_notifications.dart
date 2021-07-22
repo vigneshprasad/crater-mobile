@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
@@ -15,7 +14,7 @@ import 'models/push_notification_data/push_notification_data.dart';
 abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
-  Future<String> getPushToken();
+  Future<String?> getPushToken();
   void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
@@ -27,7 +26,7 @@ class PushNotificationsImpl implements PushNotifications {
   Future<String> getSubscriptionToken() async {
     final Completer<String> _completer = Completer();
     final device = await OneSignal.shared.getDeviceState();
-    final userId = device.userId;
+    final userId = device?.userId;
     if (userId == null) {
       OneSignal.shared.setSubscriptionObserver((changes) {
         if (changes.to.userId != null) {
@@ -41,10 +40,10 @@ class PushNotificationsImpl implements PushNotifications {
   }
 
   @override
-  Future<String> getPushToken() async {
+  Future<String?> getPushToken() async {
     final device = await OneSignal.shared.getDeviceState();
 
-    return device.pushToken;
+    return device?.pushToken;
   }
 
   @override
@@ -59,42 +58,45 @@ class PushNotificationsImpl implements PushNotifications {
     }
 
     final isIntercomPush =
-        await Intercom.isIntercomPush(result.notification.rawPayload);
+        await Intercom.isIntercomPush(result.notification.rawPayload!);
     if (isIntercomPush) {
-      await Intercom.handlePush(result.notification.rawPayload);
+      await Intercom.handlePush(result.notification.rawPayload!);
       return;
     }
 
-    final objTyp = result.notification.additionalData["obj_type"];
+    final objTyp = result.notification.additionalData?["obj_type"];
     final json = result.notification.additionalData;
 
     final PushType type = enumFromType(objTyp);
     final _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
     if (type == PushType.chatMessage) {
-      final message = ChatMessageModel.fromJson(json);
-      _navigatorKey.currentState.pushNamed(Routes.chatScreen,
-          arguments: ChatScreenArguments(recieverId: message.senderId));
+      final message = ChatMessageModel.fromJson(json!);
+      _navigatorKey.currentState?.pushNamed(ChatScreenRoute.name,
+          arguments: ChatScreenRouteArgs(recieverId: message.senderId!));
     } else if (type == PushType.conversation) {
-      final data = ConversationNotificationData.fromJson(json);
+      final ConversationNotificationData data =
+          ConversationNotificationData.fromJson(json!);
 
-      _navigatorKey.currentState
-          .pushNamed(Routes.conversationScreen(id: data.groupId));
+      _navigatorKey.currentState?.pushNamed(ConversationScreenRoute.name,
+          arguments: ConversationScreenRouteArgs(id: data.groupId as int));
     } else if (type == PushType.upcomingMeeting) {
       if (_navigatorKey.currentWidget is! HomeScreen) {
-        _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
+        _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name);
       }
     } else if (type == PushType.createConversation) {
-      AutoRouter.root.push(Routes.homeScreen(tab: 1));
+      _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name,
+          arguments: const HomeScreenRouteArgs(tab: 1));
     }
   }
 
   @override
   Future<void> initSdk() async {
-    final settings = {
+    final _ = {
       OSiOSSettings.autoPrompt: false,
       OSiOSSettings.inAppLaunchUrl: false,
     };
+    //TODO: iOS settings
 
     OneSignal.shared.setAppId(ConfigReader.getOneSignalAppId());
 

@@ -10,19 +10,19 @@ enum TopicType { group, ama }
 @freezed
 abstract class Topic with _$Topic {
   factory Topic({
-    int id,
-    String name,
-    String image,
-    @JsonKey(name: "is_active") bool active,
-    int parent,
-    String description,
-    int article,
-    @JsonKey(name: "is_approved") bool approved,
-    String creator,
-    Topic root,
-    int groupCount,
-    TopicType type,
-    @JsonKey(name: "article_detail") Article articleDetail,
+    int? id,
+    required String name,
+    String? image,
+    @JsonKey(name: "is_active") bool? active,
+    int? parent,
+    String? description,
+    int? article,
+    @JsonKey(name: "is_approved") bool? approved,
+    String? creator,
+    Topic? root,
+    int? groupCount,
+    TopicType? type,
+    @JsonKey(name: "article_detail") Article? articleDetail,
   }) = _Topic;
 
   factory Topic.fromCountJson(Map<String, dynamic> json) {

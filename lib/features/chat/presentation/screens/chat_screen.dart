@@ -12,8 +12,8 @@ class ChatScreen extends StatefulWidget {
   final String recieverId;
 
   const ChatScreen({
-    Key key,
-    @required this.recieverId,
+    Key? key,
+    required this.recieverId,
   }) : super(key: key);
 
   @override
@@ -22,9 +22,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _chatInputController = TextEditingController();
-  ChatBloc _chatBloc;
-  String message;
-  bool _isTyping;
+  late ChatBloc _chatBloc;
+  late String message;
+  late bool _isTyping;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    _chatInputController?.dispose();
+    _chatInputController.dispose();
     _chatBloc.close();
     super.dispose();
   }
@@ -63,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: chatState.messages.length,
                     listBuilder: (context, index) {
                       return ChatMessageItem(
-                        user: authState.user,
+                        user: authState.user!,
                         message: chatState.messages[index],
                       );
                     },

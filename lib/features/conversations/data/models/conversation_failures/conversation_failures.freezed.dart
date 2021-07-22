@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'conversation_failures.dart';
 
@@ -8,6 +8,10 @@ part of 'conversation_failures.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 ConversationFailure _$ConversationFailureFromJson(Map<String, dynamic> json) {
   return _ConversationFailure.fromJson(json);
 }
@@ -16,39 +20,35 @@ ConversationFailure _$ConversationFailureFromJson(Map<String, dynamic> json) {
 class _$ConversationFailureTearOff {
   const _$ConversationFailureTearOff();
 
-// ignore: unused_element
   _ConversationFailure call(
-      {@JsonKey(name: 'error_message')
-          String message,
-      @JsonKey(name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-          ConversationFailuresType errorCode}) {
+      {@JsonKey(name: "error_message") String? message,
+      @JsonKey(name: "error_code") ConversationFailuresType errorCode =
+          ConversationFailuresType.genericError}) {
     return _ConversationFailure(
       message: message,
       errorCode: errorCode,
     );
   }
 
-// ignore: unused_element
   ConversationFailure fromJson(Map<String, Object> json) {
     return ConversationFailure.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ConversationFailure = _$ConversationFailureTearOff();
 
 /// @nodoc
 mixin _$ConversationFailure {
-  @JsonKey(name: 'error_message')
-  String get message;
-  @JsonKey(
-      name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-  ConversationFailuresType get errorCode;
+  @JsonKey(name: "error_message")
+  String? get message => throw _privateConstructorUsedError;
+  @JsonKey(name: "error_code")
+  ConversationFailuresType get errorCode => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ConversationFailureCopyWith<ConversationFailure> get copyWith;
+  $ConversationFailureCopyWith<ConversationFailure> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,10 +57,8 @@ abstract class $ConversationFailureCopyWith<$Res> {
           ConversationFailure value, $Res Function(ConversationFailure) then) =
       _$ConversationFailureCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'error_message')
-          String message,
-      @JsonKey(name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-          ConversationFailuresType errorCode});
+      {@JsonKey(name: "error_message") String? message,
+      @JsonKey(name: "error_code") ConversationFailuresType errorCode});
 }
 
 /// @nodoc
@@ -74,14 +72,18 @@ class _$ConversationFailureCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object message = freezed,
-    Object errorCode = freezed,
+    Object? message = freezed,
+    Object? errorCode = freezed,
   }) {
     return _then(_value.copyWith(
-      message: message == freezed ? _value.message : message as String,
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
       errorCode: errorCode == freezed
           ? _value.errorCode
-          : errorCode as ConversationFailuresType,
+          : errorCode // ignore: cast_nullable_to_non_nullable
+              as ConversationFailuresType,
     ));
   }
 }
@@ -94,10 +96,8 @@ abstract class _$ConversationFailureCopyWith<$Res>
       __$ConversationFailureCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'error_message')
-          String message,
-      @JsonKey(name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-          ConversationFailuresType errorCode});
+      {@JsonKey(name: "error_message") String? message,
+      @JsonKey(name: "error_code") ConversationFailuresType errorCode});
 }
 
 /// @nodoc
@@ -113,38 +113,40 @@ class __$ConversationFailureCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object message = freezed,
-    Object errorCode = freezed,
+    Object? message = freezed,
+    Object? errorCode = freezed,
   }) {
     return _then(_ConversationFailure(
-      message: message == freezed ? _value.message : message as String,
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
       errorCode: errorCode == freezed
           ? _value.errorCode
-          : errorCode as ConversationFailuresType,
+          : errorCode // ignore: cast_nullable_to_non_nullable
+              as ConversationFailuresType,
     ));
   }
 }
 
+/// @nodoc
 @JsonSerializable()
 @Implements(Failure)
-
-/// @nodoc
 class _$_ConversationFailure implements _ConversationFailure {
   _$_ConversationFailure(
-      {@JsonKey(name: 'error_message')
+      {@JsonKey(name: "error_message")
           this.message,
-      @JsonKey(name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-          this.errorCode});
+      @JsonKey(name: "error_code")
+          this.errorCode = ConversationFailuresType.genericError});
 
   factory _$_ConversationFailure.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationFailureFromJson(json);
 
   @override
-  @JsonKey(name: 'error_message')
-  final String message;
+  @JsonKey(name: "error_message")
+  final String? message;
   @override
-  @JsonKey(
-      name: 'error_code', defaultValue: ConversationFailuresType.genericError)
+  @JsonKey(name: "error_code")
   final ConversationFailuresType errorCode;
 
   @override
@@ -184,22 +186,21 @@ class _$_ConversationFailure implements _ConversationFailure {
 
 abstract class _ConversationFailure implements ConversationFailure, Failure {
   factory _ConversationFailure(
-      {@JsonKey(name: 'error_message')
-          String message,
-      @JsonKey(name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-          ConversationFailuresType errorCode}) = _$_ConversationFailure;
+          {@JsonKey(name: "error_message") String? message,
+          @JsonKey(name: "error_code") ConversationFailuresType errorCode}) =
+      _$_ConversationFailure;
 
   factory _ConversationFailure.fromJson(Map<String, dynamic> json) =
       _$_ConversationFailure.fromJson;
 
   @override
-  @JsonKey(name: 'error_message')
-  String get message;
+  @JsonKey(name: "error_message")
+  String? get message => throw _privateConstructorUsedError;
   @override
-  @JsonKey(
-      name: 'error_code', defaultValue: ConversationFailuresType.genericError)
-  ConversationFailuresType get errorCode;
+  @JsonKey(name: "error_code")
+  ConversationFailuresType get errorCode => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ConversationFailureCopyWith<_ConversationFailure> get copyWith;
+  _$ConversationFailureCopyWith<_ConversationFailure> get copyWith =>
+      throw _privateConstructorUsedError;
 }

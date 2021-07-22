@@ -2,11 +2,11 @@ import 'package:hive/hive.dart';
 
 class TimeSlot extends HiveObject {
   final int pk;
-  final DateTime end;
-  final DateTime start;
+  final DateTime? end;
+  final DateTime? start;
 
   TimeSlot({
-    this.pk,
+    required this.pk,
     this.end,
     this.start,
   });

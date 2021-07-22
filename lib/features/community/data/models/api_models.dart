@@ -20,11 +20,11 @@ class PostsPageApiResponse extends Equatable {
   final List<PostModel> results;
 
   const PostsPageApiResponse({
-    this.count,
-    this.currentPage,
-    this.next,
-    this.previous,
-    this.results,
+    required this.count,
+    required this.currentPage,
+    required this.next,
+    required this.previous,
+    required this.results,
   });
 
   @override
@@ -53,11 +53,11 @@ class CommentsPageApiResponse extends Equatable {
   final List<CommentModel> results;
 
   const CommentsPageApiResponse({
-    this.count,
-    this.currentPage,
-    this.next,
-    this.previous,
-    this.results,
+    required this.count,
+    required this.currentPage,
+    required this.next,
+    required this.previous,
+    required this.results,
   });
 
   @override

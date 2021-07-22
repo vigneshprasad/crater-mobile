@@ -13,17 +13,17 @@ part 'user_meeting_preference_model.g.dart';
 class UserMeetingPreferenceModel extends UserMeetingPreference {
   final int pk;
 
-  final String user;
+  final String? user;
 
-  final int meeting;
+  final int? meeting;
 
   @JsonKey(name: 'number_of_meetings')
-  final int numberOfMeetings;
+  final int? numberOfMeetings;
 
   @JsonKey(name: 'number_of_meetings_per_month')
-  final int numberOfMeetingsPerMonth;
+  final int? numberOfMeetingsPerMonth;
 
-  final List<MeetingObjectiveModel> objectives;
+  final List<MeetingObjectiveModel>? objectives;
 
   final List<MeetingInterestModel> interests;
 
@@ -31,14 +31,14 @@ class UserMeetingPreferenceModel extends UserMeetingPreference {
   final List<int> timeSlots;
 
   UserMeetingPreferenceModel({
-    this.pk,
+    required this.pk,
     this.user,
     this.meeting,
     this.numberOfMeetings,
     this.numberOfMeetingsPerMonth,
     this.objectives,
-    this.interests,
-    this.timeSlots,
+    required this.interests,
+    required this.timeSlots,
   }) : super(
           pk: pk,
           user: user,

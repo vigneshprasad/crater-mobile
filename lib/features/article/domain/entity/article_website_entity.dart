@@ -6,8 +6,8 @@ class ArticleWebsite extends HiveObject {
   final String url;
 
   ArticleWebsite({
-    this.pk,
-    this.name,
-    this.url,
+    required this.pk,
+    required this.name,
+    required this.url,
   });
 }

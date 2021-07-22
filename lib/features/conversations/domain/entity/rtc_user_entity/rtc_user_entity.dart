@@ -7,8 +7,8 @@ part 'rtc_user_entity.freezed.dart';
 @freezed
 abstract class RtcUser with _$RtcUser {
   factory RtcUser({
-    @Required() ConversationUser userInfo,
-    @Required() String pk,
+    required ConversationUser userInfo,
+    required String pk,
     @Default(false) bool online,
     @Default(false) bool muted,
     @Default(0) int volume,

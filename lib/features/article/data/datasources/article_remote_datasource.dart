@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import '../../../../api/articles/articles_api_service.dart';
 import '../../../../api/tags/tags_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -23,8 +21,8 @@ class ArticleRemoteDatasourceImpl implements ArticleRemoteDatasource {
   final TagsApiService tagsApiService;
 
   ArticleRemoteDatasourceImpl({
-    @required this.apiService,
-    @required this.tagsApiService,
+    required this.apiService,
+    required this.tagsApiService,
   });
 
   @override
@@ -39,6 +37,7 @@ class ArticleRemoteDatasourceImpl implements ArticleRemoteDatasource {
         count: responseModel.count,
         currentPage: responseModel.currentPage,
         pages: responseModel.pages,
+        pageSize: pageSize,
         fromCache: false,
         results: responseModel.results,
       );

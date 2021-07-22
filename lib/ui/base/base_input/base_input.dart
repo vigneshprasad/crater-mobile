@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../constants/theme.dart';
 
 class BaseInput extends StatelessWidget {
-  final String label;
+  final String? label;
   final TextInputType keyboardType;
   final bool obscureText;
-  final TextEditingController controller;
-  final int maxLines;
-  final FocusNode focusNode;
+  final TextEditingController? controller;
+  final int? maxLines;
+  final FocusNode? focusNode;
 
   const BaseInput({
-    Key key,
-    @required this.label,
+    Key? key,
+    this.label,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.maxLines,

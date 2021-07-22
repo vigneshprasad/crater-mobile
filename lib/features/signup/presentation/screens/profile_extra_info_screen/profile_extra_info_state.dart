@@ -6,9 +6,10 @@ import '../../../../../core/api_result/api_result.dart';
 import '../../../data/models/profile_extra_meta/profile_extra_meta.dart';
 import '../../../data/repository/profile_meta_repository_impl.dart';
 
-final profileFormMetaStateProvider =
-    StateNotifierProvider.family<ProfileFormMetaStateNotifier, int>(
-        (ref, id) => ProfileFormMetaStateNotifier(id, ref.read));
+final profileFormMetaStateProvider = StateNotifierProvider.family<
+    ProfileFormMetaStateNotifier,
+    ApiResult<ProfileExtraMeta>,
+    int>((ref, id) => ProfileFormMetaStateNotifier(id, ref.read));
 
 class ProfileFormMetaStateNotifier
     extends StateNotifier<ApiResult<ProfileExtraMeta>> {
@@ -28,10 +29,10 @@ class ProfileFormMetaStateNotifier
       (data) {
         final authState = KiwiContainer().resolve<AuthBloc>().state;
         final name = authState.profile != null
-            ? authState.profile.name
-            : authState.user.name;
+            ? authState.profile!.name
+            : authState.user!.name;
         data =
-            data.copyWith(question: data.question.replaceAll("{name}", name));
+            data.copyWith(question: data.question.replaceAll("{name}", name!));
         return ApiResult<ProfileExtraMeta>.data(data);
       },
     );

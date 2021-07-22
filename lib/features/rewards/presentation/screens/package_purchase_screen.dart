@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -23,8 +24,8 @@ class PackagePurchaseScreen extends StatefulWidget {
   final Package package;
 
   const PackagePurchaseScreen({
-    Key key,
-    @required this.package,
+    Key? key,
+    required this.package,
   }) : super(key: key);
 
   @override
@@ -32,24 +33,24 @@ class PackagePurchaseScreen extends StatefulWidget {
 }
 
 class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
-  StreamSubscription<RewardsState> _subscription;
-  RewardsBloc _bloc;
-  int _quantity;
-  double _maxDiscount;
-  int _discount;
-  double _maxPoints;
-  double _amount;
+  late StreamSubscription<RewardsState> _subscription;
+  late RewardsBloc _bloc;
+  late int _quantity;
+  late double _maxDiscount;
+  late int _discount;
+  late double _maxPoints;
+  late double _amount;
 
   @override
   void initState() {
     BlocProvider.of<PointsBloc>(context).add(const GetUserPointsStarted());
     _quantity = 1;
-    _maxDiscount = (widget.package.maxDiscount * _quantity).toDouble();
-    _maxPoints = (widget.package.maxDiscountPoints * _quantity).toDouble();
+    _maxDiscount = (widget.package.maxDiscount! * _quantity).toDouble();
+    _maxPoints = (widget.package.maxDiscountPoints! * _quantity).toDouble();
     _discount = 0;
     _amount = _getAmount();
     _bloc = BlocProvider.of<RewardsBloc>(context);
-    _subscription = _bloc.listen(_rewardsBlocListener);
+    _subscription = _bloc.stream.listen(_rewardsBlocListener);
     super.initState();
   }
 
@@ -62,16 +63,16 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
   void _rewardsBlocListener(RewardsState state) {
     if (state is RewardsPostPackageRequestLoaded) {
       final successText =
-          AppLocalizations.of(context).translate('rewards:succes_text');
+          AppLocalizations.of(context)?.translate('rewards:succes_text');
       final successDesc =
-          AppLocalizations.of(context).translate('rewards:success_desc');
-      final buttonText = AppLocalizations.of(context).translate("got_it");
+          AppLocalizations.of(context)?.translate('rewards:success_desc');
+      final buttonText = AppLocalizations.of(context)?.translate("got_it");
       Navigator.of(context)
           .push(
             SuccessPopup(
-                title: successText,
-                message: successDesc,
-                buttonTitle: buttonText,
+                title: successText!,
+                message: successDesc!,
+                buttonTitle: buttonText!,
                 iconAsset: AppImageAssets.packageSuccess,
                 onButtonClicked: () {
                   Navigator.of(context).pop(true);
@@ -82,15 +83,15 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
   }
 
   double _getAmount() {
-    return (widget.package.maxPrice * _quantity -
-            _discount * widget.package.pointsConversion)
+    return (widget.package.maxPrice! * _quantity -
+            _discount * widget.package.pointsConversion!)
         .toDouble();
   }
 
   @override
   Widget build(BuildContext context) {
     final purchaseLabel =
-        AppLocalizations.of(context).translate("rewards:purchase");
+        AppLocalizations.of(context)?.translate("rewards:purchase");
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarBrightness: Brightness.light,
@@ -105,11 +106,11 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
           listener: (context, state) {},
           builder: (context, state) {
             final header = AppLocalizations.of(context)
-                .translate("rewards:purchase_header_label");
-            final headerStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+                ?.translate("rewards:purchase_header_label");
+            final headerStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
                   color: Colors.white,
                 );
-            final pointsStyle = Theme.of(context).textTheme.headline5.copyWith(
+            final pointsStyle = Theme.of(context).textTheme.headline5?.copyWith(
                   color: Colors.white,
                 );
             return Column(
@@ -122,7 +123,7 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          header,
+                          header!,
                           style: headerStyle,
                         ),
                         const SizedBox(height: AppInsets.med),
@@ -173,12 +174,12 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
                               RewardsPostPackageRequestStarted(
                                 quantity: _quantity,
                                 pointsApplied: _discount,
-                                package: widget.package.pk,
-                                requestedBy: user.pk,
+                                package: widget.package.pk!,
+                                requestedBy: user!.pk!,
                               ),
                             );
                           },
-                          child: Text(purchaseLabel),
+                          child: Text(purchaseLabel!),
                         ),
                         const SizedBox(height: AppPadding.l),
                       ],
@@ -194,14 +195,14 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
   }
 
   Widget _buildHeader(BuildContext context) {
-    final providerNameStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final providerNameStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Colors.grey[800],
         );
-    final packageNameStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final packageNameStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontSize: 17,
           color: Colors.grey[800],
         );
-    final priceStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final priceStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           color: Colors.grey[600],
         );
@@ -223,12 +224,12 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.package.provider.name,
+                  widget.package.provider!.name!,
                   style: providerNameStyle,
                 ),
                 const SizedBox(height: AppInsets.sm),
                 Text(
-                  widget.package.title,
+                  widget.package.title!,
                   style: packageNameStyle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -264,11 +265,11 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
 
     final priceDisplay = currency.format(_amount);
     final amountLabel =
-        AppLocalizations.of(context).translate("rewards:amount_label");
-    final priceStyle = Theme.of(context).textTheme.headline6.copyWith(
+        AppLocalizations.of(context)?.translate("rewards:amount_label");
+    final priceStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontSize: 24,
         );
-    final labelStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final labelStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           color: Colors.grey[400],
         );
 
@@ -282,7 +283,7 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
           ),
           const SizedBox(height: AppInsets.med),
           Text(
-            amountLabel,
+            amountLabel!,
             style: labelStyle,
           ),
         ],

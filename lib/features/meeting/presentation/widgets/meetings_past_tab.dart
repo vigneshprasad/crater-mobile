@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
 import '../bloc/meeting_bloc.dart';
@@ -16,9 +15,9 @@ class MeetingsPastTab extends StatefulWidget {
   final Function onRefresh;
 
   const MeetingsPastTab({
-    Key key,
-    @required this.past,
-    @required this.onRefresh,
+    Key? key,
+    required this.past,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -26,7 +25,7 @@ class MeetingsPastTab extends StatefulWidget {
 }
 
 class _MeetingsPastTabState extends State<MeetingsPastTab> {
-  Completer _completer;
+  late Completer _completer;
 
   @override
   void initState() {
@@ -83,10 +82,10 @@ class _MeetingsPastTabState extends State<MeetingsPastTab> {
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final User user = BlocProvider.of<AuthBloc>(context).state.user;
+              final user = BlocProvider.of<AuthBloc>(context).state.user;
               return MeetingCard(
                 meeting: meetingsByDate.meetings[index],
-                user: user,
+                user: user!,
                 onRefresh: widget.onRefresh,
               );
             },

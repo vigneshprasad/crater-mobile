@@ -7,16 +7,16 @@ import '../../../../../core/widgets/base/base_container/base_container.dart';
 
 class DateTimePicker extends HookWidget {
   final List<DateTime> slots;
-  final ValueChanged<DateTime> onChanged;
+  final ValueChanged<DateTime>? onChanged;
 
   const DateTimePicker({
-    @required this.slots,
+    required this.slots,
     this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final selected = useState<DateTime>(null);
+    final selected = useState<DateTime?>(null);
     final dateFormat = DateFormat.yMMMMd('en_US');
     return Column(
       children: [
@@ -33,7 +33,7 @@ class DateTimePicker extends HookWidget {
                       onPressed: (value) {
                         selected.value = value;
                         if (onChanged != null) {
-                          onChanged(selected.value);
+                          onChanged!(value);
                         }
                       },
                     ))
@@ -52,11 +52,11 @@ class _Slot extends StatelessWidget {
   final ValueChanged<DateTime> onPressed;
 
   const _Slot({
-    Key key,
-    @required this.isNow,
-    @required this.slot,
-    @required this.selected,
-    @required this.onPressed,
+    Key? key,
+    required this.isNow,
+    required this.slot,
+    required this.selected,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -73,7 +73,7 @@ class _Slot extends StatelessWidget {
       color: borderColor,
     );
 
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14.00,
           color: textColor,
         );
@@ -111,14 +111,14 @@ class _Slot extends StatelessWidget {
 
 class DateTimeFormField extends FormField<DateTime> {
   final List<DateTime> slots;
-  final ValueChanged<DateTime> onChanged;
+  final ValueChanged<DateTime>? onChanged;
 
   DateTimeFormField({
     this.onChanged,
-    @required this.slots,
-    DateTime initialValue,
-    FormFieldSetter<DateTime> onSaved,
-    FormFieldValidator<DateTime> validator,
+    required this.slots,
+    DateTime? initialValue,
+    FormFieldSetter<DateTime?>? onSaved,
+    FormFieldValidator<DateTime?>? validator,
   }) : super(
           initialValue: initialValue,
           onSaved: onSaved,

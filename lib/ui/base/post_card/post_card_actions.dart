@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../constants/theme.dart';
 
 class PostCardActions extends StatelessWidget {
-  final Text label;
+  final Text? label;
   final Icon icon;
   final VoidCallback onPress;
 
   const PostCardActions({
-    Key key,
+    Key? key,
     this.label,
-    @required this.icon,
-    @required this.onPress,
+    required this.icon,
+    required this.onPress,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class PostCardActions extends StatelessWidget {
                 const SizedBox(
                   width: AppInsets.sm,
                 ),
-              if (label != null) label,
+              if (label != null) label!,
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,7 +35,7 @@ const kSpacingList = 24.00;
 const kListBottomPadding = 124.00;
 
 class ConversationScreen extends HookWidget {
-  final int id;
+  final int? id;
 
   const ConversationScreen({
     @PathParam("id") this.id,
@@ -42,8 +43,7 @@ class ConversationScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(getRoundTableNotifier(id).state);
-
+    final state = useProvider(getRoundTableNotifier(id!));
     return Scaffold(
       appBar: BaseAppBar(
         actions: [
@@ -91,8 +91,8 @@ class _RoundTableLoaded extends HookWidget {
   final Conversation table;
 
   const _RoundTableLoaded({
-    Key key,
-    this.table,
+    Key? key,
+    required this.table,
   }) : super(key: key);
 
   @override
@@ -102,7 +102,7 @@ class _RoundTableLoaded extends HookWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2;
     final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
     // Controller
     final rtcController =
@@ -130,13 +130,13 @@ class _RoundTableLoaded extends HookWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (table.topicDetail.root != null)
+                  if (table.topicDetail!.root != null)
                     Chip(
                         backgroundColor:
                             Theme.of(context).dialogBackgroundColor,
                         visualDensity: VisualDensity.compact,
                         label: Text(
-                          table.topicDetail.root.name,
+                          table.topicDetail!.root!.name,
                         )),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -149,17 +149,18 @@ class _RoundTableLoaded extends HookWidget {
                     onCardPressed: (_) {},
                   ),
                   const SizedBox(height: AppInsets.l),
-                  if (table.topicDetail.articleDetail == null)
-                    EditableTextField(text: table.topicDetail.description),
+                  if (table.topicDetail!.articleDetail == null)
+                    EditableTextField(text: table.topicDetail!.description!),
                   const SizedBox(height: AppInsets.xl),
                   Center(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("conversations:speakers_label"),
+                                ?.translate("conversations:speakers_label") ??
+                            '',
                         style: pageLabelStyle),
                   ),
-                  if (table.isSpeaker) const SizedBox(height: AppInsets.l),
-                  if (!table.isSpeaker) const SizedBox(height: AppInsets.xl),
+                  if (table.isSpeaker!) const SizedBox(height: AppInsets.l),
+                  if (!table.isSpeaker!) const SizedBox(height: AppInsets.xl),
                   if (rtcController.showConnectionBar)
                     SpeakersTable(
                         speakers: rtcController.speakers,
@@ -169,7 +170,7 @@ class _RoundTableLoaded extends HookWidget {
                   if (!rtcController.showConnectionBar)
                     _SpeakersListWithIntro(
                       table: table,
-                      authUserPk: authUserPK,
+                      authUserPk: authUserPK!,
                     ),
                   const SizedBox(height: kListBottomPadding),
                 ],
@@ -198,7 +199,7 @@ class _RoundTableLoaded extends HookWidget {
       BuildContext context, ConversationScreenController controller) {
     final bool showConnectionBar = controller.showConnectionBar;
     final List<Widget> items = [];
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final user = BlocProvider.of<AuthBloc>(context).state.user!;
 
     if (showConnectionBar) {
       items.add(Align(
@@ -207,10 +208,10 @@ class _RoundTableLoaded extends HookWidget {
           table: table,
         ),
       ));
-    } else if (!table.isPast) {
-      if (table.isSpeaker) {
+    } else if (!table.isPast!) {
+      if (table.isSpeaker!) {
         final label = AppLocalizations.of(context)
-            .translate("conversation_screen:go_live_label");
+            ?.translate("conversation_screen:go_live_label");
 
         items.add(
           Align(
@@ -224,7 +225,7 @@ class _RoundTableLoaded extends HookWidget {
                   onPressed: () {
                     _joinRoundTableChannel(context, user, controller);
                   },
-                  child: Text(label),
+                  child: Text(label!),
                 ),
               ),
             ),
@@ -241,10 +242,11 @@ class _RoundTableLoaded extends HookWidget {
                 child: BaseLargeButton(
                   width: MediaQuery.of(context).size.width * 0.6,
                   onPressed: () {
-                    postRequestToJoinGroup(context, controller, table.id);
+                    postRequestToJoinGroup(context, controller, table.id!);
                   },
                   child: Text(AppLocalizations.of(context)
-                      .translate("conversations:join_button_label")),
+                          ?.translate("conversations:join_button_label") ??
+                      ''),
                 ),
               ),
             ),
@@ -293,18 +295,18 @@ class _RoundTableLoaded extends HookWidget {
   Future<void> postRequestToJoinGroup(BuildContext context,
       ConversationScreenController controller, int group) async {
     final _overlay = _buildLoaderOverlay();
-    Overlay.of(context).insert(_overlay);
+    Overlay.of(context)?.insert(_overlay);
     final response = await controller.requestToJoinGroup(group);
 
     response.fold(
       (failure) {
         _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (result) {
-        final tableId = result.groupDetail.id;
+        final tableId = result.groupDetail!.id;
         _overlay.remove();
-        _updatedTableAndShowPopup(context, tableId);
+        _updatedTableAndShowPopup(context, tableId!);
       },
     );
   }
@@ -312,7 +314,7 @@ class _RoundTableLoaded extends HookWidget {
   Future<void> _updatedTableAndShowPopup(
       BuildContext context, int tableId) async {
     final response = await context
-        .read(getRoundTableNotifier(tableId))
+        .read(getRoundTableNotifier(tableId).notifier)
         .getTableInfo(tableId);
 
     response.fold(
@@ -338,17 +340,17 @@ class _SpeakersListWithIntro extends StatelessWidget {
   final Conversation table;
   final String authUserPk;
   const _SpeakersListWithIntro({
-    Key key,
-    this.table,
-    @required this.authUserPk,
+    Key? key,
+    required this.table,
+    required this.authUserPk,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
 
     if (table.speakersDetailList != null &&
-        table.speakersDetailList.isNotEmpty) {
-      for (final speaker in table.speakersDetailList) {
+        table.speakersDetailList!.isNotEmpty) {
+      for (final speaker in table.speakersDetailList!) {
         children.add(_SpeakerWithIntro(
           user: speaker,
           authUserPk: authUserPk,
@@ -366,20 +368,20 @@ class _SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
   final String authUserPk;
   const _SpeakerWithIntro({
-    Key key,
-    @required this.user,
-    @required this.authUserPk,
+    Key? key,
+    required this.user,
+    required this.authUserPk,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.email;
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => AutoRouter.of(context).push(Routes.profileScreen(
+      onTap: () => AutoRouter.of(context).push(ProfileScreenRoute(
           userId: user.pk, allowEdit: authUserPk == user.pk)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -398,10 +400,10 @@ class _SpeakerWithIntro extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.name, style: headingStyle),
+                  Text(user.name ?? '', style: headingStyle),
                   const SizedBox(height: AppInsets.sm),
                   Text(
-                    description,
+                    description ?? '',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,

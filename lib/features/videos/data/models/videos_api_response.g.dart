@@ -11,10 +11,9 @@ VideosApiResponse _$VideosApiResponseFromJson(Map<String, dynamic> json) {
     count: json['count'] as int,
     next: json['next'] as String,
     previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : VideoModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    results: (json['results'] as List<dynamic>)
+        .map((e) => VideoModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

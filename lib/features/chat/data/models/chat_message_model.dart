@@ -13,47 +13,47 @@ part 'chat_message_model.g.dart';
 @JsonSerializable()
 class ChatMessageModel extends ChatMessage {
   @HiveField(0)
-  final String message;
+  final String? message;
 
   @HiveField(1)
-  final String file;
+  final String? file;
 
   @HiveField(2)
-  final String filename;
+  final String? filename;
 
   @HiveField(3)
-  final String fileFormat;
+  final String? fileFormat;
 
   @HiveField(4)
-  final String sender;
+  final String? sender;
 
   @HiveField(5)
-  final String receiver;
+  final String? receiver;
 
   @HiveField(6)
   final int pk;
 
   @HiveField(7)
-  final String photo;
+  final String? photo;
 
   @HiveField(8)
-  final String created;
+  final String? created;
 
   @HiveField(9)
   @JsonKey(name: "is_read")
-  final bool isRead;
+  final bool? isRead;
 
   @HiveField(10)
   @JsonKey(name: "sender_id")
-  final String senderId;
+  final String? senderId;
 
   @HiveField(11)
   @JsonKey(name: "receiver_id")
-  final String receiverId;
+  final String? receiverId;
 
   @HiveField(12)
   @JsonKey(name: "is_support")
-  final bool isSupport;
+  final bool? isSupport;
 
   ChatMessageModel({
     this.message,
@@ -62,7 +62,7 @@ class ChatMessageModel extends ChatMessage {
     this.fileFormat,
     this.sender,
     this.receiver,
-    this.pk,
+    required this.pk,
     this.photo,
     this.created,
     this.isRead,

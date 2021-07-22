@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -20,26 +21,26 @@ typedef PostItemFunc = void Function(int id);
 typedef PostLikeItemFunc = void Function(int id, bool myLike);
 
 class PostCard extends StatelessWidget {
-  final User user;
+  final User? user;
   final Post post;
-  final PostItemFunc onPostDelete;
-  final PostLikeItemFunc onLikePost;
-  final PostItemFunc onCommentPost;
+  final PostItemFunc? onPostDelete;
+  final PostLikeItemFunc? onLikePost;
+  final PostItemFunc? onCommentPost;
   final bool showActions;
 
   const PostCard({
-    Key key,
+    Key? key,
     this.showActions = true,
     this.onPostDelete,
     this.onLikePost,
     this.onCommentPost,
     this.user,
-    @required this.post,
+    required this.post,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final links = ParseUrls.getLinksList(post.message);
+    final links = ParseUrls.getLinksList(post.message!);
     return Card(
       elevation: 1,
       color: Colors.white,
@@ -62,8 +63,8 @@ class PostCard extends StatelessWidget {
   Widget getPostHeader(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.subtitle2;
     final subHeadStyle =
-        Theme.of(context).textTheme.caption.apply(color: Colors.grey);
-    final postCreatedTime = DateTime.parse(post.created);
+        Theme.of(context).textTheme.caption?.apply(color: Colors.grey);
+    final postCreatedTime = DateTime.parse(post.created!);
     final createdFormater = DateFormat('MMM dd yyyy h:mm a');
     return Padding(
       padding: const EdgeInsets.all(AppInsets.xl),
@@ -71,7 +72,7 @@ class PostCard extends StatelessWidget {
         children: <Widget>[
           if (post.creatorPhoto != null)
             CachedNetworkImage(
-              imageUrl: post.creatorPhoto,
+              imageUrl: post.creatorPhoto!,
               placeholder: (context, url) => Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -93,13 +94,13 @@ class PostCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               BaseText(
-                text: post.creatorName,
-                style: headingStyle,
+                text: post.creatorName!,
+                style: headingStyle!,
               ),
               const SizedBox(height: 2),
               BaseText(
                 text: createdFormater.format(postCreatedTime),
-                style: subHeadStyle,
+                style: subHeadStyle!,
               ),
             ],
           ),
@@ -115,7 +116,7 @@ class PostCard extends StatelessWidget {
       padding: const EdgeInsets.only(
           left: basePadding, bottom: basePadding, right: basePadding),
       child: BaseTextExpand(
-        post.message,
+        post.message!,
         style: contentStyle,
       ),
     );
@@ -123,11 +124,11 @@ class PostCard extends StatelessWidget {
 
   Widget getPostLinkMeta(BuildContext context, String link) {
     return FutureBuilder<http.Response>(
-      future: http.get(link),
+      future: http.get(Uri.parse(link)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          final document = responseToDocument(snapshot.data);
+          final document = MetadataFetch.responseToDocument(snapshot.data!);
           final data = MetadataParser.parse(document);
           if (isEmptyMetadata(data)) {
             return Container();
@@ -165,12 +166,12 @@ class PostCard extends StatelessWidget {
     try {
       await launch(
         link,
-        option: CustomTabsOption(
+        customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          extraCustomTabs: <String>[
+          extraCustomTabs: const <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',
             // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
@@ -185,17 +186,21 @@ class PostCard extends StatelessWidget {
   }
 
   Widget renderMetaData(Metadata data, BuildContext context) {
-    final headingStyle =
-        Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.grey[800]);
-    final bodyStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[600]);
+    final headingStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        ?.copyWith(color: Colors.grey[800]);
+    final bodyStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(color: Colors.grey[600]);
     const radius = Radius.circular(8);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (data.image != null)
           CachedNetworkImage(
-            imageUrl: data.image,
+            imageUrl: data.image!,
             placeholder: (context, url) {
               return Lottie.asset(
                 "assets/lottie/loading_dots.json",
@@ -244,7 +249,7 @@ class PostCard extends StatelessWidget {
     final textTheme = Theme.of(context)
         .textTheme
         .button
-        .copyWith(color: Colors.grey[400], fontSize: 16);
+        ?.copyWith(color: Colors.grey[400], fontSize: 16);
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppInsets.med, vertical: AppInsets.sm),
@@ -254,15 +259,15 @@ class PostCard extends StatelessWidget {
             PostCardActions(
               icon: Icon(
                 WorkNetIcons.like,
-                color: post.myLike ? AppTheme.blueAccent : Colors.grey[500],
+                color: post.myLike! ? AppTheme.blueAccent : Colors.grey[500],
               ),
               label: Text(
                 post.likes.toString(),
                 style: textTheme,
               ),
-              onPress: () => onLikePost(
+              onPress: () => onLikePost!(
                 post.pk,
-                post.myLike,
+                post.myLike!,
               ),
             ),
           if (onCommentPost != null)
@@ -275,16 +280,16 @@ class PostCard extends StatelessWidget {
                 post.comments.toString(),
                 style: textTheme,
               ),
-              onPress: () => onCommentPost(post.pk),
+              onPress: () => onCommentPost!(post.pk),
             ),
           const Spacer(),
-          if (user.pk == post.creator && onPostDelete != null)
+          if (user?.pk == post.creator && onPostDelete != null)
             PostCardActions(
               icon: Icon(
                 WorkNetIcons.delete,
                 color: Colors.grey[500],
               ),
-              onPress: () => onPostDelete(post.pk),
+              onPress: () => onPostDelete!(post.pk),
             )
         ],
       ),

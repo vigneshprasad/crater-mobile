@@ -12,32 +12,40 @@ part 'meeting_config_model.g.dart';
 class MeetingConfigModel extends MeetingConfig {
   final int pk;
 
-  final String title;
+  final String? title;
 
   @JsonKey(name: 'week_start_date')
   final String weekStartDate;
 
   @JsonKey(name: 'week_end_date')
-  final String weekEndDate;
+  final String? weekEndDate;
 
   @JsonKey(name: 'is_registration_open')
-  final bool isRegistrationOpen;
+  final bool? isRegistrationOpen;
 
   @JsonKey(name: 'is_active')
-  final bool isActive;
+  final bool? isActive;
 
   @JsonKey(name: 'available_time_slots')
   final Map<String, List<TimeSlotModel>> availableTimeSlots;
 
   MeetingConfigModel({
-    this.pk,
+    required this.pk,
     this.title,
-    this.weekStartDate,
+    required this.weekStartDate,
     this.weekEndDate,
     this.isRegistrationOpen,
     this.isActive,
-    this.availableTimeSlots,
-  });
+    required this.availableTimeSlots,
+  }) : super(
+          availableTimeSlots: availableTimeSlots,
+          pk: pk,
+          title: title,
+          weekStartDate: weekStartDate,
+          weekEndDate: weekEndDate,
+          isActive: isActive,
+          isRegistrationOpen: isRegistrationOpen,
+        );
 
   factory MeetingConfigModel.fromJson(Map<String, dynamic> json) =>
       _$MeetingConfigModelFromJson(json);

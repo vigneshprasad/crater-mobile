@@ -7,7 +7,7 @@ class MeetingRsvp extends HiveObject {
   final MeetingRsvpStatus status;
 
   MeetingRsvp({
-    this.pk,
-    this.status,
+    required this.pk,
+    required this.status,
   });
 }

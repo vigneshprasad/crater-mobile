@@ -15,9 +15,9 @@ class ArticlesTab extends StatefulWidget {
 }
 
 class _ArticlesTabState extends State<ArticlesTab> {
-  ArticleBloc _bloc;
-  List<ArticleWebsite> _websites;
-  Completer<void> _completer;
+  late ArticleBloc _bloc;
+  late List<ArticleWebsite> _websites;
+  late Completer<void> _completer;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _ArticlesTabState extends State<ArticlesTab> {
 
   List<Widget> _buildArticlesRows(BuildContext context) {
     return _websites.fold([], (previousValue, website) {
-      final headingStyle = Theme.of(context).textTheme.headline6.copyWith(
+      final headingStyle = Theme.of(context).textTheme.headline6?.copyWith(
             fontSize: 15,
             fontWeight: FontWeight.w700,
             color: Colors.grey[800],

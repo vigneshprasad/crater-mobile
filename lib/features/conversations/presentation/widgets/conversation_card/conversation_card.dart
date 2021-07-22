@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -14,23 +15,23 @@ import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
-  final ValueChanged<Conversation> onCardPressed;
-  final bool hideFooter;
+  final ValueChanged<Conversation>? onCardPressed;
+  final bool? hideFooter;
 
   const ConversationCard({
-    Key key,
-    @required this.conversation,
+    Key? key,
+    required this.conversation,
     this.onCardPressed,
     this.hideFooter,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 13.00,
           color: Colors.white70,
         );
-    final isFull = conversation.speakers.length >= conversation.maxSpeakers;
+    final isFull = conversation.speakers!.length >= conversation.maxSpeakers;
     final now = DateTime.now();
     final difference = conversation.start.toLocal().difference(now).inMinutes;
 
@@ -38,10 +39,10 @@ class ConversationCard extends StatelessWidget {
     final startTime = difference <= 30 ? "In $difference minutes" : "";
     final dateFormat = DateFormat.jm();
 
-    BoxBorder _border;
+    BoxBorder _border = Border.all();
 
-    if (!conversation.isPast) {
-      if (conversation.isSpeaker) {
+    if (!conversation.isPast!) {
+      if (conversation.isSpeaker!) {
         _border = Border.all(
           color: AppTheme.blueAccentDark,
           width: 2.00,
@@ -56,11 +57,11 @@ class ConversationCard extends StatelessWidget {
       }
     }
 
-    final article = conversation.topicDetail.articleDetail;
+    final article = conversation.topicDetail!.articleDetail;
 
     final heading =
-        article != null ? article.description : conversation.topicDetail.name;
-    final padding = article != null && article.description.isEmpty
+        article != null ? article.description : conversation.topicDetail!.name;
+    final padding = article != null && article.description!.isEmpty
         ? const EdgeInsets.symmetric(
             horizontal: AppInsets.xl,
           )
@@ -72,15 +73,15 @@ class ConversationCard extends StatelessWidget {
     return CalendarCardLayout(
       onPressed: () {
         if (onCardPressed != null) {
-          onCardPressed(conversation);
+          onCardPressed!(conversation);
         } else {
           AutoRouter.of(context)
-              .push(Routes.conversationScreen(id: conversation.id));
+              .push(ConversationScreenRoute(id: conversation.id));
         }
       },
       padding: padding,
       background: Theme.of(context).canvasColor,
-      heading: Text(heading),
+      heading: Text(heading!),
       subHeading: Row(
         children: [
           const Spacer(),
@@ -90,8 +91,9 @@ class ConversationCard extends StatelessWidget {
       border: _border,
       child: Column(
         children: [
-          if (conversation.topicDetail.articleDetail != null)
-            _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
+          if (conversation.topicDetail!.articleDetail != null)
+            _ArticleDetailCard(
+                article: conversation.topicDetail!.articleDetail!),
           if (hideFooter != true)
             Row(
               children: [
@@ -105,7 +107,7 @@ class ConversationCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: _SpeakersAvatarList(
-                      speakers: conversation.speakersDetailList),
+                      speakers: conversation.speakersDetailList!),
                 ),
                 const SizedBox(width: 20),
                 BaseContainer(
@@ -114,8 +116,8 @@ class ConversationCard extends StatelessWidget {
                       color: Theme.of(context).canvasColor,
                       child: IconButton(
                         icon: const Icon(Icons.arrow_forward),
-                        onPressed: () => AutoRouter.of(context).push(
-                            Routes.conversationScreen(id: conversation.id)),
+                        onPressed: () => AutoRouter.of(context)
+                            .push(ConversationScreenRoute(id: conversation.id)),
                       ),
                     )),
               ],
@@ -130,13 +132,13 @@ class _ArticleDetailCard extends StatelessWidget {
   final Article article;
 
   const _ArticleDetailCard({
-    Key key,
-    @required this.article,
+    Key? key,
+    required this.article,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14.00,
           color: Colors.black,
           fontWeight: FontWeight.w500,
@@ -158,7 +160,7 @@ class _ArticleDetailCard extends StatelessWidget {
               Row(
                 children: [
                   BaseNetworkImage(
-                    imageUrl: article.articleSourceDetail.image,
+                    imageUrl: article.articleSourceDetail?.image,
                     defaultImage: AppImageAssets.videoPlaceholder,
                     imagebuilder: (context, imageProvider) => CircleAvatar(
                       backgroundImage: imageProvider,
@@ -166,13 +168,13 @@ class _ArticleDetailCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppInsets.l),
-                  Text(article.articleSourceDetail.name,
+                  Text(article.articleSourceDetail!.name!,
                       style: sourceLabelStyle),
                 ],
               ),
               const SizedBox(height: AppInsets.l),
               Text(
-                article.title,
+                article.title!,
                 style: const TextStyle(color: Colors.black),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -189,8 +191,8 @@ class _SpeakersAvatarList extends StatelessWidget {
   final List<ConversationUser> speakers;
 
   const _SpeakersAvatarList({
-    Key key,
-    @required this.speakers,
+    Key? key,
+    required this.speakers,
   }) : super(key: key);
 
   @override

@@ -17,19 +17,19 @@ class PackageModelAdapter extends TypeAdapter<PackageModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PackageModel(
-      pk: fields[0] as int,
-      maxPrice: fields[1] as int,
-      maxDiscount: fields[2] as int,
-      maxDiscountPoints: fields[3] as int,
-      title: fields[4] as String,
-      shortDesc: fields[5] as String,
-      listImage: fields[6] as String,
-      coverImage: fields[7] as String,
-      color: fields[8] as String,
-      provider: fields[9] as PackageProviderModel,
-      longDesc: fields[10] as String,
-      pointsConversion: fields[11] as double,
-      isDark: fields[12] as bool,
+      pk: fields[0] as int?,
+      maxPrice: fields[1] as int?,
+      maxDiscount: fields[2] as int?,
+      maxDiscountPoints: fields[3] as int?,
+      title: fields[4] as String?,
+      shortDesc: fields[5] as String?,
+      listImage: fields[6] as String?,
+      coverImage: fields[7] as String?,
+      color: fields[8] as String?,
+      provider: fields[9] as PackageProviderModel?,
+      longDesc: fields[10] as String?,
+      pointsConversion: fields[11] as double?,
+      isDark: fields[12] as bool?,
     );
   }
 
@@ -82,22 +82,22 @@ class PackageModelAdapter extends TypeAdapter<PackageModel> {
 
 PackageModel _$PackageModelFromJson(Map<String, dynamic> json) {
   return PackageModel(
-    pk: json['pk'] as int,
-    maxPrice: json['max_price'] as int,
-    maxDiscount: json['max_discount'] as int,
-    maxDiscountPoints: json['max_discount_points'] as int,
-    title: json['title'] as String,
-    shortDesc: json['short_desc'] as String,
-    listImage: json['list_image'] as String,
-    coverImage: json['cover_image'] as String,
-    color: json['color'] as String,
+    pk: json['pk'] as int?,
+    maxPrice: json['max_price'] as int?,
+    maxDiscount: json['max_discount'] as int?,
+    maxDiscountPoints: json['max_discount_points'] as int?,
+    title: json['title'] as String?,
+    shortDesc: json['short_desc'] as String?,
+    listImage: json['list_image'] as String?,
+    coverImage: json['cover_image'] as String?,
+    color: json['color'] as String?,
     provider: json['provider'] == null
         ? null
         : PackageProviderModel.fromJson(
             json['provider'] as Map<String, dynamic>),
-    longDesc: json['long_desc'] as String,
-    pointsConversion: (json['points_conversion'] as num)?.toDouble(),
-    isDark: json['is_dark'] as bool,
+    longDesc: json['long_desc'] as String?,
+    pointsConversion: (json['points_conversion'] as num?)?.toDouble(),
+    isDark: json['is_dark'] as bool?,
   );
 }
 

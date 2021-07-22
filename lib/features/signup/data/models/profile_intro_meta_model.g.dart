@@ -42,8 +42,8 @@ class ProfileIntroMetaModelAdapter extends TypeAdapter<ProfileIntroMetaModel> {
 ProfileIntroMetaModel _$ProfileIntroMetaModelFromJson(
     Map<String, dynamic> json) {
   return ProfileIntroMetaModel(
-    value: json['value'] as int,
-    name: json['name'] as String,
+    value: json['value'] as int?,
+    name: json['name'] as String?,
   );
 }
 

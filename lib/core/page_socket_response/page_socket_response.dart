@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 class PageSocketResponse<T> extends Equatable {
   final int page;
@@ -8,10 +7,10 @@ class PageSocketResponse<T> extends Equatable {
   final bool fromCache;
 
   const PageSocketResponse({
-    @required this.page,
-    @required this.pages,
-    @required this.results,
-    @required this.fromCache,
+    required this.page,
+    required this.pages,
+    required this.results,
+    required this.fromCache,
   });
 
   @override

@@ -7,7 +7,7 @@ class MeetingsByDate extends HiveObject {
   final List<Meeting> meetings;
 
   MeetingsByDate({
-    this.date,
-    this.meetings,
+    required this.date,
+    required this.meetings,
   });
 }

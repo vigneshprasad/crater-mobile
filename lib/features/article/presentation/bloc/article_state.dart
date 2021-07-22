@@ -2,15 +2,15 @@ part of 'article_bloc.dart';
 
 abstract class ArticleState extends Equatable {
   final bool loading;
-  final dynamic error;
+  final Object? error;
 
   const ArticleState({
-    @required this.loading,
-    @required this.error,
+    required this.loading,
+    required this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ArticleInitial extends ArticleState {
@@ -22,7 +22,7 @@ class ArticleInitial extends ArticleState {
 }
 
 class ArticleRequestError extends ArticleState {
-  const ArticleRequestError({@required dynamic error})
+  const ArticleRequestError({required dynamic error})
       : super(loading: false, error: error);
 }
 
@@ -35,47 +35,53 @@ class ArticlesRequestLoading extends ArticleState {
 }
 
 class ArticlesPageRequestLoaded extends ArticleState {
-  final int websiteTag;
-  final List<Article> articles;
-  final int currentPage;
-  final int pages;
-  final int count;
+  final int? websiteTag;
+  final List<Article>? articles;
+  final int? currentPage;
+  final int? pages;
+  final int? count;
   final bool fromCache;
 
   const ArticlesPageRequestLoaded({
-    @required this.websiteTag,
-    @required this.articles,
-    @required this.currentPage,
-    @required this.pages,
-    @required this.count,
-    @required this.fromCache,
+    this.websiteTag,
+    this.articles,
+    this.currentPage,
+    this.pages,
+    this.count,
+    required this.fromCache,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-        articles,
-        currentPage,
-        count,
-        pages,
-        fromCache,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      loading,
+      fromCache,
+    ];
+
+    if (articles != null) temp.add(articles!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (pages != null) temp.add(pages!);
+    if (count != null) temp.add(count!);
+    if (websiteTag != null) temp.add(websiteTag!);
+
+    return temp;
+  }
 }
 
 class ArticleWebsitesRequestLoaded extends ArticleState {
   final List<ArticleWebsite> websites;
 
   const ArticleWebsitesRequestLoaded({
-    this.websites,
+    required this.websites,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, websites];
+  List<Object> get props =>
+      error != null ? [loading, error!, websites] : [loading, websites];
 }

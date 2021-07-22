@@ -8,18 +8,18 @@ import '../../../chat_inbox/domain/entity/chat_user_entity.dart';
 
 class ChatLayout extends StatefulWidget {
   final bool userIsTyping;
-  final ChatUser user;
-  final IndexedWidgetBuilder listBuilder;
-  final Widget chatBar;
+  final ChatUser? user;
+  final IndexedWidgetBuilder? listBuilder;
+  final Widget? chatBar;
   final int itemCount;
 
   const ChatLayout({
-    Key key,
+    Key? key,
     this.user,
-    @required this.userIsTyping,
-    @required this.listBuilder,
-    @required this.chatBar,
-    @required this.itemCount,
+    required this.userIsTyping,
+    this.listBuilder,
+    this.chatBar,
+    required this.itemCount,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class ChatLayout extends StatefulWidget {
 }
 
 class _ChatLayoutState extends State<ChatLayout> {
-  ScrollController _controller;
+  ScrollController? _controller;
 
   @override
   void initState() {
@@ -55,7 +55,8 @@ class _ChatLayoutState extends State<ChatLayout> {
                   slivers: [
                     if (widget.listBuilder != null)
                       SliverList(
-                        delegate: SliverChildBuilderDelegate(widget.listBuilder,
+                        delegate: SliverChildBuilderDelegate(
+                            widget.listBuilder!,
                             childCount: widget.itemCount),
                       ),
                     // SliverPersistentHeader(
@@ -75,16 +76,16 @@ class _ChatLayoutState extends State<ChatLayout> {
     );
   }
 
-  Widget _buildLabel(BuildContext context, double opacity) {
+  Widget? _buildLabel(BuildContext context, double opacity) {
     if (widget.user != null) {
       final formatDate = DateFormat("h:mm a");
-      final image = widget.user.photo != null
-          ? NetworkImage(widget.user.photo)
+      final image = widget.user!.photo != null
+          ? NetworkImage(widget.user!.photo!)
           : AppImageAssets.defaultAvatar as ImageProvider;
-      final name = widget.user.name.isNotEmpty ? widget.user.name : "";
+      final name = widget.user!.name.isNotEmpty ? widget.user!.name : "";
       // ignore: unused_local_variable
-      final lastSeen = widget.user.lastSeen != null
-          ? formatDate.format(widget.user.lastSeen)
+      final lastSeen = widget.user!.lastSeen != null
+          ? formatDate.format(widget.user!.lastSeen!)
           : "";
       final headerStyle = Theme.of(context).textTheme.subtitle2;
 

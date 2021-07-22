@@ -16,13 +16,17 @@ enum ConversationTabType {
 }
 
 final conversationCalendarStateProvider = StateNotifierProvider.family<
-    ConversationCalendarStateNofier, ConversationTabType>((ref, type) {
+    ConversationCalendarStateNofier,
+    List<CalendarWeekData>,
+    ConversationTabType>((ref, type) {
   return ConversationCalendarStateNofier(type, ref.read);
 });
 
 final initialStateProvider =
     FutureProvider.autoDispose.family<void, ConversationTabType>((ref, type) {
-  return ref.watch(conversationCalendarStateProvider(type)).getInitialData();
+  return ref
+      .watch(conversationCalendarStateProvider(type).notifier)
+      .getInitialData();
 });
 
 class ConversationCalendarStateNofier
@@ -119,16 +123,16 @@ class ConversationCalendarStateNofier
 
   Future<Either<Failure, List<ConversationByDate>>>
       getPreviousWeekData() async {
-    final _start = state[0].start.subtract(const Duration(days: 7));
-    final _end = state[0].start.subtract(const Duration(days: 1));
+    final _start = state[0].start?.subtract(const Duration(days: 7));
+    final _end = state[0].start?.subtract(const Duration(days: 1));
     Either<Failure, List<ConversationByDate>> response;
 
     if (type == ConversationTabType.all) {
       response = await read(conversationRepositoryProvider)
-          .getAllConversations(_start, _end);
+          .getAllConversations(_start!, _end!);
     } else {
       response = await read(conversationRepositoryProvider)
-          .getMyConversations(_start, _end);
+          .getMyConversations(_start!, _end!);
     }
 
     response.fold(

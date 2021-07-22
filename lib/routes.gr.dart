@@ -4,672 +4,802 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-// ignore_for_file: public_member_api_docs
+import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:flutter/material.dart' as _i2;
 
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'core/widgets/screens/home_screen/home_screen.dart' as _i4;
+import 'features/auth/presentation/screens/auth/auth_screen.dart' as _i10;
+import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart'
+    as _i11;
+import 'features/auth/presentation/screens/new_password/new_password_screen.dart'
+    as _i31;
+import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart'
+    as _i12;
+import 'features/auth/presentation/screens/splash/splash_screen.dart' as _i3;
+import 'features/auth/presentation/screens/welcome/welcome_screen.dart' as _i5;
+import 'features/chat/presentation/screens/chat_screen.dart' as _i14;
+import 'features/chat_inbox/presentation/screens/chat_search_screen.dart'
+    as _i15;
+import 'features/community/presentation/screens/create_post.dart' as _i13;
+import 'features/community/presentation/screens/post_screen.dart' as _i18;
+import 'features/conversations/domain/entity/topic_entity/topic_entity.dart'
+    as _i38;
+import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart'
+    as _i24;
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart'
+    as _i25;
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart'
+    as _i39;
+import 'features/meeting/domain/entity/meeting_config_entity.dart' as _i33;
+import 'features/meeting/domain/entity/meeting_interest_entity.dart' as _i36;
+import 'features/meeting/domain/entity/meeting_objective_entity.dart' as _i35;
+import 'features/meeting/domain/entity/user_meeting_preference_entity.dart'
+    as _i34;
+import 'features/meeting/presentation/screens/meeting_details_screen.dart'
+    as _i20;
+import 'features/meeting/presentation/screens/register_meeting_screen.dart'
+    as _i19;
+import 'features/notification/presentation/screens/notifications_screen.dart'
+    as _i17;
+import 'features/points/presentation/screens/points_faq_screen.dart' as _i23;
+import 'features/profile/presentation/screens/profile_screen/profile_screen.dart'
+    as _i32;
+import 'features/rewards/domain/entity/package_entity.dart' as _i37;
+import 'features/rewards/presentation/screens/package_detail_screen.dart'
+    as _i21;
+import 'features/rewards/presentation/screens/package_purchase_screen.dart'
+    as _i22;
+import 'features/signup/presentation/screens/objectives_screen.dart' as _i6;
+import 'features/signup/presentation/screens/phone_verification_screen.dart'
+    as _i9;
+import 'features/signup/presentation/screens/profile_basic_screen.dart' as _i27;
+import 'features/signup/presentation/screens/profile_bio_screen.dart' as _i30;
+import 'features/signup/presentation/screens/profile_extra_info_screen/profile_intro_screen.dart'
+    as _i8;
+import 'features/signup/presentation/screens/profile_image_screen.dart' as _i29;
+import 'features/signup/presentation/screens/profile_intro_screen.dart' as _i26;
+import 'features/signup/presentation/screens/profile_setup_screen.dart' as _i7;
+import 'features/signup/presentation/screens/profile_tags_screen.dart' as _i28;
+import 'features/videos/presentation/screens/video_player_screen.dart' as _i16;
 
-import 'core/widgets/screens/home_screen/home_screen.dart';
-import 'features/auth/presentation/screens/auth/auth_screen.dart';
-import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
-import 'features/auth/presentation/screens/new_password/new_password_screen.dart';
-import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'features/auth/presentation/screens/splash/splash_screen.dart';
-import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
-import 'features/chat/presentation/screens/chat_screen.dart';
-import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
-import 'features/community/presentation/screens/create_post.dart';
-import 'features/community/presentation/screens/post_screen.dart';
-import 'features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
-import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
-import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import 'features/meeting/domain/entity/meeting_config_entity.dart';
-import 'features/meeting/domain/entity/meeting_interest_entity.dart';
-import 'features/meeting/domain/entity/meeting_objective_entity.dart';
-import 'features/meeting/domain/entity/user_meeting_preference_entity.dart';
-import 'features/meeting/presentation/screens/meeting_details_screen.dart';
-import 'features/meeting/presentation/screens/register_meeting_screen.dart';
-import 'features/notification/presentation/screens/notifications_screen.dart';
-import 'features/points/presentation/screens/points_faq_screen.dart';
-import 'features/profile/presentation/screens/profile_screen/profile_screen.dart';
-import 'features/rewards/domain/entity/package_entity.dart';
-import 'features/rewards/presentation/screens/package_detail_screen.dart';
-import 'features/rewards/presentation/screens/package_purchase_screen.dart';
-import 'features/signup/presentation/screens/objectives_screen.dart';
-import 'features/signup/presentation/screens/phone_verification_screen.dart';
-import 'features/signup/presentation/screens/profile_basic_screen.dart';
-import 'features/signup/presentation/screens/profile_bio_screen.dart';
-import 'features/signup/presentation/screens/profile_extra_info_screen/profile_intro_screen.dart';
-import 'features/signup/presentation/screens/profile_image_screen.dart';
-import 'features/signup/presentation/screens/profile_intro_screen.dart';
-import 'features/signup/presentation/screens/profile_setup_screen.dart';
-import 'features/signup/presentation/screens/profile_tags_screen.dart';
-import 'features/videos/presentation/screens/video_player_screen.dart';
+class AppRouter extends _i1.RootStackRouter {
+  AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
+      : super(navigatorKey);
 
-class Routes {
-  static const String splashScreen = '/';
-  static const String _homeScreen = '/home/:tab?';
-  static String homeScreen({dynamic tab = ''}) => '/home/$tab';
-  static const String _topicListScreen = '/topic-list/:topic?';
-  static String topicListScreen({dynamic topic = ''}) => '/topic-list/$topic';
-  static const String welcomeScreen = '/welcome';
-  static const String _objectivesScreen = '/objectives/:editMode?';
-  static String objectivesScreen({dynamic editMode = ''}) =>
-      '/objectives/$editMode';
-  static const String _profileSetupScreen = '/profile-setup/:editMode?';
-  static String profileSetupScreen({dynamic editMode = ''}) =>
-      '/profile-setup/$editMode';
-  static const String profileExtraInfoScreen = '/profile-extra-info';
-  static const String phoneVerificationScreen = '/phone-verify';
-  static const String _authScreen = '/auth/:state?';
-  static String authScreen({dynamic state = ''}) => '/auth/$state';
-  static const String forgotPasswordScreen = '/forgot-password';
-  static const String _onboardingScreen = '/onboarding/:type';
-  static String onboardingScreen({@required dynamic type}) =>
-      '/onboarding/$type';
-  static const String createPostScreen = '/create-post';
-  static const String chatScreen = '/chat/user';
-  static const String chatSearchScreen = '/chat/search';
-  static const String videoPlayerScreen = '/video-player';
-  static const String notificationsScreen = '/notifications';
-  static const String postScreen = '/post';
-  static const String registerMeetingScreen = '/register-meeting';
-  static const String meetingDetailScreen = '/meeting-detail';
-  static const String packageDetailScreen = '/package-detail';
-  static const String packagePurchaseScreen = '/package-purchase';
-  static const String pointsFaqScreen = '/points-faq';
-  static const String _conversationScreen = '/roundtable/:id';
-  static String conversationScreen({@required dynamic id}) => '/roundtable/$id';
-  static const String createConversationScreen = '/create-conversation';
-  static const String _profileIntroScreen = '/profile-intro/:editMode?';
-  static String profileIntroScreen({dynamic editMode = ''}) =>
-      '/profile-intro/$editMode';
-  static const String _profileBasicScreen = '/profile-basic/:editMode?';
-  static String profileBasicScreen({dynamic editMode = ''}) =>
-      '/profile-basic/$editMode';
-  static const String _profileTagsScreen = '/profile-tags/:editMode?';
-  static String profileTagsScreen({dynamic editMode = ''}) =>
-      '/profile-tags/$editMode';
-  static const String _profileImageScreen = '/profile-image/:editMode?';
-  static String profileImageScreen({dynamic editMode = ''}) =>
-      '/profile-image/$editMode';
-  static const String _profileBioScreen = '/profile-bio/:editMode?';
-  static String profileBioScreen({dynamic editMode = ''}) =>
-      '/profile-bio/$editMode';
-  static const String _newPasswordScreen = '/new-password/:params?';
-  static String newPasswordScreen({dynamic params = ''}) =>
-      '/new-password/$params';
-  static const String _profileScreen = '/profile-detail/:userId/:allowEdit';
-  static String profileScreen(
-          {@required dynamic userId, @required dynamic allowEdit}) =>
-      '/profile-detail/$userId/$allowEdit';
-  static const all = <String>{
-    splashScreen,
-    _homeScreen,
-    _topicListScreen,
-    welcomeScreen,
-    _objectivesScreen,
-    _profileSetupScreen,
-    profileExtraInfoScreen,
-    phoneVerificationScreen,
-    _authScreen,
-    forgotPasswordScreen,
-    _onboardingScreen,
-    createPostScreen,
-    chatScreen,
-    chatSearchScreen,
-    videoPlayerScreen,
-    notificationsScreen,
-    postScreen,
-    registerMeetingScreen,
-    meetingDetailScreen,
-    packageDetailScreen,
-    packagePurchaseScreen,
-    pointsFaqScreen,
-    _conversationScreen,
-    createConversationScreen,
-    _profileIntroScreen,
-    _profileBasicScreen,
-    _profileTagsScreen,
-    _profileImageScreen,
-    _profileBioScreen,
-    _newPasswordScreen,
-    _profileScreen,
-  };
-}
-
-class Router extends RouterBase {
   @override
-  List<RouteDef> get routes => _routes;
-  final _routes = <RouteDef>[
-    RouteDef(Routes.splashScreen, page: SplashScreen),
-    RouteDef(Routes._homeScreen, page: HomeScreen),
-    RouteDef(Routes._topicListScreen, page: HomeScreen),
-    RouteDef(Routes.welcomeScreen, page: WelcomeScreen),
-    RouteDef(Routes._objectivesScreen, page: ObjectivesScreen),
-    RouteDef(Routes._profileSetupScreen, page: ProfileSetupScreen),
-    RouteDef(Routes.profileExtraInfoScreen, page: ProfileExtraInfoScreen),
-    RouteDef(Routes.phoneVerificationScreen, page: PhoneVerificationScreen),
-    RouteDef(Routes._authScreen, page: AuthScreen),
-    RouteDef(Routes.forgotPasswordScreen, page: ForgotPasswordScreen),
-    RouteDef(Routes._onboardingScreen, page: OnboardingScreen),
-    RouteDef(Routes.createPostScreen, page: CreatePostScreen),
-    RouteDef(Routes.chatScreen, page: ChatScreen),
-    RouteDef(Routes.chatSearchScreen, page: ChatSearchScreen),
-    RouteDef(Routes.videoPlayerScreen, page: VideoPlayerScreen),
-    RouteDef(Routes.notificationsScreen, page: NotificationsScreen),
-    RouteDef(Routes.postScreen, page: PostScreen),
-    RouteDef(Routes.registerMeetingScreen, page: RegisterMeetingScreen),
-    RouteDef(Routes.meetingDetailScreen, page: MeetingDetailScreen),
-    RouteDef(Routes.packageDetailScreen, page: PackageDetailScreen),
-    RouteDef(Routes.packagePurchaseScreen, page: PackagePurchaseScreen),
-    RouteDef(Routes.pointsFaqScreen, page: PointsFaqScreen),
-    RouteDef(Routes._conversationScreen, page: ConversationScreen),
-    RouteDef(Routes.createConversationScreen, page: CreateConversationScreen),
-    RouteDef(Routes._profileIntroScreen, page: ProfileIntroScreen),
-    RouteDef(Routes._profileBasicScreen, page: ProfileBasicScreen),
-    RouteDef(Routes._profileTagsScreen, page: ProfileTagsScreen),
-    RouteDef(Routes._profileImageScreen, page: ProfileImageScreen),
-    RouteDef(Routes._profileBioScreen, page: ProfileBioScreen),
-    RouteDef(Routes._newPasswordScreen, page: NewPasswordScreen),
-    RouteDef(Routes._profileScreen, page: ProfileScreen),
-  ];
-  @override
-  Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
-  final _pagesMap = <Type, AutoRouteFactory>{
-    SplashScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => SplashScreen(),
-        settings: data,
-      );
-    },
-    HomeScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeScreen(
-          tab: data.pathParams['tab'].intValue ?? 0,
-          topic: data.pathParams['topic'].intValue ?? 0,
-        ),
-        settings: data,
-      );
-    },
-    WelcomeScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => WelcomeScreen(),
-        settings: data,
-      );
-    },
-    ObjectivesScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ObjectivesScreen(),
-        settings: data,
-      );
-    },
-    ProfileSetupScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileSetupScreen(),
-        settings: data,
-      );
-    },
-    ProfileExtraInfoScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileExtraInfoScreen(),
-        settings: data,
-      );
-    },
-    PhoneVerificationScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => PhoneVerificationScreen(),
-        settings: data,
-      );
-    },
-    AuthScreen: (data) {
-      final args = data.getArgs<AuthScreenArguments>(
-        orElse: () => AuthScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => AuthScreen(
-          key: args.key,
-          state: data.pathParams['state'].stringValue ?? "signup",
-        ),
-        settings: data,
-      );
-    },
-    ForgotPasswordScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ForgotPasswordScreen(),
-        settings: data,
-      );
-    },
-    OnboardingScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            OnboardingScreen(data.pathParams['type'].stringValue),
-        settings: data,
-      );
-    },
-    CreatePostScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => CreatePostScreen(),
-        settings: data,
-        fullscreenDialog: true,
-      );
-    },
-    ChatScreen: (data) {
-      final args = data.getArgs<ChatScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ChatScreen(
-          key: args.key,
-          recieverId: args.recieverId,
-        ),
-        settings: data,
-      );
-    },
-    ChatSearchScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ChatSearchScreen(),
-        settings: data,
-      );
-    },
-    VideoPlayerScreen: (data) {
-      final args = data.getArgs<VideoPlayerScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => VideoPlayerScreen(
-          videoId: args.videoId,
-          key: args.key,
-        ),
-        settings: data,
-      );
-    },
-    NotificationsScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => NotificationsScreen(),
-        settings: data,
-      );
-    },
-    PostScreen: (data) {
-      final args = data.getArgs<PostScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => PostScreen(
-          key: args.key,
-          postId: args.postId,
-        ),
-        settings: data,
-      );
-    },
-    RegisterMeetingScreen: (data) {
-      final args = data.getArgs<RegisterMeetingScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => RegisterMeetingScreen(
-          key: args.key,
-          config: args.config,
-          preference: args.preference,
-          objectives: args.objectives,
-          interests: args.interests,
-        ),
-        settings: data,
-      );
-    },
-    MeetingDetailScreen: (data) {
-      final args = data.getArgs<MeetingDetailScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => MeetingDetailScreen(
-          key: args.key,
-          meetingId: args.meetingId,
-        ),
-        settings: data,
-      );
-    },
-    PackageDetailScreen: (data) {
-      final args = data.getArgs<PackageDetailScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => PackageDetailScreen(
-          key: args.key,
-          packageId: args.packageId,
-        ),
-        settings: data,
-      );
-    },
-    PackagePurchaseScreen: (data) {
-      final args = data.getArgs<PackagePurchaseScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => PackagePurchaseScreen(
-          key: args.key,
-          package: args.package,
-        ),
-        settings: data,
-      );
-    },
-    PointsFaqScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => PointsFaqScreen(),
-        settings: data,
-      );
-    },
-    ConversationScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            ConversationScreen(id: data.pathParams['id'].intValue),
-        settings: data,
-      );
-    },
-    CreateConversationScreen: (data) {
-      final args =
-          data.getArgs<CreateConversationScreenArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => CreateConversationScreen(
-          key: args.key,
-          topic: args.topic,
-          type: args.type,
-        ),
-        settings: data,
-      );
-    },
-    ProfileIntroScreen: (data) {
-      final args = data.getArgs<ProfileIntroScreenArguments>(
-        orElse: () => ProfileIntroScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileIntroScreen(
-          key: args.key,
-          editMode: data.pathParams['editMode'].boolValue,
-        ),
-        settings: data,
-      );
-    },
-    ProfileBasicScreen: (data) {
-      final args = data.getArgs<ProfileBasicScreenArguments>(
-        orElse: () => ProfileBasicScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileBasicScreen(
-          key: args.key,
-          editMode: data.pathParams['editMode'].boolValue,
-        ),
-        settings: data,
-      );
-    },
-    ProfileTagsScreen: (data) {
-      final args = data.getArgs<ProfileTagsScreenArguments>(
-        orElse: () => ProfileTagsScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileTagsScreen(
-          key: args.key,
-          editMode: data.pathParams['editMode'].boolValue,
-        ),
-        settings: data,
-      );
-    },
-    ProfileImageScreen: (data) {
-      final args = data.getArgs<ProfileImageScreenArguments>(
-        orElse: () => ProfileImageScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileImageScreen(
-          key: args.key,
-          editMode: data.pathParams['editMode'].boolValue,
-        ),
-        settings: data,
-      );
-    },
-    ProfileBioScreen: (data) {
-      final args = data.getArgs<ProfileBioScreenArguments>(
-        orElse: () => ProfileBioScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileBioScreen(
-          key: args.key,
-          editMode: data.pathParams['editMode'].boolValue,
-        ),
-        settings: data,
-      );
-    },
-    NewPasswordScreen: (data) {
-      final args = data.getArgs<NewPasswordScreenArguments>(
-        orElse: () => NewPasswordScreenArguments(),
-      );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => NewPasswordScreen(
-          key: args.key,
-          params: data.pathParams['params'].stringValue,
-        ),
-        settings: data,
-      );
-    },
-    ProfileScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileScreen(
-          data.pathParams['userId'].stringValue,
-          allowEdit: data.pathParams['allowEdit'].boolValue,
-        ),
-        settings: data,
-      );
-    },
+  final Map<String, _i1.PageFactory> pagesMap = {
+    SplashScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i3.SplashScreen();
+        }),
+    HomeScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<HomeScreenRouteArgs>(
+              orElse: () => HomeScreenRouteArgs(
+                  tab: pathParams.optInt('tab'),
+                  topic: pathParams.optInt('topic')));
+          return _i4.HomeScreen(tab: args.tab, topic: args.topic);
+        }),
+    TopicListScreen.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<TopicListScreenArgs>(
+              orElse: () => TopicListScreenArgs(
+                  tab: pathParams.optInt('tab'),
+                  topic: pathParams.optInt('topic')));
+          return _i4.HomeScreen(tab: args.tab, topic: args.topic);
+        }),
+    WelcomeScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i5.WelcomeScreen();
+        }),
+    ObjectivesScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i6.ObjectivesScreen();
+        }),
+    ProfileSetupScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i7.ProfileSetupScreen();
+        }),
+    ProfileExtraInfoScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i8.ProfileExtraInfoScreen();
+        }),
+    PhoneVerificationScreenRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (_) {
+              return _i9.PhoneVerificationScreen();
+            }),
+    AuthScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<AuthScreenRouteArgs>(
+              orElse: () =>
+                  AuthScreenRouteArgs(state: pathParams.getString('state')));
+          return _i10.AuthScreen(key: args.key, state: args.state);
+        }),
+    ForgotPasswordScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i11.ForgotPasswordScreen();
+        }),
+    OnboardingScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<OnboardingScreenRouteArgs>(
+              orElse: () => OnboardingScreenRouteArgs(
+                  type: pathParams.getString('type')));
+          return _i12.OnboardingScreen(args.type);
+        }),
+    CreatePostScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i13.CreatePostScreen();
+        },
+        fullscreenDialog: true),
+    ChatScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<ChatScreenRouteArgs>();
+          return _i14.ChatScreen(key: args.key, recieverId: args.recieverId);
+        }),
+    ChatSearchScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i15.ChatSearchScreen();
+        }),
+    VideoPlayerScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<VideoPlayerScreenRouteArgs>();
+          return _i16.VideoPlayerScreen(videoId: args.videoId, key: args.key);
+        }),
+    NotificationsScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i17.NotificationsScreen();
+        }),
+    PostScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<PostScreenRouteArgs>();
+          return _i18.PostScreen(key: args.key, postId: args.postId);
+        }),
+    RegisterMeetingScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<RegisterMeetingScreenRouteArgs>();
+          return _i19.RegisterMeetingScreen(
+              key: args.key,
+              config: args.config,
+              preference: args.preference,
+              objectives: args.objectives,
+              interests: args.interests);
+        }),
+    MeetingDetailScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<MeetingDetailScreenRouteArgs>();
+          return _i20.MeetingDetailScreen(
+              key: args.key, meetingId: args.meetingId);
+        }),
+    PackageDetailScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<PackageDetailScreenRouteArgs>();
+          return _i21.PackageDetailScreen(
+              key: args.key, packageId: args.packageId);
+        }),
+    PackagePurchaseScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<PackagePurchaseScreenRouteArgs>();
+          return _i22.PackagePurchaseScreen(
+              key: args.key, package: args.package);
+        }),
+    PointsFaqScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i23.PointsFaqScreen();
+        }),
+    ConversationScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ConversationScreenRouteArgs>(
+              orElse: () =>
+                  ConversationScreenRouteArgs(id: pathParams.optInt('id')));
+          return _i24.ConversationScreen(id: args.id);
+        }),
+    CreateConversationScreenRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (data) {
+              final args = data.argsAs<CreateConversationScreenRouteArgs>();
+              return _i25.CreateConversationScreen(
+                  key: args.key, topic: args.topic, type: args.type);
+            }),
+    ProfileIntroScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileIntroScreenRouteArgs>(
+              orElse: () => ProfileIntroScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i26.ProfileIntroScreen(
+              key: args.key, editMode: args.editMode);
+        }),
+    ProfileBasicScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileBasicScreenRouteArgs>(
+              orElse: () => ProfileBasicScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i27.ProfileBasicScreen(
+              key: args.key, editMode: args.editMode);
+        }),
+    ProfileTagsScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileTagsScreenRouteArgs>(
+              orElse: () => ProfileTagsScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i28.ProfileTagsScreen(key: args.key, editMode: args.editMode);
+        }),
+    ProfileImageScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileImageScreenRouteArgs>(
+              orElse: () => ProfileImageScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i29.ProfileImageScreen(
+              key: args.key, editMode: args.editMode);
+        }),
+    ProfileBioScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileBioScreenRouteArgs>(
+              orElse: () => ProfileBioScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i30.ProfileBioScreen(key: args.key, editMode: args.editMode);
+        }),
+    NewPasswordScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<NewPasswordScreenRouteArgs>(
+              orElse: () => NewPasswordScreenRouteArgs(
+                  params: pathParams.optString('params')));
+          return _i31.NewPasswordScreen(key: args.key, params: args.params);
+        }),
+    ProfileScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileScreenRouteArgs>(
+              orElse: () => ProfileScreenRouteArgs(
+                  userId: pathParams.getString('userId'),
+                  allowEdit: pathParams.getBool('allowEdit')));
+          return _i32.ProfileScreen(args.userId, allowEdit: args.allowEdit);
+        })
   };
+
+  @override
+  List<_i1.RouteConfig> get routes => [
+        _i1.RouteConfig(SplashScreenRoute.name, path: '/'),
+        _i1.RouteConfig(HomeScreenRoute.name, path: '/home/:tab?'),
+        _i1.RouteConfig(TopicListScreen.name, path: '/topic-list/:topic?'),
+        _i1.RouteConfig(WelcomeScreenRoute.name, path: '/welcome'),
+        _i1.RouteConfig(ObjectivesScreenRoute.name, path: '/objectives'),
+        _i1.RouteConfig(ProfileSetupScreenRoute.name, path: '/profile-setup'),
+        _i1.RouteConfig(ProfileExtraInfoScreenRoute.name,
+            path: '/profile-extra-info'),
+        _i1.RouteConfig(PhoneVerificationScreenRoute.name,
+            path: '/phone-verify'),
+        _i1.RouteConfig(AuthScreenRoute.name, path: '/auth/:state?'),
+        _i1.RouteConfig(ForgotPasswordScreenRoute.name,
+            path: '/forgot-password'),
+        _i1.RouteConfig(OnboardingScreenRoute.name, path: '/onboarding/:type'),
+        _i1.RouteConfig(CreatePostScreenRoute.name, path: '/create-post'),
+        _i1.RouteConfig(ChatScreenRoute.name, path: '/chat/user'),
+        _i1.RouteConfig(ChatSearchScreenRoute.name, path: '/chat/search'),
+        _i1.RouteConfig(VideoPlayerScreenRoute.name, path: '/video-player'),
+        _i1.RouteConfig(NotificationsScreenRoute.name, path: '/notifications'),
+        _i1.RouteConfig(PostScreenRoute.name, path: '/post'),
+        _i1.RouteConfig(RegisterMeetingScreenRoute.name,
+            path: '/register-meeting'),
+        _i1.RouteConfig(MeetingDetailScreenRoute.name, path: '/meeting-detail'),
+        _i1.RouteConfig(PackageDetailScreenRoute.name, path: '/package-detail'),
+        _i1.RouteConfig(PackagePurchaseScreenRoute.name,
+            path: '/package-purchase'),
+        _i1.RouteConfig(PointsFaqScreenRoute.name, path: '/points-faq'),
+        _i1.RouteConfig(ConversationScreenRoute.name, path: '/roundtable/:id'),
+        _i1.RouteConfig(CreateConversationScreenRoute.name,
+            path: '/create-conversation'),
+        _i1.RouteConfig(ProfileIntroScreenRoute.name,
+            path: '/profile-intro/:editMode?'),
+        _i1.RouteConfig(ProfileBasicScreenRoute.name,
+            path: '/profile-basic/:editMode?'),
+        _i1.RouteConfig(ProfileTagsScreenRoute.name,
+            path: '/profile-tags/:editMode?'),
+        _i1.RouteConfig(ProfileImageScreenRoute.name,
+            path: '/profile-image/:editMode?'),
+        _i1.RouteConfig(ProfileBioScreenRoute.name,
+            path: '/profile-bio/:editMode?'),
+        _i1.RouteConfig(NewPasswordScreenRoute.name,
+            path: '/new-password/:params?'),
+        _i1.RouteConfig(ProfileScreenRoute.name,
+            path: '/profile-detail/:userId/:allowEdit')
+      ];
 }
 
-/// ************************************************************************
-/// Navigation helper methods extension
-/// *************************************************************************
+class SplashScreenRoute extends _i1.PageRouteInfo {
+  const SplashScreenRoute() : super(name, path: '/');
 
-extension RouterAutoRouterStateX on AutoRouterState {
-  Future<dynamic> pushSplashScreen() => push<dynamic>(Routes.splashScreen);
-
-  Future<dynamic> pushWelcomeScreen() => push<dynamic>(Routes.welcomeScreen);
-
-  Future<dynamic> pushProfileExtraInfoScreen() =>
-      push<dynamic>(Routes.profileExtraInfoScreen);
-
-  Future<dynamic> pushPhoneVerificationScreen() =>
-      push<dynamic>(Routes.phoneVerificationScreen);
-
-  Future<dynamic> pushForgotPasswordScreen() =>
-      push<dynamic>(Routes.forgotPasswordScreen);
-
-  Future<dynamic> pushCreatePostScreen() =>
-      push<dynamic>(Routes.createPostScreen);
-
-  Future<dynamic> pushChatScreen({
-    Key key,
-    @required String recieverId,
-  }) =>
-      push<dynamic>(
-        Routes.chatScreen,
-        arguments: ChatScreenArguments(key: key, recieverId: recieverId),
-      );
-
-  Future<dynamic> pushChatSearchScreen() =>
-      push<dynamic>(Routes.chatSearchScreen);
-
-  Future<dynamic> pushVideoPlayerScreen({
-    @required int videoId,
-    Key key,
-  }) =>
-      push<dynamic>(
-        Routes.videoPlayerScreen,
-        arguments: VideoPlayerScreenArguments(videoId: videoId, key: key),
-      );
-
-  Future<dynamic> pushNotificationsScreen() =>
-      push<dynamic>(Routes.notificationsScreen);
-
-  Future<dynamic> pushPostScreen({
-    Key key,
-    @required int postId,
-  }) =>
-      push<dynamic>(
-        Routes.postScreen,
-        arguments: PostScreenArguments(key: key, postId: postId),
-      );
-
-  Future<dynamic> pushRegisterMeetingScreen({
-    Key key,
-    @required MeetingConfig config,
-    @required UserMeetingPreference preference,
-    @required List<MeetingObjective> objectives,
-    @required List<MeetingInterest> interests,
-  }) =>
-      push<dynamic>(
-        Routes.registerMeetingScreen,
-        arguments: RegisterMeetingScreenArguments(
-            key: key,
-            config: config,
-            preference: preference,
-            objectives: objectives,
-            interests: interests),
-      );
-
-  Future<dynamic> pushMeetingDetailScreen({
-    Key key,
-    @required int meetingId,
-  }) =>
-      push<dynamic>(
-        Routes.meetingDetailScreen,
-        arguments: MeetingDetailScreenArguments(key: key, meetingId: meetingId),
-      );
-
-  Future<dynamic> pushPackageDetailScreen({
-    Key key,
-    @required int packageId,
-  }) =>
-      push<dynamic>(
-        Routes.packageDetailScreen,
-        arguments: PackageDetailScreenArguments(key: key, packageId: packageId),
-      );
-
-  Future<dynamic> pushPackagePurchaseScreen({
-    Key key,
-    @required Package package,
-  }) =>
-      push<dynamic>(
-        Routes.packagePurchaseScreen,
-        arguments: PackagePurchaseScreenArguments(key: key, package: package),
-      );
-
-  Future<dynamic> pushPointsFaqScreen() =>
-      push<dynamic>(Routes.pointsFaqScreen);
-
-  Future<dynamic> pushCreateConversationScreen({
-    Key key,
-    @required Topic topic,
-    @required ConversationType type,
-  }) =>
-      push<dynamic>(
-        Routes.createConversationScreen,
-        arguments: CreateConversationScreenArguments(
-            key: key, topic: topic, type: type),
-      );
+  static const String name = 'SplashScreenRoute';
 }
 
-/// ************************************************************************
-/// Arguments holder classes
-/// *************************************************************************
+class HomeScreenRoute extends _i1.PageRouteInfo<HomeScreenRouteArgs> {
+  HomeScreenRoute({int? tab, int? topic})
+      : super(name,
+            path: '/home/:tab?',
+            args: HomeScreenRouteArgs(tab: tab, topic: topic),
+            rawPathParams: {'tab': tab, 'topic': topic});
 
-/// AuthScreen arguments holder class
-class AuthScreenArguments {
-  final Key key;
-  AuthScreenArguments({this.key});
+  static const String name = 'HomeScreenRoute';
 }
 
-/// ChatScreen arguments holder class
-class ChatScreenArguments {
-  final Key key;
+class HomeScreenRouteArgs {
+  const HomeScreenRouteArgs({this.tab, this.topic});
+
+  final int? tab;
+
+  final int? topic;
+}
+
+class TopicListScreen extends _i1.PageRouteInfo<TopicListScreenArgs> {
+  TopicListScreen({int? tab, int? topic})
+      : super(name,
+            path: '/topic-list/:topic?',
+            args: TopicListScreenArgs(tab: tab, topic: topic),
+            rawPathParams: {'tab': tab, 'topic': topic});
+
+  static const String name = 'TopicListScreen';
+}
+
+class TopicListScreenArgs {
+  const TopicListScreenArgs({this.tab, this.topic});
+
+  final int? tab;
+
+  final int? topic;
+}
+
+class WelcomeScreenRoute extends _i1.PageRouteInfo {
+  const WelcomeScreenRoute() : super(name, path: '/welcome');
+
+  static const String name = 'WelcomeScreenRoute';
+}
+
+class ObjectivesScreenRoute extends _i1.PageRouteInfo {
+  const ObjectivesScreenRoute() : super(name, path: '/objectives');
+
+  static const String name = 'ObjectivesScreenRoute';
+}
+
+class ProfileSetupScreenRoute extends _i1.PageRouteInfo {
+  const ProfileSetupScreenRoute() : super(name, path: '/profile-setup');
+
+  static const String name = 'ProfileSetupScreenRoute';
+}
+
+class ProfileExtraInfoScreenRoute extends _i1.PageRouteInfo {
+  const ProfileExtraInfoScreenRoute()
+      : super(name, path: '/profile-extra-info');
+
+  static const String name = 'ProfileExtraInfoScreenRoute';
+}
+
+class PhoneVerificationScreenRoute extends _i1.PageRouteInfo {
+  const PhoneVerificationScreenRoute() : super(name, path: '/phone-verify');
+
+  static const String name = 'PhoneVerificationScreenRoute';
+}
+
+class AuthScreenRoute extends _i1.PageRouteInfo<AuthScreenRouteArgs> {
+  AuthScreenRoute({_i2.Key? key, required String state})
+      : super(name,
+            path: '/auth/:state?',
+            args: AuthScreenRouteArgs(key: key, state: state),
+            rawPathParams: {'state': state});
+
+  static const String name = 'AuthScreenRoute';
+}
+
+class AuthScreenRouteArgs {
+  const AuthScreenRouteArgs({this.key, required this.state});
+
+  final _i2.Key? key;
+
+  final String state;
+}
+
+class ForgotPasswordScreenRoute extends _i1.PageRouteInfo {
+  const ForgotPasswordScreenRoute() : super(name, path: '/forgot-password');
+
+  static const String name = 'ForgotPasswordScreenRoute';
+}
+
+class OnboardingScreenRoute
+    extends _i1.PageRouteInfo<OnboardingScreenRouteArgs> {
+  OnboardingScreenRoute({required String type})
+      : super(name,
+            path: '/onboarding/:type',
+            args: OnboardingScreenRouteArgs(type: type),
+            rawPathParams: {'type': type});
+
+  static const String name = 'OnboardingScreenRoute';
+}
+
+class OnboardingScreenRouteArgs {
+  const OnboardingScreenRouteArgs({required this.type});
+
+  final String type;
+}
+
+class CreatePostScreenRoute extends _i1.PageRouteInfo {
+  const CreatePostScreenRoute() : super(name, path: '/create-post');
+
+  static const String name = 'CreatePostScreenRoute';
+}
+
+class ChatScreenRoute extends _i1.PageRouteInfo<ChatScreenRouteArgs> {
+  ChatScreenRoute({_i2.Key? key, required String recieverId})
+      : super(name,
+            path: '/chat/user',
+            args: ChatScreenRouteArgs(key: key, recieverId: recieverId));
+
+  static const String name = 'ChatScreenRoute';
+}
+
+class ChatScreenRouteArgs {
+  const ChatScreenRouteArgs({this.key, required this.recieverId});
+
+  final _i2.Key? key;
+
   final String recieverId;
-  ChatScreenArguments({this.key, @required this.recieverId});
 }
 
-/// VideoPlayerScreen arguments holder class
-class VideoPlayerScreenArguments {
+class ChatSearchScreenRoute extends _i1.PageRouteInfo {
+  const ChatSearchScreenRoute() : super(name, path: '/chat/search');
+
+  static const String name = 'ChatSearchScreenRoute';
+}
+
+class VideoPlayerScreenRoute
+    extends _i1.PageRouteInfo<VideoPlayerScreenRouteArgs> {
+  VideoPlayerScreenRoute({required int videoId, _i2.Key? key})
+      : super(name,
+            path: '/video-player',
+            args: VideoPlayerScreenRouteArgs(videoId: videoId, key: key));
+
+  static const String name = 'VideoPlayerScreenRoute';
+}
+
+class VideoPlayerScreenRouteArgs {
+  const VideoPlayerScreenRouteArgs({required this.videoId, this.key});
+
   final int videoId;
-  final Key key;
-  VideoPlayerScreenArguments({@required this.videoId, this.key});
+
+  final _i2.Key? key;
 }
 
-/// PostScreen arguments holder class
-class PostScreenArguments {
-  final Key key;
+class NotificationsScreenRoute extends _i1.PageRouteInfo {
+  const NotificationsScreenRoute() : super(name, path: '/notifications');
+
+  static const String name = 'NotificationsScreenRoute';
+}
+
+class PostScreenRoute extends _i1.PageRouteInfo<PostScreenRouteArgs> {
+  PostScreenRoute({_i2.Key? key, required int postId})
+      : super(name,
+            path: '/post', args: PostScreenRouteArgs(key: key, postId: postId));
+
+  static const String name = 'PostScreenRoute';
+}
+
+class PostScreenRouteArgs {
+  const PostScreenRouteArgs({this.key, required this.postId});
+
+  final _i2.Key? key;
+
   final int postId;
-  PostScreenArguments({this.key, @required this.postId});
 }
 
-/// RegisterMeetingScreen arguments holder class
-class RegisterMeetingScreenArguments {
-  final Key key;
-  final MeetingConfig config;
-  final UserMeetingPreference preference;
-  final List<MeetingObjective> objectives;
-  final List<MeetingInterest> interests;
-  RegisterMeetingScreenArguments(
+class RegisterMeetingScreenRoute
+    extends _i1.PageRouteInfo<RegisterMeetingScreenRouteArgs> {
+  RegisterMeetingScreenRoute(
+      {_i2.Key? key,
+      required _i33.MeetingConfig config,
+      required _i34.UserMeetingPreference preference,
+      required List<_i35.MeetingObjective> objectives,
+      required List<_i36.MeetingInterest> interests})
+      : super(name,
+            path: '/register-meeting',
+            args: RegisterMeetingScreenRouteArgs(
+                key: key,
+                config: config,
+                preference: preference,
+                objectives: objectives,
+                interests: interests));
+
+  static const String name = 'RegisterMeetingScreenRoute';
+}
+
+class RegisterMeetingScreenRouteArgs {
+  const RegisterMeetingScreenRouteArgs(
       {this.key,
-      @required this.config,
-      @required this.preference,
-      @required this.objectives,
-      @required this.interests});
+      required this.config,
+      required this.preference,
+      required this.objectives,
+      required this.interests});
+
+  final _i2.Key? key;
+
+  final _i33.MeetingConfig config;
+
+  final _i34.UserMeetingPreference preference;
+
+  final List<_i35.MeetingObjective> objectives;
+
+  final List<_i36.MeetingInterest> interests;
 }
 
-/// MeetingDetailScreen arguments holder class
-class MeetingDetailScreenArguments {
-  final Key key;
+class MeetingDetailScreenRoute
+    extends _i1.PageRouteInfo<MeetingDetailScreenRouteArgs> {
+  MeetingDetailScreenRoute({_i2.Key? key, required int meetingId})
+      : super(name,
+            path: '/meeting-detail',
+            args: MeetingDetailScreenRouteArgs(key: key, meetingId: meetingId));
+
+  static const String name = 'MeetingDetailScreenRoute';
+}
+
+class MeetingDetailScreenRouteArgs {
+  const MeetingDetailScreenRouteArgs({this.key, required this.meetingId});
+
+  final _i2.Key? key;
+
   final int meetingId;
-  MeetingDetailScreenArguments({this.key, @required this.meetingId});
 }
 
-/// PackageDetailScreen arguments holder class
-class PackageDetailScreenArguments {
-  final Key key;
+class PackageDetailScreenRoute
+    extends _i1.PageRouteInfo<PackageDetailScreenRouteArgs> {
+  PackageDetailScreenRoute({_i2.Key? key, required int packageId})
+      : super(name,
+            path: '/package-detail',
+            args: PackageDetailScreenRouteArgs(key: key, packageId: packageId));
+
+  static const String name = 'PackageDetailScreenRoute';
+}
+
+class PackageDetailScreenRouteArgs {
+  const PackageDetailScreenRouteArgs({this.key, required this.packageId});
+
+  final _i2.Key? key;
+
   final int packageId;
-  PackageDetailScreenArguments({this.key, @required this.packageId});
 }
 
-/// PackagePurchaseScreen arguments holder class
-class PackagePurchaseScreenArguments {
-  final Key key;
-  final Package package;
-  PackagePurchaseScreenArguments({this.key, @required this.package});
+class PackagePurchaseScreenRoute
+    extends _i1.PageRouteInfo<PackagePurchaseScreenRouteArgs> {
+  PackagePurchaseScreenRoute({_i2.Key? key, required _i37.Package package})
+      : super(name,
+            path: '/package-purchase',
+            args: PackagePurchaseScreenRouteArgs(key: key, package: package));
+
+  static const String name = 'PackagePurchaseScreenRoute';
 }
 
-/// CreateConversationScreen arguments holder class
-class CreateConversationScreenArguments {
-  final Key key;
-  final Topic topic;
-  final ConversationType type;
-  CreateConversationScreenArguments(
-      {this.key, @required this.topic, @required this.type});
+class PackagePurchaseScreenRouteArgs {
+  const PackagePurchaseScreenRouteArgs({this.key, required this.package});
+
+  final _i2.Key? key;
+
+  final _i37.Package package;
 }
 
-/// ProfileIntroScreen arguments holder class
-class ProfileIntroScreenArguments {
-  final Key key;
-  ProfileIntroScreenArguments({this.key});
+class PointsFaqScreenRoute extends _i1.PageRouteInfo {
+  const PointsFaqScreenRoute() : super(name, path: '/points-faq');
+
+  static const String name = 'PointsFaqScreenRoute';
 }
 
-/// ProfileBasicScreen arguments holder class
-class ProfileBasicScreenArguments {
-  final Key key;
-  ProfileBasicScreenArguments({this.key});
+class ConversationScreenRoute
+    extends _i1.PageRouteInfo<ConversationScreenRouteArgs> {
+  ConversationScreenRoute({int? id})
+      : super(name,
+            path: '/roundtable/:id',
+            args: ConversationScreenRouteArgs(id: id),
+            rawPathParams: {'id': id});
+
+  static const String name = 'ConversationScreenRoute';
 }
 
-/// ProfileTagsScreen arguments holder class
-class ProfileTagsScreenArguments {
-  final Key key;
-  ProfileTagsScreenArguments({this.key});
+class ConversationScreenRouteArgs {
+  const ConversationScreenRouteArgs({this.id});
+
+  final int? id;
 }
 
-/// ProfileImageScreen arguments holder class
-class ProfileImageScreenArguments {
-  final Key key;
-  ProfileImageScreenArguments({this.key});
+class CreateConversationScreenRoute
+    extends _i1.PageRouteInfo<CreateConversationScreenRouteArgs> {
+  CreateConversationScreenRoute(
+      {_i2.Key? key,
+      required _i38.Topic topic,
+      required _i39.ConversationType type})
+      : super(name,
+            path: '/create-conversation',
+            args: CreateConversationScreenRouteArgs(
+                key: key, topic: topic, type: type));
+
+  static const String name = 'CreateConversationScreenRoute';
 }
 
-/// ProfileBioScreen arguments holder class
-class ProfileBioScreenArguments {
-  final Key key;
-  ProfileBioScreenArguments({this.key});
+class CreateConversationScreenRouteArgs {
+  const CreateConversationScreenRouteArgs(
+      {this.key, required this.topic, required this.type});
+
+  final _i2.Key? key;
+
+  final _i38.Topic topic;
+
+  final _i39.ConversationType type;
 }
 
-/// NewPasswordScreen arguments holder class
-class NewPasswordScreenArguments {
-  final Key key;
-  NewPasswordScreenArguments({this.key});
+class ProfileIntroScreenRoute
+    extends _i1.PageRouteInfo<ProfileIntroScreenRouteArgs> {
+  ProfileIntroScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-intro/:editMode?',
+            args: ProfileIntroScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
+
+  static const String name = 'ProfileIntroScreenRoute';
+}
+
+class ProfileIntroScreenRouteArgs {
+  const ProfileIntroScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class ProfileBasicScreenRoute
+    extends _i1.PageRouteInfo<ProfileBasicScreenRouteArgs> {
+  ProfileBasicScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-basic/:editMode?',
+            args: ProfileBasicScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
+
+  static const String name = 'ProfileBasicScreenRoute';
+}
+
+class ProfileBasicScreenRouteArgs {
+  const ProfileBasicScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class ProfileTagsScreenRoute
+    extends _i1.PageRouteInfo<ProfileTagsScreenRouteArgs> {
+  ProfileTagsScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-tags/:editMode?',
+            args: ProfileTagsScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
+
+  static const String name = 'ProfileTagsScreenRoute';
+}
+
+class ProfileTagsScreenRouteArgs {
+  const ProfileTagsScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class ProfileImageScreenRoute
+    extends _i1.PageRouteInfo<ProfileImageScreenRouteArgs> {
+  ProfileImageScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-image/:editMode?',
+            args: ProfileImageScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
+
+  static const String name = 'ProfileImageScreenRoute';
+}
+
+class ProfileImageScreenRouteArgs {
+  const ProfileImageScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class ProfileBioScreenRoute
+    extends _i1.PageRouteInfo<ProfileBioScreenRouteArgs> {
+  ProfileBioScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-bio/:editMode?',
+            args: ProfileBioScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
+
+  static const String name = 'ProfileBioScreenRoute';
+}
+
+class ProfileBioScreenRouteArgs {
+  const ProfileBioScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class NewPasswordScreenRoute
+    extends _i1.PageRouteInfo<NewPasswordScreenRouteArgs> {
+  NewPasswordScreenRoute({_i2.Key? key, String? params})
+      : super(name,
+            path: '/new-password/:params?',
+            args: NewPasswordScreenRouteArgs(key: key, params: params),
+            rawPathParams: {'params': params});
+
+  static const String name = 'NewPasswordScreenRoute';
+}
+
+class NewPasswordScreenRouteArgs {
+  const NewPasswordScreenRouteArgs({this.key, this.params});
+
+  final _i2.Key? key;
+
+  final String? params;
+}
+
+class ProfileScreenRoute extends _i1.PageRouteInfo<ProfileScreenRouteArgs> {
+  ProfileScreenRoute({required String userId, required bool allowEdit})
+      : super(name,
+            path: '/profile-detail/:userId/:allowEdit',
+            args: ProfileScreenRouteArgs(userId: userId, allowEdit: allowEdit),
+            rawPathParams: {'userId': userId, 'allowEdit': allowEdit});
+
+  static const String name = 'ProfileScreenRoute';
+}
+
+class ProfileScreenRouteArgs {
+  const ProfileScreenRouteArgs({required this.userId, required this.allowEdit});
+
+  final String userId;
+
+  final bool allowEdit;
 }

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -27,9 +26,9 @@ class PostRescheduleRsvpParams extends Equatable {
   final List<DateTime> timeSlots;
 
   const PostRescheduleRsvpParams({
-    @required this.oldMeeting,
-    @required this.requestedBy,
-    @required this.timeSlots,
+    required this.oldMeeting,
+    required this.requestedBy,
+    required this.timeSlots,
   });
 
   @override

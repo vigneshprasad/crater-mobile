@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import '../../../../api/points/points_api_service.dart';
 import '../../../../api/tags/tags_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -23,8 +21,8 @@ class PointsRemoteDatasourceImpl implements PointsRemoteDatasource {
   final TagsApiService tagsApiService;
 
   PointsRemoteDatasourceImpl({
-    @required this.apiService,
-    @required this.tagsApiService,
+    required this.apiService,
+    required this.tagsApiService,
   });
 
   @override

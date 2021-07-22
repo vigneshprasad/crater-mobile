@@ -14,8 +14,8 @@ class RescheduleRequestSheet extends StatefulWidget {
   final Meeting meeting;
 
   const RescheduleRequestSheet({
-    Key key,
-    @required this.meeting,
+    Key? key,
+    required this.meeting,
   }) : super(key: key);
 
   @override
@@ -23,10 +23,10 @@ class RescheduleRequestSheet extends StatefulWidget {
 }
 
 class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
-  MeetingBloc _bloc;
-  List<List<DateTime>> _rescheduleSlots;
+  late MeetingBloc _bloc;
+  List<List<DateTime>>? _rescheduleSlots;
   List<DateTime> _selectedSlots = [];
-  bool _loading;
+  late bool _loading;
   bool _enableButton = false;
 
   @override
@@ -39,12 +39,12 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
+    final headingStyle = Theme.of(context).textTheme.headline5?.copyWith(
           fontSize: 22,
           fontWeight: FontWeight.w500,
         );
     final heading = AppLocalizations.of(context)
-        .translate("meeting_reschedule:request_heading");
+        ?.translate("meeting_reschedule:request_heading");
     return BlocListener<MeetingBloc, MeetingState>(
       listener: _blocListener,
       child: BaseBottomSheet(
@@ -54,7 +54,7 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
               child: Text(
-                heading,
+                heading!,
                 style: headingStyle,
                 textAlign: TextAlign.center,
               ),
@@ -63,7 +63,7 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
             if (!_loading)
               BaseDateTimePicker<DateTime>(
                 initialValue: _selectedSlots,
-                timeSlots: _rescheduleSlots,
+                timeSlots: _rescheduleSlots ?? [],
                 getDateTime: (obj) => obj,
                 maxLength: 3,
                 onValueChanged: (value) {
@@ -94,9 +94,12 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
 
   void _onSubmitPressed(BuildContext context) {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
+    if (user == null) {
+      return;
+    }
     _bloc.add(PostMeetingRescheduleRsvpStarted(
       oldMeeting: widget.meeting.pk,
-      requestedBy: user.pk,
+      requestedBy: user.pk!,
       timeSlots: _selectedSlots,
     ));
   }

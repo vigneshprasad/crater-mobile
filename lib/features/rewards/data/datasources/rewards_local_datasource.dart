@@ -9,7 +9,7 @@ abstract class RewardsLocalDatasource {
   Future<List<Package>> persistPackagesToCache(List<Package> packages);
   List<Package> getPackagesFromCache();
   Future<Package> persistPackageToCache(Package package);
-  Package getPackageFromCache(int packageId);
+  Package? getPackageFromCache(int packageId);
 }
 
 class RewardsLocalDatasourceImpl implements RewardsLocalDatasource {
@@ -40,7 +40,7 @@ class RewardsLocalDatasourceImpl implements RewardsLocalDatasource {
   }
 
   @override
-  Package getPackageFromCache(int packageId) {
+  Package? getPackageFromCache(int packageId) {
     if (_box.isEmpty) {
       throw CacheException('${_box.name} is empty.');
     }

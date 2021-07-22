@@ -10,9 +10,9 @@ _$_ArticleWebsiteSource _$_$_ArticleWebsiteSourceFromJson(
     Map<String, dynamic> json) {
   return _$_ArticleWebsiteSource(
     pk: json['pk'] as int,
-    name: json['name'] as String,
-    url: json['url'] as String,
-    image: json['image'] as String,
+    name: json['name'] as String?,
+    url: json['url'] as String?,
+    image: json['image'] as String?,
   );
 }
 

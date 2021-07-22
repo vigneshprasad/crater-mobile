@@ -34,16 +34,16 @@ class GetMeetingConfigApiResponse extends Equatable {
   final UserMeetingPreferenceModel userPreferences;
 
   const GetMeetingConfigApiResponse({
-    this.pk,
-    this.title,
-    this.interests,
-    this.objectives,
-    this.isActive,
-    this.availableTimeSlots,
-    this.weekEndDate,
-    this.weekStartDate,
-    this.isRegistrationOpen,
-    this.userPreferences,
+    required this.pk,
+    required this.title,
+    required this.interests,
+    required this.objectives,
+    required this.isActive,
+    required this.availableTimeSlots,
+    required this.weekEndDate,
+    required this.weekStartDate,
+    required this.isRegistrationOpen,
+    required this.userPreferences,
   });
 
   @override

@@ -5,24 +5,26 @@ class ChatSearchState extends Equatable {
   final int page;
   final int pages;
   final List<ChatUser> results;
-  final dynamic error;
+  final Object? error;
 
   const ChatSearchState({
-    this.search,
+    required this.search,
     this.error,
-    @required this.page,
-    @required this.pages,
-    @required this.results,
+    required this.page,
+    required this.pages,
+    required this.results,
   });
 
   @override
-  List<Object> get props => [search, page, pages, results, error];
+  List<Object> get props => error != null
+      ? [search, page, pages, results, error!]
+      : [search, page, pages, results];
 
   ChatSearchState copyWith({
-    String search,
-    int page,
-    int pages,
-    List<ChatUser> results,
+    String? search,
+    int? page,
+    int? pages,
+    List<ChatUser>? results,
     dynamic error,
   }) {
     return ChatSearchState(
@@ -59,10 +61,10 @@ class SocketConnectedInitState extends ChatSearchState {
 
 class ChatSearchResultsLoaded extends ChatSearchState {
   const ChatSearchResultsLoaded({
-    String search,
-    int page,
-    int pages,
-    List<ChatUser> results,
+    required String search,
+    required int page,
+    required int pages,
+    required List<ChatUser> results,
     dynamic error,
   }) : super(
           search: search,
@@ -75,10 +77,10 @@ class ChatSearchResultsLoaded extends ChatSearchState {
 
 class ChatResultsCacheLoaded extends ChatSearchState {
   const ChatResultsCacheLoaded({
-    String search,
-    int page,
-    int pages,
-    List<ChatUser> results,
+    required String search,
+    required int page,
+    required int pages,
+    required List<ChatUser> results,
     dynamic error,
   }) : super(
           search: search,

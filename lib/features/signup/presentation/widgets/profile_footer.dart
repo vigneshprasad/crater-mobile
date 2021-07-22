@@ -5,17 +5,17 @@ import '../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../utils/app_localizations.dart';
 
 class ProfileFooter extends StatelessWidget {
-  final VoidCallback onSkip;
+  final VoidCallback? onSkip;
   final VoidCallback onSave;
 
   const ProfileFooter({
-    Key key,
-    @required this.onSave,
+    Key? key,
+    required this.onSave,
     this.onSkip,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final next = AppLocalizations.of(context).translate("next");
+    final next = AppLocalizations.of(context)?.translate("next");
     return BaseContainer(
       disableAnimation: true,
       child: SafeArea(
@@ -26,7 +26,7 @@ class ProfileFooter extends StatelessWidget {
             child: Row(
               children: [
                 if (onSkip != null)
-                  FlatButton(
+                  TextButton(
                     onPressed: onSkip,
                     child: const Text('skip for now'),
                   ),

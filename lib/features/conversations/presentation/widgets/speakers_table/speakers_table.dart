@@ -4,12 +4,12 @@ import '../speaker_chair/speaker_chair.dart';
 
 class SpeakersTable extends StatelessWidget {
   final List speakers;
-  final double chairSize;
+  final double? chairSize;
   final bool isLive;
 
   const SpeakersTable({
-    Key key,
-    @required this.speakers,
+    Key? key,
+    required this.speakers,
     this.chairSize,
     this.isLive = false,
   }) : super(key: key);

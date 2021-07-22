@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -12,17 +13,17 @@ import '../../domain/entity/meeting_participant_entity.dart';
 
 class OneOnOneCard extends StatelessWidget {
   final Meeting meeting;
-  final ValueChanged<Meeting> onCardPressed;
+  final ValueChanged<Meeting>? onCardPressed;
 
   const OneOnOneCard({
-    Key key,
-    @required this.meeting,
+    Key? key,
+    required this.meeting,
     this.onCardPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 13.00,
         );
     final now = DateTime.now();
@@ -37,7 +38,7 @@ class OneOnOneCard extends StatelessWidget {
 
     if (meeting.isPast) {
       _border = Border.all(
-        color: Colors.grey[200],
+        color: Colors.grey[200]!,
         width: 2.00,
       );
     } else {
@@ -49,11 +50,11 @@ class OneOnOneCard extends StatelessWidget {
 
     return CalendarCardLayout(
       onPressed: () {
-        AutoRouter.of(context).push(Routes.meetingDetailScreen,
-            arguments: MeetingDetailScreenArguments(meetingId: meeting.pk));
+        AutoRouter.of(context)
+            .push(MeetingDetailScreenRoute(meetingId: meeting.pk));
       },
       background: background,
-      heading: Text('Meeting with ${meeting.participantDetail.name}'),
+      heading: Text('Meeting with ${meeting.participantDetail!.name}'),
       subHeading: Row(
         children: [
           Text(dateFormat.format(meeting.start.toLocal())),
@@ -74,11 +75,11 @@ class OneOnOneCard extends StatelessWidget {
 }
 
 class _SpeakersAvatarList extends StatelessWidget {
-  final List<MeetingParticipant> speakers;
+  final List<MeetingParticipant>? speakers;
 
   const _SpeakersAvatarList({
-    Key key,
-    @required this.speakers,
+    Key? key,
+    this.speakers,
   }) : super(key: key);
 
   @override
@@ -96,8 +97,8 @@ class _SpeakersAvatarList extends StatelessWidget {
     final List<Widget> children = [];
     const background = Color(0xFFCDDAFD);
 
-    for (int index = 0; index < speakers.length; index++) {
-      final speaker = speakers[index];
+    for (int index = 0; index < (speakers?.length ?? 0); index++) {
+      final speaker = speakers![index];
       children.add(
         Positioned(
           right: 20.00 * index,

@@ -9,15 +9,15 @@ part of 'profile_entity.dart';
 _$_Profile _$_$_ProfileFromJson(Map<String, dynamic> json) {
   return _$_Profile(
     pk: json['pk'] as int,
-    uuid: json['uuid'] as String,
-    name: json['name'] as String,
-    introduction: json['introduction'] as String,
-    generatedIntroduction: json['generated_introduction'] as String,
-    tag: (json['tag_list'] as List)
-        ?.map((e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    linkedIn: json['linkedin_url'] as String,
-    photo: json['photo'] as String,
+    uuid: json['uuid'] as String?,
+    name: json['name'] as String?,
+    introduction: json['introduction'] as String?,
+    generatedIntroduction: json['generated_introduction'] as String?,
+    tag: (json['tag_list'] as List<dynamic>?)
+        ?.map((e) => Tag.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    linkedIn: json['linkedin_url'] as String?,
+    photo: json['photo'] as String?,
   );
 }
 

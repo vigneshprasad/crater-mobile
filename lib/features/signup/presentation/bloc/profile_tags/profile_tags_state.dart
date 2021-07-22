@@ -2,15 +2,15 @@ part of 'profile_tags_bloc.dart';
 
 abstract class ProfileTagsState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const ProfileTagsState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ProfileTagsInitial extends ProfileTagsState {
@@ -29,39 +29,41 @@ class ProfileTagsRequestLoading extends ProfileTagsState {
         );
 }
 
-class ProfileTagsRequestError  extends ProfileTagsState {
+class ProfileTagsRequestError extends ProfileTagsState {
   const ProfileTagsRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
         );
 }
 
-class ProfileTagsRequestLoaded  extends ProfileTagsState {
+class ProfileTagsRequestLoaded extends ProfileTagsState {
   final List<UserTag> tags;
 
   const ProfileTagsRequestLoaded({
-    @required this.tags,
+    required this.tags,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, tags];
+  List<Object> get props =>
+      error != null ? [loading, error!, tags] : [loading, tags];
 }
 
 class PostProfileTagsRequestLoaded extends ProfileTagsState {
   final UserProfile user;
 
   const PostProfileTagsRequestLoaded({
-    @required this.user,
+    required this.user,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, user];
+  List<Object> get props =>
+      error != null ? [loading, error!, user] : [loading, user];
 }

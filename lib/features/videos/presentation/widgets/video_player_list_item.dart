@@ -10,16 +10,16 @@ class VideoPlayerListItem extends StatelessWidget {
   final VoidCallback onPressItem;
 
   const VideoPlayerListItem({
-    Key key,
-    @required this.video,
-    @required this.onPressItem,
+    Key? key,
+    required this.video,
+    required this.onPressItem,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final headingStyle = theme.textTheme.subtitle2;
-    final descStyle = theme.textTheme.bodyText2.copyWith(
+    final descStyle = theme.textTheme.bodyText2?.copyWith(
       color: Colors.grey[400],
     );
     return ListTile(
@@ -30,13 +30,13 @@ class VideoPlayerListItem extends StatelessWidget {
       ),
       isThreeLine: true,
       title: Text(
-        video.author,
+        video.author!,
         style: headingStyle,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),
       subtitle: Text(
-        video.description,
+        video.description!,
         style: descStyle,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
@@ -60,7 +60,7 @@ class VideoPlayerListItem extends StatelessWidget {
       );
     }
     return CachedNetworkImage(
-      imageUrl: video.thumbnail,
+      imageUrl: video.thumbnail!,
       imageBuilder: (context, imageProvider) {
         return Container(
           width: 64,

@@ -2,15 +2,15 @@ part of 'objectives_bloc.dart';
 
 abstract class ObjectivesState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const ObjectivesState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ObjectivesInitial extends ObjectivesState {
@@ -31,7 +31,7 @@ class ObjectivesRequestLoading extends ObjectivesState {
 
 class ObjectivesRequestError extends ObjectivesState {
   const ObjectivesRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -42,26 +42,28 @@ class ObjectivesRequestLoaded extends ObjectivesState {
   final List<UserObjective> objectives;
 
   const ObjectivesRequestLoaded({
-    @required this.objectives,
+    required this.objectives,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, objectives];
+  List<Object> get props =>
+      error != null ? [loading, error!, objectives] : [loading, objectives];
 }
 
 class PatchObjectivesRequestLoaded extends ObjectivesState {
   final User user;
 
   const PatchObjectivesRequestLoaded({
-    @required this.user,
+    required this.user,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, user];
+  List<Object> get props =>
+      error != null ? [loading, error!, user] : [loading, user];
 }

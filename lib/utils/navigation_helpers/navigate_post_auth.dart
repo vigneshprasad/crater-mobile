@@ -6,30 +6,30 @@ import '../../features/auth/domain/entity/user_entity.dart';
 import '../../features/auth/domain/entity/user_profile_entity.dart';
 import '../../routes.gr.dart';
 
-void navigatePostAuth(User user, {UserProfile profile}) {
+void navigatePostAuth(User? user, {UserProfile? profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   if (user != null) {
     if (profile == null) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileBasicScreen(editMode: false), (route) => false);
-    } else if (profile.tagList == null || profile.tagList.isEmpty) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileTagsScreen(editMode: false), (route) => false);
+      _navigator.currentState?.pushNamedAndRemoveUntil(
+          ProfileBasicScreenRoute.name, (route) => false);
+    } else if (profile.tagList == null || profile.tagList!.isEmpty) {
+      _navigator.currentState?.pushNamedAndRemoveUntil(
+          ProfileTagsScreenRoute.name, (route) => false);
     } else if (profile.profileIntroUpdated == false) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileExtraInfoScreen, (route) => false);
+      _navigator.currentState?.pushNamedAndRemoveUntil(
+          ProfileExtraInfoScreenRoute.name, (route) => false);
     } else if (profile.photo == null) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileImageScreen(editMode: false), (route) => false);
+      _navigator.currentState?.pushNamedAndRemoveUntil(
+          ProfileImageScreenRoute.name, (route) => false);
     } else {
       _navigator.currentState
-          .pushNamedAndRemoveUntil(Routes.homeScreen(tab: 0), (route) => false);
+          ?.pushNamedAndRemoveUntil(HomeScreenRoute.name, (route) => false);
     }
-  } else if (user.phoneNumberVerified == false) {
-    _navigator.currentState.pushNamedAndRemoveUntil(
-        Routes.phoneVerificationScreen, (route) => false);
+  } else if (user!.phoneNumberVerified == false) {
+    _navigator.currentState?.pushNamedAndRemoveUntil(
+        PhoneVerificationScreenRoute.name, (route) => false);
   } else {
-    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
+    _navigator.currentState?.popAndPushNamed(HomeScreenRoute.name);
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();
   }
 }

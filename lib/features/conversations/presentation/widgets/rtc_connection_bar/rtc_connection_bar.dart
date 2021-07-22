@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
@@ -16,12 +17,12 @@ const kconnectionIndicatorSize = 12.00;
 
 class RtcConnectionBar extends HookWidget {
   final Conversation table;
-  final RtcConnection connection;
+  final RtcConnection? connection;
 
   const RtcConnectionBar({
-    Key key,
+    Key? key,
     this.connection,
-    @required this.table,
+    required this.table,
   }) : super(key: key);
 
   void _leaveRoundTableChannel(BuildContext context) {
@@ -53,7 +54,7 @@ class RtcConnectionBar extends HookWidget {
                 child: TextButton(
                   onPressed: () async {
                     context
-                        .read(conversationStateProvider(table.id))
+                        .read(conversationStateProvider(table.id!).notifier)
                         .leaveAudioCall();
                     // controller.leaveRoundTableChannel();
 
@@ -62,10 +63,10 @@ class RtcConnectionBar extends HookWidget {
                     //     PopupType.conversationLeave, context);
                     // Navigator.pop(context);
 
-                    AutoRouter.of(context).pushAndRemoveUntil(
-                      Routes.onboardingScreen(
+                    AutoRouter.of(context).pushAndPopUntil(
+                      OnboardingScreenRoute(
                           type: OnboardingType.meetingLeaving.toString()),
-                      (_) => false,
+                      predicate: (_) => false,
                     );
                   },
                   child: const Text(
@@ -98,7 +99,7 @@ class RtcConnectionBar extends HookWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText1;
     final localUser =
-        useProvider(conversationSpeakersState(table.id)).localUser;
+        useProvider(conversationSpeakersState(table.id!).notifier).localUser;
     return Container(
       width: MediaQuery.of(context).size.width,
       height: kconnectionBarHeight,
@@ -113,9 +114,9 @@ class RtcConnectionBar extends HookWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _StatusIndicator(state: connection),
+            _StatusIndicator(state: connection!),
             const SizedBox(width: AppInsets.med),
-            Text(getLabel(connection), style: textStyle),
+            Text(getLabel(connection!), style: textStyle),
             const Spacer(),
             if (connection != RtcConnection.connected)
               const SizedBox(
@@ -130,7 +131,7 @@ class RtcConnectionBar extends HookWidget {
                   muted: localUser.muted,
                   onPressed: () {
                     context
-                        .read(conversationStateProvider(table.id))
+                        .read(conversationStateProvider(table.id!).notifier)
                         .muteLocalAudio(muted: !localUser.muted);
                   },
                 ),
@@ -155,8 +156,8 @@ class _StatusIndicator extends StatelessWidget {
   final RtcConnection state;
 
   const _StatusIndicator({
-    Key key,
-    @required this.state,
+    Key? key,
+    required this.state,
   }) : super(key: key);
 
   @override
@@ -192,9 +193,9 @@ class _MicrophoneButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _MicrophoneButton({
-    Key key,
-    @required this.muted,
-    @required this.onPressed,
+    Key? key,
+    required this.muted,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -225,8 +226,8 @@ class _LeaveButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _LeaveButton({
-    Key key,
-    @required this.onPressed,
+    Key? key,
+    required this.onPressed,
   }) : super(key: key);
 
   @override

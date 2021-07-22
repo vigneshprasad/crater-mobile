@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -38,8 +39,8 @@ final homeScreenScrollController =
 });
 
 class HomeScreen extends HookWidget {
-  final int tab;
-  final int topic;
+  final int? tab;
+  final int? topic;
 
   static const icons = [
     Icons.home,
@@ -81,8 +82,8 @@ class HomeScreen extends HookWidget {
     final _activeTopic = useState(topic ?? 0);
 
     final name =
-        BlocProvider.of<AuthBloc>(context).state.user.name.split(' ').first;
-    final email = BlocProvider.of<AuthBloc>(context).state.user.email;
+        BlocProvider.of<AuthBloc>(context).state.user!.name!.split(' ').first;
+    final email = BlocProvider.of<AuthBloc>(context).state.user!.email;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -167,7 +168,7 @@ class HomeScreen extends HookWidget {
                       child: IconButton(
                         icon: const Icon(Icons.help),
                         onPressed: () =>
-                            context.read(intercomProvider).show(email),
+                            context.read(intercomProvider).show(email!),
                       ),
                     ),
                   ),
@@ -195,13 +196,11 @@ class HomeScreen extends HookWidget {
                           padding: const EdgeInsets.all(2.0),
                           child: UserProfileNavItem(
                             onPressed: () {
-                              final user = BlocProvider.of<AuthBloc>(context)
-                                  .state
-                                  ?.user;
+                              final user =
+                                  BlocProvider.of<AuthBloc>(context).state.user;
                               if (user != null) {
-                                AutoRouter.of(context).push(
-                                    Routes.profileScreen(
-                                        userId: user.pk, allowEdit: true));
+                                AutoRouter.of(context).push(ProfileScreenRoute(
+                                    userId: user.pk!, allowEdit: true));
                               }
                             },
                           ),
@@ -244,7 +243,7 @@ class HomeScreen extends HookWidget {
     );
   }
 
-  Future<int> _startConversation(BuildContext context) {
+  Future<int?> _startConversation(BuildContext context) {
     return showModalBottomSheet(
         elevation: 10,
         backgroundColor: Colors.transparent,
@@ -279,10 +278,10 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text('1:1'),
                               onPressed: () {
                                 Navigator.of(context).pop(0);
                               },
+                              child: const Text('1:1'),
                             ),
                           ),
                         ),
@@ -291,10 +290,10 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text('AMA'),
                               onPressed: () {
                                 Navigator.of(context).pop(1);
                               },
+                              child: const Text('AMA'),
                             ),
                           ),
                         ),
@@ -303,13 +302,13 @@ class HomeScreen extends HookWidget {
                             width: 80,
                             height: 80,
                             child: BaseLargeButton(
-                              child: Text(
-                                'Round\nTable',
-                                textAlign: TextAlign.center,
-                              ),
                               onPressed: () {
                                 Navigator.of(context).pop(2);
                               },
+                              child: const Text(
+                                'Round\nTable',
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
@@ -327,9 +326,9 @@ class HomeScreen extends HookWidget {
     final shown = await onboarding.getOnboardingKey();
 
     if (!shown) {
-      AutoRouter.of(context).pushAndRemoveUntil(
-          Routes.onboardingScreen(type: OnboardingType.signupComplete),
-          (_) => false);
+      AutoRouter.of(context).pushAndPopUntil(
+          OnboardingScreenRoute(type: OnboardingType.signupComplete.toString()),
+          predicate: (_) => false);
     }
   }
 }

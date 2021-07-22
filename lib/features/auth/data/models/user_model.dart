@@ -13,60 +13,60 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel extends User {
   @HiveField(0)
-  final String token;
+  final String? token;
 
   @HiveField(1)
-  final String pk;
+  final String? pk;
 
   @HiveField(2)
-  final String photo;
+  final String? photo;
 
   @HiveField(3)
-  final String email;
+  final String? email;
 
   @HiveField(4)
   @JsonKey(name: 'email_verified')
-  final bool emailVerified;
+  final bool? emailVerified;
 
   @HiveField(5)
-  final String name;
+  final String? name;
 
   @HiveField(6)
-  final int city;
+  final int? city;
 
   @HiveField(7)
-  final String reason;
+  final String? reason;
 
   @HiveField(8)
   @JsonKey(name: 'phone_number')
-  final String phoneNumber;
+  final String? phoneNumber;
 
   @HiveField(9)
   @JsonKey(name: 'phone_number_verified')
-  final bool phoneNumberVerified;
+  final bool? phoneNumberVerified;
 
   @HiveField(10)
-  final String role;
+  final String? role;
 
   @HiveField(11)
   @JsonKey(name: 'has_profile')
-  final bool hasProfile;
+  final bool? hasProfile;
 
   @HiveField(12)
   @JsonKey(name: 'has_bank_details')
-  final bool hasBankDetails;
+  final bool? hasBankDetails;
 
   @HiveField(13)
   @JsonKey(name: 'has_services')
-  final bool hasServices;
+  final bool? hasServices;
 
   @HiveField(14)
   @JsonKey(name: 'has_active_subscription')
-  final bool hasActiveSubscription;
+  final bool? hasActiveSubscription;
 
   @HiveField(15)
   @JsonKey(name: 'active_subscription_membership')
-  final String activeSubscriptionMembership;
+  final String? activeSubscriptionMembership;
 
   @HiveField(16)
   @JsonKey(name: 'pan_card')
@@ -78,21 +78,21 @@ class UserModel extends User {
 
   @HiveField(18)
   @JsonKey(name: 'unread_notifications')
-  final int unreadNotifications;
+  final int? unreadNotifications;
 
   @HiveField(19)
   @JsonKey(name: 'is_approved')
-  final bool isApproved;
+  final bool? isApproved;
 
   @HiveField(20)
-  final List<int> objectives;
+  final List<int>? objectives;
 
   @HiveField(21)
   @JsonKey(name: "linkedin_url")
-  String linkedinUrl;
+  String? linkedinUrl;
 
   @HiveField(22)
-  String intent;
+  String? intent;
 
   UserModel({
     this.token,
@@ -149,29 +149,29 @@ class UserModel extends User {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   UserModel copyWith({
-    String token,
-    String pk,
-    String photo,
-    String email,
-    bool emailVerified,
-    String name,
-    int city,
-    String reason,
-    String phoneNumber,
-    bool phoneNumberVerified,
-    String role,
-    bool hasProfile,
-    bool hasBankDetails,
-    bool hasServices,
-    bool hasActiveSubscription,
-    String activeSubscriptionMembership,
+    String? token,
+    String? pk,
+    String? photo,
+    String? email,
+    bool? emailVerified,
+    String? name,
+    int? city,
+    String? reason,
+    String? phoneNumber,
+    bool? phoneNumberVerified,
+    String? role,
+    bool? hasProfile,
+    bool? hasBankDetails,
+    bool? hasServices,
+    bool? hasActiveSubscription,
+    String? activeSubscriptionMembership,
     dynamic panCard,
     dynamic panCardSize,
-    int unreadNotifications,
-    bool isApproved,
-    List<int> objectives,
-    String linkedinUrl,
-    String intent,
+    int? unreadNotifications,
+    bool? isApproved,
+    List<int>? objectives,
+    String? linkedinUrl,
+    String? intent,
   }) {
     return UserModel(
       token: token ?? this.token,

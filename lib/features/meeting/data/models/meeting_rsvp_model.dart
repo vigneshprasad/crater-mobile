@@ -27,8 +27,8 @@ class MeetingRsvpModel extends MeetingRsvp {
   final MeetingRsvpStatus status;
 
   MeetingRsvpModel({
-    this.pk,
-    this.status,
+    required this.pk,
+    required this.status,
   }) : super(
           pk: pk,
           status: status,

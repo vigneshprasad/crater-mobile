@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -19,8 +20,8 @@ class ProfileImageScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileImageScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -28,19 +29,19 @@ class ProfileImageScreen extends StatefulWidget {
 }
 
 class _ProfileImageScreenState extends State<ProfileImageScreen> {
-  ProfileIntroBloc _bloc;
-  File _photo;
-  String _photoUrl;
-  String _name;
+  late ProfileIntroBloc _bloc;
+  File? _photo;
+  String? _photoUrl;
+  late String _name;
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final user = BlocProvider.of<AuthBloc>(context).state.user!;
 
     _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
       ..add(GetProfileIntroRequestStarted(user: user));
 
-    _name = user.name;
+    _name = user.name!;
     _photoUrl = user.photo;
 
     if (_photoUrl == null) {
@@ -116,14 +117,14 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
       }));
     } else {
       _bloc.add(ProfilePhotoRequestStarted(
-        photo: _photo,
+        photo: _photo!,
       ));
     }
   }
 
   void _goToNextScreen() {
     AutoRouter.of(context)
-        .push(Routes.profileBioScreen(editMode: widget.editMode));
+        .push(ProfileBioScreenRoute(editMode: widget.editMode));
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {

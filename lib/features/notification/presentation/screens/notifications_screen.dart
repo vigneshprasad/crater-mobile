@@ -14,9 +14,9 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final _pageSize = 10;
   int _currentPage = 1;
-  int _pages = 1;
   List<Notification> _notifications = [];
-  NotificationBloc _bloc;
+  // ignore: unused_field
+  late NotificationBloc _bloc;
 
   @override
   void initState() {
@@ -47,9 +47,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       BuildContext context, NotificationState state) {
     if (state is GetNotificationsReceived) {
       setState(() {
-        _currentPage = state.currentPage;
-        _notifications = [..._notifications, ...state.notifications];
-        _pages = state.pages;
+        _currentPage = state.currentPage!;
+        _notifications = [..._notifications, ...state.notifications!];
       });
     }
   }

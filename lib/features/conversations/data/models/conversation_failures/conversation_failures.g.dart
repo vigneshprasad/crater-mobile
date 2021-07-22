@@ -9,10 +9,9 @@ part of 'conversation_failures.dart';
 _$_ConversationFailure _$_$_ConversationFailureFromJson(
     Map<String, dynamic> json) {
   return _$_ConversationFailure(
-    message: json['error_message'] as String,
-    errorCode: _$enumDecodeNullable(
-            _$ConversationFailuresTypeEnumMap, json['error_code']) ??
-        ConversationFailuresType.genericError,
+    message: json['error_message'] as String?,
+    errorCode:
+        _$enumDecode(_$ConversationFailuresTypeEnumMap, json['error_code']),
   );
 }
 
@@ -23,36 +22,30 @@ Map<String, dynamic> _$_$_ConversationFailureToJson(
       'error_code': _$ConversationFailuresTypeEnumMap[instance.errorCode],
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$ConversationFailuresTypeEnumMap = {

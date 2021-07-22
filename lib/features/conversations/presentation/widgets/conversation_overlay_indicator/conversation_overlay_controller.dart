@@ -5,11 +5,11 @@ final conversationOverlayProvider =
     ChangeNotifierProvider((_) => ConversationOverlayController());
 
 class ConversationOverlayController extends ChangeNotifier {
-  OverlayEntry _entry;
-  int _groupId;
+  OverlayEntry? _entry;
+  int? _groupId;
 
-  OverlayEntry get entry => _entry;
-  int get groupId => _groupId;
+  OverlayEntry? get entry => _entry;
+  int? get groupId => _groupId;
 
   void createOverlayEntry(
       BuildContext context, OverlayEntry entry, int groupId) {
@@ -19,7 +19,7 @@ class ConversationOverlayController extends ChangeNotifier {
     _groupId = groupId;
     notifyListeners();
 
-    Overlay.of(context).insert(_entry);
+    Overlay.of(context)?.insert(entry);
   }
 
   void removeOverlayEntry() {

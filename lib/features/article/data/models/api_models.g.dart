@@ -14,10 +14,9 @@ ArticlesPageApiResponse _$ArticlesPageApiResponseFromJson(
     next: json['next'] as String,
     pages: json['pages'] as int,
     previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : ArticleModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    results: (json['results'] as List<dynamic>)
+        .map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

@@ -2,26 +2,26 @@ part of 'new_password_bloc.dart';
 
 @immutable
 class NewPasswordState extends Equatable {
-  final String response;
+  final String? response;
   final bool isPasswordValid;
   final bool isPasswordConfirmValid;
-  final Failure error;
+  final Failure? error;
   final bool isSubmitting;
 
   const NewPasswordState({
     this.response,
-    this.isPasswordValid,
-    this.isPasswordConfirmValid,
+    required this.isPasswordValid,
+    required this.isPasswordConfirmValid,
     this.error,
-    this.isSubmitting,
+    required this.isSubmitting,
   });
 
   NewPasswordState copyWith({
-    String response,
-    bool isPasswordValid,
-    bool isPasswordConfirmValid,
-    Failure error,
-    bool isSubmitting,
+    String? response,
+    bool? isPasswordValid,
+    bool? isPasswordConfirmValid,
+    Failure? error,
+    bool? isSubmitting,
   }) {
     return NewPasswordState(
       response: response ?? this.response,
@@ -40,8 +40,8 @@ class NewPasswordState extends Equatable {
   }
 
   NewPasswordState update({
-    @required bool isPasswordValid,
-    @required bool isPasswordConfirmValid,
+    required bool isPasswordValid,
+    required bool isPasswordConfirmValid,
   }) {
     return copyWith(
       isPasswordValid: isPasswordValid,
@@ -50,13 +50,21 @@ class NewPasswordState extends Equatable {
   }
 
   @override
-  List<Object> get props => [
-        response,
-        isPasswordValid,
-        isPasswordConfirmValid,
-        error,
-        isSubmitting,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      isPasswordValid,
+      isPasswordConfirmValid,
+      isSubmitting,
+    ];
+    if (response != null) {
+      temp.add(response!);
+    }
+
+    if (error != null) {
+      temp.add(error!);
+    }
+    return temp;
+  }
 }
 
 class NewPasswordInitial extends NewPasswordState {
@@ -72,7 +80,7 @@ class NewPasswordInitial extends NewPasswordState {
 
 class NewPasswordSuccess extends NewPasswordState {
   const NewPasswordSuccess({
-    @required final String response,
+    required final String response,
   }) : super(
           response: response,
           isPasswordValid: true,
@@ -84,7 +92,7 @@ class NewPasswordSuccess extends NewPasswordState {
 
 class NewPasswordFailure extends NewPasswordState {
   const NewPasswordFailure({
-    @required Failure error,
+    required Failure error,
   }) : super(
           response: null,
           isPasswordValid: true,

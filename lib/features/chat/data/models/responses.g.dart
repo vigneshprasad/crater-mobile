@@ -8,23 +8,21 @@ part of 'responses.dart';
 
 SetChatUserResponse _$SetChatUserResponseFromJson(Map<String, dynamic> json) {
   return SetChatUserResponse(
-    type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
         unknownValue: WSResponseType.unknowType),
-    user: json['user'] as String,
-    introduction: json['introduction'] as String,
-    name: json['name'] as String,
-    page: json['page'] as int,
-    pages: json['pages'] as int,
-    results: (json['results'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ChatMessageModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    user: json['user'] as String?,
+    introduction: json['introduction'] as String?,
+    name: json['name'] as String?,
+    page: json['page'] as int?,
+    pages: json['pages'] as int?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
     userData: json['user_data'] == null
         ? null
         : ChatUserModel.fromJson(json['user_data'] as Map<String, dynamic>),
-    additionalInformation: json['additional_information'] as String,
-    tagLine: json['tag_line'] as String,
+    additionalInformation: json['additional_information'] as String?,
+    tagLine: json['tag_line'] as String?,
   );
 }
 
@@ -43,36 +41,30 @@ Map<String, dynamic> _$SetChatUserResponseToJson(
       'tag_line': instance.tagLine,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$WSResponseTypeEnumMap = {
@@ -88,21 +80,21 @@ const _$WSResponseTypeEnumMap = {
 
 SentMessageResponse _$SentMessageResponseFromJson(Map<String, dynamic> json) {
   return SentMessageResponse(
-    type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
         unknownValue: WSResponseType.unknowType),
-    message: json['message'] as String,
-    file: json['file'] as String,
-    filename: json['filename'] as String,
-    fileFormat: json['fileFormat'] as String,
-    sender: json['sender'] as String,
-    receiver: json['receiver'] as String,
+    message: json['message'] as String?,
+    file: json['file'] as String?,
+    filename: json['filename'] as String?,
+    fileFormat: json['fileFormat'] as String?,
+    sender: json['sender'] as String?,
+    receiver: json['receiver'] as String?,
     pk: json['pk'] as int,
-    photo: json['photo'] as String,
-    created: json['created'] as String,
-    isRead: json['is_read'] as bool,
-    senderId: json['sender_id'] as String,
-    receiverId: json['receiver_id'] as String,
-    isSupport: json['is_support'] as bool,
+    photo: json['photo'] as String?,
+    created: json['created'] as String?,
+    isRead: json['is_read'] as bool?,
+    senderId: json['sender_id'] as String?,
+    receiverId: json['receiver_id'] as String?,
+    isSupport: json['is_support'] as bool?,
   );
 }
 
@@ -128,24 +120,24 @@ Map<String, dynamic> _$SentMessageResponseToJson(
 ChatMessageNotificationResponse _$ChatMessageNotificationResponseFromJson(
     Map<String, dynamic> json) {
   return ChatMessageNotificationResponse(
-    type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
         unknownValue: WSResponseType.unknowType),
-    created: json['created'] as String,
-    name: json['name'] as String,
-    photo: json['photo'] as String,
-    message: json['message'] as String,
+    created: json['created'] as String?,
+    name: json['name'] as String?,
+    photo: json['photo'] as String?,
+    message: json['message'] as String?,
     pk: json['pk'] as String,
-    senderName: json['sender'] as String,
-    receiverName: json['receiver'] as String,
-    isStarred: json['is_starred'] as bool,
+    senderName: json['sender'] as String?,
+    receiverName: json['receiver'] as String?,
+    isStarred: json['is_starred'] as bool?,
     latestMessage: json['latest_message'] == null
         ? null
         : ChatMessageModel.fromJson(
             json['latest_message'] as Map<String, dynamic>),
-    messageId: json['message_id'] as int,
-    recieverId: json['receiver_id'] as String,
-    senderId: json['sender_id'] as String,
-    unreadCount: json['unread_count'] as int,
+    messageId: json['message_id'] as int?,
+    recieverId: json['receiver_id'] as String?,
+    senderId: json['sender_id'] as String?,
+    unreadCount: json['unread_count'] as int?,
   );
 }
 

@@ -11,11 +11,11 @@ part 'meeting_interest_model.g.dart';
 class MeetingInterestModel extends MeetingInterest {
   final int pk;
   final String name;
-  final String icon;
+  final String? icon;
 
   const MeetingInterestModel({
-    this.pk,
-    this.name,
+    required this.pk,
+    required this.name,
     this.icon,
   }) : super(
           pk: pk,

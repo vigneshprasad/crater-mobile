@@ -21,12 +21,12 @@ class ArticlesPageApiResponse extends Equatable {
   final List<ArticleModel> results;
 
   const ArticlesPageApiResponse({
-    this.count,
-    this.currentPage,
-    this.next,
-    this.pages,
-    this.previous,
-    this.results,
+    required this.count,
+    required this.currentPage,
+    required this.next,
+    required this.pages,
+    required this.previous,
+    required this.results,
   });
 
   @override

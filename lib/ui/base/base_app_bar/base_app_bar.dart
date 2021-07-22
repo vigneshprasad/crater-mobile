@@ -6,18 +6,18 @@ import '../../../constants/work_net_icons_icons.dart';
 import '../../../core/widgets/base/base_container/base_container.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget title;
-  final List<Widget> actions;
+  final Widget? title;
+  final List<Widget>? actions;
   final Color color;
-  final double elevation;
-  final Color appBarActionColor;
+  final double? elevation;
+  final Color? appBarActionColor;
 
   @override
   final Size preferredSize;
 
   // ignore: prefer_const_constructors_in_immutables
   BaseAppBar({
-    Key key,
+    Key? key,
     this.title,
     this.actions,
     this.color = Colors.transparent,
@@ -55,11 +55,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: title,
                 ),
               if (title == null) const Spacer(),
-              if (actions != null && actions.isNotEmpty)
+              if (actions != null && actions!.isNotEmpty)
                 Flexible(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: actions,
+                    children: actions!,
                   ),
                 ),
               const SizedBox(width: AppInsets.l),
@@ -72,7 +72,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget getDrawerButton(BuildContext context) {
     final color = appBarActionColor ??
-        Theme.of(context).appBarTheme.actionsIconTheme.color;
+        Theme.of(context).appBarTheme.actionsIconTheme?.color;
     return IconButton(
       icon: const Icon(WorkNetIcons.menu),
       color: color,
@@ -82,8 +82,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget getBackButton(BuildContext context) {
     final color = appBarActionColor ??
-        Theme.of(context).appBarTheme.actionsIconTheme.color;
-    final ModalRoute<dynamic> parentRoute = ModalRoute.of(context);
+        Theme.of(context).appBarTheme.actionsIconTheme?.color;
+    final ModalRoute<dynamic>? parentRoute = ModalRoute.of(context);
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
     final IconData icon = useCloseButton ? Icons.close : Icons.arrow_back;
@@ -95,7 +95,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: IconButton(
           icon: Icon(icon),
           color: color,
-          onPressed: () => AutoRouter.of(context).maybePop(),
+          onPressed: () => AutoRouter.of(context).pop(),
         ),
       ),
     );

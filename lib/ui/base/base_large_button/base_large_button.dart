@@ -4,11 +4,11 @@ import '../../../constants/theme.dart';
 import '../../../core/widgets/base/base_container/base_container.dart';
 
 class BaseLargeButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String text;
+  final VoidCallback? onPressed;
+  final String? text;
   final bool enabled;
   const BaseLargeButton({
-    Key key,
+    Key? key,
     this.onPressed,
     this.text,
     this.enabled = true,
@@ -30,7 +30,7 @@ class BaseLargeButton extends StatelessWidget {
           ),
           onPressed: enabled ? onPressed : null,
           child: Text(
-            text.toUpperCase(),
+            text?.toUpperCase() ?? '',
             style: textStyle,
           ),
         ),

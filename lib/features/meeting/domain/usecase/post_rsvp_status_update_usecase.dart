@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -25,8 +24,8 @@ class PostRsvpStatusParams extends Equatable {
   final int meetingId;
 
   const PostRsvpStatusParams({
-    @required this.status,
-    @required this.meetingId,
+    required this.status,
+    required this.meetingId,
   });
 
   @override

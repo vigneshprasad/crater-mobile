@@ -10,7 +10,7 @@ MeetingInterestModel _$MeetingInterestModelFromJson(Map<String, dynamic> json) {
   return MeetingInterestModel(
     pk: json['pk'] as int,
     name: json['name'] as String,
-    icon: json['icon'] as String,
+    icon: json['icon'] as String?,
   );
 }
 

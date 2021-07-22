@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
@@ -17,17 +16,17 @@ part 'chat_search_state.dart';
 class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
   final WebsocketBloc websocketBloc;
   final UCSearchAllUsers getAllChatUsers;
-  StreamSubscription _websocketBlocSub;
-  StreamSubscription _socketStreamSub;
+  StreamSubscription? _websocketBlocSub;
+  StreamSubscription? _socketStreamSub;
 
   ChatSearchBloc({
-    @required this.websocketBloc,
-    @required this.getAllChatUsers,
+    required this.websocketBloc,
+    required this.getAllChatUsers,
   }) : super(const ChatSearchInitial()) {
     if (websocketBloc.state is WebSocketConnected) {
       add(const WebSocketBlocConnected());
     } else {
-      _websocketBlocSub ??= websocketBloc.listen((websocketblocState) {
+      _websocketBlocSub ??= websocketBloc.stream.listen((websocketblocState) {
         if (websocketblocState is WebSocketConnected) {
           add(const WebSocketBlocConnected());
         }
@@ -75,10 +74,11 @@ class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
   Stream<ChatSearchState> _mapSearchResultsToState(
       SearchResultsReceived event) async* {
     yield ChatSearchResultsLoaded(
+      search: '',
       error: event.response.errors,
-      results: event.response.results,
-      page: event.response.page,
-      pages: event.response.pages,
+      results: event.response.results!,
+      page: event.response.page!,
+      pages: event.response.pages!,
     );
   }
 
@@ -92,8 +92,7 @@ class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
     yield cacheOrError.fold(
       (failure) => state.copyWith(error: failure),
       (results) => ChatResultsCacheLoaded(
-        // ignore: avoid_redundant_argument_values
-        error: null,
+        search: '',
         page: state.page,
         pages: state.page,
         results: state.results,

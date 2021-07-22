@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../../../../api/post/post_api_service.dart';
@@ -32,7 +31,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
   final PostApiService apiService;
 
   CommunityRemoteDatasourceImpl({
-    @required this.apiService,
+    required this.apiService,
   });
 
   @override
@@ -44,6 +43,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
       final responseModel = PostsPageApiResponse.fromJson(json);
       final pages = (responseModel.count / pageSize).ceil();
       return PageApiResponse<Post>(
+        pageSize: pageSize,
         count: responseModel.count,
         currentPage: responseModel.currentPage,
         results: responseModel.results.cast<Post>(),
@@ -129,6 +129,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
           responseModel.results.map((e) => e.copyWith(postId: postId)).toList();
       return PageApiResponse<Comment>(
         count: responseModel.count,
+        pageSize: pageSize,
         currentPage: responseModel.currentPage,
         results: resultsUpdated,
         fromCache: false,

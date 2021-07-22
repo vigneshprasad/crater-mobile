@@ -7,22 +7,22 @@ class ChatUser extends HiveObject {
 
   final String name;
 
-  final String photo;
+  final String? photo;
 
-  final int unreadCount;
+  final int? unreadCount;
 
   final bool isStarred;
 
-  final DateTime lastSeen;
+  final DateTime? lastSeen;
 
-  final ChatMessage latestMessage;
+  final ChatMessage? latestMessage;
 
   ChatUser({
-    this.pk,
-    this.name,
+    required this.pk,
+    this.name = '',
     this.photo,
     this.unreadCount,
-    this.isStarred,
+    this.isStarred = false,
     this.lastSeen,
     this.latestMessage,
   });

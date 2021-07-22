@@ -22,12 +22,10 @@ Map<String, dynamic> _$SetChatRequestParamsToJson(
 
 SetChatRequest _$SetChatRequestFromJson(Map<String, dynamic> json) {
   return SetChatRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
-    message: json['message'] == null
-        ? null
-        : SetChatRequestParams.fromJson(
-            json['message'] as Map<String, dynamic>),
+    message:
+        SetChatRequestParams.fromJson(json['message'] as Map<String, dynamic>),
   );
 }
 
@@ -37,36 +35,30 @@ Map<String, dynamic> _$SetChatRequestToJson(SetChatRequest instance) =>
       'message': instance.message,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$WSRequestTypeEnumMap = {
@@ -82,7 +74,7 @@ const _$WSRequestTypeEnumMap = {
 
 ChatMessageRequest _$ChatMessageRequestFromJson(Map<String, dynamic> json) {
   return ChatMessageRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
     message: json['message'] as String,
   );
@@ -96,7 +88,7 @@ Map<String, dynamic> _$ChatMessageRequestToJson(ChatMessageRequest instance) =>
 
 UserTypingRequest _$UserTypingRequestFromJson(Map<String, dynamic> json) {
   return UserTypingRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
   );
 }
@@ -109,7 +101,7 @@ Map<String, dynamic> _$UserTypingRequestToJson(UserTypingRequest instance) =>
 ReadUserMessagesRequest _$ReadUserMessagesRequestFromJson(
     Map<String, dynamic> json) {
   return ReadUserMessagesRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
   );
 }

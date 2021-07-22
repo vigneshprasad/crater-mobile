@@ -1,6 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
@@ -23,11 +24,11 @@ import '../../widgets/conversation_overlay_indicator/conversation_overlay_indica
 enum RtcConnection { connected, connecting, disconnected }
 
 final conversationStateProvider = StateNotifierProvider.autoDispose
-    .family<ConversationState, int>(
+    .family<ConversationState, ApiResult<Conversation>, int>(
         (ref, id) => ConversationState(ref.read, id));
 
 final conversationSpeakersState = StateNotifierProvider.autoDispose
-    .family<ConversationSpeakersState, int>(
+    .family<ConversationSpeakersState, List<RtcUser>, int>(
         (ref, id) => ConversationSpeakersState(ref.read));
 
 final rtcConnectionProvider = ChangeNotifierProvider.autoDispose
@@ -62,8 +63,8 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     state = response.fold(
       (failure) => ApiResult<Conversation>.error(failure),
       (group) {
-        read(conversationSpeakersState(_groupId))
-            .setInitialSpeakers(group.speakersDetailList);
+        read(conversationSpeakersState(_groupId).notifier)
+            .setInitialSpeakers(group.speakersDetailList!);
         return ApiResult<Conversation>.data(group);
       },
     );
@@ -80,13 +81,13 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   }
 
   Future<void> connectToAudioCall() async {
-    final user = KiwiContainer().resolve<AuthBloc>().state.user;
+    final user = KiwiContainer().resolve<AuthBloc>().state.user!;
     read(rtcConnectionProvider(_groupId)).connection = RtcConnection.connecting;
     final response = await read(conversationRepositoryProvider)
         .getConversationRtcInfo(_groupId);
 
     response.fold(
-      (failure) => Fluttertoast.showToast(msg: failure.message),
+      (failure) => Fluttertoast.showToast(msg: failure.message!),
       (info) {
         _connectToRtcAudioCall(info, user);
       },
@@ -101,7 +102,7 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
       await read(conversationRtcClient).joinAudioCall(
         info.channelName,
         info.token,
-        user.pk,
+        user.pk!,
       );
     } catch (exception) {
       Fluttertoast.showToast(msg: 'Some error occurred. Please try again.');
@@ -111,11 +112,11 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     }
   }
 
-  Future<void> muteLocalAudio({@required bool muted}) async {
-    final user = read(conversationSpeakersState(_groupId)).localUser;
+  Future<void> muteLocalAudio({required bool muted}) async {
+    final user = read(conversationSpeakersState(_groupId).notifier).localUser;
     await read(conversationRtcClient).muteLocalAudio(muted: muted);
 
-    read(conversationSpeakersState(_groupId))
+    read(conversationSpeakersState(_groupId).notifier)
         .toggleMutedState(user.pk, muted: !user.muted);
   }
 
@@ -134,10 +135,10 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   /// RTC Call Event Handlers
   ///
   void _setAudioCallHandlers() {
-    final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
+    final localUser = KiwiContainer().resolve<AuthBloc>().state.user!;
     read(conversationRtcClient).setEventHandler(RtcEngineEventHandler(
       joinChannelSuccess: (channel, uid, elapsed) =>
-          _onJoinChannelSuccess(channel, uid, elapsed, localUser.pk),
+          _onJoinChannelSuccess(channel, uid, elapsed, localUser.pk!),
       userJoined: (uid, elapsed) => _onRemoteUserJoined(uid, elapsed),
       localAudioStateChanged: (state, error) =>
           _onLocalAudioStateChanged(state, error),
@@ -157,12 +158,12 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   Future<void> leaveAudioCall() async {
     state.maybeWhen(
       orElse: () {},
-      data: (group) async {
+      data: (Conversation group) async {
         await read(conversationRtcClient).dispose();
         read(rtcConnectionProvider(_groupId)).connection =
             RtcConnection.disconnected;
-        read(conversationSpeakersState(_groupId))
-            .setInitialSpeakers(group.speakersDetailList);
+        read(conversationSpeakersState(_groupId).notifier)
+            .setInitialSpeakers(group.speakersDetailList!);
       },
     );
   }
@@ -175,7 +176,7 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
           "id": _groupId,
         });
     read(rtcConnectionProvider(_groupId)).connection = RtcConnection.connected;
-    read(conversationSpeakersState(_groupId))
+    read(conversationSpeakersState(_groupId).notifier)
         .toggleOnlineState(pk, online: true);
   }
 
@@ -184,8 +185,9 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   }
 
   Future<void> _onRemoteUserJoined(int uid, int elapsed) async {
-    final info = await read(conversationRtcClient).engine.getUserInfoByUid(uid);
-    final pk = info.userAccount;
+    final info =
+        await read(conversationRtcClient).engine?.getUserInfoByUid(uid);
+    final pk = info?.userAccount;
 
     if (pk != null) {
       final response = await read(conversationRepositoryProvider)
@@ -194,10 +196,10 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
       response.fold(
         (failure) {},
         (conversation) {
-          read(conversationSpeakersState(_groupId))
-              .mergeUpdatedSpeakersList(conversation.speakersDetailList);
+          read(conversationSpeakersState(_groupId).notifier)
+              .mergeUpdatedSpeakersList(conversation.speakersDetailList!);
 
-          read(conversationSpeakersState(_groupId))
+          read(conversationSpeakersState(_groupId).notifier)
               .toggleOnlineState(pk, online: true);
         },
       );
@@ -209,23 +211,24 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     for (final speaker in speakers) {
       final info = await read(conversationRtcClient)
           .engine
-          .getUserInfoByUid(speaker.uid);
-      final pk = info.userAccount;
+          ?.getUserInfoByUid(speaker.uid);
+      final pk = info?.userAccount;
 
       if (pk != null) {
-        read(conversationSpeakersState(_groupId))
+        read(conversationSpeakersState(_groupId).notifier)
             .toggleVolumeIndicator(pk, speaker.volume);
       }
     }
   }
 
   Future<void> _onRemoteUserOffline(int uid, UserOfflineReason reason) async {
-    final info = await read(conversationRtcClient).engine.getUserInfoByUid(uid);
+    final info =
+        await read(conversationRtcClient).engine?.getUserInfoByUid(uid);
 
-    final pk = info.userAccount;
+    final pk = info?.userAccount;
 
     if (pk != null) {
-      read(conversationSpeakersState(_groupId)).toggleOnlineState(pk);
+      read(conversationSpeakersState(_groupId).notifier).toggleOnlineState(pk);
     }
   }
 
@@ -270,10 +273,10 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
       if (states.contains(state)) {
         final muted = state != AudioRemoteState.Starting;
         final info =
-            await read(conversationRtcClient).engine.getUserInfoByUid(uid);
-        final pk = info.userAccount;
+            await read(conversationRtcClient).engine?.getUserInfoByUid(uid);
+        final pk = info?.userAccount;
         if (pk != null) {
-          read(conversationSpeakersState(_groupId))
+          read(conversationSpeakersState(_groupId).notifier)
               .toggleMutedState(pk, muted: muted);
         }
       }
@@ -281,25 +284,27 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   }
 
   Future<void> _onRemoteAudioDecoded(int uid, int elapsed) async {
-    final info = await read(conversationRtcClient).engine.getUserInfoByUid(uid);
+    final info =
+        await read(conversationRtcClient).engine?.getUserInfoByUid(uid);
 
-    final pk = info.userAccount;
+    final pk = info?.userAccount;
 
     if (pk != null) {
-      read(conversationSpeakersState(_groupId))
+      read(conversationSpeakersState(_groupId).notifier)
           .toggleOnlineState(pk, online: true);
     }
   }
 
   Future<void> _onLocalAudioStateChanged(
       AudioLocalState state, AudioLocalError error) async {
-    final localUser = read(conversationSpeakersState(_groupId)).localUser;
+    final localUser =
+        read(conversationSpeakersState(_groupId).notifier).localUser;
     if (error == AudioLocalError.Ok) {
       if (state == AudioLocalState.Stopped) {
-        read(conversationSpeakersState(_groupId))
+        read(conversationSpeakersState(_groupId).notifier)
             .toggleMutedState(localUser.pk, muted: true);
       } else if (state == AudioLocalState.Recording) {
-        read(conversationSpeakersState(_groupId))
+        read(conversationSpeakersState(_groupId).notifier)
             .toggleMutedState(localUser.pk);
       }
     }
@@ -312,7 +317,7 @@ class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
   ConversationSpeakersState(this.read) : super(<RtcUser>[]);
 
   RtcUser get localUser {
-    final user = KiwiContainer().resolve<AuthBloc>().state.user;
+    final user = KiwiContainer().resolve<AuthBloc>().state.user!;
     return state.firstWhere((element) => element.pk == user.pk);
   }
 

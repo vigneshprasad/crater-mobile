@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +21,8 @@ class ProfileTagsScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileTagsScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -29,10 +30,10 @@ class ProfileTagsScreen extends StatefulWidget {
 }
 
 class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
-  ProfileTagsBloc _bloc;
-  List<UserTag> tags;
-  List<UserTag> selectedTags;
-  List<PickerItem> items;
+  late ProfileTagsBloc _bloc;
+  late List<UserTag> tags;
+  late List<UserTag> selectedTags;
+  late List<PickerItem> items;
   bool allowSkip = false;
 
   @override
@@ -132,7 +133,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   }
 
   void goToNextScreen() {
-    AutoRouter.of(context).push(Routes.profileExtraInfoScreen);
+    AutoRouter.of(context).push(const ProfileExtraInfoScreenRoute());
   }
 
   void _onPressSubmit() {
@@ -140,7 +141,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
       return;
     }
     _bloc.add(PostProfileTagsRequestStarted(
-        tagIds: selectedTags.map((e) => e.pk).toList()));
+        tagIds: selectedTags.map((e) => e.pk!).toList()));
   }
 
   void _onPressedObjectiveItem(PickerItem item, bool isSelected) {

@@ -2,18 +2,18 @@ part of 'meeting_bloc.dart';
 
 abstract class MeetingState extends Equatable {
   final bool loading;
-  final dynamic error;
-  final MeetingConfig config;
-  final List<MeetingsByDate> upcoming;
-  final List<MeetingsByDate> past;
-  final List<MeetingObjective> objectives;
-  final List<MeetingInterest> interests;
-  final UserMeetingPreference preference;
-  final UserMeetingPreference pastPreferences;
-  final Meeting meeting;
+  final Object? error;
+  final MeetingConfig? config;
+  final List<MeetingsByDate>? upcoming;
+  final List<MeetingsByDate>? past;
+  final List<MeetingObjective>? objectives;
+  final List<MeetingInterest>? interests;
+  final UserMeetingPreference? preference;
+  final UserMeetingPreference? pastPreferences;
+  final Meeting? meeting;
 
   const MeetingState({
-    this.loading,
+    required this.loading,
     this.error,
     this.upcoming,
     this.past,
@@ -26,17 +26,36 @@ abstract class MeetingState extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-        upcoming,
-        past,
-        objectives,
-        interests,
-        config,
-        pastPreferences,
-        meeting,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [loading];
+
+    if (error != null) {
+      temp.add(error!);
+    }
+    if (upcoming != null) {
+      temp.add(upcoming!);
+    }
+    if (past != null) {
+      temp.add(past!);
+    }
+    if (objectives != null) {
+      temp.add(objectives!);
+    }
+    if (interests != null) {
+      temp.add(interests!);
+    }
+    if (config != null) {
+      temp.add(config!);
+    }
+    if (pastPreferences != null) {
+      temp.add(pastPreferences!);
+    }
+    if (meeting != null) {
+      temp.add(meeting!);
+    }
+
+    return temp;
+  }
 }
 
 class MeetingInitial extends MeetingState {
@@ -118,7 +137,7 @@ class MeetingGetUpcomingRequestLoading extends MeetingState {
 
 class MeetingGetUpcomingRequestError extends MeetingState {
   const MeetingGetUpcomingRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: true,
           error: error,
@@ -127,7 +146,7 @@ class MeetingGetUpcomingRequestError extends MeetingState {
 
 class MeetingPastRequestError extends MeetingState {
   const MeetingPastRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: true,
           error: error,
@@ -143,7 +162,7 @@ class MeetingGetPastRequestLoading extends MeetingState {
 }
 
 class MeetingGetRequestError extends MeetingState {
-  const MeetingGetRequestError({@required dynamic error})
+  const MeetingGetRequestError({required dynamic error})
       : super(
           loading: false,
           error: error,
@@ -152,7 +171,7 @@ class MeetingGetRequestError extends MeetingState {
 
 class MeetingGetInterestsLoaded extends MeetingState {
   const MeetingGetInterestsLoaded({
-    @required List<MeetingInterest> interests,
+    required List<MeetingInterest> interests,
   }) : super(
           loading: false,
           error: null,
@@ -162,7 +181,7 @@ class MeetingGetInterestsLoaded extends MeetingState {
 
 class MeetingGetObjectivesLoaded extends MeetingState {
   const MeetingGetObjectivesLoaded({
-    @required List<MeetingObjective> objectives,
+    required List<MeetingObjective> objectives,
   }) : super(
           loading: false,
           error: null,
@@ -172,7 +191,7 @@ class MeetingGetObjectivesLoaded extends MeetingState {
 
 class MeetingGetPreferencesLoaded extends MeetingState {
   const MeetingGetPreferencesLoaded({
-    @required UserMeetingPreference preference,
+    required UserMeetingPreference preference,
   }) : super(
           loading: false,
           error: null,
@@ -182,7 +201,7 @@ class MeetingGetPreferencesLoaded extends MeetingState {
 
 class MeetingGetPastPreferencesLoaded extends MeetingState {
   const MeetingGetPastPreferencesLoaded({
-    @required UserMeetingPreference pastPreferences,
+    required UserMeetingPreference pastPreferences,
   }) : super(
           loading: false,
           error: null,
@@ -192,7 +211,7 @@ class MeetingGetPastPreferencesLoaded extends MeetingState {
 
 class MeetingGetConfigLoaded extends MeetingState {
   const MeetingGetConfigLoaded({
-    @required MeetingConfig config,
+    required MeetingConfig config,
   }) : super(
           loading: false,
           error: null,
@@ -202,7 +221,7 @@ class MeetingGetConfigLoaded extends MeetingState {
 
 class GetUpcomingMeetingsLoaded extends MeetingState {
   const GetUpcomingMeetingsLoaded({
-    @required List<MeetingsByDate> upcoming,
+    required List<MeetingsByDate> upcoming,
   }) : super(
           upcoming: upcoming,
           loading: false,
@@ -212,7 +231,7 @@ class GetUpcomingMeetingsLoaded extends MeetingState {
 
 class GetPastMeetingsLoaded extends MeetingState {
   const GetPastMeetingsLoaded({
-    @required List<MeetingsByDate> past,
+    required List<MeetingsByDate> past,
   }) : super(
           past: past,
           loading: false,
@@ -224,18 +243,23 @@ class PostMeetingPreferencesLoaded extends MeetingState {
   final UserMeetingPreference preferences;
 
   const PostMeetingPreferencesLoaded({
-    @required this.preferences,
+    required this.preferences,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-        preferences,
-      ];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+          preferences,
+        ]
+      : [
+          loading,
+          preferences,
+        ];
 }
 
 class PostMeetingPreferenceError extends MeetingState {
@@ -246,28 +270,37 @@ class PostMeetingPreferenceError extends MeetingState {
           error: error,
         );
   @override
-  List<Object> get props => [
-        loading,
-        error,
-      ];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+        ]
+      : [
+          loading,
+        ];
 }
 
 class PostUserProfileResponseLoaded extends MeetingState {
   final UserProfile profile;
 
   const PostUserProfileResponseLoaded({
-    @required this.profile,
+    required this.profile,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [
-        loading,
-        error,
-        profile,
-      ];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+          profile,
+        ]
+      : [
+          loading,
+          profile,
+        ];
 }
 
 /// Retrieve Meeting States
@@ -282,7 +315,7 @@ class RetrieveMeetingLoading extends MeetingState {
 
 class RetrieveMeetingLoaded extends MeetingState {
   const RetrieveMeetingLoaded({
-    @required Meeting meeting,
+    required Meeting meeting,
   }) : super(
           loading: false,
           error: null,
@@ -292,7 +325,7 @@ class RetrieveMeetingLoaded extends MeetingState {
 
 class RetrieveMeetingError extends MeetingState {
   const RetrieveMeetingError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -312,7 +345,7 @@ class PostMeetingRsvpStatusLoading extends MeetingState {
 class PostMeetingRsvpStatusLoaded extends MeetingState {
   final MeetingRsvp rsvp;
   const PostMeetingRsvpStatusLoaded({
-    @required this.rsvp,
+    required this.rsvp,
   }) : super(
           loading: false,
           error: null,
@@ -321,7 +354,7 @@ class PostMeetingRsvpStatusLoaded extends MeetingState {
 
 class PostMeetingRsvpStatusError extends MeetingState {
   const PostMeetingRsvpStatusError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -340,7 +373,7 @@ class GetMeetingRescheduleSlotsLoading extends MeetingState {
 
 class GetMeetingRescheduleSlotsError extends MeetingState {
   const GetMeetingRescheduleSlotsError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -350,7 +383,7 @@ class GetMeetingRescheduleSlotsError extends MeetingState {
 class GetMeetingRescheduleSlotsLoaded extends MeetingState {
   final List<List<DateTime>> timeslots;
   const GetMeetingRescheduleSlotsLoaded({
-    @required this.timeslots,
+    required this.timeslots,
   }) : super(
           loading: false,
           error: null,
@@ -369,7 +402,7 @@ class PostMeetingRecheduleRsvpLoading extends MeetingState {
 
 class PostMeetingRecheduleRsvpError extends MeetingState {
   const PostMeetingRecheduleRsvpError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -379,7 +412,7 @@ class PostMeetingRecheduleRsvpError extends MeetingState {
 class PostMeetingRecheduleRsvpLoaded extends MeetingState {
   final RescheduleRequest response;
   const PostMeetingRecheduleRsvpLoaded({
-    @required this.response,
+    required this.response,
   }) : super(
           loading: false,
           error: null,
@@ -398,7 +431,7 @@ class GetMeetingRescheduleRequestLoading extends MeetingState {
 
 class GetMeetingRescheduleRequestError extends MeetingState {
   const GetMeetingRescheduleRequestError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -409,7 +442,7 @@ class GetMeetingRescheduleRequestLoaded extends MeetingState {
   final RescheduleRequest response;
 
   const GetMeetingRescheduleRequestLoaded({
-    @required this.response,
+    required this.response,
   }) : super(
           loading: false,
           error: null,
@@ -428,7 +461,7 @@ class PostConfirmRescheduleRequestLoading extends MeetingState {
 
 class PostConfirmRescheduleRequestError extends MeetingState {
   const PostConfirmRescheduleRequestError({
-    @required dynamic error,
+    required dynamic error,
   }) : super(
           loading: false,
           error: error,
@@ -439,7 +472,7 @@ class PostConfirmRescheduleRequestLoaded extends MeetingState {
   final bool response;
 
   const PostConfirmRescheduleRequestLoaded({
-    @required this.response,
+    required this.response,
   }) : super(
           loading: false,
           error: null,

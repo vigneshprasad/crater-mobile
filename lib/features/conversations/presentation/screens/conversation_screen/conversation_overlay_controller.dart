@@ -7,8 +7,8 @@ final groupOverlayControllerProvider =
     Provider((_) => ConversationOverlayController());
 
 class ConversationOverlayController {
-  OverlayEntry _entry;
-  Conversation _roundTable;
+  OverlayEntry? _entry;
+  Conversation? _roundTable;
 
   void createOverlayEntry(
       BuildContext context, OverlayEntry entry, Conversation table) {
@@ -16,7 +16,7 @@ class ConversationOverlayController {
 
     _entry = entry;
     _roundTable = table;
-    Overlay.of(context).insert(_entry);
+    Overlay.of(context)?.insert(_entry!);
   }
 
   void removeOverlayEntry() {
@@ -25,6 +25,6 @@ class ConversationOverlayController {
     _roundTable = null;
   }
 
-  OverlayEntry get entry => _entry;
-  Conversation get table => _roundTable;
+  OverlayEntry? get entry => _entry;
+  Conversation? get table => _roundTable;
 }

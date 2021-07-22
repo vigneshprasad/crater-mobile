@@ -12,10 +12,9 @@ PostsPageApiResponse _$PostsPageApiResponseFromJson(Map<String, dynamic> json) {
     currentPage: json['current_page'] as int,
     next: json['next'] as String,
     previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : PostModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    results: (json['results'] as List<dynamic>)
+        .map((e) => PostModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -36,10 +35,9 @@ CommentsPageApiResponse _$CommentsPageApiResponseFromJson(
     currentPage: json['current_page'] as int,
     next: json['next'] as String,
     previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : CommentModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    results: (json['results'] as List<dynamic>)
+        .map((e) => CommentModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +19,8 @@ class ProfileBasicScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileBasicScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -30,17 +31,17 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
-  ProfileBasicBloc _bloc;
+  late ProfileBasicBloc _bloc;
   bool allowSkip = false;
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final user = BlocProvider.of<AuthBloc>(context).state.user!;
 
     _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
 
-    if (user.name != null && user.name.trim().isNotEmpty) {
-      final name = user.name.split(' ');
+    if (user.name != null && user.name!.trim().isNotEmpty) {
+      final name = user.name!.split(' ');
       _firstNameController.text = name.first;
       _lastNameController.text = name.last;
     } else if (widget.editMode == false) {
@@ -117,16 +118,18 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
               controller: _firstNameController,
               autovalidate: false,
               label: firstnameLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
             BaseFormInput(
               controller: _lastNameController,
               autovalidate: false,
               label: lastnameLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -137,12 +140,12 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   void _goToNextScreen() {
     AutoRouter.of(context)
-        .push(Routes.profileTagsScreen(editMode: widget.editMode));
+        .push(ProfileTagsScreenRoute(editMode: widget.editMode));
   }
 
   void _onPressedSubmit() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid ?? false) {
       final name = '${_firstNameController.text} ${_lastNameController.text}';
       _bloc.add(PostProfileBasicRequestStarted(name: name));
     }

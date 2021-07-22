@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -13,7 +14,7 @@ import '../bloc/points_bloc.dart';
 
 class PointsTab extends StatefulWidget {
   const PointsTab({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -21,9 +22,9 @@ class PointsTab extends StatefulWidget {
 }
 
 class _PointsTabState extends State<PointsTab> {
-  PointsBloc _bloc;
-  int points;
-  double moneyValue;
+  late PointsBloc _bloc;
+  late int points;
+  late double moneyValue;
 
   @override
   void initState() {
@@ -39,10 +40,10 @@ class _PointsTabState extends State<PointsTab> {
     final descStyle = Theme.of(context).textTheme.bodyText2;
     final recognizer = TapGestureRecognizer()
       ..onTap = () {
-        AutoRouter.of(context).push(Routes.pointsFaqScreen);
+        AutoRouter.of(context).push(const PointsFaqScreenRoute());
       };
     final pointsDescText =
-        AppLocalizations.of(context).translate("rewards:tab_desc");
+        AppLocalizations.of(context)?.translate("rewards:tab_desc");
     return BlocListener<PointsBloc, PointsState>(
       listener: (context, state) {
         if (state is PointsValueUpdateRecieved) {
@@ -77,7 +78,7 @@ class _PointsTabState extends State<PointsTab> {
                         TextSpan(
                           text: 'Learn More',
                           recognizer: recognizer,
-                          style: descStyle.copyWith(
+                          style: descStyle?.copyWith(
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).primaryColor,
                           ),
@@ -105,7 +106,7 @@ class _PointsTabState extends State<PointsTab> {
   }
 
   Widget _buildPointsRow(BuildContext context) {
-    final equalsStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final equalsStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontSize: 16,
         );
     return Padding(
@@ -146,13 +147,13 @@ class _PointsBadge extends StatelessWidget {
   final String label;
 
   const _PointsBadge({
-    Key key,
-    this.label,
+    Key? key,
+    required this.label,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           fontSize: 18,
         );
     const badgeSize = 30.0;
@@ -185,7 +186,7 @@ class _PointsBadge extends StatelessWidget {
 class _MoneyBadge extends StatelessWidget {
   final double label;
 
-  const _MoneyBadge({Key key, this.label}) : super(key: key);
+  const _MoneyBadge({Key? key, required this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,10 +195,10 @@ class _MoneyBadge extends StatelessWidget {
       decimalDigits: 0,
       locale: 'en-in',
     );
-    final labelStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           fontSize: 18,
         );
-    final symbolStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final symbolStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           color: Colors.yellow[900],
         );
     const badgeSize = 30.0;
@@ -208,7 +209,7 @@ class _MoneyBadge extends StatelessWidget {
           width: badgeSize,
           height: badgeSize,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.yellow[900], width: 2),
+            border: Border.all(color: Colors.yellow[900]!, width: 2),
             color: Colors.yellow[600],
             shape: BoxShape.circle,
           ),

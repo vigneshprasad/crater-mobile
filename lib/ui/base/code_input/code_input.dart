@@ -8,12 +8,12 @@ typedef OnValidCallback = void Function(bool isValid);
 
 class CodeInput extends StatefulWidget {
   final int length;
-  final OnChangeCallback onChange;
-  final OnValidCallback onValidChange;
+  final OnChangeCallback? onChange;
+  final OnValidCallback? onValidChange;
 
   const CodeInput({
-    Key key,
-    @required this.length,
+    Key? key,
+    required this.length,
     this.onChange,
     this.onValidChange,
   }) : super(key: key);
@@ -23,9 +23,9 @@ class CodeInput extends StatefulWidget {
 }
 
 class _CodeInputState extends State<CodeInput> {
-  FocusNode _focusNode;
-  TextEditingController _controller;
-  List<String> _valuesList;
+  late FocusNode _focusNode;
+  late TextEditingController _controller;
+  late List<String> _valuesList;
 
   @override
   void initState() {
@@ -97,11 +97,11 @@ class _CodeInputState extends State<CodeInput> {
   void _textChangeListener() {
     final currentText = _controller.text;
     if (widget.onChange != null) {
-      widget.onChange(currentText);
+      widget.onChange!(currentText);
     }
 
     if (widget.onValidChange != null) {
-      widget.onValidChange(currentText.length == widget.length);
+      widget.onValidChange!(currentText.length == widget.length);
     }
     _setTextToDisplay(currentText);
   }
@@ -112,7 +112,7 @@ class _CodeInputState extends State<CodeInput> {
         ? Border.all(
             width: 2,
             color: _valuesList[index].isEmpty
-                ? Colors.grey[400]
+                ? Colors.grey[400]!
                 : Theme.of(context).primaryColor,
           )
         : null;
@@ -155,7 +155,7 @@ class _CodeInputState extends State<CodeInput> {
   }
 
   void _setTextToDisplay(String text) {
-    final replaceInputList = List<String>(widget.length);
+    final replaceInputList = List<String>.filled(widget.length, '');
 
     for (int i = 0; i < widget.length; i++) {
       replaceInputList[i] = text.length > i ? text[i] : "";

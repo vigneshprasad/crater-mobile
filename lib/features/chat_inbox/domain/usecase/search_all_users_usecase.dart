@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -10,7 +9,7 @@ class UCSearchAllUsers implements AsyncUseCase<void, SearchAllUsersParams> {
   final ChatInboxRepository repository;
 
   UCSearchAllUsers({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -29,7 +28,7 @@ class SearchAllUsersParams extends Equatable {
 
   const SearchAllUsersParams({
     this.latestMessage = "all",
-    @required this.search,
+    required this.search,
     this.page = 1,
     this.strict = true,
     this.filter = "all",

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BaseIconButton extends StatelessWidget {
-  final Icon icon;
+  final Icon? icon;
   final VoidCallback onPressed;
 
   const BaseIconButton({
-    Key key,
+    Key? key,
     this.icon,
-    @required this.onPressed,
+    required this.onPressed,
   }) : super(key: key);
 
   @override

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 // import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,7 +5,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/error/exceptions.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../domain/entity/access_token.dart';
 
 abstract class SocialAuthRemoteDataSource {
@@ -21,8 +19,8 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   final FacebookLogin facebookLogin;
 
   SocialAuthRemoteDataSourceImpl({
-    @required this.googleSignIn,
-    @required this.facebookLogin,
+    required this.googleSignIn,
+    required this.facebookLogin,
   });
 
   @override
@@ -65,8 +63,8 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
 
     try {
       final account = await googleSignIn.signIn();
-      final auth = await account.authentication;
-      return AccessToken(auth.accessToken);
+      final auth = await account?.authentication;
+      return AccessToken(auth!.accessToken!);
     } catch (error) {
       throw ServerException();
     }
@@ -79,7 +77,7 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
       //     appBar: BaseAppBar(
       //   title: const Text("LinkedIn Auth"),
       // ));
-      // return AccessToken(token);
+      return const AccessToken('');
     } catch (error) {
       throw ServerException();
     }

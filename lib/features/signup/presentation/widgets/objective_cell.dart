@@ -14,12 +14,10 @@ class ObjectiveCell extends StatefulWidget {
   final ObjectiveCellCallback onPressedItem;
 
   const ObjectiveCell({
-    Key key,
-    @required this.item,
-    @required this.onPressedItem,
-  })  : assert(item != null),
-        assert(onPressedItem != null),
-        super(key: key);
+    Key? key,
+    required this.item,
+    required this.onPressedItem,
+  }) : super(key: key);
 
   @override
   _ObjectiveCellState createState() => _ObjectiveCellState();
@@ -33,7 +31,7 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
 
   @override
   Widget build(BuildContext context) {
-    final unselectedColor = Colors.grey[200];
+    final unselectedColor = Colors.grey[200]!;
     final selectedColor = Theme.of(context).primaryColor;
     final backgroundColor =
         widget.item.selected ? selectedColor : unselectedColor;
@@ -64,7 +62,7 @@ class _ObjectiveCellState extends State<ObjectiveCell> {
                 children: [
                   if (widget.item.icon != null)
                     SvgPicture.network(
-                      widget.item.icon,
+                      widget.item.icon!,
                       color: iconColor,
                       height: 28,
                     ),

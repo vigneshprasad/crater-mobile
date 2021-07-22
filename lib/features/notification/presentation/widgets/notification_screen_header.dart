@@ -5,15 +5,15 @@ import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 
 class NotifficationScreenHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
-  final Color color;
-  final String heading;
-  final String subHeading;
+  final Color? color;
+  final String? heading;
+  final String? subHeading;
 
   NotifficationScreenHeader({
     this.color,
     this.heading,
     this.subHeading,
-    @required this.expandedHeight,
+    required this.expandedHeight,
   });
 
   @override
@@ -52,21 +52,21 @@ class NotifficationScreenHeader extends SliverPersistentHeaderDelegate {
                         children: [
                           if (heading != null)
                             Text(
-                              heading,
+                              heading!,
                               textAlign: TextAlign.start,
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5
-                                  .copyWith(fontWeight: FontWeight.w700),
+                                  ?.copyWith(fontWeight: FontWeight.w700),
                             ),
                           const SizedBox(height: AppPadding.tiny),
                           if (subHeading != null)
                             Text(
-                              subHeading,
+                              subHeading!,
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1
-                                  .copyWith(
+                                  ?.copyWith(
                                     color: Colors.grey[500],
                                   ),
                               maxLines: 1,
@@ -82,7 +82,7 @@ class NotifficationScreenHeader extends SliverPersistentHeaderDelegate {
                 child: BaseAppBar(
                   title: Opacity(
                     opacity: shrinkOffset / maxExtent,
-                    child: Text(heading, style: AppTheme.appBarTitle),
+                    child: Text(heading!, style: AppTheme.appBarTitle),
                   ),
                 ),
               ),

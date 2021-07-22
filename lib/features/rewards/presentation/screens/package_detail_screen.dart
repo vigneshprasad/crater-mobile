@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/theme.dart';
@@ -15,8 +16,8 @@ class PackageDetailScreen extends StatefulWidget {
   final int packageId;
 
   const PackageDetailScreen({
-    Key key,
-    @required this.packageId,
+    Key? key,
+    required this.packageId,
   }) : super(key: key);
 
   @override
@@ -24,9 +25,9 @@ class PackageDetailScreen extends StatefulWidget {
 }
 
 class _PackageDetailScreenState extends State<PackageDetailScreen> {
-  Package package;
-  RewardsBloc _bloc;
-  bool isDark;
+  Package? package;
+  late RewardsBloc _bloc;
+  late bool isDark;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
         if (state is RewardsGetPackageLoaded) {
           setState(() {
             package = state.package;
-            isDark = state.package.isDark;
+            isDark = state.package!.isDark!;
           });
         }
       },
@@ -59,7 +60,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
               appBar: BaseAppBar(
                 appBarActionColor: appActionBarColor,
               ),
-              backgroundColor: HexColor.fromHex(package.color),
+              backgroundColor: HexColor.fromHex(package!.color!),
               body: _buildContent(context),
             );
           },
@@ -71,16 +72,17 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
   Widget _buildContent(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.headline6;
     final descStyle = Theme.of(context).textTheme.bodyText2;
-    final providerNameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final providerNameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    final redeemText = AppLocalizations.of(context).translate("rewards:redeem");
+    final redeemText =
+        AppLocalizations.of(context)?.translate("rewards:redeem");
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         CachedNetworkImage(
-          imageUrl: package.coverImage,
+          imageUrl: package!.coverImage!,
           imageBuilder: (context, imageProvider) {
             return Image(
               height: MediaQuery.of(context).size.height * 0.4,
@@ -99,7 +101,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CachedNetworkImage(
-                  imageUrl: package.provider.logo,
+                  imageUrl: package!.provider!.logo!,
                   imageBuilder: (context, imageProvider) {
                     return Container(
                       height: 56,
@@ -107,7 +109,7 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                       decoration: BoxDecoration(
                         border: isDark
                             ? Border.all(color: Colors.white, width: 2)
-                            : Border.all(color: Colors.grey[700], width: 2),
+                            : Border.all(color: Colors.grey[700]!, width: 2),
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
                           image: imageProvider,
@@ -119,17 +121,17 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                 ),
                 const SizedBox(height: AppInsets.med),
                 Text(
-                  package.provider.name,
+                  package!.provider!.name!,
                   style: providerNameStyle,
                 ),
                 const SizedBox(height: AppInsets.l),
                 Text(
-                  package.title,
+                  package!.title!,
                   style: headingStyle,
                 ),
                 const SizedBox(height: AppInsets.xl),
                 Text(
-                  package.shortDesc,
+                  package!.shortDesc!,
                   style: descStyle,
                 ),
                 Expanded(
@@ -147,11 +149,11 @@ class _PackageDetailScreenState extends State<PackageDetailScreen> {
                     onPressed: () {
                       Navigator.of(context).push(
                         PackageDetailModal(
-                          package: package,
+                          package: package!,
                         ),
                       );
                     },
-                    child: Text(redeemText),
+                    child: Text(redeemText!),
                   ),
                 ),
                 const SizedBox(height: AppInsets.xl)

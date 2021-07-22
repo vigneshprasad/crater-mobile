@@ -9,13 +9,15 @@ class NotificationListItem extends StatelessWidget {
   final Notification notification;
 
   const NotificationListItem({
-    Key key,
-    @required this.notification,
+    Key? key,
+    required this.notification,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final notificationTextStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey[700]);
+    final notificationTextStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(color: Colors.grey[700]);
     return Column(
       children: [
         ListTile(
@@ -26,7 +28,7 @@ class NotificationListItem extends StatelessWidget {
           subtitle: Padding(
             padding: const EdgeInsets.only(top: AppInsets.sm),
             child: Text(
-              notification.text,
+              notification.text!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: notificationTextStyle,
@@ -40,10 +42,10 @@ class NotificationListItem extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) {
-    final authorTestStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final authorTestStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontSize: 14,
         );
-    final softStyle = authorTestStyle.copyWith(
+    final softStyle = authorTestStyle?.copyWith(
       color: Colors.grey,
       fontWeight: FontWeight.w400,
     );
@@ -63,7 +65,7 @@ class NotificationListItem extends StatelessWidget {
       );
     } else {
       return CachedNetworkImage(
-        imageUrl: notification.authAvatar,
+        imageUrl: notification.authAvatar!,
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(
             backgroundImage: imageProvider,

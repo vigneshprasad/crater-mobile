@@ -10,21 +10,18 @@ UserMeetingPreferenceModel _$UserMeetingPreferenceModelFromJson(
     Map<String, dynamic> json) {
   return UserMeetingPreferenceModel(
     pk: json['pk'] as int,
-    user: json['user'] as String,
-    meeting: json['meeting'] as int,
-    numberOfMeetings: json['number_of_meetings'] as int,
-    numberOfMeetingsPerMonth: json['number_of_meetings_per_month'] as int,
-    objectives: (json['objectives'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    interests: (json['interests'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    timeSlots: (json['time_slots'] as List)?.map((e) => e as int)?.toList(),
+    user: json['user'] as String?,
+    meeting: json['meeting'] as int?,
+    numberOfMeetings: json['number_of_meetings'] as int?,
+    numberOfMeetingsPerMonth: json['number_of_meetings_per_month'] as int?,
+    objectives: (json['objectives'] as List<dynamic>?)
+        ?.map((e) => MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    interests: (json['interests'] as List<dynamic>)
+        .map((e) => MeetingInterestModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    timeSlots:
+        (json['time_slots'] as List<dynamic>).map((e) => e as int).toList(),
   );
 }
 

@@ -13,13 +13,13 @@ part 'package_provider_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.packageProvider)
 class PackageProviderModel extends PackageProvider {
   @HiveField(0)
-  final String name;
+  final String? name;
 
   @HiveField(1)
-  final String description;
+  final String? description;
 
   @HiveField(2)
-  final String logo;
+  final String? logo;
 
   PackageProviderModel({
     this.name,

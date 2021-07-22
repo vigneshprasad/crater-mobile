@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
 
@@ -13,8 +14,8 @@ class HomeScreenAppBar extends StatelessWidget {
   final Widget title;
 
   const HomeScreenAppBar({
-    Key key,
-    this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -40,10 +41,10 @@ class HomeScreenAppBar extends StatelessWidget {
         // ),
         UserProfileNavItem(
           onPressed: () {
-            final user = BlocProvider.of<AuthBloc>(context).state?.user;
+            final user = BlocProvider.of<AuthBloc>(context).state.user;
             if (user != null) {
               AutoRouter.of(context)
-                  .push(Routes.profileScreen(userId: user.pk, allowEdit: true));
+                  .push(ProfileScreenRoute(userId: user.pk!, allowEdit: true));
             }
           },
         ),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../domain/entity/comment_entity.dart';
 import '../../../domain/entity/post_entity.dart';
@@ -19,9 +18,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   final UCCreateCommentPost createComment;
 
   PostBloc({
-    @required this.getPost,
-    @required this.getCommentsPage,
-    @required this.createComment,
+    required this.getPost,
+    required this.getCommentsPage,
+    required this.createComment,
   }) : super(const PostInitial());
 
   @override

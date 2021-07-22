@@ -6,18 +6,18 @@ import '../../../../../../core/widgets/base/base_container/base_container.dart';
 const kCardBorderRadius = 8.00;
 
 class CalendarCardLayout extends StatelessWidget {
-  final Widget heading;
-  final Widget subHeading;
+  final Widget? heading;
+  final Widget? subHeading;
   final Widget child;
-  final List<Widget> rows;
-  final BoxBorder border;
-  final Color background;
-  final VoidCallback onPressed;
-  final EdgeInsets padding;
+  final List<Widget>? rows;
+  final BoxBorder? border;
+  final Color? background;
+  final VoidCallback? onPressed;
+  final EdgeInsets? padding;
 
   const CalendarCardLayout({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.heading,
     this.subHeading,
     this.rows,
@@ -32,11 +32,11 @@ class CalendarCardLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final titleStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16.00,
           fontWeight: FontWeight.bold,
         );
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14.00,
         );
     final _background = background ?? Theme.of(context).cardColor;
@@ -65,10 +65,10 @@ class CalendarCardLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (heading != null)
-                    DefaultTextStyle(style: titleStyle, child: heading),
+                    DefaultTextStyle(style: titleStyle!, child: heading!),
                   if (heading != null) const SizedBox(height: AppInsets.sm),
                   if (subHeading != null)
-                    DefaultTextStyle(style: subheadStyle, child: subHeading),
+                    DefaultTextStyle(style: subheadStyle!, child: subHeading!),
                   Container(
                     constraints: const BoxConstraints(minHeight: 32.00),
                     child: child,

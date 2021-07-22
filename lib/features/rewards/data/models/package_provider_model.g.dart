@@ -17,9 +17,9 @@ class PackageProviderModelAdapter extends TypeAdapter<PackageProviderModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PackageProviderModel(
-      name: fields[0] as String,
-      description: fields[1] as String,
-      logo: fields[2] as String,
+      name: fields[0] as String?,
+      description: fields[1] as String?,
+      logo: fields[2] as String?,
     );
   }
 
@@ -52,9 +52,9 @@ class PackageProviderModelAdapter extends TypeAdapter<PackageProviderModel> {
 
 PackageProviderModel _$PackageProviderModelFromJson(Map<String, dynamic> json) {
   return PackageProviderModel(
-    name: json['name'] as String,
-    description: json['description'] as String,
-    logo: json['logo'] as String,
+    name: json['name'] as String?,
+    description: json['description'] as String?,
+    logo: json['logo'] as String?,
   );
 }
 

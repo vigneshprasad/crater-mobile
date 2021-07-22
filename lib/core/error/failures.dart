@@ -7,50 +7,50 @@ abstract class Failure extends Equatable {
 
 // General Failures
 class ServerFailure extends Failure {
-  final dynamic message;
+  final Object? message;
   ServerFailure([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }
 
 class CacheFailure extends Failure {
-  final dynamic message;
+  final Object? message;
   CacheFailure([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }
 
 class WebsocketServerFailure extends Failure {
-  final dynamic message;
+  final Object? message;
   WebsocketServerFailure([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }
 
 class WebsocketLocalFailure extends Failure {
-  final dynamic message;
+  final Object? message;
   WebsocketLocalFailure([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }
 
 class WebsocketCloseFailure extends Failure {
-  final dynamic message;
+  final Object? message;
   WebsocketCloseFailure([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }
 
 // Auth Failures
 class UnknowSocialProvider extends Failure {
-  final dynamic message;
+  final Object? message;
   UnknowSocialProvider([this.message]);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message!];
 }

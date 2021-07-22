@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'article_entity.dart';
 
@@ -8,6 +8,10 @@ part of 'article_entity.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return _Article.fromJson(json);
 }
@@ -16,19 +20,18 @@ Article _$ArticleFromJson(Map<String, dynamic> json) {
 class _$ArticleTearOff {
   const _$ArticleTearOff();
 
-// ignore: unused_element
   _Article call(
-      {int pk,
-      String title,
-      String description,
-      String image,
-      String tag,
-      @JsonKey(name: 'website_tag')
-          String websiteTag,
-      @JsonKey(name: 'website_url')
-          String websiteUrl,
-      @JsonKey(name: 'website_tag_detail')
-          ArticleWebsiteSource articleSourceDetail}) {
+      {required int pk,
+      String? title,
+      String? description,
+      String? image,
+      String? tag,
+      @JsonKey(name: "website_tag")
+          String? websiteTag,
+      @JsonKey(name: "website_url")
+          String? websiteUrl,
+      @JsonKey(name: "website_tag_detail")
+          ArticleWebsiteSource? articleSourceDetail}) {
     return _Article(
       pk: pk,
       title: title,
@@ -41,33 +44,32 @@ class _$ArticleTearOff {
     );
   }
 
-// ignore: unused_element
   Article fromJson(Map<String, Object> json) {
     return Article.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Article = _$ArticleTearOff();
 
 /// @nodoc
 mixin _$Article {
-  int get pk;
-  String get title;
-  String get description;
-  String get image;
-  String get tag;
-  @JsonKey(name: 'website_tag')
-  String get websiteTag;
-  @JsonKey(name: 'website_url')
-  String get websiteUrl;
-  @JsonKey(name: 'website_tag_detail')
-  ArticleWebsiteSource get articleSourceDetail;
+  int get pk => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+  String? get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: "website_tag")
+  String? get websiteTag => throw _privateConstructorUsedError;
+  @JsonKey(name: "website_url")
+  String? get websiteUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "website_tag_detail")
+  ArticleWebsiteSource? get articleSourceDetail =>
+      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ArticleCopyWith<Article> get copyWith;
+  $ArticleCopyWith<Article> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -76,18 +78,18 @@ abstract class $ArticleCopyWith<$Res> {
       _$ArticleCopyWithImpl<$Res>;
   $Res call(
       {int pk,
-      String title,
-      String description,
-      String image,
-      String tag,
-      @JsonKey(name: 'website_tag')
-          String websiteTag,
-      @JsonKey(name: 'website_url')
-          String websiteUrl,
-      @JsonKey(name: 'website_tag_detail')
-          ArticleWebsiteSource articleSourceDetail});
+      String? title,
+      String? description,
+      String? image,
+      String? tag,
+      @JsonKey(name: "website_tag")
+          String? websiteTag,
+      @JsonKey(name: "website_url")
+          String? websiteUrl,
+      @JsonKey(name: "website_tag_detail")
+          ArticleWebsiteSource? articleSourceDetail});
 
-  $ArticleWebsiteSourceCopyWith<$Res> get articleSourceDetail;
+  $ArticleWebsiteSourceCopyWith<$Res>? get articleSourceDetail;
 }
 
 /// @nodoc
@@ -100,38 +102,58 @@ class _$ArticleCopyWithImpl<$Res> implements $ArticleCopyWith<$Res> {
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object title = freezed,
-    Object description = freezed,
-    Object image = freezed,
-    Object tag = freezed,
-    Object websiteTag = freezed,
-    Object websiteUrl = freezed,
-    Object articleSourceDetail = freezed,
+    Object? pk = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? image = freezed,
+    Object? tag = freezed,
+    Object? websiteTag = freezed,
+    Object? websiteUrl = freezed,
+    Object? articleSourceDetail = freezed,
   }) {
     return _then(_value.copyWith(
-      pk: pk == freezed ? _value.pk : pk as int,
-      title: title == freezed ? _value.title : title as String,
-      description:
-          description == freezed ? _value.description : description as String,
-      image: image == freezed ? _value.image : image as String,
-      tag: tag == freezed ? _value.tag : tag as String,
-      websiteTag:
-          websiteTag == freezed ? _value.websiteTag : websiteTag as String,
-      websiteUrl:
-          websiteUrl == freezed ? _value.websiteUrl : websiteUrl as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tag: tag == freezed
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteTag: websiteTag == freezed
+          ? _value.websiteTag
+          : websiteTag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteUrl: websiteUrl == freezed
+          ? _value.websiteUrl
+          : websiteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       articleSourceDetail: articleSourceDetail == freezed
           ? _value.articleSourceDetail
-          : articleSourceDetail as ArticleWebsiteSource,
+          : articleSourceDetail // ignore: cast_nullable_to_non_nullable
+              as ArticleWebsiteSource?,
     ));
   }
 
   @override
-  $ArticleWebsiteSourceCopyWith<$Res> get articleSourceDetail {
+  $ArticleWebsiteSourceCopyWith<$Res>? get articleSourceDetail {
     if (_value.articleSourceDetail == null) {
       return null;
     }
-    return $ArticleWebsiteSourceCopyWith<$Res>(_value.articleSourceDetail,
+
+    return $ArticleWebsiteSourceCopyWith<$Res>(_value.articleSourceDetail!,
         (value) {
       return _then(_value.copyWith(articleSourceDetail: value));
     });
@@ -145,19 +167,19 @@ abstract class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
   @override
   $Res call(
       {int pk,
-      String title,
-      String description,
-      String image,
-      String tag,
-      @JsonKey(name: 'website_tag')
-          String websiteTag,
-      @JsonKey(name: 'website_url')
-          String websiteUrl,
-      @JsonKey(name: 'website_tag_detail')
-          ArticleWebsiteSource articleSourceDetail});
+      String? title,
+      String? description,
+      String? image,
+      String? tag,
+      @JsonKey(name: "website_tag")
+          String? websiteTag,
+      @JsonKey(name: "website_url")
+          String? websiteUrl,
+      @JsonKey(name: "website_tag_detail")
+          ArticleWebsiteSource? articleSourceDetail});
 
   @override
-  $ArticleWebsiteSourceCopyWith<$Res> get articleSourceDetail;
+  $ArticleWebsiteSourceCopyWith<$Res>? get articleSourceDetail;
 }
 
 /// @nodoc
@@ -171,46 +193,64 @@ class __$ArticleCopyWithImpl<$Res> extends _$ArticleCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object pk = freezed,
-    Object title = freezed,
-    Object description = freezed,
-    Object image = freezed,
-    Object tag = freezed,
-    Object websiteTag = freezed,
-    Object websiteUrl = freezed,
-    Object articleSourceDetail = freezed,
+    Object? pk = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? image = freezed,
+    Object? tag = freezed,
+    Object? websiteTag = freezed,
+    Object? websiteUrl = freezed,
+    Object? articleSourceDetail = freezed,
   }) {
     return _then(_Article(
-      pk: pk == freezed ? _value.pk : pk as int,
-      title: title == freezed ? _value.title : title as String,
-      description:
-          description == freezed ? _value.description : description as String,
-      image: image == freezed ? _value.image : image as String,
-      tag: tag == freezed ? _value.tag : tag as String,
-      websiteTag:
-          websiteTag == freezed ? _value.websiteTag : websiteTag as String,
-      websiteUrl:
-          websiteUrl == freezed ? _value.websiteUrl : websiteUrl as String,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tag: tag == freezed
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteTag: websiteTag == freezed
+          ? _value.websiteTag
+          : websiteTag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteUrl: websiteUrl == freezed
+          ? _value.websiteUrl
+          : websiteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       articleSourceDetail: articleSourceDetail == freezed
           ? _value.articleSourceDetail
-          : articleSourceDetail as ArticleWebsiteSource,
+          : articleSourceDetail // ignore: cast_nullable_to_non_nullable
+              as ArticleWebsiteSource?,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Article implements _Article {
   _$_Article(
-      {this.pk,
+      {required this.pk,
       this.title,
       this.description,
       this.image,
       this.tag,
-      @JsonKey(name: 'website_tag') this.websiteTag,
-      @JsonKey(name: 'website_url') this.websiteUrl,
-      @JsonKey(name: 'website_tag_detail') this.articleSourceDetail});
+      @JsonKey(name: "website_tag") this.websiteTag,
+      @JsonKey(name: "website_url") this.websiteUrl,
+      @JsonKey(name: "website_tag_detail") this.articleSourceDetail});
 
   factory _$_Article.fromJson(Map<String, dynamic> json) =>
       _$_$_ArticleFromJson(json);
@@ -218,22 +258,22 @@ class _$_Article implements _Article {
   @override
   final int pk;
   @override
-  final String title;
+  final String? title;
   @override
-  final String description;
+  final String? description;
   @override
-  final String image;
+  final String? image;
   @override
-  final String tag;
+  final String? tag;
   @override
-  @JsonKey(name: 'website_tag')
-  final String websiteTag;
+  @JsonKey(name: "website_tag")
+  final String? websiteTag;
   @override
-  @JsonKey(name: 'website_url')
-  final String websiteUrl;
+  @JsonKey(name: "website_url")
+  final String? websiteUrl;
   @override
-  @JsonKey(name: 'website_tag_detail')
-  final ArticleWebsiteSource articleSourceDetail;
+  @JsonKey(name: "website_tag_detail")
+  final ArticleWebsiteSource? articleSourceDetail;
 
   @override
   String toString() {
@@ -291,40 +331,42 @@ class _$_Article implements _Article {
 
 abstract class _Article implements Article {
   factory _Article(
-      {int pk,
-      String title,
-      String description,
-      String image,
-      String tag,
-      @JsonKey(name: 'website_tag')
-          String websiteTag,
-      @JsonKey(name: 'website_url')
-          String websiteUrl,
-      @JsonKey(name: 'website_tag_detail')
-          ArticleWebsiteSource articleSourceDetail}) = _$_Article;
+      {required int pk,
+      String? title,
+      String? description,
+      String? image,
+      String? tag,
+      @JsonKey(name: "website_tag")
+          String? websiteTag,
+      @JsonKey(name: "website_url")
+          String? websiteUrl,
+      @JsonKey(name: "website_tag_detail")
+          ArticleWebsiteSource? articleSourceDetail}) = _$_Article;
 
   factory _Article.fromJson(Map<String, dynamic> json) = _$_Article.fromJson;
 
   @override
-  int get pk;
+  int get pk => throw _privateConstructorUsedError;
   @override
-  String get title;
+  String? get title => throw _privateConstructorUsedError;
   @override
-  String get description;
+  String? get description => throw _privateConstructorUsedError;
   @override
-  String get image;
+  String? get image => throw _privateConstructorUsedError;
   @override
-  String get tag;
+  String? get tag => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'website_tag')
-  String get websiteTag;
+  @JsonKey(name: "website_tag")
+  String? get websiteTag => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'website_url')
-  String get websiteUrl;
+  @JsonKey(name: "website_url")
+  String? get websiteUrl => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'website_tag_detail')
-  ArticleWebsiteSource get articleSourceDetail;
+  @JsonKey(name: "website_tag_detail")
+  ArticleWebsiteSource? get articleSourceDetail =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ArticleCopyWith<_Article> get copyWith;
+  _$ArticleCopyWith<_Article> get copyWith =>
+      throw _privateConstructorUsedError;
 }

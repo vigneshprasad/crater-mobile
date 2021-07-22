@@ -4,8 +4,8 @@ class CommentsForm extends StatefulWidget {
   final int postId;
 
   const CommentsForm({
-    Key key,
-    @required this.postId,
+    Key? key,
+    required this.postId,
   }) : super(key: key);
 
   @override

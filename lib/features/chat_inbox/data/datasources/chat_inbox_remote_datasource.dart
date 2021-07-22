@@ -1,19 +1,17 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/features/websocket/domain/repository/websocket_repository.dart';
 import '../models/requests.dart';
 
 abstract class ChatInboxRemoteDataSource {
-  Future<void> sendGetAllUsersRequest([
-    String search,
-    String filter,
-    int page,
-    String latestMessages,
-  ]);
+  Future<void> sendGetAllUsersRequest({
+    required String search,
+    required String filter,
+    required int page,
+    required String latestMessages,
+  });
   Future<void> sendStarUserRequest({
-    @required String user,
-    @required bool isStarred,
+    required String user,
+    required bool isStarred,
   });
 }
 
@@ -21,16 +19,16 @@ class ChatInboxRemoteDataSourceImpl implements ChatInboxRemoteDataSource {
   final WebSocketRepository webSocketRepository;
 
   ChatInboxRemoteDataSourceImpl({
-    @required this.webSocketRepository,
+    required this.webSocketRepository,
   });
 
   @override
-  Future<void> sendGetAllUsersRequest([
-    String search,
-    String filter,
-    int page,
-    String latestMessages,
-  ]) async {
+  Future<void> sendGetAllUsersRequest({
+    required String search,
+    required String filter,
+    required int page,
+    required String latestMessages,
+  }) async {
     final request = GetAllChatUsersRequest(
         message: GetAllUsersRequestParams(
       search: search,
@@ -47,8 +45,8 @@ class ChatInboxRemoteDataSourceImpl implements ChatInboxRemoteDataSource {
 
   @override
   Future<void> sendStarUserRequest({
-    @required String user,
-    @required bool isStarred,
+    required String user,
+    required bool isStarred,
   }) async {
     Map<String, dynamic> data;
     if (isStarred) {

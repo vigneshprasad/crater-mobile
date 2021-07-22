@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../features/rewards/presentation/widgets/redeem_button.dart';
@@ -11,11 +10,11 @@ class SuccessPopup extends ModalRoute<void> {
   final VoidCallback onButtonClicked;
 
   SuccessPopup(
-      {@required this.title,
-      @required this.message,
-      @required this.buttonTitle,
-      @required this.iconAsset,
-      @required this.onButtonClicked});
+      {required this.title,
+      required this.message,
+      required this.buttonTitle,
+      required this.iconAsset,
+      required this.onButtonClicked});
 
   @override
   Color get barrierColor => Colors.black.withOpacity(0.8);
@@ -24,7 +23,7 @@ class SuccessPopup extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   bool get maintainState => true;
@@ -41,10 +40,10 @@ class SuccessPopup extends ModalRoute<void> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final successStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final successStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontSize: 18,
         );
-    final descStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
         );
 

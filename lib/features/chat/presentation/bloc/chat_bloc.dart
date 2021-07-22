@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
@@ -30,29 +29,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final UCPersistReceivedMessage persistReceivedMessage;
   final UCSendReadUserMessage sendReadUserMessage;
 
-  StreamSubscription _webSocketBlocSub;
-  StreamSubscription _streamSubscription;
+  StreamSubscription? _webSocketBlocSub;
+  StreamSubscription? _streamSubscription;
 
   ChatBloc({
-    @required this.websocketBloc,
-    @required this.setChatWithUser,
-    @required this.sendMessage,
-    @required this.receivedSetChatWithUser,
-    @required this.sendUserIsTyping,
-    @required this.persistReceivedMessage,
-    @required this.sendReadUserMessage,
-  })  : assert(websocketBloc != null),
-        assert(setChatWithUser != null),
-        assert(sendMessage != null),
-        assert(receivedSetChatWithUser != null),
-        assert(sendUserIsTyping != null),
-        assert(persistReceivedMessage != null),
-        assert(sendReadUserMessage != null),
-        super(const ChatInitial()) {
+    required this.websocketBloc,
+    required this.setChatWithUser,
+    required this.sendMessage,
+    required this.receivedSetChatWithUser,
+    required this.sendUserIsTyping,
+    required this.persistReceivedMessage,
+    required this.sendReadUserMessage,
+  }) : super(const ChatInitial()) {
     if (websocketBloc.state is WebSocketConnected) {
       add(const WebSocketBlocConnected());
     } else {
-      _webSocketBlocSub ??= websocketBloc.listen((websocketBlocState) {
+      _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
         if (websocketBlocState is WebSocketDisconnected) {
           add(const WebSocketBlocConnected());
         }
@@ -105,14 +97,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         final response = SentMessageResponse.fromJson(json);
         add(ReceivedChatMessageResponse(
           message: response.toChatMessage(),
-          chatKey: response.receiverId,
+          chatKey: response.receiverId!,
         ));
       } else if (type == WSResponseType.getUserNotification) {
         final response = ChatMessageNotificationResponse.fromJson(json);
-        if (response.senderId == state.receiverUser.pk) {
+        if (response.senderId == state.receiverUser?.pk) {
           add(ReceivedChatMessageResponse(
-            message: response.latestMessage,
-            chatKey: response.senderId,
+            message: response.latestMessage!,
+            chatKey: response.senderId!,
           ));
         }
       }
@@ -128,7 +120,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (userState) => state.copyWith(
         recieverId: userState.recieverId,
         receiverUser: userState.receiverUser,
-        messages: userState.messages.toList(),
+        messages: userState.messages?.toList(),
         page: userState.page,
         pages: userState.pages,
         unreadCount: userState.unreadCount,
@@ -139,18 +131,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> _mapRecievedSetChatToState(
       ReceivedSetChatUserResponse event) async* {
     final cachedOrError = await receivedSetChatWithUser(ReceivedSetChatParams(
-      messages: event.response.results,
-      receiverUser: event.response.userData,
-      page: event.response.page,
-      pages: event.response.pages,
-      unreadCount: event.response.userData.unreadCount,
+      messages: event.response.results!,
+      receiverUser: event.response.userData!,
+      page: event.response.page!,
+      pages: event.response.pages!,
+      unreadCount: event.response.userData!.unreadCount!,
     ));
     yield cachedOrError.fold(
       (failure) => state.copyWith(error: failure),
       (userState) => state.copyWith(
           recieverId: userState.recieverId,
           receiverUser: userState.receiverUser,
-          messages: userState.messages.toList(),
+          messages: userState.messages?.toList(),
           page: userState.page,
           pages: userState.pages,
           unreadCount: userState.unreadCount),
@@ -192,7 +184,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         final messages = [message, ...state.messages];
         return ChatMessagePersisted(
           recieverId: state.recieverId,
-          receiverUser: state.receiverUser,
+          receiverUser: state.receiverUser!,
           page: state.page,
           pages: state.pages,
           messages: messages,

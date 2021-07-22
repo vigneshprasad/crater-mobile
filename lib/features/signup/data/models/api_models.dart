@@ -8,7 +8,7 @@ class PostPhoneNumberResponse extends Equatable {
   final String status;
 
   const PostPhoneNumberResponse({
-    this.status,
+    required this.status,
   });
 
   @override

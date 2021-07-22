@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class Points extends HiveObject {
@@ -6,7 +5,7 @@ class Points extends HiveObject {
   final double moneyValue;
 
   Points({
-    @required this.points,
-    @required this.moneyValue,
+    required this.points,
+    required this.moneyValue,
   });
 }

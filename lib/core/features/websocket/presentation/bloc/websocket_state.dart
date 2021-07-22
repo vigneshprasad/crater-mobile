@@ -14,8 +14,8 @@ class WebSocketConnected extends WebsocketState {
   final StreamController controller;
 
   const WebSocketConnected({
-    @required this.channel,
-    @required this.controller,
+    required this.channel,
+    required this.controller,
   });
 
   @override
@@ -27,18 +27,18 @@ class WebSocketConnectLoading extends WebsocketState {
 }
 
 class WebSocketDisconnected extends WebsocketState {
-  final dynamic error;
+  final Object? error;
 
   const WebSocketDisconnected({
     this.error,
   });
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => error != null ? [error!] : [];
 }
 
 class WebSocketError extends WebsocketState {
-  final dynamic error;
+  final Object error;
 
   const WebSocketError(this.error);
 

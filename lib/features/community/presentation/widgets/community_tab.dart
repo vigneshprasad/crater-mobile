@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -22,15 +23,13 @@ class CommunityTab extends StatefulWidget {
 
 class _CommunityTabState extends State<CommunityTab> {
   final _pageSize = 10;
-  bool _fromCache = false;
-  int _count = 0;
   int _pages = 1;
   int _currentPage = 1;
-  Completer<void> _refreshCompleter;
+  Completer<void>? _refreshCompleter;
   List<Post> _posts = [];
-  CommunityBloc _bloc;
-  ScrollController _controller;
-  bool _showShimmer;
+  late CommunityBloc _bloc;
+  late ScrollController _controller;
+  late bool _showShimmer;
 
   @override
   void initState() {
@@ -54,18 +53,17 @@ class _CommunityTabState extends State<CommunityTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String heading =
-        AppLocalizations.of(context).translate('community:title');
-    final String subHeading =
-        AppLocalizations.of(context).translate('community:subtitle');
+    final heading = AppLocalizations.of(context)?.translate('community:title');
+    final subHeading =
+        AppLocalizations.of(context)?.translate('community:subtitle');
     return BlocConsumer<CommunityBloc, CommunityState>(
       listener: _blocListener,
       builder: (context, state) {
         return BlocBuilder<AuthBloc, AuthState>(
           builder: (context, authState) {
-            final user = authState.user;
+            final user = authState.user!;
             return HomeTabLayout(
-              heading: heading,
+              heading: heading!,
               subHeading: subHeading,
               onRefresh: _onRefreshList,
               listController: _controller,
@@ -92,8 +90,8 @@ class _CommunityTabState extends State<CommunityTab> {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return Shimmer.fromColors(
-            baseColor: Colors.grey[300],
-            highlightColor: Colors.grey[200],
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[200]!,
             child: Card(
               margin: const EdgeInsets.symmetric(
                 vertical: AppInsets.sm,
@@ -162,7 +160,7 @@ class _CommunityTabState extends State<CommunityTab> {
         pageSize: _pageSize,
       ),
     );
-    return _refreshCompleter.future;
+    return _refreshCompleter!.future;
   }
 
   void _updatePostsList(CommunityGetPageResponseReceived state) {
@@ -170,12 +168,10 @@ class _CommunityTabState extends State<CommunityTab> {
     _refreshCompleter = Completer();
     setState(() {
       _showShimmer = false;
-      _currentPage = state.currentPage;
+      _currentPage = state.currentPage!;
       _posts =
-          state.currentPage == 1 ? state.posts : [..._posts, ...state.posts];
-      _pages = state.pages;
-      _count = state.count;
-      _fromCache = state.fromCache;
+          state.currentPage! == 1 ? state.posts! : [..._posts, ...state.posts!];
+      _pages = state.pages!;
     });
   }
 
@@ -234,39 +230,39 @@ class _CommunityTabState extends State<CommunityTab> {
   }
 
   void _onCommentPostPressed(int postId) {
-    AutoRouter.of(context)
-        .push(Routes.postScreen, arguments: PostScreenArguments(postId: postId))
-        .then((value) {
+    AutoRouter.of(context).push(PostScreenRoute(postId: postId)).then((value) {
       _onRefreshList();
     });
   }
 
   void _onDeletePost(int postId) {
     final alertContent =
-        AppLocalizations.of(context).translate("community:delete_post_text");
+        AppLocalizations.of(context)?.translate("community:delete_post_text");
     final delete =
-        AppLocalizations.of(context).translate("delete").toUpperCase();
+        AppLocalizations.of(context)?.translate("delete")?.toUpperCase();
     final dismiss =
-        AppLocalizations.of(context).translate("dismiss").toUpperCase();
+        AppLocalizations.of(context)?.translate("dismiss")?.toUpperCase();
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Text(alertContent),
+          content: Text(alertContent!),
           actions: [
-            FlatButton(
-              textColor: Colors.grey,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(dismiss),
+              child: Text(
+                dismiss!,
+                style: const TextStyle(color: Colors.grey),
+              ),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _bloc.add(DeletePostRequestStarted(postId: postId));
               },
-              child: Text(delete),
+              child: Text(delete!),
             )
           ],
         );
@@ -277,7 +273,7 @@ class _CommunityTabState extends State<CommunityTab> {
   void _sendCreateLikeRequest(int id, User user) {
     _bloc.add(CreateLikePostRequest(
       postId: id,
-      userId: user.pk,
+      userId: user.pk!,
     ));
   }
 

@@ -27,10 +27,10 @@ class ConversationCalendarTab extends HookWidget {
   final VoidCallback onSchedulePressed;
 
   const ConversationCalendarTab({
-    @required this.type,
-    @required this.controller,
-    @required this.name,
-    @required this.onSchedulePressed,
+    required this.type,
+    required this.controller,
+    required this.name,
+    required this.onSchedulePressed,
   });
 
   @override
@@ -64,16 +64,17 @@ class _LoadedConversationTab extends HookWidget {
   final VoidCallback onSchedulePressed;
 
   const _LoadedConversationTab({
-    Key key,
-    @required this.type,
-    @required this.name,
-    @required this.onSchedulePressed,
+    Key? key,
+    required this.type,
+    required this.name,
+    required this.onSchedulePressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = useProvider(conversationCalendarStateProvider(type));
-    final weeks = useProvider(conversationCalendarStateProvider(type).state);
+    final controller =
+        useProvider(conversationCalendarStateProvider(type).notifier);
+    final weeks = useProvider(conversationCalendarStateProvider(type));
 
     final List<Widget> children = [];
 
@@ -131,7 +132,7 @@ class _LoadedConversationTab extends HookWidget {
           ),
         ]);
       }
-      if (!week.future) {
+      if (week.future != null && !week.future!) {
         /// Add Conversations
         for (final date in week.conversations) {
           children.addAll([
@@ -227,13 +228,13 @@ class _EmptyOptinsState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final heading = AppLocalizations.of(context)
-        .translate("my_conversations:empty_state_heading");
+        ?.translate("my_conversations:empty_state_heading");
     final subheading = AppLocalizations.of(context)
-        .translate("my_conversations:empty_state_subeading");
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+        ?.translate("my_conversations:empty_state_subeading");
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 18.00,
         );
-    final subheadingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final subheadingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14.00,
         );
     return SliverToBoxAdapter(
@@ -247,11 +248,11 @@ class _EmptyOptinsState extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.8,
             ),
             const SizedBox(height: AppInsets.xl),
-            Text(heading, style: headingStyle),
+            Text(heading!, style: headingStyle),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Text(
-                subheading,
+                subheading!,
                 textAlign: TextAlign.center,
                 style: subheadingStyle,
               ),
@@ -267,8 +268,8 @@ class _DateLabel extends StatelessWidget {
   final DateTime date;
 
   const _DateLabel({
-    Key key,
-    @required this.date,
+    Key? key,
+    required this.date,
   }) : super(key: key);
 
   @override
@@ -279,7 +280,7 @@ class _DateLabel extends StatelessWidget {
     final isToday = now.isSameDate(date);
     final decoration = BoxDecoration(
         color: primaryColor, borderRadius: BorderRadius.circular(20));
-    final dateLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final dateLabelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: isToday ? 16.00 : 18.00,
           color: isToday ? Colors.white : Colors.white70,
         );

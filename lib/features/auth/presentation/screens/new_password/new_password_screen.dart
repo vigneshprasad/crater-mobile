@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
@@ -12,10 +13,10 @@ import '../../bloc/new_password/new_password_bloc.dart';
 import '../auth/auth_screen.dart';
 
 class NewPasswordScreen extends StatefulWidget {
-  final String params;
+  final String? params;
 
   const NewPasswordScreen({
-    Key key,
+    Key? key,
     @PathParam("params") this.params,
   }) : super(key: key);
 
@@ -28,8 +29,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController _passwordConfirmController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  NewPasswordBloc _bloc;
-  String password;
+  late NewPasswordBloc _bloc;
+  late String password;
 
   @override
   void initState() {
@@ -98,15 +99,15 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   }
 
   Widget _buildContent(BuildContext context, NewPasswordState state) {
-    final String forgotPassword =
-        AppLocalizations.of(context).translate("auth:new_password");
-    final String desc =
-        AppLocalizations.of(context).translate("auth:new_password_desc");
-    final headingStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final forgotPassword =
+        AppLocalizations.of(context)?.translate("auth:new_password");
+    final desc =
+        AppLocalizations.of(context)?.translate("auth:new_password_desc");
+    final headingStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontSize: 20,
           color: Colors.grey[700],
         );
-    final descStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Colors.grey[500],
         );
 
@@ -115,13 +116,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       child: Column(
         children: [
           Text(
-            forgotPassword,
+            forgotPassword!,
             textAlign: TextAlign.center,
             style: headingStyle,
           ),
           const SizedBox(height: AppInsets.l),
           Text(
-            desc,
+            desc!,
             textAlign: TextAlign.center,
             style: descStyle,
           ),
@@ -133,7 +134,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             obscureText: true,
             maxLines: 1,
             validator: (text) {
-              if (text.isEmpty) return null;
+              if (text == null || text.isEmpty) return null;
               return !state.isPasswordValid ? 'Invalid Password' : null;
             },
           ),
@@ -145,7 +146,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             obscureText: true,
             maxLines: 1,
             validator: (text) {
-              if (text.isEmpty) return null;
+              if (text == null || text.isEmpty) return null;
               return !state.isPasswordConfirmValid
                   ? 'Invalid Password Confirm'
                   : null;
@@ -164,12 +165,12 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   }
 
   void _submitForm() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid ?? false) {
       password = _passwordController.text;
       _bloc.add(NewPasswordRequestStarted(
         password: password,
-        query: widget.params,
+        query: widget.params ?? '',
       ));
     }
   }

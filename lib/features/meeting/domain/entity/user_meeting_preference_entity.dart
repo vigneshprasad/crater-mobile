@@ -5,22 +5,22 @@ import 'meeting_objective_entity.dart';
 
 class UserMeetingPreference extends HiveObject {
   final int pk;
-  final int meeting;
-  final int numberOfMeetings;
-  final int numberOfMeetingsPerMonth;
-  final List<MeetingObjective> objectives;
+  final int? meeting;
+  final int? numberOfMeetings;
+  final int? numberOfMeetingsPerMonth;
+  final List<MeetingObjective>? objectives;
   final List<MeetingInterest> interests;
   final List<int> timeSlots;
-  final String user;
+  final String? user;
 
   UserMeetingPreference({
-    this.pk,
+    required this.pk,
     this.meeting,
     this.numberOfMeetings,
     this.numberOfMeetingsPerMonth,
     this.objectives,
-    this.interests,
-    this.timeSlots,
+    required this.interests,
+    required this.timeSlots,
     this.user,
   });
 }

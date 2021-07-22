@@ -9,15 +9,13 @@ part of 'api_models.dart';
 GetAllNotificationsPageResponse _$GetAllNotificationsPageResponseFromJson(
     Map<String, dynamic> json) {
   return GetAllNotificationsPageResponse(
-    count: json['count'] as int,
-    currentPage: json['current_page'] as int,
-    next: json['next'] as String,
-    pages: json['pages'] as int,
-    results: (json['results'] as List)
-        ?.map((e) => e == null
-            ? null
-            : NotificationModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    count: json['count'] as int?,
+    currentPage: json['current_page'] as int?,
+    next: json['next'] as String?,
+    pages: json['pages'] as int?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => NotificationModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

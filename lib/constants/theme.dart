@@ -51,8 +51,10 @@ mixin AppTheme {
     canvasColor: canvasColor,
     backgroundColor: Colors.grey[100],
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    textSelectionHandleColor: primaryColor,
-    cursorColor: primaryColor,
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionHandleColor: primaryColor,
+      cursorColor: primaryColor,
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(

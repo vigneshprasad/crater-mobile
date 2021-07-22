@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../constants/theme.dart';
 
 class BaseCardButton extends MaterialButton {
-  final ButtonThemeData buttonTheme;
+  final ButtonThemeData? buttonTheme;
 
   const BaseCardButton({
-    @required Widget child,
-    @required VoidCallback onPressed,
-    Color textColor,
+    required Widget child,
+    required VoidCallback onPressed,
+    Color? textColor,
     this.buttonTheme,
   }) : super(
           onPressed: onPressed,
@@ -34,7 +34,7 @@ class BaseCardButton extends MaterialButton {
         splashColor: buttonThemeData.getSplashColor(this),
         focusColor: buttonThemeData.getFocusColor(this),
         highlightColor: buttonThemeData.getHighlightColor(this),
-        textStyle: theme.textTheme.button.copyWith(
+        textStyle: theme.textTheme.button?.copyWith(
           color: textColor ?? buttonThemeData.getTextColor(this),
         ),
         shape: RoundedRectangleBorder(

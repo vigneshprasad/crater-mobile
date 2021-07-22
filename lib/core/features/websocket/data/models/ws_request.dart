@@ -33,13 +33,13 @@ enum WSRequestType {
 class WSRequest extends Equatable {
   @JsonKey(unknownEnumValue: WSRequestType.unknownValue)
   final WSRequestType type;
-  final dynamic message;
+  final Object? message;
 
   const WSRequest({
-    this.type,
+    required this.type,
     this.message,
   });
 
   @override
-  List<Object> get props => [type, message];
+  List<Object> get props => message != null ? [type, message!] : [type];
 }

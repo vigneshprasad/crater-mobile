@@ -91,12 +91,11 @@ class ShareBottomSheet extends StatelessWidget {
                     const SizedBox(height: 20),
                     BaseContainer(
                       radius: 30,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           launch(
                             whatsAppUrl,
                             forceSafariVC: false,
-                            forceWebView: false,
                           );
                         },
                         child: Row(
@@ -140,7 +139,6 @@ class ShareBottomSheet extends StatelessWidget {
                             launch(
                               linkedUrl,
                               forceSafariVC: false,
-                              forceWebView: false,
                             );
                           }),
                       IconButton(
@@ -154,7 +152,6 @@ class ShareBottomSheet extends StatelessWidget {
                             launch(
                               twitterUrl,
                               forceSafariVC: false,
-                              forceWebView: false,
                             );
                           }),
                       // IconButton(

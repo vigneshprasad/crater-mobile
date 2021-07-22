@@ -9,8 +9,8 @@ part of 'conversation_request_entity.dart';
 _$_ConversationRequest _$_$_ConversationRequestFromJson(
     Map<String, dynamic> json) {
   return _$_ConversationRequest(
-    pk: json['pk'] as int,
-    group: json['group'] as int,
+    pk: json['pk'] as int?,
+    group: json['group'] as int?,
     groupDetail: json['group_detail'] == null
         ? null
         : Conversation.fromJson(json['group_detail'] as Map<String, dynamic>),

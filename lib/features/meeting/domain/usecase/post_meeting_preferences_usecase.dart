@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -36,10 +35,10 @@ class PostMeetingPrefParams extends Equatable {
   final List<TimeSlot> timeSlots;
 
   const PostMeetingPrefParams({
-    @required this.interests,
-    @required this.config,
-    @required this.objectives,
-    @required this.timeSlots,
+    required this.interests,
+    required this.config,
+    required this.objectives,
+    required this.timeSlots,
   });
 
   @override

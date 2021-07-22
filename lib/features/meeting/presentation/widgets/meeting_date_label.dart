@@ -7,14 +7,14 @@ class MeetingDateLabel extends StatelessWidget {
   final DateTime date;
 
   const MeetingDateLabel({
-    Key key,
-    @required this.date,
+    Key? key,
+    required this.date,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final DateFormat dateFormat = DateFormat('EEEE, d MMM');
-    final dateStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final dateStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14,
         );
     return Container(

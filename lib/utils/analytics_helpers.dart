@@ -16,9 +16,9 @@ Map<String, dynamic> getUserTraitsFromModel(User user) {
 
 Map<String, dynamic> getProfileTraitsFromModel(UserProfile profile) {
   return {
-    "user_tags": profile.tagList.map((e) => e.name).toList(),
+    "user_tags": profile.tagList?.map((e) => e.name).toList(),
     "role": profile.role,
     "has_introduction":
-        profile.introduction != null && profile.introduction.isNotEmpty,
+        profile.introduction != null && profile.introduction!.isNotEmpty,
   };
 }

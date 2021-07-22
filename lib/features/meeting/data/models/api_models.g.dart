@@ -11,34 +11,26 @@ GetMeetingConfigApiResponse _$GetMeetingConfigApiResponseFromJson(
   return GetMeetingConfigApiResponse(
     pk: json['pk'] as int,
     title: json['title'] as String,
-    interests: (json['interests'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingInterestModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    objectives: (json['objectives'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    interests: (json['interests'] as List<dynamic>)
+        .map((e) => MeetingInterestModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    objectives: (json['objectives'] as List<dynamic>)
+        .map((e) => MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
     isActive: json['is_active'] as bool,
     availableTimeSlots:
-        (json['available_time_slots'] as Map<String, dynamic>)?.map(
+        (json['available_time_slots'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(
           k,
-          (e as List)
-              ?.map((e) => e == null
-                  ? null
-                  : TimeSlotModel.fromJson(e as Map<String, dynamic>))
-              ?.toList()),
+          (e as List<dynamic>)
+              .map((e) => TimeSlotModel.fromJson(e as Map<String, dynamic>))
+              .toList()),
     ),
     weekEndDate: json['week_end_date'] as String,
     weekStartDate: json['week_start_date'] as String,
     isRegistrationOpen: json['is_registration_open'] as bool,
-    userPreferences: json['user_preferences'] == null
-        ? null
-        : UserMeetingPreferenceModel.fromJson(
-            json['user_preferences'] as Map<String, dynamic>),
+    userPreferences: UserMeetingPreferenceModel.fromJson(
+        json['user_preferences'] as Map<String, dynamic>),
   );
 }
 

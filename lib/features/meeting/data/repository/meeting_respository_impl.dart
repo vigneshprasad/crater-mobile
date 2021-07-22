@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -22,8 +21,8 @@ class MeetingRepositoryImpl implements MeetingRepository {
   final NetworkInfo networkInfo;
 
   MeetingRepositoryImpl({
-    @required this.remoteDatasource,
-    @required this.networkInfo,
+    required this.remoteDatasource,
+    required this.networkInfo,
   });
 
   @override
@@ -117,7 +116,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
 
   @override
   Future<Either<Failure, List<MeetingsByDate>>> getMeetingsByDate(
-      {bool past}) async {
+      {bool? past}) async {
     try {
       final response =
           await remoteDatasource.getMeetingsByDateFromRemote(past: past);

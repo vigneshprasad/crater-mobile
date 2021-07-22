@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
@@ -29,7 +29,7 @@ class ProfileScreen extends HookWidget {
 
   const ProfileScreen(
     @PathParam('userId') this.userId, {
-    @PathParam('allowEdit') this.allowEdit,
+    @PathParam('allowEdit') required this.allowEdit,
   });
 
   Size _textSize(String text, TextStyle style, BuildContext context) {
@@ -44,7 +44,7 @@ class ProfileScreen extends HookWidget {
 
   Widget _appBar(BuildContext context, Profile profile) {
     final size = _textSize(
-        profile.introduction, Theme.of(context).textTheme.bodyText1, context);
+        profile.introduction!, Theme.of(context).textTheme.bodyText1!, context);
 
     return SliverAppBar(
       expandedHeight: size.height + 350,
@@ -54,7 +54,7 @@ class ProfileScreen extends HookWidget {
       shadowColor: Colors.grey,
       forceElevated: true,
       actions: [
-        if (allowEdit != null && allowEdit)
+        if (allowEdit)
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: BaseContainer(
@@ -62,7 +62,7 @@ class ProfileScreen extends HookWidget {
               child: IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () => AutoRouter.of(context)
-                      .push(Routes.profileBasicScreen(editMode: true))),
+                      .push(ProfileBasicScreenRoute(editMode: true))),
             ),
           ),
         const SizedBox(
@@ -87,7 +87,7 @@ class ProfileScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileState = useProvider(getProfileNotifierProvider(userId).state);
+    final profileState = useProvider(getProfileNotifierProvider(userId));
 
     return profileState.when(
       data: (state) => Scaffold(
@@ -99,10 +99,14 @@ class ProfileScreen extends HookWidget {
                   _appBar(context, state.profile),
                 ],
                 body: TabBarView(children: [
-                  _SnapShot(state.profile, state.objectives, state.meta,
-                      allowEdit != null && allowEdit),
+                  _SnapShot(
+                    profile: state.profile,
+                    objectives: state.objectives,
+                    meta: state.meta,
+                    showLogout: allowEdit,
+                  ),
                   _Interests(state.interests),
-                  _UserConnections(state.connections),
+                  _UserConnections(state.connections!),
                 ]),
               ),
             )),
@@ -157,11 +161,11 @@ class _ProfileBody extends HookWidget {
                                   children: [
                                     if (profile.generatedIntroduction != null)
                                       Text(
-                                        profile.generatedIntroduction,
+                                        profile.generatedIntroduction!,
                                       ),
                                     if (profile.introduction != null)
                                       Text(
-                                        profile.introduction,
+                                        profile.introduction!,
                                       )
                                   ]),
                             Row(
@@ -194,7 +198,7 @@ class _ProfileBody extends HookWidget {
                       height: 20,
                     ),
                     Text(
-                      profile.name,
+                      profile.name!,
                       style: Theme.of(context).textTheme.headline6,
                     )
                   ],
@@ -208,7 +212,7 @@ class _ProfileBody extends HookWidget {
   }
 
   Widget _buildImage() {
-    final String photo = profile.photo;
+    final photo = profile.photo;
     if (photo != null) {
       return CachedNetworkImage(
         imageUrl: photo,
@@ -249,7 +253,7 @@ class _ProfileBody extends HookWidget {
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         onPressed: () =>
-            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn),
+            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
         child: SvgPicture.asset(
           AppSvgAssets.linkedinFilled,
           height: 30.0,
@@ -260,19 +264,19 @@ class _ProfileBody extends HookWidget {
 }
 
 class _ConnectionProfile extends HookWidget {
-  final String photoUrl;
+  final String? photoUrl;
   final double size;
 
   const _ConnectionProfile({
     this.photoUrl,
-    this.size,
+    required this.size,
   });
 
   @override
   Widget build(BuildContext context) {
     if (photoUrl != null) {
       return CachedNetworkImage(
-        imageUrl: photoUrl,
+        imageUrl: photoUrl!,
         width: size,
         height: size,
         imageBuilder: (context, imageProvider) {
@@ -301,12 +305,17 @@ class _ConnectionProfile extends HookWidget {
 }
 
 class _SnapShot extends HookWidget {
-  final Profile profile;
+  final Profile? profile;
   final List<MeetingObjective> objectives;
-  final Map<String, String> meta;
+  final Map<String, String>? meta;
   final bool showLogout;
 
-  const _SnapShot(this.profile, this.objectives, this.meta, this.showLogout);
+  const _SnapShot({
+    this.profile,
+    required this.objectives,
+    this.meta,
+    required this.showLogout,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -316,9 +325,9 @@ class _SnapShot extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppInsets.l),
-          if (meta != null && meta.isNotEmpty)
+          if (meta != null && meta!.isNotEmpty)
             Column(
-                children: meta.entries
+                children: meta!.entries
                     .map((e) => Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Row(
@@ -354,8 +363,8 @@ class _SnapShot extends HookWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    AutoRouter.of(context)
-        .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
+    AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
+        predicate: (route) => false);
   }
 }
 
@@ -378,7 +387,7 @@ class _Objectives extends HookWidget {
     final labelStyle = Theme.of(context)
         .textTheme
         .subtitle1
-        .copyWith(fontWeight: FontWeight.bold);
+        ?.copyWith(fontWeight: FontWeight.bold);
     if (objectives.isEmpty) {
       return [];
     }
@@ -478,9 +487,8 @@ class _UserConnections extends HookWidget {
             .map((user) => SizedBox(
                   width: itemWidth,
                   child: InkWell(
-                    onTap: () => AutoRouter.of(context).push(
-                        Routes.profileScreen(
-                            userId: user.uuid, allowEdit: false)),
+                    onTap: () => AutoRouter.of(context).push(ProfileScreenRoute(
+                        userId: user.uuid!, allowEdit: false)),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Column(
@@ -491,7 +499,7 @@ class _UserConnections extends HookWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            user.name,
+                            user.name!,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 13),
                           )
@@ -510,13 +518,13 @@ class _ListItem extends StatelessWidget {
   final String text;
 
   const _ListItem({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           height: 1.4,
           color: Colors.grey[700],
@@ -543,9 +551,9 @@ class _ListItem extends StatelessWidget {
 
 class _ChipItem extends StatelessWidget {
   final String text;
-  final double width;
+  final double? width;
 
-  const _ChipItem({Key key, @required this.text, this.width}) : super(key: key);
+  const _ChipItem({Key? key, required this.text, this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

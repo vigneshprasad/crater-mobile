@@ -20,8 +20,8 @@ class PointsModel extends Points {
   final double moneyValue;
 
   PointsModel({
-    this.points,
-    this.moneyValue,
+    required this.points,
+    required this.moneyValue,
   }) : super(
           points: points,
           moneyValue: moneyValue,

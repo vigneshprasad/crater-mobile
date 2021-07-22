@@ -13,13 +13,13 @@ part 'video_tag_model.g.dart';
 @JsonSerializable()
 class VideoTagModel extends VideoTag {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String name;
+  final String? name;
 
   VideoTagModel({
-    this.pk,
+     this.pk,
     this.name,
   });
 

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -25,8 +24,8 @@ class CreatePostParams extends Equatable {
   final List<File> images;
 
   const CreatePostParams({
-    @required this.message,
-    this.images,
+    required this.message,
+    required this.images,
   });
 
   @override

@@ -10,7 +10,7 @@ abstract class VideoPlayerEvent extends Equatable {
 class GetFeatureVideoStarted extends VideoPlayerEvent {
   final int id;
   const GetFeatureVideoStarted({
-    @required this.id,
+    required this.id,
   });
 
   @override
@@ -23,8 +23,8 @@ class GetVideosPlaylistStarted extends VideoPlayerEvent {
   final int pageSize;
 
   const GetVideosPlaylistStarted({
-    @required this.excludeItemId,
-    @required this.page,
-    @required this.pageSize,
+    required this.excludeItemId,
+    required this.page,
+    required this.pageSize,
   });
 }

@@ -17,12 +17,12 @@ class UserChatModelAdapter extends TypeAdapter<UserChatModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserChatModel(
-      recieverId: fields[0] as String,
-      receiverUser: fields[1] as ChatUserModel,
-      page: fields[2] as int,
-      pages: fields[3] as int,
-      messages: (fields[4] as HiveList)?.castHiveList(),
-      unreadCount: fields[5] as int,
+      recieverId: fields[0] as String?,
+      receiverUser: fields[1] as ChatUserModel?,
+      page: fields[2] as int?,
+      pages: fields[3] as int?,
+      messages: (fields[4] as HiveList?)?.castHiveList(),
+      unreadCount: fields[5] as int?,
     );
   }
 

@@ -4,22 +4,22 @@ import 'package:worknetwork/constants/theme.dart';
 class ProfileFormInput extends StatelessWidget {
   final bool enabled;
   final AutovalidateMode autovalidateMode;
-  final String initialValue;
+  final String? initialValue;
   final bool autocorrect;
   final bool obscureText;
-  final TextEditingController controller;
-  final FormFieldValidator<String> validator;
-  final int maxLines;
-  final int minLines;
-  final ValueChanged<String> onChanged;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+  final int? maxLines;
+  final int? minLines;
+  final ValueChanged<String>? onChanged;
   final TextInputType keyboardType;
-  final InputDecoration decoration;
-  final TextStyle style;
-  final VoidCallback onEditingComplete;
-  final ValueChanged<String> onFieldSubmitted;
+  final InputDecoration? decoration;
+  final TextStyle? style;
+  final VoidCallback? onEditingComplete;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const ProfileFormInput({
-    Key key,
+    Key? key,
     this.initialValue,
     this.controller,
     this.validator,
@@ -59,8 +59,8 @@ class ProfileFormInput extends StatelessWidget {
         onFieldSubmitted: onFieldSubmitted,
         onEditingComplete: onEditingComplete,
         decoration: decoration ??
-            InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
+            const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
                 vertical: AppInsets.sm,
                 horizontal: AppInsets.med,
               ),

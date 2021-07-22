@@ -39,14 +39,14 @@ class ArticleModel extends Article {
   final String websiteUrl;
 
   ArticleModel({
-    this.pk,
-    this.created,
-    this.picture,
-    this.tag,
-    this.text,
-    this.title,
-    this.websiteTag,
-    this.websiteUrl,
+    required this.pk,
+    required this.created,
+    required this.picture,
+    required this.tag,
+    required this.text,
+    required this.title,
+    required this.websiteTag,
+    required this.websiteUrl,
   }) : super(
           pk: pk,
           created: created,

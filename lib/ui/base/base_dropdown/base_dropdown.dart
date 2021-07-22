@@ -6,20 +6,20 @@ typedef LabelGetterFunc<T> = String Function(T item);
 
 class BaseDropdown<T> extends StatefulWidget {
   final List<T> listItems;
-  final T value;
+  final T? value;
   final LabelGetterFunc<T> labelGetter;
-  final ValueChanged<T> onChanged;
-  final String placeholder;
-  final FormFieldValidator<T> validator;
+  final ValueChanged<T?>? onChanged;
+  final String? placeholder;
+  final FormFieldValidator<T>? validator;
 
   const BaseDropdown({
-    Key key,
+    Key? key,
     this.value,
     this.onChanged,
     this.placeholder,
     this.validator,
-    @required this.labelGetter,
-    @required this.listItems,
+    required this.labelGetter,
+    required this.listItems,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class BaseDropdown<T> extends StatefulWidget {
 }
 
 class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
-  List<DropdownMenuItem<T>> _dropdownMenuItems;
+  List<DropdownMenuItem<T>>? _dropdownMenuItems;
 
   @override
   void initState() {
@@ -54,8 +54,8 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
       child: DropdownButtonFormField<T>(
         hint: widget.placeholder != null
             ? Text(
-                widget.placeholder,
-                style: textStyle.copyWith(color: Colors.grey[500]),
+                widget.placeholder ?? '',
+                style: textStyle?.copyWith(color: Colors.grey[500]),
               )
             : null,
         style: textStyle,

@@ -17,19 +17,19 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChatMessageModel(
-      message: fields[0] as String,
-      file: fields[1] as String,
-      filename: fields[2] as String,
-      fileFormat: fields[3] as String,
-      sender: fields[4] as String,
-      receiver: fields[5] as String,
+      message: fields[0] as String?,
+      file: fields[1] as String?,
+      filename: fields[2] as String?,
+      fileFormat: fields[3] as String?,
+      sender: fields[4] as String?,
+      receiver: fields[5] as String?,
       pk: fields[6] as int,
-      photo: fields[7] as String,
-      created: fields[8] as String,
-      isRead: fields[9] as bool,
-      senderId: fields[10] as String,
-      receiverId: fields[11] as String,
-      isSupport: fields[12] as bool,
+      photo: fields[7] as String?,
+      created: fields[8] as String?,
+      isRead: fields[9] as bool?,
+      senderId: fields[10] as String?,
+      receiverId: fields[11] as String?,
+      isSupport: fields[12] as bool?,
     );
   }
 
@@ -82,19 +82,19 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
 
 ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
   return ChatMessageModel(
-    message: json['message'] as String,
-    file: json['file'] as String,
-    filename: json['filename'] as String,
-    fileFormat: json['fileFormat'] as String,
-    sender: json['sender'] as String,
-    receiver: json['receiver'] as String,
+    message: json['message'] as String?,
+    file: json['file'] as String?,
+    filename: json['filename'] as String?,
+    fileFormat: json['fileFormat'] as String?,
+    sender: json['sender'] as String?,
+    receiver: json['receiver'] as String?,
     pk: json['pk'] as int,
-    photo: json['photo'] as String,
-    created: json['created'] as String,
-    isRead: json['is_read'] as bool,
-    senderId: json['sender_id'] as String,
-    receiverId: json['receiver_id'] as String,
-    isSupport: json['is_support'] as bool,
+    photo: json['photo'] as String?,
+    created: json['created'] as String?,
+    isRead: json['is_read'] as bool?,
+    senderId: json['sender_id'] as String?,
+    receiverId: json['receiver_id'] as String?,
+    isSupport: json['is_support'] as bool?,
   );
 }
 

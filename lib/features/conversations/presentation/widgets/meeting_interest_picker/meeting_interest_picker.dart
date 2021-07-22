@@ -17,9 +17,9 @@ class MeetingInterestPicker extends HookWidget {
   final ValueChanged<List<MeetingInterest>> onValueChanged;
 
   const MeetingInterestPicker({
-    Key key,
-    @required this.options,
-    @required this.onValueChanged,
+    Key? key,
+    required this.options,
+    required this.onValueChanged,
     this.initialValue = const [],
   }) : super(key: key);
 
@@ -57,8 +57,8 @@ class MeetingInterestPicker extends HookWidget {
     );
   }
 
-  List<List<MeetingInterest>> _getTableRows(List<MeetingInterest> options) {
-    final List<List<MeetingInterest>> rows = options.fold(
+  List<List<MeetingInterest?>> _getTableRows(List<MeetingInterest> options) {
+    final List<List<MeetingInterest?>> rows = options.fold(
       [[]],
       (list, interest) => list.last.length == kRowLength
           ? (list..add([interest]))
@@ -67,7 +67,7 @@ class MeetingInterestPicker extends HookWidget {
 
     rows.map((row) {
       if (row.length < 3) {
-        final filler = List(3 - row.length);
+        final filler = List.filled(3 - row.length, 0);
         row.addAll(filler.map((e) => null));
       }
     }).toList();
@@ -82,10 +82,10 @@ class _InterestItem extends StatelessWidget {
   final ValueChanged<MeetingInterest> onValuePressed;
 
   const _InterestItem({
-    Key key,
-    @required this.interest,
-    @required this.selected,
-    @required this.onValuePressed,
+    Key? key,
+    required this.interest,
+    required this.selected,
+    required this.onValuePressed,
   }) : super(key: key);
 
   @override
@@ -143,12 +143,12 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
   final List<MeetingInterest> options;
 
   FormMeetingInterestPicker({
-    FormFieldSetter<List<MeetingInterest>> onSaved,
-    FormFieldValidator<List<MeetingInterest>> validator,
+    FormFieldSetter<List<MeetingInterest>?>? onSaved,
+    FormFieldValidator<List<MeetingInterest>?>? validator,
     List<MeetingInterest> initialValue = const [],
-    Key key,
+    Key? key,
     AutovalidateMode autovalidateMode = AutovalidateMode.always,
-    @required this.options,
+    required this.options,
   }) : super(
           onSaved: onSaved,
           autovalidateMode: autovalidateMode,
@@ -159,7 +159,7 @@ class FormMeetingInterestPicker extends FormField<List<MeetingInterest>> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (state.hasError) BaseErrorText(text: state.errorText),
+                if (state.hasError) BaseErrorText(text: state.errorText!),
                 MeetingInterestPicker(
                   options: options,
                   onValueChanged: (value) {

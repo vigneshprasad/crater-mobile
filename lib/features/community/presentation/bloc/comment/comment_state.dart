@@ -2,15 +2,15 @@ part of 'comment_bloc.dart';
 
 abstract class CommentState extends Equatable {
   final bool loading;
-  final dynamic error;
+  final Object? error;
 
   const CommentState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class CommentInitial extends CommentState {

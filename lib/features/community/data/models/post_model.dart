@@ -17,65 +17,65 @@ class PostModel extends Post {
   final int pk;
 
   @HiveField(1)
-  final String message;
+  final String? message;
 
   @HiveField(2)
-  final int group;
+  final int? group;
 
   @HiveField(3)
   @JsonKey(name: "group_name")
-  final String groupName;
+  final String? groupName;
 
   @HiveField(4)
   @JsonKey(name: "files_urls")
-  final List<String> filesUrls;
+  final List<String>? filesUrls;
 
   @HiveField(5)
-  @JsonKey(name: "files_data", nullable: true)
-  final List<FileDataModel> filesData;
+  @JsonKey(name: "files_data")
+  final List<FileDataModel>? filesData;
 
   @HiveField(6)
-  final String creator;
+  final String? creator;
 
   @HiveField(7)
   @JsonKey(name: "creator_name")
-  final String creatorName;
+  final String? creatorName;
 
   @HiveField(8)
   @JsonKey(name: "is_creator_approved")
-  final bool isCreatorApproved;
+  final bool? isCreatorApproved;
 
   @HiveField(9)
   @JsonKey(name: "creator_photo")
-  final String creatorPhoto;
+  final String? creatorPhoto;
 
   @HiveField(10)
-  final String created;
+  final String? created;
 
   @HiveField(11)
-  final int likes;
+  final int? likes;
 
   @HiveField(12)
   @JsonKey(name: "my_like")
-  final bool myLike;
+  final bool? myLike;
 
   @HiveField(13)
   @JsonKey(name: "is_followed")
-  final bool isFollowed;
+  final bool? isFollowed;
 
   @HiveField(14)
   @JsonKey(name: "is_reported")
-  final bool isReported;
+  final bool? isReported;
 
   @HiveField(15)
-  final int comments;
+  final int? comments;
 
   @HiveField(16)
   @JsonKey(name: "latest_comments")
-  final List<CommentModel> latestComments;
+  final List<CommentModel>? latestComments;
 
   PostModel({
-    this.pk,
+    required this.pk,
     this.message,
     this.group,
     this.groupName,
@@ -120,17 +120,20 @@ class PostModel extends Post {
 @HiveType(typeId: AppHiveTypeIds.fileData)
 @JsonSerializable()
 class FileDataModel extends FileData {
+  @HiveField(0)
   final String file;
 
+  @HiveField(1)
   @JsonKey(name: "is_video")
   final bool isVideo;
 
+  @HiveField(2)
   final String thumbnail;
 
   const FileDataModel({
-    this.file,
-    this.isVideo,
-    this.thumbnail,
+    required this.file,
+    required this.isVideo,
+    required this.thumbnail,
   }) : super(
           file: file,
           isVideo: isVideo,

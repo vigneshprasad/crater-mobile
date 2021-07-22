@@ -14,14 +14,14 @@ part 'points_rule_model.g.dart';
 class PointsRuleModel extends PointsRule {
   @HiveField(0)
   @JsonKey(name: "key")
-  final int pointsKey;
+  final int? pointsKey;
 
   @HiveField(1)
-  final String desc;
+  final String? desc;
 
   @HiveField(2)
   @JsonKey(name: "points_value")
-  final int pointsValue;
+  final int? pointsValue;
 
   PointsRuleModel({
     this.pointsKey,

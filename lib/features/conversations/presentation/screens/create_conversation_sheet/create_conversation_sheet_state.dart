@@ -6,8 +6,8 @@ import '../../../../../core/error/failures/failures.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 
-final getRootTopicsProvider =
-    StateNotifierProvider.autoDispose<GetRootTopicNotifier>((ref) {
+final getRootTopicsProvider = StateNotifierProvider.autoDispose<
+    GetRootTopicNotifier, ApiResult<List<Topic>>>((ref) {
   return GetRootTopicNotifier(ref.read);
 });
 

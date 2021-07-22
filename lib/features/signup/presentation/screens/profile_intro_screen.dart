@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,8 +23,8 @@ class ProfileIntroScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileIntroScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -31,15 +32,15 @@ class ProfileIntroScreen extends StatefulWidget {
 }
 
 class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
-  List<ProfileIntroQuestion> _allQuestions;
-  List<ProfileIntroElement> _elements;
-  int _visibleQuestions;
-  bool _showSubmit;
-  ProfileIntroBloc _bloc;
-  Map<String, dynamic> _values;
-  File _photo;
-  String _photoUrl;
-  String _name;
+  late List<ProfileIntroQuestion> _allQuestions;
+  late List<ProfileIntroElement> _elements;
+  late int _visibleQuestions;
+  late bool _showSubmit;
+  late ProfileIntroBloc _bloc;
+  late Map<String, dynamic> _values;
+  File? _photo;
+  String? _photoUrl;
+  late String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> editedFieldIds = [];
   bool allowSkip = false;
@@ -51,12 +52,12 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     _values = {};
     _visibleQuestions = 0;
     _showSubmit = false;
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final user = BlocProvider.of<AuthBloc>(context).state.user!;
     _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
       ..add(GetProfileIntroRequestStarted(user: user));
 
-    _name = user.name;
-    _photoUrl = user.photo;
+    _name = user.name ?? '';
+    _photoUrl = user.photo ?? '';
 
     // Prefill Values in Editing mode
     final profile = BlocProvider.of<AuthBloc>(context).state.profile;
@@ -158,7 +159,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   }
 
   void submitAnswers() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
       _bloc.add(PostProfileIntroRequestStarted(
         values: _values,
@@ -201,9 +202,9 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
       _allQuestions = state.questions;
       if (widget.editMode == true) {
         _visibleQuestions = _allQuestions.length;
-        _allQuestions.forEach((element) {
+        for (final element in _allQuestions) {
           _elements.addAll(element.elements);
-        });
+        }
         Future.delayed(const Duration(seconds: 1)).then((value) {
           setState(() {
             _showSubmit = true;
@@ -222,6 +223,6 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
 
   void goToNextScreen() {
     AutoRouter.of(context)
-        .push(Routes.profileImageScreen(editMode: widget.editMode));
+        .push(ProfileImageScreenRoute(editMode: widget.editMode));
   }
 }

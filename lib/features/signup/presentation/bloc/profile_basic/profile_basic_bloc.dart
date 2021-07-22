@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
@@ -22,13 +21,10 @@ class ProfileBasicBloc extends Bloc<ProfileBasicEvent, ProfileBasicState> {
   final Analytics analytics;
 
   ProfileBasicBloc({
-    @required this.postUserProfile,
-    @required this.patchUser,
-    @required this.analytics,
-  })  : assert(postUserProfile != null),
-        assert(patchUser != null),
-        assert(analytics != null),
-        super(const ProfileBasicInitial());
+    required this.postUserProfile,
+    required this.patchUser,
+    required this.analytics,
+  }) : super(const ProfileBasicInitial());
 
   @override
   Stream<ProfileBasicState> mapEventToState(

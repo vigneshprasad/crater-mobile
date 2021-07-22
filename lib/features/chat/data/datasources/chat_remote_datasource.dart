@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/features/websocket/domain/repository/websocket_repository.dart';
 import '../models/requests.dart';
@@ -15,7 +13,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   final WebSocketRepository repository;
 
   ChatRemoteDataSourceImpl({
-    @required this.repository,
+    required this.repository,
   });
   @override
   Future<void> sendSetChatWithUserRequest(String receiverId) async {

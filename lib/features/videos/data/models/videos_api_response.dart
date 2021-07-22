@@ -13,10 +13,10 @@ class VideosApiResponse extends Equatable {
   final List<VideoModel> results;
 
   const VideosApiResponse({
-    this.count,
-    this.next,
-    this.previous,
-    this.results,
+    required this.count,
+    required this.next,
+    required this.previous,
+    required this.results,
   });
 
   @override

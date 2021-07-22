@@ -36,8 +36,8 @@ class ChatLocalDataSourceImpl implements ChatLocalDataSource {
       final userChat = _userChatBox.get(userChatKey);
       await _chatMessagesBox.put(message.pk, message as ChatMessageModel);
       if (userChat != null) {
-        userChat.messages.add(message as ChatMessageModel);
-        messages = userChat.messages.toList();
+        userChat.messages?.add(message);
+        messages = userChat.messages?.toList() ?? [];
       } else {
         messages = [message];
         await _updateUserChatHive(
@@ -84,19 +84,19 @@ class ChatLocalDataSourceImpl implements ChatLocalDataSource {
 
   Future<UserChat> _updateUserChatHive(
     String key, {
-    List<ChatMessage> messages,
-    ChatUser receiverUser,
-    int page,
-    int pages,
-    int unreadCount,
+    List<ChatMessage>? messages,
+    ChatUser? receiverUser,
+    int? page,
+    int? pages,
+    int? unreadCount,
   }) async {
     final persistedChat = _userChatBox.get(key);
     final messgesList = HiveList(
       _chatMessagesBox,
-      objects: messages as List<ChatMessageModel>,
+      objects: messages as List<ChatMessageModel>?,
     );
     var updated = UserChatModel(
-      receiverUser: receiverUser as ChatUserModel,
+      receiverUser: receiverUser as ChatUserModel?,
       page: page ?? 1,
       pages: pages ?? 1,
       unreadCount: unreadCount ?? 0,

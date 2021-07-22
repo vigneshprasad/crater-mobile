@@ -12,8 +12,8 @@ class CreatePostRequestStarted extends CreatePostEvent {
   final List<File> images;
 
   const CreatePostRequestStarted({
-    this.message,
-    this.images,
+    required this.message,
+    required this.images,
   });
 
   @override

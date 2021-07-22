@@ -2,17 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BaseNetworkImage extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
   final ImageWidgetBuilder imagebuilder;
-  final LoadingErrorWidgetBuilder errorBuilder;
-  final LoadingErrorWidgetBuilder loadingBuilder;
+  final LoadingErrorWidgetBuilder? errorBuilder;
+  final LoadingErrorWidgetBuilder? loadingBuilder;
   final ImageProvider defaultImage;
 
   const BaseNetworkImage({
-    Key key,
-    @required this.imageUrl,
-    @required this.imagebuilder,
-    @required this.defaultImage,
+    Key? key,
+    this.imageUrl,
+    required this.imagebuilder,
+    required this.defaultImage,
     this.errorBuilder,
     this.loadingBuilder,
   }) : super(key: key);
@@ -21,7 +21,7 @@ class BaseNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imageUrl != null) {
       return CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: imageUrl!,
         imageBuilder: imagebuilder,
         errorWidget: errorBuilder,
       );

@@ -5,8 +5,8 @@ class NumberOfMeetings extends Equatable {
   final int value;
 
   const NumberOfMeetings({
-    this.label,
-    this.value,
+    required this.label,
+    required this.value,
   });
 
   @override

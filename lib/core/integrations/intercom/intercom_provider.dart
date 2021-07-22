@@ -18,7 +18,7 @@ class IntercomProvider {
   Future<void> show(String email) async {
     await Intercom.registerIdentifiedUser(email: email);
     final device = await OneSignal.shared.getDeviceState();
-    final token = device.pushToken;
+    final token = device?.pushToken;
     if (token != null) {
       await Intercom.sendTokenToIntercom(token);
     }

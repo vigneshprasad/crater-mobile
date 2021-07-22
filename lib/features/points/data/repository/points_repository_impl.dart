@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -17,9 +16,9 @@ class PointsRepositoryImpl implements PointsRepository {
   final NetworkInfo networkInfo;
 
   PointsRepositoryImpl({
-    @required this.localDatasource,
-    @required this.remoteDatasource,
-    @required this.networkInfo,
+    required this.localDatasource,
+    required this.remoteDatasource,
+    required this.networkInfo,
   });
 
   @override

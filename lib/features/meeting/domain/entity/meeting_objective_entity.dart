@@ -16,10 +16,10 @@ class MeetingObjective extends Equatable {
   final ObjectiveType type;
 
   const MeetingObjective({
-    this.icon,
-    this.name,
-    this.pk,
-    this.type,
+    required this.icon,
+    required this.name,
+    required this.pk,
+    required this.type,
   });
 
   @override

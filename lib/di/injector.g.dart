@@ -10,15 +10,15 @@ class _$CoreInjector extends CoreInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton<CustomTabs>((c) => CustomTabImpl());
-    container.registerSingleton<NetworkInfo>(
-        (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()));
     container
-        .registerSingleton<PushNotifications>((c) => PushNotificationsImpl());
-    container.registerSingleton<LocalStorage>((c) => LocalStorageImpl());
-    container.registerSingleton<Analytics>((c) => AnalyticsImpl(
-        c<PushNotifications>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
-    container.registerSingleton<Logger>((c) => LoggerImpl(c<SentryClient>()));
+      ..registerSingleton<CustomTabs>((c) => CustomTabImpl())
+      ..registerSingleton<NetworkInfo>(
+          (c) => NetworkInfoImpl(connectionChecker: c<DataConnectionChecker>()))
+      ..registerSingleton<PushNotifications>((c) => PushNotificationsImpl())
+      ..registerSingleton<LocalStorage>((c) => LocalStorageImpl())
+      ..registerSingleton<Analytics>((c) => AnalyticsImpl(
+          c<PushNotifications>(), c<AuthLocalDataSource>(), c<NetworkInfo>()))
+      ..registerSingleton<Logger>((c) => LoggerImpl(c<SentryClient>()));
   }
 }
 
@@ -26,30 +26,30 @@ class _$WebSocketInjector extends WebSocketInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton((c) => WebsocketBloc(
-        connectionState: c<UCWebSocketGetConnection>(),
-        connect: c<UCWebsocketConnect>(),
-        addToSink: c<UCWebSocketAddToSink>(),
-        authBloc: c<AuthBloc>(),
-        socketClose: c<UCWebSocketClose>()));
-    container.registerSingleton<WebSocketRepository>((c) =>
-        WebsocketRepositoryImpl(
-            localDataSource: c<WebSocketLocalDataSource>(),
-            remoteDataSource: c<WebSocketRemoteDataSource>(),
-            authRepository: c<AuthRepository>(),
-            authLocalDataSource: c<AuthLocalDataSource>()));
-    container.registerSingleton<WebSocketRemoteDataSource>(
-        (c) => WebSocketRemoteDataSourceImpl());
-    container.registerSingleton<WebSocketLocalDataSource>(
-        (c) => WebsocketLocalDataSourceImpl());
-    container.registerSingleton(
-        (c) => UCWebsocketConnect(repository: c<WebSocketRepository>()));
-    container.registerSingleton(
-        (c) => UCWebSocketGetConnection(repository: c<WebSocketRepository>()));
-    container.registerSingleton(
-        (c) => UCWebSocketAddToSink(repository: c<WebSocketRepository>()));
-    container.registerSingleton(
-        (c) => UCWebSocketClose(repository: c<WebSocketRepository>()));
+    container
+      ..registerSingleton((c) => WebsocketBloc(
+          connectionState: c<UCWebSocketGetConnection>(),
+          connect: c<UCWebsocketConnect>(),
+          addToSink: c<UCWebSocketAddToSink>(),
+          authBloc: c<AuthBloc>(),
+          socketClose: c<UCWebSocketClose>()))
+      ..registerSingleton<WebSocketRepository>((c) => WebsocketRepositoryImpl(
+          localDataSource: c<WebSocketLocalDataSource>(),
+          remoteDataSource: c<WebSocketRemoteDataSource>(),
+          authRepository: c<AuthRepository>(),
+          authLocalDataSource: c<AuthLocalDataSource>()))
+      ..registerSingleton<WebSocketRemoteDataSource>(
+          (c) => WebSocketRemoteDataSourceImpl())
+      ..registerSingleton<WebSocketLocalDataSource>(
+          (c) => WebsocketLocalDataSourceImpl())
+      ..registerSingleton(
+          (c) => UCWebsocketConnect(repository: c<WebSocketRepository>()))
+      ..registerSingleton(
+          (c) => UCWebSocketGetConnection(repository: c<WebSocketRepository>()))
+      ..registerSingleton(
+          (c) => UCWebSocketAddToSink(repository: c<WebSocketRepository>()))
+      ..registerSingleton(
+          (c) => UCWebSocketClose(repository: c<WebSocketRepository>()));
   }
 }
 
@@ -57,48 +57,46 @@ class _$AuthInjector extends AuthInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton((c) => AuthBloc(
-        getUser: c<UCGetUser>(),
-        getUserProfile: c<UCGetUserProfile>(),
-        pushNotifications: c<PushNotifications>(),
-        getAuthentication: c<UCGetAuthentication>(),
-        authLinkedIn: c<UCAuthLinkedIn>(),
-        authGoogle: c<UCGoogleAuth>(),
-        authWithApple: c<UCAuthWithApple>(),
-        authFacebook: c<UCFacebookAuth>(),
-        loginEmail: c<UCLoginEmail>(),
-        socialAuthToken: c<UCGetSocialAuthToken>(),
-        registerEmail: c<UCRegisterEmail>(),
-        analytics: c<Analytics>()));
-    container.registerFactory(
-        (c) => ForgotPasswordBloc(passwordReset: c<UCPostPasswordReset>()));
-    container.registerFactory(
-        (c) => NewPasswordBloc(postNewPassword: c<UCPostNewPassword>()));
-    container.registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
-        c<AuthRemoteDataSource>(), c<AuthLocalDataSource>(), c<NetworkInfo>()));
-    container.registerSingleton<AuthRemoteDataSource>((c) =>
-        AuthRemoteDataSourceImpl(c<AuthApiService>(), c<UserApiService>()));
-    container.registerSingleton<AuthLocalDataSource>(
-        (c) => AuthLocalDataSourceImpl());
-    container.registerSingleton((c) => UCGetUser(c<AuthRepository>()));
-    container.registerSingleton(
-        (c) => UCGetAuthentication(repository: c<AuthRepository>()));
-    container.registerSingleton(
-        (c) => UCGoogleAuth(repository: c<AuthRepository>()));
-    container.registerSingleton((c) => UCFacebookAuth(c<AuthRepository>()));
-    container.registerSingleton((c) => UCAuthWithApple(c<AuthRepository>()));
-    container.registerSingleton(
-        (c) => UCLoginEmail(repository: c<AuthRepository>()));
-    container.registerSingleton(
-        (c) => UCAuthLinkedIn(repository: c<AuthRepository>()));
-    container.registerSingleton((c) => UCRegisterEmail(c<AuthRepository>()));
     container
-        .registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()));
-    container.registerSingleton((c) => UCPostUserProfile(c<AuthRepository>()));
-    container.registerSingleton((c) => UCGetUserProfile(c<AuthRepository>()));
-    container
-        .registerSingleton((c) => UCPostPasswordReset(c<AuthRepository>()));
-    container.registerSingleton((c) => UCPostNewPassword(c<AuthRepository>()));
+      ..registerSingleton((c) => AuthBloc(
+          getUser: c<UCGetUser>(),
+          getUserProfile: c<UCGetUserProfile>(),
+          pushNotifications: c<PushNotifications>(),
+          getAuthentication: c<UCGetAuthentication>(),
+          authLinkedIn: c<UCAuthLinkedIn>(),
+          authGoogle: c<UCGoogleAuth>(),
+          authWithApple: c<UCAuthWithApple>(),
+          authFacebook: c<UCFacebookAuth>(),
+          loginEmail: c<UCLoginEmail>(),
+          socialAuthToken: c<UCGetSocialAuthToken>(),
+          registerEmail: c<UCRegisterEmail>(),
+          analytics: c<Analytics>()))
+      ..registerFactory(
+          (c) => ForgotPasswordBloc(passwordReset: c<UCPostPasswordReset>()))
+      ..registerFactory(
+          (c) => NewPasswordBloc(postNewPassword: c<UCPostNewPassword>()))
+      ..registerSingleton<AuthRepository>((c) => AuthRepositoryImpl(
+          c<AuthRemoteDataSource>(),
+          c<AuthLocalDataSource>(),
+          c<NetworkInfo>()))
+      ..registerSingleton<AuthRemoteDataSource>((c) =>
+          AuthRemoteDataSourceImpl(c<AuthApiService>(), c<UserApiService>()))
+      ..registerSingleton<AuthLocalDataSource>((c) => AuthLocalDataSourceImpl())
+      ..registerSingleton((c) => UCGetUser(c<AuthRepository>()))
+      ..registerSingleton(
+          (c) => UCGetAuthentication(repository: c<AuthRepository>()))
+      ..registerSingleton((c) => UCGoogleAuth(repository: c<AuthRepository>()))
+      ..registerSingleton((c) => UCFacebookAuth(c<AuthRepository>()))
+      ..registerSingleton((c) => UCAuthWithApple(c<AuthRepository>()))
+      ..registerSingleton((c) => UCLoginEmail(repository: c<AuthRepository>()))
+      ..registerSingleton(
+          (c) => UCAuthLinkedIn(repository: c<AuthRepository>()))
+      ..registerSingleton((c) => UCRegisterEmail(c<AuthRepository>()))
+      ..registerSingleton((c) => UCPatchUser(repository: c<AuthRepository>()))
+      ..registerSingleton((c) => UCPostUserProfile(c<AuthRepository>()))
+      ..registerSingleton((c) => UCGetUserProfile(c<AuthRepository>()))
+      ..registerSingleton((c) => UCPostPasswordReset(c<AuthRepository>()))
+      ..registerSingleton((c) => UCPostNewPassword(c<AuthRepository>()));
   }
 }
 
@@ -106,62 +104,61 @@ class _$SignupInjector extends SignupInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ObjectivesBloc(
-        getUserObjectives: c<UCGetUserObjectives>(),
-        patchUser: c<UCPatchUser>(),
-        analytics: c<Analytics>()));
-    container.registerFactory((c) => ProfileSetupBloc(
-        getUserTags: c<UCGetUserTags>(),
-        postUserProfile: c<UCPostUserProfile>(),
-        analytics: c<Analytics>()));
-    container.registerFactory((c) => PhoneVerifyBloc(
-        postNewPhoneNumber: c<UCPostNewPhoneNumber>(),
-        postSmsCode: c<UCPostSmsCode>(),
-        analytics: c<Analytics>()));
-    container.registerFactory((c) => ProfileIntroBloc(
-        getProfileIntroQuestions: c<UCGetProfileIntroQuestions>(),
-        getProfileIntroCompanies: c<UCGetProfileIntroCompanies>(),
-        getProfileIntroEducations: c<UCGetProfileIntroEducations>(),
-        getProfileIntroExperiences: c<UCGetProfileIntroExperiences>(),
-        getProfileIntroSectors: c<UCGetProfileIntroSectors>(),
-        postUserProfile: c<UCPostUserProfileIntro>(),
-        patchUser: c<UCPatchUser>(),
-        analytics: c<Analytics>()));
-    container.registerFactory((c) => ProfileBasicBloc(
-        postUserProfile: c<UCPostUserProfileIntro>(),
-        patchUser: c<UCPatchUser>(),
-        analytics: c<Analytics>()));
-    container.registerFactory((c) => ProfileTagsBloc(
-        getUserTags: c<UCGetUserTags>(),
-        postUserProfile: c<UCPostUserProfileIntro>(),
-        analytics: c<Analytics>()));
-    container.registerSingleton<SignupRepository>(
-        (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()));
-    container.registerSingleton<SignupRemoteDatasource>((c) =>
-        SignupRemoteDatasourceImpl(c<TagsApiService>(), c<UserApiService>()));
-    container.registerSingleton<ProfileIntroRemoteDatasource>(
-        (c) => ProfileIntroRemoteDatasourceImpl(c<ProfileIntroApiService>()));
-    container.registerSingleton<ProfileIntroRepository>((c) =>
-        ProfileIntroRepositoryImpl(
-            c<ProfileIntroRemoteDatasource>(), c<AuthLocalDataSource>()));
     container
-        .registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()));
-    container.registerSingleton((c) => UCGetUserTags(c<SignupRepository>()));
-    container
-        .registerSingleton((c) => UCPostNewPhoneNumber(c<SignupRepository>()));
-    container.registerSingleton((c) => UCPostSmsCode(c<SignupRepository>()));
-    container.registerSingleton(
-        (c) => UCGetProfileIntroQuestions(c<ProfileIntroRepository>()));
-    container.registerSingleton(
-        (c) => UCGetProfileIntroCompanies(c<ProfileIntroRepository>()));
-    container.registerSingleton(
-        (c) => UCGetProfileIntroEducations(c<ProfileIntroRepository>()));
-    container.registerSingleton(
-        (c) => UCGetProfileIntroExperiences(c<ProfileIntroRepository>()));
-    container.registerSingleton(
-        (c) => UCGetProfileIntroSectors(c<ProfileIntroRepository>()));
-    container.registerSingleton(
-        (c) => UCPostUserProfileIntro(c<ProfileIntroRepository>()));
+      ..registerFactory((c) => ObjectivesBloc(
+          getUserObjectives: c<UCGetUserObjectives>(),
+          patchUser: c<UCPatchUser>(),
+          analytics: c<Analytics>()))
+      ..registerFactory((c) => ProfileSetupBloc(
+          getUserTags: c<UCGetUserTags>(),
+          postUserProfile: c<UCPostUserProfile>(),
+          analytics: c<Analytics>()))
+      ..registerFactory((c) => PhoneVerifyBloc(
+          postNewPhoneNumber: c<UCPostNewPhoneNumber>(),
+          postSmsCode: c<UCPostSmsCode>(),
+          analytics: c<Analytics>()))
+      ..registerFactory((c) => ProfileIntroBloc(
+          getProfileIntroQuestions: c<UCGetProfileIntroQuestions>(),
+          getProfileIntroCompanies: c<UCGetProfileIntroCompanies>(),
+          getProfileIntroEducations: c<UCGetProfileIntroEducations>(),
+          getProfileIntroExperiences: c<UCGetProfileIntroExperiences>(),
+          getProfileIntroSectors: c<UCGetProfileIntroSectors>(),
+          postUserProfile: c<UCPostUserProfileIntro>(),
+          patchUser: c<UCPatchUser>(),
+          analytics: c<Analytics>()))
+      ..registerFactory((c) => ProfileBasicBloc(
+          postUserProfile: c<UCPostUserProfileIntro>(),
+          patchUser: c<UCPatchUser>(),
+          analytics: c<Analytics>()))
+      ..registerFactory((c) => ProfileTagsBloc(
+          getUserTags: c<UCGetUserTags>(),
+          postUserProfile: c<UCPostUserProfileIntro>(),
+          analytics: c<Analytics>()))
+      ..registerSingleton<SignupRepository>(
+          (c) => SignupRepositoryImpl(c<SignupRemoteDatasource>()))
+      ..registerSingleton<SignupRemoteDatasource>((c) =>
+          SignupRemoteDatasourceImpl(c<TagsApiService>(), c<UserApiService>()))
+      ..registerSingleton<ProfileIntroRemoteDatasource>(
+          (c) => ProfileIntroRemoteDatasourceImpl(c<ProfileIntroApiService>()))
+      ..registerSingleton<ProfileIntroRepository>((c) =>
+          ProfileIntroRepositoryImpl(
+              c<ProfileIntroRemoteDatasource>(), c<AuthLocalDataSource>()))
+      ..registerSingleton((c) => UCGetUserObjectives(c<SignupRepository>()))
+      ..registerSingleton((c) => UCGetUserTags(c<SignupRepository>()))
+      ..registerSingleton((c) => UCPostNewPhoneNumber(c<SignupRepository>()))
+      ..registerSingleton((c) => UCPostSmsCode(c<SignupRepository>()))
+      ..registerSingleton(
+          (c) => UCGetProfileIntroQuestions(c<ProfileIntroRepository>()))
+      ..registerSingleton(
+          (c) => UCGetProfileIntroCompanies(c<ProfileIntroRepository>()))
+      ..registerSingleton(
+          (c) => UCGetProfileIntroEducations(c<ProfileIntroRepository>()))
+      ..registerSingleton(
+          (c) => UCGetProfileIntroExperiences(c<ProfileIntroRepository>()))
+      ..registerSingleton(
+          (c) => UCGetProfileIntroSectors(c<ProfileIntroRepository>()))
+      ..registerSingleton(
+          (c) => UCPostUserProfileIntro(c<ProfileIntroRepository>()));
   }
 }
 
@@ -169,14 +166,15 @@ class _$SocialAuthInjector extends SocialAuthInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton(
-        (c) => UCGetSocialAuthToken(repository: c<SocialAuthRepository>()));
-    container.registerSingleton<SocialAuthRepository>(
-        (c) => SocialAuthRepositoryImpl(c<SocialAuthRemoteDataSource>()));
-    container.registerSingleton<SocialAuthRemoteDataSource>((c) =>
-        SocialAuthRemoteDataSourceImpl(
-            googleSignIn: c<GoogleSignIn>(),
-            facebookLogin: c<FacebookLogin>()));
+    container
+      ..registerSingleton(
+          (c) => UCGetSocialAuthToken(repository: c<SocialAuthRepository>()))
+      ..registerSingleton<SocialAuthRepository>(
+          (c) => SocialAuthRepositoryImpl(c<SocialAuthRemoteDataSource>()))
+      ..registerSingleton<SocialAuthRemoteDataSource>((c) =>
+          SocialAuthRemoteDataSourceImpl(
+              googleSignIn: c<GoogleSignIn>(),
+              facebookLogin: c<FacebookLogin>()));
   }
 }
 
@@ -184,40 +182,37 @@ class _$CommunityInjector extends CommunityInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => CommunityBloc(
-        getPostsPage: c<UCGetPostsPage>(),
-        deletePost: c<UCDeletePost>(),
-        createLikePost: c<UCCreateLikePost>(),
-        deleteLikePost: c<UCDeleteLikePost>()));
-    container.registerFactory((c) => PostBloc(
-        getPost: c<UCGetPost>(),
-        getCommentsPage: c<UCGetCommentsPage>(),
-        createComment: c<UCCreateCommentPost>()));
-    container.registerFactory((c) => CreatePostBloc(
-        createPost: c<UCCreatePost>(), analytics: c<Analytics>()));
-    container.registerSingleton<CommunityRepository>((c) =>
-        CommunityRepositoryImpl(
-            remoteDatasource: c<CommunityRemoteDatasource>(),
-            localDatasource: c<CommunityLocalDatasource>(),
-            networkInfo: c<NetworkInfo>()));
-    container.registerSingleton<CommunityLocalDatasource>(
-        (c) => CommunityLocalDatasourceImpl());
-    container.registerSingleton<CommunityRemoteDatasource>(
-        (c) => CommunityRemoteDatasourceImpl(apiService: c<PostApiService>()));
     container
-        .registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()));
-    container.registerSingleton((c) => UCGetPost(c<CommunityRepository>()));
-    container.registerSingleton((c) => UCCreatePost(c<CommunityRepository>()));
-    container.registerSingleton(
-        (c) => UCDeletePost(repository: c<CommunityRepository>()));
-    container.registerSingleton(
-        (c) => UCCreateLikePost(repository: c<CommunityRepository>()));
-    container.registerSingleton(
-        (c) => UCDeleteLikePost(repository: c<CommunityRepository>()));
-    container
-        .registerSingleton((c) => UCGetCommentsPage(c<CommunityRepository>()));
-    container.registerSingleton(
-        (c) => UCCreateCommentPost(c<CommunityRepository>()));
+      ..registerFactory((c) => CommunityBloc(
+          getPostsPage: c<UCGetPostsPage>(),
+          deletePost: c<UCDeletePost>(),
+          createLikePost: c<UCCreateLikePost>(),
+          deleteLikePost: c<UCDeleteLikePost>()))
+      ..registerFactory((c) => PostBloc(
+          getPost: c<UCGetPost>(),
+          getCommentsPage: c<UCGetCommentsPage>(),
+          createComment: c<UCCreateCommentPost>()))
+      ..registerFactory((c) => CreatePostBloc(
+          createPost: c<UCCreatePost>(), analytics: c<Analytics>()))
+      ..registerSingleton<CommunityRepository>((c) => CommunityRepositoryImpl(
+          remoteDatasource: c<CommunityRemoteDatasource>(),
+          localDatasource: c<CommunityLocalDatasource>(),
+          networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<CommunityLocalDatasource>(
+          (c) => CommunityLocalDatasourceImpl())
+      ..registerSingleton<CommunityRemoteDatasource>(
+          (c) => CommunityRemoteDatasourceImpl(apiService: c<PostApiService>()))
+      ..registerSingleton((c) => UCGetPostsPage(c<CommunityRepository>()))
+      ..registerSingleton((c) => UCGetPost(c<CommunityRepository>()))
+      ..registerSingleton((c) => UCCreatePost(c<CommunityRepository>()))
+      ..registerSingleton(
+          (c) => UCDeletePost(repository: c<CommunityRepository>()))
+      ..registerSingleton(
+          (c) => UCCreateLikePost(repository: c<CommunityRepository>()))
+      ..registerSingleton(
+          (c) => UCDeleteLikePost(repository: c<CommunityRepository>()))
+      ..registerSingleton((c) => UCGetCommentsPage(c<CommunityRepository>()))
+      ..registerSingleton((c) => UCCreateCommentPost(c<CommunityRepository>()));
   }
 }
 
@@ -225,34 +220,33 @@ class _$ChatInboxInjector extends ChatInboxInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ChatInboxBloc(
-        websocketBloc: c<WebsocketBloc>(),
-        getAllChatUsers: c<UCGetAllChatUsers>(),
-        persistChatUsers: c<UCPersistChatUsers>(),
-        starChatUser: c<UCSendStarChatUser>(),
-        starUserChanged: c<UCReceivedStarUserChanged>()));
-    container.registerFactory((c) => ChatSearchBloc(
-        websocketBloc: c<WebsocketBloc>(),
-        getAllChatUsers: c<UCSearchAllUsers>()));
-    container.registerSingleton<ChatInboxRepository>((c) =>
-        ChatInboxRepositoryImpl(
-            localDataSource: c<ChatInboxLocalDataSource>(),
-            remoteDataSource: c<ChatInboxRemoteDataSource>()));
-    container.registerSingleton<ChatInboxLocalDataSource>(
-        (c) => ChatInboxLocalDataSourceImpl());
-    container.registerSingleton<ChatInboxRemoteDataSource>((c) =>
-        ChatInboxRemoteDataSourceImpl(
-            webSocketRepository: c<WebSocketRepository>()));
-    container.registerSingleton(
-        (c) => UCGetAllChatUsers(repository: c<ChatInboxRepository>()));
-    container.registerSingleton(
-        (c) => UCSearchAllUsers(repository: c<ChatInboxRepository>()));
-    container.registerSingleton(
-        (c) => UCSendStarChatUser(repository: c<ChatInboxRepository>()));
-    container.registerSingleton(
-        (c) => UCReceivedStarUserChanged(repository: c<ChatInboxRepository>()));
     container
-        .registerSingleton((c) => UCPersistChatUsers(c<ChatInboxRepository>()));
+      ..registerFactory((c) => ChatInboxBloc(
+          websocketBloc: c<WebsocketBloc>(),
+          getAllChatUsers: c<UCGetAllChatUsers>(),
+          persistChatUsers: c<UCPersistChatUsers>(),
+          starChatUser: c<UCSendStarChatUser>(),
+          starUserChanged: c<UCReceivedStarUserChanged>()))
+      ..registerFactory((c) => ChatSearchBloc(
+          websocketBloc: c<WebsocketBloc>(),
+          getAllChatUsers: c<UCSearchAllUsers>()))
+      ..registerSingleton<ChatInboxRepository>((c) => ChatInboxRepositoryImpl(
+          localDataSource: c<ChatInboxLocalDataSource>(),
+          remoteDataSource: c<ChatInboxRemoteDataSource>()))
+      ..registerSingleton<ChatInboxLocalDataSource>(
+          (c) => ChatInboxLocalDataSourceImpl())
+      ..registerSingleton<ChatInboxRemoteDataSource>((c) =>
+          ChatInboxRemoteDataSourceImpl(
+              webSocketRepository: c<WebSocketRepository>()))
+      ..registerSingleton(
+          (c) => UCGetAllChatUsers(repository: c<ChatInboxRepository>()))
+      ..registerSingleton(
+          (c) => UCSearchAllUsers(repository: c<ChatInboxRepository>()))
+      ..registerSingleton(
+          (c) => UCSendStarChatUser(repository: c<ChatInboxRepository>()))
+      ..registerSingleton((c) =>
+          UCReceivedStarUserChanged(repository: c<ChatInboxRepository>()))
+      ..registerSingleton((c) => UCPersistChatUsers(c<ChatInboxRepository>()));
   }
 }
 
@@ -260,34 +254,34 @@ class _$ChatInjector extends ChatInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ChatBloc(
-        websocketBloc: c<WebsocketBloc>(),
-        setChatWithUser: c<UCSetChatWithUser>(),
-        sendMessage: c<UCSendChatToUser>(),
-        receivedSetChatWithUser: c<UCReceivedSetChatWithUser>(),
-        sendUserIsTyping: c<UCSendUserIsTyping>(),
-        persistReceivedMessage: c<UCPersistReceivedMessage>(),
-        sendReadUserMessage: c<UCSendReadUserMessage>()));
-    container.registerSingleton<ChatRepository>((c) => ChatRepositoryImpl(
-        repository: c<WebSocketRepository>(),
-        localDataSource: c<ChatLocalDataSource>(),
-        remoteDataSource: c<ChatRemoteDataSource>()));
-    container.registerSingleton<ChatLocalDataSource>(
-        (c) => ChatLocalDataSourceImpl());
-    container.registerSingleton<ChatRemoteDataSource>(
-        (c) => ChatRemoteDataSourceImpl(repository: c<WebSocketRepository>()));
-    container.registerSingleton(
-        (c) => UCSetChatWithUser(repository: c<ChatRepository>()));
-    container.registerSingleton(
-        (c) => UCSendChatToUser(repository: c<ChatRepository>()));
-    container.registerSingleton(
-        (c) => UCReceivedSetChatWithUser(repository: c<ChatRepository>()));
-    container.registerSingleton(
-        (c) => UCSendUserIsTyping(repository: c<ChatRepository>()));
-    container.registerSingleton(
-        (c) => UCPersistReceivedMessage(repository: c<ChatRepository>()));
-    container.registerSingleton(
-        (c) => UCSendReadUserMessage(repository: c<ChatRepository>()));
+    container
+      ..registerFactory((c) => ChatBloc(
+          websocketBloc: c<WebsocketBloc>(),
+          setChatWithUser: c<UCSetChatWithUser>(),
+          sendMessage: c<UCSendChatToUser>(),
+          receivedSetChatWithUser: c<UCReceivedSetChatWithUser>(),
+          sendUserIsTyping: c<UCSendUserIsTyping>(),
+          persistReceivedMessage: c<UCPersistReceivedMessage>(),
+          sendReadUserMessage: c<UCSendReadUserMessage>()))
+      ..registerSingleton<ChatRepository>((c) => ChatRepositoryImpl(
+          repository: c<WebSocketRepository>(),
+          localDataSource: c<ChatLocalDataSource>(),
+          remoteDataSource: c<ChatRemoteDataSource>()))
+      ..registerSingleton<ChatLocalDataSource>((c) => ChatLocalDataSourceImpl())
+      ..registerSingleton<ChatRemoteDataSource>(
+          (c) => ChatRemoteDataSourceImpl(repository: c<WebSocketRepository>()))
+      ..registerSingleton(
+          (c) => UCSetChatWithUser(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCSendChatToUser(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCReceivedSetChatWithUser(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCSendUserIsTyping(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCPersistReceivedMessage(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCSendReadUserMessage(repository: c<ChatRepository>()));
   }
 }
 
@@ -295,23 +289,22 @@ class _$ArticleInjector extends ArticleInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ArticleBloc(
-        getArticles: c<UCGetArticlesPage>(),
-        getArticleWebsites: c<UCGetArticleWebsites>()));
-    container.registerSingleton<ArticleRepository>((c) => ArticleRepositoryImpl(
-        remoteDatasource: c<ArticleRemoteDatasource>(),
-        localDatasource: c<ArticleLocalDatasource>(),
-        networkInfo: c<NetworkInfo>()));
-    container.registerSingleton<ArticleRemoteDatasource>((c) =>
-        ArticleRemoteDatasourceImpl(
-            apiService: c<ArticlesApiService>(),
-            tagsApiService: c<TagsApiService>()));
-    container.registerSingleton<ArticleLocalDatasource>(
-        (c) => ArticleLocalDatasourceImpl());
     container
-        .registerSingleton((c) => UCGetArticlesPage(c<ArticleRepository>()));
-    container
-        .registerSingleton((c) => UCGetArticleWebsites(c<ArticleRepository>()));
+      ..registerFactory((c) => ArticleBloc(
+          getArticles: c<UCGetArticlesPage>(),
+          getArticleWebsites: c<UCGetArticleWebsites>()))
+      ..registerSingleton<ArticleRepository>((c) => ArticleRepositoryImpl(
+          remoteDatasource: c<ArticleRemoteDatasource>(),
+          localDatasource: c<ArticleLocalDatasource>(),
+          networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<ArticleRemoteDatasource>((c) =>
+          ArticleRemoteDatasourceImpl(
+              apiService: c<ArticlesApiService>(),
+              tagsApiService: c<TagsApiService>()))
+      ..registerSingleton<ArticleLocalDatasource>(
+          (c) => ArticleLocalDatasourceImpl())
+      ..registerSingleton((c) => UCGetArticlesPage(c<ArticleRepository>()))
+      ..registerSingleton((c) => UCGetArticleWebsites(c<ArticleRepository>()));
   }
 }
 
@@ -320,22 +313,22 @@ class _$VideoInjector extends VideoInjector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container
-        .registerFactory((c) => VideoBloc(getVideos: c<UCGetVideosListPage>()));
-    container.registerFactory((c) => VideoPlayerBloc(
-        getVideoItem: c<UCGetVideoItem>(),
-        getVideosList: c<UCGetVideosListPage>()));
-    container.registerSingleton<VideoRepository>((c) => VideoRepositoryImpl(
-        networkInfo: c<NetworkInfo>(),
-        localDataSource: c<VideoLocalDataSource>(),
-        remoteDatasource: c<VideoRemoteDatasource>()));
-    container.registerSingleton<VideoLocalDataSource>(
-        (c) => VideoLocalDataSourceImpl());
-    container.registerSingleton<VideoRemoteDatasource>((c) =>
-        VideoRemoteDatasourceImpl(apiService: c<MasterClassApiService>()));
-    container.registerSingleton(
-        (c) => UCGetVideosListPage(repository: c<VideoRepository>()));
-    container.registerSingleton(
-        (c) => UCGetVideoItem(repository: c<VideoRepository>()));
+      ..registerFactory((c) => VideoBloc(getVideos: c<UCGetVideosListPage>()))
+      ..registerFactory((c) => VideoPlayerBloc(
+          getVideoItem: c<UCGetVideoItem>(),
+          getVideosList: c<UCGetVideosListPage>()))
+      ..registerSingleton<VideoRepository>((c) => VideoRepositoryImpl(
+          networkInfo: c<NetworkInfo>(),
+          localDataSource: c<VideoLocalDataSource>(),
+          remoteDatasource: c<VideoRemoteDatasource>()))
+      ..registerSingleton<VideoLocalDataSource>(
+          (c) => VideoLocalDataSourceImpl())
+      ..registerSingleton<VideoRemoteDatasource>((c) =>
+          VideoRemoteDatasourceImpl(apiService: c<MasterClassApiService>()))
+      ..registerSingleton(
+          (c) => UCGetVideosListPage(repository: c<VideoRepository>()))
+      ..registerSingleton(
+          (c) => UCGetVideoItem(repository: c<VideoRepository>()));
   }
 }
 
@@ -343,51 +336,46 @@ class _$MeetingInjector extends MeetingInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => MeetingBloc(
-        getMeetingInterests: c<UCGetMeetingInterests>(),
-        getMeetingObjectives: c<UCGetMeetingObjectives>(),
-        getMeetingConfig: c<UCGetMeetingConfig>(),
-        getMeetingPreferences: c<UCGetMeetingPreferences>(),
-        postMeetingPreferences: c<UCPostMeetingPreferences>(),
-        getPastMeetingPreferences: c<UCGetPastMeetingPreferences>(),
-        getMeetingsByDate: c<UCGetMeetingsByDate>(),
-        retrieveMeetingDetails: c<UCRetrieveMeetingDetails>(),
-        postRsvpStatus: c<UCPostRsvpStatus>(),
-        getRescheduleTimeSlots: c<UCGetRescheduleTimeSlots>(),
-        postRecheduleRsvpStatus: c<UCPostRecheduleRsvpStatus>(),
-        getRescheduleRequest: c<UCGetRescheduleRequest>(),
-        postConfirmRescheduleRequest: c<UCPostConfirmRescheduleRequest>()));
-    container.registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
-        remoteDatasource: c<MeetingRemoteDatasource>(),
-        networkInfo: c<NetworkInfo>()));
-    container.registerSingleton<MeetingRemoteDatasource>(
-        (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()));
-    container.registerSingleton(
-        (c) => UCGetMeetingInterests(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCGetMeetingObjectives(c<MeetingRepository>()));
     container
-        .registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCGetMeetingPreferences(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCPostMeetingPreferences(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCGetPastMeetingPreferences(c<MeetingRepository>()));
-    container
-        .registerSingleton((c) => UCGetMeetingsByDate(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCRetrieveMeetingDetails(c<MeetingRepository>()));
-    container
-        .registerSingleton((c) => UCPostRsvpStatus(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCGetRescheduleTimeSlots(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCPostRecheduleRsvpStatus(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCGetRescheduleRequest(c<MeetingRepository>()));
-    container.registerSingleton(
-        (c) => UCPostConfirmRescheduleRequest(c<MeetingRepository>()));
+      ..registerFactory((c) => MeetingBloc(
+          getMeetingInterests: c<UCGetMeetingInterests>(),
+          getMeetingObjectives: c<UCGetMeetingObjectives>(),
+          getMeetingConfig: c<UCGetMeetingConfig>(),
+          getMeetingPreferences: c<UCGetMeetingPreferences>(),
+          postMeetingPreferences: c<UCPostMeetingPreferences>(),
+          getPastMeetingPreferences: c<UCGetPastMeetingPreferences>(),
+          getMeetingsByDate: c<UCGetMeetingsByDate>(),
+          retrieveMeetingDetails: c<UCRetrieveMeetingDetails>(),
+          postRsvpStatus: c<UCPostRsvpStatus>(),
+          getRescheduleTimeSlots: c<UCGetRescheduleTimeSlots>(),
+          postRecheduleRsvpStatus: c<UCPostRecheduleRsvpStatus>(),
+          getRescheduleRequest: c<UCGetRescheduleRequest>(),
+          postConfirmRescheduleRequest: c<UCPostConfirmRescheduleRequest>()))
+      ..registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
+          remoteDatasource: c<MeetingRemoteDatasource>(),
+          networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<MeetingRemoteDatasource>(
+          (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()))
+      ..registerSingleton((c) => UCGetMeetingInterests(c<MeetingRepository>()))
+      ..registerSingleton((c) => UCGetMeetingObjectives(c<MeetingRepository>()))
+      ..registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCGetMeetingPreferences(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCPostMeetingPreferences(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCGetPastMeetingPreferences(c<MeetingRepository>()))
+      ..registerSingleton((c) => UCGetMeetingsByDate(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCRetrieveMeetingDetails(c<MeetingRepository>()))
+      ..registerSingleton((c) => UCPostRsvpStatus(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCGetRescheduleTimeSlots(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCPostRecheduleRsvpStatus(c<MeetingRepository>()))
+      ..registerSingleton((c) => UCGetRescheduleRequest(c<MeetingRepository>()))
+      ..registerSingleton(
+          (c) => UCPostConfirmRescheduleRequest(c<MeetingRepository>()));
   }
 }
 
@@ -395,25 +383,26 @@ class _$PointsInjector extends PointsInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => PointsBloc(
-        getPoints: c<UCGetSelfUserPoints>(),
-        getPointsFaq: c<UCGetPointsFaq>(),
-        pointsRules: c<UCGetPointsRules>()));
-    container.registerSingleton<PointsRepository>((c) => PointsRepositoryImpl(
-        localDatasource: c<PointsLocalDatasource>(),
-        remoteDatasource: c<PointsRemoteDatasource>(),
-        networkInfo: c<NetworkInfo>()));
-    container.registerSingleton<PointsLocalDatasource>((c) =>
-        PointsLocalDatasourceImpl(
-            authLocalDataSource: c<AuthLocalDataSource>()));
-    container.registerSingleton<PointsRemoteDatasource>((c) =>
-        PointsRemoteDatasourceImpl(
-            apiService: c<PointsApiService>(),
-            tagsApiService: c<TagsApiService>()));
-    container.registerSingleton(
-        (c) => UCGetSelfUserPoints(repository: c<PointsRepository>()));
-    container.registerSingleton((c) => UCGetPointsRules(c<PointsRepository>()));
-    container.registerSingleton((c) => UCGetPointsFaq(c<PointsRepository>()));
+    container
+      ..registerFactory((c) => PointsBloc(
+          getPoints: c<UCGetSelfUserPoints>(),
+          getPointsFaq: c<UCGetPointsFaq>(),
+          pointsRules: c<UCGetPointsRules>()))
+      ..registerSingleton<PointsRepository>((c) => PointsRepositoryImpl(
+          localDatasource: c<PointsLocalDatasource>(),
+          remoteDatasource: c<PointsRemoteDatasource>(),
+          networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<PointsLocalDatasource>((c) =>
+          PointsLocalDatasourceImpl(
+              authLocalDataSource: c<AuthLocalDataSource>()))
+      ..registerSingleton<PointsRemoteDatasource>((c) =>
+          PointsRemoteDatasourceImpl(
+              apiService: c<PointsApiService>(),
+              tagsApiService: c<TagsApiService>()))
+      ..registerSingleton(
+          (c) => UCGetSelfUserPoints(repository: c<PointsRepository>()))
+      ..registerSingleton((c) => UCGetPointsRules(c<PointsRepository>()))
+      ..registerSingleton((c) => UCGetPointsFaq(c<PointsRepository>()));
   }
 }
 
@@ -421,20 +410,21 @@ class _$NotificationInjector extends NotificationInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) =>
-        NotificationBloc(getNotifications: c<UCGetNotificationPageRequest>()));
-    container.registerSingleton<NotificationRepository>((c) =>
-        NotificationRepositoryImpl(
-            localDatasource: c<NotificationLocalDatasource>(),
-            remotDatasource: c<NotificationRemotDatasource>(),
-            networkInfo: c<NetworkInfo>()));
-    container.registerSingleton<NotificationLocalDatasource>(
-        (c) => NotificationLocalDatasourceImpl());
-    container.registerSingleton<NotificationRemotDatasource>((c) =>
-        NotificationRemotDatasourceImpl(
-            apiService: c<NotificationApiService>()));
-    container.registerSingleton((c) =>
-        UCGetNotificationPageRequest(repository: c<NotificationRepository>()));
+    container
+      ..registerFactory((c) =>
+          NotificationBloc(getNotifications: c<UCGetNotificationPageRequest>()))
+      ..registerSingleton<NotificationRepository>((c) =>
+          NotificationRepositoryImpl(
+              localDatasource: c<NotificationLocalDatasource>(),
+              remotDatasource: c<NotificationRemotDatasource>(),
+              networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<NotificationLocalDatasource>(
+          (c) => NotificationLocalDatasourceImpl())
+      ..registerSingleton<NotificationRemotDatasource>((c) =>
+          NotificationRemotDatasourceImpl(
+              apiService: c<NotificationApiService>()))
+      ..registerSingleton((c) => UCGetNotificationPageRequest(
+          repository: c<NotificationRepository>()));
   }
 }
 
@@ -442,23 +432,23 @@ class _$RewardsInjector extends RewardsInjector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => RewardsBloc(
-        getPackagesList: c<UCGetPackagesList>(),
-        getPackage: c<UCGetPackage>(),
-        packageRequest: c<UCPostPackageRequest>(),
-        analytics: c<Analytics>()));
-    container.registerSingleton<RewardsRepository>((c) => RewardsRepositoryImpl(
-        networkInfo: c<NetworkInfo>(),
-        localDatasource: c<RewardsLocalDatasource>(),
-        remoteDatasource: c<RewardsRemoteDatasource>()));
-    container.registerSingleton<RewardsLocalDatasource>(
-        (c) => RewardsLocalDatasourceImpl());
-    container.registerSingleton<RewardsRemoteDatasource>(
-        (c) => RewardsRemoteDatasourceImpl(apiService: c<RewardsApiService>()));
-    container.registerSingleton(
-        (c) => UCGetPackagesList(repository: c<RewardsRepository>()));
-    container.registerSingleton((c) => UCGetPackage(c<RewardsRepository>()));
     container
-        .registerSingleton((c) => UCPostPackageRequest(c<RewardsRepository>()));
+      ..registerFactory((c) => RewardsBloc(
+          getPackagesList: c<UCGetPackagesList>(),
+          getPackage: c<UCGetPackage>(),
+          packageRequest: c<UCPostPackageRequest>(),
+          analytics: c<Analytics>()))
+      ..registerSingleton<RewardsRepository>((c) => RewardsRepositoryImpl(
+          networkInfo: c<NetworkInfo>(),
+          localDatasource: c<RewardsLocalDatasource>(),
+          remoteDatasource: c<RewardsRemoteDatasource>()))
+      ..registerSingleton<RewardsLocalDatasource>(
+          (c) => RewardsLocalDatasourceImpl())
+      ..registerSingleton<RewardsRemoteDatasource>((c) =>
+          RewardsRemoteDatasourceImpl(apiService: c<RewardsApiService>()))
+      ..registerSingleton(
+          (c) => UCGetPackagesList(repository: c<RewardsRepository>()))
+      ..registerSingleton((c) => UCGetPackage(c<RewardsRepository>()))
+      ..registerSingleton((c) => UCPostPackageRequest(c<RewardsRepository>()));
   }
 }

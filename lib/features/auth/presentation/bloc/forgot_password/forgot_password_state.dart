@@ -2,23 +2,23 @@ part of 'forgot_password_bloc.dart';
 
 @immutable
 class ForgotPasswordState extends Equatable {
-  final String response;
+  final String? response;
   final bool isEmailValid;
-  final Failure error;
+  final Failure? error;
   final bool isSubmitting;
 
   const ForgotPasswordState({
     this.response,
-    this.isEmailValid,
+    required this.isEmailValid,
     this.error,
-    this.isSubmitting,
+    required this.isSubmitting,
   });
 
   ForgotPasswordState copyWith({
-    String response,
-    bool isEmailValid,
-    Failure error,
-    bool isSubmitting,
+    String? response,
+    bool? isEmailValid,
+    Failure? error,
+    bool? isSubmitting,
   }) {
     return ForgotPasswordState(
       response: response ?? this.response,
@@ -35,7 +35,7 @@ class ForgotPasswordState extends Equatable {
   }
 
   ForgotPasswordState update({
-    @required bool isEmailValid,
+    required bool isEmailValid,
   }) {
     return copyWith(
       isEmailValid: isEmailValid,
@@ -43,12 +43,21 @@ class ForgotPasswordState extends Equatable {
   }
 
   @override
-  List<Object> get props => [
-        response,
-        isEmailValid,
-        error,
-        isSubmitting,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      isEmailValid,
+      isSubmitting,
+    ];
+
+    if (response != null) {
+      temp.add(response!);
+    }
+
+    if (error != null) {
+      temp.add(error!);
+    }
+    return temp;
+  }
 }
 
 class ForgotPasswordInitial extends ForgotPasswordState {
@@ -63,7 +72,7 @@ class ForgotPasswordInitial extends ForgotPasswordState {
 
 class ForgotPasswordSuccess extends ForgotPasswordState {
   const ForgotPasswordSuccess({
-    @required final String response,
+    required final String response,
   }) : super(
           response: response,
           isEmailValid: true,
@@ -74,7 +83,7 @@ class ForgotPasswordSuccess extends ForgotPasswordState {
 
 class ForgotPasswordFailure extends ForgotPasswordState {
   const ForgotPasswordFailure({
-    @required Failure error,
+    required Failure error,
   }) : super(
           response: null,
           isEmailValid: true,

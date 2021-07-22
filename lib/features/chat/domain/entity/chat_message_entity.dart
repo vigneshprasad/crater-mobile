@@ -2,35 +2,35 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class ChatMessage extends HiveObject {
-  final String message;
+  final String? message;
 
-  final String file;
+  final String? file;
 
-  final String filename;
+  final String? filename;
 
-  final String fileFormat;
+  final String? fileFormat;
 
-  final String sender;
+  final String? sender;
 
-  final String receiver;
+  final String? receiver;
 
   final int pk;
 
-  final String photo;
+  final String? photo;
 
-  final String created;
+  final String? created;
 
   @JsonKey(name: "is_read")
-  final bool isRead;
+  final bool? isRead;
 
   @JsonKey(name: "sender_id")
-  final String senderId;
+  final String? senderId;
 
   @JsonKey(name: "receiver_id")
-  final String receiverId;
+  final String? receiverId;
 
   @JsonKey(name: "is_support")
-  final bool isSupport;
+  final bool? isSupport;
 
   ChatMessage({
     this.message,
@@ -39,7 +39,7 @@ class ChatMessage extends HiveObject {
     this.fileFormat,
     this.sender,
     this.receiver,
-    this.pk,
+    required this.pk,
     this.photo,
     this.created,
     this.isRead,

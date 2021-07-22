@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 // ignore: avoid_classes_with_only_static_members
 abstract class ConfigReader {
-  static Map<String, dynamic> _config;
+  static late Map<String, dynamic> _config;
 
   static Future<void> intialize(String configPath) async {
     final configString = await rootBundle.loadString(configPath);

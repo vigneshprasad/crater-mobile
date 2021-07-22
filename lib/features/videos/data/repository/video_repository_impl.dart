@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -18,9 +17,9 @@ class VideoRepositoryImpl implements VideoRepository {
   final VideoRemoteDatasource remoteDatasource;
 
   VideoRepositoryImpl({
-    @required this.networkInfo,
-    @required this.localDataSource,
-    @required this.remoteDatasource,
+    required this.networkInfo,
+    required this.localDataSource,
+    required this.remoteDatasource,
   });
 
   @override

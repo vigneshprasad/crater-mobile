@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'rtc_user_entity.dart';
 
@@ -9,14 +9,16 @@ part of 'rtc_user_entity.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$RtcUserTearOff {
   const _$RtcUserTearOff();
 
-// ignore: unused_element
   _RtcUser call(
-      {@required ConversationUser userInfo,
-      @required String pk,
+      {required ConversationUser userInfo,
+      required String pk,
       bool online = false,
       bool muted = false,
       int volume = 0}) {
@@ -31,19 +33,18 @@ class _$RtcUserTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $RtcUser = _$RtcUserTearOff();
 
 /// @nodoc
 mixin _$RtcUser {
-  ConversationUser get userInfo;
-  String get pk;
-  bool get online;
-  bool get muted;
-  int get volume;
+  ConversationUser get userInfo => throw _privateConstructorUsedError;
+  String get pk => throw _privateConstructorUsedError;
+  bool get online => throw _privateConstructorUsedError;
+  bool get muted => throw _privateConstructorUsedError;
+  int get volume => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RtcUserCopyWith<RtcUser> get copyWith;
+  $RtcUserCopyWith<RtcUser> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -70,27 +71,38 @@ class _$RtcUserCopyWithImpl<$Res> implements $RtcUserCopyWith<$Res> {
 
   @override
   $Res call({
-    Object userInfo = freezed,
-    Object pk = freezed,
-    Object online = freezed,
-    Object muted = freezed,
-    Object volume = freezed,
+    Object? userInfo = freezed,
+    Object? pk = freezed,
+    Object? online = freezed,
+    Object? muted = freezed,
+    Object? volume = freezed,
   }) {
     return _then(_value.copyWith(
-      userInfo:
-          userInfo == freezed ? _value.userInfo : userInfo as ConversationUser,
-      pk: pk == freezed ? _value.pk : pk as String,
-      online: online == freezed ? _value.online : online as bool,
-      muted: muted == freezed ? _value.muted : muted as bool,
-      volume: volume == freezed ? _value.volume : volume as int,
+      userInfo: userInfo == freezed
+          ? _value.userInfo
+          : userInfo // ignore: cast_nullable_to_non_nullable
+              as ConversationUser,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as String,
+      online: online == freezed
+          ? _value.online
+          : online // ignore: cast_nullable_to_non_nullable
+              as bool,
+      muted: muted == freezed
+          ? _value.muted
+          : muted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      volume: volume == freezed
+          ? _value.volume
+          : volume // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
   @override
   $ConversationUserCopyWith<$Res> get userInfo {
-    if (_value.userInfo == null) {
-      return null;
-    }
     return $ConversationUserCopyWith<$Res>(_value.userInfo, (value) {
       return _then(_value.copyWith(userInfo: value));
     });
@@ -124,36 +136,46 @@ class __$RtcUserCopyWithImpl<$Res> extends _$RtcUserCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object userInfo = freezed,
-    Object pk = freezed,
-    Object online = freezed,
-    Object muted = freezed,
-    Object volume = freezed,
+    Object? userInfo = freezed,
+    Object? pk = freezed,
+    Object? online = freezed,
+    Object? muted = freezed,
+    Object? volume = freezed,
   }) {
     return _then(_RtcUser(
-      userInfo:
-          userInfo == freezed ? _value.userInfo : userInfo as ConversationUser,
-      pk: pk == freezed ? _value.pk : pk as String,
-      online: online == freezed ? _value.online : online as bool,
-      muted: muted == freezed ? _value.muted : muted as bool,
-      volume: volume == freezed ? _value.volume : volume as int,
+      userInfo: userInfo == freezed
+          ? _value.userInfo
+          : userInfo // ignore: cast_nullable_to_non_nullable
+              as ConversationUser,
+      pk: pk == freezed
+          ? _value.pk
+          : pk // ignore: cast_nullable_to_non_nullable
+              as String,
+      online: online == freezed
+          ? _value.online
+          : online // ignore: cast_nullable_to_non_nullable
+              as bool,
+      muted: muted == freezed
+          ? _value.muted
+          : muted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      volume: volume == freezed
+          ? _value.volume
+          : volume // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_RtcUser implements _RtcUser {
   _$_RtcUser(
-      {@required this.userInfo,
-      @required this.pk,
+      {required this.userInfo,
+      required this.pk,
       this.online = false,
       this.muted = false,
-      this.volume = 0})
-      : assert(userInfo != null),
-        assert(pk != null),
-        assert(online != null),
-        assert(muted != null),
-        assert(volume != null);
+      this.volume = 0});
 
   @override
   final ConversationUser userInfo;
@@ -208,23 +230,24 @@ class _$_RtcUser implements _RtcUser {
 
 abstract class _RtcUser implements RtcUser {
   factory _RtcUser(
-      {@required ConversationUser userInfo,
-      @required String pk,
+      {required ConversationUser userInfo,
+      required String pk,
       bool online,
       bool muted,
       int volume}) = _$_RtcUser;
 
   @override
-  ConversationUser get userInfo;
+  ConversationUser get userInfo => throw _privateConstructorUsedError;
   @override
-  String get pk;
+  String get pk => throw _privateConstructorUsedError;
   @override
-  bool get online;
+  bool get online => throw _privateConstructorUsedError;
   @override
-  bool get muted;
+  bool get muted => throw _privateConstructorUsedError;
   @override
-  int get volume;
+  int get volume => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RtcUserCopyWith<_RtcUser> get copyWith;
+  _$RtcUserCopyWith<_RtcUser> get copyWith =>
+      throw _privateConstructorUsedError;
 }

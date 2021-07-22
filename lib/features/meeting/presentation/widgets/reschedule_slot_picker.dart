@@ -9,9 +9,9 @@ class RescheduleSlotPicker extends StatefulWidget {
   final bool disabled;
 
   const RescheduleSlotPicker({
-    Key key,
-    @required this.timeSlots,
-    @required this.onValueChanged,
+    Key? key,
+    required this.timeSlots,
+    required this.onValueChanged,
     this.disabled = false,
   }) : super(key: key);
 
@@ -20,7 +20,7 @@ class RescheduleSlotPicker extends StatefulWidget {
 }
 
 class _RescheduleSlotPickerState extends State<RescheduleSlotPicker> {
-  DateTime _value;
+  late DateTime _value;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +50,10 @@ class _TimeSlots extends StatelessWidget {
   final ValueChanged<DateTime> onPressed;
 
   const _TimeSlots({
-    Key key,
-    @required this.slot,
-    @required this.selected,
-    @required this.onPressed,
+    Key? key,
+    required this.slot,
+    required this.selected,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -61,7 +61,7 @@ class _TimeSlots extends StatelessWidget {
     final primaryColor = Theme.of(context).primaryColor;
     final dateFormat = DateFormat('EEE, dd MMM - hh:mm a');
     final borderRadius = BorderRadius.circular(8.0);
-    final textStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 15,
           color: selected ? Colors.white : Colors.grey[600],
         );

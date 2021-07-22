@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ws_response.g.dart';
@@ -32,12 +31,13 @@ enum WSResponseType {
 @JsonSerializable()
 class WSResponse {
   static WSResponseType getEnumFromJson(dynamic value) =>
-      _$enumDecodeNullable(_$WSResponseTypeEnumMap, value,
+      _$enumDecode(_$WSResponseTypeEnumMap, value,
           unknownValue: WSResponseType.unknowType);
+
   @JsonKey(unknownEnumValue: WSResponseType.unknowType)
   final WSResponseType type;
 
   WSResponse({
-    @required this.type,
+    required this.type,
   });
 }

@@ -9,8 +9,8 @@ class NewPasswordRequestStarted extends NewPasswordEvent {
   final String query;
 
   const NewPasswordRequestStarted({
-    @required this.password,
-    @required this.query,
+    required this.password,
+    required this.query,
   });
 
   @override
@@ -20,7 +20,7 @@ class NewPasswordRequestStarted extends NewPasswordEvent {
 class NewPasswordChanged extends NewPasswordEvent {
   final String password;
 
-  const NewPasswordChanged({this.password});
+  const NewPasswordChanged({required this.password});
 
   @override
   List<Object> get props => [password];
@@ -30,7 +30,8 @@ class NewPasswordConfirmChanged extends NewPasswordEvent {
   final String password;
   final String passwordConfirm;
 
-  const NewPasswordConfirmChanged({this.password, this.passwordConfirm});
+  const NewPasswordConfirmChanged(
+      {required this.password, required this.passwordConfirm});
 
   @override
   List<Object> get props => [password, passwordConfirm];

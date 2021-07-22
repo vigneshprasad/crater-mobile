@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../core/features/websocket/data/models/ws_request.dart';
@@ -13,7 +12,7 @@ class GetAllUsersRequestParams extends Equatable {
   final String search;
 
   @JsonKey(name: "latest_messages")
-  final String latestMessages;
+  final String? latestMessages;
 
   final bool strict;
 
@@ -42,7 +41,7 @@ class GetAllUsersRequestParams extends Equatable {
 class GetAllChatUsersRequest extends WSRequest {
   const GetAllChatUsersRequest({
     WSRequestType type = WSRequestType.getAllUsers,
-    @required GetAllUsersRequestParams message,
+    required GetAllUsersRequestParams message,
   }) : super(
           type: type,
           message: message,
@@ -58,7 +57,7 @@ class StarChatUserRequestParams extends Equatable {
   final String user;
 
   const StarChatUserRequestParams({
-    this.user,
+    required this.user,
   });
 
   @override
@@ -73,7 +72,7 @@ class StarChatUserRequestParams extends Equatable {
 class StarChatUserRequest extends WSRequest {
   const StarChatUserRequest({
     WSRequestType type = WSRequestType.starChatUser,
-    @required StarChatUserRequestParams message,
+    required StarChatUserRequestParams message,
   }) : super(
           type: type,
           message: message,
@@ -88,7 +87,7 @@ class StarChatUserRequest extends WSRequest {
 class UnStarChatUserRequest extends WSRequest {
   const UnStarChatUserRequest({
     WSRequestType type = WSRequestType.unStarChatUser,
-    @required StarChatUserRequestParams message,
+    required StarChatUserRequestParams message,
   }) : super(
           type: type,
           message: message,

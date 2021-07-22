@@ -12,8 +12,8 @@ class GetVideosListRequestStarted extends VideoEvent {
   final int pageSize;
 
   const GetVideosListRequestStarted({
-    @required this.page,
-    @required this.pageSize,
+    required this.page,
+    required this.pageSize,
   });
 
   @override

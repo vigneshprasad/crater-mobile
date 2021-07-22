@@ -8,7 +8,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   final double maxScrollRatio;
 
   BaseBottomSheetRoute({
-    @required this.child,
+    required this.child,
     this.initialHeightRatio = 0.5,
     this.maxScrollRatio = 1.0,
   });
@@ -20,7 +20,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,

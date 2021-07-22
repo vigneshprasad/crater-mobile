@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
@@ -18,11 +17,9 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
   final Analytics analytics;
 
   CreatePostBloc({
-    @required this.createPost,
-    @required this.analytics,
-  })  : assert(createPost != null),
-        assert(analytics != null),
-        super(const CreatePostInitial());
+    required this.createPost,
+    required this.analytics,
+  }) : super(const CreatePostInitial());
 
   @override
   Stream<CreatePostState> mapEventToState(

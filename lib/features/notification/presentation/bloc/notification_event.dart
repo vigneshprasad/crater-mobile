@@ -12,8 +12,8 @@ class GetNotificationsRequestStarted extends NotificationEvent {
   final int pageSize;
 
   const GetNotificationsRequestStarted({
-    @required this.page,
-    @required this.pageSize,
+    required this.page,
+    required this.pageSize,
   });
 
   @override

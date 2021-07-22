@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
@@ -19,13 +18,10 @@ class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
   final Analytics analytics;
 
   PhoneVerifyBloc({
-    @required this.postNewPhoneNumber,
-    @required this.postSmsCode,
-    @required this.analytics,
-  })  : assert(postNewPhoneNumber != null),
-        assert(postSmsCode != null),
-        assert(analytics != null),
-        super(const PhoneVerifyInitial());
+    required this.postNewPhoneNumber,
+    required this.postSmsCode,
+    required this.analytics,
+  }) : super(const PhoneVerifyInitial());
 
   @override
   Stream<PhoneVerifyState> mapEventToState(

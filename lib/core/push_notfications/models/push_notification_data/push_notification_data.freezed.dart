@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'push_notification_data.dart';
 
@@ -8,6 +8,10 @@ part of 'push_notification_data.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 ConversationNotificationData _$ConversationNotificationDataFromJson(
     Map<String, dynamic> json) {
   return _ConversationNotificationData.fromJson(json);
@@ -17,37 +21,34 @@ ConversationNotificationData _$ConversationNotificationDataFromJson(
 class _$ConversationNotificationDataTearOff {
   const _$ConversationNotificationDataTearOff();
 
-// ignore: unused_element
   _ConversationNotificationData call(
-      {@JsonKey(name: 'obj_type') PushType type,
-      @JsonKey(name: 'group_id') dynamic groupId = PushType.conversation}) {
+      {@JsonKey(name: "obj_type") required PushType type,
+      @JsonKey(name: "group_id") dynamic groupId = PushType.conversation}) {
     return _ConversationNotificationData(
       type: type,
       groupId: groupId,
     );
   }
 
-// ignore: unused_element
   ConversationNotificationData fromJson(Map<String, Object> json) {
     return ConversationNotificationData.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ConversationNotificationData = _$ConversationNotificationDataTearOff();
 
 /// @nodoc
 mixin _$ConversationNotificationData {
-  @JsonKey(name: 'obj_type')
-  PushType get type;
-  @JsonKey(name: 'group_id')
-  dynamic get groupId;
+  @JsonKey(name: "obj_type")
+  PushType get type => throw _privateConstructorUsedError;
+  @JsonKey(name: "group_id")
+  dynamic get groupId => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ConversationNotificationDataCopyWith<ConversationNotificationData>
-      get copyWith;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,8 +58,8 @@ abstract class $ConversationNotificationDataCopyWith<$Res> {
           $Res Function(ConversationNotificationData) then) =
       _$ConversationNotificationDataCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'obj_type') PushType type,
-      @JsonKey(name: 'group_id') dynamic groupId});
+      {@JsonKey(name: "obj_type") PushType type,
+      @JsonKey(name: "group_id") dynamic groupId});
 }
 
 /// @nodoc
@@ -72,12 +73,18 @@ class _$ConversationNotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object type = freezed,
-    Object groupId = freezed,
+    Object? type = freezed,
+    Object? groupId = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed ? _value.type : type as PushType,
-      groupId: groupId == freezed ? _value.groupId : groupId as dynamic,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as PushType,
+      groupId: groupId == freezed
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -91,8 +98,8 @@ abstract class _$ConversationNotificationDataCopyWith<$Res>
       __$ConversationNotificationDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'obj_type') PushType type,
-      @JsonKey(name: 'group_id') dynamic groupId});
+      {@JsonKey(name: "obj_type") PushType type,
+      @JsonKey(name: "group_id") dynamic groupId});
 }
 
 /// @nodoc
@@ -110,34 +117,35 @@ class __$ConversationNotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object type = freezed,
-    Object groupId = freezed,
+    Object? type = freezed,
+    Object? groupId = freezed,
   }) {
     return _then(_ConversationNotificationData(
-      type: type == freezed ? _value.type : type as PushType,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as PushType,
       groupId: groupId == freezed ? _value.groupId : groupId,
     ));
   }
 }
 
+/// @nodoc
 @JsonSerializable()
 @Implements(PushNotificationBase)
-
-/// @nodoc
 class _$_ConversationNotificationData implements _ConversationNotificationData {
   _$_ConversationNotificationData(
-      {@JsonKey(name: 'obj_type') this.type,
-      @JsonKey(name: 'group_id') this.groupId = PushType.conversation})
-      : assert(groupId != null);
+      {@JsonKey(name: "obj_type") required this.type,
+      @JsonKey(name: "group_id") this.groupId = PushType.conversation});
 
   factory _$_ConversationNotificationData.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationNotificationDataFromJson(json);
 
   @override
-  @JsonKey(name: 'obj_type')
+  @JsonKey(name: "obj_type")
   final PushType type;
   @override
-  @JsonKey(name: 'group_id')
+  @JsonKey(name: "group_id")
   final dynamic groupId;
 
   @override
@@ -176,21 +184,21 @@ class _$_ConversationNotificationData implements _ConversationNotificationData {
 abstract class _ConversationNotificationData
     implements ConversationNotificationData, PushNotificationBase {
   factory _ConversationNotificationData(
-          {@JsonKey(name: 'obj_type') PushType type,
-          @JsonKey(name: 'group_id') dynamic groupId}) =
+          {@JsonKey(name: "obj_type") required PushType type,
+          @JsonKey(name: "group_id") dynamic groupId}) =
       _$_ConversationNotificationData;
 
   factory _ConversationNotificationData.fromJson(Map<String, dynamic> json) =
       _$_ConversationNotificationData.fromJson;
 
   @override
-  @JsonKey(name: 'obj_type')
-  PushType get type;
+  @JsonKey(name: "obj_type")
+  PushType get type => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'group_id')
-  dynamic get groupId;
+  @JsonKey(name: "group_id")
+  dynamic get groupId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationNotificationDataCopyWith<_ConversationNotificationData>
-      get copyWith;
+      get copyWith => throw _privateConstructorUsedError;
 }
