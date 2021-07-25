@@ -12,8 +12,7 @@ class _$CoreInjector extends CoreInjector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton<CustomTabs>((c) => CustomTabImpl())
-      ..registerSingleton<NetworkInfo>(
-          (c) => NetworkInfoImpl(connectionChecker: c<dynamic>()))
+      ..registerSingleton<NetworkInfo>((c) => NetworkInfoImpl())
       ..registerSingleton<PushNotifications>((c) => PushNotificationsImpl())
       ..registerSingleton<LocalStorage>((c) => LocalStorageImpl())
       ..registerSingleton<Analytics>((c) => AnalyticsImpl(

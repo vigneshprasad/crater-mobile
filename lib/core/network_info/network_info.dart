@@ -5,11 +5,11 @@ abstract class NetworkInfo {
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  final dynamic connectionChecker;
+  // final dynamic connectionChecker;
 
-  NetworkInfoImpl({
-    required this.connectionChecker,
-  });
+  // NetworkInfoImpl({
+  // required this.connectionChecker,
+  // });
 
   @override
   Future<bool> get isConnected =>
