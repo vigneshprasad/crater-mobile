@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -8,28 +9,28 @@ import '../../routes.gr.dart';
 
 void navigatePostAuth(User? user, {UserProfile? profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+  final router = AutoRouter.of(_navigator.currentContext!);
   if (user != null) {
     if (profile == null) {
-      _navigator.currentState?.pushNamedAndRemoveUntil(
-          ProfileBasicScreenRoute.name, (route) => false);
+      router.pushAndPopUntil(ProfileBasicScreenRoute(editMode: false),
+          predicate: (route) => false);
     } else if (profile.tagList == null || profile.tagList!.isEmpty) {
-      _navigator.currentState?.pushNamedAndRemoveUntil(
-          ProfileTagsScreenRoute.name, (route) => false);
+      router.pushAndPopUntil(ProfileTagsScreenRoute(editMode: false),
+          predicate: (route) => false);
     } else if (profile.profileIntroUpdated == false) {
-      _navigator.currentState?.pushNamedAndRemoveUntil(
-          ProfileExtraInfoScreenRoute.name, (route) => false);
+      router.pushAndPopUntil(const ProfileExtraInfoScreenRoute(),
+          predicate: (route) => false);
     } else if (profile.photo == null) {
-      _navigator.currentState?.pushNamedAndRemoveUntil(
-          ProfileImageScreenRoute.name, (route) => false);
+      router.pushAndPopUntil(ProfileImageScreenRoute(editMode: false),
+          predicate: (route) => false);
     } else {
-      _navigator.currentState
-          ?.pushNamedAndRemoveUntil(HomeScreenRoute.name, (route) => false);
+      router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     }
   } else if (user!.phoneNumberVerified == false) {
-    _navigator.currentState?.pushNamedAndRemoveUntil(
-        PhoneVerificationScreenRoute.name, (route) => false);
+    router.pushAndPopUntil(const PhoneVerificationScreenRoute(),
+        predicate: (route) => false);
   } else {
-    _navigator.currentState?.popAndPushNamed(HomeScreenRoute.name);
+    router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();
   }
 }
