@@ -69,7 +69,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   Widget build(BuildContext context) {
     items = tags
         .map((e) => PickerItem(
-              name: e.name,
+              name: e.name ?? '',
               selected: selectedTags.contains(e),
             ))
         .toList();
@@ -155,7 +155,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     setState(() {
       items = tags
           .map((e) => PickerItem(
-                name: e.name,
+                name: e.name ?? '',
                 selected: selectedTags.contains(e),
               ))
           .toList();

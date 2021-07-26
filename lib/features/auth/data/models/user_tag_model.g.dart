@@ -17,8 +17,8 @@ class UserTagModelAdapter extends TypeAdapter<UserTagModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserTagModel(
-      name: fields[0] as String,
-      pk: fields[1] as int,
+      name: fields[0] as String?,
+      pk: fields[1] as int?,
     );
   }
 
@@ -49,8 +49,8 @@ class UserTagModelAdapter extends TypeAdapter<UserTagModel> {
 
 UserTagModel _$UserTagModelFromJson(Map<String, dynamic> json) {
   return UserTagModel(
-    name: json['name'] as String,
-    pk: json['pk'] as int,
+    name: json['name'] as String?,
+    pk: json['pk'] as int?,
   );
 }
 

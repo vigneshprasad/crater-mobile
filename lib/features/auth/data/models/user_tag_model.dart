@@ -13,14 +13,14 @@ part 'user_tag_model.g.dart';
 @JsonSerializable()
 class UserTagModel extends UserTag {
   @HiveField(0)
-  final String name;
+  final String? name;
 
   @HiveField(1)
-  final int pk;
+  final int? pk;
 
   UserTagModel({
-    required this.name,
-    required this.pk,
+    this.name,
+    this.pk,
   }) : super(
           name: name,
           pk: pk,

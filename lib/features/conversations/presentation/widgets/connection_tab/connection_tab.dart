@@ -65,7 +65,7 @@ class ConnectionTab extends HookWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: FilterChip(
                         selected: selectedTag?.name == tags[index].name,
-                        label: Text(tags[index].name),
+                        label: Text(tags[index].name ?? ''),
                         onSelected: (value) {
                           selectedTag = tags[index];
                           context

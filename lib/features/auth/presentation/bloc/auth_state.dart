@@ -47,8 +47,8 @@ class AuthState extends Equatable {
   }
 
   AuthState update({
-    bool isEmailValid = false,
-    bool isPasswordValid = false,
+    bool? isEmailValid,
+    bool? isPasswordValid,
   }) {
     return copyWith(
       isEmailValid: isEmailValid,
