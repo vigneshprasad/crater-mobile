@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'user_tag_entity.dart';
 
 class UserProfile extends HiveObject {
-  final int pk;
+  final int? pk;
   final String? additionalInformation;
   final int? cover;
   final String? coverFile;
@@ -39,7 +39,7 @@ class UserProfile extends HiveObject {
   final String? companyName;
 
   UserProfile({
-    required this.pk,
+    this.pk,
     this.additionalInformation,
     this.cover,
     this.coverFile,

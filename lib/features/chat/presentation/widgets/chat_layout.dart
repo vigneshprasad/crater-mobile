@@ -82,7 +82,8 @@ class _ChatLayoutState extends State<ChatLayout> {
       final image = widget.user!.photo != null
           ? NetworkImage(widget.user!.photo!)
           : AppImageAssets.defaultAvatar as ImageProvider;
-      final name = widget.user!.name.isNotEmpty ? widget.user!.name : "";
+      final name =
+          (widget.user!.name?.isNotEmpty ?? false) ? widget.user!.name : "";
       // ignore: unused_local_variable
       final lastSeen = widget.user!.lastSeen != null
           ? formatDate.format(widget.user!.lastSeen!)
@@ -104,7 +105,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    name ?? '',
                     style: headerStyle,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -26,12 +26,13 @@ class MeetingRepositoryImpl implements MeetingRepository {
   });
 
   @override
-  Future<Either<Failure, MeetingConfig?>> getMeetingsCoonfigs() async {
+  Future<Either<Failure, MeetingConfig>> getMeetingsCoonfigs() async {
     final isConnected = await networkInfo.isConnected;
 
     if (isConnected) {
       try {
         final response = await remoteDatasource.getMeetingConfigFromRemote();
+        if (response == null) return Left(CacheFailure());
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -93,9 +94,10 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, UserMeetingPreference?>> getMeetingPreference() async {
+  Future<Either<Failure, UserMeetingPreference>> getMeetingPreference() async {
     try {
       final response = await remoteDatasource.getMeetingPreferenceFromRemote();
+      if (response == null) return Right(UserMeetingPreference());
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));
@@ -103,11 +105,12 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, UserMeetingPreference?>>
+  Future<Either<Failure, UserMeetingPreference>>
       getPastMeetingPreference() async {
     try {
       final response =
           await remoteDatasource.getPastMeetingPreferenceFromRemote();
+      if (response == null) return Left(ServerFailure());
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

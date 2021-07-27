@@ -22,7 +22,7 @@ class ChatInboxLocalDataSourceImpl implements ChatInboxLocalDataSource {
     final Map<String, ChatUserModel> entries = users.fold(
       {},
       (previousValue, element) => {
-        element.pk: element as ChatUserModel,
+        element.pk ?? '': element as ChatUserModel,
         ...previousValue,
       },
     );

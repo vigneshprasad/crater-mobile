@@ -21,7 +21,7 @@ class _$ProfileTearOff {
   const _$ProfileTearOff();
 
   _Profile call(
-      {required int pk,
+      {int? pk,
       String? uuid,
       String? name,
       String? introduction,
@@ -51,7 +51,7 @@ const $Profile = _$ProfileTearOff();
 
 /// @nodoc
 mixin _$Profile {
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   String? get uuid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get introduction => throw _privateConstructorUsedError;
@@ -73,7 +73,7 @@ abstract class $ProfileCopyWith<$Res> {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
       _$ProfileCopyWithImpl<$Res>;
   $Res call(
-      {int pk,
+      {int? pk,
       String? uuid,
       String? name,
       String? introduction,
@@ -106,7 +106,7 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       uuid: uuid == freezed
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -145,7 +145,7 @@ abstract class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       __$ProfileCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int pk,
+      {int? pk,
       String? uuid,
       String? name,
       String? introduction,
@@ -179,7 +179,7 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       uuid: uuid == freezed
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -216,7 +216,7 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Profile implements _Profile {
   _$_Profile(
-      {required this.pk,
+      {this.pk,
       this.uuid,
       this.name,
       this.introduction,
@@ -229,7 +229,7 @@ class _$_Profile implements _Profile {
       _$_$_ProfileFromJson(json);
 
   @override
-  final int pk;
+  final int? pk;
   @override
   final String? uuid;
   @override
@@ -303,7 +303,7 @@ class _$_Profile implements _Profile {
 
 abstract class _Profile implements Profile {
   factory _Profile(
-      {required int pk,
+      {int? pk,
       String? uuid,
       String? name,
       String? introduction,
@@ -315,7 +315,7 @@ abstract class _Profile implements Profile {
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
   @override
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   @override
   String? get uuid => throw _privateConstructorUsedError;
   @override

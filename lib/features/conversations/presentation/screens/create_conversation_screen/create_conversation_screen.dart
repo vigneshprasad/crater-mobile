@@ -85,7 +85,7 @@ class CreateConversationScreen extends HookWidget {
                                 topic: topic,
                                 showFooter: false,
                                 onTap: () => launch(
-                                  topic.articleDetail!.websiteUrl!,
+                                  topic.articleDetail?.websiteUrl ?? '',
                                   customTabsOption: const CustomTabsOption(),
                                 ),
                               )
@@ -162,7 +162,8 @@ class CreateConversationScreen extends HookWidget {
                                   if (type == ConversationType.curated)
                                     TimeSlotFormField(
                                       initialValue: const [],
-                                      slots: meta.config!.availableTimeSlots,
+                                      slots:
+                                          meta.config?.availableTimeSlots ?? {},
                                       onChange: (slots) =>
                                           _timeslots.value = slots,
                                       validator: (value) {
@@ -281,7 +282,7 @@ class CreateConversationScreen extends HookWidget {
             properties: {
               "id": conversation.id,
               "topic": conversation.topic,
-              "topic_name": conversation.topicDetail!.name,
+              "topic_name": conversation.topicDetail?.name,
             });
         AutoRouter.of(context).pushAndPopUntil(
           OnboardingScreenRoute(

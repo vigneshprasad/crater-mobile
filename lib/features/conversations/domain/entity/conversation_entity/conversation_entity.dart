@@ -29,9 +29,9 @@ abstract class Conversation with _$Conversation {
     int? topic,
     String? description,
     List<int>? interests,
-    required DateTime start,
+    DateTime? start,
     DateTime? end,
-    @JsonKey(name: 'max_speakers') required int maxSpeakers,
+    @JsonKey(name: 'max_speakers') int? maxSpeakers,
     ConversationPrivacy? privacy,
     ConversationMedium? medium,
     bool? closed,
@@ -54,7 +54,7 @@ abstract class Conversation with _$Conversation {
 @freezed
 abstract class ConversationUser with _$ConversationUser {
   factory ConversationUser({
-    required String pk,
+    String? pk,
     String? email,
     String? name,
     String? photo,
@@ -68,8 +68,8 @@ abstract class ConversationUser with _$ConversationUser {
 @freezed
 abstract class ConversationByDate with _$ConversationByDate {
   factory ConversationByDate({
-    required DateTime date,
-    required List<Conversation> conversations,
+    DateTime? date,
+    List<Conversation>? conversations,
   }) = _ConversationByDate;
 
   factory ConversationByDate.fromJson(Map<String, dynamic> json) =>

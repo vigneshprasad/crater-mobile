@@ -16,9 +16,10 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
     description: json['description'] as String?,
     interests:
         (json['interests'] as List<dynamic>?)?.map((e) => e as int).toList(),
-    start: DateTime.parse(json['start'] as String),
+    start:
+        json['start'] == null ? null : DateTime.parse(json['start'] as String),
     end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
-    maxSpeakers: json['max_speakers'] as int,
+    maxSpeakers: json['max_speakers'] as int?,
     privacy:
         _$enumDecodeNullable(_$ConversationPrivacyEnumMap, json['privacy']),
     medium: _$enumDecodeNullable(_$ConversationMediumEnumMap, json['medium']),
@@ -53,7 +54,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'topic': instance.topic,
       'description': instance.description,
       'interests': instance.interests,
-      'start': instance.start.toIso8601String(),
+      'start': instance.start?.toIso8601String(),
       'end': instance.end?.toIso8601String(),
       'max_speakers': instance.maxSpeakers,
       'privacy': _$ConversationPrivacyEnumMap[instance.privacy],
@@ -118,7 +119,7 @@ const _$ConversationMediumEnumMap = {
 
 _$_ConversationUser _$_$_ConversationUserFromJson(Map<String, dynamic> json) {
   return _$_ConversationUser(
-    pk: json['pk'] as String,
+    pk: json['pk'] as String?,
     email: json['email'] as String?,
     name: json['name'] as String?,
     photo: json['photo'] as String?,
@@ -139,9 +140,9 @@ Map<String, dynamic> _$_$_ConversationUserToJson(
 _$_ConversationByDate _$_$_ConversationByDateFromJson(
     Map<String, dynamic> json) {
   return _$_ConversationByDate(
-    date: DateTime.parse(json['date'] as String),
-    conversations: (json['conversations'] as List<dynamic>)
-        .map((e) => Conversation.fromJson(e as Map<String, dynamic>))
+    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    conversations: (json['conversations'] as List<dynamic>?)
+        ?.map((e) => Conversation.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
@@ -149,6 +150,6 @@ _$_ConversationByDate _$_$_ConversationByDateFromJson(
 Map<String, dynamic> _$_$_ConversationByDateToJson(
         _$_ConversationByDate instance) =>
     <String, dynamic>{
-      'date': instance.date.toIso8601String(),
+      'date': instance.date?.toIso8601String(),
       'conversations': instance.conversations,
     };

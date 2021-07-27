@@ -33,7 +33,7 @@ class MeetingPreferencesCard extends StatelessWidget {
         .textTheme
         .bodyText2
         ?.copyWith(fontSize: 14, color: Colors.grey[500]);
-    final startDate = DateTime.parse(meetingConfig.weekStartDate);
+    final startDate = DateTime.parse(meetingConfig.weekStartDate ?? '');
     final dateFormat = DateFormat("d MMMM");
     final subhead =
         "Update your preferences for the week of ${dateFormat.format(startDate)}.";
@@ -123,17 +123,18 @@ class MeetingPreferencesCard extends StatelessWidget {
   }
 
   List<TimeSlot> _getSelectedTimeSlots() {
-    return meetingConfig.availableTimeSlots.entries.fold(
-      [],
-      (previousValue, element) {
-        for (final timeSlot in element.value) {
-          if (preference.timeSlots.contains(timeSlot.pk)) {
-            previousValue.add(timeSlot);
-          }
-        }
-        return previousValue;
-      },
-    );
+    return meetingConfig.availableTimeSlots?.entries.fold(
+          [],
+          (previousValue, element) {
+            for (final timeSlot in element.value) {
+              if (preference.timeSlots?.contains(timeSlot.pk) ?? false) {
+                previousValue?.add(timeSlot);
+              }
+            }
+            return previousValue;
+          },
+        ) ??
+        [];
   }
 
   MeetingObjective _getSelectedObjective() {
@@ -143,7 +144,7 @@ class MeetingPreferencesCard extends StatelessWidget {
 
   List<MeetingInterest> _getSelectedInterests() {
     return interests.fold([], (previousValue, element) {
-      if (preference.interests.contains(element)) {
+      if (preference.interests?.contains(element) ?? false) {
         previousValue.add(element);
       }
       return previousValue;

@@ -119,7 +119,7 @@ class _SheetHeader extends StatelessWidget {
               onPressed: onBackPress,
             ),
             Text(
-              topic!.name,
+              topic?.name ?? '',
               style: style,
             ),
           ],

@@ -131,11 +131,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Stream<ChatState> _mapRecievedSetChatToState(
       ReceivedSetChatUserResponse event) async* {
     final cachedOrError = await receivedSetChatWithUser(ReceivedSetChatParams(
-      messages: event.response.results!,
-      receiverUser: event.response.userData!,
-      page: event.response.page!,
-      pages: event.response.pages!,
-      unreadCount: event.response.userData!.unreadCount!,
+      messages: event.response.results ?? [],
+      receiverUser: event.response.userData ?? ChatUser(),
+      page: event.response.page ?? 0,
+      pages: event.response.pages ?? 0,
+      unreadCount: event.response.userData?.unreadCount ?? 0,
     ));
     yield cachedOrError.fold(
       (failure) => state.copyWith(error: failure),

@@ -3,9 +3,9 @@ import 'package:hive/hive.dart';
 import '../../../chat/domain/entity/chat_message_entity.dart';
 
 class ChatUser extends HiveObject {
-  final String pk;
+  final String? pk;
 
-  final String name;
+  final String? name;
 
   final String? photo;
 
@@ -18,7 +18,7 @@ class ChatUser extends HiveObject {
   final ChatMessage? latestMessage;
 
   ChatUser({
-    required this.pk,
+    this.pk,
     this.name = '',
     this.photo,
     this.unreadCount,

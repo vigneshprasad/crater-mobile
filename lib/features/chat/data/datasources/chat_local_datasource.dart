@@ -57,7 +57,7 @@ class ChatLocalDataSourceImpl implements ChatLocalDataSource {
     try {
       await _persistMessagesToHive(messages);
       final updated = await _updateUserChatHive(
-        receiverUser.pk,
+        receiverUser.pk ?? '',
         messages: messages,
         page: page,
         pages: pages,

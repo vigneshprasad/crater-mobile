@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/error/failures.dart';
 
-import '../../../../../core/error/failures/failures.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/repository/meeting_repository.dart';
@@ -66,14 +66,17 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     for (final result in response) {
       if (result.isLeft()) {
-        final failure = result.getOrElse(() => []) as Failure;
+        final failure =
+            result.swap().getOrElse(() => ServerFailure()) as Failure;
         state = TableMetaState.error(failure);
         return;
       }
     }
 
-    final interests = response[0].getOrElse(() => []) as List<MeetingInterest>;
-    final slots = response[1].getOrElse(() => <DateTime>[]) as List<DateTime>;
+    final interests = response[0].getOrElse(() => List<MeetingInterest>.empty())
+        as List<MeetingInterest>;
+    final slots =
+        response[1].getOrElse(() => List<DateTime>.empty()) as List<DateTime>;
 
     state = TableMetaState.data(CreateTableMeta(
       interests: interests,
@@ -89,19 +92,22 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     for (final result in response) {
       if (result.isLeft()) {
-        final failure = result.getOrElse(() => []) as Failure?;
-        state = TableMetaState.error(failure!);
+        final failure =
+            result.swap().getOrElse(() => ServerFailure()) as Failure;
+        state = TableMetaState.error(failure);
         return;
       }
     }
 
-    final interests = response[0].getOrElse(() => []) as List<MeetingInterest>?;
-    final config = response[1].getOrElse(() => []) as MeetingConfig?;
+    final interests = response[0].getOrElse(() => List<MeetingInterest>.empty())
+        as List<MeetingInterest>;
 
-    if (config == null) {
+    if (response[1].isRight()) {
       state = TableMetaState.emptyConfig();
       return;
     }
+    final config =
+        response[1].getOrElse(() => MeetingConfig()) as MeetingConfig;
 
     state = TableMetaState.data(CreateTableMeta(
       interests: interests,

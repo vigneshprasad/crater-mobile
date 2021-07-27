@@ -101,7 +101,7 @@ class MeetingCard extends StatelessWidget {
   Widget _buildActionsRow(BuildContext context) {
     return Row(
       children: [
-        if (meeting.participants!.isNotEmpty)
+        if (meeting.participants?.isNotEmpty ?? false)
           ...meeting.participants!
               .map((participant) => participant.rsvp != null
                   ? RsvpIndicator(

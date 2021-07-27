@@ -31,9 +31,11 @@ class ConversationCard extends StatelessWidget {
           fontSize: 13.00,
           color: Colors.white70,
         );
-    final isFull = conversation.speakers!.length >= conversation.maxSpeakers;
+    final isFull =
+        (conversation.speakers?.length ?? 0) >= (conversation.maxSpeakers ?? 0);
     final now = DateTime.now();
-    final difference = conversation.start.toLocal().difference(now).inMinutes;
+    final difference =
+        conversation.start?.toLocal().difference(now).inMinutes ?? 0;
 
     final isSoon = difference > 0 && difference <= 30;
     final startTime = difference <= 30 ? "In $difference minutes" : "";
@@ -57,11 +59,11 @@ class ConversationCard extends StatelessWidget {
       }
     }
 
-    final article = conversation.topicDetail!.articleDetail;
+    final article = conversation.topicDetail?.articleDetail;
 
     final heading =
-        article != null ? article.description : conversation.topicDetail!.name;
-    final padding = article != null && article.description!.isEmpty
+        article != null ? article.description : conversation.topicDetail?.name;
+    final padding = article != null && (article.description?.isEmpty ?? true)
         ? const EdgeInsets.symmetric(
             horizontal: AppInsets.xl,
           )
@@ -91,7 +93,7 @@ class ConversationCard extends StatelessWidget {
       border: _border,
       child: Column(
         children: [
-          if (conversation.topicDetail!.articleDetail != null)
+          if (conversation.topicDetail?.articleDetail != null)
             _ArticleDetailCard(
                 article: conversation.topicDetail!.articleDetail!),
           if (hideFooter != true)
@@ -100,7 +102,8 @@ class ConversationCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(dateFormat.format(conversation.start.toLocal())),
+                    Text(dateFormat.format(
+                        conversation.start?.toLocal() ?? DateTime.now())),
                     Text("Relevancy: ${conversation.relevancy}%",
                         style: subheadStyle),
                   ],

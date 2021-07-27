@@ -84,10 +84,10 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               final pastPrefs = state.pastPreferences;
               if (pastPrefs != null) {
                 final List<TimeSlot> slots = [];
-                _selectedInterests = pastPrefs.interests;
-                widget.config.availableTimeSlots.forEach((key, value) {
+                _selectedInterests = pastPrefs.interests ?? [];
+                widget.config.availableTimeSlots?.forEach((key, value) {
                   for (final slot in value) {
-                    if (pastPrefs.timeSlots.contains(slot.pk)) {
+                    if (pastPrefs.timeSlots?.contains(slot.pk) ?? false) {
                       slots.add(slot);
                     }
                   }
@@ -163,7 +163,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
           color: Colors.grey[500],
           height: 1.6,
         );
-    final startDate = DateTime.parse(widget.config.weekStartDate);
+    final startDate = DateTime.parse(widget.config.weekStartDate ?? '');
     final dateFormat = DateFormat("dd MMMM");
     final subheadText =
         "Choose preferences for the week of ${dateFormat.format(startDate)}";
@@ -254,7 +254,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
                   return null;
                 },
                 initialValue: _selectedSlots,
-                slots: widget.config.availableTimeSlots,
+                slots: widget.config.availableTimeSlots ?? {},
                 onChange: (slots) {
                   setState(() {
                     _selectedSlots = slots;

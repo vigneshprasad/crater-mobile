@@ -326,7 +326,7 @@ class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
       for (final speaker in speakers)
         RtcUser(
           userInfo: speaker,
-          pk: speaker.pk,
+          pk: speaker.pk!,
           online: false,
           muted: false,
           volume: 0,
@@ -381,7 +381,7 @@ class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
       for (final speaker in newSpeakers)
         RtcUser(
           userInfo: speaker,
-          pk: speaker.pk,
+          pk: speaker.pk!,
           online: false,
           muted: false,
           volume: 0,

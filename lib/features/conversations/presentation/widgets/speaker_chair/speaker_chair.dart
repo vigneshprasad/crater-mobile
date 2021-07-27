@@ -84,7 +84,7 @@ class SpeakerChair extends StatelessWidget {
                   : InkWell(
                       onTap: () {
                         AutoRouter.of(context).push(ProfileScreenRoute(
-                            userId: (speaker as ConversationUser?)!.pk,
+                            userId: (speaker as ConversationUser?)!.pk!,
                             allowEdit: speaker.pk == authUserPK));
                       },
                       child: SpeakerAvatar(

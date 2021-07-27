@@ -8,7 +8,7 @@ part of 'profile_entity.dart';
 
 _$_Profile _$_$_ProfileFromJson(Map<String, dynamic> json) {
   return _$_Profile(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     uuid: json['uuid'] as String?,
     name: json['name'] as String?,
     introduction: json['introduction'] as String?,

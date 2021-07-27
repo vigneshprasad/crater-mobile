@@ -27,10 +27,10 @@ class _$ConversationTearOff {
       int? topic,
       String? description,
       List<int>? interests,
-      required DateTime start,
+      DateTime? start,
       DateTime? end,
       @JsonKey(name: 'max_speakers')
-          required int maxSpeakers,
+          int? maxSpeakers,
       ConversationPrivacy? privacy,
       ConversationMedium? medium,
       bool? closed,
@@ -89,10 +89,10 @@ mixin _$Conversation {
   int? get topic => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<int>? get interests => throw _privateConstructorUsedError;
-  DateTime get start => throw _privateConstructorUsedError;
+  DateTime? get start => throw _privateConstructorUsedError;
   DateTime? get end => throw _privateConstructorUsedError;
   @JsonKey(name: 'max_speakers')
-  int get maxSpeakers => throw _privateConstructorUsedError;
+  int? get maxSpeakers => throw _privateConstructorUsedError;
   ConversationPrivacy? get privacy => throw _privateConstructorUsedError;
   ConversationMedium? get medium => throw _privateConstructorUsedError;
   bool? get closed => throw _privateConstructorUsedError;
@@ -132,10 +132,10 @@ abstract class $ConversationCopyWith<$Res> {
       int? topic,
       String? description,
       List<int>? interests,
-      DateTime start,
+      DateTime? start,
       DateTime? end,
       @JsonKey(name: 'max_speakers')
-          int maxSpeakers,
+          int? maxSpeakers,
       ConversationPrivacy? privacy,
       ConversationMedium? medium,
       bool? closed,
@@ -218,7 +218,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       start: start == freezed
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       end: end == freezed
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
@@ -226,7 +226,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       maxSpeakers: maxSpeakers == freezed
           ? _value.maxSpeakers
           : maxSpeakers // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       privacy: privacy == freezed
           ? _value.privacy
           : privacy // ignore: cast_nullable_to_non_nullable
@@ -311,10 +311,10 @@ abstract class _$ConversationCopyWith<$Res>
       int? topic,
       String? description,
       List<int>? interests,
-      DateTime start,
+      DateTime? start,
       DateTime? end,
       @JsonKey(name: 'max_speakers')
-          int maxSpeakers,
+          int? maxSpeakers,
       ConversationPrivacy? privacy,
       ConversationMedium? medium,
       bool? closed,
@@ -401,7 +401,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
       start: start == freezed
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       end: end == freezed
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
@@ -409,7 +409,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
       maxSpeakers: maxSpeakers == freezed
           ? _value.maxSpeakers
           : maxSpeakers // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       privacy: privacy == freezed
           ? _value.privacy
           : privacy // ignore: cast_nullable_to_non_nullable
@@ -468,9 +468,9 @@ class _$_Conversation implements _Conversation {
       this.topic,
       this.description,
       this.interests,
-      required this.start,
+      this.start,
       this.end,
-      @JsonKey(name: 'max_speakers') required this.maxSpeakers,
+      @JsonKey(name: 'max_speakers') this.maxSpeakers,
       this.privacy,
       this.medium,
       this.closed,
@@ -499,12 +499,12 @@ class _$_Conversation implements _Conversation {
   @override
   final List<int>? interests;
   @override
-  final DateTime start;
+  final DateTime? start;
   @override
   final DateTime? end;
   @override
   @JsonKey(name: 'max_speakers')
-  final int maxSpeakers;
+  final int? maxSpeakers;
   @override
   final ConversationPrivacy? privacy;
   @override
@@ -641,10 +641,10 @@ abstract class _Conversation implements Conversation {
       int? topic,
       String? description,
       List<int>? interests,
-      required DateTime start,
+      DateTime? start,
       DateTime? end,
       @JsonKey(name: 'max_speakers')
-          required int maxSpeakers,
+          int? maxSpeakers,
       ConversationPrivacy? privacy,
       ConversationMedium? medium,
       bool? closed,
@@ -680,12 +680,12 @@ abstract class _Conversation implements Conversation {
   @override
   List<int>? get interests => throw _privateConstructorUsedError;
   @override
-  DateTime get start => throw _privateConstructorUsedError;
+  DateTime? get start => throw _privateConstructorUsedError;
   @override
   DateTime? get end => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'max_speakers')
-  int get maxSpeakers => throw _privateConstructorUsedError;
+  int? get maxSpeakers => throw _privateConstructorUsedError;
   @override
   ConversationPrivacy? get privacy => throw _privateConstructorUsedError;
   @override
@@ -732,7 +732,7 @@ class _$ConversationUserTearOff {
   const _$ConversationUserTearOff();
 
   _ConversationUser call(
-      {required String pk,
+      {String? pk,
       String? email,
       String? name,
       String? photo,
@@ -756,7 +756,7 @@ const $ConversationUser = _$ConversationUserTearOff();
 
 /// @nodoc
 mixin _$ConversationUser {
-  String get pk => throw _privateConstructorUsedError;
+  String? get pk => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
@@ -774,7 +774,7 @@ abstract class $ConversationUserCopyWith<$Res> {
           ConversationUser value, $Res Function(ConversationUser) then) =
       _$ConversationUserCopyWithImpl<$Res>;
   $Res call(
-      {String pk,
+      {String? pk,
       String? email,
       String? name,
       String? photo,
@@ -802,7 +802,7 @@ class _$ConversationUserCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -831,7 +831,7 @@ abstract class _$ConversationUserCopyWith<$Res>
       __$ConversationUserCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String pk,
+      {String? pk,
       String? email,
       String? name,
       String? photo,
@@ -861,7 +861,7 @@ class __$ConversationUserCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -886,13 +886,13 @@ class __$ConversationUserCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ConversationUser implements _ConversationUser {
   _$_ConversationUser(
-      {required this.pk, this.email, this.name, this.photo, this.introduction});
+      {this.pk, this.email, this.name, this.photo, this.introduction});
 
   factory _$_ConversationUser.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationUserFromJson(json);
 
   @override
-  final String pk;
+  final String? pk;
   @override
   final String? email;
   @override
@@ -946,7 +946,7 @@ class _$_ConversationUser implements _ConversationUser {
 
 abstract class _ConversationUser implements ConversationUser {
   factory _ConversationUser(
-      {required String pk,
+      {String? pk,
       String? email,
       String? name,
       String? photo,
@@ -956,7 +956,7 @@ abstract class _ConversationUser implements ConversationUser {
       _$_ConversationUser.fromJson;
 
   @override
-  String get pk => throw _privateConstructorUsedError;
+  String? get pk => throw _privateConstructorUsedError;
   @override
   String? get email => throw _privateConstructorUsedError;
   @override
@@ -980,7 +980,7 @@ class _$ConversationByDateTearOff {
   const _$ConversationByDateTearOff();
 
   _ConversationByDate call(
-      {required DateTime date, required List<Conversation> conversations}) {
+      {DateTime? date, List<Conversation>? conversations}) {
     return _ConversationByDate(
       date: date,
       conversations: conversations,
@@ -997,8 +997,8 @@ const $ConversationByDate = _$ConversationByDateTearOff();
 
 /// @nodoc
 mixin _$ConversationByDate {
-  DateTime get date => throw _privateConstructorUsedError;
-  List<Conversation> get conversations => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
+  List<Conversation>? get conversations => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1011,7 +1011,7 @@ abstract class $ConversationByDateCopyWith<$Res> {
   factory $ConversationByDateCopyWith(
           ConversationByDate value, $Res Function(ConversationByDate) then) =
       _$ConversationByDateCopyWithImpl<$Res>;
-  $Res call({DateTime date, List<Conversation> conversations});
+  $Res call({DateTime? date, List<Conversation>? conversations});
 }
 
 /// @nodoc
@@ -1032,11 +1032,11 @@ class _$ConversationByDateCopyWithImpl<$Res>
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       conversations: conversations == freezed
           ? _value.conversations
           : conversations // ignore: cast_nullable_to_non_nullable
-              as List<Conversation>,
+              as List<Conversation>?,
     ));
   }
 }
@@ -1048,7 +1048,7 @@ abstract class _$ConversationByDateCopyWith<$Res>
           _ConversationByDate value, $Res Function(_ConversationByDate) then) =
       __$ConversationByDateCopyWithImpl<$Res>;
   @override
-  $Res call({DateTime date, List<Conversation> conversations});
+  $Res call({DateTime? date, List<Conversation>? conversations});
 }
 
 /// @nodoc
@@ -1071,11 +1071,11 @@ class __$ConversationByDateCopyWithImpl<$Res>
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       conversations: conversations == freezed
           ? _value.conversations
           : conversations // ignore: cast_nullable_to_non_nullable
-              as List<Conversation>,
+              as List<Conversation>?,
     ));
   }
 }
@@ -1083,15 +1083,15 @@ class __$ConversationByDateCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ConversationByDate implements _ConversationByDate {
-  _$_ConversationByDate({required this.date, required this.conversations});
+  _$_ConversationByDate({this.date, this.conversations});
 
   factory _$_ConversationByDate.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationByDateFromJson(json);
 
   @override
-  final DateTime date;
+  final DateTime? date;
   @override
-  final List<Conversation> conversations;
+  final List<Conversation>? conversations;
 
   @override
   String toString() {
@@ -1128,16 +1128,16 @@ class _$_ConversationByDate implements _ConversationByDate {
 
 abstract class _ConversationByDate implements ConversationByDate {
   factory _ConversationByDate(
-      {required DateTime date,
-      required List<Conversation> conversations}) = _$_ConversationByDate;
+      {DateTime? date,
+      List<Conversation>? conversations}) = _$_ConversationByDate;
 
   factory _ConversationByDate.fromJson(Map<String, dynamic> json) =
       _$_ConversationByDate.fromJson;
 
   @override
-  DateTime get date => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
   @override
-  List<Conversation> get conversations => throw _privateConstructorUsedError;
+  List<Conversation>? get conversations => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationByDateCopyWith<_ConversationByDate> get copyWith =>

@@ -54,7 +54,7 @@ class OneOnOneCard extends StatelessWidget {
             .push(MeetingDetailScreenRoute(meetingId: meeting.pk));
       },
       background: background,
-      heading: Text('Meeting with ${meeting.participantDetail!.name}'),
+      heading: Text('Meeting with ${meeting.participantDetail?.name}'),
       subHeading: Row(
         children: [
           Text(dateFormat.format(meeting.start.toLocal())),

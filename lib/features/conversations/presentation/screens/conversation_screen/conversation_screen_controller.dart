@@ -91,7 +91,7 @@ class ConversationScreenController extends ChangeNotifier {
     if (_localUser == null) {
       return null;
     }
-    return _speakers.firstWhere((element) => element.pk == _localUser!.pk);
+    return _speakers.firstWhere((element) => element.pk == _localUser?.pk);
   }
 
   List<RtcUser> intializeSpeakers(Conversation table) {
@@ -108,7 +108,7 @@ class ConversationScreenController extends ChangeNotifier {
     initial.addAll(table.speakersDetailList?.map(
           (speaker) => RtcUser(
             userInfo: speaker,
-            pk: speaker.pk,
+            pk: speaker.pk!,
             online: false,
             muted: false,
           ),

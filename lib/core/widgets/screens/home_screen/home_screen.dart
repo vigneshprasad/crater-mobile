@@ -81,9 +81,9 @@ class HomeScreen extends HookWidget {
     final _activeTab = useState(tab ?? 0);
     final _activeTopic = useState(topic ?? 0);
 
-    final name =
-        BlocProvider.of<AuthBloc>(context).state.user!.name!.split(' ').first;
-    final email = BlocProvider.of<AuthBloc>(context).state.user!.email;
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final name = user?.name?.split(' ').first ?? '';
+    final email = user?.email;
 
     useEffect(() {
       void _tabChangeListener() {

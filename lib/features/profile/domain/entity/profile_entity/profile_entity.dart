@@ -8,7 +8,7 @@ part 'profile_entity.g.dart';
 @freezed
 abstract class Profile with _$Profile {
   factory Profile({
-    required int pk,
+    int? pk,
     String? uuid,
     String? name,
     String? introduction,

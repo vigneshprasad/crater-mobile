@@ -123,7 +123,7 @@ class _ConversationLoaded extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: AppInsets.sm),
-                  Text(startDateFormat.format(conversation.start.toLocal()),
+                  Text(startDateFormat.format(conversation.start!.toLocal()),
                       style: dateStyle),
                   ConversationCard(
                     conversation: conversation,
@@ -247,7 +247,7 @@ class _ConversationLoaded extends StatelessWidget {
       },
       (group) {
         final now = DateTime.now().toLocal();
-        final start = group.start.toLocal();
+        final start = group.start!.toLocal();
         final end = group.end!.toLocal();
 
         if (now.isAfter(start) && now.isBefore(end)) {
@@ -313,7 +313,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
-        ProfileScreenRoute(userId: user.pk, allowEdit: authUserPk == user.pk),
+        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

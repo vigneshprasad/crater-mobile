@@ -325,7 +325,7 @@ class _SnapShot extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppInsets.l),
-          if (meta != null && meta!.isNotEmpty)
+          if (meta?.isNotEmpty ?? false)
             Column(
                 children: meta!.entries
                     .map((e) => Padding(

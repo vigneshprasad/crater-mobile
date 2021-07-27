@@ -140,7 +140,7 @@ class _RoundTableLoaded extends HookWidget {
                         )),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(startDateFormat.format(table.start.toLocal()),
+                    child: Text(startDateFormat.format(table.start!.toLocal()),
                         style: dateStyle),
                   ),
                   ConversationCard(
@@ -382,7 +382,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(ProfileScreenRoute(
-          userId: user.pk, allowEdit: authUserPk == user.pk)),
+          userId: user.pk!, allowEdit: authUserPk == user.pk)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(

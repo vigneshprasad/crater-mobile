@@ -101,7 +101,7 @@ class _InboxTabState extends State<InboxTab> {
       user: user,
       onStarPressed: () {
         _inboxBloc.add(StarUserRequestStarted(
-          user: user.pk,
+          user: user.pk ?? '',
           isStarred: !user.isStarred,
         ));
       },

@@ -9,7 +9,7 @@ import '../../routes.gr.dart';
 
 void navigatePostAuth(User? user, {UserProfile? profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
-  final router = AutoRouter.of(_navigator.currentContext!);
+  final router = AutoRouter.of(_navigator.currentContext!).root;
   if (user != null) {
     if (profile == null) {
       router.pushAndPopUntil(ProfileBasicScreenRoute(editMode: false),
@@ -23,12 +23,12 @@ void navigatePostAuth(User? user, {UserProfile? profile}) {
     } else if (profile.photo == null) {
       router.pushAndPopUntil(ProfileImageScreenRoute(editMode: false),
           predicate: (route) => false);
+    } else if (user.phoneNumberVerified == false) {
+      router.pushAndPopUntil(const PhoneVerificationScreenRoute(),
+          predicate: (route) => false);
     } else {
       router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     }
-  } else if (user!.phoneNumberVerified == false) {
-    router.pushAndPopUntil(const PhoneVerificationScreenRoute(),
-        predicate: (route) => false);
   } else {
     router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();

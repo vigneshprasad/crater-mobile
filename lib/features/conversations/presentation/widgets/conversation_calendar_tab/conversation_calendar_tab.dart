@@ -132,7 +132,7 @@ class _LoadedConversationTab extends HookWidget {
           ),
         ]);
       }
-      if (week.future != null && !week.future!) {
+      if (week.future != null) {
         /// Add Conversations
         for (final date in week.conversations) {
           children.addAll([
@@ -151,9 +151,9 @@ class _LoadedConversationTab extends HookWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       return ConversationCard(
-                          conversation: date.conversations[index]);
+                          conversation: date.conversations![index]);
                     },
-                    childCount: date.conversations.length,
+                    childCount: date.conversations?.length ?? 0,
                   ),
                 ),
               ),
@@ -248,11 +248,11 @@ class _EmptyOptinsState extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.8,
             ),
             const SizedBox(height: AppInsets.xl),
-            Text(heading!, style: headingStyle),
+            Text(heading ?? '', style: headingStyle),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Text(
-                subheading!,
+                subheading ?? '',
                 textAlign: TextAlign.center,
                 style: subheadingStyle,
               ),
@@ -265,19 +265,20 @@ class _EmptyOptinsState extends StatelessWidget {
 }
 
 class _DateLabel extends StatelessWidget {
-  final DateTime date;
+  final DateTime? date;
 
   const _DateLabel({
     Key? key,
-    required this.date,
+    this.date,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (date == null) return Container();
     final dateFormat = DateFormat("d MMM - yyyy");
     final primaryColor = Theme.of(context).scaffoldBackgroundColor;
     final now = DateTime.now().toUtc();
-    final isToday = now.isSameDate(date);
+    final isToday = now.isSameDate(date!);
     final decoration = BoxDecoration(
         color: primaryColor, borderRadius: BorderRadius.circular(20));
     final dateLabelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
@@ -294,7 +295,7 @@ class _DateLabel extends StatelessWidget {
               width: 200.00,
               decoration: decoration,
               child: Center(
-                child: Text(dateFormat.format(date), style: dateLabelStyle),
+                child: Text(dateFormat.format(date!), style: dateLabelStyle),
               ),
             ),
           ],

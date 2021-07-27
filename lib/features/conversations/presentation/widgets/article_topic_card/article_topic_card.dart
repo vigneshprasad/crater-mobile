@@ -46,14 +46,14 @@ class ArticleTopicCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (topic.articleDetail!.description!.isNotEmpty)
+                if (topic.articleDetail?.description?.isNotEmpty ?? false)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: AppInsets.xl,
                       left: AppInsets.xl,
                       right: AppInsets.xl,
                     ),
-                    child: Text(topic.articleDetail!.description!,
+                    child: Text(topic.articleDetail?.description ?? '',
                         style: headingStyle),
                   )
                 else
@@ -164,7 +164,8 @@ class _ArticleContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppInsets.l),
-                  Text(article.articleSourceDetail!.name!, style: headingStyle),
+                  Text(article.articleSourceDetail?.name ?? '',
+                      style: headingStyle),
                   const Spacer(),
                   IconButton(
                     splashRadius: 22.00,

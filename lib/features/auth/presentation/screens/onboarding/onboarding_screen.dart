@@ -169,7 +169,7 @@ class OnboardingScreen extends HookWidget {
                   predicate: (route) => false);
 
               launch(
-                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user!.email}',
+                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user?.email}',
                 customTabsOption: const CustomTabsOption(
                   enableUrlBarHiding: true,
                   extraCustomTabs: [],

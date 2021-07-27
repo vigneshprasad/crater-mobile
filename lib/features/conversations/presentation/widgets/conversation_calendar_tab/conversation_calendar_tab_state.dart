@@ -52,13 +52,15 @@ class ConversationCalendarStateNofier
 
       for (final result in response) {
         if (result.isLeft()) {
-          throw result.getOrElse(() => []);
+          throw result.swap().getOrElse(() => ServerFailure());
         }
       }
 
       final conversations =
-          response[0].getOrElse(() => []) as List<ConversationByDate>;
-      final meetings = response[1].getOrElse(() => []) as List<MeetingsByDate>;
+          response[0].getOrElse(() => List<ConversationByDate>.empty())
+              as List<ConversationByDate>;
+      final meetings = response[1].getOrElse(() => List<MeetingsByDate>.empty())
+          as List<MeetingsByDate>;
 
       state = [
         CalendarWeekData(
@@ -87,14 +89,17 @@ class ConversationCalendarStateNofier
 
       for (final result in response) {
         if (result.isLeft()) {
-          throw result.getOrElse(() => []);
+          throw result.swap().getOrElse(() => ServerFailure());
         }
       }
 
       final conversations =
-          response[0].getOrElse(() => []) as List<ConversationByDate>;
-      final optins = response[1].getOrElse(() => []) as List<OptinsByDate>;
-      final meetings = response[2].getOrElse(() => []) as List<MeetingsByDate>;
+          response[0].getOrElse(() => List<ConversationByDate>.empty())
+              as List<ConversationByDate>;
+      final optins = response[1].getOrElse(() => List<OptinsByDate>.empty())
+          as List<OptinsByDate>;
+      final meetings = response[2].getOrElse(() => List<MeetingsByDate>.empty())
+          as List<MeetingsByDate>;
 
       state = [
         CalendarWeekData(
