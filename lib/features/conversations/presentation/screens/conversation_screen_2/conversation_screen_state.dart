@@ -100,8 +100,8 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     try {
       _setAudioCallHandlers();
       await read(conversationRtcClient).joinAudioCall(
-        info.channelName,
-        info.token,
+        info.channelName!,
+        info.token!,
         user.pk!,
       );
     } catch (exception) {

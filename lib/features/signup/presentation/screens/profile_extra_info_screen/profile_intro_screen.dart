@@ -309,7 +309,7 @@ class _AnimatedForm extends StatelessWidget {
       switch (data.type) {
         case FieldType.dropDown:
           return ProfileFormDropDown<Option>(
-            items: data.options,
+            items: data.options ?? [],
             labelGetter: (item) => item.name,
             validator: (value) =>
                 value != null ? null : "Please provide a value",
@@ -342,7 +342,7 @@ class _AnimatedForm extends StatelessWidget {
 
         case FieldType.multiSelect:
           return BaseMultiSelectDropdownFormField<Option>(
-            items: data.options,
+            items: data.options ?? [],
             labelGetter: (item) => item.name,
             validator: (value) => value == null || value.isEmpty
                 ? "Please provide a value"

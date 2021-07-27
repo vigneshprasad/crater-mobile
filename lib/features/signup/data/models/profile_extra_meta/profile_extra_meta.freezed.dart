@@ -182,7 +182,7 @@ class _$FormFieldDataTearOff {
 
   _FormFieldData call(
       {required FieldType type,
-      required List<Option> options,
+      List<Option>? options,
       required String label,
       required bool blank}) {
     return _FormFieldData(
@@ -204,7 +204,7 @@ const $FormFieldData = _$FormFieldDataTearOff();
 /// @nodoc
 mixin _$FormFieldData {
   FieldType get type => throw _privateConstructorUsedError;
-  List<Option> get options => throw _privateConstructorUsedError;
+  List<Option>? get options => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
   bool get blank => throw _privateConstructorUsedError;
 
@@ -219,7 +219,7 @@ abstract class $FormFieldDataCopyWith<$Res> {
   factory $FormFieldDataCopyWith(
           FormFieldData value, $Res Function(FormFieldData) then) =
       _$FormFieldDataCopyWithImpl<$Res>;
-  $Res call({FieldType type, List<Option> options, String label, bool blank});
+  $Res call({FieldType type, List<Option>? options, String label, bool blank});
 }
 
 /// @nodoc
@@ -246,7 +246,7 @@ class _$FormFieldDataCopyWithImpl<$Res>
       options: options == freezed
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -266,7 +266,7 @@ abstract class _$FormFieldDataCopyWith<$Res>
           _FormFieldData value, $Res Function(_FormFieldData) then) =
       __$FormFieldDataCopyWithImpl<$Res>;
   @override
-  $Res call({FieldType type, List<Option> options, String label, bool blank});
+  $Res call({FieldType type, List<Option>? options, String label, bool blank});
 }
 
 /// @nodoc
@@ -295,7 +295,7 @@ class __$FormFieldDataCopyWithImpl<$Res>
       options: options == freezed
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -313,7 +313,7 @@ class __$FormFieldDataCopyWithImpl<$Res>
 class _$_FormFieldData implements _FormFieldData {
   _$_FormFieldData(
       {required this.type,
-      required this.options,
+      this.options,
       required this.label,
       required this.blank});
 
@@ -323,7 +323,7 @@ class _$_FormFieldData implements _FormFieldData {
   @override
   final FieldType type;
   @override
-  final List<Option> options;
+  final List<Option>? options;
   @override
   final String label;
   @override
@@ -371,7 +371,7 @@ class _$_FormFieldData implements _FormFieldData {
 abstract class _FormFieldData implements FormFieldData {
   factory _FormFieldData(
       {required FieldType type,
-      required List<Option> options,
+      List<Option>? options,
       required String label,
       required bool blank}) = _$_FormFieldData;
 
@@ -381,7 +381,7 @@ abstract class _FormFieldData implements FormFieldData {
   @override
   FieldType get type => throw _privateConstructorUsedError;
   @override
-  List<Option> get options => throw _privateConstructorUsedError;
+  List<Option>? get options => throw _privateConstructorUsedError;
   @override
   String get label => throw _privateConstructorUsedError;
   @override

@@ -23,11 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc?.add(AuthStarted());
-    authBloc?.stream.listen((event) {
+    authBloc?.stream.take(1).listen((event) {
       final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
       listenAuthState(_navigator.currentContext!, event);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    authBloc = null;
+    super.dispose();
   }
 
   @override

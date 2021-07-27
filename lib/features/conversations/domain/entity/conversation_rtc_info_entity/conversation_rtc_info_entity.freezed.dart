@@ -21,9 +21,9 @@ class _$ConversationRtcInfoTearOff {
   const _$ConversationRtcInfoTearOff();
 
   _ConversationRtcInfo call(
-      {required String token,
-      @JsonKey(name: "channel_name") required String channelName,
-      @JsonKey(name: "rtc_uid") required String rtcUid}) {
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid}) {
     return _ConversationRtcInfo(
       token: token,
       channelName: channelName,
@@ -41,11 +41,11 @@ const $ConversationRtcInfo = _$ConversationRtcInfoTearOff();
 
 /// @nodoc
 mixin _$ConversationRtcInfo {
-  String get token => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
   @JsonKey(name: "channel_name")
-  String get channelName => throw _privateConstructorUsedError;
+  String? get channelName => throw _privateConstructorUsedError;
   @JsonKey(name: "rtc_uid")
-  String get rtcUid => throw _privateConstructorUsedError;
+  String? get rtcUid => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,9 +59,9 @@ abstract class $ConversationRtcInfoCopyWith<$Res> {
           ConversationRtcInfo value, $Res Function(ConversationRtcInfo) then) =
       _$ConversationRtcInfoCopyWithImpl<$Res>;
   $Res call(
-      {String token,
-      @JsonKey(name: "channel_name") String channelName,
-      @JsonKey(name: "rtc_uid") String rtcUid});
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid});
 }
 
 /// @nodoc
@@ -83,15 +83,15 @@ class _$ConversationRtcInfoCopyWithImpl<$Res>
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       channelName: channelName == freezed
           ? _value.channelName
           : channelName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       rtcUid: rtcUid == freezed
           ? _value.rtcUid
           : rtcUid // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -104,9 +104,9 @@ abstract class _$ConversationRtcInfoCopyWith<$Res>
       __$ConversationRtcInfoCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String token,
-      @JsonKey(name: "channel_name") String channelName,
-      @JsonKey(name: "rtc_uid") String rtcUid});
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid});
 }
 
 /// @nodoc
@@ -130,15 +130,15 @@ class __$ConversationRtcInfoCopyWithImpl<$Res>
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       channelName: channelName == freezed
           ? _value.channelName
           : channelName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       rtcUid: rtcUid == freezed
           ? _value.rtcUid
           : rtcUid // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -147,21 +147,21 @@ class __$ConversationRtcInfoCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ConversationRtcInfo implements _ConversationRtcInfo {
   _$_ConversationRtcInfo(
-      {required this.token,
-      @JsonKey(name: "channel_name") required this.channelName,
-      @JsonKey(name: "rtc_uid") required this.rtcUid});
+      {this.token,
+      @JsonKey(name: "channel_name") this.channelName,
+      @JsonKey(name: "rtc_uid") this.rtcUid});
 
   factory _$_ConversationRtcInfo.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationRtcInfoFromJson(json);
 
   @override
-  final String token;
+  final String? token;
   @override
   @JsonKey(name: "channel_name")
-  final String channelName;
+  final String? channelName;
   @override
   @JsonKey(name: "rtc_uid")
-  final String rtcUid;
+  final String? rtcUid;
 
   @override
   String toString() {
@@ -202,22 +202,21 @@ class _$_ConversationRtcInfo implements _ConversationRtcInfo {
 
 abstract class _ConversationRtcInfo implements ConversationRtcInfo {
   factory _ConversationRtcInfo(
-          {required String token,
-          @JsonKey(name: "channel_name") required String channelName,
-          @JsonKey(name: "rtc_uid") required String rtcUid}) =
-      _$_ConversationRtcInfo;
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid}) = _$_ConversationRtcInfo;
 
   factory _ConversationRtcInfo.fromJson(Map<String, dynamic> json) =
       _$_ConversationRtcInfo.fromJson;
 
   @override
-  String get token => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: "channel_name")
-  String get channelName => throw _privateConstructorUsedError;
+  String? get channelName => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: "rtc_uid")
-  String get rtcUid => throw _privateConstructorUsedError;
+  String? get rtcUid => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationRtcInfoCopyWith<_ConversationRtcInfo> get copyWith =>

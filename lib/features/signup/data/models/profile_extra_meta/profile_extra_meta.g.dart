@@ -21,8 +21,8 @@ Map<String, dynamic> _$_$_OptionToJson(_$_Option instance) => <String, dynamic>{
 _$_FormFieldData _$_$_FormFieldDataFromJson(Map<String, dynamic> json) {
   return _$_FormFieldData(
     type: _$enumDecode(_$FieldTypeEnumMap, json['type']),
-    options: (json['options'] as List<dynamic>)
-        .map((e) => Option.fromJson(e as Map<String, dynamic>))
+    options: (json['options'] as List<dynamic>?)
+        ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
         .toList(),
     label: json['label'] as String,
     blank: json['blank'] as bool,

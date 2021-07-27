@@ -129,7 +129,7 @@ class _TopicCard extends StatelessWidget {
                             ),
                             const SizedBox(height: AppInsets.xl),
                             Text(
-                              topic.description!,
+                              topic.description ?? '',
                               style: descriptionStyle,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,

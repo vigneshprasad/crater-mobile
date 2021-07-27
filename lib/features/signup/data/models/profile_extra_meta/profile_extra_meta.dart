@@ -26,7 +26,7 @@ abstract class Option with _$Option {
 abstract class FormFieldData with _$FormFieldData {
   factory FormFieldData({
     required FieldType type,
-    required List<Option> options,
+    List<Option>? options,
     required String label,
     required bool blank,
   }) = _FormFieldData;

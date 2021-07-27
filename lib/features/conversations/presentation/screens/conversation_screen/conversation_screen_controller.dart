@@ -157,7 +157,7 @@ class ConversationScreenController extends ChangeNotifier {
     _setRtcEventHandlers(localUser);
     try {
       await _rtcClient.joinRoundTableChannel(
-          info.channelName, info.token, localUser.pk!);
+          info.channelName!, info.token!, localUser.pk!);
     } catch (exception) {
       Fluttertoast.showToast(msg: 'Some error occurred. Please try again.');
       debugPrint(exception.toString());
@@ -239,7 +239,7 @@ class ConversationScreenController extends ChangeNotifier {
       (info) async {
         _rtcInfo = info;
         notifyListeners();
-        await read(roundTableRtcClientProvider).renewToken(info.token);
+        await read(roundTableRtcClientProvider).renewToken(info.token!);
       },
     );
   }
