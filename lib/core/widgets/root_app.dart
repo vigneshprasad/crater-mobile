@@ -100,6 +100,7 @@ class RootApp extends HookWidget {
                 canvasColor: darkBlue,
                 bottomNavigationBarTheme: BottomNavigationBarThemeData(
                   backgroundColor: black,
+                  selectedItemColor: buttonColor,
                 ),
                 appBarTheme: AppBarTheme(
                     iconTheme: IconThemeData(color: buttonColor),

@@ -36,7 +36,7 @@ class ConversationRtcClient {
     if (_engine == null) {
       await initEngine();
     }
-    await _engine!.setClientRole(
+    await _engine?.setClientRole(
       ClientRole.Broadcaster,
     );
     // await _engine?.setLogFilter(LogFilter.Off);
