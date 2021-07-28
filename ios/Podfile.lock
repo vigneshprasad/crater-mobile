@@ -75,7 +75,7 @@ PODS:
   - GTMSessionFetcher/Core (1.6.1)
   - image_picker (0.0.1):
     - Flutter
-  - Intercom (10.0.2)
+  - Intercom (10.0.3)
   - intercom_flutter (4.0.0):
     - Flutter
     - Intercom (~> 10.0.2)
@@ -266,7 +266,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
-  Intercom: 5d0dce325b596f3a35de0fb8fb728d29374ac0c1
+  Intercom: 7a58cfdfaa67a2f98f7256cd5d09c87fbc29cb7d
   intercom_flutter: 38838a418f85a7c38ebee69609e4ff800aabb633
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
