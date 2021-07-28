@@ -20,7 +20,7 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 class _$TagTearOff {
   const _$TagTearOff();
 
-  _Tag call({required int pk, required String name}) {
+  _Tag call({int? pk, String? name}) {
     return _Tag(
       pk: pk,
       name: name,
@@ -37,8 +37,8 @@ const $Tag = _$TagTearOff();
 
 /// @nodoc
 mixin _$Tag {
-  int get pk => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +49,7 @@ mixin _$Tag {
 abstract class $TagCopyWith<$Res> {
   factory $TagCopyWith(Tag value, $Res Function(Tag) then) =
       _$TagCopyWithImpl<$Res>;
-  $Res call({int pk, String name});
+  $Res call({int? pk, String? name});
 }
 
 /// @nodoc
@@ -69,11 +69,11 @@ class _$TagCopyWithImpl<$Res> implements $TagCopyWith<$Res> {
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -83,7 +83,7 @@ abstract class _$TagCopyWith<$Res> implements $TagCopyWith<$Res> {
   factory _$TagCopyWith(_Tag value, $Res Function(_Tag) then) =
       __$TagCopyWithImpl<$Res>;
   @override
-  $Res call({int pk, String name});
+  $Res call({int? pk, String? name});
 }
 
 /// @nodoc
@@ -104,11 +104,11 @@ class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -116,14 +116,14 @@ class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Tag implements _Tag {
-  _$_Tag({required this.pk, required this.name});
+  _$_Tag({this.pk, this.name});
 
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$_$_TagFromJson(json);
 
   @override
-  final int pk;
+  final int? pk;
   @override
-  final String name;
+  final String? name;
 
   @override
   String toString() {
@@ -158,14 +158,14 @@ class _$_Tag implements _Tag {
 }
 
 abstract class _Tag implements Tag {
-  factory _Tag({required int pk, required String name}) = _$_Tag;
+  factory _Tag({int? pk, String? name}) = _$_Tag;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
   @override
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TagCopyWith<_Tag> get copyWith => throw _privateConstructorUsedError;

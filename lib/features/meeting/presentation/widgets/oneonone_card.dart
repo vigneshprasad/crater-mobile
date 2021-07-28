@@ -27,7 +27,7 @@ class OneOnOneCard extends StatelessWidget {
           fontSize: 13.00,
         );
     final now = DateTime.now();
-    final difference = meeting.start.toLocal().difference(now).inMinutes;
+    final difference = meeting.start!.toLocal().difference(now).inMinutes;
 
     final isSoon = difference > 0 && difference <= 30;
     final startTime = difference <= 30 ? "In $difference minutes" : "";
@@ -36,7 +36,7 @@ class OneOnOneCard extends StatelessWidget {
     BoxBorder _border;
     final background = Theme.of(context).backgroundColor;
 
-    if (meeting.isPast) {
+    if (meeting.isPast!) {
       _border = Border.all(
         color: Colors.grey[200]!,
         width: 2.00,
@@ -51,13 +51,13 @@ class OneOnOneCard extends StatelessWidget {
     return CalendarCardLayout(
       onPressed: () {
         AutoRouter.of(context)
-            .push(MeetingDetailScreenRoute(meetingId: meeting.pk));
+            .push(MeetingDetailScreenRoute(meetingId: meeting.pk!));
       },
       background: background,
       heading: Text('Meeting with ${meeting.participantDetail?.name}'),
       subHeading: Row(
         children: [
-          Text(dateFormat.format(meeting.start.toLocal())),
+          Text(dateFormat.format(meeting.start!.toLocal())),
           const Spacer(),
           if (isSoon) Text(startTime, style: subheadStyle),
         ],

@@ -128,7 +128,7 @@ class _InterestItem extends StatelessWidget {
             ),
             const SizedBox(height: AppInsets.sm),
             Text(
-              interest.name,
+              interest.name ?? '',
               style: labelStyle,
               textAlign: TextAlign.center,
             ),

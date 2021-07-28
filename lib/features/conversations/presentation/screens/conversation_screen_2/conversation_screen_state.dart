@@ -117,7 +117,7 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     await read(conversationRtcClient).muteLocalAudio(muted: muted);
 
     read(conversationSpeakersState(_groupId).notifier)
-        .toggleMutedState(user.pk, muted: !user.muted);
+        .toggleMutedState(user.pk!, muted: !user.muted);
   }
 
   void createAudioCallOverlay(BuildContext context) {
@@ -302,10 +302,10 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
     if (error == AudioLocalError.Ok) {
       if (state == AudioLocalState.Stopped) {
         read(conversationSpeakersState(_groupId).notifier)
-            .toggleMutedState(localUser.pk, muted: true);
+            .toggleMutedState(localUser.pk!, muted: true);
       } else if (state == AudioLocalState.Recording) {
         read(conversationSpeakersState(_groupId).notifier)
-            .toggleMutedState(localUser.pk);
+            .toggleMutedState(localUser.pk!);
       }
     }
   }
@@ -326,7 +326,7 @@ class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
       for (final speaker in speakers)
         RtcUser(
           userInfo: speaker,
-          pk: speaker.pk!,
+          pk: speaker.pk,
           online: false,
           muted: false,
           volume: 0,
@@ -381,7 +381,7 @@ class ConversationSpeakersState extends StateNotifier<List<RtcUser>> {
       for (final speaker in newSpeakers)
         RtcUser(
           userInfo: speaker,
-          pk: speaker.pk!,
+          pk: speaker.pk,
           online: false,
           muted: false,
           volume: 0,

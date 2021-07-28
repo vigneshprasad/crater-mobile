@@ -123,9 +123,9 @@ class _LoadedConversationTab extends HookWidget {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return OneOnOneCard(meeting: date.meetings[index]);
+                    return OneOnOneCard(meeting: date.meetings![index]);
                   },
-                  childCount: date.meetings.length,
+                  childCount: date.meetings?.length,
                 ),
               ),
             ),
@@ -183,10 +183,10 @@ class _LoadedConversationTab extends HookWidget {
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final optin = date.optins[index];
+                        final optin = date.optins![index];
                         return OptinCard(optin: optin);
                       },
-                      childCount: date.optins.length,
+                      childCount: date.optins?.length,
                     ),
                   ),
                 ),

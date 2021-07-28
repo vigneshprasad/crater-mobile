@@ -22,7 +22,7 @@ class _$TopicTearOff {
 
   _Topic call(
       {int? id,
-      required String name,
+      String? name,
       String? image,
       @JsonKey(name: "is_active") bool? active,
       int? parent,
@@ -62,7 +62,7 @@ const $Topic = _$TopicTearOff();
 /// @nodoc
 mixin _$Topic {
   int? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: "is_active")
   bool? get active => throw _privateConstructorUsedError;
@@ -89,7 +89,7 @@ abstract class $TopicCopyWith<$Res> {
       _$TopicCopyWithImpl<$Res>;
   $Res call(
       {int? id,
-      String name,
+      String? name,
       String? image,
       @JsonKey(name: "is_active") bool? active,
       int? parent,
@@ -138,7 +138,7 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -216,7 +216,7 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
   @override
   $Res call(
       {int? id,
-      String name,
+      String? name,
       String? image,
       @JsonKey(name: "is_active") bool? active,
       int? parent,
@@ -268,7 +268,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -322,7 +322,7 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
 class _$_Topic implements _Topic {
   _$_Topic(
       {this.id,
-      required this.name,
+      this.name,
       this.image,
       @JsonKey(name: "is_active") this.active,
       this.parent,
@@ -341,7 +341,7 @@ class _$_Topic implements _Topic {
   @override
   final int? id;
   @override
-  final String name;
+  final String? name;
   @override
   final String? image;
   @override
@@ -442,7 +442,7 @@ class _$_Topic implements _Topic {
 abstract class _Topic implements Topic {
   factory _Topic(
       {int? id,
-      required String name,
+      String? name,
       String? image,
       @JsonKey(name: "is_active") bool? active,
       int? parent,
@@ -460,7 +460,7 @@ abstract class _Topic implements Topic {
   @override
   int? get id => throw _privateConstructorUsedError;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   @override
   String? get image => throw _privateConstructorUsedError;
   @override

@@ -21,7 +21,7 @@ class _$ArticleTearOff {
   const _$ArticleTearOff();
 
   _Article call(
-      {required int pk,
+      {int? pk,
       String? title,
       String? description,
       String? image,
@@ -54,7 +54,7 @@ const $Article = _$ArticleTearOff();
 
 /// @nodoc
 mixin _$Article {
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
@@ -77,7 +77,7 @@ abstract class $ArticleCopyWith<$Res> {
   factory $ArticleCopyWith(Article value, $Res Function(Article) then) =
       _$ArticleCopyWithImpl<$Res>;
   $Res call(
-      {int pk,
+      {int? pk,
       String? title,
       String? description,
       String? image,
@@ -115,7 +115,7 @@ class _$ArticleCopyWithImpl<$Res> implements $ArticleCopyWith<$Res> {
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ abstract class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
       __$ArticleCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int pk,
+      {int? pk,
       String? title,
       String? description,
       String? image,
@@ -206,7 +206,7 @@ class __$ArticleCopyWithImpl<$Res> extends _$ArticleCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -243,7 +243,7 @@ class __$ArticleCopyWithImpl<$Res> extends _$ArticleCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Article implements _Article {
   _$_Article(
-      {required this.pk,
+      {this.pk,
       this.title,
       this.description,
       this.image,
@@ -256,7 +256,7 @@ class _$_Article implements _Article {
       _$_$_ArticleFromJson(json);
 
   @override
-  final int pk;
+  final int? pk;
   @override
   final String? title;
   @override
@@ -331,7 +331,7 @@ class _$_Article implements _Article {
 
 abstract class _Article implements Article {
   factory _Article(
-      {required int pk,
+      {int? pk,
       String? title,
       String? description,
       String? image,
@@ -346,7 +346,7 @@ abstract class _Article implements Article {
   factory _Article.fromJson(Map<String, dynamic> json) = _$_Article.fromJson;
 
   @override
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   @override
   String? get title => throw _privateConstructorUsedError;
   @override

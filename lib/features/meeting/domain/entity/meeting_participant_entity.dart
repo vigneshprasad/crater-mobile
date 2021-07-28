@@ -5,7 +5,7 @@ import 'meeting_objective_entity.dart';
 import 'meeting_rsvp_entity.dart';
 
 class MeetingParticipant extends HiveObject {
-  final String pk;
+  final String? pk;
   final String? name;
   final String? introduction;
   final String? photo;
@@ -14,7 +14,7 @@ class MeetingParticipant extends HiveObject {
   final List<MeetingObjective>? objectives;
 
   MeetingParticipant({
-    required this.pk,
+    this.pk,
     this.name,
     this.introduction,
     this.photo,

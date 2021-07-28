@@ -71,7 +71,7 @@ class SpeakerAvatar extends HookWidget {
                 _AnimatedAudioInteraction(controller: _animationController),
               Align(
                 child: BaseNetworkImage(
-                  imageUrl: user.userInfo.photo,
+                  imageUrl: user.userInfo?.photo ?? '',
                   defaultImage: AppImageAssets.defaultAvatar,
                   imagebuilder: (context, imageProvider) => Container(
                     width: avtarSize,

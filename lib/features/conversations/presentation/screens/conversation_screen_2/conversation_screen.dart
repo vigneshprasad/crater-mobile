@@ -284,7 +284,7 @@ class _SpeakersListWithIntro extends StatelessWidget {
 
     for (final speaker in speakers) {
       children.add(_SpeakerWithIntro(
-        user: speaker.userInfo,
+        user: speaker.userInfo!,
         authUserPk: authUserPk,
       ));
     }

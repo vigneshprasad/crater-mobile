@@ -10,7 +10,7 @@ part 'optin_entity.g.dart';
 @freezed
 abstract class Optin with _$Optin {
   factory Optin({
-    required int pk,
+    int? pk,
     String? user,
     int? meeting,
     int? topic,
@@ -31,8 +31,8 @@ abstract class Optin with _$Optin {
 @freezed
 abstract class OptinsByDate with _$OptinsByDate {
   factory OptinsByDate({
-    required DateTime date,
-    required List<Optin> optins,
+    DateTime? date,
+    List<Optin>? optins,
   }) = _OptinsByDate;
 
   factory OptinsByDate.fromJson(Map<String, dynamic> json) =>

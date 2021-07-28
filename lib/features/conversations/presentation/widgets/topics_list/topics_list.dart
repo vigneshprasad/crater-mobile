@@ -124,7 +124,7 @@ class _TopicCard extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: AppInsets.l),
-                                Text(topic.name, style: headingStyle),
+                                Text(topic.name ?? '', style: headingStyle),
                               ],
                             ),
                             const SizedBox(height: AppInsets.xl),

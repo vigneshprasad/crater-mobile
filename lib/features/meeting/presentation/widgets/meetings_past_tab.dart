@@ -70,7 +70,7 @@ class _MeetingsPastTabState extends State<MeetingsPastTab> {
     for (final MeetingsByDate meetingsByDate in widget.past) {
       slivers.add(SliverToBoxAdapter(
         child: MeetingDateLabel(
-          date: meetingsByDate.date,
+          date: meetingsByDate.date!,
         ),
       ));
 
@@ -84,12 +84,12 @@ class _MeetingsPastTabState extends State<MeetingsPastTab> {
             (context, index) {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
               return MeetingCard(
-                meeting: meetingsByDate.meetings[index],
+                meeting: meetingsByDate.meetings![index],
                 user: user!,
                 onRefresh: widget.onRefresh,
               );
             },
-            childCount: meetingsByDate.meetings.length,
+            childCount: meetingsByDate.meetings?.length,
           ),
         ),
       ));

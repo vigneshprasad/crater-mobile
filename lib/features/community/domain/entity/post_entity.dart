@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'comment_entity.dart';
 
 class Post extends HiveObject {
-  final int pk;
+  final int? pk;
   final String? message;
   final int? group;
   final String? groupName;
@@ -23,7 +23,7 @@ class Post extends HiveObject {
   final List<Comment>? latestComments;
 
   Post({
-    required this.pk,
+    this.pk,
     this.message,
     this.group,
     this.groupName,

@@ -136,7 +136,7 @@ class _RoundTableLoaded extends HookWidget {
                             Theme.of(context).dialogBackgroundColor,
                         visualDensity: VisualDensity.compact,
                         label: Text(
-                          table.topicDetail!.root!.name,
+                          table.topicDetail?.root?.name ?? '',
                         )),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

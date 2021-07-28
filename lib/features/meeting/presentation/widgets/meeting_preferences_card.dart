@@ -91,7 +91,7 @@ class MeetingPreferencesCard extends StatelessWidget {
               ),
               _PreferenceItemDisplay(
                 label: "Your Objective",
-                child: Text(_getSelectedObjective().name),
+                child: Text(_getSelectedObjective().name ?? ''),
               ),
               _PreferenceItemDisplay(
                 label: "Your Preferences",
@@ -105,7 +105,7 @@ class MeetingPreferencesCard extends StatelessWidget {
                       ),
                       child: Chip(
                         backgroundColor: Theme.of(context).primaryColor,
-                        label: Text(interest.name),
+                        label: Text(interest.name ?? ''),
                         labelStyle: const TextStyle(
                           fontSize: 12,
                           color: Colors.white,

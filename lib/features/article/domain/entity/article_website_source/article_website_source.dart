@@ -6,7 +6,7 @@ part 'article_website_source.g.dart';
 @freezed
 abstract class ArticleWebsiteSource with _$ArticleWebsiteSource {
   factory ArticleWebsiteSource({
-    required int pk,
+    int? pk,
     String? name,
     String? url,
     String? image,

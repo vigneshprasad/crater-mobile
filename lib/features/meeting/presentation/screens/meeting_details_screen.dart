@@ -185,8 +185,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           ?.translate("meeting_details:reschedule_request_label");
     } else {
       meetingLabel = meeting?.isPast ?? false
-          ? 'Your meeting was scheduled at ${dateFormat.format(meeting!.start)}'
-          : 'Your meeting is scheduled at ${dateFormat.format(meeting!.start)}';
+          ? 'Your meeting was scheduled at ${dateFormat.format(meeting!.start!)}'
+          : 'Your meeting is scheduled at ${dateFormat.format(meeting!.start!)}';
     }
 
     final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
@@ -404,7 +404,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
 
   void _postMeetingStatusRequest(MeetingRsvpStatus status) {
     _bloc.add(
-        PostMeetingRsvpStatusStarted(meetingId: meeting!.pk, status: status));
+        PostMeetingRsvpStatusStarted(meetingId: meeting!.pk!, status: status));
     setState(() {
       loading = true;
     });
@@ -611,7 +611,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       const SizedBox(height: AppInsets.med),
       ...participant!.objectives!
           .map((objective) => _ListItem(
-                text: objective.name,
+                text: objective.name ?? '',
               ))
           .toList(),
     ];
@@ -635,7 +635,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       const SizedBox(height: AppInsets.med),
       ...participant!.interests!
           .map((interest) => _ListItem(
-                text: interest.name,
+                text: interest.name ?? '',
               ))
           .toList(),
     ];

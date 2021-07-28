@@ -204,7 +204,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               label: "What would you like to converse about?",
               child: BaseMultiSelectDropdownFormField<MeetingObjective>(
                 items: lookingFor,
-                labelGetter: (item) => item.name,
+                labelGetter: (item) => item.name ?? '',
                 label: "Pick atleast two",
                 initialValue: _selectedLookingFor,
                 maxLength: 0,
@@ -225,7 +225,7 @@ class _RegisterMeetingScreenState extends State<RegisterMeetingScreen> {
               label: "Who would you like to meet?",
               child: BaseMultiSelectDropdownFormField<MeetingInterest>(
                 items: widget.interests,
-                labelGetter: (item) => item.name,
+                labelGetter: (item) => item.name ?? '',
                 label: "Pick atleast two",
                 initialValue: _selectedInterests,
                 maxLength: 0,

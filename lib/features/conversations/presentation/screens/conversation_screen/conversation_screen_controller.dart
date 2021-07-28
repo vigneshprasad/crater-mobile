@@ -108,7 +108,7 @@ class ConversationScreenController extends ChangeNotifier {
     initial.addAll(table.speakersDetailList?.map(
           (speaker) => RtcUser(
             userInfo: speaker,
-            pk: speaker.pk!,
+            pk: speaker.pk,
             online: false,
             muted: false,
           ),

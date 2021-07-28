@@ -8,7 +8,7 @@ part 'article_entity.g.dart';
 @freezed
 abstract class Article with _$Article {
   factory Article({
-    required int pk,
+    int? pk,
     String? title,
     String? description,
     String? image,

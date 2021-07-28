@@ -14,7 +14,7 @@ class ChatMessage extends HiveObject {
 
   final String? receiver;
 
-  final int pk;
+  final int? pk;
 
   final String? photo;
 
@@ -39,7 +39,7 @@ class ChatMessage extends HiveObject {
     this.fileFormat,
     this.sender,
     this.receiver,
-    required this.pk,
+    this.pk,
     this.photo,
     this.created,
     this.isRead,

@@ -78,13 +78,13 @@ class _ArticlesTabState extends State<ArticlesTab> {
         padding: const EdgeInsets.symmetric(
             vertical: AppInsets.l, horizontal: AppInsets.xxl),
         sliver: SliverToBoxAdapter(
-          child: Text(website.name, style: headingStyle),
+          child: Text(website.name ?? '', style: headingStyle),
         ),
       );
 
       final list = SliverToBoxAdapter(
         child: ArticlesRowList(
-          websiteTagId: website.pk,
+          websiteTagId: website.pk ?? 0,
         ),
       );
 

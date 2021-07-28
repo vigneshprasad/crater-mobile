@@ -8,7 +8,7 @@ part of 'optin_entity.dart';
 
 _$_Optin _$_$_OptinFromJson(Map<String, dynamic> json) {
   return _$_Optin(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     user: json['user'] as String?,
     meeting: json['meeting'] as int?,
     topic: json['topic'] as int?,
@@ -49,15 +49,15 @@ Map<String, dynamic> _$_$_OptinToJson(_$_Optin instance) => <String, dynamic>{
 
 _$_OptinsByDate _$_$_OptinsByDateFromJson(Map<String, dynamic> json) {
   return _$_OptinsByDate(
-    date: DateTime.parse(json['date'] as String),
-    optins: (json['optins'] as List<dynamic>)
-        .map((e) => Optin.fromJson(e as Map<String, dynamic>))
+    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    optins: (json['optins'] as List<dynamic>?)
+        ?.map((e) => Optin.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
 Map<String, dynamic> _$_$_OptinsByDateToJson(_$_OptinsByDate instance) =>
     <String, dynamic>{
-      'date': instance.date.toIso8601String(),
+      'date': instance.date?.toIso8601String(),
       'optins': instance.optins,
     };

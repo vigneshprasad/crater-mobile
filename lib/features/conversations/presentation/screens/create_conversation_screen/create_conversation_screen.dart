@@ -99,7 +99,7 @@ class CreateConversationScreen extends HookWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        topic.name,
+                                        topic.name ?? '',
                                         style: topicStyle,
                                       ),
                                       const SizedBox(height: AppInsets.l),
@@ -256,7 +256,10 @@ class CreateConversationScreen extends HookWidget {
       topic: topic.id,
       description: topic.description,
       start: start.toLocal(),
-      interests: interests.map((e) => e.pk).toList(),
+      interests: interests
+          .where((element) => element.pk != null)
+          .map((e) => e.pk!)
+          .toList(),
       privacy: ConversationPrivacy.public,
       medium: ConversationMedium.audio,
       closed: false,

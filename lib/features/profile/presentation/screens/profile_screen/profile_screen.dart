@@ -401,7 +401,7 @@ class _Objectives extends HookWidget {
       const SizedBox(height: AppInsets.med),
       ...objectives
           .map((objective) => _ListItem(
-                text: objective.name,
+                text: objective.name ?? '',
               ))
           .toList(),
     ];
@@ -455,7 +455,7 @@ class _Interests extends HookWidget {
         // physics: const NeverScrollableScrollPhysics(),
         children: interests
             .map((interest) => _ChipItem(
-                  text: interest.name,
+                  text: interest.name ?? '',
                   width: width,
                 ))
             .toList(),

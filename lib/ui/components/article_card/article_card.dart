@@ -57,7 +57,7 @@ class ArticleCard extends StatelessWidget {
           const SizedBox(height: AppInsets.sm),
           Text(article.websiteTag!, style: bodyStyle),
           const SizedBox(height: AppInsets.med),
-          Taglabel(label: article.tag),
+          Taglabel(label: article.tag ?? ''),
         ],
       ),
     );
@@ -65,8 +65,9 @@ class ArticleCard extends StatelessWidget {
 
   Future<void> _launchURL(BuildContext context) async {
     try {
+      if (article.websiteUrl == null) return;
       await launch(
-        article.websiteUrl,
+        article.websiteUrl!,
         customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,

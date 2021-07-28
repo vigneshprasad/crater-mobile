@@ -21,7 +21,7 @@ class _$OptinTearOff {
   const _$OptinTearOff();
 
   _Optin call(
-      {required int pk,
+      {int? pk,
       String? user,
       int? meeting,
       int? topic,
@@ -65,7 +65,7 @@ const $Optin = _$OptinTearOff();
 
 /// @nodoc
 mixin _$Optin {
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   String? get user => throw _privateConstructorUsedError;
   int? get meeting => throw _privateConstructorUsedError;
   int? get topic => throw _privateConstructorUsedError;
@@ -95,7 +95,7 @@ abstract class $OptinCopyWith<$Res> {
   factory $OptinCopyWith(Optin value, $Res Function(Optin) then) =
       _$OptinCopyWithImpl<$Res>;
   $Res call(
-      {int pk,
+      {int? pk,
       String? user,
       int? meeting,
       int? topic,
@@ -144,7 +144,7 @@ class _$OptinCopyWithImpl<$Res> implements $OptinCopyWith<$Res> {
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -210,7 +210,7 @@ abstract class _$OptinCopyWith<$Res> implements $OptinCopyWith<$Res> {
       __$OptinCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int pk,
+      {int? pk,
       String? user,
       int? meeting,
       int? topic,
@@ -261,7 +261,7 @@ class __$OptinCopyWithImpl<$Res> extends _$OptinCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -314,7 +314,7 @@ class __$OptinCopyWithImpl<$Res> extends _$OptinCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Optin implements _Optin {
   _$_Optin(
-      {required this.pk,
+      {this.pk,
       this.user,
       this.meeting,
       this.topic,
@@ -337,7 +337,7 @@ class _$_Optin implements _Optin {
       _$_$_OptinFromJson(json);
 
   @override
-  final int pk;
+  final int? pk;
   @override
   final String? user;
   @override
@@ -442,7 +442,7 @@ class _$_Optin implements _Optin {
 
 abstract class _Optin implements Optin {
   factory _Optin(
-      {required int pk,
+      {int? pk,
       String? user,
       int? meeting,
       int? topic,
@@ -464,7 +464,7 @@ abstract class _Optin implements Optin {
   factory _Optin.fromJson(Map<String, dynamic> json) = _$_Optin.fromJson;
 
   @override
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   @override
   String? get user => throw _privateConstructorUsedError;
   @override
@@ -507,7 +507,7 @@ OptinsByDate _$OptinsByDateFromJson(Map<String, dynamic> json) {
 class _$OptinsByDateTearOff {
   const _$OptinsByDateTearOff();
 
-  _OptinsByDate call({required DateTime date, required List<Optin> optins}) {
+  _OptinsByDate call({DateTime? date, List<Optin>? optins}) {
     return _OptinsByDate(
       date: date,
       optins: optins,
@@ -524,8 +524,8 @@ const $OptinsByDate = _$OptinsByDateTearOff();
 
 /// @nodoc
 mixin _$OptinsByDate {
-  DateTime get date => throw _privateConstructorUsedError;
-  List<Optin> get optins => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
+  List<Optin>? get optins => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -538,7 +538,7 @@ abstract class $OptinsByDateCopyWith<$Res> {
   factory $OptinsByDateCopyWith(
           OptinsByDate value, $Res Function(OptinsByDate) then) =
       _$OptinsByDateCopyWithImpl<$Res>;
-  $Res call({DateTime date, List<Optin> optins});
+  $Res call({DateTime? date, List<Optin>? optins});
 }
 
 /// @nodoc
@@ -558,11 +558,11 @@ class _$OptinsByDateCopyWithImpl<$Res> implements $OptinsByDateCopyWith<$Res> {
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       optins: optins == freezed
           ? _value.optins
           : optins // ignore: cast_nullable_to_non_nullable
-              as List<Optin>,
+              as List<Optin>?,
     ));
   }
 }
@@ -574,7 +574,7 @@ abstract class _$OptinsByDateCopyWith<$Res>
           _OptinsByDate value, $Res Function(_OptinsByDate) then) =
       __$OptinsByDateCopyWithImpl<$Res>;
   @override
-  $Res call({DateTime date, List<Optin> optins});
+  $Res call({DateTime? date, List<Optin>? optins});
 }
 
 /// @nodoc
@@ -596,11 +596,11 @@ class __$OptinsByDateCopyWithImpl<$Res> extends _$OptinsByDateCopyWithImpl<$Res>
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       optins: optins == freezed
           ? _value.optins
           : optins // ignore: cast_nullable_to_non_nullable
-              as List<Optin>,
+              as List<Optin>?,
     ));
   }
 }
@@ -608,15 +608,15 @@ class __$OptinsByDateCopyWithImpl<$Res> extends _$OptinsByDateCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_OptinsByDate implements _OptinsByDate {
-  _$_OptinsByDate({required this.date, required this.optins});
+  _$_OptinsByDate({this.date, this.optins});
 
   factory _$_OptinsByDate.fromJson(Map<String, dynamic> json) =>
       _$_$_OptinsByDateFromJson(json);
 
   @override
-  final DateTime date;
+  final DateTime? date;
   @override
-  final List<Optin> optins;
+  final List<Optin>? optins;
 
   @override
   String toString() {
@@ -651,16 +651,16 @@ class _$_OptinsByDate implements _OptinsByDate {
 }
 
 abstract class _OptinsByDate implements OptinsByDate {
-  factory _OptinsByDate({required DateTime date, required List<Optin> optins}) =
+  factory _OptinsByDate({DateTime? date, List<Optin>? optins}) =
       _$_OptinsByDate;
 
   factory _OptinsByDate.fromJson(Map<String, dynamic> json) =
       _$_OptinsByDate.fromJson;
 
   @override
-  DateTime get date => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
   @override
-  List<Optin> get optins => throw _privateConstructorUsedError;
+  List<Optin>? get optins => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$OptinsByDateCopyWith<_OptinsByDate> get copyWith =>

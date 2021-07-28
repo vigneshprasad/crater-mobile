@@ -11,7 +11,7 @@ enum TopicType { group, ama }
 abstract class Topic with _$Topic {
   factory Topic({
     int? id,
-    required String name,
+    String? name,
     String? image,
     @JsonKey(name: "is_active") bool? active,
     int? parent,

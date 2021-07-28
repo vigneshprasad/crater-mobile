@@ -19,7 +19,7 @@ class OptinCard extends StatelessWidget {
         AppLocalizations.of(context)?.translate("conversations:scheduling");
     final dateFormat = DateFormat.jm();
     return CalendarCardLayout(
-      heading: Text(optin.topicDetail!.name),
+      heading: Text(optin.topicDetail?.name ?? ''),
       subHeading:
           Text(dateFormat.format(optin.timeSlotList!.first.start!.toLocal())),
       border: Border.all(

@@ -60,8 +60,8 @@ class MeetingCard extends StatelessWidget {
     final meetingParticipant =
         meeting.participants?.firstWhere((element) => element.pk != user.pk);
     final timeFormat = DateFormat.jm();
-    final startTime = timeFormat.format(meeting.start);
-    final endTime = timeFormat.format(meeting.end);
+    final startTime = timeFormat.format(meeting.start!);
+    final endTime = timeFormat.format(meeting.end!);
     final nameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 18,
         );
@@ -93,7 +93,7 @@ class MeetingCard extends StatelessWidget {
             ],
           ),
         ),
-        if (!meeting.isPast) _buildCardStatus(context),
+        if (!meeting.isPast!) _buildCardStatus(context),
       ],
     );
   }
@@ -106,7 +106,7 @@ class MeetingCard extends StatelessWidget {
               .map((participant) => participant.rsvp != null
                   ? RsvpIndicator(
                       participant: participant,
-                      showIndicator: !meeting.isPast,
+                      showIndicator: !meeting.isPast!,
                     )
                   : Container())
               .toList(),
@@ -114,7 +114,7 @@ class MeetingCard extends StatelessWidget {
         BaseCardButton(
           onPressed: () {
             AutoRouter.of(context)
-                .push(MeetingDetailScreenRoute(meetingId: meeting.pk))
+                .push(MeetingDetailScreenRoute(meetingId: meeting.pk!))
                 .then((value) => onRefresh());
           },
           child: const Text('Details'),
@@ -150,6 +150,8 @@ class MeetingCard extends StatelessWidget {
         style = style?.copyWith(
           color: Colors.orange,
         );
+        break;
+      default:
         break;
     }
     return Text(

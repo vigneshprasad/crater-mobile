@@ -21,7 +21,7 @@ class _$ArticleWebsiteSourceTearOff {
   const _$ArticleWebsiteSourceTearOff();
 
   _ArticleWebsiteSource call(
-      {required int pk, String? name, String? url, String? image}) {
+      {int? pk, String? name, String? url, String? image}) {
     return _ArticleWebsiteSource(
       pk: pk,
       name: name,
@@ -40,7 +40,7 @@ const $ArticleWebsiteSource = _$ArticleWebsiteSourceTearOff();
 
 /// @nodoc
 mixin _$ArticleWebsiteSource {
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $ArticleWebsiteSourceCopyWith<$Res> {
   factory $ArticleWebsiteSourceCopyWith(ArticleWebsiteSource value,
           $Res Function(ArticleWebsiteSource) then) =
       _$ArticleWebsiteSourceCopyWithImpl<$Res>;
-  $Res call({int pk, String? name, String? url, String? image});
+  $Res call({int? pk, String? name, String? url, String? image});
 }
 
 /// @nodoc
@@ -79,7 +79,7 @@ class _$ArticleWebsiteSourceCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -103,7 +103,7 @@ abstract class _$ArticleWebsiteSourceCopyWith<$Res>
           $Res Function(_ArticleWebsiteSource) then) =
       __$ArticleWebsiteSourceCopyWithImpl<$Res>;
   @override
-  $Res call({int pk, String? name, String? url, String? image});
+  $Res call({int? pk, String? name, String? url, String? image});
 }
 
 /// @nodoc
@@ -128,7 +128,7 @@ class __$ArticleWebsiteSourceCopyWithImpl<$Res>
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -148,13 +148,13 @@ class __$ArticleWebsiteSourceCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ArticleWebsiteSource implements _ArticleWebsiteSource {
-  _$_ArticleWebsiteSource({required this.pk, this.name, this.url, this.image});
+  _$_ArticleWebsiteSource({this.pk, this.name, this.url, this.image});
 
   factory _$_ArticleWebsiteSource.fromJson(Map<String, dynamic> json) =>
       _$_$_ArticleWebsiteSourceFromJson(json);
 
   @override
-  final int pk;
+  final int? pk;
   @override
   final String? name;
   @override
@@ -203,7 +203,7 @@ class _$_ArticleWebsiteSource implements _ArticleWebsiteSource {
 
 abstract class _ArticleWebsiteSource implements ArticleWebsiteSource {
   factory _ArticleWebsiteSource(
-      {required int pk,
+      {int? pk,
       String? name,
       String? url,
       String? image}) = _$_ArticleWebsiteSource;
@@ -212,7 +212,7 @@ abstract class _ArticleWebsiteSource implements ArticleWebsiteSource {
       _$_ArticleWebsiteSource.fromJson;
 
   @override
-  int get pk => throw _privateConstructorUsedError;
+  int? get pk => throw _privateConstructorUsedError;
   @override
   String? get name => throw _privateConstructorUsedError;
   @override

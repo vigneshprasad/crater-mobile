@@ -8,8 +8,8 @@ part of 'tag_entity.dart';
 
 _$_Tag _$_$_TagFromJson(Map<String, dynamic> json) {
   return _$_Tag(
-    pk: json['pk'] as int,
-    name: json['name'] as String,
+    pk: json['pk'] as int?,
+    name: json['name'] as String?,
   );
 }
 

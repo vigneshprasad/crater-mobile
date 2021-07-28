@@ -119,7 +119,7 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
     for (final MeetingsByDate meetingsByDate in widget.upcoming) {
       slivers.add(SliverToBoxAdapter(
         child: MeetingDateLabel(
-          date: meetingsByDate.date,
+          date: meetingsByDate.date!,
         ),
       ));
 
@@ -133,12 +133,12 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
             (context, index) {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
               return MeetingCard(
-                meeting: meetingsByDate.meetings[index],
+                meeting: meetingsByDate.meetings![index],
                 user: user!,
                 onRefresh: widget.onRefresh,
               );
             },
-            childCount: meetingsByDate.meetings.length,
+            childCount: meetingsByDate.meetings?.length,
           ),
         ),
       ));

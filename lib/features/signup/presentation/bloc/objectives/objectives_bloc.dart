@@ -52,8 +52,11 @@ class ObjectivesBloc extends Bloc<ObjectivesEvent, ObjectivesState> {
   Stream<ObjectivesState> _mapPostObjectiveToState(
       PostObjectivesRequestStarted event) async* {
     yield const ObjectivesRequestLoading();
-    final user =
-        UserModel(objectives: event.objectives.map((e) => e.pk).toList());
+    final user = UserModel(
+        objectives: event.objectives
+            .where((element) => element.pk != null)
+            .map((e) => e.pk!)
+            .toList());
     final updateOrError = await patchUser(PatchUserParams(user: user));
 
     yield updateOrError.fold(

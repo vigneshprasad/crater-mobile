@@ -266,7 +266,7 @@ class PostCard extends StatelessWidget {
                 style: textTheme,
               ),
               onPress: () => onLikePost!(
-                post.pk,
+                post.pk!,
                 post.myLike!,
               ),
             ),
@@ -280,7 +280,7 @@ class PostCard extends StatelessWidget {
                 post.comments.toString(),
                 style: textTheme,
               ),
-              onPress: () => onCommentPost!(post.pk),
+              onPress: () => onCommentPost!(post.pk!),
             ),
           const Spacer(),
           if (user?.pk == post.creator && onPostDelete != null)
@@ -289,7 +289,7 @@ class PostCard extends StatelessWidget {
                 WorkNetIcons.delete,
                 color: Colors.grey[500],
               ),
-              onPress: () => onPostDelete!(post.pk),
+              onPress: () => onPostDelete!(post.pk!),
             )
         ],
       ),

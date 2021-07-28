@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 class Comment extends HiveObject {
-  final int pk;
+  final int? pk;
   final String? message;
   final String? creatorId;
   final String? creatorName;
@@ -9,7 +9,7 @@ class Comment extends HiveObject {
   final DateTime? created;
 
   Comment({
-    required this.pk,
+    this.pk,
     this.message,
     this.creatorId,
     this.creatorName,

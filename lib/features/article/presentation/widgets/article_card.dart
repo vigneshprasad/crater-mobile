@@ -23,7 +23,11 @@ class ArticleCard extends StatelessWidget {
         width: 180,
         child: InkWell(
           onTap: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
+            if (article.websiteUrl != null) {
+              KiwiContainer()
+                  .resolve<CustomTabs>()
+                  .openLink(article.websiteUrl!);
+            }
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,9 +72,10 @@ class ArticleCard extends StatelessWidget {
               maxLines: 2,
             ),
             const Spacer(),
-            _Tag(
-              tag: article.tag,
-            ),
+            if (article.tag != null)
+              _Tag(
+                tag: article.tag!,
+              ),
           ],
         ),
       ),

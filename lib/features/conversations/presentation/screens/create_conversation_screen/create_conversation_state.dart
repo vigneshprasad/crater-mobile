@@ -92,8 +92,7 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
 
     for (final result in response) {
       if (result.isLeft()) {
-        final failure =
-            result.swap().getOrElse(() => ServerFailure()) as Failure;
+        final failure = result.swap().getOrElse(() => ServerFailure());
         state = TableMetaState.error(failure);
         return;
       }

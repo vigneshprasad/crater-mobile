@@ -9,7 +9,7 @@ part of 'topic_entity.dart';
 _$_Topic _$_$_TopicFromJson(Map<String, dynamic> json) {
   return _$_Topic(
     id: json['id'] as int?,
-    name: json['name'] as String,
+    name: json['name'] as String?,
     image: json['image'] as String?,
     active: json['is_active'] as bool?,
     parent: json['parent'] as int?,
