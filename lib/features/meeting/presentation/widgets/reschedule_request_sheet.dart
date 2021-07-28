@@ -98,7 +98,7 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
       return;
     }
     _bloc.add(PostMeetingRescheduleRsvpStarted(
-      oldMeeting: widget.meeting.pk,
+      oldMeeting: widget.meeting.pk!,
       requestedBy: user.pk!,
       timeSlots: _selectedSlots,
     ));

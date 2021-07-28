@@ -9,13 +9,13 @@ part of 'api_models.dart';
 ArticlesPageApiResponse _$ArticlesPageApiResponseFromJson(
     Map<String, dynamic> json) {
   return ArticlesPageApiResponse(
-    count: json['count'] as int,
-    currentPage: json['current_page'] as int,
-    next: json['next'] as String,
-    pages: json['pages'] as int,
-    previous: json['previous'] as String,
-    results: (json['results'] as List<dynamic>)
-        .map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
+    count: json['count'] as int?,
+    currentPage: json['current_page'] as int?,
+    next: json['next'] as String?,
+    pages: json['pages'] as int?,
+    previous: json['previous'] as String?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }

@@ -17,8 +17,8 @@ class PointsModelAdapter extends TypeAdapter<PointsModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PointsModel(
-      points: fields[0] as int,
-      moneyValue: fields[1] as double,
+      points: fields[0] as int?,
+      moneyValue: fields[1] as double?,
     );
   }
 
@@ -49,8 +49,8 @@ class PointsModelAdapter extends TypeAdapter<PointsModel> {
 
 PointsModel _$PointsModelFromJson(Map<String, dynamic> json) {
   return PointsModel(
-    points: json['points'] as int,
-    moneyValue: (json['money_value'] as num).toDouble(),
+    points: json['points'] as int?,
+    moneyValue: (json['money_value'] as num?)?.toDouble(),
   );
 }
 

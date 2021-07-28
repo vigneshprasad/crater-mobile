@@ -9,7 +9,7 @@ part of 'reschedule_request_model.dart';
 RescheduleRequestModel _$RescheduleRequestModelFromJson(
     Map<String, dynamic> json) {
   return RescheduleRequestModel(
-    id: json['id'] as int,
+    id: json['id'] as int?,
     oldMeeting: json['old_meeting'] as int?,
     timeSlots: (json['time_slots'] as List<dynamic>?)
         ?.map((e) => DateTime.parse(e as String))

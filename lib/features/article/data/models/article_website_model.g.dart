@@ -17,9 +17,9 @@ class ArticleWebsiteModelAdapter extends TypeAdapter<ArticleWebsiteModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ArticleWebsiteModel(
-      pk: fields[0] as int,
-      name: fields[1] as String,
-      url: fields[2] as String,
+      pk: fields[0] as int?,
+      name: fields[1] as String?,
+      url: fields[2] as String?,
     );
   }
 
@@ -52,9 +52,9 @@ class ArticleWebsiteModelAdapter extends TypeAdapter<ArticleWebsiteModel> {
 
 ArticleWebsiteModel _$ArticleWebsiteModelFromJson(Map<String, dynamic> json) {
   return ArticleWebsiteModel(
-    pk: json['pk'] as int,
-    name: json['name'] as String,
-    url: json['url'] as String,
+    pk: json['pk'] as int?,
+    name: json['name'] as String?,
+    url: json['url'] as String?,
   );
 }
 

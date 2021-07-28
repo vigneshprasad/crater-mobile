@@ -14,7 +14,7 @@ part 'chat_user_model.g.dart';
 @JsonSerializable()
 class ChatUserModel extends ChatUser {
   @HiveField(0)
-  final String pk;
+  final String? pk;
 
   @HiveField(1)
   final String name;
@@ -28,7 +28,7 @@ class ChatUserModel extends ChatUser {
 
   @HiveField(4)
   @JsonKey(name: "is_starred")
-  final bool isStarred;
+  final bool? isStarred;
 
   @HiveField(5)
   @JsonKey(name: "last_seen")
@@ -39,11 +39,11 @@ class ChatUserModel extends ChatUser {
   final ChatMessageModel? latestMessage;
 
   ChatUserModel({
-    required this.pk,
+    this.pk,
     this.name = '',
     this.photo,
     this.unreadCount,
-    required this.isStarred,
+    this.isStarred,
     this.lastSeen,
     this.latestMessage,
   }) : super(

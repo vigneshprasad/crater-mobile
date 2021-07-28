@@ -11,7 +11,7 @@ class ChatUser extends HiveObject {
 
   final int? unreadCount;
 
-  final bool isStarred;
+  final bool? isStarred;
 
   final DateTime? lastSeen;
 

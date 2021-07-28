@@ -13,18 +13,18 @@ part 'article_website_model.g.dart';
 @JsonSerializable()
 class ArticleWebsiteModel extends ArticleWebsite {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String name;
+  final String? name;
 
   @HiveField(2)
-  final String url;
+  final String? url;
 
   ArticleWebsiteModel({
-    required this.pk,
-    required this.name,
-    required this.url,
+    this.pk,
+    this.name,
+    this.url,
   }) : super(
           pk: pk,
           name: name,

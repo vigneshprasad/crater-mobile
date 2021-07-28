@@ -30,7 +30,7 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
   @override
   void initState() {
     _bloc = BlocProvider.of<MeetingBloc>(context);
-    _bloc.add(GetRescheduleRequestStarted(meetingId: widget.meeting.pk));
+    _bloc.add(GetRescheduleRequestStarted(meetingId: widget.meeting.pk!));
     _loading = true;
     super.initState();
   }
@@ -76,7 +76,7 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
               onPressed: _selectedSlot != null
                   ? () {
                       _bloc.add(PostConfirmRescheduleRequestStarted(
-                        rescheduleRequest: _request.id,
+                        rescheduleRequest: _request.id!,
                         timeSlot: _selectedSlot!,
                       ));
                     }

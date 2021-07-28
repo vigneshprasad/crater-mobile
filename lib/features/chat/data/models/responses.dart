@@ -50,7 +50,7 @@ class SentMessageResponse extends WSResponse {
   final String? fileFormat;
   final String? sender;
   final String? receiver;
-  final int pk;
+  final int? pk;
   final String? photo;
   final String? created;
 
@@ -74,7 +74,7 @@ class SentMessageResponse extends WSResponse {
     this.fileFormat,
     this.sender,
     this.receiver,
-    required this.pk,
+    this.pk,
     this.photo,
     this.created,
     this.isRead,
@@ -113,7 +113,7 @@ class ChatMessageNotificationResponse extends WSResponse {
   final String? photo;
   final String? message;
 
-  final String pk;
+  final String? pk;
 
   @JsonKey(name: "sender")
   final String? senderName;
@@ -145,7 +145,7 @@ class ChatMessageNotificationResponse extends WSResponse {
     this.name,
     this.photo,
     this.message,
-    required this.pk,
+    this.pk,
     this.senderName,
     this.receiverName,
     this.isStarred,

@@ -17,11 +17,11 @@ class ChatUserModelAdapter extends TypeAdapter<ChatUserModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChatUserModel(
-      pk: fields[0] as String,
+      pk: fields[0] as String?,
       name: fields[1] as String,
       photo: fields[2] as String?,
       unreadCount: fields[3] as int?,
-      isStarred: fields[4] as bool,
+      isStarred: fields[4] as bool?,
       lastSeen: fields[5] as DateTime?,
       latestMessage: fields[6] as ChatMessageModel?,
     );
@@ -64,11 +64,11 @@ class ChatUserModelAdapter extends TypeAdapter<ChatUserModel> {
 
 ChatUserModel _$ChatUserModelFromJson(Map<String, dynamic> json) {
   return ChatUserModel(
-    pk: json['pk'] as String,
+    pk: json['pk'] as String?,
     name: json['name'] as String,
     photo: json['photo'] as String?,
     unreadCount: json['unread_count'] as int?,
-    isStarred: json['is_starred'] as bool,
+    isStarred: json['is_starred'] as bool?,
     lastSeen: json['last_seen'] == null
         ? null
         : DateTime.parse(json['last_seen'] as String),

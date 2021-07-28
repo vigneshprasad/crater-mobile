@@ -31,7 +31,7 @@ class ChatMessageModel extends ChatMessage {
   final String? receiver;
 
   @HiveField(6)
-  final int pk;
+  final int? pk;
 
   @HiveField(7)
   final String? photo;
@@ -62,7 +62,7 @@ class ChatMessageModel extends ChatMessage {
     this.fileFormat,
     this.sender,
     this.receiver,
-    required this.pk,
+    this.pk,
     this.photo,
     this.created,
     this.isRead,

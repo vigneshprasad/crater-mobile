@@ -13,7 +13,7 @@ part 'comment_model.g.dart';
 @JsonSerializable()
 class CommentModel extends Comment {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
   final String? message;
@@ -37,7 +37,7 @@ class CommentModel extends Comment {
   final int? postId;
 
   CommentModel({
-    required this.pk,
+    this.pk,
     this.message,
     this.creatorId,
     this.creatorName,

@@ -46,8 +46,8 @@ class PointsBloc extends Bloc<PointsEvent, PointsState> {
     yield pointsOrError.fold(
       (failure) => state.copyWith(loading: false, error: failure),
       (data) => PointsValueUpdateRecieved(
-        points: data.points,
-        moneyValue: data.moneyValue,
+        points: data.points!,
+        moneyValue: data.moneyValue!,
       ),
     );
   }

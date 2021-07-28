@@ -23,12 +23,12 @@ enum MeetingRsvpStatus {
 
 @JsonSerializable()
 class MeetingRsvpModel extends MeetingRsvp {
-  final int pk;
-  final MeetingRsvpStatus status;
+  final int? pk;
+  final MeetingRsvpStatus? status;
 
   MeetingRsvpModel({
-    required this.pk,
-    required this.status,
+    this.pk,
+    this.status,
   }) : super(
           pk: pk,
           status: status,

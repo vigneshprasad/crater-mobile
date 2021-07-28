@@ -29,7 +29,7 @@ class VideoRepositoryImpl implements VideoRepository {
     if (isConnected) {
       try {
         final response = await remoteDatasource.getVideosFromRemote(page);
-        final pages = (response.count / VIDEOS_PAGE_SIZE).floor();
+        final pages = (response.count ?? 0 / VIDEOS_PAGE_SIZE).floor();
         return Right(PageApiResponse(
           fromCache: false,
           count: response.count,

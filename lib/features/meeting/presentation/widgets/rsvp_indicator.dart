@@ -56,7 +56,7 @@ class RsvpIndicator extends StatelessWidget {
         height: 16,
         width: 16,
         decoration: BoxDecoration(
-          color: MeetingRsvpUtils.getRsvpStatusColor(participant.rsvp!.status),
+          color: MeetingRsvpUtils.getRsvpStatusColor(participant.rsvp!.status!),
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white,

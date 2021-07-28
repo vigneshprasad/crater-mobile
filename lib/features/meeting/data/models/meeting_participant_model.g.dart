@@ -9,11 +9,13 @@ part of 'meeting_participant_model.dart';
 MeetingParticipantModel _$MeetingParticipantModelFromJson(
     Map<String, dynamic> json) {
   return MeetingParticipantModel(
-    pk: json['pk'] as String,
+    pk: json['pk'] as String?,
     name: json['name'] as String?,
     introduction: json['introduction'] as String?,
     photo: json['photo'] as String?,
-    rsvp: MeetingRsvpModel.fromJson(json['rsvp'] as Map<String, dynamic>),
+    rsvp: json['rsvp'] == null
+        ? null
+        : MeetingRsvpModel.fromJson(json['rsvp'] as Map<String, dynamic>),
     interests: (json['interests'] as List<dynamic>?)
         ?.map((e) => MeetingInterestModel.fromJson(e as Map<String, dynamic>))
         .toList(),

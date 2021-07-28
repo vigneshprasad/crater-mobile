@@ -9,13 +9,13 @@ part 'meeting_interest_model.g.dart';
 
 @JsonSerializable()
 class MeetingInterestModel extends MeetingInterest {
-  final int pk;
-  final String name;
+  final int? pk;
+  final String? name;
   final String? icon;
 
   const MeetingInterestModel({
-    required this.pk,
-    required this.name,
+    this.pk,
+    this.name,
     this.icon,
   }) : super(
           pk: pk,

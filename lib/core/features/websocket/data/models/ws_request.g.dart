@@ -8,7 +8,7 @@ part of 'ws_request.dart';
 
 WSRequest _$WSRequestFromJson(Map<String, dynamic> json) {
   return WSRequest(
-    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
     message: json['message'],
   );
@@ -43,6 +43,17 @@ K _$enumDecode<K, V>(
       return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$WSRequestTypeEnumMap = {

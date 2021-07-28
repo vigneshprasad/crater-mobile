@@ -14,7 +14,7 @@ part 'user_profile_model.g.dart';
 @JsonSerializable()
 class UserProfileModel extends UserProfile {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
   @JsonKey(name: "additional_information")
@@ -138,7 +138,7 @@ class UserProfileModel extends UserProfile {
   final String? companyName;
 
   UserProfileModel({
-    required this.pk,
+    this.pk,
     this.additionalInformation,
     this.cover,
     this.coverFile,

@@ -8,7 +8,7 @@ part of 'user_objective_model.dart';
 
 UserObjectiveModel _$UserObjectiveModelFromJson(Map<String, dynamic> json) {
   return UserObjectiveModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     icon: json['icon'] as String?,
     name: json['name'] as String?,
   );

@@ -5,14 +5,14 @@ part 'api_models.g.dart';
 
 @JsonSerializable()
 class PostPhoneNumberResponse extends Equatable {
-  final String status;
+  final String? status;
 
   const PostPhoneNumberResponse({
-    required this.status,
+    this.status,
   });
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => status != null ? [status!] : [];
 
   factory PostPhoneNumberResponse.fromJson(Map<String, dynamic> json) =>
       _$PostPhoneNumberResponseFromJson(json);

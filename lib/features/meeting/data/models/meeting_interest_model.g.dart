@@ -8,8 +8,8 @@ part of 'meeting_interest_model.dart';
 
 MeetingInterestModel _$MeetingInterestModelFromJson(Map<String, dynamic> json) {
   return MeetingInterestModel(
-    pk: json['pk'] as int,
-    name: json['name'] as String,
+    pk: json['pk'] as int?,
+    name: json['name'] as String?,
     icon: json['icon'] as String?,
   );
 }

@@ -17,7 +17,7 @@ class CommentModelAdapter extends TypeAdapter<CommentModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CommentModel(
-      pk: fields[0] as int,
+      pk: fields[0] as int?,
       message: fields[1] as String?,
       creatorId: fields[2] as String?,
       creatorName: fields[3] as String?,
@@ -64,7 +64,7 @@ class CommentModelAdapter extends TypeAdapter<CommentModel> {
 
 CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
   return CommentModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     message: json['message'] as String?,
     creatorId: json['creator_id'] as String?,
     creatorName: json['creator_name'] as String?,

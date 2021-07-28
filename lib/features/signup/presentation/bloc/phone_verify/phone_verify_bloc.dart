@@ -42,7 +42,7 @@ class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
 
     yield sentOrError.fold(
       (failure) => PhoneVerifyRequestError(error: failure),
-      (response) => PhoneNumberPostRequestLoaded(status: response.status),
+      (response) => PhoneNumberPostRequestLoaded(status: response.status!),
     );
   }
 
@@ -65,7 +65,7 @@ class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
             "phone_number": event.phoneNumber,
           },
         );
-        return PhoneSmsCodeRequestLoaded(status: response.status);
+        return PhoneSmsCodeRequestLoaded(status: response.status!);
       },
     );
   }

@@ -10,12 +10,12 @@ part 'meeting_config_model.g.dart';
 
 @JsonSerializable()
 class MeetingConfigModel extends MeetingConfig {
-  final int pk;
+  final int? pk;
 
   final String? title;
 
   @JsonKey(name: 'week_start_date')
-  final String weekStartDate;
+  final String? weekStartDate;
 
   @JsonKey(name: 'week_end_date')
   final String? weekEndDate;
@@ -27,16 +27,16 @@ class MeetingConfigModel extends MeetingConfig {
   final bool? isActive;
 
   @JsonKey(name: 'available_time_slots')
-  final Map<String, List<TimeSlotModel>> availableTimeSlots;
+  final Map<String, List<TimeSlotModel>>? availableTimeSlots;
 
   MeetingConfigModel({
-    required this.pk,
+    this.pk,
     this.title,
-    required this.weekStartDate,
+    this.weekStartDate,
     this.weekEndDate,
     this.isRegistrationOpen,
     this.isActive,
-    required this.availableTimeSlots,
+    this.availableTimeSlots,
   }) : super(
           availableTimeSlots: availableTimeSlots,
           pk: pk,

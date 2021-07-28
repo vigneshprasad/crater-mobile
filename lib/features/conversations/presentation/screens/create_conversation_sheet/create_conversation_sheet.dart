@@ -281,7 +281,7 @@ class _TopicItem extends StatelessWidget {
       color: Colors.white,
       child: ListTile(
         title: Text(
-          category.name,
+          category.name ?? '',
           style: labelStyle,
         ),
         trailing: Icon(

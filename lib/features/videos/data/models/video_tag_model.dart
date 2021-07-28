@@ -19,7 +19,7 @@ class VideoTagModel extends VideoTag {
   final String? name;
 
   VideoTagModel({
-     this.pk,
+    this.pk,
     this.name,
   });
 

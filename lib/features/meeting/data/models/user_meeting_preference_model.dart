@@ -11,7 +11,7 @@ part 'user_meeting_preference_model.g.dart';
 
 @JsonSerializable()
 class UserMeetingPreferenceModel extends UserMeetingPreference {
-  final int pk;
+  final int? pk;
 
   final String? user;
 
@@ -25,20 +25,20 @@ class UserMeetingPreferenceModel extends UserMeetingPreference {
 
   final List<MeetingObjectiveModel>? objectives;
 
-  final List<MeetingInterestModel> interests;
+  final List<MeetingInterestModel>? interests;
 
   @JsonKey(name: 'time_slots')
-  final List<int> timeSlots;
+  final List<int>? timeSlots;
 
   UserMeetingPreferenceModel({
-    required this.pk,
+    this.pk,
     this.user,
     this.meeting,
     this.numberOfMeetings,
     this.numberOfMeetingsPerMonth,
     this.objectives,
-    required this.interests,
-    required this.timeSlots,
+    this.interests,
+    this.timeSlots,
   }) : super(
           pk: pk,
           user: user,

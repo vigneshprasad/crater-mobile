@@ -35,9 +35,9 @@ class WSResponse {
           unknownValue: WSResponseType.unknowType);
 
   @JsonKey(unknownEnumValue: WSResponseType.unknowType)
-  final WSResponseType type;
+  final WSResponseType? type;
 
   WSResponse({
-    required this.type,
+    this.type,
   });
 }

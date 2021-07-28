@@ -9,17 +9,19 @@ part of 'meeting_model.dart';
 MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
   return MeetingModel(
     config: json['config'] as int?,
-    end: DateTime.parse(json['end'] as String),
+    end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
     isCanceled: json['is_canceled'] as bool?,
-    isPast: json['is_past'] as bool,
+    isPast: json['is_past'] as bool?,
     link: json['link'] as String?,
-    participants: (json['participants'] as List<dynamic>)
-        .map((e) => MeetingParticipantModel.fromJson(e as Map<String, dynamic>))
+    participants: (json['participants'] as List<dynamic>?)
+        ?.map(
+            (e) => MeetingParticipantModel.fromJson(e as Map<String, dynamic>))
         .toList(),
-    pk: json['pk'] as int,
-    start: DateTime.parse(json['start'] as String),
+    pk: json['pk'] as int?,
+    start:
+        json['start'] == null ? null : DateTime.parse(json['start'] as String),
     timeSlot: json['time_slot'] as int?,
-    status: _$enumDecode(_$MeetingStatusEnumMap, json['status']),
+    status: _$enumDecodeNullable(_$MeetingStatusEnumMap, json['status']),
     participantDetail: json['participant_detail'] == null
         ? null
         : MeetingParticipantModel.fromJson(
@@ -30,13 +32,13 @@ MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$MeetingModelToJson(MeetingModel instance) =>
     <String, dynamic>{
       'config': instance.config,
-      'end': instance.end.toIso8601String(),
+      'end': instance.end?.toIso8601String(),
       'is_canceled': instance.isCanceled,
       'is_past': instance.isPast,
       'link': instance.link,
       'participants': instance.participants,
       'pk': instance.pk,
-      'start': instance.start.toIso8601String(),
+      'start': instance.start?.toIso8601String(),
       'status': _$MeetingStatusEnumMap[instance.status],
       'time_slot': instance.timeSlot,
       'participant_detail': instance.participantDetail,
@@ -66,6 +68,17 @@ K _$enumDecode<K, V>(
       return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$MeetingStatusEnumMap = {

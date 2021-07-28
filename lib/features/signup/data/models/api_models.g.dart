@@ -9,7 +9,7 @@ part of 'api_models.dart';
 PostPhoneNumberResponse _$PostPhoneNumberResponseFromJson(
     Map<String, dynamic> json) {
   return PostPhoneNumberResponse(
-    status: json['status'] as String,
+    status: json['status'] as String?,
   );
 }
 

@@ -82,7 +82,7 @@ class UserListItem extends StatelessWidget {
 
   Widget? _buildListActions() {
     if (withFavorite) {
-      final icon = user.isStarred ? Icons.star : Icons.star_border;
+      final icon = user.isStarred ?? false ? Icons.star : Icons.star_border;
       return IconButton(
         onPressed: onStarPressed,
         icon: Icon(icon),

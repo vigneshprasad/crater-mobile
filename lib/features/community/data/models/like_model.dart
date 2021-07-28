@@ -11,13 +11,13 @@ part 'like_model.g.dart';
 class LikeModel extends Like {
   @JsonKey(name: "like_count")
   final int? likeCount;
-  final int pk;
+  final int? pk;
   final int? post;
   final String? user;
 
   LikeModel({
     this.likeCount,
-    required this.pk,
+    this.pk,
     this.post,
     this.user,
   }) : super(

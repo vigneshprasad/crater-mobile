@@ -12,20 +12,20 @@ part 'meeting_participant_model.g.dart';
 
 @JsonSerializable()
 class MeetingParticipantModel extends MeetingParticipant {
-  final String pk;
+  final String? pk;
   final String? name;
   final String? introduction;
   final String? photo;
-  final MeetingRsvpModel rsvp;
+  final MeetingRsvpModel? rsvp;
   final List<MeetingInterestModel>? interests;
   final List<MeetingObjectiveModel>? objectives;
 
   MeetingParticipantModel({
-    required this.pk,
+    this.pk,
     this.name,
     this.introduction,
     this.photo,
-    required this.rsvp,
+    this.rsvp,
     this.interests,
     this.objectives,
   }) : super(

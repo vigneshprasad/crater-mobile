@@ -8,7 +8,7 @@ part of 'ws_response.dart';
 
 WSResponse _$WSResponseFromJson(Map<String, dynamic> json) {
   return WSResponse(
-    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
+    type: _$enumDecodeNullable(_$WSResponseTypeEnumMap, json['type'],
         unknownValue: WSResponseType.unknowType),
   );
 }
@@ -42,6 +42,17 @@ K _$enumDecode<K, V>(
       return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$WSResponseTypeEnumMap = {

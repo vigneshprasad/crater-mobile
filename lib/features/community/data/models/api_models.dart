@@ -8,33 +8,35 @@ part 'api_models.g.dart';
 
 @JsonSerializable()
 class PostsPageApiResponse extends Equatable {
-  final int count;
+  final int? count;
 
   @JsonKey(name: "current_page")
-  final int currentPage;
+  final int? currentPage;
 
-  final String next;
+  final String? next;
 
-  final String previous;
+  final String? previous;
 
-  final List<PostModel> results;
+  final List<PostModel>? results;
 
   const PostsPageApiResponse({
-    required this.count,
-    required this.currentPage,
-    required this.next,
-    required this.previous,
-    required this.results,
+    this.count,
+    this.currentPage,
+    this.next,
+    this.previous,
+    this.results,
   });
 
   @override
-  List<Object> get props => [
-        count,
-        currentPage,
-        next,
-        previous,
-        results,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (count != null) temp.add(count!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (next != null) temp.add(next!);
+    if (previous != null) temp.add(previous!);
+    if (results != null) temp.add(results!);
+    return temp;
+  }
 
   factory PostsPageApiResponse.fromJson(Map<String, dynamic> json) =>
       _$PostsPageApiResponseFromJson(json);
@@ -43,31 +45,33 @@ class PostsPageApiResponse extends Equatable {
 
 @JsonSerializable()
 class CommentsPageApiResponse extends Equatable {
-  final int count;
+  final int? count;
 
   @JsonKey(name: "current_page")
-  final int currentPage;
+  final int? currentPage;
 
-  final String next;
-  final String previous;
-  final List<CommentModel> results;
+  final String? next;
+  final String? previous;
+  final List<CommentModel>? results;
 
   const CommentsPageApiResponse({
-    required this.count,
-    required this.currentPage,
-    required this.next,
-    required this.previous,
-    required this.results,
+    this.count,
+    this.currentPage,
+    this.next,
+    this.previous,
+    this.results,
   });
 
   @override
-  List<Object> get props => [
-        count,
-        currentPage,
-        next,
-        previous,
-        results,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (count != null) temp.add(count!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (next != null) temp.add(next!);
+    if (previous != null) temp.add(previous!);
+    if (results != null) temp.add(results!);
+    return temp;
+  }
 
   factory CommentsPageApiResponse.fromJson(Map<String, dynamic> json) =>
       _$CommentsPageApiResponseFromJson(json);

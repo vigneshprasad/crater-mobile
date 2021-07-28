@@ -14,7 +14,7 @@ part 'post_model.g.dart';
 @JsonSerializable()
 class PostModel extends Post {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
   final String? message;
@@ -75,7 +75,7 @@ class PostModel extends Post {
   final List<CommentModel>? latestComments;
 
   PostModel({
-    required this.pk,
+    this.pk,
     this.message,
     this.group,
     this.groupName,

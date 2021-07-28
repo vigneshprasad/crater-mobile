@@ -41,12 +41,12 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final responseModel = PostsPageApiResponse.fromJson(json);
-      final pages = (responseModel.count / pageSize).ceil();
+      final pages = (responseModel.count ?? 0 / pageSize).ceil();
       return PageApiResponse<Post>(
         pageSize: pageSize,
         count: responseModel.count,
         currentPage: responseModel.currentPage,
-        results: responseModel.results.cast<Post>(),
+        results: responseModel.results?.cast<Post>(),
         fromCache: false,
         pages: pages,
       );
@@ -124,9 +124,10 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final responseModel = CommentsPageApiResponse.fromJson(json);
-      final pages = (responseModel.results.length / pageSize).ceil();
-      final resultsUpdated =
-          responseModel.results.map((e) => e.copyWith(postId: postId)).toList();
+      final pages = (responseModel.results?.length ?? 0 / pageSize).ceil();
+      final resultsUpdated = responseModel.results
+          ?.map((e) => e.copyWith(postId: postId))
+          .toList();
       return PageApiResponse<Comment>(
         count: responseModel.count,
         pageSize: pageSize,

@@ -9,16 +9,16 @@ part 'meeting_objective_model.g.dart';
 
 @JsonSerializable()
 class MeetingObjectiveModel extends MeetingObjective {
-  final String icon;
-  final String name;
-  final int pk;
-  final ObjectiveType type;
+  final String? icon;
+  final String? name;
+  final int? pk;
+  final ObjectiveType? type;
 
   const MeetingObjectiveModel({
-    required this.icon,
-    required this.name,
-    required this.pk,
-    required this.type,
+    this.icon,
+    this.name,
+    this.pk,
+    this.type,
   }) : super(
           icon: icon,
           name: name,

@@ -13,40 +13,40 @@ part 'article_model.g.dart';
 @JsonSerializable()
 class ArticleModel extends Article {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String created;
+  final String? created;
 
   @HiveField(2)
-  final String picture;
+  final String? picture;
 
   @HiveField(3)
-  final String tag;
+  final String? tag;
 
   @HiveField(4)
-  final String text;
+  final String? text;
 
   @HiveField(5)
-  final String title;
+  final String? title;
 
   @HiveField(6)
   @JsonKey(name: 'website_tag')
-  final String websiteTag;
+  final String? websiteTag;
 
   @HiveField(7)
   @JsonKey(name: 'website_url')
-  final String websiteUrl;
+  final String? websiteUrl;
 
   ArticleModel({
-    required this.pk,
-    required this.created,
-    required this.picture,
-    required this.tag,
-    required this.text,
-    required this.title,
-    required this.websiteTag,
-    required this.websiteUrl,
+    this.pk,
+    this.created,
+    this.picture,
+    this.tag,
+    this.text,
+    this.title,
+    this.websiteTag,
+    this.websiteUrl,
   }) : super(
           pk: pk,
           created: created,

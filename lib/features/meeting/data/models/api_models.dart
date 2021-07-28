@@ -10,55 +10,57 @@ part 'api_models.g.dart';
 
 @JsonSerializable()
 class GetMeetingConfigApiResponse extends Equatable {
-  final int pk;
-  final String title;
-  final List<MeetingInterestModel> interests;
-  final List<MeetingObjectiveModel> objectives;
+  final int? pk;
+  final String? title;
+  final List<MeetingInterestModel>? interests;
+  final List<MeetingObjectiveModel>? objectives;
 
   @JsonKey(name: "is_active")
-  final bool isActive;
+  final bool? isActive;
 
   @JsonKey(name: "available_time_slots")
-  final Map<String, List<TimeSlotModel>> availableTimeSlots;
+  final Map<String, List<TimeSlotModel>>? availableTimeSlots;
 
   @JsonKey(name: "week_end_date")
-  final String weekEndDate;
+  final String? weekEndDate;
 
   @JsonKey(name: "week_start_date")
-  final String weekStartDate;
+  final String? weekStartDate;
 
   @JsonKey(name: "is_registration_open")
-  final bool isRegistrationOpen;
+  final bool? isRegistrationOpen;
 
   @JsonKey(name: "user_preferences")
-  final UserMeetingPreferenceModel userPreferences;
+  final UserMeetingPreferenceModel? userPreferences;
 
   const GetMeetingConfigApiResponse({
-    required this.pk,
-    required this.title,
-    required this.interests,
-    required this.objectives,
-    required this.isActive,
-    required this.availableTimeSlots,
-    required this.weekEndDate,
-    required this.weekStartDate,
-    required this.isRegistrationOpen,
-    required this.userPreferences,
+    this.pk,
+    this.title,
+    this.interests,
+    this.objectives,
+    this.isActive,
+    this.availableTimeSlots,
+    this.weekEndDate,
+    this.weekStartDate,
+    this.isRegistrationOpen,
+    this.userPreferences,
   });
 
   @override
-  List<Object> get props => [
-        pk,
-        title,
-        interests,
-        objectives,
-        isActive,
-        availableTimeSlots,
-        weekEndDate,
-        weekStartDate,
-        isRegistrationOpen,
-        userPreferences,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (pk != null) temp.add(pk!);
+    if (title != null) temp.add(title!);
+    if (interests != null) temp.add(interests!);
+    if (objectives != null) temp.add(objectives!);
+    if (isActive != null) temp.add(isActive!);
+    if (availableTimeSlots != null) temp.add(availableTimeSlots!);
+    if (weekEndDate != null) temp.add(weekEndDate!);
+    if (weekStartDate != null) temp.add(weekStartDate!);
+    if (isRegistrationOpen != null) temp.add(isRegistrationOpen!);
+    if (userPreferences != null) temp.add(userPreferences!);
+    return temp;
+  }
 
   factory GetMeetingConfigApiResponse.fromJson(Map<String, dynamic> json) =>
       _$GetMeetingConfigApiResponseFromJson(json);

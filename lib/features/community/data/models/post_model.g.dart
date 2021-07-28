@@ -17,7 +17,7 @@ class PostModelAdapter extends TypeAdapter<PostModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PostModel(
-      pk: fields[0] as int,
+      pk: fields[0] as int?,
       message: fields[1] as String?,
       group: fields[2] as int?,
       groupName: fields[3] as String?,
@@ -134,7 +134,7 @@ class FileDataModelAdapter extends TypeAdapter<FileDataModel> {
 
 PostModel _$PostModelFromJson(Map<String, dynamic> json) {
   return PostModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     message: json['message'] as String?,
     group: json['group'] as int?,
     groupName: json['group_name'] as String?,

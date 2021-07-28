@@ -17,7 +17,7 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserProfileModel(
-      pk: fields[0] as int,
+      pk: fields[0] as int?,
       additionalInformation: fields[1] as String?,
       cover: fields[2] as int?,
       coverFile: fields[3] as String?,
@@ -145,7 +145,7 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
 
 UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
   return UserProfileModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     additionalInformation: json['additional_information'] as String?,
     cover: json['cover'] as int?,
     coverFile: json['cover_file'] as String?,

@@ -8,8 +8,8 @@ part of 'meeting_rsvp_model.dart';
 
 MeetingRsvpModel _$MeetingRsvpModelFromJson(Map<String, dynamic> json) {
   return MeetingRsvpModel(
-    pk: json['pk'] as int,
-    status: _$enumDecode(_$MeetingRsvpStatusEnumMap, json['status']),
+    pk: json['pk'] as int?,
+    status: _$enumDecodeNullable(_$MeetingRsvpStatusEnumMap, json['status']),
   );
 }
 
@@ -43,6 +43,17 @@ K _$enumDecode<K, V>(
       return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$MeetingRsvpStatusEnumMap = {

@@ -9,7 +9,7 @@ part of 'user_meeting_preference_model.dart';
 UserMeetingPreferenceModel _$UserMeetingPreferenceModelFromJson(
     Map<String, dynamic> json) {
   return UserMeetingPreferenceModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     user: json['user'] as String?,
     meeting: json['meeting'] as int?,
     numberOfMeetings: json['number_of_meetings'] as int?,
@@ -17,11 +17,11 @@ UserMeetingPreferenceModel _$UserMeetingPreferenceModelFromJson(
     objectives: (json['objectives'] as List<dynamic>?)
         ?.map((e) => MeetingObjectiveModel.fromJson(e as Map<String, dynamic>))
         .toList(),
-    interests: (json['interests'] as List<dynamic>)
-        .map((e) => MeetingInterestModel.fromJson(e as Map<String, dynamic>))
+    interests: (json['interests'] as List<dynamic>?)
+        ?.map((e) => MeetingInterestModel.fromJson(e as Map<String, dynamic>))
         .toList(),
     timeSlots:
-        (json['time_slots'] as List<dynamic>).map((e) => e as int).toList(),
+        (json['time_slots'] as List<dynamic>?)?.map((e) => e as int).toList(),
   );
 }
 
