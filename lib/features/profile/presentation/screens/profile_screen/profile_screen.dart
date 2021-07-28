@@ -48,7 +48,7 @@ class ProfileScreen extends HookWidget {
 
     return SliverAppBar(
       expandedHeight: size.height + 350,
-      flexibleSpace: _ProfileBody(profile),
+      flexibleSpace: FlexibleSpaceBar(background: _ProfileBody(profile)),
       pinned: true,
       elevation: 0.5,
       shadowColor: Colors.grey,

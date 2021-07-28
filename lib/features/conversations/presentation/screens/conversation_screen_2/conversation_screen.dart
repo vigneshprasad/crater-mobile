@@ -47,7 +47,7 @@ class ConversationScreen extends HookWidget {
     useEffect(() {
       if (overlayProvider.entry != null) {
         overlayProvider.removeOverlayEntry();
-        if (overlayProvider.groupId != id) {
+        if (overlayProvider.groupId != null && overlayProvider.groupId != id) {
           context
               .read(
                   conversationStateProvider(overlayProvider.groupId!).notifier)
