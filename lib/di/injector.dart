@@ -1,7 +1,7 @@
-// import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:flutter/material.dart';
 
-// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
@@ -457,13 +457,13 @@ class Di {
     container.registerInstance(ProfileIntroApiService.create());
 
     // Externals
-    // container.registerInstance(DataConnectionChecker());
+    container.registerInstance(InternetConnectionChecker());
     container.registerInstance(GoogleSignIn(
       scopes: AppConstants.googleAuthScope,
     ));
     container.registerInstance(
         SentryClient(SentryOptions(dsn: ConfigReader.getSentryDsn())));
-    // container.registerInstance(FacebookLogin());
+    container.registerInstance(FacebookAuth.instance);
     container.registerInstance(GlobalKey<NavigatorState>());
   }
 }

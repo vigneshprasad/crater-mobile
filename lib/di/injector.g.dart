@@ -12,7 +12,8 @@ class _$CoreInjector extends CoreInjector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton<CustomTabs>((c) => CustomTabImpl())
-      ..registerSingleton<NetworkInfo>((c) => NetworkInfoImpl())
+      ..registerSingleton<NetworkInfo>((c) =>
+          NetworkInfoImpl(connectionChecker: c<InternetConnectionChecker>()))
       ..registerSingleton<PushNotifications>((c) => PushNotificationsImpl())
       ..registerSingleton<LocalStorage>((c) => LocalStorageImpl())
       ..registerSingleton<Analytics>((c) => AnalyticsImpl(
@@ -171,7 +172,9 @@ class _$SocialAuthInjector extends SocialAuthInjector {
       ..registerSingleton<SocialAuthRepository>(
           (c) => SocialAuthRepositoryImpl(c<SocialAuthRemoteDataSource>()))
       ..registerSingleton<SocialAuthRemoteDataSource>((c) =>
-          SocialAuthRemoteDataSourceImpl(googleSignIn: c<GoogleSignIn>()));
+          SocialAuthRemoteDataSourceImpl(
+              googleSignIn: c<GoogleSignIn>(),
+              facebookLogin: c<FacebookAuth>()));
   }
 }
 

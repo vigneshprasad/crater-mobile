@@ -17,9 +17,11 @@ abstract class SocialAuthRemoteDataSource {
 
 class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   final GoogleSignIn googleSignIn;
+  final fb.FacebookAuth facebookLogin;
 
   SocialAuthRemoteDataSourceImpl({
     required this.googleSignIn,
+    required this.facebookLogin,
   });
 
   @override
@@ -44,8 +46,8 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   @override
   Future<AccessToken> getFacebookAccessToken() async {
     try {
-      await fb.FacebookAuth.instance.logOut();
-      final fb.LoginResult result = await fb.FacebookAuth.instance.login(
+      await facebookLogin.logOut();
+      final result = await facebookLogin.login(
           permissions: ['email'], loginBehavior: fb.LoginBehavior.webViewOnly);
       if (result.status == fb.LoginStatus.success) {
         return AccessToken(result.accessToken!.token);
