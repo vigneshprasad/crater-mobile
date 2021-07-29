@@ -23,10 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc?.add(AuthStarted());
-    authBloc?.stream.take(1).listen((event) {
-      final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
-      listenAuthState(_navigator.currentContext!, event);
-    });
+    // authBloc?.stream.take(1).listen((event) {
+    // final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+    //   listenAuthState(_navigator.currentContext!, event);
+    // });
     super.initState();
   }
 
@@ -50,9 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void listenAuthState(BuildContext context, AuthState state) {
+  void listenAuthState(BuildContext context, AuthState state) async {
+    await Future.delayed(const Duration(seconds: 1));
     if (state is AuthStateFailure) {
-      AutoRouter.of(context).popAndPush(const WelcomeScreenRoute());
+      final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+      AutoRouter.of(_navigator.currentContext!)
+          .root
+          .popAndPush(const WelcomeScreenRoute());
     }
 
     if (state is AuthStateSuccess) {
