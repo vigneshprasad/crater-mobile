@@ -18,6 +18,18 @@ PODS:
   - AppsFlyerFramework/Main (6.3.2)
   - device_info (0.0.1):
     - Flutter
+  - FBSDKCoreKit (11.0.1):
+    - FBSDKCoreKit/Core (= 11.0.1)
+  - FBSDKCoreKit/Core (11.0.1):
+    - FBSDKCoreKit_Basics (~> 11.0.1)
+  - FBSDKCoreKit_Basics (11.0.1):
+    - FBSDKCoreKit_Basics/Basics (= 11.0.1)
+  - FBSDKCoreKit_Basics/Basics (11.0.1)
+  - FBSDKLoginKit (11.0.1):
+    - FBSDKLoginKit/Login (= 11.0.1)
+  - FBSDKLoginKit/Login (11.0.1):
+    - FBSDKCoreKit (~> 11.0.1)
+    - FBSDKCoreKit_Basics (~> 11.0.1)
   - Firebase/CoreOnly (8.3.0):
     - FirebaseCore (= 8.3.0)
   - Firebase/DynamicLinks (8.3.0):
@@ -44,10 +56,18 @@ PODS:
   - Flutter (1.0.0)
   - flutter_custom_tabs (0.0.1):
     - Flutter
+  - flutter_facebook_auth (2.0.0):
+    - FBSDKCoreKit (~> 11.0.0)
+    - FBSDKLoginKit (~> 11.0.0)
+    - Flutter
+  - flutter_secure_storage (3.3.1):
+    - Flutter
   - flutter_segment (0.0.1):
     - Analytics (= 3.7.0)
     - Flutter
     - Segment-Amplitude (= 3.0.1)
+  - flutter_web_auth (0.3.0):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -135,7 +155,10 @@ DEPENDENCIES:
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
+  - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
+  - flutter_web_auth (from `.symlinks/plugins/flutter_web_auth/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -164,6 +187,9 @@ SPEC REPOS:
     - Analytics
     - AppAuth
     - AppsFlyerFramework
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
     - Firebase
     - FirebaseCore
     - FirebaseCoreDiagnostics
@@ -200,8 +226,14 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_custom_tabs:
     :path: ".symlinks/plugins/flutter_custom_tabs/ios"
+  flutter_facebook_auth:
+    :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_segment:
     :path: ".symlinks/plugins/flutter_segment/ios"
+  flutter_web_auth:
+    :path: ".symlinks/plugins/flutter_web_auth/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
@@ -248,6 +280,9 @@ SPEC CHECKSUMS:
   appsflyer_sdk: ca0dc5172a2bd2bdf32b3272a9729c203aa8fba7
   AppsFlyerFramework: c66d79d965ccc2f44fd5db3df3d214428cc7665a
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
+  FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
+  FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
@@ -256,7 +291,10 @@ SPEC CHECKSUMS:
   FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
+  flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
+  flutter_web_auth: ede89bf8107b021cf16e769756d267d84d24e88b
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb

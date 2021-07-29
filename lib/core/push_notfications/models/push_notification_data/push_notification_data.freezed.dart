@@ -135,8 +135,8 @@ class __$ConversationNotificationDataCopyWithImpl<$Res>
 @Implements(PushNotificationBase)
 class _$_ConversationNotificationData implements _ConversationNotificationData {
   _$_ConversationNotificationData(
-      {@JsonKey(name: "obj_type") this.type = PushType.conversation,
-      @JsonKey(name: "group_id") this.groupId});
+      {@JsonKey(name: "obj_type") required this.type,
+      @JsonKey(name: "group_id") this.groupId = PushType.conversation});
 
   factory _$_ConversationNotificationData.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationNotificationDataFromJson(json);

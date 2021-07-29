@@ -74,12 +74,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
-    // LinkedInLogin.initialize(
-    //   context,
-    //   clientId: ConfigReader.getLinkedInClientId(),
-    //   clientSecret: ConfigReader.getLinkedInSecret(),
-    //   redirectUri: ConfigReader.getLinkedInRedirect(),
-    // );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
