@@ -32,16 +32,17 @@ class RootApp extends HookWidget {
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
+  late AppRouter _appRouter;
+
   @override
   Widget build(BuildContext context) {
     useEffect(() {
       initApp(context);
+      final _navigatorKey =
+          KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+      _appRouter = AppRouter(_navigatorKey);
       return;
     }, []);
-
-    final GlobalKey<NavigatorState> _navigatorKey =
-        KiwiContainer().resolve<GlobalKey<NavigatorState>>();
-    final _appRouter = AppRouter(_navigatorKey);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
