@@ -18,7 +18,7 @@ class ConnectionTab extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(connectionStateProvider);
+    final connectionState = useProvider(connectionStateProvider);
     final tagsState = useProvider(tagStateProvider);
 
     final _controller = useScrollController();
@@ -80,7 +80,7 @@ class ConnectionTab extends HookWidget {
               );
             },
           ),
-          topicsState.when(
+          connectionState.when(
             loading: () => const CircularProgressIndicator(),
             error: (err, st) => Container(
               height: 200,
@@ -89,7 +89,10 @@ class ConnectionTab extends HookWidget {
             ),
             data: (profiles) => Expanded(
               child: ListView.builder(
-                itemCount: profiles.length + 1,
+                itemCount: profiles.length +
+                    (context.read(connectionStateProvider.notifier).allLoaded
+                        ? 0
+                        : 1),
                 controller: _controller,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == profiles.length) {

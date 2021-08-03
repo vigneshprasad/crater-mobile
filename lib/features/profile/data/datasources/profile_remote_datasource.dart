@@ -15,7 +15,8 @@ final profileRemoteDatasourceProvider =
 abstract class ProfileRemoteDatasource {
   /// TODO: PUT COMMENTS
   Future<Profile> retrieveProfileFromRemote(String profileId);
-  Future<List<Profile>> retrieveProfilesFromRemote(String tags, int page);
+  Future<List<Profile>> retrieveProfilesFromRemote(
+      String tags, int page, int pageSize);
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId);
 }
 
@@ -39,8 +40,8 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
   Future<List<Profile>> retrieveProfilesFromRemote(
     String tags,
     int page,
+    int pageSize,
   ) async {
-    const pageSize = 10;
     const searchKeyword = '';
     final response = await apiService.retrieveProfiles(
       tags,
