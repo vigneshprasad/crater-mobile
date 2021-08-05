@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dyte_client/dyte.dart';
+import 'package:dyte_client/dyteMeeting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -135,6 +137,14 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           ..._buildObjectives(context),
           ..._buildInterests(context),
           const SizedBox(height: AppInsets.xl),
+          SizedBox(
+              width: 200,
+              height: 300,
+              child: DyteMeeting(
+                roomName: "temporary-stag",
+                authToken: "",
+                onInit: (DyteMeetingHandler meeting) async {},
+              ))
         ],
       ),
     );

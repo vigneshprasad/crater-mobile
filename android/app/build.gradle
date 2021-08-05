@@ -92,6 +92,7 @@ android {
         release {
             signingConfig signingConfigs.release
             manifestPlaceholders = [segmentDebugMode: "false", segmentWriteKey: "iGbaBkLh7gb9l1rkZjGFSqmzkj13z4YN"]
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

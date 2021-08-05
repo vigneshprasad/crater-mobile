@@ -18,6 +18,10 @@ PODS:
   - AppsFlyerFramework/Main (6.3.2)
   - device_info (0.0.1):
     - Flutter
+  - dyte_client (0.0.1):
+    - DyteSdk
+    - Flutter
+  - DyteSdk (1.3)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
   - FBSDKCoreKit/Core (11.0.1):
@@ -147,6 +151,7 @@ DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
+  - dyte_client (from `.symlinks/plugins/dyte_client/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
@@ -181,6 +186,7 @@ SPEC REPOS:
     - Analytics
     - AppAuth
     - AppsFlyerFramework
+    - DyteSdk
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
     - FBSDKLoginKit
@@ -212,6 +218,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/appsflyer_sdk/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
+  dyte_client:
+    :path: ".symlinks/plugins/dyte_client/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_dynamic_links:
@@ -270,6 +278,8 @@ SPEC CHECKSUMS:
   appsflyer_sdk: ca0dc5172a2bd2bdf32b3272a9729c203aa8fba7
   AppsFlyerFramework: c66d79d965ccc2f44fd5db3df3d214428cc7665a
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  dyte_client: bc489239cdde60efba48b5c57ac520fc29b4a665
+  DyteSdk: d61b787f25c565577c3a81a5542c7eebd6a48ea6
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
