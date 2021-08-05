@@ -43,11 +43,11 @@ class ProfileScreen extends HookWidget {
   }
 
   Widget _appBar(BuildContext context, Profile profile) {
-    final size = _textSize(
-        profile.introduction!, Theme.of(context).textTheme.bodyText1!, context);
+    // final size = _textSize(
+    //     profile.introduction!, Theme.of(context).textTheme.bodyText1!, context);
 
     return SliverAppBar(
-      expandedHeight: size.height + 350,
+      expandedHeight: 240,
       flexibleSpace: FlexibleSpaceBar(background: _ProfileBody(profile)),
       pinned: true,
       elevation: 0.5,
@@ -70,19 +70,76 @@ class ProfileScreen extends HookWidget {
         )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 50),
-        child: Container(
-          color: Theme.of(context).backgroundColor,
-          child: const TabBar(
-            tabs: [
-              Tab(text: 'Snapshot'),
-              Tab(text: 'Inerests'),
-              Tab(text: 'Connections'),
+        preferredSize: const Size(double.infinity, 100),
+        child: SizedBox(
+          height: 100,
+          child: Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              Container(
+                height: 50,
+                color: Colors.black,
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 120),
+                child: const TabBar(
+                  tabs: [
+                    Tab(text: 'Club'),
+                    Tab(text: 'About'),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 36,
+                left: 20,
+                child: Row(
+                  children: [
+                    BaseContainer(
+                      color: Colors.black,
+                      radius: 30,
+                      child: _buildImage(profile),
+                    ),
+                    const SizedBox(height: 8, width: 8),
+                    Text(
+                      profile.name!,
+                      style: Theme.of(context).textTheme.subtitle1,
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildImage(Profile profile) {
+    final photo = profile.photo;
+    if (photo != null) {
+      return CachedNetworkImage(
+        imageUrl: photo,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          image: const DecorationImage(
+              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
+        ),
+      );
+    }
   }
 
   @override
@@ -92,21 +149,21 @@ class ProfileScreen extends HookWidget {
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
-            length: 3,
+            length: 2,
             child: SafeArea(
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   _appBar(context, state.profile),
                 ],
                 body: TabBarView(children: [
-                  _SnapShot(
+                  _ClubTab(state.connections!),
+                  _AboutTab(
                     profile: state.profile,
                     objectives: state.objectives,
+                    interests: state.interests,
                     meta: state.meta,
                     showLogout: allowEdit,
                   ),
-                  _Interests(state.interests),
-                  _UserConnections(state.connections!),
                 ]),
               ),
             )),
@@ -135,109 +192,56 @@ class _ProfileBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
+        child: Stack(
+          alignment: Alignment.topLeft,
+          children: [
+            Column(
               children: [
-                Column(
-                  children: [
-                    BaseContainer(
-                      disableAnimation: true,
-                      radius: AppInsets.l,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        // height: 150,
-                        child: Column(
-                          children: [
-                            if (profile.introduction != null ||
-                                profile.generatedIntroduction != null)
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (profile.generatedIntroduction != null)
-                                      Text(
-                                        profile.generatedIntroduction!,
-                                      ),
-                                    if (profile.introduction != null)
-                                      Text(
-                                        profile.introduction!,
-                                      )
-                                  ]),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Spacer(),
-                                if (profile.linkedIn != null)
-                                  _buildLinkedInButton()
-                                else
-                                  const SizedBox(height: 50),
-                              ],
-                            ),
-                          ],
-                        ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  // height: 150,
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Spacer(),
+                          if (profile.linkedIn != null)
+                            _buildLinkedInButton()
+                          else
+                            const SizedBox(height: 50),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    Center(
-                        child: BaseContainer(
-                      radius: 50,
-                      child: _buildImage(),
-                    )),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      profile.name!,
-                      style: Theme.of(context).textTheme.headline6,
-                    )
-                  ],
+                const SizedBox(
+                  height: 100,
                 ),
               ],
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildImage() {
-    final photo = profile.photo;
-    if (photo != null) {
-      return CachedNetworkImage(
-        imageUrl: photo,
-        imageBuilder: (context, imageProvider) {
-          return Container(
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.0),
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // BaseContainer(
+                //   radius: 25,
+                //   child: _buildImage(),
+                // ),
+                // const SizedBox(height: 8),
+                // Text(
+                //   profile.name!,
+                //   style: Theme.of(context).textTheme.subtitle1,
+                // )
+              ],
             ),
-          );
-        },
-      );
-    } else {
-      return Container(
-        height: 100,
-        width: 100,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0),
-          image: const DecorationImage(
-              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
 
   Widget _buildLinkedInButton() {
@@ -304,15 +308,17 @@ class _ConnectionProfile extends HookWidget {
   }
 }
 
-class _SnapShot extends HookWidget {
-  final Profile? profile;
+class _AboutTab extends HookWidget {
+  final Profile profile;
   final List<MeetingObjective> objectives;
+  final List<MeetingInterest> interests;
   final Map<String, String>? meta;
   final bool showLogout;
 
-  const _SnapShot({
-    this.profile,
+  const _AboutTab({
+    required this.profile,
     required this.objectives,
+    required this.interests,
     this.meta,
     required this.showLogout,
   });
@@ -325,11 +331,24 @@ class _SnapShot extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppInsets.l),
+          if (profile.introduction != null ||
+              profile.generatedIntroduction != null)
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (profile.generatedIntroduction != null)
+                Text(
+                  profile.generatedIntroduction!,
+                ),
+              if (profile.introduction != null)
+                Text(
+                  profile.introduction!,
+                )
+            ]),
+          const SizedBox(height: AppInsets.xxl),
           if (meta?.isNotEmpty ?? false)
             Column(
                 children: meta!.entries
                     .map((e) => Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Row(
                             children: [
                               SizedBox(
@@ -345,7 +364,9 @@ class _SnapShot extends HookWidget {
                         ))
                     .toList()),
           _Objectives(objectives),
-          const Spacer(),
+          const SizedBox(height: AppInsets.xxl),
+          _Interests(interests),
+          const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(
               child: BaseLargeButton(
@@ -415,14 +436,11 @@ class _Interests extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ..._buildInterests(context),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ..._buildInterests(context),
+      ],
     );
   }
 
@@ -464,10 +482,10 @@ class _Interests extends HookWidget {
   }
 }
 
-class _UserConnections extends HookWidget {
+class _ClubTab extends HookWidget {
   final List<Profile> connections;
 
-  const _UserConnections(this.connections);
+  const _ClubTab(this.connections);
 
   @override
   Widget build(BuildContext context) {
@@ -480,35 +498,46 @@ class _UserConnections extends HookWidget {
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 20,
-        children: connections
-            .map((user) => SizedBox(
-                  width: itemWidth,
-                  child: InkWell(
-                    onTap: () => AutoRouter.of(context).push(ProfileScreenRoute(
-                        userId: user.uuid!, allowEdit: false)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        children: [
-                          _ConnectionProfile(
-                            photoUrl: user.photo,
-                            size: 70,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Community Members',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          const SizedBox(height: AppInsets.xxl),
+          Wrap(
+            spacing: 8,
+            runSpacing: 20,
+            children: connections
+                .map((user) => SizedBox(
+                      width: itemWidth,
+                      child: InkWell(
+                        onTap: () => AutoRouter.of(context).push(
+                            ProfileScreenRoute(
+                                userId: user.uuid!, allowEdit: false)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: [
+                              _ConnectionProfile(
+                                photoUrl: user.photo,
+                                size: 70,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                user.name!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 13),
+                              )
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            user.name!,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 13),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ))
-            .toList(),
+                    ))
+                .toList(),
+          ),
+        ],
       ),
     );
   }
@@ -560,7 +589,7 @@ class _ChipItem extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText1;
     return Container(
         width: width,
-        height: 50,
+        // height: 40,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
             color: Colors.transparent,
