@@ -354,8 +354,13 @@ class _$MeetingInjector extends MeetingInjector {
       ..registerSingleton<MeetingRepository>((c) => MeetingRepositoryImpl(
           remoteDatasource: c<MeetingRemoteDatasource>(),
           networkInfo: c<NetworkInfo>()))
+      ..registerSingleton<DyteRepository>((c) => DyteRepositoryImpl(
+          remoteDatasource: c<DyteRemoteDatasource>(),
+          networkInfo: c<NetworkInfo>()))
       ..registerSingleton<MeetingRemoteDatasource>(
           (c) => MeetingRemoteDatasourceImpl(c<MeetsApiService>()))
+      ..registerSingleton<DyteRemoteDatasource>(
+          (c) => DyteRemoteDatasourceImpl(c<DyteApiService>()))
       ..registerSingleton((c) => UCGetMeetingInterests(c<MeetingRepository>()))
       ..registerSingleton((c) => UCGetMeetingObjectives(c<MeetingRepository>()))
       ..registerSingleton((c) => UCGetMeetingConfig(c<MeetingRepository>()))

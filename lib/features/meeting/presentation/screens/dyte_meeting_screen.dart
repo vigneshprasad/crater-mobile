@@ -1,27 +1,52 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dyte_client/dyte.dart';
 import 'package:dyte_client/dyteMeeting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
-class DyteMeetingScreen extends StatefulWidget {
-  const DyteMeetingScreen({Key? key}) : super(key: key);
+class DyteMeetingScreen extends HookWidget {
+  final int meetingId;
+  const DyteMeetingScreen({Key? key, required this.meetingId})
+      : super(key: key);
 
-  @override
-  _DyteMeetingScreenState createState() => _DyteMeetingScreenState();
-}
-
-class _DyteMeetingScreenState extends State<DyteMeetingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
+
+    return profileState.when(
+      data: (state) => Scaffold(
+          appBar: BaseAppBar(),
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          body: SizedBox(
+            child: DyteMeeting(
+              roomName: state.room,
+              authToken: state.token,
+              onInit: (DyteMeetingHandler meeting) async {
+                meeting.events.on('meetingEnd', context, (ev, c) {
+                  AutoRouter.of(context).pop();
+                });
+              },
+            ),
+          )),
+      loading: () => Scaffold(
         appBar: BaseAppBar(),
-        body: SafeArea(
-          child: DyteMeeting(
-            roomName: "oripsd-eockll",
-            authToken:
-                "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRiMDMxYmNjLWNlZWUtNDQ4ZC1iYTBkLTk0NTRlOGVmZWYzOCIsImxvZ2dlZEluIjp0cnVlLCJpYXQiOjE2MjgxNjE3OTUsImV4cCI6MTYyODI0ODE5NX0.ur9I0BICkJLEZCs8QZ79Z-GpLRMzD3PaTbeAosC2Er-v_qSCVDMnLmt7J7k0L-4pu-vSv-xWIMlGlEB0ccChcgeYHLoy_imnH8FNohM_a079CKZkvpDRWgVtfzlyfCNPe73ILOWMqEhKlrErxymGB1tr75G0LbHQ7TisFMxmJXgiTLGc1bZGLgbXpczyywjv8vCdODgQGQqe0fxEs8Vbsg6vNoo2IWTE0sHHKMjrgpJFevVpb8uJQ8QB3f1BwbqF1chb6ayNMFg4JZbRzykTDnHyFxXRm2wkiCfsHuymNxZCoKBuDXU9ThqfpCBfoH8l103ivpgdldd5NLStHkuA1w",
-            onInit: (DyteMeetingHandler meeting) async {},
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              children: const [
+                LinearProgressIndicator(),
+              ],
+            ),
           ),
-        ));
+        ),
+      ),
+      error: (error, stackTrace) => Center(
+        child: Text(error.toString()),
+      ),
+    );
   }
 }

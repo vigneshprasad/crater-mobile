@@ -140,7 +140,9 @@ class ProfileScreen extends HookWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => Center(child: Text(error.toString())),
+      error: (error, stackTrace) => Center(
+        child: Text(error.toString()),
+      ),
     );
   }
 }

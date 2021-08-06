@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dyte_client/dyte.dart';
-import 'package:dyte_client/dyteMeeting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
-import 'package:worknetwork/routes.gr.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -250,7 +247,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             text: "Join call",
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DyteMeetingScreen()));
+                  builder: (context) =>
+                      DyteMeetingScreen(meetingId: widget.meetingId)));
               return;
               if (meeting?.link != null) {
                 KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
@@ -288,7 +286,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           text: "Join call",
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const DyteMeetingScreen()));
+                builder: (context) =>
+                    DyteMeetingScreen(meetingId: widget.meetingId)));
             return;
             if (meeting?.link != null) {
               KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);

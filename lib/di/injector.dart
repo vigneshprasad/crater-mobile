@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/features/meeting/data/datasources/dyte_remote_datasource.dart';
+import 'package:worknetwork/features/meeting/data/repository/dyte_repository_impl.dart';
+import 'package:worknetwork/features/meeting/data/services/dyte_api_service.dart';
+import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -329,8 +333,10 @@ abstract class VideoInjector {
 abstract class MeetingInjector {
   @Register.factory(MeetingBloc)
   @Register.singleton(MeetingRepository, from: MeetingRepositoryImpl)
+  @Register.singleton(DyteRepository, from: DyteRepositoryImpl)
   @Register.singleton(MeetingRemoteDatasource,
       from: MeetingRemoteDatasourceImpl)
+  @Register.singleton(DyteRemoteDatasource, from: DyteRemoteDatasourceImpl)
   @Register.singleton(UCGetMeetingInterests)
   @Register.singleton(UCGetMeetingObjectives)
   @Register.singleton(UCGetMeetingConfig)
@@ -452,6 +458,7 @@ class Di {
     container.registerInstance(PostApiService.create());
     container.registerInstance(ArticlesApiService.create());
     container.registerInstance(MeetsApiService.create());
+    container.registerInstance(DyteApiService.create());
     container.registerInstance(TagsApiService.create());
     container.registerInstance(RewardsApiService.create());
     container.registerInstance(ProfileIntroApiService.create());
