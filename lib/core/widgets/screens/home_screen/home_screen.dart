@@ -109,7 +109,7 @@ class HomeScreen extends HookWidget {
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final value = await _startConversation(context);
+          final value = await startConversation(context);
           if (value == null) {
             return;
           }
@@ -243,83 +243,6 @@ class HomeScreen extends HookWidget {
     );
   }
 
-  Future<int?> _startConversation(BuildContext context) {
-    return showModalBottomSheet(
-        elevation: 10,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-                topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-              ),
-              child: Container(
-                color: Theme.of(context).backgroundColor,
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 30,
-                      runSpacing: 30,
-                      children: [
-                        Text(
-                          'Start a conversation',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Text(
-                          'What type of conversation would you like to have?',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(0);
-                              },
-                              child: const Text('1:1'),
-                            ),
-                          ),
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(1);
-                              },
-                              child: const Text('AMA'),
-                            ),
-                          ),
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(2);
-                              },
-                              child: const Text(
-                                'Round\nTable',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ));
-        });
-  }
-
   Future<void> _navigateToHome(BuildContext context) async {
     final onboarding = ProviderContainer().read(onboardingProvider);
 
@@ -331,4 +254,81 @@ class HomeScreen extends HookWidget {
           predicate: (_) => false);
     }
   }
+}
+
+Future<int?> startConversation(BuildContext context) {
+  return showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+              topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            ),
+            child: Container(
+              color: Theme.of(context).backgroundColor,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 30,
+                    runSpacing: 30,
+                    children: [
+                      Text(
+                        'Start a conversation',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text(
+                        'What type of conversation would you like to have?',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(0);
+                            },
+                            child: const Text('1:1'),
+                          ),
+                        ),
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(1);
+                            },
+                            child: const Text('AMA'),
+                          ),
+                        ),
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(2);
+                            },
+                            child: const Text(
+                              'Round\nTable',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ));
+      });
 }

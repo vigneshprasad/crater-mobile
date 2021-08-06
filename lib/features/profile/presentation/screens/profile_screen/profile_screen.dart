@@ -10,6 +10,8 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/speakers_table/speakers_table.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -43,13 +45,11 @@ class ProfileScreen extends HookWidget {
   }
 
   Widget _appBar(BuildContext context, Profile profile) {
-    // final size = _textSize(
-    //     profile.introduction!, Theme.of(context).textTheme.bodyText1!, context);
-
     return SliverAppBar(
-      expandedHeight: 240,
+      expandedHeight: 260,
       flexibleSpace: FlexibleSpaceBar(background: _ProfileBody(profile)),
       pinned: true,
+      floating: true,
       elevation: 0.5,
       shadowColor: Colors.grey,
       forceElevated: true,
@@ -77,8 +77,8 @@ class ProfileScreen extends HookWidget {
             alignment: Alignment.bottomLeft,
             children: [
               Container(
-                height: 50,
-                color: Colors.black,
+                height: 80,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 alignment: Alignment.bottomLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 120),
                 child: const TabBar(
@@ -89,19 +89,18 @@ class ProfileScreen extends HookWidget {
                 ),
               ),
               Positioned(
-                bottom: 36,
+                bottom: 20,
                 left: 20,
                 child: Row(
                   children: [
                     BaseContainer(
-                      color: Colors.black,
-                      radius: 30,
-                      child: _buildImage(profile),
+                      radius: 40,
+                      child: _buildImage(profile, 40),
                     ),
-                    const SizedBox(height: 8, width: 8),
+                    const SizedBox(height: 16, width: 16),
                     Text(
                       profile.name!,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     )
                   ],
                 ),
@@ -113,17 +112,17 @@ class ProfileScreen extends HookWidget {
     );
   }
 
-  Widget _buildImage(Profile profile) {
+  Widget _buildImage(Profile profile, double radius) {
     final photo = profile.photo;
     if (photo != null) {
       return CachedNetworkImage(
         imageUrl: photo,
         imageBuilder: (context, imageProvider) {
           return Container(
-            height: 60,
-            width: 60,
+            height: radius * 2,
+            width: radius * 2,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(radius),
               image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
           );
@@ -131,10 +130,10 @@ class ProfileScreen extends HookWidget {
       );
     } else {
       return Container(
-        height: 60,
-        width: 60,
+        height: radius * 2,
+        width: radius * 2,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(radius),
           image: const DecorationImage(
               image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
         ),
@@ -192,55 +191,38 @@ class _ProfileBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
-        child: Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  // height: 150,
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Spacer(),
-                          if (profile.linkedIn != null)
-                            _buildLinkedInButton()
-                          else
-                            const SizedBox(height: 50),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // BaseContainer(
-                //   radius: 25,
-                //   child: _buildImage(),
-                // ),
-                // const SizedBox(height: 8),
-                // Text(
-                //   profile.name!,
-                //   style: Theme.of(context).textTheme.subtitle1,
-                // )
-              ],
-            ),
-          ],
+    return Stack(
+      alignment: Alignment.topLeft,
+      children: [
+        Image.asset(
+          'assets/images/img_drawer_image.png',
+          width: double.infinity,
+          fit: BoxFit.cover,
         ),
-      ),
+        SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            // height: 150,
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Spacer(),
+                    if (profile.linkedIn != null)
+                      _buildLinkedInButton()
+                    else
+                      const SizedBox(height: 50),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ))
+      ],
     );
   }
 
@@ -502,8 +484,48 @@ class _ClubTab extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
+            'Ongoing Chats',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          const SizedBox(height: AppInsets.xxl),
+          Row(
+            children: [
+              const SpeakersTable(
+                speakers: [],
+                chairSize: 36,
+              ),
+              // const SizedBox(width: AppInsets.xxl),
+              MaterialButton(
+                onPressed: () async {
+                  final value = await startConversation(context);
+                  if (value == null) {
+                    return;
+                  }
+                  // _tabController.animateTo(0);
+                  // _activeTopic.value = value;
+                },
+                child: BaseContainer(
+                  radius: 20,
+                  child: Container(
+                    width: 140,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.black,
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 80),
+          Text(
             'Community Members',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(height: AppInsets.xxl),
           Wrap(
