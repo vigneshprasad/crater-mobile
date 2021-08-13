@@ -183,7 +183,7 @@ class _TopicCard extends StatelessWidget {
 
     AutoRouter.of(context)
         .push(CreateConversationScreenRoute(
-            topic: topic, type: ConversationType.instant))
+            topic: topic, type: ConversationType.curated))
         .then(
       (value) {
         if (value is Conversation) {
