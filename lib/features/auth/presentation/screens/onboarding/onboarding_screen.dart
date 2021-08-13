@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -35,19 +35,14 @@ class OnboardingScreen extends HookWidget {
     switch (str.replaceFirst('OnboardingType.', '')) {
       case "signupComplete":
         return OnboardingType.signupComplete;
-        break;
       case "oneOnOneMeetingCreation":
         return OnboardingType.oneOnOneMeetingCreation;
-        break;
       case "groupMeetingCreation":
         return OnboardingType.groupMeetingCreation;
-        break;
       case "meetingJoining":
         return OnboardingType.meetingJoining;
-        break;
       case "meetingLeaving":
         return OnboardingType.meetingLeaving;
-        break;
     }
     return OnboardingType.signupComplete;
   }
@@ -59,25 +54,20 @@ class OnboardingScreen extends HookWidget {
         final user = BlocProvider.of<AuthBloc>(context).state.user;
         return signupSlides
             .map((e) => OnboardingSlideContent(
-                  heading: e.heading.replaceFirst('NAME', user.name),
+                  heading: e.heading.replaceFirst('NAME', user?.name ?? ''),
                   subHeading: e.subHeading,
                   image: e.image,
                   buttons: e.buttons,
                 ))
             .toList();
-        break;
       case OnboardingType.oneOnOneMeetingCreation:
         return oneOnOneCreationSlides;
-        break;
       case OnboardingType.groupMeetingCreation:
         return groupCreationSlides;
-        break;
       case OnboardingType.meetingJoining:
         return meetingJoiningSlides;
-        break;
       case OnboardingType.meetingLeaving:
         return meetingLeavingSlides;
-        break;
       default:
         return [];
     }
@@ -92,7 +82,7 @@ class OnboardingScreen extends HookWidget {
 
     useEffect(() {
       void listener() {
-        currentPage.value = pageController.page.floor();
+        currentPage.value = pageController.page!.floor();
       }
 
       pageController.addListener(listener);
@@ -158,30 +148,29 @@ class OnboardingScreen extends HookWidget {
                   duration: duration, curve: Curves.easeInOut);
             },
           );
-          break;
         case OnboardingSlideButtonType.invite:
           final shareManager = useProvider(shareManagerProvider);
           return _ActionButton(
             label: e.title,
             onTap: () async {
               await shareManager.share(context);
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
             },
           );
-          break;
         case OnboardingSlideButtonType.feedback:
           return _ActionButton(
             label: e.title,
             onTap: () async {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
 
               launch(
-                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user.email}',
-                option: const CustomTabsOption(
+                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user?.email}',
+                customTabsOption: const CustomTabsOption(
                   enableUrlBarHiding: true,
                   extraCustomTabs: [],
                   showPageTitle: false,
@@ -190,43 +179,39 @@ class OnboardingScreen extends HookWidget {
               );
             },
           );
-          break;
         case OnboardingSlideButtonType.start1on1Conversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.topicListScreen(topic: 1), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 1),
+                  predicate: (route) => false);
             },
           );
-          break;
         case OnboardingSlideButtonType.startGroupConversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.topicListScreen(topic: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 0),
+                  predicate: (route) => false);
             },
           );
-          break;
         case OnboardingSlideButtonType.joinConversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 1), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 1),
+                  predicate: (route) => false);
             },
           );
-          break;
         default:
           return _ActionButton(
             label: e.title,
             onTap: () {
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
             },
           );
       }
@@ -253,17 +238,17 @@ class _PageContent extends StatelessWidget {
   final OnboardingSlideContent content;
 
   const _PageContent({
-    Key key,
-    @required this.content,
+    Key? key,
+    required this.content,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 18,
           color: Colors.white54,
         );
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 20,
         );
     return Column(
@@ -305,11 +290,11 @@ class _PageContent extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _ActionButton({
-    Key key,
-    @required this.label,
+    Key? key,
+    required this.label,
     this.onTap,
   }) : super(key: key);
 

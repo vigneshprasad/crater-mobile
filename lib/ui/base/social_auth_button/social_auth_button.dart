@@ -10,12 +10,12 @@ enum AuthProvider { google, facebook, linkedin }
 class SocialAuthButton extends StatelessWidget {
   final SocialAuthProviders provider;
   final bool isLarge;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isSignUp;
 
   const SocialAuthButton(
-      {Key key,
-      @required this.provider,
+      {Key? key,
+      required this.provider,
       this.onPressed,
       this.isLarge = false,
       this.isSignUp = false})
@@ -23,8 +23,8 @@ class SocialAuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _child;
-    Color _buttonColor;
+    late Widget _child;
+    late Color _buttonColor;
     Color _textColor = Colors.white;
     final _iconSize = isLarge ? 24.0 : 20.0;
 
@@ -113,19 +113,14 @@ class SocialAuthButton extends StatelessWidget {
     switch (provider) {
       case SocialAuthProviders.linkedin:
         return "LinkedIn";
-        break;
       case SocialAuthProviders.apple:
         return isSignUp ? "Sign up with Apple" : "Sign in with Apple";
-        break;
       case SocialAuthProviders.facebook:
         return "Facebook";
-        break;
       case SocialAuthProviders.google:
         return "Google";
-        break;
       case SocialAuthProviders.email:
         return "Email";
-        break;
       default:
         return "";
     }

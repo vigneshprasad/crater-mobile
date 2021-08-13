@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'channels.dart';
@@ -40,7 +41,7 @@ mixin UserLeapFlutter {
       return await _channel
           .invokeMethod(Channels.SET_EMAIL_ADDRESS, {'email': email});
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -49,7 +50,7 @@ mixin UserLeapFlutter {
     try {
       return await _channel.invokeMethod(Channels.DISPLAY_WITH_ID, {'id': id});
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -70,8 +71,7 @@ mixin UserLeapFlutter {
 
   /// track a specific event defined on your dashboard
   static Future<SurveryStatus> track(String event) async {
-    final String res =
-        await _channel.invokeMethod(Channels.TRACK, {'event': event});
+    final res = await _channel.invokeMethod(Channels.TRACK, {'event': event});
     switch (res) {
       case 'READY':
         return SurveryStatus.ready;

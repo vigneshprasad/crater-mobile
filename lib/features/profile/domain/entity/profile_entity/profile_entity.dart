@@ -8,14 +8,14 @@ part 'profile_entity.g.dart';
 @freezed
 abstract class Profile with _$Profile {
   factory Profile({
-    int pk,
-    String uuid,
-    String name,
-    String introduction,
-    @JsonKey(name: 'generated_introduction') String generatedIntroduction,
-    @JsonKey(name: "tag_list") List<Tag> tag,
-    @JsonKey(name: "linkedin_url") String linkedIn,
-    String photo,
+    int? pk,
+    String? uuid,
+    String? name,
+    String? introduction,
+    @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
+    @JsonKey(name: "tag_list") List<Tag>? tag,
+    @JsonKey(name: "linkedin_url") String? linkedIn,
+    String? photo,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>

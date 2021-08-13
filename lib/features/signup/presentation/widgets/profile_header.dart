@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
 
   const ProfileHeader({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
     this.subtitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
+    final headingStyle = Theme.of(context).textTheme.headline5?.copyWith(
           fontSize: 22,
           fontWeight: FontWeight.w500,
         );
-    final subHeadingStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final subHeadingStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w400,
         );
@@ -34,7 +34,7 @@ class ProfileHeader extends StatelessWidget {
             const SizedBox(height: 20),
             if (subtitle != null)
               Text(
-                subtitle,
+                subtitle!,
                 style: subHeadingStyle,
               ),
           ]),

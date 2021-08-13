@@ -1,5 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:lottie/lottie.dart';
@@ -18,8 +19,8 @@ class VideoPlayerScreen extends StatefulWidget {
   final int videoId;
 
   const VideoPlayerScreen({
-    @required this.videoId,
-    Key key,
+    required this.videoId,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -27,9 +28,9 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  VideoPlayerBloc _bloc;
-  VideoPlayerController _videoPlayerController;
-  ChewieController _controller;
+  VideoPlayerBloc? _bloc;
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? _controller;
   List<Video> _playlist = [];
   final int _pageSize = 10;
 
@@ -62,16 +63,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: _bloc,
+      value: _bloc!,
       child: Theme(
         data: AppTheme.darkTheme,
         child: BlocConsumer<VideoPlayerBloc, VideoPlayerState>(
           listener: (context, state) {
             if (state is VideoFeatureItemReceived) {
               setState(() {
-                _videoPlayerController =
-                    VideoPlayerController.network(state.featureVideo.cover);
-                _controller = _buildVideoController(state.featureVideo);
+                if (state.featureVideo != null) {
+                  _videoPlayerController = VideoPlayerController.network(
+                      state.featureVideo!.cover ?? '');
+                  _controller = _buildVideoController(state.featureVideo!);
+                }
               });
             }
 
@@ -85,7 +88,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             return Scaffold(
               appBar: BaseAppBar(),
               body: VideoScreenLayout(
-                  featureVideo: state.featureVideo,
+                  featureVideo: state.featureVideo!,
                   videoPlayer: _buildPlayer(state),
                   playlist: _buildPlayList(state)),
             );
@@ -98,7 +101,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget _buildPlayer(VideoPlayerState state) {
     if (_controller != null) {
       return Chewie(
-        controller: _controller,
+        controller: _controller!,
       );
     }
     return AspectRatio(
@@ -112,7 +115,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   ChewieController _buildVideoController(Video featureVideo) {
     return ChewieController(
       showControlsOnInitialize: false,
-      videoPlayerController: _videoPlayerController,
+      videoPlayerController: _videoPlayerController!,
       autoInitialize: true,
       aspectRatio: 16 / 9,
       autoPlay: true,
@@ -137,10 +140,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   void _onPressPlayListItem(Video item) {
-    _controller.pause();
-    _bloc.add(GetFeatureVideoStarted(id: item.pk));
-    _bloc.add(GetVideosPlaylistStarted(
-      excludeItemId: item.pk,
+    _controller?.pause();
+    _bloc?.add(GetFeatureVideoStarted(id: item.pk!));
+    _bloc?.add(GetVideosPlaylistStarted(
+      excludeItemId: item.pk!,
       page: 1,
       pageSize: _pageSize,
     ));

@@ -24,7 +24,7 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, List<Topic>>> getAllAMATopics();
 
-  Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
+  Future<Either<Failure, List<Topic>>> getAllTopics(int? parent);
 
   Future<Either<Failure, Optin>> postGroupOptin(
     List<MeetingInterest> interests,

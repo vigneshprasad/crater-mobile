@@ -7,13 +7,13 @@ part 'api_models.g.dart';
 
 @JsonSerializable()
 class GetAllNotificationsPageResponse extends Equatable {
-  final int count;
+  final int? count;
 
   @JsonKey(name: "current_page")
-  final int currentPage;
-  final String next;
-  final int pages;
-  final List<NotificationModel> results;
+  final int? currentPage;
+  final String? next;
+  final int? pages;
+  final List<NotificationModel>? results;
 
   const GetAllNotificationsPageResponse({
     this.count,
@@ -24,14 +24,15 @@ class GetAllNotificationsPageResponse extends Equatable {
   });
 
   @override
-  // TODO: implement props
-  List<Object> get props => [
-        count,
-        currentPage,
-        next,
-        pages,
-        results,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (count != null) temp.add(count!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (next != null) temp.add(next!);
+    if (pages != null) temp.add(pages!);
+    if (results != null) temp.add(results!);
+    return temp;
+  }
 
   factory GetAllNotificationsPageResponse.fromJson(Map<String, dynamic> json) =>
       _$GetAllNotificationsPageResponseFromJson(json);

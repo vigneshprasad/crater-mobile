@@ -2,15 +2,15 @@ part of 'phone_verify_bloc.dart';
 
 abstract class PhoneVerifyState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const PhoneVerifyState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class PhoneVerifyInitial extends PhoneVerifyState {
@@ -31,7 +31,7 @@ class PhoneVerifyRequestLoading extends PhoneVerifyState {
 
 class PhoneVerifyRequestError extends PhoneVerifyState {
   const PhoneVerifyRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -41,25 +41,27 @@ class PhoneVerifyRequestError extends PhoneVerifyState {
 class PhoneNumberPostRequestLoaded extends PhoneVerifyState {
   final String status;
   const PhoneNumberPostRequestLoaded({
-    this.status,
+    required this.status,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, status];
+  List<Object> get props =>
+      error != null ? [loading, error!, status] : [loading, status];
 }
 
 class PhoneSmsCodeRequestLoaded extends PhoneVerifyState {
   final String status;
   const PhoneSmsCodeRequestLoaded({
-    this.status,
+    required this.status,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, status];
+  List<Object> get props =>
+      error != null ? [loading, error!, status] : [loading, status];
 }

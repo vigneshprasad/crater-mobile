@@ -31,7 +31,7 @@ abstract class ConversationApiService extends ChopperService {
       @Query() DateTime start, @Query() DateTime end);
 
   @Get(path: 'topic/')
-  Future<Response> getAllTopics(@Query() int parent);
+  Future<Response> getAllTopics(@Query() int? parent);
 
   @Get(path: 'topic/ama/')
   Future<Response> getAllAMATopics();

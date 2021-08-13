@@ -7,13 +7,16 @@ import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 
 final topicsStateProvider =
-    StateNotifierProvider((ref) => TopicsStateNotifier(ref));
+    StateNotifierProvider<TopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => TopicsStateNotifier(ref));
 
 final amaTopicsStateProvider =
-    StateNotifierProvider((ref) => AMATopicsStateNotifier(ref));
+    StateNotifierProvider<AMATopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => AMATopicsStateNotifier(ref));
 
 final articleTopicsStateProiver =
-    StateNotifierProvider((ref) => ArticleTopicsStateNotifier(ref));
+    StateNotifierProvider<ArticleTopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => ArticleTopicsStateNotifier(ref));
 
 class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
   final ProviderReference ref;

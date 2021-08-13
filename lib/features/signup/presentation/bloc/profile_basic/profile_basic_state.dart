@@ -2,15 +2,15 @@ part of 'profile_basic_bloc.dart';
 
 abstract class ProfileBasicState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const ProfileBasicState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ProfileBasicInitial extends ProfileBasicState {
@@ -31,7 +31,7 @@ class ProfileBasicRequestLoading extends ProfileBasicState {
 
 class ProfileBasicRequestError extends ProfileBasicState {
   const ProfileBasicRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -46,7 +46,7 @@ class ProfileBasicRequestLoaded extends ProfileBasicState {
         );
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class PatchProfileBasicRequestLoaded extends ProfileBasicState {
@@ -54,13 +54,24 @@ class PatchProfileBasicRequestLoaded extends ProfileBasicState {
   final UserProfile profile;
 
   const PatchProfileBasicRequestLoaded({
-    @required this.user,
-    @required this.profile,
+    required this.user,
+    required this.profile,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, user, profile];
+  List<Object> get props => error != null
+      ? [
+          loading,
+          error!,
+          user,
+          profile,
+        ]
+      : [
+          loading,
+          user,
+          profile,
+        ];
 }

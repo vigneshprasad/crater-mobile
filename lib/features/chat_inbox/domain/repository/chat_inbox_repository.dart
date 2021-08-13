@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/page_socket_response/page_socket_response.dart';
@@ -7,8 +6,8 @@ import '../entity/chat_user_entity.dart';
 
 abstract class ChatInboxRepository {
   Future<Either<Failure, void>> sendStarChatUser({
-    @required String user,
-    @required bool isStarred,
+    required String user,
+    required bool isStarred,
   });
   Future<Either<Failure, void>> persistChatUsers(List<ChatUser> users);
   Future<Either<Failure, PageSocketResponse<ChatUser>>> getAllChatUsers(
@@ -18,8 +17,8 @@ abstract class ChatInboxRepository {
     String latestMesssages,
   );
   Future<Either<Failure, ChatUser>> recievedUserChatStarChange({
-    @required bool isStarred,
-    @required String user,
+    required bool isStarred,
+    required String user,
   });
   Future<Either<Failure, void>> sendSearchAllChatUsers(
     String search,

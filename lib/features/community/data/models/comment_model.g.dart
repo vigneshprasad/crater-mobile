@@ -17,13 +17,13 @@ class CommentModelAdapter extends TypeAdapter<CommentModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CommentModel(
-      pk: fields[0] as int,
-      message: fields[1] as String,
-      creatorId: fields[2] as String,
-      creatorName: fields[3] as String,
-      creatorPhoto: fields[4] as String,
-      created: fields[5] as DateTime,
-      postId: fields[6] as int,
+      pk: fields[0] as int?,
+      message: fields[1] as String?,
+      creatorId: fields[2] as String?,
+      creatorName: fields[3] as String?,
+      creatorPhoto: fields[4] as String?,
+      created: fields[5] as DateTime?,
+      postId: fields[6] as int?,
     );
   }
 
@@ -64,15 +64,15 @@ class CommentModelAdapter extends TypeAdapter<CommentModel> {
 
 CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
   return CommentModel(
-    pk: json['pk'] as int,
-    message: json['message'] as String,
-    creatorId: json['creator_id'] as String,
-    creatorName: json['creator_name'] as String,
-    creatorPhoto: json['creator_photo'] as String,
+    pk: json['pk'] as int?,
+    message: json['message'] as String?,
+    creatorId: json['creator_id'] as String?,
+    creatorName: json['creator_name'] as String?,
+    creatorPhoto: json['creator_photo'] as String?,
     created: json['created'] == null
         ? null
         : DateTime.parse(json['created'] as String),
-    postId: json['postId'] as int,
+    postId: json['postId'] as int?,
   );
 }
 

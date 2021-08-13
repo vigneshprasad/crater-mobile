@@ -1,5 +1,5 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:flutter/material.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -14,11 +14,11 @@ final roundTableRtcClientProvider = Provider<RoundTableRtcClient>((ref) {
 });
 
 class RoundTableRtcClient {
-  RtcEngine _engine;
+  RtcEngine? _engine;
 
   RoundTableRtcClient();
 
-  RtcEngine get engine => _engine;
+  RtcEngine? get engine => _engine;
 
   Future<void> initEngine() async {
     if (_engine != null) {
@@ -26,9 +26,11 @@ class RoundTableRtcClient {
     }
 
     // Get microphone permission
-    await PermissionHandler().requestPermissions([
-      PermissionGroup.microphone,
-    ]);
+
+    await Permission.microphone.request();
+    // await PermissionHandler().requestPermissions([
+    //   PermissionGroup.microphone,
+    // ]);
 
     // Create RTC client instance
     _engine = await RtcEngine.create(ConfigReader.getAgoraAppId());
@@ -42,28 +44,28 @@ class RoundTableRtcClient {
     if (_engine == null) {
       await initEngine();
     }
-    await _engine.setClientRole(
+    await _engine?.setClientRole(
       ClientRole.Broadcaster,
     );
-    await _engine.setLogFilter(LogFilter.Off);
-    await _engine.enableAudioVolumeIndication(300, 3, true);
-    await _engine.setDefaultAudioRoutetoSpeakerphone(true);
-    await _engine.setAudioProfile(
+    // await _engine?.setLogFilter(LogFilter.Off);
+    await _engine?.enableAudioVolumeIndication(300, 3, true);
+    await _engine?.setDefaultAudioRoutetoSpeakerphone(true);
+    await _engine?.setAudioProfile(
         AudioProfile.MusicHighQuality, AudioScenario.GameStreaming);
-    await _engine.joinChannelWithUserAccount(token, channelName, account);
-    await _engine.renewToken(token);
+    await _engine?.joinChannelWithUserAccount(token, channelName, account);
+    await _engine?.renewToken(token);
   }
 
   void setEventHandler(RtcEngineEventHandler handler) {
-    _engine.setEventHandler(handler);
+    _engine?.setEventHandler(handler);
   }
 
   Future<void> renewToken(String token) async {
-    await _engine.renewToken(token);
+    await _engine?.renewToken(token);
   }
 
-  Future<void> muteLocalAudio({@required bool muted}) async {
-    await _engine.muteLocalAudioStream(muted);
+  Future<void> muteLocalAudio({required bool muted}) async {
+    await _engine?.muteLocalAudioStream(muted);
   }
 
   Future<void> dispose() async {

@@ -12,27 +12,38 @@ part 'notification_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.notifications)
 @JsonSerializable()
 class NotificationModel extends Notification {
-  final int pk;
-  final String text;
-  final DateTime created;
+  @HiveField(0)
+  final int? pk;
 
+  @HiveField(1)
+  final String? text;
+
+  @HiveField(2)
+  final DateTime? created;
+
+  @HiveField(3)
   @JsonKey(name: "author_avatar")
-  final String authAvatar;
+  final String? authAvatar;
 
+  @HiveField(4)
   @JsonKey(name: "author_name")
-  final String authorName;
+  final String? authorName;
 
+  @HiveField(5)
   @JsonKey(name: "event_date")
-  final DateTime eventDate;
+  final DateTime? eventDate;
 
+  @HiveField(6)
   @JsonKey(name: "is_read")
-  final bool isRead;
+  final bool? isRead;
 
+  @HiveField(7)
   @JsonKey(name: "obj_pk")
-  final int objPk;
+  final int? objPk;
 
+  @HiveField(8)
   @JsonKey(name: "obj_type")
-  final String objType;
+  final String? objType;
 
   NotificationModel({
     this.pk,

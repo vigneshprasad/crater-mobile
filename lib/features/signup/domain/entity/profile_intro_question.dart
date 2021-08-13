@@ -9,18 +9,18 @@ class ProfileIntroQuestion extends HiveObject {
 }
 
 class ProfileIntroElement extends HiveObject {
-  final String id;
+  final String? id;
   final ProfileIntroElementType type;
-  final String value;
-  final List<ProfileIntroMeta> options;
-  final double width;
-  final int lines;
-  final String placeholder;
-  final bool optional;
+  final String? value;
+  final List<ProfileIntroMeta>? options;
+  final double? width;
+  final int? lines;
+  final String? placeholder;
+  final bool? optional;
 
   ProfileIntroElement({
     this.id,
-    this.type,
+    required this.type,
     this.value,
     this.options,
     this.width,

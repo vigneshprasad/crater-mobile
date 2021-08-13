@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../constants/theme.dart';
 
 class BaseFormField extends StatelessWidget {
-  final String label;
+  final String? label;
   final Widget child;
 
   const BaseFormField({
-    Key key,
+    Key? key,
     this.label,
-    @required this.child,
+    required this.child,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class BaseFormField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (label != null) Text(label, style: labelStyle),
+          if (label != null) Text(label!, style: labelStyle),
           const SizedBox(height: AppInsets.med),
           child,
         ],

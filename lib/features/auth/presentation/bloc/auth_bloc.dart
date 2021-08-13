@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/analytics/analytics.dart';
@@ -44,31 +45,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Analytics analytics;
 
   AuthBloc({
-    @required this.getUser,
-    @required this.getUserProfile,
-    @required this.pushNotifications,
-    @required this.getAuthentication,
-    @required this.authLinkedIn,
-    @required this.authGoogle,
-    @required this.authWithApple,
-    @required this.authFacebook,
-    @required this.loginEmail,
-    @required this.socialAuthToken,
-    @required this.registerEmail,
-    @required this.analytics,
-  })  : assert(getUser != null),
-        assert(getUserProfile != null),
-        assert(pushNotifications != null),
-        assert(getAuthentication != null),
-        assert(authLinkedIn != null),
-        assert(authWithApple != null),
-        assert(authGoogle != null),
-        assert(authFacebook != null),
-        assert(loginEmail != null),
-        assert(socialAuthToken != null),
-        assert(registerEmail != null),
-        assert(analytics != null),
-        super(const AuthStateInitial());
+    required this.getUser,
+    required this.getUserProfile,
+    required this.pushNotifications,
+    required this.getAuthentication,
+    required this.authLinkedIn,
+    required this.authGoogle,
+    required this.authWithApple,
+    required this.authFacebook,
+    required this.loginEmail,
+    required this.socialAuthToken,
+    required this.registerEmail,
+    required this.analytics,
+  }) : super(const AuthStateInitial());
 
   @override
   Stream<AuthState> mapEventToState(
@@ -111,7 +100,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await analytics.identify(
                   properties: getUserTraitsFromModel(user));
               yield profileOrError.fold(
-                (profileFailure) => AuthStateSuccess(user: user, profile: null),
+                (profileFailure) => AuthStateSuccess(user: user),
                 (profile) {
                   analytics.identify(
                       properties: getProfileTraitsFromModel(profile));
@@ -226,7 +215,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ));
 
       final profileOrError = await getUserProfile(NoParams());
-      final profile = profileOrError.getOrElse(() => state.profile);
+      final profile = profileOrError.getOrElse(() => state.profile!);
 
       yield userOrFailure.fold(
         (failure) => AuthRequestFailure(error: failure),

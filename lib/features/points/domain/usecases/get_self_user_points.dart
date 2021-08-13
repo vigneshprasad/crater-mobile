@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -10,7 +9,7 @@ class UCGetSelfUserPoints implements AsyncUseCase<Points, NoParams> {
   final PointsRepository repository;
 
   UCGetSelfUserPoints({
-    @required this.repository,
+    required this.repository,
   });
 
   @override

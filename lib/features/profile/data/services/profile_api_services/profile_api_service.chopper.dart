@@ -8,7 +8,7 @@ part of 'profile_api_service.dart';
 
 // ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
 class _$ProfileApiService extends ProfileApiService {
-  _$ProfileApiService([ChopperClient client]) {
+  _$ProfileApiService([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }

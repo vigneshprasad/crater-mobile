@@ -17,14 +17,14 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ArticleModel(
-      pk: fields[0] as int,
-      created: fields[1] as String,
-      picture: fields[2] as String,
-      tag: fields[3] as String,
-      text: fields[4] as String,
-      title: fields[5] as String,
-      websiteTag: fields[6] as String,
-      websiteUrl: fields[7] as String,
+      pk: fields[0] as int?,
+      created: fields[1] as String?,
+      picture: fields[2] as String?,
+      tag: fields[3] as String?,
+      text: fields[4] as String?,
+      title: fields[5] as String?,
+      websiteTag: fields[6] as String?,
+      websiteUrl: fields[7] as String?,
     );
   }
 
@@ -67,14 +67,14 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
 
 ArticleModel _$ArticleModelFromJson(Map<String, dynamic> json) {
   return ArticleModel(
-    pk: json['pk'] as int,
-    created: json['created'] as String,
-    picture: json['picture'] as String,
-    tag: json['tag'] as String,
-    text: json['text'] as String,
-    title: json['title'] as String,
-    websiteTag: json['website_tag'] as String,
-    websiteUrl: json['website_url'] as String,
+    pk: json['pk'] as int?,
+    created: json['created'] as String?,
+    picture: json['picture'] as String?,
+    tag: json['tag'] as String?,
+    text: json['text'] as String?,
+    title: json['title'] as String?,
+    websiteTag: json['website_tag'] as String?,
+    websiteUrl: json['website_url'] as String?,
   );
 }
 

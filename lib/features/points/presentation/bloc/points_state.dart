@@ -5,36 +5,44 @@ class PointsState extends Equatable {
   final bool loading;
   final int points;
   final double moneyValue;
-  final dynamic error;
+  final Object? error;
   final List<PointsRule> rules;
   final List<PointsFaq> faqs;
 
   const PointsState({
-    this.rules,
-    this.faqs,
-    this.points,
-    this.moneyValue,
-    @required this.loading,
-    @required this.error,
+    this.rules = const [],
+    this.faqs = const [],
+    this.points = 0,
+    this.moneyValue = 0,
+    required this.loading,
+    required this.error,
   });
 
   @override
-  List<Object> get props => [
-        faqs,
-        rules,
-        moneyValue,
-        points,
-        loading,
-        error,
-      ];
+  List<Object> get props => error != null
+      ? [
+          faqs,
+          rules,
+          moneyValue,
+          points,
+          loading,
+          error!,
+        ]
+      : [
+          faqs,
+          rules,
+          moneyValue,
+          points,
+          loading,
+        ];
 
   PointsState copyWith({
-    bool loading,
-    int points,
-    dynamic error,
-    double moneyValue,
-    List<PointsRule> rules,
-    List<PointsFaq> faqs,
+    bool? loading,
+    int? points,
+    Object? error,
+    double? moneyValue,
+    List<PointsRule>? rules,
+    List<PointsFaq>? faqs,
   }) {
     return PointsState(
       rules: rules ?? this.rules,
@@ -61,8 +69,8 @@ class PointsInitial extends PointsState {
 
 class PointsValueUpdateRecieved extends PointsState {
   const PointsValueUpdateRecieved({
-    @required int points,
-    @required double moneyValue,
+    required int points,
+    required double moneyValue,
   }) : super(
           points: points,
           loading: false,
@@ -81,7 +89,7 @@ class PointsFaqRequestLoading extends PointsState {
 
 class PointsFaqListLoaded extends PointsState {
   const PointsFaqListLoaded({
-    @required List<PointsFaq> faqs,
+    required List<PointsFaq> faqs,
   }) : super(
           faqs: faqs,
           loading: false,
@@ -99,7 +107,7 @@ class PointsRulesListLoading extends PointsState {
 
 class PointsRulesListLoaded extends PointsState {
   const PointsRulesListLoaded({
-    @required List<PointsRule> rules,
+    required List<PointsRule> rules,
   }) : super(
           rules: rules,
           loading: false,

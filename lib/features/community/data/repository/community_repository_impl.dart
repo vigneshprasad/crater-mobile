@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -20,9 +19,9 @@ class CommunityRepositoryImpl implements CommunityRepository {
   final NetworkInfo networkInfo;
 
   CommunityRepositoryImpl({
-    @required this.remoteDatasource,
-    @required this.localDatasource,
-    @required this.networkInfo,
+    required this.remoteDatasource,
+    required this.localDatasource,
+    required this.networkInfo,
   });
 
   @override
@@ -33,7 +32,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
       try {
         final response =
             await remoteDatasource.getPostsPageFromRemote(pageSize, page);
-        await localDatasource.persistPostsToCache(response.results);
+        await localDatasource.persistPostsToCache(response.results!);
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -44,6 +43,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
         return Right(PageApiResponse<Post>(
           count: posts.length,
           results: posts,
+          pageSize: pageSize,
           fromCache: true,
           currentPage: 1,
         ));
@@ -54,7 +54,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
   }
 
   @override
-  Future<Either<Failure, Post>> getPost(int postId) async {
+  Future<Either<Failure, Post?>> getPost(int postId) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
@@ -147,6 +147,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
         return Right(PageApiResponse<Comment>(
           count: cached.length,
           results: cached,
+          pageSize: pageSize,
           currentPage: 1,
           fromCache: false,
         ));

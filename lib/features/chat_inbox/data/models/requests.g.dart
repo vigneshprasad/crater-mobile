@@ -13,7 +13,7 @@ GetAllUsersRequestParams _$GetAllUsersRequestParamsFromJson(
     page: json['page'] as int,
     search: json['search'] as String,
     strict: json['strict'] as bool,
-    latestMessages: json['latest_messages'] as String,
+    latestMessages: json['latest_messages'] as String?,
   );
 }
 
@@ -30,12 +30,10 @@ Map<String, dynamic> _$GetAllUsersRequestParamsToJson(
 GetAllChatUsersRequest _$GetAllChatUsersRequestFromJson(
     Map<String, dynamic> json) {
   return GetAllChatUsersRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
-    message: json['message'] == null
-        ? null
-        : GetAllUsersRequestParams.fromJson(
-            json['message'] as Map<String, dynamic>),
+    message: GetAllUsersRequestParams.fromJson(
+        json['message'] as Map<String, dynamic>),
   );
 }
 
@@ -46,36 +44,30 @@ Map<String, dynamic> _$GetAllChatUsersRequestToJson(
       'message': instance.message,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$WSRequestTypeEnumMap = {
@@ -104,12 +96,10 @@ Map<String, dynamic> _$StarChatUserRequestParamsToJson(
 
 StarChatUserRequest _$StarChatUserRequestFromJson(Map<String, dynamic> json) {
   return StarChatUserRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
-    message: json['message'] == null
-        ? null
-        : StarChatUserRequestParams.fromJson(
-            json['message'] as Map<String, dynamic>),
+    message: StarChatUserRequestParams.fromJson(
+        json['message'] as Map<String, dynamic>),
   );
 }
 
@@ -123,12 +113,10 @@ Map<String, dynamic> _$StarChatUserRequestToJson(
 UnStarChatUserRequest _$UnStarChatUserRequestFromJson(
     Map<String, dynamic> json) {
   return UnStarChatUserRequest(
-    type: _$enumDecodeNullable(_$WSRequestTypeEnumMap, json['type'],
+    type: _$enumDecode(_$WSRequestTypeEnumMap, json['type'],
         unknownValue: WSRequestType.unknownValue),
-    message: json['message'] == null
-        ? null
-        : StarChatUserRequestParams.fromJson(
-            json['message'] as Map<String, dynamic>),
+    message: StarChatUserRequestParams.fromJson(
+        json['message'] as Map<String, dynamic>),
   );
 }
 

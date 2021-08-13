@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'conversation_rtc_info_entity.dart';
 
@@ -8,6 +8,10 @@ part of 'conversation_rtc_info_entity.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 ConversationRtcInfo _$ConversationRtcInfoFromJson(Map<String, dynamic> json) {
   return _ConversationRtcInfo.fromJson(json);
 }
@@ -16,11 +20,10 @@ ConversationRtcInfo _$ConversationRtcInfoFromJson(Map<String, dynamic> json) {
 class _$ConversationRtcInfoTearOff {
   const _$ConversationRtcInfoTearOff();
 
-// ignore: unused_element
   _ConversationRtcInfo call(
-      {String token,
-      @JsonKey(name: 'channel_name') String channelName,
-      @JsonKey(name: 'rtc_uid') String rtcUid}) {
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid}) {
     return _ConversationRtcInfo(
       token: token,
       channelName: channelName,
@@ -28,27 +31,26 @@ class _$ConversationRtcInfoTearOff {
     );
   }
 
-// ignore: unused_element
   ConversationRtcInfo fromJson(Map<String, Object> json) {
     return ConversationRtcInfo.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ConversationRtcInfo = _$ConversationRtcInfoTearOff();
 
 /// @nodoc
 mixin _$ConversationRtcInfo {
-  String get token;
-  @JsonKey(name: 'channel_name')
-  String get channelName;
-  @JsonKey(name: 'rtc_uid')
-  String get rtcUid;
+  String? get token => throw _privateConstructorUsedError;
+  @JsonKey(name: "channel_name")
+  String? get channelName => throw _privateConstructorUsedError;
+  @JsonKey(name: "rtc_uid")
+  String? get rtcUid => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ConversationRtcInfoCopyWith<ConversationRtcInfo> get copyWith;
+  $ConversationRtcInfoCopyWith<ConversationRtcInfo> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,9 +59,9 @@ abstract class $ConversationRtcInfoCopyWith<$Res> {
           ConversationRtcInfo value, $Res Function(ConversationRtcInfo) then) =
       _$ConversationRtcInfoCopyWithImpl<$Res>;
   $Res call(
-      {String token,
-      @JsonKey(name: 'channel_name') String channelName,
-      @JsonKey(name: 'rtc_uid') String rtcUid});
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid});
 }
 
 /// @nodoc
@@ -73,15 +75,23 @@ class _$ConversationRtcInfoCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object token = freezed,
-    Object channelName = freezed,
-    Object rtcUid = freezed,
+    Object? token = freezed,
+    Object? channelName = freezed,
+    Object? rtcUid = freezed,
   }) {
     return _then(_value.copyWith(
-      token: token == freezed ? _value.token : token as String,
-      channelName:
-          channelName == freezed ? _value.channelName : channelName as String,
-      rtcUid: rtcUid == freezed ? _value.rtcUid : rtcUid as String,
+      token: token == freezed
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channelName: channelName == freezed
+          ? _value.channelName
+          : channelName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rtcUid: rtcUid == freezed
+          ? _value.rtcUid
+          : rtcUid // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -94,9 +104,9 @@ abstract class _$ConversationRtcInfoCopyWith<$Res>
       __$ConversationRtcInfoCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String token,
-      @JsonKey(name: 'channel_name') String channelName,
-      @JsonKey(name: 'rtc_uid') String rtcUid});
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid});
 }
 
 /// @nodoc
@@ -112,39 +122,46 @@ class __$ConversationRtcInfoCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object token = freezed,
-    Object channelName = freezed,
-    Object rtcUid = freezed,
+    Object? token = freezed,
+    Object? channelName = freezed,
+    Object? rtcUid = freezed,
   }) {
     return _then(_ConversationRtcInfo(
-      token: token == freezed ? _value.token : token as String,
-      channelName:
-          channelName == freezed ? _value.channelName : channelName as String,
-      rtcUid: rtcUid == freezed ? _value.rtcUid : rtcUid as String,
+      token: token == freezed
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channelName: channelName == freezed
+          ? _value.channelName
+          : channelName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rtcUid: rtcUid == freezed
+          ? _value.rtcUid
+          : rtcUid // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_ConversationRtcInfo implements _ConversationRtcInfo {
   _$_ConversationRtcInfo(
       {this.token,
-      @JsonKey(name: 'channel_name') this.channelName,
-      @JsonKey(name: 'rtc_uid') this.rtcUid});
+      @JsonKey(name: "channel_name") this.channelName,
+      @JsonKey(name: "rtc_uid") this.rtcUid});
 
   factory _$_ConversationRtcInfo.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationRtcInfoFromJson(json);
 
   @override
-  final String token;
+  final String? token;
   @override
-  @JsonKey(name: 'channel_name')
-  final String channelName;
+  @JsonKey(name: "channel_name")
+  final String? channelName;
   @override
-  @JsonKey(name: 'rtc_uid')
-  final String rtcUid;
+  @JsonKey(name: "rtc_uid")
+  final String? rtcUid;
 
   @override
   String toString() {
@@ -185,22 +202,23 @@ class _$_ConversationRtcInfo implements _ConversationRtcInfo {
 
 abstract class _ConversationRtcInfo implements ConversationRtcInfo {
   factory _ConversationRtcInfo(
-      {String token,
-      @JsonKey(name: 'channel_name') String channelName,
-      @JsonKey(name: 'rtc_uid') String rtcUid}) = _$_ConversationRtcInfo;
+      {String? token,
+      @JsonKey(name: "channel_name") String? channelName,
+      @JsonKey(name: "rtc_uid") String? rtcUid}) = _$_ConversationRtcInfo;
 
   factory _ConversationRtcInfo.fromJson(Map<String, dynamic> json) =
       _$_ConversationRtcInfo.fromJson;
 
   @override
-  String get token;
+  String? get token => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'channel_name')
-  String get channelName;
+  @JsonKey(name: "channel_name")
+  String? get channelName => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'rtc_uid')
-  String get rtcUid;
+  @JsonKey(name: "rtc_uid")
+  String? get rtcUid => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ConversationRtcInfoCopyWith<_ConversationRtcInfo> get copyWith;
+  _$ConversationRtcInfoCopyWith<_ConversationRtcInfo> get copyWith =>
+      throw _privateConstructorUsedError;
 }

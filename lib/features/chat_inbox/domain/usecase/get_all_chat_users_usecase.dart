@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/page_socket_response/page_socket_response.dart';
@@ -13,7 +12,7 @@ class UCGetAllChatUsers
   final ChatInboxRepository repository;
 
   UCGetAllChatUsers({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -36,7 +35,7 @@ class GetAllUsersParams extends Equatable {
   final String latestMessage;
 
   const GetAllUsersParams({
-    this.latestMessage,
+    this.latestMessage = '',
     this.search = "",
     this.page = 1,
     this.strict = true,

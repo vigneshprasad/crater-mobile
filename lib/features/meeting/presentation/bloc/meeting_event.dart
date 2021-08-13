@@ -46,10 +46,10 @@ class PostMeetingPreferencesStarted extends MeetingEvent {
   final List<TimeSlot> timeSlots;
 
   const PostMeetingPreferencesStarted({
-    @required this.interests,
-    @required this.config,
-    @required this.objectives,
-    @required this.timeSlots,
+    required this.interests,
+    required this.config,
+    required this.objectives,
+    required this.timeSlots,
   });
 
   @override
@@ -65,7 +65,7 @@ class PostUserProfileRequestStarted extends MeetingEvent {
   final Map<String, dynamic> requestBody;
 
   const PostUserProfileRequestStarted({
-    this.requestBody,
+    required this.requestBody,
   });
 
   @override
@@ -76,7 +76,7 @@ class RetrieveMeetingDetailStarted extends MeetingEvent {
   final int meetingId;
 
   const RetrieveMeetingDetailStarted({
-    @required this.meetingId,
+    required this.meetingId,
   });
 
   @override
@@ -88,8 +88,8 @@ class PostMeetingRsvpStatusStarted extends MeetingEvent {
   final int meetingId;
 
   const PostMeetingRsvpStatusStarted({
-    @required this.status,
-    @required this.meetingId,
+    required this.status,
+    required this.meetingId,
   });
 
   @override
@@ -109,9 +109,9 @@ class PostMeetingRescheduleRsvpStarted extends MeetingEvent {
   final List<DateTime> timeSlots;
 
   const PostMeetingRescheduleRsvpStarted({
-    this.oldMeeting,
-    this.requestedBy,
-    this.timeSlots,
+    required this.oldMeeting,
+    required this.requestedBy,
+    required this.timeSlots,
   });
 
   @override
@@ -126,7 +126,7 @@ class GetRescheduleRequestStarted extends MeetingEvent {
   final int meetingId;
 
   const GetRescheduleRequestStarted({
-    @required this.meetingId,
+    required this.meetingId,
   });
 
   @override
@@ -140,8 +140,8 @@ class PostConfirmRescheduleRequestStarted extends MeetingEvent {
   final int rescheduleRequest;
 
   const PostConfirmRescheduleRequestStarted({
-    @required this.timeSlot,
-    @required this.rescheduleRequest,
+    required this.timeSlot,
+    required this.rescheduleRequest,
   });
 
   @override

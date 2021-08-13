@@ -16,8 +16,8 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   final UCGetVideosListPage getVideosList;
 
   VideoPlayerBloc({
-    @required this.getVideoItem,
-    @required this.getVideosList,
+    required this.getVideoItem,
+    required this.getVideosList,
   }) : super(const VideoPlayerInitial());
 
   @override
@@ -64,10 +64,10 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
       (videos) {
         final results = videos.results;
         videos.results
-            .removeWhere((element) => element.pk == event.excludeItemId);
+            ?.removeWhere((element) => element.pk == event.excludeItemId);
         return VideoPlaylistItemsReceived(
-          featureVideo: state.featureVideo,
-          playlistItems: results,
+          featureVideo: state.featureVideo!,
+          playlistItems: results!,
           loadingFeature: state.loadingFeature,
         );
       },

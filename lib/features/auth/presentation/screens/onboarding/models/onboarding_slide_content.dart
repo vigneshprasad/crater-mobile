@@ -15,7 +15,7 @@ class OnboardingSlideButton {
   final String title;
   final OnboardingSlideButtonType type;
 
-  const OnboardingSlideButton({this.title, this.type});
+  const OnboardingSlideButton({required this.title, required this.type});
 }
 
 const _defaultButtons = [
@@ -29,9 +29,9 @@ class OnboardingSlideContent extends Equatable {
   final List<OnboardingSlideButton> buttons;
 
   const OnboardingSlideContent({
-    @required this.heading,
-    @required this.subHeading,
-    @required this.image,
+    required this.heading,
+    required this.subHeading,
+    required this.image,
     this.buttons = _defaultButtons,
   });
 

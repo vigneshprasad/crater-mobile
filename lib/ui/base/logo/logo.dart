@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
   final bool withSubtext;
 
   const Logo({
-    Key key,
+    Key? key,
     this.withText = true,
     this.withSubtext = true,
   }) : super(key: key);

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BaseContainer extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
   final double radius;
-  final Color color;
+  final Color? color;
   final bool disableAnimation;
 
   const BaseContainer({
-    Key key,
+    Key? key,
     this.child,
     this.radius = 8,
     this.color,

@@ -20,11 +20,10 @@ Map<String, dynamic> _$_$_OptionToJson(_$_Option instance) => <String, dynamic>{
 
 _$_FormFieldData _$_$_FormFieldDataFromJson(Map<String, dynamic> json) {
   return _$_FormFieldData(
-    type: _$enumDecodeNullable(_$FieldTypeEnumMap, json['type']),
-    options: (json['options'] as List)
-        ?.map((e) =>
-            e == null ? null : Option.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    type: _$enumDecode(_$FieldTypeEnumMap, json['type']),
+    options: (json['options'] as List<dynamic>?)
+        ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
+        .toList(),
     label: json['label'] as String,
     blank: json['blank'] as bool,
   );
@@ -38,36 +37,30 @@ Map<String, dynamic> _$_$_FormFieldDataToJson(_$_FormFieldData instance) =>
       'blank': instance.blank,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$FieldTypeEnumMap = {
@@ -79,9 +72,8 @@ const _$FieldTypeEnumMap = {
 _$_ProfileExtraMeta _$_$_ProfileExtraMetaFromJson(Map<String, dynamic> json) {
   return _$_ProfileExtraMeta(
     question: json['question'] as String,
-    meta: (json['meta'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k,
-          e == null ? null : FormFieldData.fromJson(e as Map<String, dynamic>)),
+    meta: (json['meta'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, FormFieldData.fromJson(e as Map<String, dynamic>)),
     ),
   );
 }

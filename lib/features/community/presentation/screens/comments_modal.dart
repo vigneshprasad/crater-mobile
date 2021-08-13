@@ -6,7 +6,7 @@ class CommentsModal extends ModalRoute<void> {
   final int postId;
 
   CommentsModal({
-    @required this.postId,
+    required this.postId,
   });
 
   @override
@@ -16,7 +16,7 @@ class CommentsModal extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -98,7 +98,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final VoidCallback onPressedClose;
 
   _SliverAppBarDelegate({
-    @required this.onPressedClose,
+    required this.onPressedClose,
   });
 
   @override

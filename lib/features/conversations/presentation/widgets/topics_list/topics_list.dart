@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -18,11 +19,11 @@ import '../topics_tab/topics_tab_state.dart';
 class TopicsList extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(topicsStateProvider.state);
+    final topicsState = useProvider(topicsStateProvider);
     return RefreshIndicator(
         onRefresh: () {
           final futures = [
-            context.read(topicsStateProvider).getTopicsList(),
+            context.read(topicsStateProvider.notifier).getTopicsList(),
           ];
 
           return Future.wait(futures);
@@ -41,11 +42,11 @@ class TopicsList extends HookWidget {
 class AMATopicsList extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(amaTopicsStateProvider.state);
+    final topicsState = useProvider(amaTopicsStateProvider);
     return RefreshIndicator(
         onRefresh: () {
           final futures = [
-            context.read(amaTopicsStateProvider).getTopicsList(),
+            context.read(amaTopicsStateProvider.notifier).getTopicsList(),
           ];
 
           return Future.wait(futures);
@@ -63,11 +64,11 @@ class AMATopicsList extends HookWidget {
 
 class _TopicCard extends StatelessWidget {
   final Topic topic;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _TopicCard({
-    Key key,
-    @required this.topic,
+    Key? key,
+    required this.topic,
     this.onTap,
   }) : super(key: key);
 
@@ -75,12 +76,12 @@ class _TopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
     final backgroundColor = HexColor.fromHex('#DDE9FD');
-    final headingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15.00,
           fontWeight: FontWeight.w700,
           color: Theme.of(context).canvasColor,
         );
-    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Theme.of(context).canvasColor,
         );
     return Padding(
@@ -123,12 +124,12 @@ class _TopicCard extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: AppInsets.l),
-                                Text(topic.name, style: headingStyle),
+                                Text(topic.name ?? '', style: headingStyle),
                               ],
                             ),
                             const SizedBox(height: AppInsets.xl),
                             Text(
-                              topic.description,
+                              topic.description ?? '',
                               style: descriptionStyle,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
@@ -157,7 +158,7 @@ class _TopicCard extends StatelessWidget {
                           child: Text(
                             "Start a conversation",
                             style:
-                                Theme.of(context).textTheme.bodyText1.copyWith(
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
                                       fontSize: 14.00,
                                     ),
                           ),
@@ -176,20 +177,18 @@ class _TopicCard extends StatelessWidget {
 
   void onTapCard(BuildContext context) {
     if (onTap != null) {
-      onTap();
+      onTap!();
       return;
     }
 
-    ExtendedNavigator.of(context)
-        .push(Routes.createConversationScreen,
-            arguments: CreateConversationScreenArguments(
-                topic: topic, type: ConversationType.instant))
+    AutoRouter.of(context)
+        .push(CreateConversationScreenRoute(
+            topic: topic, type: ConversationType.instant))
         .then(
       (value) {
         if (value is Conversation) {
-          HomeTabControllerProvider.of(context).controller.animateTo(1);
-          ExtendedNavigator.of(context)
-              .push(Routes.conversationScreen(id: value.id));
+          HomeTabControllerProvider.of(context)?.controller.animateTo(1);
+          AutoRouter.of(context).push(ConversationScreenRoute(id: value.id));
         }
       },
     );

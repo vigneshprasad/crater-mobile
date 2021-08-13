@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,8 +22,8 @@ class TopicsTab extends HookWidget {
   final ValueNotifier<int> topic;
 
   TopicsTab({
-    @required this.name,
-    @required this.topic,
+    required this.name,
+    required this.topic,
   });
 
   final titles = [
@@ -33,7 +34,7 @@ class TopicsTab extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articlesState = useProvider(articleTopicsStateProiver.state);
+    final articlesState = useProvider(articleTopicsStateProiver);
     final _tabController = useTabController(
         initialLength: titles.length, initialIndex: topic.value);
     final _textController = useTextEditingController();
@@ -59,8 +60,7 @@ class TopicsTab extends HookWidget {
               bottom: PreferredSize(
                 preferredSize: const Size(300, 50),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TabBar(
                     controller: _tabController,
                     onTap: (value) {
@@ -100,7 +100,7 @@ class TopicsTab extends HookWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2
-                            .copyWith(color: Colors.grey),
+                            ?.copyWith(color: Colors.grey),
                       ),
                       if (topic.value != 0)
                         Column(
@@ -159,7 +159,7 @@ class TopicsTab extends HookWidget {
                         onRefresh: () {
                           final futures = [
                             context
-                                .read(articleTopicsStateProiver)
+                                .read(articleTopicsStateProiver.notifier)
                                 .getAllArticleTopcs(),
                           ];
 
@@ -189,10 +189,8 @@ class TopicsTab extends HookWidget {
     switch (index) {
       case 1:
         return TopicType.ama;
-        break;
       case 2:
         return TopicType.group;
-        break;
       default:
         return TopicType.group;
     }
@@ -216,7 +214,7 @@ class TopicsTab extends HookWidget {
   ) async {
     final _overlay = _buildLoaderOverlay();
 
-    Overlay.of(context).insert(_overlay);
+    Overlay.of(context)?.insert(_overlay);
 
     final response = await context
         .read(conversationRepositoryProvider)
@@ -228,25 +226,24 @@ class TopicsTab extends HookWidget {
     return response.fold(
       (failure) {
         _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
         return false;
       },
       (topic) {
         _overlay.remove();
 
-        ConversationType conversationType = type == TopicType.ama
+        final conversationType = type == TopicType.ama
             ? ConversationType.instant
             : ConversationType.ama;
-        ExtendedNavigator.of(context)
-            .push(Routes.createConversationScreen,
-                arguments: CreateConversationScreenArguments(
-                    topic: topic, type: conversationType))
+        AutoRouter.of(context)
+            .push(CreateConversationScreenRoute(
+                topic: topic, type: conversationType))
             .then(
           (value) {
             if (value is Conversation) {
-              HomeTabControllerProvider.of(context).controller.animateTo(1);
-              ExtendedNavigator.of(context)
-                  .push(Routes.conversationScreen(id: value.id));
+              HomeTabControllerProvider.of(context)?.controller.animateTo(1);
+              AutoRouter.of(context)
+                  .push(ConversationScreenRoute(id: value.id));
             }
           },
         );
@@ -274,8 +271,8 @@ class _ArticleTopicList extends StatelessWidget {
   final List<Topic> topics;
 
   const _ArticleTopicList({
-    Key key,
-    @required this.topics,
+    Key? key,
+    required this.topics,
   }) : super(key: key);
 
   @override

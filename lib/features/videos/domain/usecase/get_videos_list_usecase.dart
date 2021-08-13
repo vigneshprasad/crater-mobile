@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
@@ -13,7 +12,7 @@ class UCGetVideosListPage
   final VideoRepository repository;
 
   UCGetVideosListPage({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -28,8 +27,8 @@ class GetVideosPageParams extends Equatable {
   final int pageSize;
 
   const GetVideosPageParams({
-    @required this.page,
-    @required this.pageSize,
+    required this.page,
+    required this.pageSize,
   });
 
   @override

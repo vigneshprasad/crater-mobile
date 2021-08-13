@@ -20,9 +20,9 @@ class _RewardsTabState extends State<RewardsTab>
     with
         AutomaticKeepAliveClientMixin<RewardsTab>,
         SingleTickerProviderStateMixin {
-  RewardsBloc _bloc;
-  TabController _tabController;
-  List<Package> _packages;
+  late RewardsBloc _bloc;
+  late TabController _tabController;
+  late List<Package> _packages;
   int _currentIndex = 0;
 
   final List<Widget> tabs = [
@@ -59,14 +59,14 @@ class _RewardsTabState extends State<RewardsTab>
 
   @override
   Widget build(BuildContext context) {
-    final heading = AppLocalizations.of(context).translate("rewards:title");
+    final heading = AppLocalizations.of(context)?.translate("rewards:title");
     final subheading =
-        AppLocalizations.of(context).translate("rewards:subtitle");
+        AppLocalizations.of(context)?.translate("rewards:subtitle");
     super.build(context);
     return BlocListener<RewardsBloc, RewardsState>(
       listener: _blockListener,
       child: TabWithTabbarLayout(
-        heading: heading,
+        heading: heading!,
         subheading: subheading,
         tabbar: BaseTabBar(
           controller: _tabController,
@@ -80,8 +80,8 @@ class _RewardsTabState extends State<RewardsTab>
               children: [
                 RewardsPackagesTab(
                   packages: _packages,
-                  onRefresh: () {
-                    return null;
+                  onRefresh: () async {
+                    return;
                   },
                 ),
                 const PointsTab(),
@@ -109,7 +109,7 @@ class _RewardsTabState extends State<RewardsTab>
   void _blockListener(BuildContext context, RewardsState state) {
     if (state is RewardsPackageListLoaded) {
       setState(() {
-        _packages = state.packages;
+        _packages = state.packages!;
       });
     }
   }

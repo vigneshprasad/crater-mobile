@@ -22,7 +22,7 @@ class PostUserProfileParams extends Equatable {
   final Map<String, dynamic> body;
 
   const PostUserProfileParams({
-    this.body,
+    required this.body,
   });
 
   @override

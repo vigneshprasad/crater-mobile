@@ -9,7 +9,7 @@ class UCWebSocketAddToSink implements AsyncUseCase<void, Params> {
   final WebSocketRepository repository;
 
   UCWebSocketAddToSink({
-    this.repository,
+    required this.repository,
   });
 
   @override
@@ -21,7 +21,7 @@ class UCWebSocketAddToSink implements AsyncUseCase<void, Params> {
 class Params extends Equatable {
   final Map<String, dynamic> message;
 
-  const Params({this.message});
+  const Params({required this.message});
 
   @override
   List<Object> get props => [message];

@@ -9,16 +9,16 @@ part 'reschedule_request_model.g.dart';
 
 @JsonSerializable()
 class RescheduleRequestModel extends RescheduleRequest {
-  final int id;
+  final int? id;
 
   @JsonKey(name: 'old_meeting')
-  final int oldMeeting;
+  final int? oldMeeting;
 
   @JsonKey(name: 'time_slots')
-  final List<DateTime> timeSlots;
+  final List<DateTime>? timeSlots;
 
   @JsonKey(name: 'requested_by')
-  final String requestedBy;
+  final String? requestedBy;
 
   RescheduleRequestModel({
     this.id,

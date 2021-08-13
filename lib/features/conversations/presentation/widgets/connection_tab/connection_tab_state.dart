@@ -9,16 +9,18 @@ import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
 import '../../../../signup/data/repository/signup_repository_impl.dart';
 
 final connectionStateProvider =
-    StateNotifierProvider((ref) => ConnectionStateNotifier(ref.read));
+    StateNotifierProvider<ConnectionStateNotifier, ApiResult<List<Profile>>>(
+        (ref) => ConnectionStateNotifier(ref.read));
 final tagStateProvider =
-    StateNotifierProvider((ref) => TagStateNotifier(ref.read));
+    StateNotifierProvider<TagStateNotifier, ApiResult<List<UserTag>>>(
+        (ref) => TagStateNotifier(ref.read));
 
 class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
   final Reader read;
   int page = 1;
-  bool loadingPage;
+  late bool loadingPage;
   bool allLoaded = false;
-  List<Profile> allProfiles;
+  late List<Profile> allProfiles;
 
   ConnectionStateNotifier(
     this.read,
@@ -50,7 +52,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     return response;
   }
 
-  Future<Either<Failure, List<Profile>>> getNextPageProfileList(
+  Future<Either<Failure, List<Profile>>?> getNextPageProfileList(
       String tags) async {
     if (loadingPage == true || allLoaded == true) {
       return null;

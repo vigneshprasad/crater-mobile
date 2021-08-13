@@ -9,7 +9,7 @@ import '../config_reader/config_reader.dart';
 abstract class Logger {
   Future<void> captureException({
     dynamic exception,
-    StackTrace stackTrace,
+    StackTrace? stackTrace,
   });
 }
 
@@ -22,24 +22,26 @@ class LoggerImpl implements Logger {
   @override
   Future<void> captureException({
     dynamic exception,
-    StackTrace stackTrace,
+    dynamic stackTrace,
   }) async {
-    if (ConfigReader.getEnv() == "prod") {
-      final event =
-          await getSentryEvent(exception: exception, stackTrace: stackTrace);
-      await sentryClient.capture(event: event);
+    if (exception is SentryException && stackTrace is SentryStackTrace) {
+      if (ConfigReader.getEnv() == "prod") {
+        final event =
+            await getSentryEvent(exception: exception, stackTrace: stackTrace);
+        await sentryClient.captureEvent(event);
+      }
     }
   }
 
-  Future<Event> getSentryEvent({
-    dynamic exception,
-    StackTrace stackTrace,
+  Future<SentryEvent> getSentryEvent({
+    SentryException? exception,
+    SentryStackTrace? stackTrace,
   }) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     if (Platform.isAndroid) {
       final androidDeviceInfo = await deviceInfo.androidInfo;
-      return Event(
+      return SentryEvent(
         release: packageInfo.version,
         environment: ConfigReader.getEnv(),
         extra: <String, dynamic>{
@@ -66,7 +68,7 @@ class LoggerImpl implements Logger {
 
     if (Platform.isIOS) {
       final IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-      return Event(
+      return SentryEvent(
         release: packageInfo.version,
         environment: ConfigReader.getEnv(),
         extra: <String, dynamic>{
@@ -84,7 +86,7 @@ class LoggerImpl implements Logger {
       );
     }
 
-    return Event(
+    return SentryEvent(
       release: packageInfo.version,
       environment: ConfigReader.getEnv(),
       exception: exception,

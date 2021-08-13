@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ScaffoldContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
-  const ScaffoldContainer({Key key, this.child}) : super(key: key);
+  const ScaffoldContainer({Key? key, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ScaffoldContainer extends StatelessWidget {
         begin: const Alignment(0.0, -1.0),
         end: const Alignment(0.0, -0.999),
         colors: [
-          Theme.of(context).appBarTheme.color,
+          Theme.of(context).appBarTheme.color!,
           Theme.of(context).scaffoldBackgroundColor,
         ],
       )

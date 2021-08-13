@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../utils/app_localizations.dart';
-import '../../../auth/domain/entity/user_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entity/meeting_config_entity.dart';
 import '../../domain/entity/meetings_by_date_entity.dart';
@@ -18,15 +17,15 @@ import 'meeting_date_label.dart';
 class MeetingUpcomingTab extends StatefulWidget {
   final List<MeetingsByDate> upcoming;
   final MeetingConfig config;
-  final UserMeetingPreference preference;
+  final UserMeetingPreference? preference;
   final Function onRefresh;
 
   const MeetingUpcomingTab({
-    Key key,
-    @required this.upcoming,
-    @required this.config,
-    @required this.preference,
-    @required this.onRefresh,
+    Key? key,
+    required this.upcoming,
+    required this.config,
+    required this.preference,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -34,7 +33,7 @@ class MeetingUpcomingTab extends StatefulWidget {
 }
 
 class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
-  Completer _completer;
+  late Completer _completer;
 
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
 
   @override
   Widget build(BuildContext context) {
-    final emptyLabelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final emptyLabelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Colors.grey[600],
           height: 1.4,
         );
@@ -53,8 +52,8 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
         ? AppImageAssets.meetingsEmpty
         : AppImageAssets.meetingScheduled;
     final text = widget.preference == null
-        ? AppLocalizations.of(context).translate("meeting:empty_meetings")
-        : AppLocalizations.of(context).translate("meeting:empty_scheduled");
+        ? AppLocalizations.of(context)?.translate("meeting:empty_meetings")
+        : AppLocalizations.of(context)?.translate("meeting:empty_scheduled");
     if (widget.upcoming.isEmpty) {
       slivers.add(SliverToBoxAdapter(
         child: SizedBox(
@@ -71,7 +70,7 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: Text(
-                    text,
+                    text!,
                     style: emptyLabelStyle,
                     textAlign: TextAlign.center,
                   ),
@@ -120,7 +119,7 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
     for (final MeetingsByDate meetingsByDate in widget.upcoming) {
       slivers.add(SliverToBoxAdapter(
         child: MeetingDateLabel(
-          date: meetingsByDate.date,
+          date: meetingsByDate.date!,
         ),
       ));
 
@@ -132,14 +131,14 @@ class _MeetingUpcomingTabState extends State<MeetingUpcomingTab> {
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final User user = BlocProvider.of<AuthBloc>(context).state.user;
+              final user = BlocProvider.of<AuthBloc>(context).state.user;
               return MeetingCard(
-                meeting: meetingsByDate.meetings[index],
-                user: user,
+                meeting: meetingsByDate.meetings![index],
+                user: user!,
                 onRefresh: widget.onRefresh,
               );
             },
-            childCount: meetingsByDate.meetings.length,
+            childCount: meetingsByDate.meetings?.length,
           ),
         ),
       ));

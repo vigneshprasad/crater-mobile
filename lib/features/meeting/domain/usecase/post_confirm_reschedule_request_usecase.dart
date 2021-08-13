@@ -24,8 +24,8 @@ class PostConfirmRescheduleRequestParams extends Equatable {
   final int rescheduleRequest;
 
   const PostConfirmRescheduleRequestParams({
-    this.timeSlot,
-    this.rescheduleRequest,
+    required this.timeSlot,
+    required this.rescheduleRequest,
   });
 
   @override

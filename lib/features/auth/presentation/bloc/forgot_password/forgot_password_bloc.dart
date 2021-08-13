@@ -15,9 +15,8 @@ class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   final UCPostPasswordReset passwordReset;
   ForgotPasswordBloc({
-    @required this.passwordReset,
-  })  : assert(passwordReset != null),
-        super(const ForgotPasswordInitial());
+    required this.passwordReset,
+  }) : super(const ForgotPasswordInitial());
 
   @override
   Stream<ForgotPasswordState> mapEventToState(

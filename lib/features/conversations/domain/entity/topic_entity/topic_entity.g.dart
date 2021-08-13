@@ -8,19 +8,19 @@ part of 'topic_entity.dart';
 
 _$_Topic _$_$_TopicFromJson(Map<String, dynamic> json) {
   return _$_Topic(
-    id: json['id'] as int,
-    name: json['name'] as String,
-    image: json['image'] as String,
-    active: json['is_active'] as bool,
-    parent: json['parent'] as int,
-    description: json['description'] as String,
-    article: json['article'] as int,
-    approved: json['is_approved'] as bool,
-    creator: json['creator'] as String,
+    id: json['id'] as int?,
+    name: json['name'] as String?,
+    image: json['image'] as String?,
+    active: json['is_active'] as bool?,
+    parent: json['parent'] as int?,
+    description: json['description'] as String?,
+    article: json['article'] as int?,
+    approved: json['is_approved'] as bool?,
+    creator: json['creator'] as String?,
     root: json['root'] == null
         ? null
         : Topic.fromJson(json['root'] as Map<String, dynamic>),
-    groupCount: json['groupCount'] as int,
+    groupCount: json['groupCount'] as int?,
     type: _$enumDecodeNullable(_$TopicTypeEnumMap, json['type']),
     articleDetail: json['article_detail'] == null
         ? null
@@ -44,36 +44,41 @@ Map<String, dynamic> _$_$_TopicToJson(_$_Topic instance) => <String, dynamic>{
       'article_detail': instance.articleDetail,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$TopicTypeEnumMap = {

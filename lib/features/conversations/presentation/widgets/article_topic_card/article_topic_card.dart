@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -18,11 +19,11 @@ import '../../screens/create_conversation_screen/create_conversation_state.dart'
 class ArticleTopicCard extends StatelessWidget {
   final Topic topic;
   final bool showFooter;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const ArticleTopicCard({
-    Key key,
-    @required this.topic,
+    Key? key,
+    required this.topic,
     this.showFooter = true,
     this.onTap,
   }) : super(key: key);
@@ -30,7 +31,7 @@ class ArticleTopicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(Radius.circular(8.00));
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16.00,
         );
 
@@ -45,21 +46,21 @@ class ArticleTopicCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (topic.articleDetail.description.isNotEmpty)
+                if (topic.articleDetail?.description?.isNotEmpty ?? false)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: AppInsets.xl,
                       left: AppInsets.xl,
                       right: AppInsets.xl,
                     ),
-                    child: Text(topic.articleDetail.description,
+                    child: Text(topic.articleDetail?.description ?? '',
                         style: headingStyle),
                   )
                 else
                   const SizedBox(height: AppInsets.xxl),
                 Padding(
                   padding: const EdgeInsets.all(AppInsets.xxl),
-                  child: _ArticleContent(article: topic.articleDetail),
+                  child: _ArticleContent(article: topic.articleDetail!),
                 ),
                 if (showFooter)
                   Padding(
@@ -82,7 +83,7 @@ class ArticleTopicCard extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
-                                  .copyWith(
+                                  ?.copyWith(
                                     fontSize: 14.00,
                                   ),
                             ),
@@ -101,20 +102,18 @@ class ArticleTopicCard extends StatelessWidget {
 
   void onTapCard(BuildContext context) {
     if (onTap != null) {
-      onTap();
+      onTap!();
       return;
     }
 
-    ExtendedNavigator.of(context)
-        .push(Routes.createConversationScreen,
-            arguments: CreateConversationScreenArguments(
-                topic: topic, type: ConversationType.instant))
+    AutoRouter.of(context)
+        .push(CreateConversationScreenRoute(
+            topic: topic, type: ConversationType.instant))
         .then(
       (value) {
         if (value is Conversation) {
-          HomeTabControllerProvider.of(context).controller.animateTo(1);
-          ExtendedNavigator.of(context)
-              .push(Routes.conversationScreen(id: value.id));
+          HomeTabControllerProvider.of(context)?.controller.animateTo(1);
+          AutoRouter.of(context).push(ConversationScreenRoute(id: value.id));
         }
       },
     );
@@ -125,18 +124,18 @@ class _ArticleContent extends StatelessWidget {
   final Article article;
 
   const _ArticleContent({
-    Key key,
-    @required this.article,
+    Key? key,
+    required this.article,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final backgroundColor = HexColor.fromHex('#DDE9FD');
-    final headingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15.00,
           fontWeight: FontWeight.w700,
           color: Theme.of(context).canvasColor,
         );
-    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Theme.of(context).canvasColor,
         );
     return BaseContainer(
@@ -157,7 +156,7 @@ class _ArticleContent extends StatelessWidget {
               Row(
                 children: [
                   BaseNetworkImage(
-                    imageUrl: article.articleSourceDetail.image,
+                    imageUrl: article.articleSourceDetail?.image,
                     defaultImage: AppImageAssets.articleDefault,
                     imagebuilder: (context, imageProvider) => CircleAvatar(
                       radius: 14.00,
@@ -165,26 +164,27 @@ class _ArticleContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppInsets.l),
-                  Text(article.articleSourceDetail.name, style: headingStyle),
+                  Text(article.articleSourceDetail?.name ?? '',
+                      style: headingStyle),
                   const Spacer(),
                   IconButton(
                     splashRadius: 22.00,
                     icon: Icon(
                       Icons.launch,
                       size: 20.00,
-                      color: Colors.grey[800].withOpacity(0.3),
+                      color: Colors.grey[800]!.withOpacity(0.3),
                     ),
                     onPressed: () {
                       KiwiContainer()
                           .resolve<CustomTabs>()
-                          .openLink(article.websiteUrl);
+                          .openLink(article.websiteUrl!);
                     },
                   ),
                 ],
               ),
               const SizedBox(height: AppInsets.sm),
               Text(
-                article.title,
+                article.title!,
                 style: descriptionStyle,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,

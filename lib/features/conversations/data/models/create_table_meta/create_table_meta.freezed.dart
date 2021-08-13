@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'create_table_meta.dart';
 
@@ -9,15 +9,17 @@ part of 'create_table_meta.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$CreateTableMetaTearOff {
   const _$CreateTableMetaTearOff();
 
-// ignore: unused_element
   _CreateTableMeta call(
-      {List<MeetingInterest> interests,
-      MeetingConfig config,
-      List<DateTime> timeSlots}) {
+      {List<MeetingInterest>? interests,
+      MeetingConfig? config,
+      List<DateTime>? timeSlots}) {
     return _CreateTableMeta(
       interests: interests,
       config: config,
@@ -27,17 +29,17 @@ class _$CreateTableMetaTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $CreateTableMeta = _$CreateTableMetaTearOff();
 
 /// @nodoc
 mixin _$CreateTableMeta {
-  List<MeetingInterest> get interests;
-  MeetingConfig get config;
-  List<DateTime> get timeSlots;
+  List<MeetingInterest>? get interests => throw _privateConstructorUsedError;
+  MeetingConfig? get config => throw _privateConstructorUsedError;
+  List<DateTime>? get timeSlots => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CreateTableMetaCopyWith<CreateTableMeta> get copyWith;
+  $CreateTableMetaCopyWith<CreateTableMeta> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -46,9 +48,9 @@ abstract class $CreateTableMetaCopyWith<$Res> {
           CreateTableMeta value, $Res Function(CreateTableMeta) then) =
       _$CreateTableMetaCopyWithImpl<$Res>;
   $Res call(
-      {List<MeetingInterest> interests,
-      MeetingConfig config,
-      List<DateTime> timeSlots});
+      {List<MeetingInterest>? interests,
+      MeetingConfig? config,
+      List<DateTime>? timeSlots});
 }
 
 /// @nodoc
@@ -62,17 +64,23 @@ class _$CreateTableMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object interests = freezed,
-    Object config = freezed,
-    Object timeSlots = freezed,
+    Object? interests = freezed,
+    Object? config = freezed,
+    Object? timeSlots = freezed,
   }) {
     return _then(_value.copyWith(
       interests: interests == freezed
           ? _value.interests
-          : interests as List<MeetingInterest>,
-      config: config == freezed ? _value.config : config as MeetingConfig,
-      timeSlots:
-          timeSlots == freezed ? _value.timeSlots : timeSlots as List<DateTime>,
+          : interests // ignore: cast_nullable_to_non_nullable
+              as List<MeetingInterest>?,
+      config: config == freezed
+          ? _value.config
+          : config // ignore: cast_nullable_to_non_nullable
+              as MeetingConfig?,
+      timeSlots: timeSlots == freezed
+          ? _value.timeSlots
+          : timeSlots // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>?,
     ));
   }
 }
@@ -85,9 +93,9 @@ abstract class _$CreateTableMetaCopyWith<$Res>
       __$CreateTableMetaCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<MeetingInterest> interests,
-      MeetingConfig config,
-      List<DateTime> timeSlots});
+      {List<MeetingInterest>? interests,
+      MeetingConfig? config,
+      List<DateTime>? timeSlots});
 }
 
 /// @nodoc
@@ -103,31 +111,38 @@ class __$CreateTableMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object interests = freezed,
-    Object config = freezed,
-    Object timeSlots = freezed,
+    Object? interests = freezed,
+    Object? config = freezed,
+    Object? timeSlots = freezed,
   }) {
     return _then(_CreateTableMeta(
       interests: interests == freezed
           ? _value.interests
-          : interests as List<MeetingInterest>,
-      config: config == freezed ? _value.config : config as MeetingConfig,
-      timeSlots:
-          timeSlots == freezed ? _value.timeSlots : timeSlots as List<DateTime>,
+          : interests // ignore: cast_nullable_to_non_nullable
+              as List<MeetingInterest>?,
+      config: config == freezed
+          ? _value.config
+          : config // ignore: cast_nullable_to_non_nullable
+              as MeetingConfig?,
+      timeSlots: timeSlots == freezed
+          ? _value.timeSlots
+          : timeSlots // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_CreateTableMeta implements _CreateTableMeta {
   _$_CreateTableMeta({this.interests, this.config, this.timeSlots});
 
   @override
-  final List<MeetingInterest> interests;
+  final List<MeetingInterest>? interests;
   @override
-  final MeetingConfig config;
+  final MeetingConfig? config;
   @override
-  final List<DateTime> timeSlots;
+  final List<DateTime>? timeSlots;
 
   @override
   String toString() {
@@ -163,17 +178,18 @@ class _$_CreateTableMeta implements _CreateTableMeta {
 
 abstract class _CreateTableMeta implements CreateTableMeta {
   factory _CreateTableMeta(
-      {List<MeetingInterest> interests,
-      MeetingConfig config,
-      List<DateTime> timeSlots}) = _$_CreateTableMeta;
+      {List<MeetingInterest>? interests,
+      MeetingConfig? config,
+      List<DateTime>? timeSlots}) = _$_CreateTableMeta;
 
   @override
-  List<MeetingInterest> get interests;
+  List<MeetingInterest>? get interests => throw _privateConstructorUsedError;
   @override
-  MeetingConfig get config;
+  MeetingConfig? get config => throw _privateConstructorUsedError;
   @override
-  List<DateTime> get timeSlots;
+  List<DateTime>? get timeSlots => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$CreateTableMetaCopyWith<_CreateTableMeta> get copyWith;
+  _$CreateTableMetaCopyWith<_CreateTableMeta> get copyWith =>
+      throw _privateConstructorUsedError;
 }

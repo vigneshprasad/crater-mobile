@@ -6,19 +6,20 @@ class BaseBadge extends StatelessWidget {
   final bool showCount;
 
   const BaseBadge({
-    Key key,
-    @required this.child,
-    @required this.count,
+    Key? key,
+    required this.child,
+    required this.count,
     this.showCount = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final countStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final countStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
         fontSize: 10, color: Colors.white, fontWeight: FontWeight.w700);
     return Stack(
       fit: StackFit.passthrough,
-      overflow: Overflow.visible,
+      // overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: [
         child,
         if (count > 0)

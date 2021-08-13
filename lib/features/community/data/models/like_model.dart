@@ -10,10 +10,10 @@ part 'like_model.g.dart';
 @JsonSerializable()
 class LikeModel extends Like {
   @JsonKey(name: "like_count")
-  final int likeCount;
-  final int pk;
-  final int post;
-  final String user;
+  final int? likeCount;
+  final int? pk;
+  final int? post;
+  final String? user;
 
   LikeModel({
     this.likeCount,

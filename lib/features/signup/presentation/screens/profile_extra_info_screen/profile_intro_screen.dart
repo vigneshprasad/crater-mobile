@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,8 +26,8 @@ class ProfileExtraInfoScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final profile = BlocProvider.of<AuthBloc>(context).state.profile;
-    final state = useProvider(
-        profileFormMetaStateProvider(profile.tagList.first.pk).state);
+    final state =
+        useProvider(profileFormMetaStateProvider(profile!.tagList!.first.pk!));
     return Scaffold(
       appBar: BaseAppBar(),
       body: state.when(
@@ -42,7 +43,7 @@ class _ProflieIntroLoaded extends HookWidget {
   final ProfileExtraMeta meta;
 
   const _ProflieIntroLoaded({
-    @required this.meta,
+    required this.meta,
   });
 
   @override
@@ -71,9 +72,9 @@ class _ProflieIntroLoaded extends HookWidget {
         if (showFooter.value)
           ProfileFooter(
             onSave: () {
-              final isValid = _formKey.value.currentState.validate();
+              final isValid = _formKey.value.currentState?.validate();
 
-              if (isValid) {
+              if (isValid ?? false) {
                 final data = {
                   ..._formData.value,
                   'profile_intro_updated': true,
@@ -90,7 +91,7 @@ class _ProflieIntroLoaded extends HookWidget {
       BuildContext context, Map<String, dynamic> data) async {
     final _overlay = _buildLoaderOverlay();
 
-    Overlay.of(context).insert(_overlay);
+    Overlay.of(context)?.insert(_overlay);
 
     final result =
         await context.read(profileMetaRepositoryProvider).postUserProfile(data);
@@ -99,11 +100,10 @@ class _ProflieIntroLoaded extends HookWidget {
 
     result.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (profile) {
-        ExtendedNavigator.of(context)
-            .push(Routes.profileImageScreen(editMode: false));
+        AutoRouter.of(context).push(ProfileImageScreenRoute(editMode: false));
       },
     );
   }
@@ -130,14 +130,14 @@ class _ProfileIntroForm extends HookWidget {
   final GlobalKey<FormState> formKey;
   final ProfileExtraMeta meta;
   final ValueNotifier<Map<String, dynamic>> formData;
-  final VoidCallback onAllQuestionsShown;
+  final VoidCallback? onAllQuestionsShown;
 
   static const kquestionAnimationDuration = Duration(seconds: 1);
 
   const _ProfileIntroForm({
-    @required this.meta,
-    @required this.formKey,
-    @required this.formData,
+    required this.meta,
+    required this.formKey,
+    required this.formData,
     this.onAllQuestionsShown,
   });
 
@@ -167,7 +167,7 @@ class _ProfileIntroForm extends HookWidget {
             controllers[questionIndex.value].animateTo(1);
           } else {
             if (onAllQuestionsShown != null) {
-              onAllQuestionsShown();
+              onAllQuestionsShown!();
             }
           }
         },
@@ -188,26 +188,26 @@ class _AnimatedForm extends StatelessWidget {
   final List<AnimationController> controllers;
   final ProfileExtraMeta meta;
   final GlobalKey<FormState> formKey;
-  final VoidCallback onRenderNextQuestion;
-  final FormValueChangeCallback<dynamic> onFormValueChanged;
+  final VoidCallback? onRenderNextQuestion;
+  final FormValueChangeCallback<dynamic>? onFormValueChanged;
 
   const _AnimatedForm({
-    Key key,
-    this.questions,
-    this.animations,
-    this.controllers,
-    this.meta,
-    this.formKey,
+    Key? key,
+    required this.questions,
+    required this.animations,
+    required this.controllers,
+    required this.meta,
+    required this.formKey,
     this.onRenderNextQuestion,
     this.onFormValueChanged,
   }) : super(key: key);
 
   factory _AnimatedForm.fromMeta({
-    List<AnimationController> controllers,
-    ProfileExtraMeta meta,
-    GlobalKey<FormState> formKey,
-    VoidCallback onRenderNextQuestion,
-    FormValueChangeCallback<dynamic> onFormValueChanged,
+    required List<AnimationController> controllers,
+    required ProfileExtraMeta meta,
+    required GlobalKey<FormState> formKey,
+    required VoidCallback onRenderNextQuestion,
+    required FormValueChangeCallback<dynamic> onFormValueChanged,
   }) {
     final questions =
         meta.question.split(".").map((question) => "$question .").toList();
@@ -253,7 +253,7 @@ class _AnimatedForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgets = [];
-    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 16.00,
           height: 2.5,
         );
@@ -309,16 +309,16 @@ class _AnimatedForm extends StatelessWidget {
       switch (data.type) {
         case FieldType.dropDown:
           return ProfileFormDropDown<Option>(
-            items: data.options,
+            items: data.options ?? [],
             labelGetter: (item) => item.name,
             validator: (value) =>
                 value != null ? null : "Please provide a value",
             onChanged: (value) {
-              if (onFormValueChanged != null) {
-                onFormValueChanged(key, value.value);
+              if (onFormValueChanged != null && value != null) {
+                onFormValueChanged!(key, value.value);
               }
               if (onRenderNextQuestion != null) {
-                onRenderNextQuestion();
+                onRenderNextQuestion!();
               }
             },
           );
@@ -327,31 +327,34 @@ class _AnimatedForm extends StatelessWidget {
           return ProfileFormInput(
             onChanged: (value) {
               if (onFormValueChanged != null) {
-                onFormValueChanged(key, value);
+                onFormValueChanged!(key, value);
               }
             },
             onFieldSubmitted: (value) {
               if (onRenderNextQuestion != null) {
-                onRenderNextQuestion();
+                onRenderNextQuestion!();
               }
             },
-            validator: (value) =>
-                value.isEmpty ? "Please provide a value" : null,
+            validator: (value) => value == null || value.isEmpty
+                ? "Please provide a value"
+                : null,
           );
 
         case FieldType.multiSelect:
           return BaseMultiSelectDropdownFormField<Option>(
-            items: data.options,
-            validator: (value) =>
-                value.isEmpty ? "Please provide a value" : null,
+            items: data.options ?? [],
+            labelGetter: (item) => item.name,
+            validator: (value) => value == null || value.isEmpty
+                ? "Please provide a value"
+                : null,
             onChanged: (value) {
               if (onFormValueChanged != null) {
                 final data = value.map((e) => e.value).toList();
-                onFormValueChanged(key, data);
+                onFormValueChanged!(key, data);
               }
 
               if (onRenderNextQuestion != null) {
-                onRenderNextQuestion();
+                onRenderNextQuestion!();
               }
             },
           );

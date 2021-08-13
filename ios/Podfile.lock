@@ -1,8 +1,8 @@
 PODS:
-  - agora_rtc_engine (3.2.1):
-    - AgoraRtcEngine_iOS (= 3.2.1)
+  - agora_rtc_engine (4.0.6):
+    - AgoraRtcEngine_iOS (= 3.4.6)
     - Flutter
-  - AgoraRtcEngine_iOS (3.2.1)
+  - AgoraRtcEngine_iOS (3.4.6)
   - Amplitude-iOS (4.8.2)
   - Analytics (3.7.0)
   - AppAuth (1.4.0):
@@ -11,61 +11,62 @@ PODS:
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
   - appsflyer_sdk (6.2.0):
-    - AppsFlyerFramework (= 6.2.4)
+    - AppsFlyerFramework (= 6.3.2)
     - Flutter
-  - AppsFlyerFramework (6.2.4):
-    - AppsFlyerFramework/Main (= 6.2.4)
-  - AppsFlyerFramework/Main (6.2.4)
+  - AppsFlyerFramework (6.3.2):
+    - AppsFlyerFramework/Main (= 6.3.2)
+  - AppsFlyerFramework/Main (6.3.2)
   - device_info (0.0.1):
     - Flutter
-  - FBSDKCoreKit (5.15.1):
-    - FBSDKCoreKit/Basics (= 5.15.1)
-    - FBSDKCoreKit/Core (= 5.15.1)
-  - FBSDKCoreKit/Basics (5.15.1)
-  - FBSDKCoreKit/Core (5.15.1):
-    - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (5.15.1):
-    - FBSDKLoginKit/Login (= 5.15.1)
-  - FBSDKLoginKit/Login (5.15.1):
-    - FBSDKCoreKit (~> 5.0)
-  - Firebase/CoreOnly (6.33.0):
-    - FirebaseCore (= 6.10.3)
-  - Firebase/DynamicLinks (6.33.0):
+  - FBSDKCoreKit (11.0.1):
+    - FBSDKCoreKit/Core (= 11.0.1)
+  - FBSDKCoreKit/Core (11.0.1):
+    - FBSDKCoreKit_Basics (~> 11.0.1)
+  - FBSDKCoreKit_Basics (11.0.1):
+    - FBSDKCoreKit_Basics/Basics (= 11.0.1)
+  - FBSDKCoreKit_Basics/Basics (11.0.1)
+  - FBSDKLoginKit (11.0.1):
+    - FBSDKLoginKit/Login (= 11.0.1)
+  - FBSDKLoginKit/Login (11.0.1):
+    - FBSDKCoreKit (~> 11.0.1)
+    - FBSDKCoreKit_Basics (~> 11.0.1)
+  - Firebase/CoreOnly (8.3.0):
+    - FirebaseCore (= 8.3.0)
+  - Firebase/DynamicLinks (8.3.0):
     - Firebase/CoreOnly
-    - FirebaseDynamicLinks (~> 4.3.1)
-  - firebase_core (0.5.3):
-    - Firebase/CoreOnly (~> 6.33.0)
+    - FirebaseDynamicLinks (~> 8.3.0)
+  - firebase_core (1.4.0):
+    - Firebase/CoreOnly (= 8.3.0)
     - Flutter
-  - firebase_dynamic_links (0.6.3):
-    - Firebase/CoreOnly (~> 6.33.0)
-    - Firebase/DynamicLinks (~> 6.33.0)
+  - firebase_dynamic_links (2.0.7):
+    - Firebase/DynamicLinks (= 8.3.0)
     - firebase_core
     - Flutter
-  - FirebaseCore (6.10.3):
-    - FirebaseCoreDiagnostics (~> 1.6)
-    - GoogleUtilities/Environment (~> 6.7)
-    - GoogleUtilities/Logger (~> 6.7)
-  - FirebaseCoreDiagnostics (1.7.0):
-    - GoogleDataTransport (~> 7.4)
-    - GoogleUtilities/Environment (~> 6.7)
-    - GoogleUtilities/Logger (~> 6.7)
-    - nanopb (~> 1.30906.0)
-  - FirebaseDynamicLinks (4.3.1):
-    - FirebaseCore (~> 6.10)
+  - FirebaseCore (8.3.0):
+    - FirebaseCoreDiagnostics (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.4.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+    - nanopb (~> 2.30908.0)
+  - FirebaseDynamicLinks (8.3.0):
+    - FirebaseCore (~> 8.0)
   - Flutter (1.0.0)
   - flutter_custom_tabs (0.0.1):
     - Flutter
-  - flutter_facebook_login (0.0.1):
-    - FBSDKCoreKit (~> 5.5)
-    - FBSDKLoginKit (~> 5.5)
+  - flutter_facebook_auth (2.0.0):
+    - FBSDKCoreKit (~> 11.0.0)
+    - FBSDKLoginKit (~> 11.0.0)
+    - Flutter
+  - flutter_secure_storage (3.3.1):
     - Flutter
   - flutter_segment (0.0.1):
     - Analytics (= 3.7.0)
     - Flutter
     - Segment-Amplitude (= 3.0.1)
-  - flutter_statusbarcolor (0.0.1):
-    - Flutter
-  - flutter_webview_plugin (0.0.1):
+  - flutter_web_auth (0.3.0):
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
@@ -76,56 +77,53 @@ PODS:
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
-  - GoogleDataTransport (7.5.1):
-    - nanopb (~> 1.30906.0)
+  - GoogleDataTransport (9.1.0):
+    - GoogleUtilities/Environment (~> 7.2)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/Environment (6.7.2):
-    - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (6.7.2):
+  - GoogleUtilities/Environment (7.5.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.5.0):
     - GoogleUtilities/Environment
-  - GTMAppAuth (1.1.0):
+  - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher (~> 1.4)
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
-  - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - GTMSessionFetcher/Core (1.6.1)
   - image_picker (0.0.1):
     - Flutter
-  - Intercom (7.1.3)
-  - "intercom_flutter (2.2.0+1)":
+  - Intercom (10.0.3)
+  - intercom_flutter (4.0.0):
     - Flutter
-    - Intercom (~> 7.1.0)
+    - Intercom (~> 10.0.2)
   - libphonenumber (0.0.1):
     - Flutter
     - libPhoneNumber-iOS
   - libPhoneNumber-iOS (0.9.15)
-  - nanopb (1.30906.0):
-    - nanopb/decode (= 1.30906.0)
-    - nanopb/encode (= 1.30906.0)
-  - nanopb/decode (1.30906.0)
-  - nanopb/encode (1.30906.0)
-  - OneSignal (2.16.1)
-  - onesignal_flutter (2.6.2):
+  - nanopb (2.30908.0):
+    - nanopb/decode (= 2.30908.0)
+    - nanopb/encode (= 2.30908.0)
+  - nanopb/decode (2.30908.0)
+  - nanopb/encode (2.30908.0)
+  - OneSignal (3.6.0)
+  - onesignal_flutter (3.1.0):
     - Flutter
-    - OneSignal (= 2.16.1)
+    - OneSignalXCFramework (= 3.5.3)
+  - OneSignalXCFramework (3.5.3)
   - package_info (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - permission_handler (3.3.0):
+  - "permission_handler (5.1.0+2)":
     - Flutter
-  - phone_number (0.6.2):
+  - phone_number (0.11.0):
     - Flutter
-    - PhoneNumberKit/PhoneNumberKitCore (~> 3.2.0)
-  - PhoneNumberKit/PhoneNumberKitCore (3.2.0)
-  - PromisesObjC (1.2.12)
-  - screen (0.0.1):
-    - Flutter
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.3.3)
+  - PhoneNumberKit/PhoneNumberKitCore (3.3.3)
+  - PromisesObjC (2.0.0)
   - Segment-Amplitude (3.0.1):
     - Amplitude-iOS (~> 4.8.0)
     - Analytics (~> 3.7.0)
@@ -157,22 +155,21 @@ DEPENDENCIES:
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
-  - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
+  - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
-  - flutter_statusbarcolor (from `.symlinks/plugins/flutter_statusbarcolor/ios`)
-  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - flutter_web_auth (from `.symlinks/plugins/flutter_web_auth/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - intercom_flutter (from `.symlinks/plugins/intercom_flutter/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
-  - OneSignal (< 3.0, >= 2.9.4)
+  - OneSignal (< 4.0, >= 3.0.0)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
-  - screen (from `.symlinks/plugins/screen/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
@@ -191,6 +188,7 @@ SPEC REPOS:
     - AppAuth
     - AppsFlyerFramework
     - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
     - FBSDKLoginKit
     - Firebase
     - FirebaseCore
@@ -206,6 +204,7 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - nanopb
     - OneSignal
+    - OneSignalXCFramework
     - PhoneNumberKit
     - PromisesObjC
     - Segment-Amplitude
@@ -227,14 +226,14 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_custom_tabs:
     :path: ".symlinks/plugins/flutter_custom_tabs/ios"
-  flutter_facebook_login:
-    :path: ".symlinks/plugins/flutter_facebook_login/ios"
+  flutter_facebook_auth:
+    :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_segment:
     :path: ".symlinks/plugins/flutter_segment/ios"
-  flutter_statusbarcolor:
-    :path: ".symlinks/plugins/flutter_statusbarcolor/ios"
-  flutter_webview_plugin:
-    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  flutter_web_auth:
+    :path: ".symlinks/plugins/flutter_web_auth/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
@@ -255,8 +254,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   phone_number:
     :path: ".symlinks/plugins/phone_number/ios"
-  screen:
-    :path: ".symlinks/plugins/screen/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
@@ -275,51 +272,52 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  agora_rtc_engine: b9eb6ee2b4dd6c3854c0d94b0691e7d041fb437e
-  AgoraRtcEngine_iOS: bf8ee53108d31dd9e3b7e448701b9098162c42c7
+  agora_rtc_engine: d3178bd63d453a2d0111bd45475f17ce1fcc754d
+  AgoraRtcEngine_iOS: 8aa4a8e46bd81963607857b1d46703b93e4de156
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  appsflyer_sdk: 1a363cc261ccbf1daffe10ea55558823be769859
-  AppsFlyerFramework: f3f0e978cfb8e7dc09a3ab90da316f52cd9c56fe
+  appsflyer_sdk: ca0dc5172a2bd2bdf32b3272a9729c203aa8fba7
+  AppsFlyerFramework: c66d79d965ccc2f44fd5db3df3d214428cc7665a
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
-  FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
-  Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
-  firebase_core: 5d6a02f3d85acd5f8321c2d6d62877626a670659
-  firebase_dynamic_links: 65b0918ed77292e87534b4b668d2e293c58f35e0
-  FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
-  FirebaseCoreDiagnostics: 770ac5958e1372ce67959ae4b4f31d8e127c3ac1
-  FirebaseDynamicLinks: 6eac37d86910382eafb6315d952cc44c9e176094
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_custom_tabs: 9f7596dc1593f2e0d0562ce888dde6447751e97c
-  flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
+  FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
+  FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
+  FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
+  Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
+  firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
+  firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
+  FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
+  FirebaseCoreDiagnostics: cad03be1904b975f845e632f2720c3337da27faf
+  FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
+  flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
-  flutter_statusbarcolor: 8afb1071ed8c58be929f1e32b36c629771fd2259
-  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  flutter_web_auth: ede89bf8107b021cf16e769756d267d84d24e88b
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
-  GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
+  google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
+  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
-  GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
-  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  Intercom: e44b10bbc38ccf6494c76f9bee4e2e3d7d007153
-  intercom_flutter: 8b168f7cad88366708aa1972a395e6195205fc3a
+  GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
+  image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
+  Intercom: 7a58cfdfaa67a2f98f7256cd5d09c87fbc29cb7d
+  intercom_flutter: 38838a418f85a7c38ebee69609e4ff800aabb633
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
-  nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
-  OneSignal: 5f6514ec2b931306eb067acb124afbb2e49970af
-  onesignal_flutter: 260bb95c0a2d791c990c7bd8749525c9834d43fc
+  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  OneSignal: fba3971064be02510de1d8b9c90fabd749da2e52
+  onesignal_flutter: 79eb89d25249b078d3c358fb7827b22909f7fbed
+  OneSignalXCFramework: 4e08d8353adec161c3d9174e2572c849e1225c9f
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  permission_handler: 67637977b227d62d46bfbf524f335f8568de5a73
-  phone_number: b545f5b7d9711bec0f020c7df43ae5a82119f4ad
-  PhoneNumberKit: df411d46177d1492da84e10b6c093846dd861452
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  phone_number: aaf1197d6ff991ac59640e7f73472e06f2efac95
+  PhoneNumberKit: 4ce83273551c4d2ae10b7361162f4283dd02835f
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Segment-Amplitude: 1b3b02a2e92f4b08a413a72bf7aa44f78566ab3b
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
@@ -329,9 +327,9 @@ SPEC CHECKSUMS:
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   UserLeapKit: 58859c55f0b8fd568f23ff21ef5b96bb48920fb3
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
-  wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
-  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: cc3f13bd26d3b5ce8b4e64c32b6ee1174abff057
+PODFILE CHECKSUM: ffa43710ac26ae7d11aa040edda2d37b7004a474
 
 COCOAPODS: 1.10.1

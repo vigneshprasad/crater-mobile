@@ -16,12 +16,23 @@ class ArticleWebsiteModelAdapter extends TypeAdapter<ArticleWebsiteModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ArticleWebsiteModel();
+    return ArticleWebsiteModel(
+      pk: fields[0] as int?,
+      name: fields[1] as String?,
+      url: fields[2] as String?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, ArticleWebsiteModel obj) {
-    writer..writeByte(0);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.pk)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.url);
   }
 
   @override
@@ -41,9 +52,9 @@ class ArticleWebsiteModelAdapter extends TypeAdapter<ArticleWebsiteModel> {
 
 ArticleWebsiteModel _$ArticleWebsiteModelFromJson(Map<String, dynamic> json) {
   return ArticleWebsiteModel(
-    pk: json['pk'] as int,
-    name: json['name'] as String,
-    url: json['url'] as String,
+    pk: json['pk'] as int?,
+    name: json['name'] as String?,
+    url: json['url'] as String?,
   );
 }
 

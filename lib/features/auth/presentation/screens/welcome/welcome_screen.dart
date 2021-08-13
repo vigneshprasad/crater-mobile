@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+// import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../core/config_reader/config_reader.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -28,9 +28,9 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  AuthBloc _authBloc;
-  TabController _tabController;
-  int _activeIndex;
+  late AuthBloc _authBloc;
+  late TabController _tabController;
+  late int _activeIndex;
 
   final List<Widget> _tabs = const [
     _ImageSlide(
@@ -74,12 +74,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
-    LinkedInLogin.initialize(
-      context,
-      clientId: ConfigReader.getLinkedInClientId(),
-      clientSecret: ConfigReader.getLinkedInSecret(),
-      redirectUri: ConfigReader.getLinkedInRedirect(),
-    );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
@@ -123,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       bottom: 20,
                       child: _buildViewContent(context),
                     ),
-                    if (state.isSubmitting != null && state.isSubmitting)
+                    if (state.isSubmitting != null && state.isSubmitting!)
                       _buildOverlay(context)
                   ],
                 ),
@@ -173,18 +167,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         context: context,
         builder: (context) {
           final title =
-              AppLocalizations.of(context).translate("auth:login_fail_title");
+              AppLocalizations.of(context)?.translate("auth:login_fail_title");
           final dismiss =
-              AppLocalizations.of(context).translate("dismiss").toUpperCase();
+              AppLocalizations.of(context)?.translate("dismiss")?.toUpperCase();
           return AlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: Text(json["non_field_errors"][0] as String),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 },
-                child: Text(dismiss),
+                child: Text(dismiss!),
               )
             ],
           );
@@ -280,7 +274,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
-                            .copyWith(fontSize: 17),
+                            ?.copyWith(fontSize: 17),
                       ),
                       const SizedBox(height: 8),
                       Text(subHeaderText),
@@ -384,7 +378,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
-    ExtendedNavigator.of(context).push(Routes.authScreen(state: state));
+    AutoRouter.of(context).push(AuthScreenRoute(state: state));
   }
 }
 
@@ -395,20 +389,20 @@ class _ImageSlide extends StatelessWidget {
   final double imageWidth;
 
   const _ImageSlide({
-    Key key,
-    @required this.image,
-    @required this.heading,
-    @required this.subheading,
+    Key? key,
+    required this.image,
+    required this.heading,
+    required this.subheading,
     this.imageWidth = double.infinity,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline4.copyWith(
+    final headingStyle = Theme.of(context).textTheme.headline4?.copyWith(
           fontWeight: FontWeight.w500,
           fontSize: 22,
         );
-    final subheadingStyle = Theme.of(context).textTheme.headline4.copyWith(
+    final subheadingStyle = Theme.of(context).textTheme.headline4?.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 16,
         );
@@ -450,9 +444,9 @@ class _SlideIndicator extends StatelessWidget {
   final int activeIndex;
 
   const _SlideIndicator({
-    Key key,
-    @required this.length,
-    @required this.activeIndex,
+    Key? key,
+    required this.length,
+    required this.activeIndex,
   }) : super(key: key);
 
   @override
@@ -464,10 +458,9 @@ class _SlideIndicator extends StatelessWidget {
   }
 
   List<Widget> _buildIndicatorItems(BuildContext context) {
-    final list = List(length);
     final List<Widget> items = [];
 
-    for (int index = 0; index < list.length; index++) {
+    for (int index = 0; index < length; index++) {
       final primaryColor = Theme.of(context).primaryColor;
       final color = index == activeIndex ? primaryColor : Colors.white24;
       final isLast = index == length - 1;

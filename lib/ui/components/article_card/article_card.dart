@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 import '../../../constants/app_constants.dart';
@@ -9,7 +10,7 @@ import '../../../features/article/domain/entity/article_entity.dart';
 class ArticleCard extends StatelessWidget {
   final Article article;
 
-  const ArticleCard({Key key, this.article}) : super(key: key);
+  const ArticleCard({Key? key, required this.article}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,21 +43,21 @@ class ArticleCard extends StatelessWidget {
 
   Widget _buildCardInfo(BuildContext context) {
     final headingStyle =
-        Theme.of(context).textTheme.headline6.copyWith(fontSize: 18);
+        Theme.of(context).textTheme.headline6?.copyWith(fontSize: 18);
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            article.title,
+            article.title!,
             style: headingStyle,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: AppInsets.sm),
-          Text(article.websiteTag, style: bodyStyle),
+          Text(article.websiteTag!, style: bodyStyle),
           const SizedBox(height: AppInsets.med),
-          Taglabel(label: article.tag),
+          Taglabel(label: article.tag ?? ''),
         ],
       ),
     );
@@ -64,15 +65,16 @@ class ArticleCard extends StatelessWidget {
 
   Future<void> _launchURL(BuildContext context) async {
     try {
+      if (article.websiteUrl == null) return;
       await launch(
-        article.websiteUrl,
-        option: CustomTabsOption(
+        article.websiteUrl!,
+        customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          animation: CustomTabsAnimation.slideIn(),
-          extraCustomTabs: <String>[
+          animation: CustomTabsSystemAnimation.slideIn(),
+          extraCustomTabs: const <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',
             // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
@@ -88,12 +90,12 @@ class ArticleCard extends StatelessWidget {
 
   Widget _buildImagePreview(BuildContext context) {
     final image = article.picture;
-    final defaultImage = AppImageAssets.articleDefault;
+    const defaultImage = AppImageAssets.articleDefault;
     if (image != null) {
       return CachedNetworkImage(
         imageUrl: image,
         errorWidget: (context, url, error) {
-          return _ImageThumbnail(
+          return const _ImageThumbnail(
             image: defaultImage,
           );
         },
@@ -102,7 +104,7 @@ class ArticleCard extends StatelessWidget {
         },
       );
     } else {
-      return _ImageThumbnail(
+      return const _ImageThumbnail(
         image: defaultImage,
       );
     }
@@ -110,11 +112,11 @@ class ArticleCard extends StatelessWidget {
 }
 
 class _ImageThumbnail extends StatelessWidget {
-  final ImageProvider<dynamic> image;
+  final ImageProvider<Object> image;
 
   const _ImageThumbnail({
-    Key key,
-    @required this.image,
+    Key? key,
+    required this.image,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -133,13 +135,13 @@ class Taglabel extends StatelessWidget {
   final String label;
 
   const Taglabel({
-    Key key,
-    @required this.label,
+    Key? key,
+    required this.label,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           color: Colors.white,
           fontSize: 13,
         );

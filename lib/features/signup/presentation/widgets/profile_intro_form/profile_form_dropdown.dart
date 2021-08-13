@@ -10,11 +10,11 @@ const padding = 52;
 class _ProfileFormDropDown<T> extends HookWidget {
   final List<T> items;
   final LabelGetter<T> labelGetter;
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T?>? onChanged;
 
   const _ProfileFormDropDown({
-    @required this.items,
-    @required this.labelGetter,
+    required this.items,
+    required this.labelGetter,
     this.onChanged,
   });
 
@@ -29,16 +29,16 @@ class _ProfileFormDropDown<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useState<T>();
+    final state = useState<T?>(null);
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: getWidthOfLargestOption(items),
       ),
       child: ButtonTheme(
         child: DropdownButtonFormField<T>(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               vertical: AppInsets.sm,
               horizontal: AppInsets.med,
             ),
@@ -53,7 +53,7 @@ class _ProfileFormDropDown<T> extends HookWidget {
           onChanged: (val) {
             state.value = val;
             if (onChanged != null) {
-              onChanged(val);
+              onChanged!(val);
             }
           },
         ),
@@ -65,15 +65,15 @@ class _ProfileFormDropDown<T> extends HookWidget {
 class ProfileFormDropDown<T> extends FormField<T> {
   final List<T> items;
   final LabelGetter<T> labelGetter;
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T?>? onChanged;
 
   ProfileFormDropDown({
-    T initialValue,
+    T? initialValue,
     AutovalidateMode autovalidateMode = AutovalidateMode.onUserInteraction,
-    FormFieldSetter<T> onSaved,
-    FormFieldValidator<T> validator,
-    this.items,
-    @required this.labelGetter,
+    FormFieldSetter<T?>? onSaved,
+    FormFieldValidator<T?>? validator,
+    required this.items,
+    required this.labelGetter,
     this.onChanged,
   }) : super(
           autovalidateMode: autovalidateMode,

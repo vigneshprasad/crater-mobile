@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -18,11 +19,11 @@ class ObjectivesScreen extends StatefulWidget {
 }
 
 class _ObjectivesScreenState extends State<ObjectivesScreen> {
-  ObjectivesBloc _bloc;
-  List<UserObjective> _objectives;
-  List<UserObjective> _selectedObjectives;
-  List<UserObjective> _interests;
-  List<UserObjective> _selectedInterests;
+  late ObjectivesBloc _bloc;
+  late List<UserObjective> _objectives;
+  late List<UserObjective> _selectedObjectives;
+  late List<UserObjective> _interests;
+  late List<UserObjective> _selectedInterests;
 
   @override
   void initState() {
@@ -47,9 +48,9 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
       builder: (context, authState) {
         const heading = 'And about your interests';
         final next =
-            AppLocalizations.of(context).translate("next").toUpperCase();
+            AppLocalizations.of(context)?.translate("next")?.toUpperCase();
 
-        final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
+        final headingStyle = Theme.of(context).textTheme.headline5?.copyWith(
               fontSize: 22,
               fontWeight: FontWeight.w500,
             );
@@ -87,7 +88,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
                               if (_interests.isNotEmpty)
                                 ObjectivesPicker(
                                   objectives: _interests
-                                      .map((e) => PickerItem(name: e.name))
+                                      .map((e) => PickerItem(name: e.name!))
                                       .toList(),
                                   onPressedItem: _onPressedInterestItem,
                                 ),
@@ -98,7 +99,7 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
                               if (_objectives.isNotEmpty)
                                 ObjectivesPicker(
                                   objectives: _objectives
-                                      .map((e) => PickerItem(name: e.name))
+                                      .map((e) => PickerItem(name: e.name!))
                                       .toList(),
                                   onPressedItem: _onPressedObjectiveItem,
                                 ),
@@ -136,8 +137,8 @@ class _ObjectivesScreenState extends State<ObjectivesScreen> {
         _objectives = state.objectives;
       });
     } else if (state is PatchObjectivesRequestLoaded) {
-      ExtendedNavigator.of(context)
-          .popAndPush(Routes.profileImageScreen(editMode: true));
+      AutoRouter.of(context)
+          .popAndPush(ProfileImageScreenRoute(editMode: true));
     }
   }
 

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart' hide Notification;
-
 import '../../../../api/notifications/notifications_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/page_api_response/page_api_response.dart';
@@ -19,7 +17,7 @@ class NotificationRemotDatasourceImpl implements NotificationRemotDatasource {
   final NotificationApiService apiService;
 
   NotificationRemotDatasourceImpl({
-    @required this.apiService,
+    required this.apiService,
   });
 
   @override

@@ -9,9 +9,9 @@ part 'time_slot_model.g.dart';
 
 @JsonSerializable()
 class TimeSlotModel extends TimeSlot {
-  final int pk;
-  final DateTime end;
-  final DateTime start;
+  final int? pk;
+  final DateTime? end;
+  final DateTime? start;
 
   TimeSlotModel({
     this.pk,

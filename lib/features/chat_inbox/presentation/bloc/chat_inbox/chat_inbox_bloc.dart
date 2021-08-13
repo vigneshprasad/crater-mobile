@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
@@ -23,18 +22,18 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
   final UCPersistChatUsers persistChatUsers;
   final UCSendStarChatUser starChatUser;
   final UCReceivedStarUserChanged starUserChanged;
-  StreamSubscription _websocketBlocSub;
-  StreamSubscription _socketStreamSub;
+  StreamSubscription? _websocketBlocSub;
+  StreamSubscription? _socketStreamSub;
 
   ChatInboxBloc({
-    @required this.websocketBloc,
-    @required this.getAllChatUsers,
-    @required this.persistChatUsers,
-    @required this.starChatUser,
-    @required this.starUserChanged,
+    required this.websocketBloc,
+    required this.getAllChatUsers,
+    required this.persistChatUsers,
+    required this.starChatUser,
+    required this.starUserChanged,
   }) : super(const ChatInboxInitial()) {
     if (websocketBloc.state is WebSocketConnected) add(const WebSocketOnline());
-    _websocketBlocSub ??= websocketBloc.listen((websocketState) {
+    _websocketBlocSub ??= websocketBloc.stream.listen((websocketState) {
       if (websocketState is WebSocketConnected) {
         add(const WebSocketOnline());
       }
@@ -105,16 +104,16 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
   Stream<ChatInboxState> _mapReceivedChatUsersToState(
       AllChatUsersReceived event) async* {
     final usersOrError = await persistChatUsers(PersistChatUsersParaams(
-      users: event.response.results,
+      users: event.response.results!,
     ));
 
     yield usersOrError.fold(
       (failure) => ChatInboxError(error: failure),
       (users) => ChatInboxUsersResponseReceived(
         fromCache: false,
-        page: event.response.page,
-        pages: event.response.pages,
-        users: event.response.results,
+        page: event.response.page!,
+        pages: event.response.pages!,
+        users: event.response.results!,
       ),
     );
   }

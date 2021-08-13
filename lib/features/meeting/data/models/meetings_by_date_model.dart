@@ -10,8 +10,8 @@ part 'meetings_by_date_model.g.dart';
 
 @JsonSerializable()
 class MeetingsByDateModel extends MeetingsByDate {
-  final DateTime date;
-  final List<MeetingModel> meetings;
+  final DateTime? date;
+  final List<MeetingModel>? meetings;
 
   MeetingsByDateModel({
     this.date,

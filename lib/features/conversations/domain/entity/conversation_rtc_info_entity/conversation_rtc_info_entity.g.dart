@@ -9,9 +9,9 @@ part of 'conversation_rtc_info_entity.dart';
 _$_ConversationRtcInfo _$_$_ConversationRtcInfoFromJson(
     Map<String, dynamic> json) {
   return _$_ConversationRtcInfo(
-    token: json['token'] as String,
-    channelName: json['channel_name'] as String,
-    rtcUid: json['rtc_uid'] as String,
+    token: json['token'] as String?,
+    channelName: json['channel_name'] as String?,
+    rtcUid: json['rtc_uid'] as String?,
   );
 }
 

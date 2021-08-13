@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -11,13 +12,13 @@ import '../../../base/base_badge/base_badge.dart';
 class UserListItem extends StatelessWidget {
   final ChatUser user;
   final bool withFavorite;
-  final VoidCallback onStarPressed;
+  final VoidCallback? onStarPressed;
   final GlobalKey<NavigatorState> _navigatorKey =
       KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
   UserListItem({
-    Key key,
-    @required this.user,
+    Key? key,
+    required this.user,
     this.onStarPressed,
     this.withFavorite = true,
   }) : super(key: key);
@@ -27,29 +28,29 @@ class UserListItem extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Material(
       child: InkWell(
-        onTap: () => _navigatorKey.currentState.pushNamed(
-          Routes.chatScreen,
-          arguments: ChatScreenArguments(recieverId: user.pk),
+        onTap: () => _navigatorKey.currentState?.pushNamed(
+          ChatScreenRoute.name,
+          arguments: ChatScreenRouteArgs(recieverId: user.pk ?? ''),
         ),
         child: ListTile(
           dense: true,
           leading: _buildAvatarImage(),
           title: Text(
-            user.name,
+            user.name ?? '',
             style: textTheme.subtitle1,
           ),
           subtitle:
-              getLastMessageString(user.latestMessage, textTheme.bodyText2),
+              getLastMessageString(user.latestMessage, textTheme.bodyText2!),
           trailing: _buildListActions(),
         ),
       ),
     );
   }
 
-  Widget getLastMessageString(ChatMessage message, TextStyle style) {
+  Widget getLastMessageString(ChatMessage? message, TextStyle style) {
     if (message != null) {
       final bool userIsCreator = user.pk == message.receiverId;
-      final String senderName = userIsCreator ? "You" : message.sender;
+      final String senderName = userIsCreator ? "You" : message.sender!;
       return Text(
         "$senderName: ${message.message}",
         style: style.copyWith(color: Colors.grey[500]),
@@ -63,7 +64,7 @@ class UserListItem extends StatelessWidget {
   Widget _buildAvatarImage() {
     if (user.photo != null) {
       return CachedNetworkImage(
-        imageUrl: user.photo,
+        imageUrl: user.photo!,
         imageBuilder: (context, imageProvider) {
           return BaseBadge(
             count: user.unreadCount ?? 0,
@@ -79,9 +80,9 @@ class UserListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildListActions() {
+  Widget? _buildListActions() {
     if (withFavorite) {
-      final icon = user.isStarred ? Icons.star : Icons.star_border;
+      final icon = user.isStarred ?? false ? Icons.star : Icons.star_border;
       return IconButton(
         onPressed: onStarPressed,
         icon: Icon(icon),

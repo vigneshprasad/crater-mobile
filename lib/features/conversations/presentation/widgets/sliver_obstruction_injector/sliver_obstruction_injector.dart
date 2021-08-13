@@ -7,11 +7,10 @@ class SliverObstructionInjector extends SliverOverlapInjector {
   ///
   /// The [handle] must not be null.
   const SliverObstructionInjector({
-    Key key,
-    @required SliverOverlapAbsorberHandle handle,
-    Widget child,
-  })  : assert(handle != null),
-        super(key: key, handle: handle, sliver: child);
+    Key? key,
+    required SliverOverlapAbsorberHandle handle,
+    Widget? child,
+  }) : super(key: key, handle: handle, sliver: child);
 
   @override
   RenderSliverObstructionInjector createRenderObject(BuildContext context) {
@@ -32,25 +31,24 @@ class RenderSliverObstructionInjector extends RenderSliverOverlapInjector {
   /// Creates a sliver that is as tall as the value of the given [handle]'s extent.
   ///
   /// The [handle] must not be null.
-  RenderSliverObstructionInjector({
-    @required SliverOverlapAbsorberHandle handle,
-    RenderSliver child,
-  })  : assert(handle != null),
-        _handle = handle,
+  RenderSliverObstructionInjector({required SliverOverlapAbsorberHandle handle})
+      : _handle = handle,
         super(handle: handle);
 
-  double _currentLayoutExtent;
-  double _currentMaxExtent;
+  double? _currentLayoutExtent;
+  double? _currentMaxExtent;
 
   /// The object that specifies how wide to make the gap injected by this render
   /// object.
   ///
   /// This should be a handle owned by a [RenderSliverOverlapAbsorber] and a
   /// [RenderNestedScrollViewViewport].
+  @override
   SliverOverlapAbsorberHandle get handle => _handle;
   SliverOverlapAbsorberHandle _handle;
+  @override
   set handle(SliverOverlapAbsorberHandle value) {
-    assert(value != null);
+    // assert(value != null);
     if (handle == value) return;
     if (attached) {
       handle.removeListener(markNeedsLayout);
@@ -76,8 +74,8 @@ class RenderSliverObstructionInjector extends RenderSliverOverlapInjector {
     _currentLayoutExtent = handle.layoutExtent;
     _currentMaxExtent = handle.layoutExtent;
     geometry = SliverGeometry(
-      paintExtent: _currentLayoutExtent,
-      maxPaintExtent: _currentMaxExtent,
+      paintExtent: _currentLayoutExtent!,
+      maxPaintExtent: _currentMaxExtent!,
     );
   }
 }

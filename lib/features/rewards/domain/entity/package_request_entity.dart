@@ -13,11 +13,11 @@ enum PackageRequestStatus {
 }
 
 class PackageRequest extends Equatable {
-  final int quantity;
-  final String requestedBy;
-  final int package;
-  final int pointsApplied;
-  final PackageRequestStatus status;
+  final int? quantity;
+  final String? requestedBy;
+  final int? package;
+  final int? pointsApplied;
+  final PackageRequestStatus? status;
 
   const PackageRequest({
     this.quantity,
@@ -28,11 +28,13 @@ class PackageRequest extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        quantity,
-        requestedBy,
-        package,
-        pointsApplied,
-        status,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (quantity != null) temp.add(quantity!);
+    if (requestedBy != null) temp.add(requestedBy!);
+    if (package != null) temp.add(package!);
+    if (pointsApplied != null) temp.add(pointsApplied!);
+    if (status != null) temp.add(status!);
+    return temp;
+  }
 }

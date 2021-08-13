@@ -15,13 +15,12 @@ class InboxTab extends StatefulWidget {
 }
 
 class _InboxTabState extends State<InboxTab> {
-  ChatInboxBloc _inboxBloc;
+  late ChatInboxBloc _inboxBloc;
   List<ChatUser> _users = [];
   final _filter = "all";
   int _currentPage = 1;
-  int _pages = 1;
-  Completer<void> _completer;
-  bool _showShimmer;
+  late Completer<void> _completer;
+  late bool _showShimmer;
 
   @override
   void initState() {
@@ -65,8 +64,8 @@ class _InboxTabState extends State<InboxTab> {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return Shimmer.fromColors(
-            baseColor: Colors.grey[300],
-            highlightColor: Colors.grey[200],
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[200]!,
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.grey[200],
@@ -102,8 +101,8 @@ class _InboxTabState extends State<InboxTab> {
       user: user,
       onStarPressed: () {
         _inboxBloc.add(StarUserRequestStarted(
-          user: user.pk,
-          isStarred: !user.isStarred,
+          user: user.pk ?? '',
+          isStarred: !user.isStarred!,
         ));
       },
     );
@@ -125,7 +124,6 @@ class _InboxTabState extends State<InboxTab> {
       setState(() {
         _users = [..._users, ...state.users];
         _currentPage = state.page;
-        _pages = state.pages;
         _showShimmer = false;
       });
     } else if (state is ChatInboxStarChangeReceived) {
@@ -143,7 +141,6 @@ class _InboxTabState extends State<InboxTab> {
   Future<void> _onRefreshList() {
     setState(() {
       _currentPage = 1;
-      _pages = 1;
       _users = [];
       _showShimmer = true;
     });

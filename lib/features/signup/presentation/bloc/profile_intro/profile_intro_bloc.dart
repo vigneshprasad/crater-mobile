@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
@@ -35,23 +34,15 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
   final Analytics analytics;
 
   ProfileIntroBloc({
-    @required this.getProfileIntroQuestions,
-    @required this.getProfileIntroCompanies,
-    @required this.getProfileIntroEducations,
-    @required this.getProfileIntroExperiences,
-    @required this.getProfileIntroSectors,
-    @required this.postUserProfile,
-    @required this.patchUser,
-    @required this.analytics,
-  })  : assert(getProfileIntroQuestions != null),
-        assert(getProfileIntroCompanies != null),
-        assert(getProfileIntroEducations != null),
-        assert(getProfileIntroExperiences != null),
-        assert(getProfileIntroSectors != null),
-        assert(postUserProfile != null),
-        assert(patchUser != null),
-        assert(analytics != null),
-        super(const ProfileIntroInitial());
+    required this.getProfileIntroQuestions,
+    required this.getProfileIntroCompanies,
+    required this.getProfileIntroEducations,
+    required this.getProfileIntroExperiences,
+    required this.getProfileIntroSectors,
+    required this.postUserProfile,
+    required this.patchUser,
+    required this.analytics,
+  }) : super(const ProfileIntroInitial());
 
   @override
   Stream<ProfileIntroState> mapEventToState(
@@ -75,19 +66,19 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
 
     // Get Companies
     final companyResponse = await getProfileIntroCompanies(NoParams());
-    final companies = companyResponse.getOrElse(null);
+    final companies = companyResponse.getOrElse(() => []);
 
     // Get Experiences
     final experienceResponse = await getProfileIntroExperiences(NoParams());
-    final experiences = experienceResponse.getOrElse(null);
+    final experiences = experienceResponse.getOrElse(() => []);
 
     // Get Sectors
     final sectorResponse = await getProfileIntroSectors(NoParams());
-    final sectors = sectorResponse.getOrElse(null);
+    final sectors = sectorResponse.getOrElse(() => []);
 
     // Get Educations
     final educationResponse = await getProfileIntroEducations(NoParams());
-    final educations = educationResponse.getOrElse(null);
+    final educations = educationResponse.getOrElse(() => []);
 
     yield questionsOrError.fold(
       (failure) => ProfileIntroRequestError(error: failure),
@@ -115,11 +106,11 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
           final id = string.replaceFirst('{', '').replaceFirst('}', '');
 
           ProfileIntroElementType type = ProfileIntroElementType.dropdown;
-          String placeholder;
+          String? placeholder;
 
-          List<ProfileIntroMeta> options = [];
-          double width;
-          int lines;
+          List<ProfileIntroMeta>? options = [];
+          double? width;
+          int? lines;
           bool optional = false;
           switch (id) {
             case ProfileIntroElement.name:
@@ -186,7 +177,7 @@ class ProfileIntroBloc extends Bloc<ProfileIntroEvent, ProfileIntroState> {
           "sector": updatedProfile.sector,
           "company_type": updatedProfile.companyType,
           "years_of_experience": updatedProfile.yearsOfExperience,
-          "user_tags": updatedProfile.tagList.map((e) => e.name).toList(),
+          "user_tags": updatedProfile.tagList?.map((e) => e.name).toList(),
         };
 
         analytics.identify(properties: properties);

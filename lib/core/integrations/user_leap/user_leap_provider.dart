@@ -16,7 +16,7 @@ class UserLeapProvider {
   }
 
   Future<void> setUserData(User user) async {
-    await UserLeapFlutter.setEmailAddress(user.email);
-    await UserLeapFlutter.setUserIdentifier(user.pk);
+    await UserLeapFlutter.setEmailAddress(user.email!);
+    await UserLeapFlutter.setUserIdentifier(user.pk!);
   }
 }

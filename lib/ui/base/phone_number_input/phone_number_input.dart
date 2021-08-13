@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:libphonenumber/libphonenumber.dart';
+import 'package:libphonenumber/libphonenumber.dart' as libphone;
 import 'package:phone_number/phone_number.dart';
 
 import '../../../constants/theme.dart';
@@ -13,12 +13,12 @@ typedef OnChangeCallback = void Function(String value);
 class PhoneNumberInput extends StatefulWidget {
   final String label;
   final bool autoValidate;
-  final OnValidCallback onValidChange;
-  final String initalCountry;
-  final OnChangeCallback onChange;
+  final OnValidCallback? onValidChange;
+  final String? initalCountry;
+  final OnChangeCallback? onChange;
 
   const PhoneNumberInput({
-    Key key,
+    Key? key,
     this.label = "Phone Number",
     this.autoValidate = true,
     this.onValidChange,
@@ -31,13 +31,13 @@ class PhoneNumberInput extends StatefulWidget {
 }
 
 class _PhoneNumberInputState extends State<PhoneNumberInput> {
-  final PhoneNumber plugin = PhoneNumber();
+  final PhoneNumberUtil plugin = PhoneNumberUtil();
   final FocusNode _inputFocus = FocusNode();
   final TextEditingController _controller = TextEditingController();
-  List<Country> _countries;
-  Country _selectedCountry;
-  bool _isFocused;
-  bool _isValid;
+  late List<Country> _countries;
+  late Country _selectedCountry;
+  late bool _isFocused;
+  late bool _isValid;
 
   @override
   void initState() {
@@ -72,12 +72,12 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
 
   Future<List<Country>> _getCountriesList() async {
     final res = await plugin.allSupportedRegions();
-    return res.entries
+    return res
         .map(
           (e) => Country(
-            countryCode: e.value,
-            isoCode: e.key,
-            flagCode: generateFlagEmojiUnicode(e.key),
+            countryCode: e.prefix,
+            isoCode: e.code,
+            flagCode: generateFlagEmojiUnicode(e.code),
           ),
         )
         .toList();
@@ -97,7 +97,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
 
   BoxDecoration _getBoxDecoration() {
     final border = _isValid
-        ? Border.all(width: 2, color: Colors.green[300])
+        ? Border.all(width: 2, color: Colors.green[300]!)
         : _isFocused
             ? Border.all(width: 2, color: Theme.of(context).primaryColor)
             : Border.all(width: 2, color: Colors.transparent);
@@ -123,7 +123,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
             child: DropdownButton<Country>(
               onChanged: (value) {
                 setState(() {
-                  _selectedCountry = value;
+                  _selectedCountry = value!;
                 });
               },
               value: _selectedCountry,
@@ -171,12 +171,12 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
       final value = "+${_selectedCountry.countryCode}$parsedPhoneNumberString";
 
       if (widget.onChange != null) {
-        widget.onChange(value);
+        widget.onChange!(value);
       }
 
       _validatePhoneNumber(parsedPhoneNumberString, isoCode).then((isValid) {
         if (widget.onValidChange != null) {
-          widget.onValidChange(isValid);
+          widget.onValidChange!(isValid);
           setState(() {
             _isValid = isValid;
           });
@@ -187,9 +187,9 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
 
   Future<bool> _validatePhoneNumber(String phoneNumber, String isoCode) async {
     try {
-      final isValid = await PhoneNumberUtil.isValidPhoneNumber(
+      final isValid = await libphone.PhoneNumberUtil.isValidPhoneNumber(
           phoneNumber: phoneNumber, isoCode: isoCode);
-      return isValid;
+      return isValid ?? false;
     } on Exception {
       return false;
     }

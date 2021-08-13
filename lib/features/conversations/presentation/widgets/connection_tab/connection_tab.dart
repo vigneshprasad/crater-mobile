@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -13,12 +14,12 @@ import 'connection_tab_state.dart';
 
 class ConnectionTab extends HookWidget {
   UserTag allTag = UserTag(name: 'All');
-  UserTag selectedTag;
+  UserTag? selectedTag;
 
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(connectionStateProvider.state);
-    final tagsState = useProvider(tagStateProvider.state);
+    final topicsState = useProvider(connectionStateProvider);
+    final tagsState = useProvider(tagStateProvider);
 
     final _controller = useScrollController();
     _controller.addListener(() {
@@ -26,8 +27,8 @@ class ConnectionTab extends HookWidget {
       if (_controller.offset >= _controller.position.maxScrollExtent &&
           !_controller.position.outOfRange) {
         context
-            .read(connectionStateProvider)
-            .getNextPageProfileList(selectedTag.pk?.toString() ?? '');
+            .read(connectionStateProvider.notifier)
+            .getNextPageProfileList(selectedTag?.pk?.toString() ?? '');
       }
     });
     return RefreshIndicator(
@@ -35,9 +36,9 @@ class ConnectionTab extends HookWidget {
       onRefresh: () {
         final futures = [
           context
-              .read(connectionStateProvider)
+              .read(connectionStateProvider.notifier)
               .getProfileList(selectedTag?.pk?.toString() ?? ''),
-          context.read(tagStateProvider).getTagList(),
+          context.read(tagStateProvider.notifier).getTagList(),
         ];
 
         return Future.wait(futures);
@@ -64,12 +65,13 @@ class ConnectionTab extends HookWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: FilterChip(
                         selected: selectedTag?.name == tags[index].name,
-                        label: Text(tags[index].name),
+                        label: Text(tags[index].name ?? ''),
                         onSelected: (value) {
                           selectedTag = tags[index];
                           context
-                              .read(connectionStateProvider)
-                              .getProfileList(selectedTag.pk?.toString() ?? '');
+                              .read(connectionStateProvider.notifier)
+                              .getProfileList(
+                                  selectedTag?.pk?.toString() ?? '');
                         },
                       ),
                     );
@@ -98,7 +100,7 @@ class ConnectionTab extends HookWidget {
                   }
                   return _Connection(
                     user: profiles[index],
-                    authUserPk: "1",
+                    authUserPk: null, //TODO: pass auth user pk.
                   );
                 },
               ),
@@ -112,24 +114,24 @@ class ConnectionTab extends HookWidget {
 
 class _Connection extends StatelessWidget {
   final Profile user;
-  final String authUserPk;
+  final int? authUserPk;
   const _Connection({
-    Key key,
-    @required this.user,
+    Key? key,
+    required this.user,
     this.authUserPk,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.generatedIntroduction ?? '';
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(
-        Routes.profileScreen(
-            userId: user.uuid, allowEdit: authUserPk == user.pk),
+      onTap: () => AutoRouter.of(context).push(
+        ProfileScreenRoute(
+            userId: user.uuid!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -151,7 +153,7 @@ class _Connection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.name, style: headingStyle),
+                  Text(user.name ?? '', style: headingStyle),
                   const SizedBox(height: AppInsets.sm),
                   Text(
                     description,

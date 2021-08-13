@@ -7,25 +7,25 @@ const _kItemHeight = 44.00;
 typedef LabelGetterFunc<T> = String Function(T item);
 
 class BaseMultiSelectDropdown<T> extends StatefulWidget {
-  final List<T> initalValue;
+  final List<T>? initalValue;
   final List<T> items;
   final ValueChanged<List<T>> onChanged;
-  final String label;
+  final String? label;
   final LabelGetterFunc<T> labelGetter;
   final int maxLength;
   final bool error;
-  final String errorText;
+  final String? errorText;
 
   const BaseMultiSelectDropdown({
-    Key key,
+    Key? key,
     this.initalValue,
     this.label,
     this.maxLength = 2,
     this.error = false,
     this.errorText,
-    @required this.items,
-    @required this.onChanged,
-    @required this.labelGetter,
+    required this.items,
+    required this.onChanged,
+    required this.labelGetter,
   }) : super(key: key);
 
   @override
@@ -35,10 +35,10 @@ class BaseMultiSelectDropdown<T> extends StatefulWidget {
 
 class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
     with SingleTickerProviderStateMixin {
-  List<T> _selected;
-  OverlayEntry _overlayEntry;
-  bool isOpen;
-  AnimationController _controller;
+  late List<T> _selected;
+  OverlayEntry? _overlayEntry;
+  bool isOpen = false;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -58,9 +58,9 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
   }
 
   OverlayEntry _createOverlayMenu() {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
+    final renderBox = context.findRenderObject() as RenderBox?;
+    final size = renderBox?.size;
+    final offset = renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
     final fullHeight = MediaQuery.of(context).size.height;
     final maxHeight = fullHeight - (2 * _kItemHeight);
     final itemsHeight = widget.items.length * _kItemHeight + 16.00;
@@ -90,7 +90,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
             Positioned(
               left: offset.dx,
               top: yPosition,
-              width: size.width,
+              width: size?.width ?? 300,
               child: _DropdownMenu<T>(
                 height: height,
                 controller: _controller,
@@ -138,7 +138,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
     setState(() {
       isOpen = !isOpen;
       if (isOpen) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => _insertOverlay());
+        WidgetsBinding.instance?.addPostFrameCallback((_) => _insertOverlay());
       } else {
         _removeOverlay();
       }
@@ -149,7 +149,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
     setState(() {
       _overlayEntry = _createOverlayMenu();
     });
-    Overlay.of(context).insert(_overlayEntry);
+    Overlay.of(context)?.insert(_overlayEntry!);
     await _controller.forward().orCancel;
   }
 
@@ -198,7 +198,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
 
   @override
   Widget build(BuildContext context) {
-    final _labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final _labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           color: Colors.grey[600],
         );
@@ -243,7 +243,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
             ),
             if (widget.error) const SizedBox(height: AppInsets.sm),
             if (widget.error && widget.errorText != null)
-              BaseErrorText(text: widget.errorText),
+              BaseErrorText(text: widget.errorText!),
           ],
         ),
       ),
@@ -257,10 +257,10 @@ class _DropdownMenu<T> extends StatelessWidget {
   final double height;
 
   const _DropdownMenu({
-    Key key,
-    @required this.items,
-    @required this.controller,
-    @required this.height,
+    Key? key,
+    required this.items,
+    required this.controller,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -319,11 +319,11 @@ class _DropDownItem<T> extends StatelessWidget {
   final ValueChanged<T> onPressed;
 
   const _DropDownItem({
-    Key key,
-    @required this.item,
-    @required this.label,
-    @required this.selected,
-    @required this.onPressed,
+    Key? key,
+    required this.item,
+    required this.label,
+    required this.selected,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -358,16 +358,16 @@ class BaseMultiSelectDropdownFormField<T> extends FormField<List<T>> {
   final LabelGetterFunc<T> labelGetter;
   final ValueChanged<List<T>> onChanged;
   final int maxLength;
-  final String label;
+  final String? label;
 
   BaseMultiSelectDropdownFormField({
     List<T> initialValue = const [],
-    FormFieldSetter<List<T>> onSaved,
-    FormFieldValidator<List<T>> validator,
+    FormFieldSetter<List<T>?>? onSaved,
+    FormFieldValidator<List<T>?>? validator,
     AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
-    this.items,
-    this.labelGetter,
-    this.onChanged,
+    required this.items,
+    required this.labelGetter,
+    required this.onChanged,
     this.maxLength = 2,
     this.label,
   }) : super(

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -10,7 +9,7 @@ class UCSendStarChatUser implements AsyncUseCase<void, SendStarChatUserParams> {
   final ChatInboxRepository repository;
 
   UCSendStarChatUser({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -25,8 +24,8 @@ class SendStarChatUserParams extends Equatable {
   final bool isStarred;
 
   const SendStarChatUserParams({
-    @required this.user,
-    @required this.isStarred,
+    required this.user,
+    required this.isStarred,
   });
 
   @override

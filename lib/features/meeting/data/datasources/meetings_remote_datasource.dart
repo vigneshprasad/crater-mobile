@@ -23,7 +23,7 @@ import '../models/reschedule_request_model.dart';
 import '../models/user_meeting_preference_model.dart';
 
 abstract class MeetingRemoteDatasource {
-  Future<MeetingConfig> getMeetingConfigFromRemote();
+  Future<MeetingConfig?> getMeetingConfigFromRemote();
   Future<UserMeetingPreference> postUserMeetingPreferencesToRemote(
     List<MeetingInterest> interests,
     MeetingConfig config,
@@ -33,9 +33,9 @@ abstract class MeetingRemoteDatasource {
   Future<List<Meeting>> getMeetingsFromRemote();
   Future<List<MeetingObjective>> getMeetingObjectivesFromRemote();
   Future<List<MeetingInterest>> getMeetingInterestFromRemote();
-  Future<UserMeetingPreference> getMeetingPreferenceFromRemote();
-  Future<UserMeetingPreference> getPastMeetingPreferenceFromRemote();
-  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool past});
+  Future<UserMeetingPreference?> getMeetingPreferenceFromRemote();
+  Future<UserMeetingPreference?> getPastMeetingPreferenceFromRemote();
+  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool? past});
   Future<Meeting> retrieveMeetingDetailFromRemote(int meetingId);
   Future<MeetingRsvp> postRsvpStatusToRemote(
     MeetingRsvpStatus status,
@@ -58,7 +58,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   MeetingRemoteDatasourceImpl(this.apiService);
 
   @override
-  Future<MeetingConfig> getMeetingConfigFromRemote() async {
+  Future<MeetingConfig?> getMeetingConfigFromRemote() async {
     final response = await apiService.getMeetingsConfig();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
@@ -134,7 +134,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<UserMeetingPreference> getMeetingPreferenceFromRemote() async {
+  Future<UserMeetingPreference?> getMeetingPreferenceFromRemote() async {
     final response = await apiService.getMeetingPreferences();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
@@ -147,7 +147,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<UserMeetingPreference> getPastMeetingPreferenceFromRemote() async {
+  Future<UserMeetingPreference?> getPastMeetingPreferenceFromRemote() async {
     final response = await apiService.getPastMeetingPreferences();
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
@@ -159,8 +159,8 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
     }
   }
 
-  Future<Response<dynamic>> _getMeetingsData({bool past}) {
-    if (past) {
+  Future<Response<dynamic>> _getMeetingsData({bool? past}) {
+    if (past == true) {
       return apiService.getPastMeetings();
     } else {
       return apiService.getUpcomingMeetings();
@@ -168,7 +168,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool past}) async {
+  Future<List<MeetingsByDate>> getMeetingsByDateFromRemote({bool? past}) async {
     final response = await _getMeetingsData(past: past);
     if (response.statusCode == 200) {
       final Iterable json = jsonDecode(response.bodyString) as Iterable;

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -6,30 +7,30 @@ import '../../features/auth/domain/entity/user_entity.dart';
 import '../../features/auth/domain/entity/user_profile_entity.dart';
 import '../../routes.gr.dart';
 
-void navigatePostAuth(User user, {UserProfile profile}) {
+void navigatePostAuth(User? user, {UserProfile? profile}) {
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
+  final router = AutoRouter.of(_navigator.currentContext!).root;
   if (user != null) {
     if (profile == null) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileBasicScreen(editMode: false), (route) => false);
-    } else if (profile.tagList == null || profile.tagList.isEmpty) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileTagsScreen(editMode: false), (route) => false);
+      router.pushAndPopUntil(ProfileBasicScreenRoute(editMode: false),
+          predicate: (route) => false);
+    } else if (profile.tagList == null || profile.tagList!.isEmpty) {
+      router.pushAndPopUntil(ProfileTagsScreenRoute(editMode: false),
+          predicate: (route) => false);
     } else if (profile.profileIntroUpdated == false) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileExtraInfoScreen, (route) => false);
+      router.pushAndPopUntil(const ProfileExtraInfoScreenRoute(),
+          predicate: (route) => false);
     } else if (profile.photo == null) {
-      _navigator.currentState.pushNamedAndRemoveUntil(
-          Routes.profileImageScreen(editMode: false), (route) => false);
+      router.pushAndPopUntil(ProfileImageScreenRoute(editMode: false),
+          predicate: (route) => false);
+    } else if (user.phoneNumberVerified == false) {
+      router.pushAndPopUntil(const PhoneVerificationScreenRoute(),
+          predicate: (route) => false);
     } else {
-      _navigator.currentState
-          .pushNamedAndRemoveUntil(Routes.homeScreen(tab: 0), (route) => false);
+      router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     }
-  } else if (user.phoneNumberVerified == false) {
-    _navigator.currentState.pushNamedAndRemoveUntil(
-        Routes.phoneVerificationScreen, (route) => false);
   } else {
-    _navigator.currentState.popAndPushNamed(Routes.homeScreen(tab: 0));
+    router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     KiwiContainer().resolve<PushNotifications>().setEventHandlers();
   }
 }

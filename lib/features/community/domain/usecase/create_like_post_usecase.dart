@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCCreateLikePost implements AsyncUseCase<Like, CreateLikeParams> {
   final CommunityRepository repository;
 
   UCCreateLikePost({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -25,8 +24,8 @@ class CreateLikeParams extends Equatable {
   final String user;
 
   const CreateLikeParams({
-    this.post,
-    this.user,
+    required this.post,
+    required this.user,
   });
 
   @override

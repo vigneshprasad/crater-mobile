@@ -18,8 +18,9 @@ enum ConversationFailuresType {
 abstract class ConversationFailure extends Failure with _$ConversationFailure {
   @Implements(Failure)
   factory ConversationFailure({
-    @JsonKey(name: "error_message") String message,
-    @JsonKey(name: "error_code", defaultValue: ConversationFailuresType.genericError)
+    @JsonKey(name: "error_message") String? message,
+    @Default(ConversationFailuresType.genericError)
+    @JsonKey(name: "error_code")
         ConversationFailuresType errorCode,
   }) = _ConversationFailure;
 

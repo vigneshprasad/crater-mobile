@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCAuthLinkedIn implements AsyncUseCase<User, LinkedAuthParams> {
   final AuthRepository repository;
 
   UCAuthLinkedIn({
-    @required this.repository,
+    required this.repository,
   });
   @override
   Future<Either<Failure, User>> call(LinkedAuthParams params) async {
@@ -24,8 +23,8 @@ class LinkedAuthParams extends Equatable {
   final String osId;
 
   const LinkedAuthParams({
-    @required this.token,
-    @required this.osId,
+    required this.token,
+    required this.osId,
   });
 
   @override

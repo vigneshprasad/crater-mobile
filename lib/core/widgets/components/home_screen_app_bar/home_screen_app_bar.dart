@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
 
@@ -13,8 +14,8 @@ class HomeScreenAppBar extends StatelessWidget {
   final Widget title;
 
   const HomeScreenAppBar({
-    Key key,
-    this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -35,15 +36,15 @@ class HomeScreenAppBar extends StatelessWidget {
         //   color: Colors.black87,
         //   icon: const Icon(WorkNetIcons.notification),
         //   onPressed: () {
-        //     ExtendedNavigator.of(context).push(Routes.notificationsScreen);
+        //     AutoRouter.of(context).push(Routes.notificationsScreen);
         //   },
         // ),
         UserProfileNavItem(
           onPressed: () {
-            final user = BlocProvider.of<AuthBloc>(context).state?.user;
+            final user = BlocProvider.of<AuthBloc>(context).state.user;
             if (user != null) {
-              ExtendedNavigator.of(context)
-                  .push(Routes.profileScreen(userId: user.pk, allowEdit: true));
+              AutoRouter.of(context)
+                  .push(ProfileScreenRoute(userId: user.pk!, allowEdit: true));
             }
           },
         ),

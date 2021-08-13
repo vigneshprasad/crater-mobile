@@ -8,21 +8,22 @@ class HomeTabLayout extends StatelessWidget {
   final String titleKey;
   final String subtitleKey;
   final Widget body;
-  final Widget action;
+  final Widget? action;
 
   const HomeTabLayout({
-    Key key,
-    this.titleKey,
-    this.subtitleKey,
+    Key? key,
+    required this.titleKey,
+    required this.subtitleKey,
     this.action,
-    this.body,
+    required this.body,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final String title = AppLocalizations.of(context).translate(titleKey) ?? "";
+    final String title =
+        AppLocalizations.of(context)?.translate(titleKey) ?? "";
     final String subtitle =
-        AppLocalizations.of(context).translate(subtitleKey) ?? "";
+        AppLocalizations.of(context)?.translate(subtitleKey) ?? "";
     return Column(
       children: [
         Padding(

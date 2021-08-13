@@ -19,8 +19,8 @@ abstract class MasterClassApiService extends ChopperService {
   }
 
   @Get(path: '')
-  Future<Response> getVideosList({@Query() int page});
+  Future<Response> getVideosList({@Query() int? page});
 
   @Get(path: '{id}/')
-  Future<Response> getVideoItem({@Path() int id});
+  Future<Response> getVideoItem({@Path() required int id});
 }

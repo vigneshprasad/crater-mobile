@@ -8,7 +8,7 @@ part of 'rewards_api_service.dart';
 
 // ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
 class _$RewardsApiService extends RewardsApiService {
-  _$RewardsApiService([ChopperClient client]) {
+  _$RewardsApiService([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }

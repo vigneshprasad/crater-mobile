@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
@@ -18,8 +19,8 @@ class PostScreen extends StatefulWidget {
   final int postId;
 
   const PostScreen({
-    Key key,
-    @required this.postId,
+    Key? key,
+    required this.postId,
   }) : super(key: key);
 
   @override
@@ -27,21 +28,17 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  bool _fromCache;
-  int _currentPage;
-  int _pages;
-  PostBloc _bloc;
-  Post _post;
-  List<Comment> _comments;
-  TextEditingController _controller;
-  String _comment;
+  late int _currentPage;
+  late PostBloc _bloc;
+  late Post? _post;
+  late List<Comment> _comments;
+  late TextEditingController _controller;
+  late String _comment;
   final _pageSize = 10;
 
   @override
   void initState() {
-    _fromCache = false;
     _currentPage = 1;
-    _pages = 1;
     _comments = [];
     _controller = TextEditingController();
     _bloc = KiwiContainer().resolve<PostBloc>()
@@ -105,10 +102,8 @@ class _PostScreenState extends State<PostScreen> {
       });
     } else if (state is GetPostCommentsResponseLoaded) {
       setState(() {
-        _comments = state.comments;
-        _currentPage = state.currentPage;
-        _pages = state.pages;
-        _fromCache = state.fromCache;
+        _comments = state.comments!;
+        _currentPage = state.currentPage!;
       });
     } else if (state is CreatePostResponseReceived) {
       setState(() {
@@ -125,7 +120,7 @@ class _PostScreenState extends State<PostScreen> {
             padding: const EdgeInsets.symmetric(horizontal: AppInsets.med),
             sliver: SliverToBoxAdapter(
               child: PostCard(
-                post: _post,
+                post: _post!,
                 showActions: false,
               ),
             ),
@@ -157,25 +152,25 @@ class _PostScreenState extends State<PostScreen> {
   Widget _buildCommentsList(BuildContext context, int index) {
     final comment = _comments[index];
     final formatTime = DateFormat('MMM dd h:mm a');
-    final messageTextStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final messageTextStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 15,
           fontWeight: FontWeight.w500,
         );
-    final subtitleStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final subtitleStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 12,
           color: Colors.grey,
         );
     return ListTile(
       leading: _buildAvatarIcon(comment),
-      title: Text(comment.message, style: messageTextStyle),
-      subtitle: Text(formatTime.format(comment.created), style: subtitleStyle),
+      title: Text(comment.message ?? '', style: messageTextStyle),
+      subtitle: Text(formatTime.format(comment.created!), style: subtitleStyle),
     );
   }
 
   Widget _buildAvatarIcon(Comment comment) {
     if (comment.creatorPhoto != null) {
       return CachedNetworkImage(
-        imageUrl: comment.creatorPhoto,
+        imageUrl: comment.creatorPhoto!,
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(backgroundImage: imageProvider);
         },
@@ -186,7 +181,7 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildCommentsHeading(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final headingStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontWeight: FontWeight.w600,
           fontSize: 14,
           color: Colors.grey[600],
@@ -201,9 +196,9 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void _onSubmitCommentPressed(AuthStateSuccess authState) {
-    final user = authState.user;
+    final user = authState.user!;
     _bloc.add(CreatePostRequestStarted(
-      creator: user.pk,
+      creator: user.pk!,
       message: _comment,
       postId: widget.postId,
     ));

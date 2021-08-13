@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
@@ -28,21 +26,23 @@ class RootApp extends HookWidget {
     StatusBarColor.setTheme(ThemeType.light);
 
     await userleapProvider.initSdk();
-    await deepLinkManager.handleDeepLink();
+    await deepLinkManager.handleDeepLink(context);
     await attributionProvider.intializeSdk();
     await interComProvider.initSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
 
+  late AppRouter _appRouter;
+
   @override
   Widget build(BuildContext context) {
     useEffect(() {
       initApp(context);
+      final _navigatorKey =
+          KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+      _appRouter = AppRouter(_navigatorKey);
       return;
     }, []);
-
-    final GlobalKey<NavigatorState> _navigatorKey =
-        KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -54,7 +54,9 @@ class RootApp extends HookWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: RootProvider(
-        child: MaterialApp(
+        child: MaterialApp.router(
+          routerDelegate: _appRouter.delegate(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
           title: 'WorkNetwork',
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -64,8 +66,8 @@ class RootApp extends HookWidget {
           localeResolutionCallback: (locale, supportedLocales) {
             // Check if the current device locale is supported
             for (final Locale supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode &&
-                  supportedLocale.countryCode == locale.countryCode) {
+              if (supportedLocale.languageCode == locale?.languageCode &&
+                  supportedLocale.countryCode == locale?.countryCode) {
                 return supportedLocale;
               }
             }
@@ -74,53 +76,55 @@ class RootApp extends HookWidget {
             return supportedLocales.first;
           },
           debugShowCheckedModeBanner: false,
-          builder: ExtendedNavigator.builder<Router>(
-            router: Router(),
-            initialRoute: "/",
-            navigatorKey: _navigatorKey,
-            observers: [
-              SegmentObserver(),
-            ],
-            builder: (context, child) {
-              final lightBlue = HexColor.fromHex('#283950');
-              final darkBlue = HexColor.fromHex('#121823');
-              final black = darkBlue;
-              //HexColor.fromHex("#10141C");
-              final buttonColor = HexColor.fromHex('#C67F70');
-              return Theme(
-                data: AppTheme.darkTheme.copyWith(
-                  backgroundColor: darkBlue,
-                  splashFactory: const NoSplashFactory(),
-                  highlightColor: Colors.transparent,
-                  primaryColor: buttonColor,
-                  scaffoldBackgroundColor: darkBlue,
-                  canvasColor: darkBlue,
-                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                    backgroundColor: black,
-                  ),
-                  appBarTheme: AppBarTheme(
-                      iconTheme: IconThemeData(color: buttonColor),
-                      color: black,
-                      elevation: 0,
-                      actionsIconTheme: IconThemeData(color: buttonColor)),
-                  buttonTheme: ButtonThemeData(
-                    buttonColor: darkBlue,
-                    colorScheme: const ColorScheme.dark(),
-                  ),
-                  indicatorColor: Colors.transparent,
-                  tabBarTheme: const TabBarTheme(
-                    indicatorSize: TabBarIndicatorSize.label,
-                  ),
-                  buttonColor: buttonColor,
-                  dialogBackgroundColor: lightBlue,
-                  floatingActionButtonTheme: FloatingActionButtonThemeData(
-                      backgroundColor: buttonColor),
-                  accentColor: buttonColor,
+          builder:
+              // AutoRouter.builder<Router>(
+              //   router: Router(),
+              //   initialRoute: "/",
+              //   navigatorKey: _navigatorKey,
+              //   observers: [
+              //     SegmentObserver(),
+              //   ],
+              // builder:
+              (context, child) {
+            final lightBlue = HexColor.fromHex('#283950');
+            final darkBlue = HexColor.fromHex('#121823');
+            final black = darkBlue;
+            //HexColor.fromHex("#10141C");
+            final buttonColor = HexColor.fromHex('#C67F70');
+            return Theme(
+              data: AppTheme.darkTheme.copyWith(
+                backgroundColor: darkBlue,
+                splashFactory: const NoSplashFactory(),
+                highlightColor: Colors.transparent,
+                primaryColor: buttonColor,
+                scaffoldBackgroundColor: darkBlue,
+                canvasColor: darkBlue,
+                bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                  backgroundColor: black,
+                  selectedItemColor: buttonColor,
                 ),
-                child: child,
-              );
-            },
-          ),
+                appBarTheme: AppBarTheme(
+                    iconTheme: IconThemeData(color: buttonColor),
+                    color: black,
+                    elevation: 0,
+                    actionsIconTheme: IconThemeData(color: buttonColor)),
+                buttonTheme: ButtonThemeData(
+                  buttonColor: darkBlue,
+                  colorScheme: const ColorScheme.dark(),
+                ),
+                indicatorColor: Colors.transparent,
+                tabBarTheme: const TabBarTheme(
+                  indicatorSize: TabBarIndicatorSize.label,
+                ),
+                buttonColor: buttonColor,
+                dialogBackgroundColor: lightBlue,
+                floatingActionButtonTheme:
+                    FloatingActionButtonThemeData(backgroundColor: buttonColor),
+                accentColor: buttonColor,
+              ),
+              child: child!,
+            );
+          },
         ),
       ),
     );
@@ -131,19 +135,18 @@ class NoSplashFactory extends InteractiveInkFeatureFactory {
   const NoSplashFactory();
 
   @override
-  InteractiveInkFeature create({
-    MaterialInkController controller,
-    RenderBox referenceBox,
-    Offset position,
-    Color color,
-    TextDirection textDirection,
-    bool containedInkWell = false,
-    Rect Function() rectCallback,
-    BorderRadius borderRadius,
-    ShapeBorder customBorder,
-    double radius,
-    VoidCallback onRemoved,
-  }) {
+  InteractiveInkFeature create(
+      {required MaterialInkController controller,
+      required RenderBox referenceBox,
+      required Offset position,
+      required Color color,
+      required TextDirection textDirection,
+      bool containedInkWell = false,
+      RectCallback? rectCallback,
+      BorderRadius? borderRadius,
+      ShapeBorder? customBorder,
+      double? radius,
+      VoidCallback? onRemoved}) {
     return NoSplash(
       controller: controller,
       referenceBox: referenceBox,
@@ -153,13 +156,14 @@ class NoSplashFactory extends InteractiveInkFeatureFactory {
 
 class NoSplash extends InteractiveInkFeature {
   NoSplash({
-    @required MaterialInkController controller,
-    @required RenderBox referenceBox,
+    MaterialInkController? controller,
+    RenderBox? referenceBox,
   })  : assert(controller != null),
         assert(referenceBox != null),
         super(
-          controller: controller,
-          referenceBox: referenceBox,
+          controller: controller!,
+          referenceBox: referenceBox!,
+          color: Colors.transparent,
         );
 
   @override

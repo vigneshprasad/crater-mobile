@@ -8,7 +8,7 @@ part of 'conversation_api_service.dart';
 
 // ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
 class _$ConversationApiService extends ConversationApiService {
-  _$ConversationApiService([ChopperClient client]) {
+  _$ConversationApiService([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
@@ -35,7 +35,7 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
-  Future<Response<dynamic>> getAllTopics(int parent) {
+  Future<Response<dynamic>> getAllTopics(int? parent) {
     final $url = '/groups/topic/';
     final $params = <String, dynamic>{'parent': parent};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);

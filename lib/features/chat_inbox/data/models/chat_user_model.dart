@@ -14,33 +14,33 @@ part 'chat_user_model.g.dart';
 @JsonSerializable()
 class ChatUserModel extends ChatUser {
   @HiveField(0)
-  final String pk;
+  final String? pk;
 
   @HiveField(1)
   final String name;
 
   @HiveField(2)
-  final String photo;
+  final String? photo;
 
   @HiveField(3)
   @JsonKey(name: "unread_count")
-  final int unreadCount;
+  final int? unreadCount;
 
   @HiveField(4)
   @JsonKey(name: "is_starred")
-  final bool isStarred;
+  final bool? isStarred;
 
   @HiveField(5)
   @JsonKey(name: "last_seen")
-  final DateTime lastSeen;
+  final DateTime? lastSeen;
 
   @HiveField(6)
   @JsonKey(name: "latest_message")
-  final ChatMessageModel latestMessage;
+  final ChatMessageModel? latestMessage;
 
   ChatUserModel({
     this.pk,
-    this.name,
+    this.name = '',
     this.photo,
     this.unreadCount,
     this.isStarred,
@@ -61,13 +61,13 @@ class ChatUserModel extends ChatUser {
   Map<String, dynamic> toJson() => _$ChatUserModelToJson(this);
 
   ChatUserModel copyWith({
-    String pk,
-    String name,
-    String photo,
-    int unreadCount,
-    bool isStarred,
-    DateTime lastSeen,
-    ChatMessageModel latestMessage,
+    String? pk,
+    String? name,
+    String? photo,
+    int? unreadCount,
+    bool? isStarred,
+    DateTime? lastSeen,
+    ChatMessageModel? latestMessage,
   }) {
     return ChatUserModel(
       pk: pk ?? this.pk,

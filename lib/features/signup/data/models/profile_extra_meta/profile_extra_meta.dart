@@ -15,8 +15,8 @@ enum FieldType {
 @freezed
 abstract class Option with _$Option {
   factory Option({
-    String name,
-    int value,
+    required String name,
+    required int value,
   }) = _Option;
 
   factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
@@ -25,10 +25,10 @@ abstract class Option with _$Option {
 @freezed
 abstract class FormFieldData with _$FormFieldData {
   factory FormFieldData({
-    FieldType type,
-    List<Option> options,
-    String label,
-    bool blank,
+    required FieldType type,
+    List<Option>? options,
+    required String label,
+    required bool blank,
   }) = _FormFieldData;
 
   factory FormFieldData.fromJson(Map<String, dynamic> json) =>
@@ -38,8 +38,8 @@ abstract class FormFieldData with _$FormFieldData {
 @freezed
 abstract class ProfileExtraMeta with _$ProfileExtraMeta {
   factory ProfileExtraMeta({
-    String question,
-    Map<String, FormFieldData> meta,
+    required String question,
+    required Map<String, FormFieldData> meta,
   }) = _ProfileExtraMeta;
 
   factory ProfileExtraMeta.fromJson(Map<String, dynamic> json) =>

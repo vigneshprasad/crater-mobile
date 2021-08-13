@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -30,8 +31,8 @@ class MeetingDetailScreen extends StatefulWidget {
   final int meetingId;
 
   const MeetingDetailScreen({
-    Key key,
-    @required this.meetingId,
+    Key? key,
+    required this.meetingId,
   }) : super(key: key);
 
   @override
@@ -39,11 +40,11 @@ class MeetingDetailScreen extends StatefulWidget {
 }
 
 class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
-  MeetingBloc _bloc;
-  Meeting meeting;
-  bool loading;
-  MeetingParticipant participant;
-  bool loadingInfo;
+  late MeetingBloc _bloc;
+  Meeting? meeting;
+  late bool loading;
+  late MeetingParticipant? participant;
+  late bool loadingInfo;
 
   @override
   void initState() {
@@ -57,7 +58,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final userRsvp = meeting != null
-        ? meeting.participants.where((element) => element != participant).first
+        ? meeting!.participants
+            ?.where((element) => element != participant)
+            .first
         : null;
     return BlocListener<MeetingBloc, MeetingState>(
       listener: _blocListener,
@@ -67,7 +70,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           child: Column(
             children: [
               if (loading || loadingInfo) const LinearProgressIndicator(),
-              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp.status),
+              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp!.status),
               if (!loadingInfo) _buildContent(context)
             ],
           ),
@@ -79,8 +82,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   void _blocListener(BuildContext context, MeetingState state) {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     if (state is RetrieveMeetingLoaded) {
-      final _participant = state.meeting.participants
-          .where((element) => element.pk != user.pk)
+      final _participant = state.meeting?.participants
+          ?.where((element) => element.pk != user!.pk)
           .first;
       setState(() {
         loadingInfo = false;
@@ -99,8 +102,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       });
       Fluttertoast.showToast(msg: "Update Status failed");
     } else if (state is PostMeetingRecheduleRsvpError) {
-      final failure = state.error as ServerFailure;
-      final json = jsonDecode(failure.message as String);
+      final failure = state.error as ServerFailure?;
+      final json = jsonDecode(failure?.message as String? ?? '');
       if (json['non_field_errors'] != null) {
         Fluttertoast.showToast(
           msg: "Meeting cannot be resheduled. Please contact support for help.",
@@ -121,13 +124,15 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           _buildHeader(context),
           const SizedBox(height: AppInsets.l),
           const Divider(),
-          if (meeting.status != MeetingStatus.cancelled || meeting.isPast)
+          if (meeting?.status != MeetingStatus.cancelled ||
+              (meeting?.isPast ?? false))
             ..._buildMeetingInfo(context),
-          if (meeting.status == MeetingStatus.cancelled && !meeting.isPast)
+          if (meeting?.status == MeetingStatus.cancelled &&
+              !(meeting?.isPast ?? false))
             _buildCancelledMeetingReschedule(context),
           const Divider(),
           const SizedBox(height: AppInsets.l),
-          if (participant.name != null && participant.introduction != null)
+          if (participant?.name != null && participant?.introduction != null)
             ..._buildIntro(context),
           ..._buildObjectives(context),
           ..._buildInterests(context),
@@ -137,9 +142,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
     );
   }
 
-  Widget _buildStatusHeader(MeetingRsvpStatus userRsvpStatus) {
+  Widget _buildStatusHeader(MeetingRsvpStatus? userRsvpStatus) {
     if (userRsvpStatus == MeetingRsvpStatus.reschedule) {
-      final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+      final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
             color: Colors.white,
           );
       return Container(
@@ -153,7 +158,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         ),
       );
     } else if (userRsvpStatus == MeetingRsvpStatus.attending) {
-      final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+      final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
             color: Colors.white,
           );
       return Container(
@@ -174,37 +179,37 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     List<Widget> buttons = [];
     final dateFormat = DateFormat('hh:mm a, EEEE, d MMMM.');
-    String meetingLabel;
-    if (meeting.status == MeetingStatus.rescheduled) {
+    String? meetingLabel;
+    if (meeting?.status == MeetingStatus.rescheduled) {
       meetingLabel = AppLocalizations.of(context)
-          .translate("meeting_details:reschedule_request_label");
+          ?.translate("meeting_details:reschedule_request_label");
     } else {
-      meetingLabel = meeting.isPast
-          ? 'Your meeting was scheduled at ${dateFormat.format(meeting.start)}'
-          : 'Your meeting is scheduled at ${dateFormat.format(meeting.start)}';
+      meetingLabel = meeting?.isPast ?? false
+          ? 'Your meeting was scheduled at ${dateFormat.format(meeting!.start!)}'
+          : 'Your meeting is scheduled at ${dateFormat.format(meeting!.start!)}';
     }
 
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 15,
         );
     final userRsvp =
-        meeting.participants.where((element) => element != participant).first;
-    if (meeting.isPast) {
+        meeting?.participants?.where((element) => element != participant).first;
+    if (meeting?.isPast ?? false) {
       final feedbackText = AppLocalizations.of(context)
-          .translate("meeting_detail:share_feedback");
+          ?.translate("meeting_detail:share_feedback");
       buttons = [
-        OutlineButton(
+        OutlinedButton(
           onPressed: () {
             final link = ConfigReader.getMeetingFeedbackTypeformLink();
             final feedbackLink =
-                "$link#meeting_id=${meeting.pk}&email=${user.email}";
+                "$link#meeting_id=${meeting!.pk}&email=${user!.email}";
             KiwiContainer().resolve<CustomTabs>().openLink(feedbackLink);
           },
-          child: Text(feedbackText),
+          child: Text(feedbackText!),
         ),
       ];
-    } else if (meeting.status == MeetingStatus.pending) {
-      if (userRsvp.rsvp.status == MeetingRsvpStatus.pending) {
+    } else if (meeting?.status == MeetingStatus.pending) {
+      if (userRsvp?.rsvp?.status == MeetingRsvpStatus.pending) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.check,
@@ -236,13 +241,15 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             },
           ),
         ];
-      } else if (userRsvp.rsvp.status == MeetingRsvpStatus.attending) {
+      } else if (userRsvp?.rsvp?.status == MeetingRsvpStatus.attending) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.duo,
             text: "Join call",
             onPressed: () {
-              KiwiContainer().resolve<CustomTabs>().openLink(meeting.link);
+              if (meeting?.link != null) {
+                KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
+              }
             },
           ),
           const VerticalDivider(
@@ -269,13 +276,15 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           ),
         ];
       }
-    } else if (meeting.status == MeetingStatus.confirmed) {
+    } else if (meeting?.status == MeetingStatus.confirmed) {
       buttons = [
         BaseLargeIconButton(
           icon: Icons.duo,
           text: "Join call",
           onPressed: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(meeting.link);
+            if (meeting?.link != null) {
+              KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
+            }
           },
         ),
         const VerticalDivider(
@@ -301,10 +310,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           },
         ),
       ];
-    } else if (meeting.status == MeetingStatus.rescheduled) {
+    } else if (meeting?.status == MeetingStatus.rescheduled) {
       final otherUser =
-          meeting.participants.where((element) => element != userRsvp).first;
-      if (otherUser.rsvp.status == MeetingRsvpStatus.reschedule) {
+          meeting?.participants?.where((element) => element != userRsvp).first;
+      if (otherUser?.rsvp?.status == MeetingRsvpStatus.reschedule) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.calendar_today,
@@ -314,12 +323,12 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
                 context: context,
                 builder: (context) {
                   return RescheduleConfirmSheet(
-                    meeting: meeting,
+                    meeting: meeting!,
                   );
                 },
               ).then((value) {
                 if (value != null && value == true) {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 }
               });
             },
@@ -342,13 +351,13 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
     }
 
     /// Remove actions if user has rescheduled meeting.
-    if (userRsvp.rsvp.status == MeetingRsvpStatus.reschedule) {
+    if (userRsvp?.rsvp?.status == MeetingRsvpStatus.reschedule) {
       return [];
     }
     return [
       const SizedBox(height: AppInsets.l),
       Text(
-        meetingLabel,
+        meetingLabel!,
         style: labelStyle,
       ),
       const SizedBox(height: AppInsets.l),
@@ -375,16 +384,18 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         children: [
           Text(
             AppLocalizations.of(context)
-                .translate("meeting_details:reschedule_question"),
+                    ?.translate("meeting_details:reschedule_question") ??
+                '',
             style: textStyle,
             textAlign: TextAlign.center,
           ),
-          FlatButton(
+          TextButton(
             onPressed: () {
               _onPressReschedule(context);
             },
             child: Text(AppLocalizations.of(context)
-                .translate("meeting_details:reschedule")),
+                    ?.translate("meeting_details:reschedule") ??
+                ''),
           ),
         ],
       ),
@@ -393,22 +404,22 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
 
   void _postMeetingStatusRequest(MeetingRsvpStatus status) {
     _bloc.add(
-        PostMeetingRsvpStatusStarted(meetingId: meeting.pk, status: status));
+        PostMeetingRsvpStatusStarted(meetingId: meeting!.pk!, status: status));
     setState(() {
       loading = true;
     });
   }
 
   Widget _buildHeader(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
         );
-    final label = meeting.isPast
+    final label = (meeting?.isPast ?? false)
         ? AppLocalizations.of(context)
-            .translate("meeting_detail:past_name_label")
+            ?.translate("meeting_detail:past_name_label")
         : AppLocalizations.of(context)
-            .translate('meeting_detail:upcoming_name_label');
-    final nameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+            ?.translate('meeting_detail:upcoming_name_label');
+    final nameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 20,
         );
     return Row(
@@ -419,12 +430,12 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                label,
+                label!,
                 style: labelStyle,
               ),
               const SizedBox(height: AppInsets.sm),
               Text(
-                participant.name,
+                participant?.name ?? '',
                 style: nameStyle,
               ),
               const SizedBox(height: AppInsets.sm),
@@ -445,7 +456,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         initialHeightRatio: 0.6,
         maxScrollRatio: 0.6,
         child: RescheduleRequestSheet(
-          meeting: meeting,
+          meeting: meeting!,
         ),
       ),
     ).then((value) {
@@ -462,7 +473,8 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       builder: (context) {
         return AlertDialog(
           content: Text(AppLocalizations.of(context)
-              .translate("meetings_details:cancel_alert_title")),
+                  ?.translate("meetings_details:cancel_alert_title") ??
+              ''),
           actions: [
             TextButton(
               onPressed: () {
@@ -470,8 +482,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
               },
               child: Text(
                 AppLocalizations.of(context)
-                    .translate("alert:dismiss")
-                    .toUpperCase(),
+                        ?.translate("alert:dismiss")
+                        ?.toUpperCase() ??
+                    '',
                 style: const TextStyle(color: Colors.grey),
               ),
             ),
@@ -481,8 +494,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
                 Navigator.of(context).pop();
               },
               child: Text(AppLocalizations.of(context)
-                  .translate("meeting:cancel_meeting")
-                  .toUpperCase()),
+                      ?.translate("meeting:cancel_meeting")
+                      ?.toUpperCase() ??
+                  ''),
             ),
           ],
         );
@@ -491,35 +505,38 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   Widget _buildStatusIndicator(BuildContext context) {
-    String text;
-    TextStyle style = Theme.of(context).textTheme.bodyText2.copyWith(
+    String text = '';
+    var style = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
         );
-    switch (meeting.status) {
+    switch (meeting?.status) {
       case MeetingStatus.confirmed:
         text = 'Meeting Confirmed';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.green,
         );
         break;
       case MeetingStatus.cancelled:
         text = 'Meeting Cancelled';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.red,
         );
         break;
       case MeetingStatus.pending:
         text = 'RSVP Pending';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.yellow[600],
         );
         break;
       case MeetingStatus.rescheduled:
         text = 'Reschedule Requested';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.orange,
         );
         break;
+
+      case null:
+        text = '';
     }
     return Text(
       text,
@@ -528,9 +545,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   Widget _buildImage() {
-    if (participant.photo != null) {
+    if (participant?.photo != null) {
       return CachedNetworkImage(
-        imageUrl: participant.photo,
+        imageUrl: participant!.photo!,
         imageBuilder: (context, imageProvider) {
           return Container(
             height: 60,
@@ -555,11 +572,11 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
   }
 
   List<Widget> _buildIntro(BuildContext context) {
-    final introLabel = 'About ${participant.name}';
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final introLabel = 'About ${participant?.name}';
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    final introStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final introStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           height: 1.4,
         );
@@ -570,7 +587,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
       ),
       const SizedBox(height: AppInsets.med),
       Text(
-        participant.introduction,
+        participant?.introduction ?? '',
         style: introStyle,
       ),
     ];
@@ -578,10 +595,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
 
   List<Widget> _buildObjectives(BuildContext context) {
     const introLabel = "Objectives";
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    if (participant.objectives.isEmpty) {
+    if (participant?.objectives?.isEmpty ?? true) {
       return [];
     }
 
@@ -592,9 +609,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         style: labelStyle,
       ),
       const SizedBox(height: AppInsets.med),
-      ...participant.objectives
+      ...participant!.objectives!
           .map((objective) => _ListItem(
-                text: objective.name,
+                text: objective.name ?? '',
               ))
           .toList(),
     ];
@@ -602,10 +619,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
 
   List<Widget> _buildInterests(BuildContext context) {
     const introLabel = "Looking to meet:";
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    if (participant.interests.isEmpty) {
+    if (participant?.interests?.isEmpty ?? true) {
       return [];
     }
 
@@ -616,9 +633,9 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
         style: labelStyle,
       ),
       const SizedBox(height: AppInsets.med),
-      ...participant.interests
+      ...participant!.interests!
           .map((interest) => _ListItem(
-                text: interest.name,
+                text: interest.name ?? '',
               ))
           .toList(),
     ];
@@ -629,13 +646,13 @@ class _ListItem extends StatelessWidget {
   final String text;
 
   const _ListItem({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           height: 1.4,
           color: Colors.grey[700],

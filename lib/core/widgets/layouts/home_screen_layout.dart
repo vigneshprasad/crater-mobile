@@ -11,12 +11,12 @@ class HomeScreenLayout extends StatelessWidget {
   final FloatingActionButtonLocation floatingActionButtonLocation;
 
   const HomeScreenLayout({
-    Key key,
-    @required this.navItems,
-    @required this.screens,
-    @required this.getFabButton,
-    @required this.onTabTapped,
-    @required this.currentTabIndex,
+    Key? key,
+    required this.navItems,
+    required this.screens,
+    required this.getFabButton,
+    required this.onTabTapped,
+    required this.currentTabIndex,
     this.floatingActionButtonLocation = FloatingActionButtonLocation.endFloat,
   }) : super(key: key);
 

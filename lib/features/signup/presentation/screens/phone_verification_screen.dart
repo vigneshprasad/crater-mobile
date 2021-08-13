@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
@@ -22,12 +23,12 @@ class PhoneVerificationScreen extends StatefulWidget {
 }
 
 class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
-  PhoneVerifyBloc _bloc;
-  bool _validPhoneNumber;
-  String _phoneNumber;
-  bool _showSmsCodeInput;
-  String _smsCode;
-  bool _validOtp;
+  late PhoneVerifyBloc _bloc;
+  late bool _validPhoneNumber;
+  late String _phoneNumber;
+  late bool _showSmsCodeInput;
+  late String _smsCode;
+  late bool _validOtp;
   String otpResponse = "";
 
   @override
@@ -51,12 +52,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     const heading = "You are all done!!";
     const subtitle = 'Verify your account';
     final enterOtp =
-        AppLocalizations.of(context).translate("phone_verify:enter_otp");
-    final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+        AppLocalizations.of(context)?.translate("phone_verify:enter_otp");
+    final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
         );
-    final statusStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final statusStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: Theme.of(context).primaryColor,
@@ -69,7 +70,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             listener: _phoneVerifyBlocListener,
             builder: (context, state) {
               final sendOtp = AppLocalizations.of(context)
-                  .translate("phone_verify:send_otp");
+                  ?.translate("phone_verify:send_otp");
               return Scaffold(
                 appBar: BaseAppBar(),
                 body: SafeArea(
@@ -102,12 +103,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               const SizedBox(height: AppInsets.xl),
                               Row(
                                 children: [
-                                  RaisedButton(
+                                  ElevatedButton(
                                     onPressed:
                                         _validPhoneNumber && !_showSmsCodeInput
                                             ? _postNewPhoneNumber
                                             : null,
-                                    child: Text(sendOtp),
+                                    child: Text(sendOtp!),
                                   ),
                                   const SizedBox(width: AppInsets.l),
                                   if (otpResponse.isNotEmpty)
@@ -116,7 +117,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               ),
                               const SizedBox(height: AppInsets.xl),
                               if (_showSmsCodeInput)
-                                Text(enterOtp, style: labelStyle),
+                                Text(enterOtp!, style: labelStyle),
                               if (_showSmsCodeInput)
                                 CodeInput(
                                   length: 4,
@@ -139,7 +140,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
-                                      child: FlatButton(
+                                      child: TextButton(
                                         onPressed:
                                             _validOtp ? _postSmsCode : null,
                                         child: const Text(verify),
@@ -178,8 +179,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         fontSize: 14,
       );
       Future.delayed(const Duration(seconds: 1), () {
-        ExtendedNavigator.of(context)
-            .pushAndRemoveUntil(Routes.homeScreen(tab: 0), (_) => false);
+        AutoRouter.of(context)
+            .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
       });
     }
   }

@@ -24,26 +24,26 @@ enum MeetingStatus {
 
 @JsonSerializable()
 class MeetingModel extends Meeting {
-  final int config;
-  final DateTime end;
+  final int? config;
+  final DateTime? end;
 
   @JsonKey(name: 'is_canceled')
-  final bool isCanceled;
+  final bool? isCanceled;
 
   @JsonKey(name: 'is_past')
-  final bool isPast;
+  final bool? isPast;
 
-  final String link;
-  final List<MeetingParticipantModel> participants;
-  final int pk;
-  final DateTime start;
-  final MeetingStatus status;
+  final String? link;
+  final List<MeetingParticipantModel>? participants;
+  final int? pk;
+  final DateTime? start;
+  final MeetingStatus? status;
 
   @JsonKey(name: 'time_slot')
-  final int timeSlot;
+  final int? timeSlot;
 
   @JsonKey(name: 'participant_detail')
-  final MeetingParticipantModel participantDetail;
+  final MeetingParticipantModel? participantDetail;
 
   MeetingModel({
     this.config,

@@ -14,28 +14,28 @@ part 'video_model.g.dart';
 @JsonSerializable()
 class VideoModel extends Video {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String author;
+  final String? author;
 
   @HiveField(2)
-  final String cover;
+  final String? cover;
 
   @HiveField(3)
-  final String created;
+  final String? created;
 
   @HiveField(4)
-  final String description;
+  final String? description;
 
   @HiveField(5)
-  final String position;
+  final String? position;
 
   @HiveField(6)
-  final String thumbnail;
+  final String? thumbnail;
 
   @HiveField(7)
-  final List<VideoTagModel> tags;
+  final List<VideoTagModel>? tags;
 
   VideoModel({
     this.pk,

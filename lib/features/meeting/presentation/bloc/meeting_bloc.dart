@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -50,33 +49,20 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
   final UCPostConfirmRescheduleRequest postConfirmRescheduleRequest;
 
   MeetingBloc({
-    @required this.getMeetingInterests,
-    @required this.getMeetingObjectives,
-    @required this.getMeetingConfig,
-    @required this.getMeetingPreferences,
-    @required this.postMeetingPreferences,
-    @required this.getPastMeetingPreferences,
-    @required this.getMeetingsByDate,
-    @required this.retrieveMeetingDetails,
-    @required this.postRsvpStatus,
-    @required this.getRescheduleTimeSlots,
-    @required this.postRecheduleRsvpStatus,
-    @required this.getRescheduleRequest,
-    @required this.postConfirmRescheduleRequest,
-  })  : assert(getMeetingInterests != null),
-        assert(getMeetingObjectives != null),
-        assert(getMeetingConfig != null),
-        assert(getMeetingPreferences != null),
-        assert(postMeetingPreferences != null),
-        assert(getPastMeetingPreferences != null),
-        assert(getMeetingsByDate != null),
-        assert(retrieveMeetingDetails != null),
-        assert(postRsvpStatus != null),
-        assert(getRescheduleTimeSlots != null),
-        assert(postRecheduleRsvpStatus != null),
-        assert(getRescheduleRequest != null),
-        assert(postConfirmRescheduleRequest != null),
-        super(const MeetingInitial());
+    required this.getMeetingInterests,
+    required this.getMeetingObjectives,
+    required this.getMeetingConfig,
+    required this.getMeetingPreferences,
+    required this.postMeetingPreferences,
+    required this.getPastMeetingPreferences,
+    required this.getMeetingsByDate,
+    required this.retrieveMeetingDetails,
+    required this.postRsvpStatus,
+    required this.getRescheduleTimeSlots,
+    required this.postRecheduleRsvpStatus,
+    required this.getRescheduleRequest,
+    required this.postConfirmRescheduleRequest,
+  }) : super(const MeetingInitial());
 
   @override
   Stream<MeetingState> mapEventToState(
@@ -120,7 +106,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (config) => MeetingGetConfigLoaded(config: config),
+      (config) => MeetingGetConfigLoaded(config: config!),
     );
   }
 
@@ -131,7 +117,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (prefs) => MeetingGetPreferencesLoaded(preference: prefs),
+      (prefs) => MeetingGetPreferencesLoaded(preference: prefs!),
     );
   }
 
@@ -181,7 +167,7 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
     yield responseOrError.fold(
       (failure) => MeetingGetRequestError(error: failure),
-      (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs),
+      (prefs) => MeetingGetPastPreferencesLoaded(pastPreferences: prefs!),
     );
   }
 

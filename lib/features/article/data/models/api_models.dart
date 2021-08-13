@@ -7,18 +7,18 @@ part 'api_models.g.dart';
 
 @JsonSerializable()
 class ArticlesPageApiResponse extends Equatable {
-  final int count;
+  final int? count;
 
   @JsonKey(name: "current_page")
-  final int currentPage;
+  final int? currentPage;
 
-  final String next;
+  final String? next;
 
-  final int pages;
+  final int? pages;
 
-  final String previous;
+  final String? previous;
 
-  final List<ArticleModel> results;
+  final List<ArticleModel>? results;
 
   const ArticlesPageApiResponse({
     this.count,
@@ -30,14 +30,16 @@ class ArticlesPageApiResponse extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        count,
-        currentPage,
-        next,
-        pages,
-        previous,
-        results,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (count != null) temp.add(count!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (next != null) temp.add(next!);
+    if (pages != null) temp.add(pages!);
+    if (previous != null) temp.add(previous!);
+    if (results != null) temp.add(results!);
+    return temp;
+  }
 
   factory ArticlesPageApiResponse.fromJson(Map<String, dynamic> json) =>
       _$ArticlesPageApiResponseFromJson(json);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class QuantityPicker extends StatefulWidget {
-  final int value;
-  final ValueChanged<int> onChange;
+  final int? value;
+  final ValueChanged<int>? onChange;
 
   const QuantityPicker({
-    Key key,
+    Key? key,
     this.value,
     this.onChange,
   }) : super(key: key);
@@ -15,7 +15,7 @@ class QuantityPicker extends StatefulWidget {
 }
 
 class _QuantityPickerState extends State<QuantityPicker> {
-  int _value;
+  late int _value;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _QuantityPickerState extends State<QuantityPicker> {
   Widget build(BuildContext context) {
     const double iconSize = 22;
     const double iconSplashRadius = 20;
-    final labelStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final labelStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontSize: 16,
         );
     return Row(
@@ -60,7 +60,7 @@ class _QuantityPickerState extends State<QuantityPicker> {
     setState(() {
       _value = _value + 1;
       if (widget.onChange != null) {
-        widget.onChange(_value);
+        widget.onChange!(_value);
       }
     });
   }
@@ -69,7 +69,7 @@ class _QuantityPickerState extends State<QuantityPicker> {
     setState(() {
       _value = _value - 1;
       if (widget.onChange != null) {
-        widget.onChange(_value);
+        widget.onChange!(_value);
       }
     });
   }

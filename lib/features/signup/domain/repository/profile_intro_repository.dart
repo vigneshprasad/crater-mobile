@@ -14,5 +14,5 @@ abstract class ProfileIntroRepository {
   Future<Either<Failure, List<ProfileIntroMeta>>> getExperiences();
   Future<Either<Failure, List<ProfileIntroMeta>>> getEducations();
   Future<Either<Failure, UserProfile>> postUserProfileIntro(
-      Map<String, dynamic> body, File photo);
+      Map<String, dynamic> body, File? photo);
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../domain/entity/like_entity.dart';
 import '../../../domain/entity/post_entity.dart';
@@ -21,10 +20,10 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
   final UCDeleteLikePost deleteLikePost;
 
   CommunityBloc({
-    @required this.getPostsPage,
-    @required this.deletePost,
-    @required this.createLikePost,
-    @required this.deleteLikePost,
+    required this.getPostsPage,
+    required this.deletePost,
+    required this.createLikePost,
+    required this.deleteLikePost,
   }) : super(const CommunityInitial());
 
   @override

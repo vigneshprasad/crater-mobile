@@ -28,7 +28,7 @@ class _PointsBadgeState extends State<PointsBadge> {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: Colors.grey[700],
@@ -50,7 +50,7 @@ class _PointsBadgeState extends State<PointsBadge> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(borderRadius),
-                  border: Border.all(color: Colors.grey[300], width: 2),
+                  border: Border.all(color: Colors.grey[300]!, width: 2),
                 ),
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppInsets.l,

@@ -9,9 +9,9 @@ part 'user_objective_model.g.dart';
 
 @JsonSerializable()
 class UserObjectiveModel extends UserObjective {
-  final int pk;
-  final String icon;
-  final String name;
+  final int? pk;
+  final String? icon;
+  final String? name;
 
   UserObjectiveModel({
     this.pk,

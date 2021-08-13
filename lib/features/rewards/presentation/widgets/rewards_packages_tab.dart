@@ -9,9 +9,9 @@ class RewardsPackagesTab extends StatefulWidget {
   final RefreshCallback onRefresh;
 
   const RewardsPackagesTab({
-    Key key,
-    @required this.packages,
-    @required this.onRefresh,
+    Key? key,
+    required this.packages,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override

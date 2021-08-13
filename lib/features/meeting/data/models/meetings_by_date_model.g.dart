@@ -9,10 +9,9 @@ part of 'meetings_by_date_model.dart';
 MeetingsByDateModel _$MeetingsByDateModelFromJson(Map<String, dynamic> json) {
   return MeetingsByDateModel(
     date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
-    meetings: (json['meetings'] as List)
-        ?.map((e) =>
-            e == null ? null : MeetingModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    meetings: (json['meetings'] as List<dynamic>?)
+        ?.map((e) => MeetingModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

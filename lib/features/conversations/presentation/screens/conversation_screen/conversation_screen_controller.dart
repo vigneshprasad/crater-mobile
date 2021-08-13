@@ -1,6 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
@@ -22,13 +23,13 @@ enum RtcConnectionState { connected, connecting, disconnected }
 final conversationScreenControllerProvider =
     ChangeNotifierProvider.family<ConversationScreenController, Conversation>(
         (ref, table) {
-  final localUser = KiwiContainer().resolve<AuthBloc>().state.user;
+  final localUser = KiwiContainer().resolve<AuthBloc>().state.user!;
 
   return ConversationScreenController(ref.read, table, localUser);
 });
 
-final getRoundTableNotifier =
-    StateNotifierProvider.family<GetRoundTableState, int>((ref, tableId) {
+final getRoundTableNotifier = StateNotifierProvider.family<GetRoundTableState,
+    ApiResult<Conversation>, int>((ref, tableId) {
   return GetRoundTableState(ref.read, tableId);
 });
 
@@ -61,24 +62,24 @@ class GetRoundTableState extends StateNotifier<ApiResult<Conversation>> {
 
 class ConversationScreenController extends ChangeNotifier {
   final Reader read;
-  final Conversation _table;
-  final User _localUser;
+  final Conversation? _table;
+  final User? _localUser;
 
-  RtcConnectionState _connectionState;
-  List<RtcUser> _speakers;
-  bool _showConnectionBar;
-  ConversationRtcInfo _rtcInfo;
+  late RtcConnectionState _connectionState;
+  late List<RtcUser> _speakers;
+  late bool _showConnectionBar;
+  late ConversationRtcInfo _rtcInfo;
 
   ConversationScreenController(this.read, this._table, this._localUser) {
     _connectionState = RtcConnectionState.disconnected;
-    _speakers = intializeSpeakers(_table);
+    _speakers = intializeSpeakers(_table!);
     _showConnectionBar = false;
     notifyListeners();
   }
 
   // Getters
-  User get localAuthUser => _localUser;
-  Conversation get table => _table;
+  User? get localAuthUser => _localUser;
+  Conversation? get table => _table;
   RtcConnectionState get connectionState => _connectionState;
   List<RtcUser> get speakers => _speakers;
   bool get showConnectionBar => _showConnectionBar;
@@ -86,15 +87,15 @@ class ConversationScreenController extends ChangeNotifier {
   bool hasOngoingMeeting() =>
       read(groupOverlayControllerProvider).entry != null;
 
-  RtcUser get locaRtclUser {
+  RtcUser? get locaRtclUser {
     if (_localUser == null) {
       return null;
     }
-    return _speakers.firstWhere((element) => element.pk == _localUser.pk);
+    return _speakers.firstWhere((element) => element.pk == _localUser?.pk);
   }
 
   List<RtcUser> intializeSpeakers(Conversation table) {
-    List<RtcUser> initial = [];
+    final List<RtcUser> initial = [];
     // if (table.host != null) {
     //   initial.add(RtcUser(
     //     userInfo: table.hostDetail,
@@ -104,14 +105,15 @@ class ConversationScreenController extends ChangeNotifier {
     //   ));
     // }
 
-    initial.addAll(table.speakersDetailList.map(
-      (speaker) => RtcUser(
-        userInfo: speaker,
-        pk: speaker.pk,
-        online: false,
-        muted: false,
-      ),
-    ));
+    initial.addAll(table.speakersDetailList?.map(
+          (speaker) => RtcUser(
+            userInfo: speaker,
+            pk: speaker.pk,
+            online: false,
+            muted: false,
+          ),
+        ) ??
+        []);
 
     return initial;
   }
@@ -131,14 +133,14 @@ class ConversationScreenController extends ChangeNotifier {
     }
 
     // Reset Speakers List
-    _speakers = intializeSpeakers(_table);
+    _speakers = intializeSpeakers(_table!);
 
     final responseOrError = await read(conversationRepositoryProvider)
-        .getConversationRtcInfo(_table.id);
+        .getConversationRtcInfo(_table!.id!);
 
     responseOrError.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (info) => _connectToRtcChannel(localUser, info),
     );
@@ -155,7 +157,7 @@ class ConversationScreenController extends ChangeNotifier {
     _setRtcEventHandlers(localUser);
     try {
       await _rtcClient.joinRoundTableChannel(
-          info.channelName, info.token, localUser.pk);
+          info.channelName!, info.token!, localUser.pk!);
     } catch (exception) {
       Fluttertoast.showToast(msg: 'Some error occurred. Please try again.');
       debugPrint(exception.toString());
@@ -170,14 +172,14 @@ class ConversationScreenController extends ChangeNotifier {
     _connectionState = RtcConnectionState.disconnected;
     _showConnectionBar = false;
     // Reset Speakers List
-    _speakers = intializeSpeakers(_table);
+    _speakers = intializeSpeakers(_table!);
     notifyListeners();
   }
 
-  Future<void> muteLocalAudioStream({@required bool muted}) async {
+  Future<void> muteLocalAudioStream({required bool muted}) async {
     await read(roundTableRtcClientProvider).muteLocalAudio(muted: muted);
     final index =
-        _speakers.indexWhere((element) => element.pk == _localUser.pk);
+        _speakers.indexWhere((element) => element.pk == _localUser!.pk);
     if (index > -1) {
       _speakers[index] = _speakers[index].copyWith(muted: muted);
     }
@@ -219,25 +221,25 @@ class ConversationScreenController extends ChangeNotifier {
   // Event Handler for rtc events
   void _onJoinChannelSuccess(User localUser) {
     _connectionState = RtcConnectionState.connected;
-    _toggleSpeakerOnlineState(localUser.pk, true);
+    _toggleSpeakerOnlineState(localUser.pk!, true);
     notifyListeners();
   }
 
   Future<void> _renewTokenToRtcEngine() async {
     final responseOrError = await read(conversationRepositoryProvider)
-        .getConversationRtcInfo(_table.id);
+        .getConversationRtcInfo(_table!.id!);
 
     responseOrError.fold(
       (failure) {
         _connectionState = RtcConnectionState.disconnected;
         _showConnectionBar = false;
         notifyListeners();
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (info) async {
         _rtcInfo = info;
         notifyListeners();
-        await read(roundTableRtcClientProvider).renewToken(info.token);
+        await read(roundTableRtcClientProvider).renewToken(info.token!);
       },
     );
   }
@@ -276,15 +278,15 @@ class ConversationScreenController extends ChangeNotifier {
       List<AudioVolumeInfo> speakers, int totalVolume) async {
     for (final speaker in speakers) {
       try {
-        String rtcUid;
+        String? rtcUid;
         // Represents local user
         if (speaker.uid == 0) {
-          rtcUid = _localUser.pk;
+          rtcUid = _localUser?.pk;
         } else {
           final info = await read(roundTableRtcClientProvider)
               .engine
-              .getUserInfoByUid(speaker.uid);
-          rtcUid = info.userAccount;
+              ?.getUserInfoByUid(speaker.uid);
+          rtcUid = info?.userAccount;
         }
 
         final index = _speakers.indexWhere((element) => element.pk == rtcUid);
@@ -314,8 +316,8 @@ class ConversationScreenController extends ChangeNotifier {
         final muted = state != AudioRemoteState.Starting;
         final info = await read(roundTableRtcClientProvider)
             .engine
-            .getUserInfoByUid(uid);
-        final rtcUid = info.userAccount;
+            ?.getUserInfoByUid(uid);
+        final rtcUid = info?.userAccount;
         if (rtcUid != null) {
           final index = _speakers.indexWhere((element) => element.pk == rtcUid);
           if (index > -1) {
@@ -329,8 +331,8 @@ class ConversationScreenController extends ChangeNotifier {
 
   Future<void> _onRemoteUserJoined(int uid, int elapsed) async {
     final info =
-        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
-    final rtcUid = info.userAccount;
+        await read(roundTableRtcClientProvider).engine?.getUserInfoByUid(uid);
+    final rtcUid = info?.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, true);
       notifyListeners();
@@ -339,8 +341,8 @@ class ConversationScreenController extends ChangeNotifier {
 
   Future<void> _onRemoteAudioDecoded(int uid, int elapsed) async {
     final info =
-        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
-    final rtcUid = info.userAccount;
+        await read(roundTableRtcClientProvider).engine?.getUserInfoByUid(uid);
+    final rtcUid = info?.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, true);
       notifyListeners();
@@ -349,8 +351,8 @@ class ConversationScreenController extends ChangeNotifier {
 
   Future<void> _onRemoteUserOffline(int uid, UserOfflineReason reason) async {
     final info =
-        await read(roundTableRtcClientProvider).engine.getUserInfoByUid(uid);
-    final rtcUid = info.userAccount;
+        await read(roundTableRtcClientProvider).engine?.getUserInfoByUid(uid);
+    final rtcUid = info?.userAccount;
     if (rtcUid != null) {
       _toggleSpeakerOnlineState(rtcUid, false);
       notifyListeners();
@@ -361,15 +363,15 @@ class ConversationScreenController extends ChangeNotifier {
     Fluttertoast.showToast(msg: err.toString());
     final _rtcClient = read(roundTableRtcClientProvider);
     if (err == ErrorCode.InvalidToken) {
-      _rtcClient.engine.leaveChannel();
+      _rtcClient.engine?.leaveChannel();
       _connectionState = RtcConnectionState.disconnected;
       _showConnectionBar = false;
     } else if (err == ErrorCode.JoinChannelRejected) {
-      _rtcClient.engine.leaveChannel();
+      _rtcClient.engine?.leaveChannel();
       _connectionState = RtcConnectionState.disconnected;
       _showConnectionBar = false;
     } else if (err == ErrorCode.TokenExpired) {
-      await _rtcClient.engine.leaveChannel();
+      await _rtcClient.engine?.leaveChannel();
       _connectionState = RtcConnectionState.disconnected;
       _showConnectionBar = false;
     }
@@ -391,7 +393,7 @@ class ConversationScreenController extends ChangeNotifier {
 
   void hideOverlayEntry() {
     final _groupOverlayController = read(groupOverlayControllerProvider);
-    final isSameTable = table?.id == _groupOverlayController?.table?.id;
+    final isSameTable = table?.id == _groupOverlayController.table?.id;
     if (!isSameTable) {
       return;
     }

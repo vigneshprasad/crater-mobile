@@ -2,12 +2,12 @@ part of '../screens/auth/auth_screen.dart';
 
 class AuthScreenBody extends StatelessWidget {
   final Widget content;
-  final VoidCallback onTapPlayButton;
-  final Widget footer;
+  final VoidCallback? onTapPlayButton;
+  final Widget? footer;
 
   const AuthScreenBody({
-    Key key,
-    @required this.content,
+    Key? key,
+    required this.content,
     this.onTapPlayButton,
     this.footer,
   }) : super(key: key);
@@ -36,7 +36,7 @@ class AuthScreenBody extends StatelessWidget {
                 ),
               ),
             ),
-            if (footer != null) footer
+            if (footer != null) footer!
           ],
         ),
       ),

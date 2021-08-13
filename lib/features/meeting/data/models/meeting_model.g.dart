@@ -8,20 +8,19 @@ part of 'meeting_model.dart';
 
 MeetingModel _$MeetingModelFromJson(Map<String, dynamic> json) {
   return MeetingModel(
-    config: json['config'] as int,
+    config: json['config'] as int?,
     end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
-    isCanceled: json['is_canceled'] as bool,
-    isPast: json['is_past'] as bool,
-    link: json['link'] as String,
-    participants: (json['participants'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MeetingParticipantModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pk: json['pk'] as int,
+    isCanceled: json['is_canceled'] as bool?,
+    isPast: json['is_past'] as bool?,
+    link: json['link'] as String?,
+    participants: (json['participants'] as List<dynamic>?)
+        ?.map(
+            (e) => MeetingParticipantModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    pk: json['pk'] as int?,
     start:
         json['start'] == null ? null : DateTime.parse(json['start'] as String),
-    timeSlot: json['time_slot'] as int,
+    timeSlot: json['time_slot'] as int?,
     status: _$enumDecodeNullable(_$MeetingStatusEnumMap, json['status']),
     participantDetail: json['participant_detail'] == null
         ? null
@@ -45,36 +44,41 @@ Map<String, dynamic> _$MeetingModelToJson(MeetingModel instance) =>
       'participant_detail': instance.participantDetail,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$MeetingStatusEnumMap = {

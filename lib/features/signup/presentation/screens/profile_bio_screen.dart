@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,8 +19,8 @@ class ProfileBioScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileBioScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -30,19 +30,19 @@ class ProfileBioScreen extends StatefulWidget {
 class _ProfileBioScreenState extends State<ProfileBioScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _bioController = TextEditingController();
-  ProfileIntroBloc _bloc;
-  Map<String, dynamic> _values;
+  late ProfileIntroBloc _bloc;
+  late Map<String, dynamic> _values;
   @override
   void initState() {
     _values = {};
     final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>();
+    if (user != null) _bloc.add(GetProfileIntroRequestStarted(user: user));
 
     final userProfile = BlocProvider.of<AuthBloc>(context).state.profile;
     if (userProfile != null) {
-      _bioController.text = userProfile.introduction;
+      _bioController.text = userProfile.introduction!;
 
       // Prefill Values in Editing mode
       _values[ProfileIntroElement.introduction] = userProfile.introduction;
@@ -113,13 +113,14 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
               autovalidate: false,
               minLines: 10,
               label: bioLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
             Align(
               alignment: Alignment.centerRight,
-              child: FlatButton(
+              child: TextButton(
                   onPressed: () async {
                     try {
                       final _ =
@@ -139,8 +140,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   void _goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileSetupScreen(editMode: widget.editMode));
+    AutoRouter.of(context).push(const ProfileSetupScreenRoute());
   }
 
   void _onPressedSkip() {
@@ -148,7 +148,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   void _onPressedSubmit() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
       _bloc.add(PostProfileIntroRequestStarted(
         values: {ProfileIntroElement.introduction: _bioController.text},

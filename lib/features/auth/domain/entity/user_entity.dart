@@ -1,51 +1,51 @@
 import 'package:hive/hive.dart';
 
 class User extends HiveObject {
-  final String token;
+  final String? token;
 
-  final String pk;
+  final String? pk;
 
-  final String photo;
+  final String? photo;
 
-  final String email;
+  final String? email;
 
-  final bool emailVerified;
+  final bool? emailVerified;
 
-  final String name;
+  final String? name;
 
-  final int city;
+  final int? city;
 
-  final String reason;
+  final String? reason;
 
-  final String phoneNumber;
+  final String? phoneNumber;
 
-  final bool phoneNumberVerified;
+  final bool? phoneNumberVerified;
 
-  final String role;
+  final String? role;
 
-  final bool hasProfile;
+  final bool? hasProfile;
 
-  final bool hasBankDetails;
+  final bool? hasBankDetails;
 
-  final bool hasServices;
+  final bool? hasServices;
 
-  final bool hasActiveSubscription;
+  final bool? hasActiveSubscription;
 
-  final String activeSubscriptionMembership;
+  final String? activeSubscriptionMembership;
 
   final dynamic panCard;
 
   final dynamic panCardSize;
 
-  final int unreadNotifications;
+  final int? unreadNotifications;
 
-  final bool isApproved;
+  final bool? isApproved;
 
-  final List<int> objectives;
+  final List<int>? objectives;
 
-  final String linkedinUrl;
+  final String? linkedinUrl;
 
-  final String intent;
+  final String? intent;
 
   User({
     this.token,
@@ -74,29 +74,29 @@ class User extends HiveObject {
   });
 
   User copyWith({
-    String token,
-    String pk,
-    String photo,
-    String email,
-    bool emailVerified,
-    String name,
-    int city,
-    String reason,
-    String phoneNumber,
-    bool phoneNumberVerified,
-    String role,
-    bool hasProfile,
-    bool hasBankDetails,
-    bool hasServices,
-    bool hasActiveSubscription,
-    String activeSubscriptionMembership,
+    String? token,
+    String? pk,
+    String? photo,
+    String? email,
+    bool? emailVerified,
+    String? name,
+    int? city,
+    String? reason,
+    String? phoneNumber,
+    bool? phoneNumberVerified,
+    String? role,
+    bool? hasProfile,
+    bool? hasBankDetails,
+    bool? hasServices,
+    bool? hasActiveSubscription,
+    String? activeSubscriptionMembership,
     dynamic panCard,
     dynamic panCardSize,
-    int unreadNotifications,
-    bool isApproved,
-    List<int> objectives,
-    String linkedinUrl,
-    String intent,
+    int? unreadNotifications,
+    bool? isApproved,
+    List<int>? objectives,
+    String? linkedinUrl,
+    String? intent,
   }) {
     return User(
       token: token ?? this.token,

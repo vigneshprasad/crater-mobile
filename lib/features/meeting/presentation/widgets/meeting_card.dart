@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../../constants/theme.dart';
@@ -16,10 +17,10 @@ class MeetingCard extends StatelessWidget {
   final Function onRefresh;
 
   const MeetingCard({
-    Key key,
-    @required this.user,
-    @required this.meeting,
-    @required this.onRefresh,
+    Key? key,
+    required this.user,
+    required this.meeting,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -57,19 +58,19 @@ class MeetingCard extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     final meetingParticipant =
-        meeting.participants.firstWhere((element) => element.pk != user.pk);
+        meeting.participants?.firstWhere((element) => element.pk != user.pk);
     final timeFormat = DateFormat.jm();
-    final startTime = timeFormat.format(meeting.start);
-    final endTime = timeFormat.format(meeting.end);
-    final nameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final startTime = timeFormat.format(meeting.start!);
+    final endTime = timeFormat.format(meeting.end!);
+    final nameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 18,
         );
 
-    final timeStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final timeStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 13,
           height: 1.6,
         );
-    final name = "${meetingParticipant.name}\n";
+    final name = "${meetingParticipant?.name}\n";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,12 +88,12 @@ class MeetingCard extends StatelessWidget {
               ),
               TextSpan(
                 text: '$startTime - $endTime',
-                style: timeStyle.copyWith(fontWeight: FontWeight.w500),
+                style: timeStyle?.copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),
         ),
-        if (!meeting.isPast) _buildCardStatus(context),
+        if (!meeting.isPast!) _buildCardStatus(context),
       ],
     );
   }
@@ -100,22 +101,20 @@ class MeetingCard extends StatelessWidget {
   Widget _buildActionsRow(BuildContext context) {
     return Row(
       children: [
-        if (meeting.participants.isNotEmpty)
-          ...meeting.participants
+        if (meeting.participants?.isNotEmpty ?? false)
+          ...meeting.participants!
               .map((participant) => participant.rsvp != null
                   ? RsvpIndicator(
                       participant: participant,
-                      showIndicator: !meeting.isPast,
+                      showIndicator: !meeting.isPast!,
                     )
                   : Container())
               .toList(),
         const Spacer(),
         BaseCardButton(
           onPressed: () {
-            ExtendedNavigator.of(context)
-                .push(Routes.meetingDetailScreen,
-                    arguments:
-                        MeetingDetailScreenArguments(meetingId: meeting.pk))
+            AutoRouter.of(context)
+                .push(MeetingDetailScreenRoute(meetingId: meeting.pk!))
                 .then((value) => onRefresh());
           },
           child: const Text('Details'),
@@ -125,32 +124,34 @@ class MeetingCard extends StatelessWidget {
   }
 
   Widget _buildCardStatus(BuildContext context) {
-    String text;
-    TextStyle style = Theme.of(context).textTheme.bodyText1;
+    String text = '';
+    TextStyle? style = Theme.of(context).textTheme.bodyText1;
     switch (meeting.status) {
       case MeetingStatus.confirmed:
         text = 'Meeting Confirmed';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.green,
         );
         break;
       case MeetingStatus.cancelled:
         text = 'Meeting Cancelled';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.red,
         );
         break;
       case MeetingStatus.pending:
         text = 'RSVP Pending';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.yellow[600],
         );
         break;
       case MeetingStatus.rescheduled:
         text = 'Reschedule Requested';
-        style = style.copyWith(
+        style = style?.copyWith(
           color: Colors.orange,
         );
+        break;
+      default:
         break;
     }
     return Text(

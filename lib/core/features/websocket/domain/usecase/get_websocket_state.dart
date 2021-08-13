@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../error/failures.dart';
 import '../../../../usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCWebSocketGetConnection
     implements SyncUseCase<WebSocketConnection, NoParams> {
   final WebSocketRepository repository;
 
-  UCWebSocketGetConnection({@required this.repository});
+  UCWebSocketGetConnection({required this.repository});
 
   @override
   Either<Failure, WebSocketConnection> call(NoParams params) {

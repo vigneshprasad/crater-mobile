@@ -13,8 +13,8 @@ class GetCommentsPageRequeststarted extends CommentEvent {
   final int pageSize;
 
   const GetCommentsPageRequeststarted({
-    @required this.postId,
-    @required this.page,
-    @required this.pageSize,
+    required this.postId,
+    required this.page,
+    required this.pageSize,
   });
 }

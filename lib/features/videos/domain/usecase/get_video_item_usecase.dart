@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCGetVideoItem implements AsyncUseCase<Video, GetVideoItemParams> {
   final VideoRepository repository;
 
   UCGetVideoItem({
-    @required this.repository,
+    required this.repository,
   });
 
   @override

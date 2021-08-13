@@ -13,11 +13,11 @@ part 'points_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.points)
 class PointsModel extends Points {
   @HiveField(0)
-  final int points;
+  final int? points;
 
   @HiveField(1)
   @JsonKey(name: "money_value")
-  final double moneyValue;
+  final double? moneyValue;
 
   PointsModel({
     this.points,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
@@ -23,13 +22,10 @@ class ObjectivesBloc extends Bloc<ObjectivesEvent, ObjectivesState> {
   final Analytics analytics;
 
   ObjectivesBloc({
-    @required this.getUserObjectives,
-    @required this.patchUser,
-    @required this.analytics,
-  })  : assert(getUserObjectives != null),
-        assert(patchUser != null),
-        assert(analytics != null),
-        super(const ObjectivesInitial());
+    required this.getUserObjectives,
+    required this.patchUser,
+    required this.analytics,
+  }) : super(const ObjectivesInitial());
 
   @override
   Stream<ObjectivesState> mapEventToState(
@@ -56,8 +52,11 @@ class ObjectivesBloc extends Bloc<ObjectivesEvent, ObjectivesState> {
   Stream<ObjectivesState> _mapPostObjectiveToState(
       PostObjectivesRequestStarted event) async* {
     yield const ObjectivesRequestLoading();
-    final user =
-        UserModel(objectives: event.objectives.map((e) => e.pk).toList());
+    final user = UserModel(
+        objectives: event.objectives
+            .where((element) => element.pk != null)
+            .map((e) => e.pk!)
+            .toList());
     final updateOrError = await patchUser(PatchUserParams(user: user));
 
     yield updateOrError.fold(

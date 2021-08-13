@@ -8,7 +8,7 @@ class UCWebSocketClose implements AsyncUseCase<void, NoParams> {
   final WebSocketRepository repository;
 
   UCWebSocketClose({
-    this.repository,
+    required this.repository,
   });
 
   @override

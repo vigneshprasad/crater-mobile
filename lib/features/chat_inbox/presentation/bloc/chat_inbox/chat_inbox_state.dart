@@ -1,16 +1,16 @@
 part of 'chat_inbox_bloc.dart';
 
 abstract class ChatInboxState extends Equatable {
-  final dynamic error;
+  final Object? error;
   final bool loading;
 
   const ChatInboxState({
-    @required this.error,
-    @required this.loading,
+    required this.error,
+    required this.loading,
   });
 
   @override
-  List<Object> get props => [error, loading];
+  List<Object> get props => error != null ? [error!, loading] : [loading];
 }
 
 class ChatInboxInitial extends ChatInboxState {
@@ -22,7 +22,7 @@ class ChatInboxInitial extends ChatInboxState {
 }
 
 class ChatInboxError extends ChatInboxState {
-  const ChatInboxError({@required dynamic error})
+  const ChatInboxError({required dynamic error})
       : super(
           loading: false,
           error: error,
@@ -44,36 +44,45 @@ class ChatInboxUsersResponseReceived extends ChatInboxState {
   final bool fromCache;
 
   const ChatInboxUsersResponseReceived({
-    @required this.users,
-    @required this.page,
-    @required this.pages,
-    @required this.fromCache,
+    required this.users,
+    required this.page,
+    required this.pages,
+    required this.fromCache,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [
-        error,
-        loading,
-        page,
-        pages,
-        fromCache,
-        users,
-      ];
+  List<Object> get props => error != null
+      ? [
+          error!,
+          loading,
+          page,
+          pages,
+          fromCache,
+          users,
+        ]
+      : [
+          loading,
+          page,
+          pages,
+          fromCache,
+          users,
+        ];
 }
 
 class ChatInboxStarChangeReceived extends ChatInboxState {
   final ChatUser user;
 
   const ChatInboxStarChangeReceived({
-    this.user,
+    required this.user,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [error, loading, user];
+  List<Object> get props =>
+      error != null ? [error!, loading, user] : [loading, user];
 }

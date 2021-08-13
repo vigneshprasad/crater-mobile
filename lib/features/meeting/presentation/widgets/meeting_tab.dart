@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -29,13 +30,13 @@ class _MeetingTabState extends State<MeetingTab>
         AutomaticKeepAliveClientMixin<MeetingTab>,
         SingleTickerProviderStateMixin {
   final Analytics analytics = KiwiContainer().resolve<Analytics>();
-  MeetingConfig config;
-  UserMeetingPreference preference;
-  List<MeetingsByDate> upcoming;
-  List<MeetingsByDate> past;
-  List<MeetingInterest> interests;
-  List<MeetingObjective> objectives;
-  TabController _tabController;
+  MeetingConfig? config;
+  UserMeetingPreference? preference;
+  late List<MeetingsByDate> upcoming;
+  late List<MeetingsByDate> past;
+  late List<MeetingInterest> interests;
+  late List<MeetingObjective> objectives;
+  late TabController _tabController;
 
   final List<Widget> tabs = [
     const BaseTab(text: "Upcoming"),
@@ -78,15 +79,15 @@ class _MeetingTabState extends State<MeetingTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final heading = AppLocalizations.of(context).translate("meeting:title");
+    final heading = AppLocalizations.of(context)?.translate("meeting:title");
     final subheading =
-        AppLocalizations.of(context).translate("meeting:subtitle");
+        AppLocalizations.of(context)?.translate("meeting:subtitle");
 
     return BlocConsumer<MeetingBloc, MeetingState>(
       listener: _blockListener,
       builder: (context, state) {
         return TabWithTabbarLayout(
-          heading: heading,
+          heading: heading!,
           subheading: subheading,
           tabbar: BaseTabBar(
             controller: _tabController,
@@ -100,7 +101,7 @@ class _MeetingTabState extends State<MeetingTab>
                 children: [
                   MeetingUpcomingTab(
                     upcoming: upcoming,
-                    config: config,
+                    config: config!,
                     preference: preference,
                     onRefresh: _onRefreshUpcomingTab,
                   ),
@@ -118,12 +119,11 @@ class _MeetingTabState extends State<MeetingTab>
                     child: RegisterMeetingButton(
                       label: "Opt-in for a meeting",
                       onPressed: () {
-                        ExtendedNavigator.of(context)
+                        AutoRouter.of(context)
                             .push(
-                              Routes.registerMeetingScreen,
-                              arguments: RegisterMeetingScreenArguments(
-                                config: config,
-                                preference: preference,
+                              RegisterMeetingScreenRoute(
+                                config: config!,
+                                preference: preference!,
                                 objectives: objectives,
                                 interests: interests,
                               ),
@@ -143,11 +143,11 @@ class _MeetingTabState extends State<MeetingTab>
   void _blockListener(BuildContext context, MeetingState state) {
     if (state is GetUpcomingMeetingsLoaded) {
       setState(() {
-        upcoming = state.upcoming;
+        upcoming = state.upcoming!;
       });
     } else if (state is GetPastMeetingsLoaded) {
       setState(() {
-        past = state.past;
+        past = state.past!;
       });
     } else if (state is MeetingGetConfigLoaded) {
       setState(() {
@@ -159,11 +159,11 @@ class _MeetingTabState extends State<MeetingTab>
       });
     } else if (state is MeetingGetObjectivesLoaded) {
       setState(() {
-        objectives = state.objectives;
+        objectives = state.objectives!;
       });
     } else if (state is MeetingGetInterestsLoaded) {
       setState(() {
-        interests = state.interests;
+        interests = state.interests!;
       });
     }
   }

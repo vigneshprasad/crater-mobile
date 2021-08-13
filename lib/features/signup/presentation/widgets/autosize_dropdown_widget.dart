@@ -6,10 +6,10 @@ import '../../domain/entity/profile_intro_question.dart';
 
 class AutoSizeDropdown extends StatelessWidget {
   const AutoSizeDropdown({
-    Key key,
-    @required this.element,
+    Key? key,
+    required this.element,
     this.value,
-    @required this.onValuesChange,
+    required this.onValuesChange,
   }) : super(key: key);
 
   static const charWidth = 8;
@@ -17,31 +17,31 @@ class AutoSizeDropdown extends StatelessWidget {
 
   final Function(String, dynamic) onValuesChange;
   final ProfileIntroElement element;
-  final ProfileIntroMeta value;
+  final ProfileIntroMeta? value;
 
   double getWidthOfLargestOption(List<ProfileIntroMeta> items) {
     final options = items.cast<ProfileIntroMeta>();
     final ProfileIntroMeta largestOption = options.reduce((value, element) {
-      return (element.name.length > value.name.length) ? element : value;
+      return (element.name!.length > value.name!.length) ? element : value;
     });
-    return (largestOption.name.length * charWidth + padding).toDouble();
+    return (largestOption.name!.length * charWidth + padding).toDouble();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: getWidthOfLargestOption(element.options),
+      width: getWidthOfLargestOption(element.options!),
       margin: const EdgeInsets.only(right: 4),
       child: BaseDropdown<ProfileIntroMeta>(
-          key: Key(element.id),
+          key: Key(element.id!),
           value: value,
-          listItems: element.options,
-          labelGetter: (lbl) => lbl.name,
+          listItems: element.options!,
+          labelGetter: (lbl) => lbl.name ?? '',
           validator: (value) {
             return value == null ? 'Select a value' : null;
           },
           onChanged: (value) {
-            onValuesChange(element.id, value.value);
+            onValuesChange(element.id!, value?.value);
           }),
     );
   }

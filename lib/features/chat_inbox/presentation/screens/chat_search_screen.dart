@@ -20,10 +20,10 @@ class ChatSearchScreen extends StatefulWidget {
 
 class _ChatSearchScreenState extends State<ChatSearchScreen> {
   final TextEditingController _searchInputController = TextEditingController();
-  String _searchString;
-  ChatSearchBloc _chatSearchBloc;
+  late String _searchString;
+  late ChatSearchBloc _chatSearchBloc;
   bool _showEmptyState = false;
-  Timer _debounce;
+  Timer? _debounce;
   final _page = 1;
 
   @override
@@ -46,7 +46,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
   Widget build(BuildContext context) {
     final headerStyle = Theme.of(context).textTheme.subtitle1;
     final appBarTitle =
-        AppLocalizations.of(context).translate("chat_search:title");
+        AppLocalizations.of(context)?.translate("chat_search:title");
     return BlocProvider.value(
       value: _chatSearchBloc,
       child: BlocConsumer<ChatSearchBloc, ChatSearchState>(
@@ -65,7 +65,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
           return Scaffold(
             appBar: BaseAppBar(
               title: Text(
-                appBarTitle,
+                appBarTitle!,
                 style: headerStyle,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -103,7 +103,7 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
   void _onChangeSearchString() {
     _searchString = _searchInputController.text;
     if (_searchString.isNotEmpty) {
-      if (_debounce?.isActive ?? false) _debounce.cancel();
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
       _debounce = Timer(const Duration(milliseconds: 200), () {
         _chatSearchBloc.add(
             SendSearchUsersRequestStarted(search: _searchString, page: _page));
@@ -130,11 +130,11 @@ class _ChatSearchScreenState extends State<ChatSearchScreen> {
     final subtitleStyle = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(color: Colors.grey, height: 1.4);
+        ?.copyWith(color: Colors.grey, height: 1.4);
     final headerStyle = Theme.of(context)
         .textTheme
         .subtitle2
-        .copyWith(fontSize: 16, height: 2, color: Colors.grey[700]);
+        ?.copyWith(fontSize: 16, height: 2, color: Colors.grey[700]);
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

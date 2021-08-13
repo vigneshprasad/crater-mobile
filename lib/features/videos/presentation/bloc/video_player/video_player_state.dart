@@ -4,33 +4,42 @@ part of 'video_player_bloc.dart';
 class VideoPlayerState extends Equatable {
   final bool loadingFeature;
   final bool loadingList;
-  final Video featureVideo;
+  final Video? featureVideo;
   final List<Video> playlistItems;
-  final dynamic error;
+  final Object? error;
 
   const VideoPlayerState({
-    this.loadingFeature,
-    this.loadingList,
+    required this.loadingFeature,
+    required this.loadingList,
     this.featureVideo,
-    this.playlistItems,
-    this.error,
+    required this.playlistItems,
+    required this.error,
   });
 
   @override
-  List<Object> get props => [
-        loadingFeature,
-        loadingList,
-        featureVideo,
-        playlistItems,
-        error,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      loadingFeature,
+      loadingList,
+      playlistItems,
+    ];
+
+    if (error != null) {
+      temp.add(error!);
+    }
+    if (featureVideo != null) {
+      temp.add(featureVideo!);
+    }
+
+    return temp;
+  }
 
   VideoPlayerState copyWith({
-    bool loadingFeature,
-    bool loadingList,
-    Video featureVideo,
-    List<Video> playlistItems,
-    dynamic error,
+    bool? loadingFeature,
+    bool? loadingList,
+    Video? featureVideo,
+    List<Video>? playlistItems,
+    Object? error,
   }) {
     return VideoPlayerState(
       loadingFeature: loadingFeature ?? this.loadingFeature,
@@ -54,9 +63,9 @@ class VideoPlayerInitial extends VideoPlayerState {
 
 class VideoFeatureItemReceived extends VideoPlayerState {
   const VideoFeatureItemReceived({
-    @required bool loadingList,
-    @required Video featureVideo,
-    @required List<Video> playlistItems,
+    required bool loadingList,
+    required Video featureVideo,
+    required List<Video> playlistItems,
   }) : super(
           featureVideo: featureVideo,
           loadingFeature: false,
@@ -68,9 +77,9 @@ class VideoFeatureItemReceived extends VideoPlayerState {
 
 class VideoPlaylistItemsReceived extends VideoPlayerState {
   const VideoPlaylistItemsReceived({
-    @required bool loadingFeature,
-    @required Video featureVideo,
-    @required List<Video> playlistItems,
+    required bool loadingFeature,
+    required Video featureVideo,
+    required List<Video> playlistItems,
   }) : super(
           featureVideo: featureVideo,
           loadingFeature: loadingFeature,

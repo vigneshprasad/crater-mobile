@@ -22,8 +22,8 @@ class FacebookAuthParams extends Equatable {
   final String osId;
 
   const FacebookAuthParams({
-    this.token,
-    this.osId,
+    required this.token,
+    required this.osId,
   });
 
   @override

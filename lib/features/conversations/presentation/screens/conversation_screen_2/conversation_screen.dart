@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,7 +31,7 @@ import '../../widgets/speakers_table/speakers_table.dart';
 import 'conversation_screen_state.dart';
 
 class ConversationScreen extends HookWidget {
-  final int id;
+  final int? id;
 
   const ConversationScreen({
     @PathParam("id") this.id,
@@ -39,17 +39,18 @@ class ConversationScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final conversationState = useProvider(conversationStateProvider(id).state);
-    final speakers = useProvider(conversationSpeakersState(id).state);
-    final connectionProvider = useProvider(rtcConnectionProvider(id));
+    final conversationState = useProvider(conversationStateProvider(id!));
+    final speakers = useProvider(conversationSpeakersState(id!));
+    final connectionProvider = useProvider(rtcConnectionProvider(id!));
     final overlayProvider = useProvider(conversationOverlayProvider);
 
     useEffect(() {
       if (overlayProvider.entry != null) {
         overlayProvider.removeOverlayEntry();
-        if (overlayProvider.groupId != id) {
+        if (overlayProvider.groupId != null && overlayProvider.groupId != id) {
           context
-              .read(conversationStateProvider(overlayProvider.groupId))
+              .read(
+                  conversationStateProvider(overlayProvider.groupId!).notifier)
               .leaveAudioCall();
         }
       }
@@ -87,10 +88,10 @@ class _ConversationLoaded extends StatelessWidget {
   final RtcConnection connection;
 
   const _ConversationLoaded({
-    Key key,
-    this.conversation,
-    this.speakers,
-    this.connection,
+    Key? key,
+    required this.conversation,
+    required this.speakers,
+    required this.connection,
   }) : super(key: key);
 
   @override
@@ -100,13 +101,13 @@ class _ConversationLoaded extends StatelessWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2;
     final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
           context
-              .read(conversationStateProvider(conversation.id))
+              .read(conversationStateProvider(conversation.id!).notifier)
               .createAudioCallOverlay(context);
         }
         return true;
@@ -122,34 +123,35 @@ class _ConversationLoaded extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: AppInsets.sm),
-                  Text(startDateFormat.format(conversation.start.toLocal()),
+                  Text(startDateFormat.format(conversation.start!.toLocal()),
                       style: dateStyle),
                   ConversationCard(
                     conversation: conversation,
                     hideFooter: true,
                     onCardPressed: (_) => launch(
-                      conversation.topicDetail.articleDetail.websiteUrl,
-                      option: const CustomTabsOption(),
+                      conversation.topicDetail!.articleDetail!.websiteUrl!,
+                      customTabsOption: const CustomTabsOption(),
                     ),
                   ),
-                  if (conversation.topicDetail.articleDetail == null &&
-                      conversation.topicDetail.description != null)
-                    Text(conversation.topicDetail.description),
+                  if (conversation.topicDetail!.articleDetail == null &&
+                      conversation.topicDetail!.description != null)
+                    Text(conversation.topicDetail!.description!),
                   const SizedBox(height: AppInsets.xl),
                   Center(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("conversations:speakers_label"),
+                                ?.translate("conversations:speakers_label") ??
+                            '',
                         style: pageLabelStyle),
                   ),
-                  if (conversation.isSpeaker)
+                  if (conversation.isSpeaker!)
                     const SizedBox(height: AppInsets.l),
-                  if (!conversation.isSpeaker)
+                  if (!conversation.isSpeaker!)
                     const SizedBox(height: AppInsets.xl),
                   if (connection == RtcConnection.disconnected)
                     _SpeakersListWithIntro(
                       speakers: speakers,
-                      authUserPk: authUserPK,
+                      authUserPk: authUserPK!,
                     )
                   else
                     SpeakersTable(
@@ -170,7 +172,7 @@ class _ConversationLoaded extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (connection == RtcConnection.disconnected)
-                      if (conversation.isSpeaker)
+                      if (conversation.isSpeaker!)
                         BaseContainer(
                           radius: 30,
                           child: BaseLargeButton(
@@ -178,11 +180,13 @@ class _ConversationLoaded extends StatelessWidget {
                             onPressed: () {
                               context
                                   .read(conversationStateProvider(
-                                      conversation.id))
+                                          conversation.id!)
+                                      .notifier)
                                   .connectToAudioCall();
                             },
-                            child: Text(AppLocalizations.of(context).translate(
-                                "conversation_screen:go_live_label")),
+                            child: Text(AppLocalizations.of(context)?.translate(
+                                    "conversation_screen:go_live_label") ??
+                                ''),
                           ),
                         )
                       else
@@ -193,8 +197,9 @@ class _ConversationLoaded extends StatelessWidget {
                             onPressed: () {
                               _requestJoinGroup(context);
                             },
-                            child: Text(AppLocalizations.of(context)
-                                .translate("conversations:join_button_label")),
+                            child: Text(AppLocalizations.of(context)?.translate(
+                                    "conversations:join_button_label") ??
+                                ''),
                           ),
                         )
                     else
@@ -214,11 +219,11 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _requestJoinGroup(BuildContext context) async {
     final response = await context
-        .read(conversationStateProvider(conversation.id))
+        .read(conversationStateProvider(conversation.id!).notifier)
         .postRequestToJoinGroup();
 
     response.fold(
-      (failure) => Fluttertoast.showToast(msg: failure.message),
+      (failure) => Fluttertoast.showToast(msg: failure.message!),
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
         analytics.trackEvent(
@@ -233,30 +238,30 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _updateConversation(BuildContext context) async {
     final response = await context
-        .read(conversationStateProvider(conversation.id))
+        .read(conversationStateProvider(conversation.id!).notifier)
         .retrieveConversation();
 
     response.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (group) {
         final now = DateTime.now().toLocal();
-        final start = group.start.toLocal();
-        final end = group.end.toLocal();
+        final start = group.start!.toLocal();
+        final end = group.end!.toLocal();
 
         if (now.isAfter(start) && now.isBefore(end)) {
           context
-              .read(conversationStateProvider(conversation.id))
+              .read(conversationStateProvider(conversation.id!).notifier)
               .connectToAudioCall();
         } else {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
-          ExtendedNavigator.of(context).pushAndRemoveUntil(
-            Routes.onboardingScreen(
+          AutoRouter.of(context).pushAndPopUntil(
+            OnboardingScreenRoute(
                 type: OnboardingType.meetingJoining.toString()),
-            (_) => false,
+            predicate: (_) => false,
           );
         }
       },
@@ -268,9 +273,9 @@ class _SpeakersListWithIntro extends StatelessWidget {
   final List<RtcUser> speakers;
   final String authUserPk;
   const _SpeakersListWithIntro({
-    Key key,
-    this.speakers,
-    @required this.authUserPk,
+    Key? key,
+    required this.speakers,
+    required this.authUserPk,
   }) : super(key: key);
 
   @override
@@ -279,7 +284,7 @@ class _SpeakersListWithIntro extends StatelessWidget {
 
     for (final speaker in speakers) {
       children.add(_SpeakerWithIntro(
-        user: speaker.userInfo,
+        user: speaker.userInfo!,
         authUserPk: authUserPk,
       ));
     }
@@ -294,21 +299,21 @@ class _SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
   final String authUserPk;
   const _SpeakerWithIntro({
-    Key key,
-    @required this.user,
-    @required this.authUserPk,
+    Key? key,
+    required this.user,
+    required this.authUserPk,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.email;
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
     final bodyStyle = Theme.of(context).textTheme.bodyText2;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(
-        Routes.profileScreen(userId: user.pk, allowEdit: authUserPk == user.pk),
+      onTap: () => AutoRouter.of(context).push(
+        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -327,10 +332,10 @@ class _SpeakerWithIntro extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.name, style: headingStyle),
+                  Text(user.name ?? '', style: headingStyle),
                   const SizedBox(height: AppInsets.sm),
                   Text(
-                    description,
+                    description ?? '',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,

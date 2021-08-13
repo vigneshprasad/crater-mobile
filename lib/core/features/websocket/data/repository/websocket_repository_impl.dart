@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../features/auth/data/datasources/auth_local_datasource.dart';
 import '../../../../../features/auth/domain/repository/auth_repository.dart';
@@ -20,10 +19,10 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
   final AuthRepository authRepository;
 
   WebsocketRepositoryImpl({
-    @required this.localDataSource,
-    @required this.remoteDataSource,
-    @required this.authRepository,
-    @required this.authLocalDataSource,
+    required this.localDataSource,
+    required this.remoteDataSource,
+    required this.authRepository,
+    required this.authLocalDataSource,
   });
 
   @override
@@ -32,13 +31,13 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
     final user = authLocalDataSource.getUserFromCache();
     try {
       localDataSource.channel ??=
-          await remoteDataSource.connectToWebsocketBackend(user.token);
+          await remoteDataSource.connectToWebsocketBackend(user.token!);
       localDataSource.streamcontroller ??= StreamController.broadcast();
       localDataSource.streamcontroller
-          .addStream(localDataSource.channel.stream);
+          ?.addStream(localDataSource.channel!.stream);
       return Right(WebSocketConnection(
-        channel: localDataSource.channel,
-        streamController: localDataSource.streamcontroller,
+        channel: localDataSource.channel!,
+        streamController: localDataSource.streamcontroller!,
       ));
     } on WebsocketServerException {
       return Left(WebsocketServerFailure());
@@ -51,8 +50,8 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
       return Left(WebsocketLocalFailure());
     }
     return Right(WebSocketConnection(
-        channel: localDataSource.channel,
-        streamController: localDataSource.streamcontroller));
+        channel: localDataSource.channel!,
+        streamController: localDataSource.streamcontroller!));
   }
 
   @override
@@ -79,7 +78,7 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
         },
       );
     }
-    channel.sink.add(data);
+    channel?.sink.add(data);
     return const Right(null);
   }
 }

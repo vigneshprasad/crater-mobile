@@ -2,13 +2,13 @@ part of 'rewards_bloc.dart';
 
 abstract class RewardsState extends Equatable {
   final bool loading;
-  final List<Package> packages;
-  final Failure error;
-  final Package package;
-  final PackageRequest packageRequest;
+  final List<Package>? packages;
+  final Failure? error;
+  final Package? package;
+  final PackageRequest? packageRequest;
 
   const RewardsState({
-    this.loading,
+    required this.loading,
     this.packages,
     this.error,
     this.package,
@@ -16,13 +16,18 @@ abstract class RewardsState extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        loading,
-        packages,
-        error,
-        package,
-        packageRequest,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      loading,
+    ];
+
+    if (packages != null) temp.add(packages!);
+    if (error != null) temp.add(error!);
+    if (package != null) temp.add(package!);
+    if (packageRequest != null) temp.add(packageRequest!);
+
+    return temp;
+  }
 }
 
 class RewardsInitial extends RewardsState {
@@ -62,7 +67,7 @@ class RewardsPostPackageRequstLoading extends RewardsState {
 
 class RewardsRequestError extends RewardsState {
   const RewardsRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -71,7 +76,7 @@ class RewardsRequestError extends RewardsState {
 
 class RewardsPackageListLoaded extends RewardsState {
   const RewardsPackageListLoaded({
-    @required List<Package> packages,
+    required List<Package> packages,
   }) : super(
           loading: false,
           error: null,
@@ -81,7 +86,7 @@ class RewardsPackageListLoaded extends RewardsState {
 
 class RewardsGetPackageLoaded extends RewardsState {
   const RewardsGetPackageLoaded({
-    @required Package package,
+    required Package package,
   }) : super(
           loading: false,
           error: null,
@@ -91,7 +96,7 @@ class RewardsGetPackageLoaded extends RewardsState {
 
 class RewardsPostPackageRequestLoaded extends RewardsState {
   const RewardsPostPackageRequestLoaded({
-    @required PackageRequest packageRequest,
+    required PackageRequest packageRequest,
   }) : super(
           loading: false,
           error: null,

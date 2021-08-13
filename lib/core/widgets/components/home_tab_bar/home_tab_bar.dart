@@ -8,8 +8,8 @@ class HomeTabItem extends Equatable {
   final String id;
 
   const HomeTabItem({
-    @required this.label,
-    @required this.id,
+    required this.label,
+    required this.id,
   });
 
   @override
@@ -25,10 +25,10 @@ class HomeTabBar extends StatelessWidget {
   final List<HomeTabItem> tabs;
 
   const HomeTabBar({
-    Key key,
+    Key? key,
     this.backgroundColor = Colors.transparent,
-    @required this.tabs,
-    @required this.controller,
+    required this.tabs,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -52,14 +52,14 @@ class _TabItem extends StatelessWidget {
   final HomeTabItem item;
 
   const _TabItem({
-    Key key,
-    @required this.item,
-    @required this.active,
+    Key? key,
+    required this.item,
+    required this.active,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: active ? Colors.grey[800] : Colors.grey[400],

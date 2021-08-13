@@ -16,12 +16,20 @@ class UserTagModelAdapter extends TypeAdapter<UserTagModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserTagModel();
+    return UserTagModel(
+      name: fields[0] as String?,
+      pk: fields[1] as int?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, UserTagModel obj) {
-    writer..writeByte(0);
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.pk);
   }
 
   @override
@@ -41,8 +49,8 @@ class UserTagModelAdapter extends TypeAdapter<UserTagModel> {
 
 UserTagModel _$UserTagModelFromJson(Map<String, dynamic> json) {
   return UserTagModel(
-    name: json['name'] as String,
-    pk: json['pk'] as int,
+    name: json['name'] as String?,
+    pk: json['pk'] as int?,
   );
 }
 

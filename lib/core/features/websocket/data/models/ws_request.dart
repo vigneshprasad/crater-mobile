@@ -32,8 +32,8 @@ enum WSRequestType {
 @JsonSerializable()
 class WSRequest extends Equatable {
   @JsonKey(unknownEnumValue: WSRequestType.unknownValue)
-  final WSRequestType type;
-  final dynamic message;
+  final WSRequestType? type;
+  final Object? message;
 
   const WSRequest({
     this.type,
@@ -41,5 +41,10 @@ class WSRequest extends Equatable {
   });
 
   @override
-  List<Object> get props => [type, message];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (type != null) temp.add(type!);
+    if (message != null) temp.add(message!);
+    return temp;
+  }
 }

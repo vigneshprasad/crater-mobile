@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
@@ -20,8 +21,8 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ForgotPasswordBloc _bloc;
-  String email;
+  late ForgotPasswordBloc _bloc;
+  late String email;
 
   @override
   void initState() {
@@ -72,20 +73,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
-      ExtendedNavigator.of(context).pop(email);
+      AutoRouter.of(context).pop(email);
     }
   }
 
   Widget _buildContent(BuildContext context, ForgotPasswordState state) {
-    final String forgotPassword =
-        AppLocalizations.of(context).translate("auth:forgot_password");
-    final String desc =
-        AppLocalizations.of(context).translate("auth:forgot_password_desc");
-    final headingStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final forgotPassword =
+        AppLocalizations.of(context)?.translate("auth:forgot_password");
+    final desc =
+        AppLocalizations.of(context)?.translate("auth:forgot_password_desc");
+    final headingStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontSize: 20,
           color: Colors.grey[700],
         );
-    final descStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Colors.grey[500],
         );
 
@@ -95,13 +96,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Column(
           children: [
             Text(
-              forgotPassword,
+              forgotPassword!,
               textAlign: TextAlign.center,
               style: headingStyle,
             ),
             const SizedBox(height: AppInsets.l),
             Text(
-              desc,
+              desc!,
               textAlign: TextAlign.center,
               style: descStyle,
             ),
@@ -112,7 +113,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               keyboardType: TextInputType.emailAddress,
               label: "Email address",
               validator: (value) {
-                if (value.isEmpty) return "Please enter an email address";
+                if (value == null || value.isEmpty) {
+                  return "Please enter an email address";
+                }
                 return !state.isEmailValid
                     ? "Please enter a valid email address"
                     : null;
@@ -132,8 +135,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _submitForm() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid ?? false) {
       _bloc.add(ForgotPasswordRequestStarted(email: email));
     }
   }

@@ -23,7 +23,7 @@ class PostNewPhoneNumberParams extends Equatable {
   final String phoneNumber;
 
   const PostNewPhoneNumberParams({
-    this.phoneNumber,
+    required this.phoneNumber,
   });
 
   @override

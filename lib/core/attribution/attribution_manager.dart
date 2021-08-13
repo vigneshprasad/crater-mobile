@@ -17,7 +17,7 @@ abstract class AttributionManager {
 }
 
 class AttributionManagerImpl implements AttributionManager {
-  AppsflyerSdk _appsflyerSdk;
+  AppsflyerSdk? _appsflyerSdk;
 
   @override
   Future<void> intializeSdk() async {
@@ -60,7 +60,7 @@ class AttributionManagerImpl implements AttributionManager {
     _appsflyerSdk ??= await _initializeAppsFlyerSdk();
 
     try {
-      return await _appsflyerSdk.logEvent(eventName, eventDetails);
+      return await _appsflyerSdk?.logEvent(eventName, eventDetails) ?? false;
     } on Exception catch (e) {
       throw Exception(e);
     }

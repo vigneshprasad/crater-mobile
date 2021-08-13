@@ -23,28 +23,28 @@ enum ConversationMedium {
 @freezed
 abstract class Conversation with _$Conversation {
   factory Conversation({
-    int id,
-    String host,
-    List<String> speakers,
-    int topic,
-    String description,
-    List<int> interests,
-    DateTime start,
-    DateTime end,
-    @JsonKey(name: 'max_speakers') int maxSpeakers,
-    ConversationPrivacy privacy,
-    ConversationMedium medium,
-    bool closed,
-    int relevancy,
-    @JsonKey(name: 'closed_at') DateTime closedAt,
-    @JsonKey(name: 'topic_detail') Topic topicDetail,
-    @JsonKey(name: 'host_detail') ConversationUser hostDetail,
+    int? id,
+    String? host,
+    List<String>? speakers,
+    int? topic,
+    String? description,
+    List<int>? interests,
+    DateTime? start,
+    DateTime? end,
+    @JsonKey(name: 'max_speakers') int? maxSpeakers,
+    ConversationPrivacy? privacy,
+    ConversationMedium? medium,
+    bool? closed,
+    int? relevancy,
+    @JsonKey(name: 'closed_at') DateTime? closedAt,
+    @JsonKey(name: 'topic_detail') Topic? topicDetail,
+    @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
     @JsonKey(name: 'interests_detail_list')
-        List<MeetingInterestModel> interestsDetailList,
+        List<MeetingInterestModel>? interestsDetailList,
     @JsonKey(name: 'speakers_detail_list')
-        List<ConversationUser> speakersDetailList,
-    @JsonKey(name: 'is_speaker') bool isSpeaker,
-    @JsonKey(name: 'is_past') bool isPast,
+        List<ConversationUser>? speakersDetailList,
+    @JsonKey(name: 'is_speaker') bool? isSpeaker,
+    @JsonKey(name: 'is_past') bool? isPast,
   }) = _Conversation;
 
   factory Conversation.fromJson(Map<String, dynamic> json) =>
@@ -54,11 +54,11 @@ abstract class Conversation with _$Conversation {
 @freezed
 abstract class ConversationUser with _$ConversationUser {
   factory ConversationUser({
-    String pk,
-    String email,
-    String name,
-    String photo,
-    String introduction,
+    String? pk,
+    String? email,
+    String? name,
+    String? photo,
+    String? introduction,
   }) = _ConversationUser;
 
   factory ConversationUser.fromJson(Map<String, dynamic> json) =>
@@ -68,8 +68,8 @@ abstract class ConversationUser with _$ConversationUser {
 @freezed
 abstract class ConversationByDate with _$ConversationByDate {
   factory ConversationByDate({
-    DateTime date,
-    List<Conversation> conversations,
+    DateTime? date,
+    List<Conversation>? conversations,
   }) = _ConversationByDate;
 
   factory ConversationByDate.fromJson(Map<String, dynamic> json) =>

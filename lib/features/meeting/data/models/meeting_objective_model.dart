@@ -9,17 +9,22 @@ part 'meeting_objective_model.g.dart';
 
 @JsonSerializable()
 class MeetingObjectiveModel extends MeetingObjective {
-  final String icon;
-  final String name;
-  final int pk;
-  final ObjectiveType type;
+  final String? icon;
+  final String? name;
+  final int? pk;
+  final ObjectiveType? type;
 
   const MeetingObjectiveModel({
     this.icon,
     this.name,
     this.pk,
     this.type,
-  });
+  }) : super(
+          icon: icon,
+          name: name,
+          pk: pk,
+          type: type,
+        );
 
   factory MeetingObjectiveModel.fromJson(Map<String, dynamic> json) =>
       _$MeetingObjectiveModelFromJson(json);

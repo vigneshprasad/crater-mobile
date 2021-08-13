@@ -13,8 +13,8 @@ class RescheduleConfirmSheet extends StatefulWidget {
   final Meeting meeting;
 
   const RescheduleConfirmSheet({
-    Key key,
-    @required this.meeting,
+    Key? key,
+    required this.meeting,
   }) : super(key: key);
 
   @override
@@ -22,22 +22,22 @@ class RescheduleConfirmSheet extends StatefulWidget {
 }
 
 class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
-  MeetingBloc _bloc;
-  bool _loading;
-  RescheduleRequest _request;
-  DateTime _selectedSlot;
+  late MeetingBloc _bloc;
+  late bool _loading;
+  late RescheduleRequest _request;
+  DateTime? _selectedSlot;
 
   @override
   void initState() {
     _bloc = BlocProvider.of<MeetingBloc>(context);
-    _bloc.add(GetRescheduleRequestStarted(meetingId: widget.meeting.pk));
+    _bloc.add(GetRescheduleRequestStarted(meetingId: widget.meeting.pk!));
     _loading = true;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline5.copyWith(
+    final headingStyle = Theme.of(context).textTheme.headline5?.copyWith(
           fontSize: 22,
           fontWeight: FontWeight.w500,
           color: Colors.grey[800],
@@ -62,7 +62,7 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
               ),
             if (!_loading)
               RescheduleSlotPicker(
-                timeSlots: _request.timeSlots,
+                timeSlots: _request.timeSlots!,
                 disabled: _loading,
                 onValueChanged: (value) {
                   setState(() {
@@ -76,8 +76,8 @@ class _RescheduleConfirmSheetState extends State<RescheduleConfirmSheet> {
               onPressed: _selectedSlot != null
                   ? () {
                       _bloc.add(PostConfirmRescheduleRequestStarted(
-                        rescheduleRequest: _request.id,
-                        timeSlot: _selectedSlot,
+                        rescheduleRequest: _request.id!,
+                        timeSlot: _selectedSlot!,
                       ));
                     }
                   : null,
