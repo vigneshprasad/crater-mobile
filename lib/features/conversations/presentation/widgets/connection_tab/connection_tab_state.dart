@@ -17,6 +17,7 @@ final tagStateProvider =
 
 class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
   final Reader read;
+  final pageSize = 10;
   int page = 1;
   late bool loadingPage;
   bool allLoaded = false;
@@ -33,8 +34,8 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     allLoaded = false;
     loadingPage = true;
     state = ApiResult<List<Profile>>.loading();
-    final response =
-        await read(profileRepositoryProvider).retrieveProfiles(tags, page);
+    final response = await read(profileRepositoryProvider)
+        .retrieveProfiles(tags, page, pageSize);
 
     state = response.fold(
       (failure) {
@@ -44,7 +45,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
       (profiles) {
         allProfiles = profiles;
         loadingPage = false;
-        allLoaded = profiles.isEmpty;
+        allLoaded = profiles.isEmpty || profiles.length < pageSize;
         return ApiResult<List<Profile>>.data(allProfiles);
       },
     );
@@ -59,8 +60,8 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     }
     loadingPage = true;
     page = page + 1;
-    final response =
-        await read(profileRepositoryProvider).retrieveProfiles(tags, page);
+    final response = await read(profileRepositoryProvider)
+        .retrieveProfiles(tags, page, pageSize);
 
     state = response.fold(
       (failure) {
@@ -70,7 +71,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
       (profiles) {
         allProfiles += profiles;
         loadingPage = false;
-        allLoaded = profiles.isEmpty;
+        allLoaded = profiles.isEmpty || profiles.length < pageSize;
         return ApiResult<List<Profile>>.data(allProfiles);
       },
     );

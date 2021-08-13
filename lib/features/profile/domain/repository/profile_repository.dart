@@ -8,6 +8,7 @@ abstract class ProfileRepository {
   Future<Either<Failure, List<Profile>>> retrieveProfiles(
     String tags,
     int page,
+    int pageSize,
   );
   Future<Either<Failure, List<Profile>>> retrieveConnections(String profileId);
 }

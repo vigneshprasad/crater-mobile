@@ -101,7 +101,7 @@ class GetCreatTableMetaNotifier extends StateNotifier<TableMetaState> {
     final interests = response[0].getOrElse(() => List<MeetingInterest>.empty())
         as List<MeetingInterest>;
 
-    if (response[1].isRight()) {
+    if (response[1].isLeft()) {
       state = TableMetaState.emptyConfig();
       return;
     }

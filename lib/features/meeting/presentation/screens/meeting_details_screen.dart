@@ -70,7 +70,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           child: Column(
             children: [
               if (loading || loadingInfo) const LinearProgressIndicator(),
-              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp!.status),
+              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp?.status),
               if (!loadingInfo) _buildContent(context)
             ],
           ),
