@@ -184,7 +184,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 1),
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 0),
                   predicate: (route) => false);
             },
           );
@@ -193,7 +193,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 0),
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 2),
                   predicate: (route) => false);
             },
           );
@@ -376,9 +376,9 @@ const signupSlides = [
     buttons: [
       OnboardingSlideButton(
           title: '1:1', type: OnboardingSlideButtonType.start1on1Conversation),
-      OnboardingSlideButton(
-          title: 'Group',
-          type: OnboardingSlideButtonType.startGroupConversation),
+      // OnboardingSlideButton(
+      //     title: 'Group',
+      //     type: OnboardingSlideButtonType.startGroupConversation),
     ],
   ),
 ];
