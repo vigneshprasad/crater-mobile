@@ -123,7 +123,7 @@ class ProfileScreen extends HookWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => Container(color: Colors.red),
+      error: (error, stackTrace) => Center(child: Text(error.toString())),
     );
   }
 }
