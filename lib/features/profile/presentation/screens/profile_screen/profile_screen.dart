@@ -43,8 +43,8 @@ class ProfileScreen extends HookWidget {
   }
 
   Widget _appBar(BuildContext context, Profile profile) {
-    final size = _textSize(
-        profile.introduction!, Theme.of(context).textTheme.bodyText1!, context);
+    final size = _textSize(profile.introduction ?? '',
+        Theme.of(context).textTheme.bodyText1!, context);
 
     return SliverAppBar(
       expandedHeight: size.height + 350,
