@@ -25,11 +25,11 @@ class PhoneVerificationScreen extends StatefulWidget {
 class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   late PhoneVerifyBloc _bloc;
   late bool _validPhoneNumber;
-  late String _phoneNumber;
+  late String _phoneNumber = '';
   late bool _showSmsCodeInput;
   late String _smsCode;
   late bool _validOtp;
-  String otpResponse = "";
+  String otpResponse = '';
 
   @override
   void initState() {

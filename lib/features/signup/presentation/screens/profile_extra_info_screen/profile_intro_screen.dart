@@ -26,8 +26,8 @@ class ProfileExtraInfoScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final profile = BlocProvider.of<AuthBloc>(context).state.profile;
-    final state =
-        useProvider(profileFormMetaStateProvider(profile!.tagList!.first.pk!));
+    final state = useProvider(
+        profileFormMetaStateProvider(profile?.tagList?.first.pk ?? 0));
     return Scaffold(
       appBar: BaseAppBar(),
       body: state.when(
