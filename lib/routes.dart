@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -44,6 +45,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: ProfileExtraInfoScreen, path: "/profile-extra-info"),
     AutoRoute(page: PhoneVerificationScreen, path: "/phone-verify"),
     AutoRoute(page: AuthScreen, path: "/auth/:state?"),
+    AutoRoute(page: PhoneScreen, path: "/phone/:state?"),
     AutoRoute(page: ForgotPasswordScreen, path: "/forgot-password"),
     AutoRoute(page: OnboardingScreen, path: "/onboarding/:type"),
     AutoRoute(

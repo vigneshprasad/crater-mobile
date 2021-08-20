@@ -12,6 +12,7 @@ enum SocialAuthProviders {
   linkedin,
   apple,
   email,
+  phone,
 }
 
 class UCGetSocialAuthToken

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/api/auth/otp_api_service.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -445,6 +446,7 @@ class Di {
 
     // Api Services
     container.registerInstance(AuthApiService.create());
+    container.registerInstance(OtpApiService.create());
     container.registerInstance(UserApiService.create());
     container.registerInstance(MasterClassApiService.create());
     container.registerInstance(PointsApiService.create());

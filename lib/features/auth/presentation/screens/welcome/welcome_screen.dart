@@ -368,6 +368,21 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                         ),
                       ),
+                    BaseContainer(
+                      child: SizedBox(
+                        width: buttonWidth,
+                        height: buttonHeight,
+                        child: SocialAuthButton(
+                          provider: SocialAuthProviders.phone,
+                          isLarge: true,
+                          isSignUp: isSignUp,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _openPhoneAuthScreen(false, context);
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -379,6 +394,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
     AutoRouter.of(context).push(AuthScreenRoute(state: state));
+  }
+
+  void _openPhoneAuthScreen(bool showSignup, BuildContext context) {
+    final state = showSignup ? "signup" : "signin";
+    AutoRouter.of(context).push(PhoneScreenRoute(state: state));
   }
 }
 
