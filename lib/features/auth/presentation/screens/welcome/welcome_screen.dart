@@ -288,7 +288,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     if (!isSignUp)
                       BaseContainer(
                         child: SizedBox(
-                          width: double.infinity,
+                          width: buttonWidth,
                           height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.google,
@@ -368,21 +368,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                         ),
                       ),
-                    BaseContainer(
-                      child: SizedBox(
-                        width: buttonWidth,
-                        height: buttonHeight,
-                        child: SocialAuthButton(
-                          provider: SocialAuthProviders.phone,
-                          isLarge: true,
-                          isSignUp: isSignUp,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            _openPhoneAuthScreen(false, context);
-                          },
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          height: buttonHeight,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.phone,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _openPhoneAuthScreen(isSignUp, context);
+                            },
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -396,8 +397,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     AutoRouter.of(context).push(AuthScreenRoute(state: state));
   }
 
-  void _openPhoneAuthScreen(bool showSignup, BuildContext context) {
-    final state = showSignup ? "signup" : "signin";
+  void _openPhoneAuthScreen(bool isSignUp, BuildContext context) {
+    final state = isSignUp ? "signup" : "signin";
     AutoRouter.of(context).push(PhoneScreenRoute(state: state));
   }
 }

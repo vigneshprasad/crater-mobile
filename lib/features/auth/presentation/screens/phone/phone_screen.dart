@@ -7,11 +7,13 @@ import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart'
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../routes.gr.dart';
 
@@ -38,8 +40,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
   @override
   Widget build(BuildContext context) {
     const verify = 'Submit';
-    const heading = "You are all done!!";
-    const subtitle = 'Verify your account';
+    final heading =
+        widget.state == 'signin' ? 'Sign In' : 'Create a new account';
+    const subtitle = 'You will receive an OTP via SMS';
     final enterOtp =
         AppLocalizations.of(context)?.translate("phone_verify:enter_otp");
     final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
@@ -59,7 +62,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const ProfileHeader(
+              ProfileHeader(
                 title: heading,
                 subtitle: subtitle,
               ),
@@ -161,12 +164,12 @@ class _PhoneScreenState extends State<PhoneScreen> {
         textColor: Colors.white,
         fontSize: 14,
       );
-    }, (user) {
+    }, (user) async {
+      final profileResponse =
+          await context.read(authRepositoryProvider).getUserProfile();
+      final profile = profileResponse.getOrElse(() => UserProfile());
       context.read(userLeapProvider).setUserData(user);
-      Future.delayed(const Duration(seconds: 1), () {
-        AutoRouter.of(context)
-            .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
-      });
+      navigatePostAuth(user, profile: profile);
     });
   }
 
