@@ -5,7 +5,7 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../bloc/auth_bloc.dart';
 
-const kProfileIconSize = 36.00;
+const kProfileIconSize = 28.00;
 
 class UserProfileNavItem extends StatelessWidget {
   final VoidCallback? onPressed;

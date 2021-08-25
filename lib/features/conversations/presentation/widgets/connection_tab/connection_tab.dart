@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -65,7 +66,17 @@ class ConnectionTab extends HookWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: FilterChip(
                         selected: selectedTag?.name == tags[index].name,
-                        label: Text(tags[index].name ?? ''),
+                        showCheckmark: false,
+                        selectedColor: Colors.white,
+                        label: Text(
+                          tags[index].name ?? '',
+                          style: TextStyle(
+                              color: selectedTag?.name == tags[index].name
+                                  ? Colors.black
+                                  : Colors.white),
+                        ),
+                        backgroundColor: Colors.black,
+                        side: BorderSide(color: Colors.white),
                         onSelected: (value) {
                           selectedTag = tags[index];
                           context
@@ -157,10 +168,12 @@ class _Connection extends StatelessWidget {
                   const SizedBox(height: AppInsets.sm),
                   Text(
                     description,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
-                  )
+                  ),
+                  const SizedBox(height: AppInsets.sm),
+                  GradientButton(onPressed: () {}, title: 'CONNECT'),
                 ],
               ),
             ),

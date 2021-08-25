@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
@@ -23,6 +24,7 @@ import '../../../../../routes.gr.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/meeting_objective_entity.dart';
 import '../../../domain/entity/profile_entity/profile_entity.dart';
+import 'gradient_button.dart';
 import 'profile_screen_state.dart';
 
 class ProfileScreen extends HookWidget {
@@ -70,38 +72,20 @@ class ProfileScreen extends HookWidget {
         )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 100),
+        preferredSize: const Size(double.infinity, 50),
         child: SizedBox(
-          height: 100,
+          height: 50,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
               Container(
-                height: 80,
+                height: 50,
                 color: Theme.of(context).scaffoldBackgroundColor,
                 alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 120),
                 child: const TabBar(
                   tabs: [
-                    Tab(text: 'Club'),
                     Tab(text: 'About'),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                child: Row(
-                  children: [
-                    BaseContainer(
-                      radius: 40,
-                      child: _buildImage(profile, 40),
-                    ),
-                    const SizedBox(height: 16, width: 16),
-                    Text(
-                      profile.name!,
-                      style: Theme.of(context).textTheme.subtitle2,
-                    )
+                    Tab(text: 'Connections'),
                   ],
                 ),
               ),
@@ -110,35 +94,6 @@ class ProfileScreen extends HookWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildImage(Profile profile, double radius) {
-    final photo = profile.photo;
-    if (photo != null) {
-      return CachedNetworkImage(
-        imageUrl: photo,
-        imageBuilder: (context, imageProvider) {
-          return Container(
-            height: radius * 2,
-            width: radius * 2,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius),
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-            ),
-          );
-        },
-      );
-    } else {
-      return Container(
-        height: radius * 2,
-        width: radius * 2,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
-          image: const DecorationImage(
-              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
-        ),
-      );
-    }
   }
 
   @override
@@ -155,7 +110,6 @@ class ProfileScreen extends HookWidget {
                   _appBar(context, state.profile),
                 ],
                 body: TabBarView(children: [
-                  _ClubTab(state.connections!),
                   _AboutTab(
                     profile: state.profile,
                     objectives: state.objectives,
@@ -163,6 +117,7 @@ class ProfileScreen extends HookWidget {
                     meta: state.meta,
                     showLogout: allowEdit,
                   ),
+                  _ClubTab(state.connections!),
                 ]),
               ),
             )),
@@ -194,36 +149,77 @@ class _ProfileBody extends HookWidget {
     return Stack(
       alignment: Alignment.topLeft,
       children: [
-        Image.asset(
-          'assets/images/img_drawer_image.png',
-          width: double.infinity,
-          fit: BoxFit.cover,
-        ),
-        SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
-          child: Container(
+        SizedBox(
+          height: 150,
+          child: Image.asset(
+            'assets/images/img_drawer_image.png',
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            // height: 150,
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Spacer(),
-                    if (profile.linkedIn != null)
-                      _buildLinkedInButton()
-                    else
-                      const SizedBox(height: 50),
-                  ],
-                ),
-              ],
-            ),
+            fit: BoxFit.cover,
           ),
-        ))
+        ),
+        Positioned(
+          bottom: 70,
+          left: 20,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              BaseContainer(
+                radius: 40,
+                child: _buildImage(profile, 40),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  profile.name!,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+            bottom: 64,
+            right: 20,
+            child: GradientButton(
+              onPressed: () {},
+              title: 'CONNECT',
+            )),
+        Positioned(
+          bottom: 120,
+          right: 20,
+          child: _buildLinkedInButton(),
+        ),
       ],
     );
+  }
+
+  Widget _buildImage(Profile profile, double radius) {
+    final photo = profile.photo;
+    if (photo != null) {
+      return CachedNetworkImage(
+        imageUrl: photo,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: radius * 2,
+            width: radius * 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(radius),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        height: radius * 2,
+        width: radius * 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(radius),
+          image: const DecorationImage(
+              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
+        ),
+      );
+    }
   }
 
   Widget _buildLinkedInButton() {
@@ -483,46 +479,46 @@ class _ClubTab extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Ongoing Chats',
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          const SizedBox(height: AppInsets.xxl),
-          Row(
-            children: [
-              const SpeakersTable(
-                speakers: [],
-                chairSize: 36,
-              ),
-              // const SizedBox(width: AppInsets.xxl),
-              MaterialButton(
-                onPressed: () async {
-                  final value = await startConversation(context);
-                  if (value == null) {
-                    return;
-                  }
-                  // _tabController.animateTo(0);
-                  // _activeTopic.value = value;
-                },
-                child: BaseContainer(
-                  radius: 20,
-                  child: Container(
-                    width: 140,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black,
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      size: 40,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 80),
+          // Text(
+          //   'Ongoing Chats',
+          //   style: Theme.of(context).textTheme.subtitle1,
+          // ),
+          // const SizedBox(height: AppInsets.xxl),
+          // Row(
+          //   children: [
+          //     const SpeakersTable(
+          //       speakers: [],
+          //       chairSize: 36,
+          //     ),
+          //     // const SizedBox(width: AppInsets.xxl),
+          //     MaterialButton(
+          //       onPressed: () async {
+          //         final value = await startConversation(context);
+          //         if (value == null) {
+          //           return;
+          //         }
+          //         // _tabController.animateTo(0);
+          //         // _activeTopic.value = value;
+          //       },
+          //       child: BaseContainer(
+          //         radius: 20,
+          //         child: Container(
+          //           width: 140,
+          //           height: 100,
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(20),
+          //             color: Colors.black,
+          //           ),
+          //           child: const Icon(
+          //             Icons.add,
+          //             size: 40,
+          //           ),
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // ),
+          // const SizedBox(height: 80),
           Text(
             'Community Members',
             style: Theme.of(context).textTheme.subtitle1,

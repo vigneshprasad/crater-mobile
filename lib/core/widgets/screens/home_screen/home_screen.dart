@@ -8,6 +8,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -43,27 +44,24 @@ class HomeScreen extends HookWidget {
   final int? topic;
 
   static const icons = [
-    Icons.home,
-    Icons.people_alt,
-    null,
-    Icons.inbox,
-    Icons.search,
+    Icon(Icons.search),
+    Icon(Icons.inbox),
+    Icon(Icons.people_alt),
+    UserProfileNavItem(),
   ];
 
   static const labels = [
-    'Topics',
-    'Conversations',
-    '',
-    'My',
     'Community',
+    'My Conversations',
+    'Clubs',
+    'Profile',
   ];
 
   static const analyticsLabels = [
-    "topics_tab_viewed",
-    "all_conversations_tab_viewed",
-    'create_conversations_tab_viewed',
-    "my_conversations_tab_viewed",
     'community_tab_viewed',
+    "my_conversations_tab_viewed",
+    "all_conversations_tab_viewed",
+    "profile_tab_viewed",
   ];
 
   const HomeScreen({
@@ -105,24 +103,24 @@ class HomeScreen extends HookWidget {
     });
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.black,
       drawer: AppDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final value = await startConversation(context);
-          if (value == null) {
-            return;
-          }
-          _tabController.animateTo(0);
-          _activeTopic.value = value;
-        },
-        backgroundColor: Colors.black,
-        foregroundColor: HexColor.fromHex("#72675B"),
-        tooltip: 'Create a Conversation',
-        elevation: 4.0,
-        child: const Icon(Icons.add, size: 36),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     final value = await startConversation(context);
+      //     if (value == null) {
+      //       return;
+      //     }
+      //     _tabController.animateTo(0);
+      //     _activeTopic.value = value;
+      //   },
+      //   backgroundColor: Colors.black,
+      //   foregroundColor: HexColor.fromHex("#72675B"),
+      //   tooltip: 'Create a Conversation',
+      //   elevation: 4.0,
+      //   child: const Icon(Icons.add, size: 36),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BaseContainer(
         radius: 0,
         disableAnimation: true,
@@ -133,17 +131,16 @@ class HomeScreen extends HookWidget {
           unselectedFontSize: 10,
           unselectedItemColor: HexColor.fromHex("#72675B"),
           type: BottomNavigationBarType.fixed,
-          items: [0, 1, 2, 3, 4]
+          items: [0, 1, 2, 3]
               .map((index) => BottomNavigationBarItem(
-                  icon: Icon(
-                    icons[index],
-                  ),
-                  label: labels[index]))
+                    icon: icons[index],
+                    label: labels[index],
+                  ))
               .toList(),
           onTap: (int index) {
-            if (index == 2) {
-              return;
-            }
+            // if (index == 2) {
+            //   return;
+            // }
 
             _tabController.index = index;
           },
@@ -186,27 +183,27 @@ class HomeScreen extends HookWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: AppInsets.sm),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BaseContainer(
-                        color: Theme.of(context).backgroundColor,
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: UserProfileNavItem(
-                            onPressed: () {
-                              final user =
-                                  BlocProvider.of<AuthBloc>(context).state.user;
-                              if (user != null) {
-                                AutoRouter.of(context).push(ProfileScreenRoute(
-                                    userId: user.pk!, allowEdit: true));
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(width: AppInsets.sm),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: BaseContainer(
+                    //     color: Theme.of(context).backgroundColor,
+                    //     radius: 30,
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(2.0),
+                    //       child: UserProfileNavItem(
+                    //         onPressed: () {
+                    //           final user =
+                    //               BlocProvider.of<AuthBloc>(context).state.user;
+                    //           if (user != null) {
+                    //             AutoRouter.of(context).push(ProfileScreenRoute(
+                    //                 userId: user.pk!, allowEdit: true));
+                    //           }
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(width: AppInsets.l),
                   ],
                 ),
@@ -219,21 +216,20 @@ class HomeScreen extends HookWidget {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TopicsTab(name: name, topic: _activeTopic),
-                  ConversationCalendarTab(
-                    type: ConversationTabType.all,
-                    controller: _scrollController,
-                    name: name,
-                    onSchedulePressed: () => _tabController.animateTo(0),
-                  ),
-                  Container(),
+                  ConnectionTab(),
                   ConversationCalendarTab(
                     type: ConversationTabType.my,
                     controller: _scrollController,
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
-                  ConnectionTab(),
+                  ConversationCalendarTab(
+                    type: ConversationTabType.all,
+                    controller: _scrollController,
+                    name: name,
+                    onSchedulePressed: () => _tabController.animateTo(0),
+                  ),
+                  ProfileScreen(user!.pk!, allowEdit: true)
                 ],
               ),
             ),
