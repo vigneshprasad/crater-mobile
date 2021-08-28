@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_linkedin/linkedloginflutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:linkedin_login/linkedin_login.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
+import 'package:worknetwork/features/auth/domain/usecase/linked_auth_usecase.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -327,11 +331,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           provider: SocialAuthProviders.linkedin,
                           isLarge: true,
                           isSignUp: isSignUp,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            _authBloc.add(const AuthSocialPressed(
-                                provider: SocialAuthProviders.linkedin));
-                          },
+                          onPressed: _onPressedLinkedIn,
                         ),
                       ),
                     ),
@@ -374,6 +374,27 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
         ));
+  }
+
+  void _onPressedLinkedIn() {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return LinkedInUserWidget(
+        appBar: BaseAppBar(),
+        redirectUrl: ConfigReader.getLinkedInRedirect(),
+        clientId: ConfigReader.getLinkedInClientId(),
+        clientSecret: ConfigReader.getLinkedInSecret(),
+        onGetUserProfile: (UserSucceededAction linkedInUser) async {
+          Navigator.of(context).pop();
+          _authBloc.add(AuthLinkedTokenRecieved(
+              token: linkedInUser.user.token.accessToken!));
+        },
+        onError: (UserFailedAction e) {
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(msg: e.toString());
+        },
+      );
+    }));
   }
 
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
