@@ -37,6 +37,7 @@ class UserProfile extends HiveObject {
   final int? aspiration;
   final bool? profileIntroUpdated;
   final String? companyName;
+  final bool? allowMeetingRequests;
 
   UserProfile({
     this.pk,
@@ -73,5 +74,6 @@ class UserProfile extends HiveObject {
     this.aspiration,
     this.profileIntroUpdated,
     this.companyName,
+    this.allowMeetingRequests,
   });
 }

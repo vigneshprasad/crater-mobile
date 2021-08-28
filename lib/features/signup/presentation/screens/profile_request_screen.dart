@@ -1,0 +1,127 @@
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_radio.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../routes.gr.dart';
+import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../bloc/profile_intro/profile_intro_bloc.dart';
+import '../widgets/profile_footer.dart';
+import '../widgets/profile_header.dart';
+import '../widgets/profile_photo_picker.dart';
+
+const kHeaderFraction = 0.5;
+const kbottomBarHeight = 72.00;
+
+class ProfileRequestScreen extends StatefulWidget {
+  @override
+  _ProfileRequestScreenState createState() => _ProfileRequestScreenState();
+}
+
+class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
+  late ProfileIntroBloc _bloc;
+  bool allowMeetingRequests = false;
+
+  @override
+  void initState() {
+    final user = BlocProvider.of<AuthBloc>(context).state.user!;
+
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
+      ..add(GetProfileIntroRequestStarted(user: user));
+
+    allowMeetingRequests = BlocProvider.of<AuthBloc>(context)
+            .state
+            .profile
+            ?.allowMeetingRequests ??
+        false;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
+      const title =
+          'Allow relevant professional to discover & request meetings with you';
+
+      return BlocProvider.value(
+          value: _bloc,
+          child: BlocConsumer<ProfileIntroBloc, ProfileIntroState>(
+              listener: _blocListener,
+              builder: (context, state) {
+                return Scaffold(
+                  appBar: BaseAppBar(),
+                  body: ScaffoldContainer(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const ProfileHeader(
+                                title: title,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    kHeaderFraction,
+                                child: Center(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.all(AppInsets.xxl),
+                                    child:
+                                        Image(image: AppImageAssets.splashAI),
+                                  ),
+                                ),
+                              ),
+                              GradientRadio(
+                                  isEnabled: allowMeetingRequests,
+                                  onPressed: (value) {
+                                    allowMeetingRequests = value;
+                                  })
+                            ],
+                          ),
+                        ),
+                        ProfileFooter(
+                          onSave: submitAnswers,
+                          // onSkip: _goToNextScreen,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }));
+    });
+  }
+
+  void submitAnswers() {
+    _bloc.add(PostProfileIntroRequestStarted(values: {
+      'allow_meeting_request': allowMeetingRequests,
+    }));
+  }
+
+  void _goToNextScreen() {
+    AutoRouter.of(context).push(HomeScreenRoute());
+  }
+
+  void _blocListener(BuildContext context, ProfileIntroState state) {
+    if (state is ProfileIntroRequestLoaded) {
+    } else if (state is PatchProfileIntroRequestLoaded) {
+      final _ = BlocProvider.of<AuthBloc>(context)
+        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _goToNextScreen();
+    }
+  }
+}

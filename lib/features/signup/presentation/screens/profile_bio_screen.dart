@@ -42,7 +42,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
 
     final userProfile = BlocProvider.of<AuthBloc>(context).state.profile;
     if (userProfile != null) {
-      _bioController.text = userProfile.introduction!;
+      _bioController.text = userProfile.introduction ?? '';
 
       // Prefill Values in Editing mode
       _values[ProfileIntroElement.introduction] = userProfile.introduction;

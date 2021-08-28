@@ -8,6 +8,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -103,8 +105,41 @@ class HomeScreen extends HookWidget {
     });
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      // backgroundColor: Colors.black,
       drawer: AppDrawer(),
+      floatingActionButton: _activeTab.value != 0
+          ? null
+          : Container(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    HexColor.fromHex('#3C3B3B'),
+                    HexColor.fromHex('#4E4E4E'),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              width: 200,
+              child: Row(
+                children: [
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Worknetwork\nIntelligence',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  const SizedBox(width: 10),
+                  GradientButton(
+                    title: 'MATCH ME',
+                    onPressed: () {
+                      AutoRouter.of(context).push(TopicsListRoute());
+                    },
+                  ),
+                ],
+              ),
+            ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () async {
       //     final value = await startConversation(context);
@@ -129,7 +164,7 @@ class HomeScreen extends HookWidget {
           iconSize: 28,
           selectedFontSize: 10,
           unselectedFontSize: 10,
-          unselectedItemColor: HexColor.fromHex("#72675B"),
+          // unselectedItemColor: HexColor.fromHex("#72675B"),
           type: BottomNavigationBarType.fixed,
           items: [0, 1, 2, 3]
               .map((index) => BottomNavigationBarItem(
@@ -156,6 +191,7 @@ class HomeScreen extends HookWidget {
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   floating: true,
+
                   // pinned: true,
                   leading: Padding(
                     padding: const EdgeInsets.all(8.0),

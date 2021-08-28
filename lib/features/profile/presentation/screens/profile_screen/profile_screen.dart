@@ -48,8 +48,12 @@ class ProfileScreen extends HookWidget {
 
   Widget _appBar(BuildContext context, Profile profile) {
     return SliverAppBar(
-      expandedHeight: 260,
-      flexibleSpace: FlexibleSpaceBar(background: _ProfileBody(profile)),
+      expandedHeight: 240,
+      flexibleSpace: FlexibleSpaceBar(
+          background: _ProfileBody(
+        profile: profile,
+        showConnect: !allowEdit,
+      )),
       pinned: true,
       floating: true,
       elevation: 0.5,
@@ -72,14 +76,14 @@ class ProfileScreen extends HookWidget {
         )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 50),
+        preferredSize: const Size(double.infinity, 30),
         child: SizedBox(
-          height: 50,
+          height: 30,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
               Container(
-                height: 50,
+                height: 30,
                 color: Theme.of(context).scaffoldBackgroundColor,
                 alignment: Alignment.bottomLeft,
                 child: const TabBar(
@@ -141,8 +145,12 @@ class ProfileScreen extends HookWidget {
 
 class _ProfileBody extends HookWidget {
   final Profile profile;
+  final bool showConnect;
 
-  const _ProfileBody(this.profile);
+  const _ProfileBody({
+    required this.profile,
+    required this.showConnect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +166,7 @@ class _ProfileBody extends HookWidget {
           ),
         ),
         Positioned(
-          bottom: 70,
+          bottom: 50,
           left: 20,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -177,18 +185,14 @@ class _ProfileBody extends HookWidget {
             ],
           ),
         ),
-        Positioned(
-            bottom: 64,
-            right: 20,
-            child: GradientButton(
-              onPressed: () {},
-              title: 'CONNECT',
-            )),
-        Positioned(
-          bottom: 120,
-          right: 20,
-          child: _buildLinkedInButton(),
-        ),
+        if (showConnect)
+          Positioned(
+              bottom: 64,
+              right: 20,
+              child: GradientButton(
+                onPressed: () {},
+                title: 'CONNECT',
+              ))
       ],
     );
   }
@@ -220,28 +224,6 @@ class _ProfileBody extends HookWidget {
         ),
       );
     }
-  }
-
-  Widget _buildLinkedInButton() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: RawMaterialButton(
-        constraints: const BoxConstraints(
-          minWidth: 40,
-        ),
-        fillColor: AppTheme.linkedInColor,
-        padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.sm,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        onPressed: () =>
-            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
-        child: SvgPicture.asset(
-          AppSvgAssets.linkedinFilled,
-          height: 30.0,
-        ),
-      ),
-    );
   }
 }
 
@@ -308,7 +290,8 @@ class _AboutTab extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: AppInsets.l),
+          UnderlinedText('ABOUT'),
+          const SizedBox(height: AppInsets.sm),
           if (profile.introduction != null ||
               profile.generatedIntroduction != null)
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -324,26 +307,41 @@ class _AboutTab extends HookWidget {
           const SizedBox(height: AppInsets.xxl),
           if (meta?.isNotEmpty ?? false)
             Column(
-                children: meta!.entries
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 150,
-                                child: Text(e.key),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UnderlinedText('SNAPSHOT'),
+                const SizedBox(height: AppInsets.l),
+                Column(
+                    children: meta!.entries
+                        .map((e) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: Text(
+                                      e.key,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  ),
+                                  Text(
+                                    e.value,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                e.value,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
-                          ),
-                        ))
-                    .toList()),
+                            ))
+                        .toList()),
+              ],
+            ),
           _Objectives(objectives),
           const SizedBox(height: AppInsets.xxl),
           _Interests(interests),
+          const SizedBox(height: AppInsets.xxl),
+          UnderlinedText('CONNECT'),
+          const SizedBox(height: AppInsets.l),
+          _buildLinkedInButton(),
           const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(
@@ -357,6 +355,28 @@ class _AboutTab extends HookWidget {
     );
   }
 
+  Widget _buildLinkedInButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RawMaterialButton(
+        constraints: const BoxConstraints(
+          minWidth: 40,
+        ),
+        fillColor: AppTheme.linkedInColor,
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.sm,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        onPressed: () =>
+            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
+        child: SvgPicture.asset(
+          AppSvgAssets.linkedinFilled,
+          height: 30.0,
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleLogout(BuildContext context) async {
     BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
     await KiwiContainer().resolve<Analytics>().reset();
@@ -364,6 +384,32 @@ class _AboutTab extends HookWidget {
     await KiwiContainer().resolve<LocalStorage>().initStorage();
     AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
         predicate: (route) => false);
+  }
+}
+
+class UnderlinedText extends StatelessWidget {
+  final String text;
+  const UnderlinedText(
+    this.text, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          text,
+          style: TextStyle(fontWeight: FontWeight.w900),
+        ),
+        Container(
+          width: 10,
+          height: 2,
+          color: Colors.white,
+        )
+      ],
+    );
   }
 }
 

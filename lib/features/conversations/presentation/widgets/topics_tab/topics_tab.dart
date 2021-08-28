@@ -153,7 +153,7 @@ class TopicsTab extends HookWidget {
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    TopicsList(),
+                    TopicsList(showTitle: false),
                     AMATopicsList(),
                     RefreshIndicator(
                         onRefresh: () {

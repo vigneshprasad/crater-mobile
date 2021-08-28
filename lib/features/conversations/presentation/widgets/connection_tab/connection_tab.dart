@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -65,6 +69,10 @@ class ConnectionTab extends HookWidget {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: FilterChip(
+                        visualDensity: VisualDensity.compact,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         selected: selectedTag?.name == tags[index].name,
                         showCheckmark: false,
                         selectedColor: Colors.white,
@@ -173,13 +181,33 @@ class _Connection extends StatelessWidget {
                     style: bodyStyle,
                   ),
                   const SizedBox(height: AppInsets.sm),
-                  GradientButton(onPressed: () {}, title: 'CONNECT'),
+                  GradientButton(
+                    onPressed: () => _showTimeSlots(context),
+                    title: 'CONNECT',
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showTimeSlots(BuildContext context) async {
+    showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: TimeSlotsScreen(),
+        );
+      },
     );
   }
 }

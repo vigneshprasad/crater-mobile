@@ -1,4 +1,6 @@
 import 'package:auto_route/annotations.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_request_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -38,6 +40,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: HomeScreen, path: "/home/:tab?"),
     AutoRoute(
         page: HomeScreen, path: "/topic-list/:topic?", name: "topicListScreen"),
+    AutoRoute(page: TopicsList, path: "/topic-1on1"),
     AutoRoute(page: WelcomeScreen, path: "/welcome"),
     AutoRoute(page: ObjectivesScreen, path: "/objectives"),
     AutoRoute(page: ProfileSetupScreen, path: "/profile-setup"),
@@ -65,6 +68,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: ProfileTagsScreen, path: "/profile-tags/:editMode?"),
     AutoRoute(page: ProfileImageScreen, path: "/profile-image/:editMode?"),
     AutoRoute(page: ProfileBioScreen, path: "/profile-bio/:editMode?"),
+    AutoRoute(page: ProfileRequestScreen, path: "/profile-request-settings"),
     AutoRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
     AutoRoute(page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
   ],
