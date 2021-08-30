@@ -20,7 +20,7 @@ class RescheduleSlotPicker extends StatefulWidget {
 }
 
 class _RescheduleSlotPickerState extends State<RescheduleSlotPicker> {
-  late DateTime _value;
+  DateTime? _value;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _RescheduleSlotPickerState extends State<RescheduleSlotPicker> {
                   if (!widget.disabled) {
                     setState(() {
                       _value = value;
-                      widget.onValueChanged(_value);
+                      widget.onValueChanged(_value!);
                     });
                   }
                 },
@@ -81,7 +81,7 @@ class _TimeSlots extends StatelessWidget {
             duration: const Duration(milliseconds: 400),
             child: Center(
               child: Text(
-                dateFormat.format(slot),
+                dateFormat.format(slot.toLocal()),
                 style: textStyle,
               ),
             ),
