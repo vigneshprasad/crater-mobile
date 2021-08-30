@@ -76,7 +76,7 @@ class ProfileScreen extends HookWidget {
           child: const TabBar(
             tabs: [
               Tab(text: 'Snapshot'),
-              Tab(text: 'Inerests'),
+              Tab(text: 'Interests'),
               Tab(text: 'Connections'),
             ],
           ),
