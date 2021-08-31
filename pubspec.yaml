@@ -107,6 +107,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/splash/
+    - assets/images/coming_soon/
     - assets/lottie/
     - assets/svg/
     - assets/icons/

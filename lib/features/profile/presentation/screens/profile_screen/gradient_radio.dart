@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:worknetwork/core/color/color.dart';
 
-class GradientRadio extends StatelessWidget {
+class GradientRadio extends StatefulWidget {
   final Function(bool) onPressed;
   final ButtonStyle? style;
   final Gradient? gradient;
@@ -17,6 +17,11 @@ class GradientRadio extends StatelessWidget {
     required this.isEnabled,
   }) : super(key: key);
 
+  @override
+  _GradientRadioState createState() => _GradientRadioState();
+}
+
+class _GradientRadioState extends State<GradientRadio> {
   @override
   Widget build(BuildContext context) {
     final gradient = LinearGradient(colors: [
@@ -34,6 +39,7 @@ class GradientRadio extends StatelessWidget {
     return Row(
       children: [
         Text('NO', style: style),
+        const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
@@ -52,13 +58,15 @@ class GradientRadio extends StatelessWidget {
                 borderRadius: BorderRadius.circular(radius),
               ),
               height: 24,
-              width: 100,
+              // width: 100,
               margin: EdgeInsets.all(thickness),
               child: Switch(
-                value: isEnabled,
+                value: widget.isEnabled,
                 onChanged: (value) {
-                  isEnabled = value;
-                  onPressed(value);
+                  widget.onPressed(value);
+                  setState(() {
+                    widget.isEnabled = value;
+                  });
                 },
                 activeTrackColor: Colors.transparent,
                 inactiveTrackColor: Colors.transparent,
@@ -67,6 +75,7 @@ class GradientRadio extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Text('YES', style: style),
       ],
     );

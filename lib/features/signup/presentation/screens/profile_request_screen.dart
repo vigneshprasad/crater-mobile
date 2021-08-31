@@ -29,7 +29,7 @@ class ProfileRequestScreen extends StatefulWidget {
 
 class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
   late ProfileIntroBloc _bloc;
-  bool allowMeetingRequests = false;
+  bool allowMeetingRequests = true;
 
   @override
   void initState() {
@@ -38,11 +38,9 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
     _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
       ..add(GetProfileIntroRequestStarted(user: user));
 
-    allowMeetingRequests = BlocProvider.of<AuthBloc>(context)
-            .state
-            .profile
-            ?.allowMeetingRequests ??
-        false;
+    allowMeetingRequests =
+        BlocProvider.of<AuthBloc>(context).state.profile?.allowMeetingRequest ??
+            true;
     super.initState();
   }
 
@@ -86,11 +84,13 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
                                   ),
                                 ),
                               ),
-                              GradientRadio(
-                                  isEnabled: allowMeetingRequests,
-                                  onPressed: (value) {
-                                    allowMeetingRequests = value;
-                                  })
+                              FittedBox(
+                                child: GradientRadio(
+                                    isEnabled: allowMeetingRequests,
+                                    onPressed: (value) {
+                                      allowMeetingRequests = value;
+                                    }),
+                              )
                             ],
                           ),
                         ),

@@ -8,7 +8,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/features/club/presentation/screens/coming_soon/coming_soon_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
@@ -21,7 +21,6 @@ import '../../../../features/auth/presentation/widgets/user_profile_nav_item/use
 import '../../../../features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
-import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../analytics/analytics.dart';
@@ -109,37 +108,8 @@ class HomeScreen extends HookWidget {
       extendBodyBehindAppBar: true,
       // backgroundColor: Colors.black,
       drawer: AppDrawer(),
-      floatingActionButton: _activeTab.value != 0
-          ? null
-          : Container(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    HexColor.fromHex('#3C3B3B'),
-                    HexColor.fromHex('#4E4E4E'),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              width: 200,
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Worknetwork\nIntelligence',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  const SizedBox(width: 10),
-                  GradientButton(
-                    title: 'MATCH ME',
-                    onPressed: () {
-                      AutoRouter.of(context).push(TopicsListRoute());
-                    },
-                  ),
-                ],
-              ),
-            ),
+      floatingActionButton: floatingButton(_activeTab.value, context),
+      floatingActionButtonLocation: floatingButtonLocation(_activeTab.value),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () async {
       //     final value = await startConversation(context);
@@ -260,18 +230,95 @@ class HomeScreen extends HookWidget {
                     name: name,
                     onSchedulePressed: () => _tabController.animateTo(0),
                   ),
-                  ConversationCalendarTab(
-                    type: ConversationTabType.all,
-                    controller: _scrollController,
-                    name: name,
-                    onSchedulePressed: () => _tabController.animateTo(0),
-                  ),
+                  const ComingSoonScreen(),
                   ProfileScreen(user!.pk!, allowEdit: true)
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget? floatingButton(int acticeTab, BuildContext context) {
+    switch (acticeTab) {
+      case 0:
+        return matchMeButton(context);
+      case 2:
+        return earlyAccessButton(context);
+      default:
+        return null;
+    }
+  }
+
+  FloatingActionButtonLocation floatingButtonLocation(int acticeTab) {
+    switch (acticeTab) {
+      case 2:
+        return FloatingActionButtonLocation.centerFloat;
+      default:
+        return FloatingActionButtonLocation.endFloat;
+    }
+  }
+
+  Container matchMeButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            HexColor.fromHex('#3C3B3B'),
+            HexColor.fromHex('#4E4E4E'),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      width: 200,
+      child: Row(
+        children: [
+          const SizedBox(width: 10),
+          const Text(
+            'Worknetwork\nIntelligence',
+            style: TextStyle(fontSize: 10),
+          ),
+          const SizedBox(width: 10),
+          GradientButton(
+            title: 'MATCH ME',
+            onPressed: () {
+              AutoRouter.of(context).push(TopicsListRoute());
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container earlyAccessButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            HexColor.fromHex('#3C3B3B'),
+            HexColor.fromHex('#4E4E4E'),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      width: 212,
+      child: Row(
+        children: [
+          const SizedBox(width: 10),
+          const Text(
+            'For mentors\n& creators',
+            style: TextStyle(fontSize: 10),
+          ),
+          const SizedBox(width: 10),
+          GradientButton(
+            title: 'EARLY ACCESS',
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

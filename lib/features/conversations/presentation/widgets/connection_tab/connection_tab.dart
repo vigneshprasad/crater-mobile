@@ -65,6 +65,7 @@ class ConnectionTab extends HookWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: tags.length,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),

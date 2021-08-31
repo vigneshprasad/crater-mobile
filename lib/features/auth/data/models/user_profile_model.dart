@@ -212,7 +212,7 @@ class UserProfileModel extends UserProfile {
             aspiration: aspiration,
             profileIntroUpdated: profileIntroUpdated,
             companyName: companyName,
-            allowMeetingRequests: allowMeetingRequest);
+            allowMeetingRequest: allowMeetingRequest);
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       _$UserProfileModelFromJson(json);
