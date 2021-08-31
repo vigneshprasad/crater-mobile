@@ -184,7 +184,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 1),
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 0),
                   predicate: (route) => false);
             },
           );
@@ -193,7 +193,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 0),
+              AutoRouter.of(context).pushAndPopUntil(TopicListScreen(topic: 2),
                   predicate: (route) => false);
             },
           );
@@ -359,26 +359,12 @@ const signupSlides = [
   ),
   OnboardingSlideContent(
     heading: "",
-    subHeading: "What do you want to do first?",
+    subHeading: "Let’s set up your first 1:1 meeting",
     image: AppImageAssets.splashAI,
     buttons: [
       OnboardingSlideButton(
-          title: 'Start a conversation', type: OnboardingSlideButtonType.next),
-      OnboardingSlideButton(
-          title: 'Join a conversation',
-          type: OnboardingSlideButtonType.joinConversation),
-    ],
-  ),
-  OnboardingSlideContent(
-    heading: "",
-    subHeading: "Start a conversation",
-    image: AppImageAssets.splashAI,
-    buttons: [
-      OnboardingSlideButton(
-          title: '1:1', type: OnboardingSlideButtonType.start1on1Conversation),
-      OnboardingSlideButton(
-          title: 'Group',
-          type: OnboardingSlideButtonType.startGroupConversation),
+          title: 'Pick a Topic',
+          type: OnboardingSlideButtonType.start1on1Conversation),
     ],
   ),
 ];

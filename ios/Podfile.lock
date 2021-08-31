@@ -60,14 +60,10 @@ PODS:
     - FBSDKCoreKit (~> 11.0.0)
     - FBSDKLoginKit (~> 11.0.0)
     - Flutter
-  - flutter_secure_storage (3.3.1):
-    - Flutter
   - flutter_segment (0.0.1):
     - Analytics (= 3.7.0)
     - Flutter
     - Segment-Amplitude (= 3.0.1)
-  - flutter_web_auth (0.3.0):
-    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -156,9 +152,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
-  - flutter_web_auth (from `.symlinks/plugins/flutter_web_auth/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -228,12 +222,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_custom_tabs/ios"
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_segment:
     :path: ".symlinks/plugins/flutter_segment/ios"
-  flutter_web_auth:
-    :path: ".symlinks/plugins/flutter_web_auth/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
@@ -292,9 +282,7 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
-  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
-  flutter_web_auth: ede89bf8107b021cf16e769756d267d84d24e88b
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb

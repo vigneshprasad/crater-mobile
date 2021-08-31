@@ -47,6 +47,9 @@ class ProfileScreen extends HookWidget {
   }
 
   Widget _appBar(BuildContext context, Profile profile) {
+    final size = _textSize(profile.introduction ?? '',
+        Theme.of(context).textTheme.bodyText1!, context);
+
     return SliverAppBar(
       expandedHeight: 240,
       flexibleSpace: FlexibleSpaceBar(
@@ -138,7 +141,7 @@ class ProfileScreen extends HookWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => Container(color: Colors.red),
+      error: (error, stackTrace) => Center(child: Text(error.toString())),
     );
   }
 }

@@ -45,16 +45,19 @@ class ConversationCalendarTab extends HookWidget {
           name: name,
           onSchedulePressed: onSchedulePressed,
         ),
-        error: (err, st) => _Loader(),
+        error: (err, st) => _Loader(message: err.toString()),
       ),
     );
   }
 }
 
 class _Loader extends StatelessWidget {
+  final String message;
+
+  const _Loader({Key? key, required this.message}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.red);
+    return Center(child: Text(message));
   }
 }
 

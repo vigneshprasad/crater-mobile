@@ -90,6 +90,8 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
         debugPrint('No image selected.');
       }
     });
-    if (widget.onChoosePhoto != null) widget.onChoosePhoto!(_image!);
+    if (widget.onChoosePhoto != null && _image != null) {
+      widget.onChoosePhoto!(_image!);
+    }
   }
 }

@@ -70,7 +70,7 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           child: Column(
             children: [
               if (loading || loadingInfo) const LinearProgressIndicator(),
-              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp!.status),
+              if (userRsvp != null) _buildStatusHeader(userRsvp.rsvp?.status),
               if (!loadingInfo) _buildContent(context)
             ],
           ),
@@ -315,30 +315,30 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           meeting?.participants?.where((element) => element != userRsvp).first;
       if (otherUser?.rsvp?.status == MeetingRsvpStatus.reschedule) {
         buttons = [
-          BaseLargeIconButton(
-            icon: Icons.calendar_today,
-            text: "Pick a slot",
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return RescheduleConfirmSheet(
-                    meeting: meeting!,
-                  );
-                },
-              ).then((value) {
-                if (value != null && value == true) {
-                  AutoRouter.of(context).pop();
-                }
-              });
-            },
-          ),
-          const SizedBox(width: AppInsets.med),
-          const VerticalDivider(
-            endIndent: AppInsets.xl,
-            indent: AppInsets.xl,
-          ),
-          const SizedBox(width: AppInsets.med),
+          // BaseLargeIconButton(
+          //   icon: Icons.calendar_today,
+          //   text: "Pick a slot",
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //       context: context,
+          //       builder: (context) {
+          //         return RescheduleConfirmSheet(
+          //           meeting: meeting!,
+          //         );
+          //       },
+          //     ).then((value) {
+          //       if (value != null && value == true) {
+          //         AutoRouter.of(context).pop();
+          //       }
+          //     });
+          //   },
+          // ),
+          // const SizedBox(width: AppInsets.med),
+          // const VerticalDivider(
+          //   endIndent: AppInsets.xl,
+          //   indent: AppInsets.xl,
+          // ),
+          // const SizedBox(width: AppInsets.med),
           BaseLargeIconButton(
             icon: Icons.clear,
             text: "Cancel",
