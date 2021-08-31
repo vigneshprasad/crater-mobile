@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -50,6 +51,9 @@ abstract class MeetingRemoteDatasource {
   Future<RescheduleRequest> getRescheduleRequestFromRemote(int meetingId);
   Future<bool> postConfirmRescheduleRequestToRemote(
       DateTime timeSlot, int rescheduleRequest);
+  Future<bool> postMeetingRequestToRemote(
+      DateTime timeSlot, String requestedBy, String requestedTo);
+  Future<List<Profile>> getMeetingRequestFromRemote();
 }
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
@@ -275,6 +279,36 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
       return true;
     } else {
       throw ServerException(response.body);
+    }
+  }
+
+  @override
+  Future<bool> postMeetingRequestToRemote(
+      DateTime timeSlot, String requestedBy, String requestedTo) async {
+    final body = {
+      'time_slots': timeSlot.toIso8601String(),
+      'requested_by': requestedBy,
+      'requested_to': requestedTo,
+    };
+    final response = await apiService.postMeetingRequest(body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw ServerException(response.body);
+    }
+  }
+
+  @override
+  Future<List<Profile>> getMeetingRequestFromRemote() async {
+    final response = await apiService.getMeetingRequest();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+
+      return jsonList
+          .map((json) => Profile.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
     }
   }
 }

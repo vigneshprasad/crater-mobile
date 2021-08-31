@@ -1,13 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -15,6 +9,8 @@ import '../../../../../core/widgets/base/base_network_image/base_network_image.d
 import '../../../../../routes.gr.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
+import '../../../../profile/presentation/screens/profile_screen/gradient_button.dart';
+import '../../screens/create_conversation_screen/timeslots_screen.dart';
 import 'connection_tab_state.dart';
 
 class ConnectionTab extends HookWidget {

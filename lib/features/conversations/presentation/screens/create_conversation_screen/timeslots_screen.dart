@@ -4,16 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
-import '../../../../../core/analytics/analytics.dart';
-import '../../../../../core/analytics/anlytics_events.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
@@ -22,10 +17,7 @@ import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../../../meeting/presentation/widgets/time_slot_picker.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
-import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
-import '../../widgets/date_time_picker/date_time_picker.dart';
-import '../../widgets/meeting_interest_picker/meeting_interest_picker.dart';
 import 'create_conversation_state.dart';
 
 const kBottomPadding = 96.00;

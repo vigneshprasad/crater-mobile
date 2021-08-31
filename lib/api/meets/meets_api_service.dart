@@ -74,4 +74,10 @@ abstract class MeetsApiService extends ChopperService {
   @Post(path: 'meetings/reschedule/accepted/')
   Future<Response> postConfirmRescheduleRequest(
       @Body() Map<String, dynamic> body);
+
+  @Post(path: 'meetings/request/')
+  Future<Response> postMeetingRequest(@Body() Map<String, dynamic> body);
+
+  @Get(path: 'meetings/request/users')
+  Future<Response> getMeetingRequest();
 }

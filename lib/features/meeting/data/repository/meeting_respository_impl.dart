@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -192,6 +193,28 @@ class MeetingRepositoryImpl implements MeetingRepository {
     try {
       final response = await remoteDatasource
           .postConfirmRescheduleRequestToRemote(timeSlot, rescheduleRequest);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postMeetingRequest(
+      DateTime timeSlot, String requestedBy, String requestedTo) async {
+    try {
+      final response = await remoteDatasource.postMeetingRequestToRemote(
+          timeSlot, requestedBy, requestedTo);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Profile>>> getMeetingRequest() async {
+    try {
+      final response = await remoteDatasource.getMeetingRequestFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
