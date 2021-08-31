@@ -75,6 +75,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapLoginEmailToState(event);
     } else if (event is AuthRegisterEmailPressed) {
       yield* _mapRegisterEmailToState(event);
+    } else if (event is AuthLinkedTokenRecieved) {
+      yield* _mapLinkedAuthToState(event);
     } else if (event is AuthUserUpdateRecieved) {
       yield AuthStateSuccess(user: event.user, profile: state.profile);
     } else if (event is AuthUserProfileUpdateRecieved) {
@@ -158,6 +160,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         provider,
       ),
     );
+  }
+
+  Stream<AuthState> _mapLinkedAuthToState(
+      AuthLinkedTokenRecieved event) async* {
+    yield state.loading();
+    const provider = SocialAuthProviders.linkedin;
+    final osId = await pushNotifications.getSubscriptionToken();
+    yield state.copyWith(isSubmitting: false);
+    yield* _mapSocialAuthBackendCallToState(() {
+      return authLinkedIn(LinkedAuthParams(osId: osId, token: event.token));
+    }, provider);
   }
 
   Stream<AuthState> _mapSocialAuthBackendCallToState(
