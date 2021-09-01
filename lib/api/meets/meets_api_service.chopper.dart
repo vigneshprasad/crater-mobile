@@ -150,4 +150,19 @@ class _$MeetsApiService extends MeetsApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postMeetingRequest(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequest() {
+    final $url = '/resources/meetings/request/users';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

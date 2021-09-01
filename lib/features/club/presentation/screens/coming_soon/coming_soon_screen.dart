@@ -7,6 +7,7 @@ class ComingSoonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: const EdgeInsets.only(bottom: 60),
       itemBuilder: (context, index) {
         return InfoCell(item: _infoItems[index]);
       },
@@ -24,22 +25,27 @@ final _infoItems = [
   InfoItem(
     image: 'club1',
     title: 'Build Your Club',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
+    subtitle: 'Bring together like minds & your followers.',
+    height: 215,
   ),
   InfoItem(
     image: 'club2',
-    title: 'Enage your auidence',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
+    title: 'Go Live',
+    subtitle: 'Stream to your auidence from anywhere & anytime.',
+    height: 210,
   ),
   InfoItem(
     image: 'club3',
-    title: 'Give Exclusive Access',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
+    title: 'Auction Tokens',
+    subtitle: 'These work like tickets for members to buy to unlock rewards.',
+    height: 245,
   ),
   InfoItem(
     image: 'club4',
-    title: 'Monetize',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
+    title: 'Set up rewards',
+    subtitle:
+        'Tokens unlocks access to your rewards. These can be 1:1, AMAs or Q/A',
+    height: 280,
   ),
 ];
 
@@ -47,11 +53,13 @@ class InfoItem {
   final String image;
   final String title;
   final String subtitle;
+  final double height;
 
   InfoItem({
     required this.image,
     required this.title,
     required this.subtitle,
+    required this.height,
   });
 }
 
@@ -63,6 +71,7 @@ class InfoCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: HexColor.fromHex('#101010'),
@@ -72,26 +81,23 @@ class InfoCell extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/coming_soon/${item.image}.png",
-            fit: BoxFit.cover,
             width: double.infinity,
+            height: item.height,
           ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontWeight: FontWeight.w900),
-                ),
-                const SizedBox(height: 8),
-                Text(item.subtitle),
-              ],
-            ),
+          const SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                item.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.copyWith(fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 8),
+              Text(item.subtitle),
+            ],
           ),
         ],
       ),

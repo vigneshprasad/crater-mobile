@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
@@ -161,7 +162,13 @@ class HomeScreen extends HookWidget {
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   floating: true,
-
+                  title: _activeTab.value != 2
+                      ? null
+                      : Image.asset(
+                          'assets/images/coming_soon/title.png',
+                          height: 38,
+                        ),
+                  centerTitle: true,
                   // pinned: true,
                   leading: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -285,7 +292,7 @@ class HomeScreen extends HookWidget {
           GradientButton(
             title: 'MATCH ME',
             onPressed: () {
-              AutoRouter.of(context).push(TopicsListRoute());
+              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
             },
           ),
         ],
@@ -316,7 +323,21 @@ class HomeScreen extends HookWidget {
           const SizedBox(width: 10),
           GradientButton(
             title: 'EARLY ACCESS',
-            onPressed: () {},
+            onPressed: () async {
+              final user = BlocProvider.of<AuthBloc>(context).state.user;
+              final email = user?.email;
+              final url =
+                  'https://worknetwork.typeform.com/to/DXvutVaB#email=$email';
+              await launch(
+                url,
+                customTabsOption: const CustomTabsOption(
+                  enableUrlBarHiding: true,
+                  extraCustomTabs: [],
+                  showPageTitle: false,
+                  enableInstantApps: false,
+                ),
+              );
+            },
           ),
         ],
       ),

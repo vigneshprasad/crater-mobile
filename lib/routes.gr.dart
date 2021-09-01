@@ -100,9 +100,11 @@ class AppRouter extends _i1.RootStackRouter {
     TopicsListRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
+          final pathParams = data.pathParams;
           final args = data.argsAs<TopicsListRouteArgs>(
-              orElse: () => const TopicsListRouteArgs());
-          return _i5.TopicsList(showTitle: args.showTitle);
+              orElse: () => TopicsListRouteArgs(
+                  showTitle: pathParams.getBool('editMode')));
+          return _i5.TopicsList(key: args.key, showTitle: args.showTitle);
         }),
     WelcomeScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -410,18 +412,20 @@ class TopicListScreenArgs {
 }
 
 class TopicsListRoute extends _i1.PageRouteInfo<TopicsListRouteArgs> {
-  TopicsListRoute({bool? showTitle})
+  TopicsListRoute({_i2.Key? key, required bool showTitle})
       : super(name,
             path: '/topic-1on1',
-            args: TopicsListRouteArgs(showTitle: showTitle));
+            args: TopicsListRouteArgs(key: key, showTitle: showTitle));
 
   static const String name = 'TopicsListRoute';
 }
 
 class TopicsListRouteArgs {
-  const TopicsListRouteArgs({this.showTitle});
+  const TopicsListRouteArgs({this.key, required this.showTitle});
 
-  final bool? showTitle;
+  final _i2.Key? key;
+
+  final bool showTitle;
 }
 
 class WelcomeScreenRoute extends _i1.PageRouteInfo {

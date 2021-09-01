@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -51,7 +52,9 @@ class ConnectionTab extends HookWidget {
             error: (err, st) => Container(
               height: 200,
               width: 200,
-              color: Colors.red,
+              child: Center(
+                child: Text(err.toString()),
+              ),
             ),
             data: (tags) {
               selectedTag = selectedTag ?? allTag;
@@ -105,6 +108,7 @@ class ConnectionTab extends HookWidget {
             ),
             data: (profiles) => Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 itemCount: profiles.length +
                     (context.read(connectionStateProvider.notifier).allLoaded
                         ? 0
@@ -117,9 +121,19 @@ class ConnectionTab extends HookWidget {
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-                  return _Connection(
-                    user: profiles[index],
-                    authUserPk: null, //TODO: pass auth user pk.
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (index == 0)
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: UnderlinedText('MATCH ME'),
+                        ),
+                      _Connection(
+                        user: profiles[index],
+                        authUserPk: null, //TODO: pass auth user pk.
+                      ),
+                    ],
                   );
                 },
               ),
@@ -181,10 +195,11 @@ class _Connection extends StatelessWidget {
                     style: bodyStyle,
                   ),
                   const SizedBox(height: AppInsets.sm),
-                  GradientButton(
-                    onPressed: () => _showTimeSlots(context),
-                    title: 'CONNECT',
-                  ),
+                  if (user.allowMeetingRequest == true)
+                    GradientButton(
+                      onPressed: () => _showTimeSlots(context),
+                      title: 'CONNECT',
+                    ),
                 ],
               ),
             ),

@@ -18,18 +18,24 @@ import '../../screens/create_conversation_screen/create_conversation_state.dart'
 import '../topics_tab/topics_tab_state.dart';
 
 class TopicsList extends HookWidget {
-  final bool? showTitle;
+  final bool showTitle;
 
-  TopicsList({this.showTitle});
+  const TopicsList({
+    Key? key,
+    @PathParam("editMode") required this.showTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final topicsState = useProvider(topicsStateProvider);
     return Scaffold(
-      appBar: !(showTitle ?? false)
+      appBar: !showTitle
           ? null
           : BaseAppBar(
-              title: Text('Pick a 1:1 topic you wish to discuss'),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: const Text('Pick a 1:1 topic you wish to discuss'),
+              ),
             ),
       body: RefreshIndicator(
           onRefresh: () {
