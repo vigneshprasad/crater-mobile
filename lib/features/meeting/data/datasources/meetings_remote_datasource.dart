@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/meeting/data/models/requests_by_date_model.dart';
+import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
@@ -55,6 +57,7 @@ abstract class MeetingRemoteDatasource {
   Future<bool> postMeetingRequestToRemote(
       List<DateTime> timeSlot, String requestedBy, String requestedTo);
   Future<List<Profile>> getMeetingRequestFromRemote();
+  Future<List<RequestsByDate>> getMyMeetingRequestFromRemote();
 }
 
 final meetingRemoteDatasourceProvider =
@@ -314,6 +317,21 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
 
       return jsonList
           .map((json) => Profile.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<RequestsByDate>> getMyMeetingRequestFromRemote() async {
+    final response = await apiService.getMyMeetingRequest();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as List;
+
+      return json
+          .map((json) =>
+              RequestsByDateModel.fromJson(json as Map<String, dynamic>))
           .toList();
     } else {
       throw ServerException(response.error);

@@ -83,4 +83,7 @@ abstract class MeetsApiService extends ChopperService {
 
   @Get(path: 'meetings/request/users')
   Future<Response> getMeetingRequest();
+
+  @Get(path: 'meetings/request/my')
+  Future<Response> getMyMeetingRequest();
 }

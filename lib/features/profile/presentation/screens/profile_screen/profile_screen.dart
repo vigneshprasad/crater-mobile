@@ -346,7 +346,11 @@ class _AboutTab extends HookWidget {
           const SizedBox(height: AppInsets.xxl),
           _Interests(interests),
           const SizedBox(height: AppInsets.xxl),
-          if (profile.allowMeetingRequest == true) UnderlinedText('CONNECT'),
+          if (profile.allowMeetingRequest == true)
+            const UnderlinedText(
+              'CONNECT',
+              bgText: 'SOCIAL MEDIA',
+            ),
           const SizedBox(height: AppInsets.l),
           _buildLinkedInButton(),
           const SizedBox(height: AppInsets.xxl),

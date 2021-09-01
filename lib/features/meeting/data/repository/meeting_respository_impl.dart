@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:worknetwork/features/meeting/data/models/reschedule_request_model.dart';
+import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -226,6 +228,16 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, List<Profile>>> getMeetingRequest() async {
     try {
       final response = await remoteDatasource.getMeetingRequestFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RequestsByDate>>> getMyMeetingRequest() async {
+    try {
+      final response = await remoteDatasource.getMyMeetingRequestFromRemote();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
