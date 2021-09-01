@@ -136,7 +136,10 @@ class ConnectionTab extends HookWidget {
                       if (index == 0)
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: UnderlinedText('MATCH ME'),
+                          child: UnderlinedText(
+                            'MATCH ME',
+                            bgText: 'CURATED',
+                          ),
                         ),
                       _Connection(
                         user: profiles[index],
@@ -168,7 +171,10 @@ class ConnectionTab extends HookWidget {
                   if (index == 0)
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12.0),
-                      child: UnderlinedText('CONNECT NOW'),
+                      child: UnderlinedText(
+                        'CONNECT NOW',
+                        bgText: 'INSTANT',
+                      ),
                     ),
                   _Connection(
                     user: profiles[index],

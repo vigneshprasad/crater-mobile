@@ -81,6 +81,7 @@ dependencies:
   web_socket_channel: ^2.1.0
   intercom_flutter: ^5.0.0
   linkedin_login: ^2.0.1
+  bordered_text: ^2.0.0
 
 dev_dependencies:
   flutter_test:
