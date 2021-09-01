@@ -44,6 +44,6 @@ abstract class MeetingRepository {
     int rescheduleRequest,
   );
   Future<Either<Failure, bool>> postMeetingRequest(
-      DateTime timeSlot, String requestedBy, String requestedTo);
+      List<DateTime> timeSlot, String requestedBy, String requestedTo);
   Future<Either<Failure, List<Profile>>> getMeetingRequest();
 }

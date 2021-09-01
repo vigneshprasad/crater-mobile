@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -16,6 +18,15 @@ import '../../domain/entity/user_meeting_preference_entity.dart';
 import '../../domain/repository/meeting_repository.dart';
 import '../datasources/meetings_remote_datasource.dart';
 import '../models/meeting_rsvp_model.dart';
+
+final meetingRepositoryProvider = Provider<MeetingRepository>((ref) {
+  final remoteDataSource = ref.read(meetingRemoteDatasourceProvider);
+  return MeetingRepositoryImpl(
+    remoteDatasource: remoteDataSource,
+    networkInfo:
+        NetworkInfoImpl(connectionChecker: InternetConnectionChecker()),
+  );
+});
 
 class MeetingRepositoryImpl implements MeetingRepository {
   final MeetingRemoteDatasource remoteDatasource;
@@ -201,7 +212,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
 
   @override
   Future<Either<Failure, bool>> postMeetingRequest(
-      DateTime timeSlot, String requestedBy, String requestedTo) async {
+      List<DateTime> timeSlot, String requestedBy, String requestedTo) async {
     try {
       final response = await remoteDatasource.postMeetingRequestToRemote(
           timeSlot, requestedBy, requestedTo);

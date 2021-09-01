@@ -113,7 +113,8 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context).push(HomeScreenRoute());
+    AutoRouter.of(context)
+        .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {

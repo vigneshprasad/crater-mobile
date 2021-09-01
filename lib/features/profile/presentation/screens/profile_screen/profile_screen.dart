@@ -187,7 +187,7 @@ class _ProfileBody extends HookWidget {
         ),
         if (showConnect)
           Positioned(
-              bottom: 64,
+              bottom: 54,
               right: 20,
               child: GradientButton(
                 onPressed: () {},

@@ -179,8 +179,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         fontSize: 14,
       );
       Future.delayed(const Duration(seconds: 1), () {
-        AutoRouter.of(context)
-            .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
+        AutoRouter.of(context).push(const ProfileRequestScreenRoute());
       });
     }
   }

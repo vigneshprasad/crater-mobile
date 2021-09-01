@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -22,6 +25,10 @@ class ConnectionTab extends HookWidget {
   Widget build(BuildContext context) {
     final connectionState = useProvider(connectionStateProvider);
     final tagsState = useProvider(tagStateProvider);
+
+    final requestState = useProvider(requestStateProvider);
+
+    final user = BlocProvider.of<AuthBloc>(context).state.profile;
 
     final _controller = useScrollController();
     _controller.addListener(() {
@@ -125,13 +132,16 @@ class ConnectionTab extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (index == 0)
+                        connectableProfiles(context, requestState, user?.pk),
+                      if (index == 0)
                         const Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.symmetric(vertical: 12.0),
                           child: UnderlinedText('MATCH ME'),
                         ),
                       _Connection(
                         user: profiles[index],
-                        authUserPk: null, //TODO: pass auth user pk.
+                        authUserPk: user?.pk, //TODO: pass auth user pk.
+                        showConnect: false,
                       ),
                     ],
                   );
@@ -143,15 +153,46 @@ class ConnectionTab extends HookWidget {
       ),
     );
   }
+
+  Widget connectableProfiles(BuildContext context,
+      ApiResult<List<Profile>> requestState, int? userPk) {
+    return requestState.when(
+      loading: () => Container(),
+      error: (err, st) => Container(),
+      data: (profiles) => Column(
+        children: List.generate(profiles.length, (index) => index)
+            .map(
+              (index) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index == 0)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      child: UnderlinedText('CONNECT NOW'),
+                    ),
+                  _Connection(
+                    user: profiles[index],
+                    authUserPk: userPk, //TODO: pass auth user pk.
+                    showConnect: (profiles[index].pk == userPk ? false : true),
+                  ),
+                ],
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
 }
 
 class _Connection extends StatelessWidget {
   final Profile user;
   final int? authUserPk;
+  final bool showConnect;
   const _Connection({
     Key? key,
     required this.user,
     this.authUserPk,
+    required this.showConnect,
   }) : super(key: key);
 
   @override
@@ -195,7 +236,7 @@ class _Connection extends StatelessWidget {
                     style: bodyStyle,
                   ),
                   const SizedBox(height: AppInsets.sm),
-                  if (user.allowMeetingRequest == true)
+                  if (showConnect == true)
                     GradientButton(
                       onPressed: () => _showTimeSlots(context),
                       title: 'CONNECT',
@@ -220,7 +261,7 @@ class _Connection extends StatelessWidget {
             topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
             topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
           ),
-          child: TimeSlotsScreen(),
+          child: TimeSlotsScreen(profileId: user.uuid!),
         );
       },
     );

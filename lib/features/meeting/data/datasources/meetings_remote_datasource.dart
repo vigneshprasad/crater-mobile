@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
@@ -52,9 +53,15 @@ abstract class MeetingRemoteDatasource {
   Future<bool> postConfirmRescheduleRequestToRemote(
       DateTime timeSlot, int rescheduleRequest);
   Future<bool> postMeetingRequestToRemote(
-      DateTime timeSlot, String requestedBy, String requestedTo);
+      List<DateTime> timeSlot, String requestedBy, String requestedTo);
   Future<List<Profile>> getMeetingRequestFromRemote();
 }
+
+final meetingRemoteDatasourceProvider =
+    Provider<MeetingRemoteDatasource>((ref) {
+  final apiService = ref.read(meetsApiServiceProvider);
+  return MeetingRemoteDatasourceImpl(apiService);
+});
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   final MeetsApiService apiService;
@@ -284,14 +291,14 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
 
   @override
   Future<bool> postMeetingRequestToRemote(
-      DateTime timeSlot, String requestedBy, String requestedTo) async {
+      List<DateTime> timeSlot, String requestedBy, String requestedTo) async {
     final body = {
-      'time_slots': timeSlot.toIso8601String(),
+      'time_slots': timeSlot.map((e) => e.toIso8601String()).toList(),
       'requested_by': requestedBy,
       'requested_to': requestedTo,
     };
     final response = await apiService.postMeetingRequest(body);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     } else {
       throw ServerException(response.body);
@@ -302,7 +309,8 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   Future<List<Profile>> getMeetingRequestFromRemote() async {
     final response = await apiService.getMeetingRequest();
     if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = json['results'] as List;
 
       return jsonList
           .map((json) => Profile.fromJson(json as Map<String, dynamic>))

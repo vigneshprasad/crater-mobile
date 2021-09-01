@@ -235,7 +235,10 @@ class HomeScreen extends HookWidget {
                     type: ConversationTabType.my,
                     controller: _scrollController,
                     name: name,
-                    onSchedulePressed: () => _tabController.animateTo(0),
+                    onSchedulePressed: () {
+                      AutoRouter.of(context)
+                          .push(TopicsTabRoute(topic: _activeTopic));
+                    },
                   ),
                   const ComingSoonScreen(),
                   ProfileScreen(user!.pk!, allowEdit: true)

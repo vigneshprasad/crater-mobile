@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -12,31 +12,31 @@ import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
+import '../../../../meeting/data/repository/meeting_respository_impl.dart';
 import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/time_slot_entity.dart';
 import '../../../../meeting/presentation/widgets/time_slot_picker.dart';
-import '../../../data/repository/conversation_repository_impl.dart';
-import '../../../domain/entity/topic_entity/topic_entity.dart';
 import 'create_conversation_state.dart';
 
 const kBottomPadding = 96.00;
 
 class TimeSlotsScreen extends HookWidget {
+  final String profileId;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _interestFormFieldKey = GlobalKey<FormFieldState>();
+
+  TimeSlotsScreen({
+    required this.profileId,
+  });
 
   @override
   Widget build(BuildContext context) {
     final state =
         useProvider(getCreateTableMetaNotifier(ConversationType.curated));
-    final topicStyle = Theme.of(context).textTheme.headline6;
     final _interests = useState<List<MeetingInterest>>([]);
     final _timeslots = useState<List<TimeSlot>>([]);
-    final _instantTimeSlot = useState<DateTime?>(null);
     final _formStep = useState<int>(0);
-    final descriptionStyle =
-        Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white70);
 
     final _scrollControiler = useScrollController();
 
@@ -127,18 +127,18 @@ class TimeSlotsScreen extends HookWidget {
   ) async {
     final _overlay = _buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
+    final user = BlocProvider.of<AuthBloc>(context).state.profile;
     final response =
-        await context.read(conversationRepositoryProvider).postGroupOptin(
-              interests,
-              timeslots,
-              config,
-              Topic(),
+        await context.read(meetingRepositoryProvider).postMeetingRequest(
+              timeslots.map((e) => e.start!).toList(),
+              user!.uuid!,
+              profileId,
             );
 
     response.fold(
       (failure) {
         _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message!);
+        // Fluttertoast.showToast(msg: failure.message!);
       },
       (optin) async {
         _overlay.remove();

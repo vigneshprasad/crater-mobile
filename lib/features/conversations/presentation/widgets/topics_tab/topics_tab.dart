@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
@@ -18,11 +20,9 @@ import '../topics_list/topics_list.dart';
 import 'topics_tab_state.dart';
 
 class TopicsTab extends HookWidget {
-  final String name;
   final ValueNotifier<int> topic;
 
   TopicsTab({
-    required this.name,
     required this.topic,
   });
 
@@ -40,6 +40,9 @@ class TopicsTab extends HookWidget {
     final _textController = useTextEditingController();
     final _topicSuggestion = useState('');
 
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final name = user?.name?.split(' ').first ?? '';
+
     useEffect(() {
       _tabController.index = topic.value;
       return;
@@ -55,8 +58,9 @@ class TopicsTab extends HookWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
               pinned: true,
-              toolbarHeight: 0,
-              automaticallyImplyLeading: false,
+              // toolbarHeight: 0,
+
+              // automaticallyImplyLeading: false,
               bottom: PreferredSize(
                 preferredSize: const Size(300, 50),
                 child: Padding(
