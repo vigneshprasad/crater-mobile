@@ -8,13 +8,12 @@ import '../../../../core/widgets/base/base_network_image/base_network_image.dart
 import '../../../../routes.gr.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
-import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_participant_entity.dart';
 import '../../domain/entity/meeting_request_entity.dart';
 
 class MeetingRequestCard extends StatelessWidget {
   final MeetingRequest meeting;
-  final ValueChanged<Meeting>? onCardPressed;
+  final VoidCallback? onCardPressed;
 
   const MeetingRequestCard({
     Key? key,
@@ -42,10 +41,7 @@ class MeetingRequestCard extends StatelessWidget {
       heading = "Meeting request from - ${meeting.participantDetail!.name}";
     }
     return CalendarCardLayout(
-      onPressed: () {
-        AutoRouter.of(context)
-            .push(MeetingRequestDetailScreenRoute(meetingId: meeting.id!));
-      },
+      onPressed: onCardPressed,
       background: background,
       heading: Text(heading),
       subHeading: Row(

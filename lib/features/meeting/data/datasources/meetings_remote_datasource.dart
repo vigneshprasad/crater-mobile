@@ -368,7 +368,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw ServerException(response.body);
+      throw ServerException(response.bodyString);
     }
   }
 
@@ -379,7 +379,7 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw ServerException(response.body);
+      throw ServerException(response.bodyString);
     }
   }
 }

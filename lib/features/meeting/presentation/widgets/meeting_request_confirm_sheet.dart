@@ -52,27 +52,55 @@ class MeetingRequestConfirmSheet extends HookWidget {
     );
   }
 
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Theme.of(context).backgroundColor.withOpacity(0.8),
+          child: _Loader(),
+        );
+      },
+    );
+  }
+
   Future<void> _submit(BuildContext context, DateTime? selectedSlot) async {
     if (selectedSlot == null) {
       return;
     }
+    final overlay = _buildLoaderOverlay();
+    Overlay.of(context)?.insert(overlay);
+
     final response = await context
         .read(meetingRepositoryProvider)
         .postAcceptMeetingRequest(meeting.id!, selectedSlot);
 
     response.fold(
-      (failure) {
-        // _overlay.remove();
+      (failure) async {
+        overlay.remove();
+        await Navigator.of(context).maybePop();
         Fluttertoast.showToast(msg: failure.toString());
       },
       (optin) async {
-        // _overlay.remove();
+        overlay.remove();
 
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
         Navigator.of(context).pop(true);
       },
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

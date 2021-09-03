@@ -188,19 +188,33 @@ class MeetingRequestDetailScreen extends HookWidget {
     });
   }
 
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Theme.of(context).backgroundColor.withOpacity(0.8),
+          child: _Loader(),
+        );
+      },
+    );
+  }
+
   Future<void> _declineMeetingRequest(
       BuildContext context, MeetingRequest meeting) async {
+    final overlay = _buildLoaderOverlay();
+    Overlay.of(context)?.insert(overlay);
+
     final response = await context
         .read(meetingRepositoryProvider)
         .postDeclineMeetingRequest(meeting.id!);
 
     response.fold(
       (failure) {
-        // _overlay.remove();
+        overlay.remove();
         Fluttertoast.showToast(msg: failure.toString());
       },
       (optin) async {
-        // _overlay.remove();
+        overlay.remove();
 
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
@@ -456,6 +470,19 @@ class _ListItem extends StatelessWidget {
           style: textStyle,
         )
       ],
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
