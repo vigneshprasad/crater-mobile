@@ -12,7 +12,7 @@ import 'features/auth/presentation/screens/auth/auth_screen.dart' as _i12;
 import 'features/auth/presentation/screens/forgot_password/forgot_password_screen.dart'
     as _i13;
 import 'features/auth/presentation/screens/new_password/new_password_screen.dart'
-    as _i34;
+    as _i35;
 import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart'
     as _i14;
 import 'features/auth/presentation/screens/splash/splash_screen.dart' as _i3;
@@ -23,49 +23,51 @@ import 'features/chat_inbox/presentation/screens/chat_search_screen.dart'
 import 'features/community/presentation/screens/create_post.dart' as _i15;
 import 'features/community/presentation/screens/post_screen.dart' as _i20;
 import 'features/conversations/domain/entity/topic_entity/topic_entity.dart'
-    as _i41;
-import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart'
-    as _i26;
-import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart'
-    as _i27;
-import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart'
     as _i42;
+import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart'
+    as _i27;
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart'
+    as _i28;
+import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart'
+    as _i43;
 import 'features/conversations/presentation/widgets/topics_list/topics_list.dart'
     as _i6;
 import 'features/conversations/presentation/widgets/topics_tab/topics_tab.dart'
     as _i5;
-import 'features/meeting/domain/entity/meeting_config_entity.dart' as _i36;
-import 'features/meeting/domain/entity/meeting_interest_entity.dart' as _i39;
-import 'features/meeting/domain/entity/meeting_objective_entity.dart' as _i38;
+import 'features/meeting/domain/entity/meeting_config_entity.dart' as _i37;
+import 'features/meeting/domain/entity/meeting_interest_entity.dart' as _i40;
+import 'features/meeting/domain/entity/meeting_objective_entity.dart' as _i39;
 import 'features/meeting/domain/entity/user_meeting_preference_entity.dart'
-    as _i37;
+    as _i38;
 import 'features/meeting/presentation/screens/meeting_details_screen.dart'
     as _i22;
+import 'features/meeting/presentation/screens/meeting_request_details_screen.dart'
+    as _i23;
 import 'features/meeting/presentation/screens/register_meeting_screen.dart'
     as _i21;
 import 'features/notification/presentation/screens/notifications_screen.dart'
     as _i19;
-import 'features/points/presentation/screens/points_faq_screen.dart' as _i25;
+import 'features/points/presentation/screens/points_faq_screen.dart' as _i26;
 import 'features/profile/presentation/screens/profile_screen/profile_screen.dart'
-    as _i35;
-import 'features/rewards/domain/entity/package_entity.dart' as _i40;
+    as _i36;
+import 'features/rewards/domain/entity/package_entity.dart' as _i41;
 import 'features/rewards/presentation/screens/package_detail_screen.dart'
-    as _i23;
-import 'features/rewards/presentation/screens/package_purchase_screen.dart'
     as _i24;
+import 'features/rewards/presentation/screens/package_purchase_screen.dart'
+    as _i25;
 import 'features/signup/presentation/screens/objectives_screen.dart' as _i8;
 import 'features/signup/presentation/screens/phone_verification_screen.dart'
     as _i11;
-import 'features/signup/presentation/screens/profile_basic_screen.dart' as _i29;
-import 'features/signup/presentation/screens/profile_bio_screen.dart' as _i32;
+import 'features/signup/presentation/screens/profile_basic_screen.dart' as _i30;
+import 'features/signup/presentation/screens/profile_bio_screen.dart' as _i33;
 import 'features/signup/presentation/screens/profile_extra_info_screen/profile_intro_screen.dart'
     as _i10;
-import 'features/signup/presentation/screens/profile_image_screen.dart' as _i31;
-import 'features/signup/presentation/screens/profile_intro_screen.dart' as _i28;
+import 'features/signup/presentation/screens/profile_image_screen.dart' as _i32;
+import 'features/signup/presentation/screens/profile_intro_screen.dart' as _i29;
 import 'features/signup/presentation/screens/profile_request_screen.dart'
-    as _i33;
+    as _i34;
 import 'features/signup/presentation/screens/profile_setup_screen.dart' as _i9;
-import 'features/signup/presentation/screens/profile_tags_screen.dart' as _i30;
+import 'features/signup/presentation/screens/profile_tags_screen.dart' as _i31;
 import 'features/videos/presentation/screens/video_player_screen.dart' as _i18;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -205,24 +207,32 @@ class AppRouter extends _i1.RootStackRouter {
           return _i22.MeetingDetailScreen(
               key: args.key, meetingId: args.meetingId);
         }),
+    MeetingRequestDetailScreenRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (data) {
+              final args = data.argsAs<MeetingRequestDetailScreenRouteArgs>();
+              return _i23.MeetingRequestDetailScreen(
+                  key: args.key, meetingId: args.meetingId);
+            }),
     PackageDetailScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<PackageDetailScreenRouteArgs>();
-          return _i23.PackageDetailScreen(
+          return _i24.PackageDetailScreen(
               key: args.key, packageId: args.packageId);
         }),
     PackagePurchaseScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<PackagePurchaseScreenRouteArgs>();
-          return _i24.PackagePurchaseScreen(
+          return _i25.PackagePurchaseScreen(
               key: args.key, package: args.package);
         }),
     PointsFaqScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i25.PointsFaqScreen();
+          return _i26.PointsFaqScreen();
         }),
     ConversationScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -231,14 +241,14 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ConversationScreenRouteArgs>(
               orElse: () =>
                   ConversationScreenRouteArgs(id: pathParams.optInt('id')));
-          return _i26.ConversationScreen(id: args.id);
+          return _i27.ConversationScreen(id: args.id);
         }),
     CreateConversationScreenRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
             routeData: routeData,
             builder: (data) {
               final args = data.argsAs<CreateConversationScreenRouteArgs>();
-              return _i27.CreateConversationScreen(
+              return _i28.CreateConversationScreen(
                   key: args.key, topic: args.topic, type: args.type);
             }),
     ProfileIntroScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
@@ -248,7 +258,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileIntroScreenRouteArgs>(
               orElse: () => ProfileIntroScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
-          return _i28.ProfileIntroScreen(
+          return _i29.ProfileIntroScreen(
               key: args.key, editMode: args.editMode);
         }),
     ProfileBasicScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
@@ -258,7 +268,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileBasicScreenRouteArgs>(
               orElse: () => ProfileBasicScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
-          return _i29.ProfileBasicScreen(
+          return _i30.ProfileBasicScreen(
               key: args.key, editMode: args.editMode);
         }),
     ProfileTagsScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
@@ -268,7 +278,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileTagsScreenRouteArgs>(
               orElse: () => ProfileTagsScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
-          return _i30.ProfileTagsScreen(key: args.key, editMode: args.editMode);
+          return _i31.ProfileTagsScreen(key: args.key, editMode: args.editMode);
         }),
     ProfileImageScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -277,7 +287,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileImageScreenRouteArgs>(
               orElse: () => ProfileImageScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
-          return _i31.ProfileImageScreen(
+          return _i32.ProfileImageScreen(
               key: args.key, editMode: args.editMode);
         }),
     ProfileBioScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
@@ -287,12 +297,12 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileBioScreenRouteArgs>(
               orElse: () => ProfileBioScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
-          return _i32.ProfileBioScreen(key: args.key, editMode: args.editMode);
+          return _i33.ProfileBioScreen(key: args.key, editMode: args.editMode);
         }),
     ProfileRequestScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i33.ProfileRequestScreen();
+          return _i34.ProfileRequestScreen();
         }),
     NewPasswordScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -301,7 +311,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<NewPasswordScreenRouteArgs>(
               orElse: () => NewPasswordScreenRouteArgs(
                   params: pathParams.optString('params')));
-          return _i34.NewPasswordScreen(key: args.key, params: args.params);
+          return _i35.NewPasswordScreen(key: args.key, params: args.params);
         }),
     ProfileScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -311,7 +321,7 @@ class AppRouter extends _i1.RootStackRouter {
               orElse: () => ProfileScreenRouteArgs(
                   userId: pathParams.getString('userId'),
                   allowEdit: pathParams.getBool('allowEdit')));
-          return _i35.ProfileScreen(args.userId, allowEdit: args.allowEdit);
+          return _i36.ProfileScreen(args.userId, allowEdit: args.allowEdit);
         })
   };
 
@@ -341,6 +351,8 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(RegisterMeetingScreenRoute.name,
             path: '/register-meeting'),
         _i1.RouteConfig(MeetingDetailScreenRoute.name, path: '/meeting-detail'),
+        _i1.RouteConfig(MeetingRequestDetailScreenRoute.name,
+            path: '/meeting-request-detail'),
         _i1.RouteConfig(PackageDetailScreenRoute.name, path: '/package-detail'),
         _i1.RouteConfig(PackagePurchaseScreenRoute.name,
             path: '/package-purchase'),
@@ -569,10 +581,10 @@ class RegisterMeetingScreenRoute
     extends _i1.PageRouteInfo<RegisterMeetingScreenRouteArgs> {
   RegisterMeetingScreenRoute(
       {_i2.Key? key,
-      required _i36.MeetingConfig config,
-      required _i37.UserMeetingPreference preference,
-      required List<_i38.MeetingObjective> objectives,
-      required List<_i39.MeetingInterest> interests})
+      required _i37.MeetingConfig config,
+      required _i38.UserMeetingPreference preference,
+      required List<_i39.MeetingObjective> objectives,
+      required List<_i40.MeetingInterest> interests})
       : super(name,
             path: '/register-meeting',
             args: RegisterMeetingScreenRouteArgs(
@@ -595,13 +607,13 @@ class RegisterMeetingScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i36.MeetingConfig config;
+  final _i37.MeetingConfig config;
 
-  final _i37.UserMeetingPreference preference;
+  final _i38.UserMeetingPreference preference;
 
-  final List<_i38.MeetingObjective> objectives;
+  final List<_i39.MeetingObjective> objectives;
 
-  final List<_i39.MeetingInterest> interests;
+  final List<_i40.MeetingInterest> interests;
 }
 
 class MeetingDetailScreenRoute
@@ -616,6 +628,26 @@ class MeetingDetailScreenRoute
 
 class MeetingDetailScreenRouteArgs {
   const MeetingDetailScreenRouteArgs({this.key, required this.meetingId});
+
+  final _i2.Key? key;
+
+  final int meetingId;
+}
+
+class MeetingRequestDetailScreenRoute
+    extends _i1.PageRouteInfo<MeetingRequestDetailScreenRouteArgs> {
+  MeetingRequestDetailScreenRoute({_i2.Key? key, required int meetingId})
+      : super(name,
+            path: '/meeting-request-detail',
+            args: MeetingRequestDetailScreenRouteArgs(
+                key: key, meetingId: meetingId));
+
+  static const String name = 'MeetingRequestDetailScreenRoute';
+}
+
+class MeetingRequestDetailScreenRouteArgs {
+  const MeetingRequestDetailScreenRouteArgs(
+      {this.key, required this.meetingId});
 
   final _i2.Key? key;
 
@@ -642,7 +674,7 @@ class PackageDetailScreenRouteArgs {
 
 class PackagePurchaseScreenRoute
     extends _i1.PageRouteInfo<PackagePurchaseScreenRouteArgs> {
-  PackagePurchaseScreenRoute({_i2.Key? key, required _i40.Package package})
+  PackagePurchaseScreenRoute({_i2.Key? key, required _i41.Package package})
       : super(name,
             path: '/package-purchase',
             args: PackagePurchaseScreenRouteArgs(key: key, package: package));
@@ -655,7 +687,7 @@ class PackagePurchaseScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i40.Package package;
+  final _i41.Package package;
 }
 
 class PointsFaqScreenRoute extends _i1.PageRouteInfo {
@@ -685,8 +717,8 @@ class CreateConversationScreenRoute
     extends _i1.PageRouteInfo<CreateConversationScreenRouteArgs> {
   CreateConversationScreenRoute(
       {_i2.Key? key,
-      required _i41.Topic topic,
-      required _i42.ConversationType type})
+      required _i42.Topic topic,
+      required _i43.ConversationType type})
       : super(name,
             path: '/create-conversation',
             args: CreateConversationScreenRouteArgs(
@@ -701,9 +733,9 @@ class CreateConversationScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i41.Topic topic;
+  final _i42.Topic topic;
 
-  final _i42.ConversationType type;
+  final _i43.ConversationType type;
 }
 
 class ProfileIntroScreenRoute

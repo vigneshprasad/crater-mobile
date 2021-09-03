@@ -1,16 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
 
 import '../../../../constants/app_constants.dart';
-import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../routes.gr.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../conversations/presentation/widgets/layouts/calendar_card_layout/calendar_card_layout.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_participant_entity.dart';
+import '../../domain/entity/meeting_request_entity.dart';
 
 class MeetingRequestCard extends StatelessWidget {
   final MeetingRequest meeting;
@@ -24,27 +24,30 @@ class MeetingRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 13.00,
-        );
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final isRequester = meeting.requestedBy == user!.pk;
 
     final dateFormat = DateFormat.jm();
 
     BoxBorder _border;
     final background = Theme.of(context).backgroundColor;
-
     _border = Border.all(
-      color: AppTheme.blueAccentDark,
+      color: isRequester ? Colors.orange : Theme.of(context).primaryColor,
       width: 2.00,
     );
 
+    String heading =
+        "Meeting requested to - ${meeting.participantDetail!.name}";
+    if (!isRequester) {
+      heading = "Meeting request from - ${meeting.participantDetail!.name}";
+    }
     return CalendarCardLayout(
       onPressed: () {
         AutoRouter.of(context)
-            .push(MeetingDetailScreenRoute(meetingId: meeting.id!));
+            .push(MeetingRequestDetailScreenRoute(meetingId: meeting.id!));
       },
       background: background,
-      heading: Text('Request from ${meeting.requestedBy}'),
+      heading: Text(heading),
       subHeading: Row(
         children: [
           Text(dateFormat.format(meeting.timeSlots![0].toLocal())),
@@ -53,7 +56,12 @@ class MeetingRequestCard extends StatelessWidget {
       ),
       border: _border,
       child: Row(
-        children: [],
+        children: [
+          Expanded(
+              child: _SpeakersAvatarList(
+            speakers: [meeting.participantDetail!],
+          ))
+        ],
       ),
     );
   }

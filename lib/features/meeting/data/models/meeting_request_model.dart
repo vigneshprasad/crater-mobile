@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
 
-import '../../domain/entity/meeting_entity.dart';
 import 'meeting_participant_model.dart';
 
 part 'meeting_request_model.g.dart';
@@ -38,6 +37,12 @@ class MeetingRequestModel extends MeetingRequest {
   @JsonKey(name: 'requested_to')
   final String? requestedTo;
 
+  @JsonKey(name: 'is_past')
+  final bool? isPast;
+
+  @JsonKey(name: 'participant_detail')
+  final MeetingParticipantModel? participantDetail;
+
   MeetingRequestModel({
     this.id,
     this.expiresAt,
@@ -45,6 +50,8 @@ class MeetingRequestModel extends MeetingRequest {
     this.timeSlots,
     this.requestedBy,
     this.requestedTo,
+    this.isPast,
+    this.participantDetail,
   }) : super(
           id: id,
           expiresAt: expiresAt,
@@ -52,6 +59,8 @@ class MeetingRequestModel extends MeetingRequest {
           timeSlots: timeSlots,
           requestedBy: requestedBy,
           requestedTo: requestedTo,
+          isPast: isPast,
+          participantDetail: participantDetail,
         );
 
   factory MeetingRequestModel.fromJson(Map<String, dynamic> json) =>

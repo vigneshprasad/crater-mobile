@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:worknetwork/features/meeting/data/models/reschedule_request_model.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
@@ -225,9 +225,22 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, List<Profile>>> getMeetingRequest() async {
+  Future<Either<Failure, List<Profile>>> getMeetingRequestUsers() async {
     try {
-      final response = await remoteDatasource.getMeetingRequestFromRemote();
+      final response =
+          await remoteDatasource.getMeetingRequestUsersFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MeetingRequest>> getMeetingRequest(
+      int meetingRequestId) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingRequestFromRemote(meetingRequestId);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -238,6 +251,30 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, List<RequestsByDate>>> getMyMeetingRequest() async {
     try {
       final response = await remoteDatasource.getMyMeetingRequestFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postAcceptMeetingRequest(
+      int meetingRequestId, DateTime timeSlot) async {
+    try {
+      final response = await remoteDatasource.postAcceptMeetingRequestToRemote(
+          meetingRequestId, timeSlot);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postDeclineMeetingRequest(
+      int meetingRequestId) async {
+    try {
+      final response = await remoteDatasource
+          .postDeclineMeetingRequestToRemote(meetingRequestId);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));

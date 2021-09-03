@@ -32,7 +32,8 @@ class RequestStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
   Future<Either<Failure, List<Profile>>> getConnectableProfileList(
       String tags) async {
     state = ApiResult<List<Profile>>.loading();
-    final response = await read(meetingRepositoryProvider).getMeetingRequest();
+    final response =
+        await read(meetingRepositoryProvider).getMeetingRequestUsers();
 
     state = response.fold(
       (failure) {

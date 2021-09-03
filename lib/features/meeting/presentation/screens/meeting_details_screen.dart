@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,6 @@ import '../../data/models/meeting_rsvp_model.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_participant_entity.dart';
 import '../bloc/meeting_bloc.dart';
-import '../widgets/reschedule_confirm_sheet.dart';
 import '../widgets/reschedule_request_sheet.dart';
 
 class MeetingDetailScreen extends StatefulWidget {

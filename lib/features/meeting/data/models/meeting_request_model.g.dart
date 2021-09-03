@@ -18,6 +18,11 @@ MeetingRequestModel _$MeetingRequestModelFromJson(Map<String, dynamic> json) {
         .toList(),
     requestedBy: json['requested_by'] as String?,
     requestedTo: json['requested_to'] as String?,
+    isPast: json['is_past'] as bool?,
+    participantDetail: json['participant_detail'] == null
+        ? null
+        : MeetingParticipantModel.fromJson(
+            json['participant_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -31,6 +36,8 @@ Map<String, dynamic> _$MeetingRequestModelToJson(
           instance.timeSlots?.map((e) => e.toIso8601String()).toList(),
       'requested_by': instance.requestedBy,
       'requested_to': instance.requestedTo,
+      'is_past': instance.isPast,
+      'participant_detail': instance.participantDetail,
     };
 
 K _$enumDecode<K, V>(

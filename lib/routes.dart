@@ -17,6 +17,7 @@ import 'features/community/presentation/screens/post_screen.dart';
 import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
 import 'features/meeting/presentation/screens/meeting_details_screen.dart';
+import 'features/meeting/presentation/screens/meeting_request_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
@@ -58,6 +59,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: PostScreen, path: "/post"),
     AutoRoute(page: RegisterMeetingScreen, path: "/register-meeting"),
     AutoRoute(page: MeetingDetailScreen, path: "/meeting-detail"),
+    AutoRoute(
+        page: MeetingRequestDetailScreen, path: "/meeting-request-detail"),
     AutoRoute(page: PackageDetailScreen, path: "/package-detail"),
     AutoRoute(page: PackagePurchaseScreen, path: "/package-purchase"),
     AutoRoute(page: PointsFaqScreen, path: "/points-faq"),
