@@ -11,6 +11,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -191,10 +192,27 @@ class _ProfileBody extends HookWidget {
               bottom: 54,
               right: 20,
               child: GradientButton(
-                onPressed: () {},
+                onPressed: () => _showTimeSlots(context),
                 title: 'CONNECT',
               ))
       ],
+    );
+  }
+
+  Future<void> _showTimeSlots(BuildContext context) async {
+    showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: TimeSlotsScreen(profileId: profile.uuid!),
+        );
+      },
     );
   }
 
@@ -409,6 +427,23 @@ class UnderlinedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const showBGText = false;
+    if (!showBGText) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(fontWeight: FontWeight.w900),
+          ),
+          Container(
+            width: 10,
+            height: 2,
+            color: Colors.white,
+          )
+        ],
+      );
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Stack(

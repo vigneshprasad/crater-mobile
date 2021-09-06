@@ -7,7 +7,7 @@ class ComingSoonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.only(bottom: 60),
+      padding: const EdgeInsets.only(bottom: 100),
       itemBuilder: (context, index) {
         return InfoCell(item: _infoItems[index]);
       },
@@ -70,11 +70,11 @@ class InfoCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(20),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: HexColor.fromHex('#101010'),
+        color: Theme.of(context).dialogBackgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

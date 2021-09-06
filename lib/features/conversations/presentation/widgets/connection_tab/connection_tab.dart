@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
@@ -115,7 +117,8 @@ class ConnectionTab extends HookWidget {
             ),
             data: (profiles) => Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 100),
                 itemCount: profiles.length +
                     (context.read(connectionStateProvider.notifier).allLoaded
                         ? 0
@@ -243,9 +246,18 @@ class _Connection extends StatelessWidget {
                   ),
                   const SizedBox(height: AppInsets.sm),
                   if (showConnect == true)
-                    GradientButton(
-                      onPressed: () => _showTimeSlots(context),
-                      title: 'CONNECT',
+                    BaseContainer(
+                      radius: 30,
+                      child: SizedBox(
+                        width: 120,
+                        child: BaseLargeButton(
+                          onPressed: () => _showTimeSlots(context),
+                          child: const Text(
+                            'CONNECT',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
                 ],
               ),

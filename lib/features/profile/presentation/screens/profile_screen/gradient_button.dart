@@ -47,14 +47,14 @@ class GradientButton extends StatelessWidget {
             gradient: gradientDB,
             borderRadius: BorderRadius.circular(radius),
           ),
-          height: 24,
+          height: 28,
           margin: EdgeInsets.all(thickness),
           child: OutlinedButton(
             onPressed: onPressed,
             style: style,
             child: Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ),

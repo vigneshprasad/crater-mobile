@@ -109,8 +109,8 @@ class HomeScreen extends HookWidget {
       extendBodyBehindAppBar: true,
       // backgroundColor: Colors.black,
       drawer: AppDrawer(),
-      floatingActionButton: floatingButton(_activeTab.value, context),
-      floatingActionButtonLocation: floatingButtonLocation(_activeTab.value),
+      // floatingActionButton: floatingButton(_activeTab.value, context),
+      // floatingActionButtonLocation: floatingButtonLocation(_activeTab.value),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () async {
       //     final value = await startConversation(context);
@@ -153,112 +153,122 @@ class HomeScreen extends HookWidget {
         ),
       ),
       body: SafeArea(
-        child: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: SliverAppBar(
-                  floating: true,
-                  title: _activeTab.value != 2
-                      ? null
-                      : Image.asset(
-                          'assets/images/coming_soon/title.png',
-                          height: 38,
+        child: Stack(
+          children: [
+            NestedScrollView(
+              controller: _scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      floating: true,
+                      title: _activeTab.value != 2
+                          ? null
+                          : Image.asset(
+                              'assets/images/coming_soon/title.png',
+                              height: 38,
+                            ),
+                      centerTitle: true,
+                      // pinned: true,
+                      leading: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BaseContainer(
+                          color: Theme.of(context).backgroundColor,
+                          radius: 30,
+                          child: IconButton(
+                            icon: const Icon(Icons.help),
+                            onPressed: () =>
+                                context.read(intercomProvider).show(email!),
+                          ),
                         ),
-                  centerTitle: true,
-                  // pinned: true,
-                  leading: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BaseContainer(
-                      color: Theme.of(context).backgroundColor,
-                      radius: 30,
-                      child: IconButton(
-                        icon: const Icon(Icons.help),
-                        onPressed: () =>
-                            context.read(intercomProvider).show(email!),
                       ),
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BaseContainer(
+                            color: Theme.of(context).backgroundColor,
+                            radius: 30,
+                            child: IconButton(
+                              icon: SvgPicture.asset(
+                                AppSvgAssets.share,
+                              ),
+                              onPressed: () => shareManager.share(context),
+                            ),
+                          ),
+                        ),
+                        // const SizedBox(width: AppInsets.sm),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: BaseContainer(
+                        //     color: Theme.of(context).backgroundColor,
+                        //     radius: 30,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.all(2.0),
+                        //       child: UserProfileNavItem(
+                        //         onPressed: () {
+                        //           final user =
+                        //               BlocProvider.of<AuthBloc>(context).state.user;
+                        //           if (user != null) {
+                        //             AutoRouter.of(context).push(ProfileScreenRoute(
+                        //                 userId: user.pk!, allowEdit: true));
+                        //           }
+                        //         },
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        const SizedBox(width: AppInsets.l),
+                      ],
                     ),
                   ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BaseContainer(
-                        color: Theme.of(context).backgroundColor,
-                        radius: 30,
-                        child: IconButton(
-                          icon: SvgPicture.asset(
-                            AppSvgAssets.share,
-                          ),
-                          onPressed: () => shareManager.share(context),
-                        ),
+                ];
+              },
+              body: DefaultStickyHeaderController(
+                child: HomeTabControllerProvider(
+                  controller: _tabController,
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      ConnectionTab(),
+                      ConversationCalendarTab(
+                        type: ConversationTabType.my,
+                        controller: _scrollController,
+                        name: name,
+                        onSchedulePressed: () {
+                          AutoRouter.of(context)
+                              .push(TopicsTabRoute(topic: _activeTopic));
+                        },
                       ),
-                    ),
-                    // const SizedBox(width: AppInsets.sm),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: BaseContainer(
-                    //     color: Theme.of(context).backgroundColor,
-                    //     radius: 30,
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.all(2.0),
-                    //       child: UserProfileNavItem(
-                    //         onPressed: () {
-                    //           final user =
-                    //               BlocProvider.of<AuthBloc>(context).state.user;
-                    //           if (user != null) {
-                    //             AutoRouter.of(context).push(ProfileScreenRoute(
-                    //                 userId: user.pk!, allowEdit: true));
-                    //           }
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    const SizedBox(width: AppInsets.l),
-                  ],
+                      const ComingSoonScreen(),
+                      ProfileScreen(user!.pk!, allowEdit: true)
+                    ],
+                  ),
                 ),
               ),
-            ];
-          },
-          body: DefaultStickyHeaderController(
-            child: HomeTabControllerProvider(
-              controller: _tabController,
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _tabController,
-                children: [
-                  ConnectionTab(),
-                  ConversationCalendarTab(
-                    type: ConversationTabType.my,
-                    controller: _scrollController,
-                    name: name,
-                    onSchedulePressed: () {
-                      AutoRouter.of(context)
-                          .push(TopicsTabRoute(topic: _activeTopic));
-                    },
-                  ),
-                  const ComingSoonScreen(),
-                  ProfileScreen(user!.pk!, allowEdit: true)
-                ],
-              ),
             ),
-          ),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: floatingButton(_activeTab.value, context),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget? floatingButton(int acticeTab, BuildContext context) {
+  Widget floatingButton(int acticeTab, BuildContext context) {
     switch (acticeTab) {
       case 0:
         return matchMeButton(context);
       case 2:
         return earlyAccessButton(context);
       default:
-        return null;
+        return Container();
     }
   }
 
@@ -273,7 +283,7 @@ class HomeScreen extends HookWidget {
 
   Container matchMeButton(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -281,17 +291,16 @@ class HomeScreen extends HookWidget {
             HexColor.fromHex('#4E4E4E'),
           ],
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
       ),
-      width: 200,
+      width: double.infinity,
       child: Row(
         children: [
-          const SizedBox(width: 10),
           const Text(
             'Worknetwork\nIntelligence',
-            style: TextStyle(fontSize: 10),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: 10),
+          const Spacer(),
           GradientButton(
             title: 'MATCH ME',
             onPressed: () {
@@ -305,7 +314,7 @@ class HomeScreen extends HookWidget {
 
   Container earlyAccessButton(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -313,17 +322,16 @@ class HomeScreen extends HookWidget {
             HexColor.fromHex('#4E4E4E'),
           ],
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
       ),
-      width: 212,
+      width: double.infinity,
       child: Row(
         children: [
-          const SizedBox(width: 10),
           const Text(
             'For mentors\n& creators',
-            style: TextStyle(fontSize: 10),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: 10),
+          const Spacer(),
           GradientButton(
             title: 'EARLY ACCESS',
             onPressed: () async {
