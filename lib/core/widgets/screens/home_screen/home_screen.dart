@@ -9,6 +9,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/club/presentation/screens/clubs/clubs_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/coming_soon/coming_soon_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
@@ -194,7 +195,7 @@ class HomeScreen extends HookWidget {
                               .push(TopicsListRoute(showTitle: true));
                         },
                       ),
-                      const ComingSoonScreen(),
+                      ClubsScreen(),
                       ProfileScreen(user!.pk!, allowEdit: true)
                     ],
                   ),
