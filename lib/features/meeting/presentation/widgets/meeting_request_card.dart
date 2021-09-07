@@ -35,11 +35,7 @@ class MeetingRequestCard extends StatelessWidget {
       width: 2.00,
     );
 
-    String heading =
-        "Meeting requested to - ${meeting.participantDetail!.name}";
-    if (!isRequester) {
-      heading = "Meeting request from - ${meeting.participantDetail!.name}";
-    }
+    final heading = "Meeting request with ${meeting.participantDetail!.name}";
     return CalendarCardLayout(
       onPressed: onCardPressed,
       background: background,

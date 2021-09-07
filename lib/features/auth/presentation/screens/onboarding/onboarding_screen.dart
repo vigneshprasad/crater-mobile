@@ -186,6 +186,7 @@ class OnboardingScreen extends HookWidget {
               context.read(onboardingProvider).setOnboardingShown();
               AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(topic: 0),
                   predicate: (route) => false);
+              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
             },
           );
         case OnboardingSlideButtonType.startGroupConversation:
@@ -373,7 +374,7 @@ const oneOnOneCreationSlides = [
   OnboardingSlideContent(
     heading: "You are all set",
     subHeading:
-        "Once your meeting is set up you will get notified & will receive an introduction to your match with the meeting link.",
+        "Once your meeting is set up & you will get notified & will receive an introduction to your match with the meeting link.",
     image: AppImageAssets.splashConversation,
   ),
   OnboardingSlideContent(

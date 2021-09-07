@@ -236,7 +236,7 @@ class HomeScreen extends HookWidget {
                         name: name,
                         onSchedulePressed: () {
                           AutoRouter.of(context)
-                              .push(TopicsTabRoute(topic: _activeTopic));
+                              .push(TopicsListRoute(showTitle: true));
                         },
                       ),
                       const ComingSoonScreen(),

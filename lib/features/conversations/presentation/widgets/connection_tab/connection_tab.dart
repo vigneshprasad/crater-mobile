@@ -217,60 +217,67 @@ class _Connection extends StatelessWidget {
             userId: user.uuid!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 72,
-              child: BaseNetworkImage(
-                imageUrl: user.photo,
-                defaultImage: AppImageAssets.defaultAvatar,
-                imagebuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                  radius: 36,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Container(
+            decoration: BoxDecoration(
+                // color:
+                //     Theme.of(context).dialogBackgroundColor.withAlpha(50),
+                borderRadius: BorderRadius.circular(20)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 72,
+                  child: BaseNetworkImage(
+                    imageUrl: user.photo,
+                    defaultImage: AppImageAssets.defaultAvatar,
+                    imagebuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundImage: imageProvider,
+                      radius: 36,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(width: AppInsets.xl),
-            Expanded(
-              child: Row(
-                children: [
-                  Column(
+                const SizedBox(width: AppInsets.xl),
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(user.name ?? '', style: headingStyle),
-                      const SizedBox(height: AppInsets.sm),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: bodyStyle,
-                      ),
+                      if (description.isNotEmpty)
+                        const SizedBox(height: AppInsets.sm),
+                      if (description.isNotEmpty)
+                        Text(
+                          description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: bodyStyle,
+                        ),
+                      if (showConnect == true)
+                        const SizedBox(height: AppInsets.med),
+                      if (showConnect == true)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: BaseContainer(
+                            radius: 30,
+                            child: SizedBox(
+                              width: 90,
+                              height: 32,
+                              child: BaseLargeButton(
+                                onPressed: () => _showTimeSlots(context),
+                                child: const Text(
+                                  'CONNECT',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
                     ],
                   ),
-                  const Spacer(),
-                  const SizedBox(height: AppInsets.sm),
-                  if (showConnect == true)
-                    BaseContainer(
-                      radius: 30,
-                      child: SizedBox(
-                        width: 120,
-                        height: 36,
-                        child: BaseLargeButton(
-                          onPressed: () => _showTimeSlots(context),
-                          child: const Text(
-                            'CONNECT',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 
