@@ -52,13 +52,14 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       profileIntroUpdated: fields[32] as bool?,
       companyName: fields[33] as String?,
       allowMeetingRequest: fields[34] as bool?,
+      canConnect: fields[35] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(35)
+      ..writeByte(36)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -128,7 +129,9 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(33)
       ..write(obj.companyName)
       ..writeByte(34)
-      ..write(obj.allowMeetingRequest);
+      ..write(obj.allowMeetingRequest)
+      ..writeByte(35)
+      ..write(obj.canConnect);
   }
 
   @override
@@ -185,6 +188,7 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
     profileIntroUpdated: json['profile_intro_updated'] as bool?,
     companyName: json['company_name'] as String?,
     allowMeetingRequest: json['allow_meeting_request'] as bool?,
+    canConnect: json['can_connect'] as bool?,
   );
 }
 
@@ -225,4 +229,5 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'profile_intro_updated': instance.profileIntroUpdated,
       'company_name': instance.companyName,
       'allow_meeting_request': instance.allowMeetingRequest,
+      'can_connect': instance.canConnect,
     };

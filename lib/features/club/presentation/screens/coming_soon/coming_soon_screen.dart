@@ -70,21 +70,20 @@ class InfoCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Theme.of(context).dialogBackgroundColor,
-        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).dialogBackgroundColor.withAlpha(50),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
           Image.asset(
             "assets/images/coming_soon/${item.image}.png",
             width: double.infinity,
-            height: item.height,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -92,11 +91,11 @@ class InfoCell extends StatelessWidget {
                 item.title,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
-                    ?.copyWith(fontWeight: FontWeight.w900),
+                    .headline4
+                    ?.copyWith(fontWeight: FontWeight.w800),
               ),
-              const SizedBox(height: 8),
-              Text(item.subtitle),
+              const SizedBox(height: 12),
+              Text(item.subtitle, style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ],

@@ -233,23 +233,29 @@ class _Connection extends StatelessWidget {
             ),
             const SizedBox(width: AppInsets.xl),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(user.name ?? '', style: headingStyle),
-                  const SizedBox(height: AppInsets.sm),
-                  Text(
-                    description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: bodyStyle,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.name ?? '', style: headingStyle),
+                      const SizedBox(height: AppInsets.sm),
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: bodyStyle,
+                      ),
+                    ],
                   ),
+                  const Spacer(),
                   const SizedBox(height: AppInsets.sm),
                   if (showConnect == true)
                     BaseContainer(
                       radius: 30,
                       child: SizedBox(
                         width: 120,
+                        height: 36,
                         child: BaseLargeButton(
                           onPressed: () => _showTimeSlots(context),
                           child: const Text(

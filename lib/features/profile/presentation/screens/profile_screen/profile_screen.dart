@@ -54,7 +54,7 @@ class ProfileScreen extends HookWidget {
       flexibleSpace: FlexibleSpaceBar(
           background: _ProfileBody(
         profile: profile,
-        showConnect: !allowEdit,
+        showConnect: profile.canConnect ?? false,
       )),
       pinned: true,
       floating: true,

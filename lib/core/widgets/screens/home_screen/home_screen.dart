@@ -166,10 +166,7 @@ class HomeScreen extends HookWidget {
                       floating: true,
                       title: _activeTab.value != 2
                           ? null
-                          : Image.asset(
-                              'assets/images/coming_soon/title.png',
-                              height: 38,
-                            ),
+                          : UnderlinedText('Coming Soon'),
                       centerTitle: true,
                       // pinned: true,
                       leading: Padding(

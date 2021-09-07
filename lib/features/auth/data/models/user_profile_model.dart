@@ -141,6 +141,10 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: 'allow_meeting_request')
   final bool? allowMeetingRequest;
 
+  @HiveField(35)
+  @JsonKey(name: "can_connect")
+  final bool? canConnect;
+
   UserProfileModel({
     this.pk,
     this.additionalInformation,
@@ -177,6 +181,7 @@ class UserProfileModel extends UserProfile {
     this.profileIntroUpdated,
     this.companyName,
     this.allowMeetingRequest,
+    this.canConnect,
   }) : super(
             pk: pk,
             additionalInformation: additionalInformation,
@@ -212,7 +217,8 @@ class UserProfileModel extends UserProfile {
             aspiration: aspiration,
             profileIntroUpdated: profileIntroUpdated,
             companyName: companyName,
-            allowMeetingRequest: allowMeetingRequest);
+            allowMeetingRequest: allowMeetingRequest,
+            canConnect: canConnect);
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       _$UserProfileModelFromJson(json);
