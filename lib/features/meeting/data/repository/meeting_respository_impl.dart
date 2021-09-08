@@ -236,6 +236,18 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
+  Future<Either<Failure, List<TimeSlot>>> getMeetingRequestSlots(
+      String requestedTo) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingRequestSlotsFromRemote(requestedTo);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, MeetingRequest>> getMeetingRequest(
       int meetingRequestId) async {
     try {

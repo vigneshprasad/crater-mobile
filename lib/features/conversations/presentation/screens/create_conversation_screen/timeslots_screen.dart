@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/base/base_date_time_picker/base_date_time_picker.dart.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen_state.dart';
+import 'package:worknetwork/features/meeting/presentation/widgets/reschedule_slot_picker.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -13,11 +16,7 @@ import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../../meeting/data/repository/meeting_respository_impl.dart';
-import '../../../../meeting/domain/entity/meeting_config_entity.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
-import '../../../../meeting/domain/entity/time_slot_entity.dart';
-import '../../../../meeting/presentation/widgets/time_slot_picker.dart';
-import 'create_conversation_state.dart';
 
 const kBottomPadding = 96.00;
 
@@ -32,19 +31,18 @@ class TimeSlotsScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state =
-        useProvider(getCreateTableMetaNotifier(ConversationType.curated));
+    final state = useProvider(getTimeslotsNotifier(profileId));
     final _interests = useState<List<MeetingInterest>>([]);
-    final _timeslots = useState<List<TimeSlot>>([]);
+    final _timeslots = useState<List<DateTime>>([]);
     final _formStep = useState<int>(0);
+    final _enableButton = useState<bool>(false);
 
     final _scrollControiler = useScrollController();
 
     return ScaffoldContainer(
       child: state.when(
         loading: () => _Loader(),
-        emptyConfig: () => _NoConfig(),
-        data: (meta) {
+        data: (timeslots) {
           return Column(
             children: [
               Expanded(
@@ -71,15 +69,20 @@ class TimeSlotsScreen extends HookWidget {
                                   child: _FormLabel(heading: 'SUGGEST TIMES'),
                                 ),
                                 const SizedBox(height: AppInsets.xl),
-                                TimeSlotFormField(
-                                  initialValue: const [],
-                                  slots: meta.config?.availableTimeSlots ?? {},
-                                  onChange: (slots) => _timeslots.value = slots,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please select atleast 1 slots.";
+                                BaseDateTimePicker<DateTime>(
+                                  initialValue: _timeslots.value,
+                                  timeSlots: timeslots
+                                      .map((e) => [e.start!, e.end!])
+                                      .toList(),
+                                  getDateTime: (obj) => obj,
+                                  maxLength: 3,
+                                  onValueChanged: (value) {
+                                    if (value.length == 3) {
+                                      _enableButton.value = true;
+                                    } else {
+                                      _enableButton.value = false;
                                     }
-                                    return null;
+                                    _timeslots.value = value;
                                   },
                                 ),
                               ],
@@ -96,16 +99,16 @@ class TimeSlotsScreen extends HookWidget {
                   padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
                   child: Center(
                     child: BaseLargeButton(
+                      enabled: _enableButton.value,
                       text: 'SUBMIT',
                       onPressed: () {
-                        if (_formKey.currentState?.validate() ?? false) {
-                          _postGroupOptin(
-                            context,
-                            _interests.value,
-                            _timeslots.value,
-                            meta.config!,
-                          );
-                        }
+                        // if (_formKey.currentState?.validate() ?? false) {
+                        _postGroupOptin(
+                          context,
+                          _interests.value,
+                          _timeslots.value,
+                        );
+                        // }
                       },
                     ),
                   ),
@@ -122,15 +125,14 @@ class TimeSlotsScreen extends HookWidget {
   Future<void> _postGroupOptin(
     BuildContext context,
     List<MeetingInterest> interests,
-    List<TimeSlot> timeslots,
-    MeetingConfig config,
+    List<DateTime> timeslots,
   ) async {
     final _overlay = _buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
     final response =
         await context.read(meetingRepositoryProvider).postMeetingRequest(
-              timeslots.map((e) => e.start!).toList(),
+              timeslots,
               user!.uuid!,
               profileId,
             );
