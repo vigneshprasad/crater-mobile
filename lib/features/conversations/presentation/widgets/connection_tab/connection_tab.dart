@@ -252,7 +252,7 @@ class _Connection extends StatelessWidget {
                           style: bodyStyle,
                         ),
                       if (showConnect == true)
-                        const SizedBox(height: AppInsets.med),
+                        const SizedBox(height: AppInsets.xl),
                       if (showConnect == true)
                         Align(
                           alignment: Alignment.centerRight,

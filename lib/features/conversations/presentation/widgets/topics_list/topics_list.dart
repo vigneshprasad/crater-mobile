@@ -31,10 +31,13 @@ class TopicsList extends HookWidget {
     return Scaffold(
       appBar: !showTitle
           ? null
-          : BaseAppBar(
-              title: Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Text('Pick a 1:1 topic you wish to discuss'),
+          : AppBar(
+              centerTitle: true,
+              title: Text(
+                'Pick a 1:1 topic you wish to discuss',
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
       body: RefreshIndicator(

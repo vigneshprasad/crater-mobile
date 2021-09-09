@@ -89,13 +89,10 @@ class InfoCell extends StatelessWidget {
             children: [
               Text(
                 item.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4
-                    ?.copyWith(fontWeight: FontWeight.w800),
+                style: Theme.of(context).textTheme.headline4,
               ),
               const SizedBox(height: 12),
-              Text(item.subtitle, style: Theme.of(context).textTheme.headline5),
+              Text(item.subtitle, style: Theme.of(context).textTheme.headline6),
             ],
           ),
         ],
