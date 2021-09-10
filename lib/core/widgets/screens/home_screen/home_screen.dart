@@ -143,7 +143,7 @@ class HomeScreen extends HookWidget {
                       floating: true,
                       title: _activeTab.value != 2
                           ? null
-                          : UnderlinedText('Coming Soon'),
+                          : const UnderlinedText('STREAMS'),
                       centerTitle: true,
                       // pinned: true,
                       leading: Padding(
@@ -218,8 +218,8 @@ class HomeScreen extends HookWidget {
     switch (acticeTab) {
       case 0:
         return matchMeButton(context);
-      case 2:
-        return earlyAccessButton(context);
+      // case 2:
+      //   return earlyAccessButton(context);
       default:
         return Container();
     }
