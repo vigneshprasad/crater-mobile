@@ -107,26 +107,7 @@ class HomeScreen extends HookWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      // backgroundColor: Colors.black,
       drawer: AppDrawer(),
-      // floatingActionButton: floatingButton(_activeTab.value, context),
-      // floatingActionButtonLocation: floatingButtonLocation(_activeTab.value),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     final value = await startConversation(context);
-      //     if (value == null) {
-      //       return;
-      //     }
-      //     _tabController.animateTo(0);
-      //     _activeTopic.value = value;
-      //   },
-      //   backgroundColor: Colors.black,
-      //   foregroundColor: HexColor.fromHex("#72675B"),
-      //   tooltip: 'Create a Conversation',
-      //   elevation: 4.0,
-      //   child: const Icon(Icons.add, size: 36),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BaseContainer(
         radius: 0,
         disableAnimation: true,
@@ -135,7 +116,6 @@ class HomeScreen extends HookWidget {
           iconSize: 28,
           selectedFontSize: 10,
           unselectedFontSize: 10,
-          // unselectedItemColor: HexColor.fromHex("#72675B"),
           type: BottomNavigationBarType.fixed,
           items: [0, 1, 2, 3]
               .map((index) => BottomNavigationBarItem(
@@ -144,10 +124,6 @@ class HomeScreen extends HookWidget {
                   ))
               .toList(),
           onTap: (int index) {
-            // if (index == 2) {
-            //   return;
-            // }
-
             _tabController.index = index;
           },
         ),
@@ -195,27 +171,6 @@ class HomeScreen extends HookWidget {
                             ),
                           ),
                         ),
-                        // const SizedBox(width: AppInsets.sm),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: BaseContainer(
-                        //     color: Theme.of(context).backgroundColor,
-                        //     radius: 30,
-                        //     child: Padding(
-                        //       padding: const EdgeInsets.all(2.0),
-                        //       child: UserProfileNavItem(
-                        //         onPressed: () {
-                        //           final user =
-                        //               BlocProvider.of<AuthBloc>(context).state.user;
-                        //           if (user != null) {
-                        //             AutoRouter.of(context).push(ProfileScreenRoute(
-                        //                 userId: user.pk!, allowEdit: true));
-                        //           }
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         const SizedBox(width: AppInsets.l),
                       ],
                     ),
