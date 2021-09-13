@@ -85,13 +85,14 @@ abstract class MeetsApiService extends ChopperService {
   Future<Response> getMeetingRequestUsers();
 
   @Get(path: 'meetings/request/slots/')
-  Future<Response> getMeetingRequestSlots(@Body() Map<String, dynamic> body);
+  Future<Response> getMeetingRequestSlots(
+      @QueryMap() Map<String, dynamic> body);
 
   @Get(path: 'meetings/request/{meetingRequestId}/')
   Future<Response> getMeetingRequest(@Path() int meetingRequestId);
 
   @Get(path: 'meetings/request/my/')
-  Future<Response> getMyMeetingRequest(@Body() Map<String, dynamic> body);
+  Future<Response> getMyMeetingRequest(@QueryMap() Map<String, dynamic> body);
 
   @Post(path: 'meetings/request/accepted/')
   Future<Response> postAcceptMeetingRequest(@Body() Map<String, dynamic> body);
