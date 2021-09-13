@@ -92,7 +92,7 @@ class MeetingRequestDetailScreen extends HookWidget {
         color: Theme.of(context).primaryColor,
         child: Center(
           child: Text(
-            'You have requested the meeting.',
+            'You have requested a meeting.',
             style: textStyle,
           ),
         ),
@@ -106,7 +106,7 @@ class MeetingRequestDetailScreen extends HookWidget {
         color: Colors.orange,
         child: Center(
           child: Text(
-            'You have the meeting request',
+            'You have a meeting request',
             style: textStyle,
           ),
         ),
