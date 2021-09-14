@@ -1,28 +1,31 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_radio.dart';
 
 import '../../../../constants/app_constants.dart';
+import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../profile/presentation/screens/profile_screen/gradient_radio.dart';
 import '../bloc/profile_intro/profile_intro_bloc.dart';
 import '../widgets/profile_footer.dart';
 import '../widgets/profile_header.dart';
-import '../widgets/profile_photo_picker.dart';
 
 const kHeaderFraction = 0.5;
 const kbottomBarHeight = 72.00;
 
 class ProfileRequestScreen extends StatefulWidget {
+  final bool editMode;
+
+  const ProfileRequestScreen({
+    Key? key,
+    @PathParam("editMode") required this.editMode,
+  }) : super(key: key);
+
   @override
   _ProfileRequestScreenState createState() => _ProfileRequestScreenState();
 }
@@ -75,10 +78,9 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
                               SizedBox(
                                 height: MediaQuery.of(context).size.height *
                                     kHeaderFraction,
-                                child: Center(
+                                child: const Center(
                                   child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(AppInsets.xxl),
+                                    padding: EdgeInsets.all(AppInsets.xxl),
                                     child:
                                         Image(image: AppImageAssets.splashAI),
                                   ),
@@ -113,8 +115,7 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context)
-        .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {

@@ -119,13 +119,22 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     ProfileSetupScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i9.ProfileSetupScreen();
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileSetupScreenRouteArgs>(
+              orElse: () => ProfileSetupScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i9.ProfileSetupScreen(key: args.key, editMode: args.editMode);
         }),
     ProfileExtraInfoScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i10.ProfileExtraInfoScreen();
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileExtraInfoScreenRouteArgs>(
+              orElse: () => ProfileExtraInfoScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i10.ProfileExtraInfoScreen(
+              key: args.key, editMode: args.editMode);
         }),
     PhoneVerificationScreenRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
@@ -311,8 +320,13 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     ProfileRequestScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i35.ProfileRequestScreen();
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<ProfileRequestScreenRouteArgs>(
+              orElse: () => ProfileRequestScreenRouteArgs(
+                  editMode: pathParams.getBool('editMode')));
+          return _i35.ProfileRequestScreen(
+              key: args.key, editMode: args.editMode);
         }),
     NewPasswordScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -343,9 +357,10 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(TopicsListRoute.name, path: '/topic-1on1'),
         _i1.RouteConfig(WelcomeScreenRoute.name, path: '/welcome'),
         _i1.RouteConfig(ObjectivesScreenRoute.name, path: '/objectives'),
-        _i1.RouteConfig(ProfileSetupScreenRoute.name, path: '/profile-setup'),
+        _i1.RouteConfig(ProfileSetupScreenRoute.name,
+            path: '/profile-setup/:editMode?'),
         _i1.RouteConfig(ProfileExtraInfoScreenRoute.name,
-            path: '/profile-extra-info'),
+            path: '/profile-extra-info/:editMode?'),
         _i1.RouteConfig(PhoneVerificationScreenRoute.name,
             path: '/phone-verify'),
         _i1.RouteConfig(AuthScreenRoute.name, path: '/auth/:state?'),
@@ -382,7 +397,7 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(ProfileBioScreenRoute.name,
             path: '/profile-bio/:editMode?'),
         _i1.RouteConfig(ProfileRequestScreenRoute.name,
-            path: '/profile-request-settings'),
+            path: '/profile-request-settings/:editMode?'),
         _i1.RouteConfig(NewPasswordScreenRoute.name,
             path: '/new-password/:params?'),
         _i1.RouteConfig(ProfileScreenRoute.name,
@@ -459,17 +474,42 @@ class ObjectivesScreenRoute extends _i1.PageRouteInfo {
   static const String name = 'ObjectivesScreenRoute';
 }
 
-class ProfileSetupScreenRoute extends _i1.PageRouteInfo {
-  const ProfileSetupScreenRoute() : super(name, path: '/profile-setup');
+class ProfileSetupScreenRoute
+    extends _i1.PageRouteInfo<ProfileSetupScreenRouteArgs> {
+  ProfileSetupScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-setup/:editMode?',
+            args: ProfileSetupScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
 
   static const String name = 'ProfileSetupScreenRoute';
 }
 
-class ProfileExtraInfoScreenRoute extends _i1.PageRouteInfo {
-  const ProfileExtraInfoScreenRoute()
-      : super(name, path: '/profile-extra-info');
+class ProfileSetupScreenRouteArgs {
+  const ProfileSetupScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
+}
+
+class ProfileExtraInfoScreenRoute
+    extends _i1.PageRouteInfo<ProfileExtraInfoScreenRouteArgs> {
+  ProfileExtraInfoScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-extra-info/:editMode?',
+            args: ProfileExtraInfoScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
 
   static const String name = 'ProfileExtraInfoScreenRoute';
+}
+
+class ProfileExtraInfoScreenRouteArgs {
+  const ProfileExtraInfoScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
 }
 
 class PhoneVerificationScreenRoute extends _i1.PageRouteInfo {
@@ -862,11 +902,23 @@ class ProfileBioScreenRouteArgs {
   final bool editMode;
 }
 
-class ProfileRequestScreenRoute extends _i1.PageRouteInfo {
-  const ProfileRequestScreenRoute()
-      : super(name, path: '/profile-request-settings');
+class ProfileRequestScreenRoute
+    extends _i1.PageRouteInfo<ProfileRequestScreenRouteArgs> {
+  ProfileRequestScreenRoute({_i2.Key? key, required bool editMode})
+      : super(name,
+            path: '/profile-request-settings/:editMode?',
+            args: ProfileRequestScreenRouteArgs(key: key, editMode: editMode),
+            rawPathParams: {'editMode': editMode});
 
   static const String name = 'ProfileRequestScreenRoute';
+}
+
+class ProfileRequestScreenRouteArgs {
+  const ProfileRequestScreenRouteArgs({this.key, required this.editMode});
+
+  final _i2.Key? key;
+
+  final bool editMode;
 }
 
 class NewPasswordScreenRoute

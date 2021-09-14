@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -19,6 +20,13 @@ import '../widgets/profile_footer.dart';
 import '../widgets/profile_header.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
+  final bool editMode;
+
+  const ProfileSetupScreen({
+    Key? key,
+    @PathParam("editMode") required this.editMode,
+  }) : super(key: key);
+
   @override
   _ProfileSetupScreenState createState() => _ProfileSetupScreenState();
 }
@@ -72,7 +80,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     _buildProfileForm(context, user),
                     const Spacer(),
                     ProfileFooter(
-                      onSkip: _onPressedSkip,
+                      onSkip: _goToNextScreen,
                       onSave: _onPressedSubmit,
                     )
                   ],
@@ -152,17 +160,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     }
   }
 
-  void _onPressedSkip() {
-    _goToNextScreen();
-  }
-
   void _goToNextScreen() {
-    final bloc = BlocProvider.of<AuthBloc>(context);
-    if (bloc.state.user?.phoneNumberVerified ?? false) {
-      AutoRouter.of(context)
-          .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
-    } else {
-      AutoRouter.of(context).push(const PhoneVerificationScreenRoute());
-    }
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 }

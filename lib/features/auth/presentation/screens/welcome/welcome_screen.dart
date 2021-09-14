@@ -206,17 +206,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
             child: Flex(
               direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  flex: 5,
-                  child: BaseLargeButton(
-                    text: 'Login',
-                    onPressed: () => openBottomSheet(context, isSignUp: false),
-                  ),
-                ),
-                Flexible(
-                  child: Container(),
-                ),
+                // Flexible(
+                //   flex: 5,
+                //   child: BaseLargeButton(
+                //     text: 'Login',
+                //     onPressed: () => openBottomSheet(context, isSignUp: false),
+                //   ),
+                // ),
+                // Flexible(
+                //   child: Container(),
+                // ),
                 Flexible(
                   flex: 5,
                   child: BaseLargeButton(

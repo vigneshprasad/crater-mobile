@@ -15,8 +15,6 @@ import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
-import '../../../../../routes.gr.dart';
-
 class PhoneScreen extends StatefulWidget {
   final String state;
 
@@ -40,8 +38,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   @override
   Widget build(BuildContext context) {
     const verify = 'Submit';
-    final heading =
-        widget.state == 'signin' ? 'Sign In' : 'Create a new account';
+    final heading = 'Enter your phone number';
     const subtitle = 'You will receive an OTP via SMS';
     final enterOtp =
         AppLocalizations.of(context)?.translate("phone_verify:enter_otp");

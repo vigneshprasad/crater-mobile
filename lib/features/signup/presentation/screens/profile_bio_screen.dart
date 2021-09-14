@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
@@ -80,7 +81,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                 ),
                 ProfileFooter(
                   onSave: _onPressedSubmit,
-                  onSkip: _onPressedSkip,
+                  onSkip: _goToNextScreen,
                 )
               ],
             ),
@@ -140,11 +141,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context).push(const ProfileSetupScreenRoute());
-  }
-
-  void _onPressedSkip() {
-    _goToNextScreen();
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressedSubmit() {

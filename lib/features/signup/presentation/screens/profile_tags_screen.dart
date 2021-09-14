@@ -1,14 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
@@ -133,7 +132,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   }
 
   void goToNextScreen() {
-    AutoRouter.of(context).push(const ProfileExtraInfoScreenRoute());
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressSubmit() {
