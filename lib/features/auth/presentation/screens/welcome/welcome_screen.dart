@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -350,7 +351,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                         ),
                       ),
-                    if (!isSignUp)
+                    if (!isSignUp || !kReleaseMode)
                       BaseContainer(
                         child: SizedBox(
                           width: buttonWidth,
@@ -361,7 +362,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             isSignUp: isSignUp,
                             onPressed: () {
                               Navigator.of(context).pop();
-                              _openSignupAuthScreen(false, context);
+                              _openSignupAuthScreen(isSignUp, context);
                             },
                           ),
                         ),

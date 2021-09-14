@@ -22,7 +22,8 @@ class _$CalendarWeekDataTearOff {
       DateTime? end,
       List<ConversationByDate> conversations = const [],
       List<OptinsByDate> optins = const [],
-      List<MeetingsByDate> meetings = const []}) {
+      List<MeetingsByDate> meetings = const [],
+      List<RequestsByDate> requests = const []}) {
     return _CalendarWeekData(
       future: future,
       start: start,
@@ -30,6 +31,7 @@ class _$CalendarWeekDataTearOff {
       conversations: conversations,
       optins: optins,
       meetings: meetings,
+      requests: requests,
     );
   }
 }
@@ -46,6 +48,7 @@ mixin _$CalendarWeekData {
       throw _privateConstructorUsedError;
   List<OptinsByDate> get optins => throw _privateConstructorUsedError;
   List<MeetingsByDate> get meetings => throw _privateConstructorUsedError;
+  List<RequestsByDate> get requests => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CalendarWeekDataCopyWith<CalendarWeekData> get copyWith =>
@@ -63,7 +66,8 @@ abstract class $CalendarWeekDataCopyWith<$Res> {
       DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings});
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests});
 }
 
 /// @nodoc
@@ -83,6 +87,7 @@ class _$CalendarWeekDataCopyWithImpl<$Res>
     Object? conversations = freezed,
     Object? optins = freezed,
     Object? meetings = freezed,
+    Object? requests = freezed,
   }) {
     return _then(_value.copyWith(
       future: future == freezed
@@ -109,6 +114,10 @@ class _$CalendarWeekDataCopyWithImpl<$Res>
           ? _value.meetings
           : meetings // ignore: cast_nullable_to_non_nullable
               as List<MeetingsByDate>,
+      requests: requests == freezed
+          ? _value.requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<RequestsByDate>,
     ));
   }
 }
@@ -126,7 +135,8 @@ abstract class _$CalendarWeekDataCopyWith<$Res>
       DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings});
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests});
 }
 
 /// @nodoc
@@ -148,6 +158,7 @@ class __$CalendarWeekDataCopyWithImpl<$Res>
     Object? conversations = freezed,
     Object? optins = freezed,
     Object? meetings = freezed,
+    Object? requests = freezed,
   }) {
     return _then(_CalendarWeekData(
       future: future == freezed
@@ -174,6 +185,10 @@ class __$CalendarWeekDataCopyWithImpl<$Res>
           ? _value.meetings
           : meetings // ignore: cast_nullable_to_non_nullable
               as List<MeetingsByDate>,
+      requests: requests == freezed
+          ? _value.requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<RequestsByDate>,
     ));
   }
 }
@@ -187,7 +202,8 @@ class _$_CalendarWeekData implements _CalendarWeekData {
       this.end,
       this.conversations = const [],
       this.optins = const [],
-      this.meetings = const []});
+      this.meetings = const [],
+      this.requests = const []});
 
   @override
   final bool? future;
@@ -204,10 +220,13 @@ class _$_CalendarWeekData implements _CalendarWeekData {
   @JsonKey(defaultValue: const [])
   @override
   final List<MeetingsByDate> meetings;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<RequestsByDate> requests;
 
   @override
   String toString() {
-    return 'CalendarWeekData(future: $future, start: $start, end: $end, conversations: $conversations, optins: $optins, meetings: $meetings)';
+    return 'CalendarWeekData(future: $future, start: $start, end: $end, conversations: $conversations, optins: $optins, meetings: $meetings, requests: $requests)';
   }
 
   @override
@@ -227,7 +246,10 @@ class _$_CalendarWeekData implements _CalendarWeekData {
                 const DeepCollectionEquality().equals(other.optins, optins)) &&
             (identical(other.meetings, meetings) ||
                 const DeepCollectionEquality()
-                    .equals(other.meetings, meetings)));
+                    .equals(other.meetings, meetings)) &&
+            (identical(other.requests, requests) ||
+                const DeepCollectionEquality()
+                    .equals(other.requests, requests)));
   }
 
   @override
@@ -238,7 +260,8 @@ class _$_CalendarWeekData implements _CalendarWeekData {
       const DeepCollectionEquality().hash(end) ^
       const DeepCollectionEquality().hash(conversations) ^
       const DeepCollectionEquality().hash(optins) ^
-      const DeepCollectionEquality().hash(meetings);
+      const DeepCollectionEquality().hash(meetings) ^
+      const DeepCollectionEquality().hash(requests);
 
   @JsonKey(ignore: true)
   @override
@@ -253,7 +276,8 @@ abstract class _CalendarWeekData implements CalendarWeekData {
       DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings}) = _$_CalendarWeekData;
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests}) = _$_CalendarWeekData;
 
   @override
   bool? get future => throw _privateConstructorUsedError;
@@ -268,6 +292,8 @@ abstract class _CalendarWeekData implements CalendarWeekData {
   List<OptinsByDate> get optins => throw _privateConstructorUsedError;
   @override
   List<MeetingsByDate> get meetings => throw _privateConstructorUsedError;
+  @override
+  List<RequestsByDate> get requests => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CalendarWeekDataCopyWith<_CalendarWeekData> get copyWith =>

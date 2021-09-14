@@ -18,6 +18,8 @@ _$_Profile _$_$_ProfileFromJson(Map<String, dynamic> json) {
         .toList(),
     linkedIn: json['linkedin_url'] as String?,
     photo: json['photo'] as String?,
+    allowMeetingRequest: json['allow_meeting_request'] as bool?,
+    canConnect: json['can_connect'] as bool?,
   );
 }
 
@@ -31,4 +33,6 @@ Map<String, dynamic> _$_$_ProfileToJson(_$_Profile instance) =>
       'tag_list': instance.tag,
       'linkedin_url': instance.linkedIn,
       'photo': instance.photo,
+      'allow_meeting_request': instance.allowMeetingRequest,
+      'can_connect': instance.canConnect,
     };

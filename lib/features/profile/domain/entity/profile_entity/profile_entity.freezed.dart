@@ -28,7 +28,9 @@ class _$ProfileTearOff {
       @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
       @JsonKey(name: "tag_list") List<Tag>? tag,
       @JsonKey(name: "linkedin_url") String? linkedIn,
-      String? photo}) {
+      String? photo,
+      @JsonKey(name: "allow_meeting_request") bool? allowMeetingRequest,
+      @JsonKey(name: "can_connect") bool? canConnect}) {
     return _Profile(
       pk: pk,
       uuid: uuid,
@@ -38,6 +40,8 @@ class _$ProfileTearOff {
       tag: tag,
       linkedIn: linkedIn,
       photo: photo,
+      allowMeetingRequest: allowMeetingRequest,
+      canConnect: canConnect,
     );
   }
 
@@ -62,6 +66,10 @@ mixin _$Profile {
   @JsonKey(name: "linkedin_url")
   String? get linkedIn => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: "allow_meeting_request")
+  bool? get allowMeetingRequest => throw _privateConstructorUsedError;
+  @JsonKey(name: "can_connect")
+  bool? get canConnect => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -80,7 +88,9 @@ abstract class $ProfileCopyWith<$Res> {
       @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
       @JsonKey(name: "tag_list") List<Tag>? tag,
       @JsonKey(name: "linkedin_url") String? linkedIn,
-      String? photo});
+      String? photo,
+      @JsonKey(name: "allow_meeting_request") bool? allowMeetingRequest,
+      @JsonKey(name: "can_connect") bool? canConnect});
 }
 
 /// @nodoc
@@ -101,6 +111,8 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
     Object? tag = freezed,
     Object? linkedIn = freezed,
     Object? photo = freezed,
+    Object? allowMeetingRequest = freezed,
+    Object? canConnect = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed
@@ -135,6 +147,14 @@ class _$ProfileCopyWithImpl<$Res> implements $ProfileCopyWith<$Res> {
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
+      allowMeetingRequest: allowMeetingRequest == freezed
+          ? _value.allowMeetingRequest
+          : allowMeetingRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      canConnect: canConnect == freezed
+          ? _value.canConnect
+          : canConnect // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -152,7 +172,9 @@ abstract class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
       @JsonKey(name: "tag_list") List<Tag>? tag,
       @JsonKey(name: "linkedin_url") String? linkedIn,
-      String? photo});
+      String? photo,
+      @JsonKey(name: "allow_meeting_request") bool? allowMeetingRequest,
+      @JsonKey(name: "can_connect") bool? canConnect});
 }
 
 /// @nodoc
@@ -174,6 +196,8 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
     Object? tag = freezed,
     Object? linkedIn = freezed,
     Object? photo = freezed,
+    Object? allowMeetingRequest = freezed,
+    Object? canConnect = freezed,
   }) {
     return _then(_Profile(
       pk: pk == freezed
@@ -208,6 +232,14 @@ class __$ProfileCopyWithImpl<$Res> extends _$ProfileCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
+      allowMeetingRequest: allowMeetingRequest == freezed
+          ? _value.allowMeetingRequest
+          : allowMeetingRequest // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      canConnect: canConnect == freezed
+          ? _value.canConnect
+          : canConnect // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -223,7 +255,9 @@ class _$_Profile implements _Profile {
       @JsonKey(name: 'generated_introduction') this.generatedIntroduction,
       @JsonKey(name: "tag_list") this.tag,
       @JsonKey(name: "linkedin_url") this.linkedIn,
-      this.photo});
+      this.photo,
+      @JsonKey(name: "allow_meeting_request") this.allowMeetingRequest,
+      @JsonKey(name: "can_connect") this.canConnect});
 
   factory _$_Profile.fromJson(Map<String, dynamic> json) =>
       _$_$_ProfileFromJson(json);
@@ -247,10 +281,16 @@ class _$_Profile implements _Profile {
   final String? linkedIn;
   @override
   final String? photo;
+  @override
+  @JsonKey(name: "allow_meeting_request")
+  final bool? allowMeetingRequest;
+  @override
+  @JsonKey(name: "can_connect")
+  final bool? canConnect;
 
   @override
   String toString() {
-    return 'Profile(pk: $pk, uuid: $uuid, name: $name, introduction: $introduction, generatedIntroduction: $generatedIntroduction, tag: $tag, linkedIn: $linkedIn, photo: $photo)';
+    return 'Profile(pk: $pk, uuid: $uuid, name: $name, introduction: $introduction, generatedIntroduction: $generatedIntroduction, tag: $tag, linkedIn: $linkedIn, photo: $photo, allowMeetingRequest: $allowMeetingRequest, canConnect: $canConnect)';
   }
 
   @override
@@ -275,7 +315,13 @@ class _$_Profile implements _Profile {
                 const DeepCollectionEquality()
                     .equals(other.linkedIn, linkedIn)) &&
             (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)));
+                const DeepCollectionEquality().equals(other.photo, photo)) &&
+            (identical(other.allowMeetingRequest, allowMeetingRequest) ||
+                const DeepCollectionEquality()
+                    .equals(other.allowMeetingRequest, allowMeetingRequest)) &&
+            (identical(other.canConnect, canConnect) ||
+                const DeepCollectionEquality()
+                    .equals(other.canConnect, canConnect)));
   }
 
   @override
@@ -288,7 +334,9 @@ class _$_Profile implements _Profile {
       const DeepCollectionEquality().hash(generatedIntroduction) ^
       const DeepCollectionEquality().hash(tag) ^
       const DeepCollectionEquality().hash(linkedIn) ^
-      const DeepCollectionEquality().hash(photo);
+      const DeepCollectionEquality().hash(photo) ^
+      const DeepCollectionEquality().hash(allowMeetingRequest) ^
+      const DeepCollectionEquality().hash(canConnect);
 
   @JsonKey(ignore: true)
   @override
@@ -310,7 +358,9 @@ abstract class _Profile implements Profile {
       @JsonKey(name: 'generated_introduction') String? generatedIntroduction,
       @JsonKey(name: "tag_list") List<Tag>? tag,
       @JsonKey(name: "linkedin_url") String? linkedIn,
-      String? photo}) = _$_Profile;
+      String? photo,
+      @JsonKey(name: "allow_meeting_request") bool? allowMeetingRequest,
+      @JsonKey(name: "can_connect") bool? canConnect}) = _$_Profile;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
@@ -333,6 +383,12 @@ abstract class _Profile implements Profile {
   String? get linkedIn => throw _privateConstructorUsedError;
   @override
   String? get photo => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "allow_meeting_request")
+  bool? get allowMeetingRequest => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "can_connect")
+  bool? get canConnect => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ProfileCopyWith<_Profile> get copyWith =>

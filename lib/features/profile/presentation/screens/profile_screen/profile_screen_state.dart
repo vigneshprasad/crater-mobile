@@ -93,24 +93,33 @@ class GetProfileNotifier
         as List<ProfileIntroMeta>;
     final user = response[7].getOrElse(() => UserProfile()) as UserProfile;
 
-    final Map<String, String> meta = {
-      'Profession': _profile.tag?.first.name ?? '',
-      'Sector':
+    final Map<String, String> meta = {};
+    if (_profile.tag?.first.name != null) {
+      meta['Profession'] = _profile.tag?.first.name ?? '';
+    }
+    if (user.sector != null) {
+      meta['Sector'] =
           sectors.firstWhere((element) => element.value == user.sector).name ??
-              '',
-      'Working with': companies
+              '';
+    }
+    if (user.companyType != null) {
+      meta['Working with'] = companies
               .firstWhere((element) => element.value == user.companyType)
               .name ??
-          '',
-      'Years of experience': experiences
+          '';
+    }
+    if (user.yearsOfExperience != null) {
+      meta['Years of experience'] = experiences
               .firstWhere((element) => element.value == user.yearsOfExperience)
               .name ??
-          '',
-      'Level of education': educations
+          '';
+    }
+    if (user.educationLevel != null) {
+      meta['Level of education'] = educations
               .firstWhere((element) => element.value == user.educationLevel)
               .name ??
-          '',
-    };
+          '';
+    }
 
     final _ProfileScreenState _profileScreenState = _ProfileScreenState(
       profile: _profile,

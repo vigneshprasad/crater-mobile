@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -17,25 +18,45 @@ import '../../screens/create_conversation_screen/create_conversation_state.dart'
 import '../topics_tab/topics_tab_state.dart';
 
 class TopicsList extends HookWidget {
+  final bool showTitle;
+
+  const TopicsList({
+    Key? key,
+    @PathParam("editMode") required this.showTitle,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final topicsState = useProvider(topicsStateProvider);
-    return RefreshIndicator(
-        onRefresh: () {
-          final futures = [
-            context.read(topicsStateProvider.notifier).getTopicsList(),
-          ];
+    return Scaffold(
+      appBar: !showTitle
+          ? null
+          : AppBar(
+              centerTitle: true,
+              title: Text(
+                'Pick a 1:1 topic you wish to discuss',
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+      body: RefreshIndicator(
+          onRefresh: () {
+            final futures = [
+              context.read(topicsStateProvider.notifier).getTopicsList(),
+            ];
 
-          return Future.wait(futures);
-        },
-        child: topicsState.when(
-          loading: () => Container(),
-          error: (err, st) => Container(),
-          data: (topics) => ListView.builder(
-            itemBuilder: (context, index) => _TopicCard(topic: topics[index]),
-            itemCount: topics.length,
-          ),
-        ));
+            return Future.wait(futures);
+          },
+          child: topicsState.when(
+            loading: () => Container(),
+            error: (err, st) => Container(),
+            data: (topics) => ListView.builder(
+              itemBuilder: (context, index) => _TopicCard(topic: topics[index]),
+              itemCount: topics.length,
+            ),
+          )),
+    );
   }
 }
 

@@ -150,4 +150,60 @@ class _$MeetsApiService extends MeetsApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postMeetingRequest(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequestUsers() {
+    final $url = '/resources/meetings/request/users/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequestSlots(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/slots/';
+    final $body = body;
+    final $request = Request('GET', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequest(int meetingRequestId) {
+    final $url = '/resources/meetings/request/$meetingRequestId/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMyMeetingRequest(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/my/';
+    final $body = body;
+    final $request = Request('GET', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postAcceptMeetingRequest(
+      Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/accepted/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postDeclineMeetingRequest(
+      Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/declined/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

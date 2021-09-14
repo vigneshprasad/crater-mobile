@@ -18,9 +18,13 @@ class BaseLargeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonWidth = MediaQuery.of(context).size.width * 0.6;
     const buttonHeight = 48.00;
-    final textStyle = Theme.of(context).textTheme.button;
+    final textStyle = Theme.of(context)
+        .textTheme
+        .button!
+        .copyWith(color: enabled ? Colors.white : Colors.white10);
     return BaseContainer(
       radius: AppBorderRadius.largeButton,
+      disableAnimation: !enabled,
       child: SizedBox(
         width: buttonWidth,
         height: buttonHeight,

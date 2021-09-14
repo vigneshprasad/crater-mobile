@@ -1,14 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_card.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
+import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../meeting/presentation/widgets/oneonone_card.dart';
@@ -44,6 +47,7 @@ class ConversationCalendarTab extends HookWidget {
           type: type,
           name: name,
           onSchedulePressed: onSchedulePressed,
+          onReload: () {},
         ),
         error: (err, st) => _Loader(message: err.toString()),
       ),
@@ -65,12 +69,14 @@ class _LoadedConversationTab extends HookWidget {
   final ConversationTabType type;
   final String name;
   final VoidCallback onSchedulePressed;
+  final VoidCallback onReload;
 
   const _LoadedConversationTab({
     Key? key,
     required this.type,
     required this.name,
     required this.onSchedulePressed,
+    required this.onReload,
   }) : super(key: key);
 
   @override
@@ -129,6 +135,39 @@ class _LoadedConversationTab extends HookWidget {
                     return OneOnOneCard(meeting: date.meetings![index]);
                   },
                   childCount: date.meetings?.length,
+                ),
+              ),
+            ),
+          ),
+        ]);
+      }
+      for (final date in week.requests) {
+        children.addAll([
+          SliverStickyHeader.builder(
+            overlapsContent: true,
+            builder: (context, state) {
+              return _DateLabel(date: date.date);
+            },
+            sliver: SliverPadding(
+              padding: const EdgeInsets.only(
+                left: kLeftPaddingForDate,
+                bottom: AppInsets.xl,
+                top: 60,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return MeetingRequestCard(
+                        onCardPressed: () async {
+                          await AutoRouter.of(context).push(
+                              MeetingRequestDetailScreenRoute(
+                                  meetingId:
+                                      date.meetingsRequests![index].id!));
+                          onReload();
+                        },
+                        meeting: date.meetingsRequests![index]);
+                  },
+                  childCount: date.meetingsRequests?.length,
                 ),
               ),
             ),
