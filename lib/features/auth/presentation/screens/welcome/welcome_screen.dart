@@ -233,6 +233,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
+    _openPhoneAuthScreen(isSignUp, context);
+
+    return;
+
     showModalBottomSheet(
       elevation: 10,
       isScrollControlled: true,
