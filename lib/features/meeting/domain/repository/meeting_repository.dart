@@ -1,4 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../data/models/meeting_rsvp_model.dart';
@@ -42,4 +45,16 @@ abstract class MeetingRepository {
     DateTime timeSlot,
     int rescheduleRequest,
   );
+  Future<Either<Failure, bool>> postMeetingRequest(
+      List<DateTime> timeSlot, String requestedBy, String requestedTo);
+  Future<Either<Failure, List<Profile>>> getMeetingRequestUsers();
+  Future<Either<Failure, List<TimeSlot>>> getMeetingRequestSlots(
+      String requestedTo);
+  Future<Either<Failure, MeetingRequest>> getMeetingRequest(
+      int meetingRequestId);
+  Future<Either<Failure, List<RequestsByDate>>> getMyMeetingRequest();
+
+  Future<Either<Failure, bool>> postAcceptMeetingRequest(
+      int meetingRequestId, DateTime timeSlot);
+  Future<Either<Failure, bool>> postDeclineMeetingRequest(int meetingRequestId);
 }

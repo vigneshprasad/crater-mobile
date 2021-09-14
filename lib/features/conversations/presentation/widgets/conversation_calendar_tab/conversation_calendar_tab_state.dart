@@ -4,6 +4,7 @@ import 'package:kiwi/kiwi.dart';
 
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../meeting/domain/entity/meetings_by_date_entity.dart';
+import '../../../../meeting/domain/entity/requests_by_date_entity.dart';
 import '../../../../meeting/domain/repository/meeting_repository.dart';
 import '../../../data/models/calendar_week_data/calendar_week_data.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
@@ -83,6 +84,7 @@ class ConversationCalendarStateNofier
         KiwiContainer()
             .resolve<MeetingRepository>()
             .getMeetingsByDate(past: false),
+        KiwiContainer().resolve<MeetingRepository>().getMyMeetingRequest(),
       ];
 
       final response = await Future.wait(futures);
@@ -100,6 +102,8 @@ class ConversationCalendarStateNofier
           as List<OptinsByDate>;
       final meetings = response[2].getOrElse(() => List<MeetingsByDate>.empty())
           as List<MeetingsByDate>;
+      final requests = response[3].getOrElse(() => List<RequestsByDate>.empty())
+          as List<RequestsByDate>;
 
       state = [
         CalendarWeekData(
@@ -119,6 +123,12 @@ class ConversationCalendarStateNofier
           start: _start,
           end: _end,
           optins: optins,
+        ),
+        CalendarWeekData(
+          future: true,
+          start: _start,
+          end: _end,
+          requests: requests,
         )
       ];
     }

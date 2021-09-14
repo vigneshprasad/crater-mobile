@@ -1,6 +1,12 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_request_model.dart';
+import 'package:worknetwork/features/meeting/data/models/requests_by_date_model.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../api/meets/meets_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -50,7 +56,23 @@ abstract class MeetingRemoteDatasource {
   Future<RescheduleRequest> getRescheduleRequestFromRemote(int meetingId);
   Future<bool> postConfirmRescheduleRequestToRemote(
       DateTime timeSlot, int rescheduleRequest);
+  Future<bool> postMeetingRequestToRemote(
+      List<DateTime> timeSlot, String requestedBy, String requestedTo);
+  Future<List<Profile>> getMeetingRequestUsersFromRemote();
+  Future<List<TimeSlot>> getMeetingRequestSlotsFromRemote(String requestedTo);
+  Future<MeetingRequest> getMeetingRequestFromRemote(int meetingRequestId);
+  Future<List<RequestsByDate>> getMyMeetingRequestFromRemote();
+
+  Future<bool> postAcceptMeetingRequestToRemote(
+      int meetingRequestId, DateTime timeSlot);
+  Future<bool> postDeclineMeetingRequestToRemote(int meetingRequestId);
 }
+
+final meetingRemoteDatasourceProvider =
+    Provider<MeetingRemoteDatasource>((ref) {
+  final apiService = ref.read(meetsApiServiceProvider);
+  return MeetingRemoteDatasourceImpl(apiService);
+});
 
 class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   final MeetsApiService apiService;
@@ -275,6 +297,108 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
       return true;
     } else {
       throw ServerException(response.body);
+    }
+  }
+
+  @override
+  Future<bool> postMeetingRequestToRemote(
+      List<DateTime> timeSlot, String requestedBy, String requestedTo) async {
+    final body = {
+      'time_slots': timeSlot.map((e) => e.toIso8601String()).toList(),
+      'requested_by': requestedBy,
+      'requested_to': requestedTo,
+    };
+    final response = await apiService.postMeetingRequest(body);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw ServerException(response.body);
+    }
+  }
+
+  @override
+  Future<List<Profile>> getMeetingRequestUsersFromRemote() async {
+    final response = await apiService.getMeetingRequestUsers();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = json['results'] as List;
+      return jsonList
+          .map((json) => Profile.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<TimeSlot>> getMeetingRequestSlotsFromRemote(
+      String requestedTo) async {
+    final body = {'requested_to': requestedTo};
+    final response = await apiService.getMeetingRequestSlots(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as List;
+      // final jsonList = json as List<List<String>>;
+      return json
+          .map((jsonList) => TimeSlot(
+              start: DateTime.tryParse(jsonList[0] as String),
+              end: DateTime.tryParse(jsonList[1] as String)))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<MeetingRequest> getMeetingRequestFromRemote(
+      int meetingRequestId) async {
+    final response = await apiService.getMeetingRequest(meetingRequestId);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return MeetingRequestModel.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<RequestsByDate>> getMyMeetingRequestFromRemote() async {
+    final body = {'status': 'pending_approval'};
+    final response = await apiService.getMyMeetingRequest(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as List;
+
+      return json
+          .map((json) =>
+              RequestsByDateModel.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<bool> postAcceptMeetingRequestToRemote(
+      int meetingRequestId, DateTime timeSlot) async {
+    final body = {
+      'meeting_request': meetingRequestId,
+      'time_slot': timeSlot.toIso8601String(),
+    };
+    final response = await apiService.postAcceptMeetingRequest(body);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw ServerException(response.bodyString);
+    }
+  }
+
+  @override
+  Future<bool> postDeclineMeetingRequestToRemote(int meetingRequestId) async {
+    final body = {'meeting_request': meetingRequestId};
+    final response = await apiService.postDeclineMeetingRequest(body);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw ServerException(response.bodyString);
     }
   }
 }

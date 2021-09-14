@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures.dart';
@@ -11,9 +12,41 @@ import '../../../../signup/data/repository/signup_repository_impl.dart';
 final connectionStateProvider =
     StateNotifierProvider<ConnectionStateNotifier, ApiResult<List<Profile>>>(
         (ref) => ConnectionStateNotifier(ref.read));
+final requestStateProvider =
+    StateNotifierProvider<RequestStateNotifier, ApiResult<List<Profile>>>(
+        (ref) => RequestStateNotifier(ref.read));
 final tagStateProvider =
     StateNotifierProvider<TagStateNotifier, ApiResult<List<UserTag>>>(
         (ref) => TagStateNotifier(ref.read));
+
+class RequestStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
+  final Reader read;
+  late bool loadingPage;
+
+  RequestStateNotifier(
+    this.read,
+  ) : super(ApiResult<List<Profile>>.loading()) {
+    getConnectableProfileList('');
+  }
+
+  Future<Either<Failure, List<Profile>>> getConnectableProfileList(
+      String tags) async {
+    state = ApiResult<List<Profile>>.loading();
+    final response =
+        await read(meetingRepositoryProvider).getMeetingRequestUsers();
+
+    state = response.fold(
+      (failure) {
+        return ApiResult<List<Profile>>.error(null);
+      },
+      (profiles) {
+        return ApiResult<List<Profile>>.data(profiles);
+      },
+    );
+
+    return response;
+  }
+}
 
 class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
   final Reader read;

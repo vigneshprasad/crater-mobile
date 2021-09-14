@@ -1,5 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_request_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
 import 'features/auth/presentation/screens/auth/auth_screen.dart';
@@ -15,6 +18,7 @@ import 'features/community/presentation/screens/post_screen.dart';
 import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart';
 import 'features/meeting/presentation/screens/meeting_details_screen.dart';
+import 'features/meeting/presentation/screens/meeting_request_details_screen.dart';
 import 'features/meeting/presentation/screens/register_meeting_screen.dart';
 import 'features/notification/presentation/screens/notifications_screen.dart';
 import 'features/points/presentation/screens/points_faq_screen.dart';
@@ -37,8 +41,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
   routes: <AutoRoute>[
     AutoRoute(page: SplashScreen, initial: true, path: "/"),
     AutoRoute(page: HomeScreen, path: "/home/:tab?"),
-    AutoRoute(
-        page: HomeScreen, path: "/topic-list/:topic?", name: "topicListScreen"),
+    AutoRoute(page: TopicsTab, path: "/topic-list/:topic?"),
+    AutoRoute(page: TopicsList, path: "/topic-1on1"),
     AutoRoute(page: WelcomeScreen, path: "/welcome"),
     AutoRoute(page: ObjectivesScreen, path: "/objectives"),
     AutoRoute(page: ProfileSetupScreen, path: "/profile-setup"),
@@ -57,6 +61,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: PostScreen, path: "/post"),
     AutoRoute(page: RegisterMeetingScreen, path: "/register-meeting"),
     AutoRoute(page: MeetingDetailScreen, path: "/meeting-detail"),
+    AutoRoute(
+        page: MeetingRequestDetailScreen, path: "/meeting-request-detail"),
     AutoRoute(page: PackageDetailScreen, path: "/package-detail"),
     AutoRoute(page: PackagePurchaseScreen, path: "/package-purchase"),
     AutoRoute(page: PointsFaqScreen, path: "/points-faq"),
@@ -67,6 +73,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: ProfileTagsScreen, path: "/profile-tags/:editMode?"),
     AutoRoute(page: ProfileImageScreen, path: "/profile-image/:editMode?"),
     AutoRoute(page: ProfileBioScreen, path: "/profile-bio/:editMode?"),
+    AutoRoute(page: ProfileRequestScreen, path: "/profile-request-settings"),
     AutoRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
     AutoRoute(page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
   ],

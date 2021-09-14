@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:bordered_text/bordered_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -21,6 +23,7 @@ import '../../../../../routes.gr.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/meeting_objective_entity.dart';
 import '../../../domain/entity/profile_entity/profile_entity.dart';
+import 'gradient_button.dart';
 import 'profile_screen_state.dart';
 
 class ProfileScreen extends HookWidget {
@@ -47,9 +50,14 @@ class ProfileScreen extends HookWidget {
         Theme.of(context).textTheme.bodyText1!, context);
 
     return SliverAppBar(
-      expandedHeight: size.height + 350,
-      flexibleSpace: FlexibleSpaceBar(background: _ProfileBody(profile)),
+      expandedHeight: 240,
+      flexibleSpace: FlexibleSpaceBar(
+          background: _ProfileBody(
+        profile: profile,
+        showConnect: profile.canConnect ?? false,
+      )),
       pinned: true,
+      floating: true,
       elevation: 0.5,
       shadowColor: Colors.grey,
       forceElevated: true,
@@ -70,14 +78,23 @@ class ProfileScreen extends HookWidget {
         )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 50),
-        child: Container(
-          color: Theme.of(context).backgroundColor,
-          child: const TabBar(
-            tabs: [
-              Tab(text: 'Snapshot'),
-              Tab(text: 'Inerests'),
-              Tab(text: 'Connections'),
+        preferredSize: const Size(double.infinity, 30),
+        child: SizedBox(
+          height: 30,
+          child: Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              Container(
+                height: 30,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                alignment: Alignment.bottomLeft,
+                child: const TabBar(
+                  tabs: [
+                    Tab(text: 'About'),
+                    Tab(text: 'Connections'),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -92,21 +109,21 @@ class ProfileScreen extends HookWidget {
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
-            length: 3,
+            length: 2,
             child: SafeArea(
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   _appBar(context, state.profile),
                 ],
                 body: TabBarView(children: [
-                  _SnapShot(
+                  _AboutTab(
                     profile: state.profile,
                     objectives: state.objectives,
+                    interests: state.interests,
                     meta: state.meta,
                     showLogout: allowEdit,
                   ),
-                  _Interests(state.interests),
-                  _UserConnections(state.connections!),
+                  _ClubTab(state.connections!),
                 ]),
               ),
             )),
@@ -130,98 +147,86 @@ class ProfileScreen extends HookWidget {
 
 class _ProfileBody extends HookWidget {
   final Profile profile;
+  final bool showConnect;
 
-  const _ProfileBody(this.profile);
+  const _ProfileBody({
+    required this.profile,
+    required this.showConnect,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.topLeft,
       children: [
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Column(
-                  children: [
-                    BaseContainer(
-                      disableAnimation: true,
-                      radius: AppInsets.l,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        // height: 150,
-                        child: Column(
-                          children: [
-                            if (profile.introduction != null ||
-                                profile.generatedIntroduction != null)
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (profile.generatedIntroduction != null)
-                                      Text(
-                                        profile.generatedIntroduction!,
-                                      ),
-                                    if (profile.introduction != null)
-                                      Text(
-                                        profile.introduction!,
-                                      )
-                                  ]),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Spacer(),
-                                if (profile.linkedIn != null)
-                                  _buildLinkedInButton()
-                                else
-                                  const SizedBox(height: 50),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Center(
-                        child: BaseContainer(
-                      radius: 50,
-                      child: _buildImage(),
-                    )),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      profile.name!,
-                      style: Theme.of(context).textTheme.headline6,
-                    )
-                  ],
-                ),
-              ],
-            ),
+        SizedBox(
+          height: 150,
+          child: Image.asset(
+            'assets/images/img_drawer_image.png',
+            width: double.infinity,
+            fit: BoxFit.cover,
           ),
         ),
+        Positioned(
+          bottom: 50,
+          left: 20,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              BaseContainer(
+                radius: 40,
+                child: _buildImage(profile, 40),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  profile.name!,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (showConnect)
+          Positioned(
+              bottom: 54,
+              right: 20,
+              child: GradientButton(
+                onPressed: () => _showTimeSlots(context),
+                title: 'CONNECT',
+              ))
       ],
     );
   }
 
-  Widget _buildImage() {
+  Future<void> _showTimeSlots(BuildContext context) async {
+    showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: TimeSlotsScreen(profileId: profile.uuid!),
+        );
+      },
+    );
+  }
+
+  Widget _buildImage(Profile profile, double radius) {
     final photo = profile.photo;
     if (photo != null) {
       return CachedNetworkImage(
         imageUrl: photo,
         imageBuilder: (context, imageProvider) {
           return Container(
-            height: 100,
-            width: 100,
+            height: radius * 2,
+            width: radius * 2,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.0),
+              borderRadius: BorderRadius.circular(radius),
               image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
           );
@@ -229,37 +234,15 @@ class _ProfileBody extends HookWidget {
       );
     } else {
       return Container(
-        height: 100,
-        width: 100,
+        height: radius * 2,
+        width: radius * 2,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0),
+          borderRadius: BorderRadius.circular(radius),
           image: const DecorationImage(
               image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
         ),
       );
     }
-  }
-
-  Widget _buildLinkedInButton() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: RawMaterialButton(
-        constraints: const BoxConstraints(
-          minWidth: 40,
-        ),
-        fillColor: AppTheme.linkedInColor,
-        padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.sm,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        onPressed: () =>
-            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
-        child: SvgPicture.asset(
-          AppSvgAssets.linkedinFilled,
-          height: 30.0,
-        ),
-      ),
-    );
   }
 }
 
@@ -304,15 +287,17 @@ class _ConnectionProfile extends HookWidget {
   }
 }
 
-class _SnapShot extends HookWidget {
-  final Profile? profile;
+class _AboutTab extends HookWidget {
+  final Profile profile;
   final List<MeetingObjective> objectives;
+  final List<MeetingInterest> interests;
   final Map<String, String>? meta;
   final bool showLogout;
 
-  const _SnapShot({
-    this.profile,
+  const _AboutTab({
+    required this.profile,
     required this.objectives,
+    required this.interests,
     this.meta,
     required this.showLogout,
   });
@@ -324,28 +309,69 @@ class _SnapShot extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: AppInsets.l),
+          const UnderlinedText(
+            'ABOUT',
+            bgText: 'CREATOR',
+          ),
+          const SizedBox(height: AppInsets.sm),
+          if (profile.introduction != null ||
+              profile.generatedIntroduction != null)
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (profile.generatedIntroduction != null)
+                Text(
+                  profile.generatedIntroduction!,
+                ),
+              if (profile.introduction != null)
+                Text(
+                  profile.introduction!,
+                )
+            ]),
+          const SizedBox(height: AppInsets.xxl),
           if (meta?.isNotEmpty ?? false)
             Column(
-                children: meta!.entries
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 150,
-                                child: Text(e.key),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const UnderlinedText(
+                  'SNAPSHOT',
+                  bgText: 'CREATOR',
+                ),
+                const SizedBox(height: AppInsets.l),
+                Column(
+                    children: meta!.entries
+                        .map((e) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: Text(
+                                      e.key,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  ),
+                                  Text(
+                                    e.value,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                e.value,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
-                          ),
-                        ))
-                    .toList()),
+                            ))
+                        .toList()),
+              ],
+            ),
           _Objectives(objectives),
-          const Spacer(),
+          const SizedBox(height: AppInsets.xxl),
+          _Interests(interests),
+          const SizedBox(height: AppInsets.xxl),
+          if (profile.allowMeetingRequest == true)
+            const UnderlinedText(
+              'CONNECT',
+              bgText: 'SOCIAL MEDIA',
+            ),
+          const SizedBox(height: AppInsets.l),
+          _buildLinkedInButton(),
+          const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(
               child: BaseLargeButton(
@@ -358,6 +384,28 @@ class _SnapShot extends HookWidget {
     );
   }
 
+  Widget _buildLinkedInButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RawMaterialButton(
+        constraints: const BoxConstraints(
+          minWidth: 40,
+        ),
+        fillColor: AppTheme.linkedInColor,
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.sm,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        onPressed: () =>
+            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
+        child: SvgPicture.asset(
+          AppSvgAssets.linkedinFilled,
+          height: 30.0,
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleLogout(BuildContext context) async {
     BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
     await KiwiContainer().resolve<Analytics>().reset();
@@ -365,6 +413,75 @@ class _SnapShot extends HookWidget {
     await KiwiContainer().resolve<LocalStorage>().initStorage();
     AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
         predicate: (route) => false);
+  }
+}
+
+class UnderlinedText extends StatelessWidget {
+  final String text;
+  final String? bgText;
+  const UnderlinedText(
+    this.text, {
+    this.bgText,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const showBGText = false;
+    if (!showBGText) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(fontWeight: FontWeight.w900),
+          ),
+          Container(
+            width: 10,
+            height: 2,
+            color: Colors.white,
+          )
+        ],
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          if (bgText != null)
+            BorderedText(
+              strokeWidth: 1,
+              strokeColor: Colors.white38,
+              child: Text(
+                bgText!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: const TextStyle(fontWeight: FontWeight.w900),
+                ),
+                Container(
+                  width: 10,
+                  height: 2,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -415,14 +532,11 @@ class _Interests extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ..._buildInterests(context),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ..._buildInterests(context),
+      ],
     );
   }
 
@@ -464,10 +578,10 @@ class _Interests extends HookWidget {
   }
 }
 
-class _UserConnections extends HookWidget {
+class _ClubTab extends HookWidget {
   final List<Profile> connections;
 
-  const _UserConnections(this.connections);
+  const _ClubTab(this.connections);
 
   @override
   Widget build(BuildContext context) {
@@ -480,35 +594,86 @@ class _UserConnections extends HookWidget {
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 20,
-        children: connections
-            .map((user) => SizedBox(
-                  width: itemWidth,
-                  child: InkWell(
-                    onTap: () => AutoRouter.of(context).push(ProfileScreenRoute(
-                        userId: user.uuid!, allowEdit: false)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        children: [
-                          _ConnectionProfile(
-                            photoUrl: user.photo,
-                            size: 70,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Text(
+          //   'Ongoing Chats',
+          //   style: Theme.of(context).textTheme.subtitle1,
+          // ),
+          // const SizedBox(height: AppInsets.xxl),
+          // Row(
+          //   children: [
+          //     const SpeakersTable(
+          //       speakers: [],
+          //       chairSize: 36,
+          //     ),
+          //     // const SizedBox(width: AppInsets.xxl),
+          //     MaterialButton(
+          //       onPressed: () async {
+          //         final value = await startConversation(context);
+          //         if (value == null) {
+          //           return;
+          //         }
+          //         // _tabController.animateTo(0);
+          //         // _activeTopic.value = value;
+          //       },
+          //       child: BaseContainer(
+          //         radius: 20,
+          //         child: Container(
+          //           width: 140,
+          //           height: 100,
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(20),
+          //             color: Colors.black,
+          //           ),
+          //           child: const Icon(
+          //             Icons.add,
+          //             size: 40,
+          //           ),
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // ),
+          // const SizedBox(height: 80),
+          Text(
+            'Community Members',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          const SizedBox(height: AppInsets.xxl),
+          Wrap(
+            spacing: 8,
+            runSpacing: 20,
+            children: connections
+                .map((user) => SizedBox(
+                      width: itemWidth,
+                      child: InkWell(
+                        onTap: () => AutoRouter.of(context).push(
+                            ProfileScreenRoute(
+                                userId: user.uuid!, allowEdit: false)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: [
+                              _ConnectionProfile(
+                                photoUrl: user.photo,
+                                size: 70,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                user.name!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 13),
+                              )
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            user.name!,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 13),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ))
-            .toList(),
+                    ))
+                .toList(),
+          ),
+        ],
       ),
     );
   }
@@ -560,7 +725,7 @@ class _ChipItem extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText1;
     return Container(
         width: width,
-        height: 50,
+        // height: 40,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
             color: Colors.transparent,

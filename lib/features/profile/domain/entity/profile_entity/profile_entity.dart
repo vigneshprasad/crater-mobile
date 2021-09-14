@@ -16,6 +16,8 @@ abstract class Profile with _$Profile {
     @JsonKey(name: "tag_list") List<Tag>? tag,
     @JsonKey(name: "linkedin_url") String? linkedIn,
     String? photo,
+    @JsonKey(name: "allow_meeting_request") bool? allowMeetingRequest,
+    @JsonKey(name: "can_connect") bool? canConnect,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>

@@ -3,11 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/club/presentation/screens/coming_soon/coming_soon_screen.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -18,7 +22,6 @@ import '../../../../features/auth/presentation/widgets/user_profile_nav_item/use
 import '../../../../features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
-import '../../../../features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../analytics/analytics.dart';
@@ -43,27 +46,24 @@ class HomeScreen extends HookWidget {
   final int? topic;
 
   static const icons = [
-    Icons.home,
-    Icons.people_alt,
-    null,
-    Icons.inbox,
-    Icons.search,
+    Icon(Icons.search),
+    Icon(Icons.inbox),
+    Icon(Icons.people_alt),
+    UserProfileNavItem(),
   ];
 
   static const labels = [
-    'Topics',
-    'Conversations',
-    '',
-    'My',
     'Community',
+    'My Conversations',
+    'Clubs',
+    'Profile',
   ];
 
   static const analyticsLabels = [
-    "topics_tab_viewed",
-    "all_conversations_tab_viewed",
-    'create_conversations_tab_viewed',
-    "my_conversations_tab_viewed",
     'community_tab_viewed',
+    "my_conversations_tab_viewed",
+    "all_conversations_tab_viewed",
+    "profile_tab_viewed",
   ];
 
   const HomeScreen({
@@ -105,24 +105,9 @@ class HomeScreen extends HookWidget {
     });
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       drawer: AppDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final value = await _startConversation(context);
-          if (value == null) {
-            return;
-          }
-          _tabController.animateTo(0);
-          _activeTopic.value = value;
-        },
-        backgroundColor: Colors.black,
-        foregroundColor: HexColor.fromHex("#72675B"),
-        tooltip: 'Create a Conversation',
-        elevation: 4.0,
-        child: const Icon(Icons.add, size: 36),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BaseContainer(
         radius: 0,
         disableAnimation: true,
@@ -131,194 +116,195 @@ class HomeScreen extends HookWidget {
           iconSize: 28,
           selectedFontSize: 10,
           unselectedFontSize: 10,
-          unselectedItemColor: HexColor.fromHex("#72675B"),
           type: BottomNavigationBarType.fixed,
-          items: [0, 1, 2, 3, 4]
+          items: [0, 1, 2, 3]
               .map((index) => BottomNavigationBarItem(
-                  icon: Icon(
-                    icons[index],
-                  ),
-                  label: labels[index]))
+                    icon: icons[index],
+                    label: labels[index],
+                  ))
               .toList(),
           onTap: (int index) {
-            if (index == 2) {
-              return;
-            }
-
             _tabController.index = index;
           },
         ),
       ),
       body: SafeArea(
-        child: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: SliverAppBar(
-                  floating: true,
-                  // pinned: true,
-                  leading: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BaseContainer(
-                      color: Theme.of(context).backgroundColor,
-                      radius: 30,
-                      child: IconButton(
-                        icon: const Icon(Icons.help),
-                        onPressed: () =>
-                            context.read(intercomProvider).show(email!),
+        child: Stack(
+          children: [
+            NestedScrollView(
+              controller: _scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      floating: true,
+                      title: _activeTab.value != 2
+                          ? null
+                          : UnderlinedText('Coming Soon'),
+                      centerTitle: true,
+                      // pinned: true,
+                      leading: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BaseContainer(
+                          color: Theme.of(context).backgroundColor,
+                          radius: 30,
+                          child: IconButton(
+                            icon: const Icon(Icons.help),
+                            onPressed: () =>
+                                context.read(intercomProvider).show(email!),
+                          ),
+                        ),
                       ),
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BaseContainer(
+                            color: Theme.of(context).backgroundColor,
+                            radius: 30,
+                            child: IconButton(
+                              icon: SvgPicture.asset(
+                                AppSvgAssets.share,
+                              ),
+                              onPressed: () => shareManager.share(context),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppInsets.l),
+                      ],
                     ),
                   ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BaseContainer(
-                        color: Theme.of(context).backgroundColor,
-                        radius: 30,
-                        child: IconButton(
-                          icon: SvgPicture.asset(
-                            AppSvgAssets.share,
-                          ),
-                          onPressed: () => shareManager.share(context),
-                        ),
+                ];
+              },
+              body: DefaultStickyHeaderController(
+                child: HomeTabControllerProvider(
+                  controller: _tabController,
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      ConnectionTab(),
+                      ConversationCalendarTab(
+                        type: ConversationTabType.my,
+                        controller: _scrollController,
+                        name: name,
+                        onSchedulePressed: () {
+                          AutoRouter.of(context)
+                              .push(TopicsListRoute(showTitle: true));
+                        },
                       ),
-                    ),
-                    const SizedBox(width: AppInsets.sm),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BaseContainer(
-                        color: Theme.of(context).backgroundColor,
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: UserProfileNavItem(
-                            onPressed: () {
-                              final user =
-                                  BlocProvider.of<AuthBloc>(context).state.user;
-                              if (user != null) {
-                                AutoRouter.of(context).push(ProfileScreenRoute(
-                                    userId: user.pk!, allowEdit: true));
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppInsets.l),
-                  ],
+                      const ComingSoonScreen(),
+                      ProfileScreen(user!.pk!, allowEdit: true)
+                    ],
+                  ),
                 ),
               ),
-            ];
-          },
-          body: DefaultStickyHeaderController(
-            child: HomeTabControllerProvider(
-              controller: _tabController,
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _tabController,
-                children: [
-                  TopicsTab(name: name, topic: _activeTopic),
-                  ConversationCalendarTab(
-                    type: ConversationTabType.all,
-                    controller: _scrollController,
-                    name: name,
-                    onSchedulePressed: () => _tabController.animateTo(0),
-                  ),
-                  Container(),
-                  ConversationCalendarTab(
-                    type: ConversationTabType.my,
-                    controller: _scrollController,
-                    name: name,
-                    onSchedulePressed: () => _tabController.animateTo(0),
-                  ),
-                  ConnectionTab(),
-                ],
-              ),
             ),
-          ),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: floatingButton(_activeTab.value, context),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<int?> _startConversation(BuildContext context) {
-    return showModalBottomSheet(
-        elevation: 10,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-                topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-              ),
-              child: Container(
-                color: Theme.of(context).backgroundColor,
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 30,
-                      runSpacing: 30,
-                      children: [
-                        Text(
-                          'Start a conversation',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Text(
-                          'What type of conversation would you like to have?',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(0);
-                              },
-                              child: const Text('1:1'),
-                            ),
-                          ),
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(1);
-                              },
-                              child: const Text('AMA'),
-                            ),
-                          ),
-                        ),
-                        BaseContainer(
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: BaseLargeButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(2);
-                              },
-                              child: const Text(
-                                'Round\nTable',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+  Widget floatingButton(int acticeTab, BuildContext context) {
+    switch (acticeTab) {
+      case 0:
+        return matchMeButton(context);
+      case 2:
+        return earlyAccessButton(context);
+      default:
+        return Container();
+    }
+  }
+
+  FloatingActionButtonLocation floatingButtonLocation(int acticeTab) {
+    switch (acticeTab) {
+      case 2:
+        return FloatingActionButtonLocation.centerFloat;
+      default:
+        return FloatingActionButtonLocation.endFloat;
+    }
+  }
+
+  Container matchMeButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            HexColor.fromHex('#3C3B3B'),
+            HexColor.fromHex('#4E4E4E'),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      width: double.infinity,
+      child: Row(
+        children: [
+          const Text(
+            'Worknetwork\nIntelligence',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          GradientButton(
+            title: 'MATCH ME',
+            onPressed: () {
+              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container earlyAccessButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            HexColor.fromHex('#3C3B3B'),
+            HexColor.fromHex('#4E4E4E'),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      width: double.infinity,
+      child: Row(
+        children: [
+          const Text(
+            'For mentors\n& creators',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          GradientButton(
+            title: 'EARLY ACCESS',
+            onPressed: () async {
+              final user = BlocProvider.of<AuthBloc>(context).state.user;
+              final email = user?.email;
+              final url =
+                  'https://worknetwork.typeform.com/to/DXvutVaB#email=$email';
+              await launch(
+                url,
+                customTabsOption: const CustomTabsOption(
+                  enableUrlBarHiding: true,
+                  extraCustomTabs: [],
+                  showPageTitle: false,
+                  enableInstantApps: false,
                 ),
-              ));
-        });
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _navigateToHome(BuildContext context) async {
@@ -332,4 +318,81 @@ class HomeScreen extends HookWidget {
           predicate: (_) => false);
     }
   }
+}
+
+Future<int?> startConversation(BuildContext context) {
+  return showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+              topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            ),
+            child: Container(
+              color: Theme.of(context).backgroundColor,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 30,
+                    runSpacing: 30,
+                    children: [
+                      Text(
+                        'Start a conversation',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text(
+                        'What type of conversation would you like to have?',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(0);
+                            },
+                            child: const Text('1:1'),
+                          ),
+                        ),
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(1);
+                            },
+                            child: const Text('AMA'),
+                          ),
+                        ),
+                      ),
+                      BaseContainer(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: BaseLargeButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(2);
+                            },
+                            child: const Text(
+                              'Round\nTable',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ));
+      });
 }

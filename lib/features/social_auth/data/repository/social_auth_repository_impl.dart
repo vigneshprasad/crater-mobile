@@ -26,11 +26,6 @@ class SocialAuthRepositoryImpl implements SocialAuthRepository {
     return _getToken(remoteDataSource.getGoogleAccessToken);
   }
 
-  @override
-  Future<Either<Failure, AccessToken>> getLinkedInAccessToken() {
-    return _getToken(remoteDataSource.getLinkedInAccessToken);
-  }
-
   Future<Either<Failure, AccessToken>> _getToken(
       Future<AccessToken> Function() callback) async {
     try {

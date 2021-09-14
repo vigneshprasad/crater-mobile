@@ -26,6 +26,9 @@ void navigatePostAuth(User? user, {UserProfile? profile}) {
     } else if (user.phoneNumberVerified == false) {
       router.pushAndPopUntil(const PhoneVerificationScreenRoute(),
           predicate: (route) => false);
+    } else if (profile.allowMeetingRequest == null) {
+      router.pushAndPopUntil(const ProfileRequestScreenRoute(),
+          predicate: (route) => false);
     } else {
       router.pushAndPopUntil(HomeScreenRoute(), predicate: (route) => false);
     }

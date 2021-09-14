@@ -29,8 +29,6 @@ class UCGetSocialAuthToken
     switch (params.provider) {
       case SocialAuthProviders.google:
         return repository.getGoogleAccessToken();
-      case SocialAuthProviders.linkedin:
-        return repository.getLinkedInAccessToken();
       case SocialAuthProviders.facebook:
         return repository.getFacebookAccessToken();
       case SocialAuthProviders.apple:

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,6 @@ import '../../data/models/meeting_rsvp_model.dart';
 import '../../domain/entity/meeting_entity.dart';
 import '../../domain/entity/meeting_participant_entity.dart';
 import '../bloc/meeting_bloc.dart';
-import '../widgets/reschedule_confirm_sheet.dart';
 import '../widgets/reschedule_request_sheet.dart';
 
 class MeetingDetailScreen extends StatefulWidget {
@@ -315,30 +313,30 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           meeting?.participants?.where((element) => element != userRsvp).first;
       if (otherUser?.rsvp?.status == MeetingRsvpStatus.reschedule) {
         buttons = [
-          BaseLargeIconButton(
-            icon: Icons.calendar_today,
-            text: "Pick a slot",
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return RescheduleConfirmSheet(
-                    meeting: meeting!,
-                  );
-                },
-              ).then((value) {
-                if (value != null && value == true) {
-                  AutoRouter.of(context).pop();
-                }
-              });
-            },
-          ),
-          const SizedBox(width: AppInsets.med),
-          const VerticalDivider(
-            endIndent: AppInsets.xl,
-            indent: AppInsets.xl,
-          ),
-          const SizedBox(width: AppInsets.med),
+          // BaseLargeIconButton(
+          //   icon: Icons.calendar_today,
+          //   text: "Pick a slot",
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //       context: context,
+          //       builder: (context) {
+          //         return RescheduleConfirmSheet(
+          //           meeting: meeting!,
+          //         );
+          //       },
+          //     ).then((value) {
+          //       if (value != null && value == true) {
+          //         AutoRouter.of(context).pop();
+          //       }
+          //     });
+          //   },
+          // ),
+          // const SizedBox(width: AppInsets.med),
+          // const VerticalDivider(
+          //   endIndent: AppInsets.xl,
+          //   indent: AppInsets.xl,
+          // ),
+          // const SizedBox(width: AppInsets.med),
           BaseLargeIconButton(
             icon: Icons.clear,
             text: "Cancel",
