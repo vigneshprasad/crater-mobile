@@ -21,6 +21,11 @@ platform :android do
   lane :prod do
     sh "flutter build apk -t lib/main_prod.dart"
     
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
     appcenter_upload(
       api_token: '46757081e5a45f8aebaf353c0572dce3dc6f61f0',
       owner_name: 'WorkNetwork',
@@ -39,7 +44,7 @@ platform :android do
         "Platform" => "Android",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-prod-1/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
   end
 
@@ -47,6 +52,11 @@ platform :android do
   desc "Deploy a new PREPROD version to the AppCenter"
   lane :preprod do
     sh "flutter build apk -t lib/main_preprod.dart"
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
     
     appcenter_upload(
       api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
@@ -66,7 +76,7 @@ platform :android do
         "Platform" => "Android",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-1/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
 
   end
@@ -75,6 +85,11 @@ platform :android do
   desc "Deploy a new DEV version to the AppCenter"
   lane :dev do
     sh "flutter build apk -t lib/main_dev.dart"
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
     
     appcenter_upload(
       api_token: '29123c2e43984fdf2bfa3155c865a2ef12f5a18d',
@@ -94,7 +109,7 @@ platform :android do
         "Platform" => "Android",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-dev-1/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
 
   end
@@ -126,6 +141,11 @@ platform :ios do
       }
     )
 
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
     appcenter_upload(
       api_token: '08c864ccf81aaddfcb83e642b03c766a0357b583',
       owner_name: 'WorkNetwork',
@@ -145,7 +165,7 @@ platform :ios do
         "Platform" => "iOS",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-prod/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
 
   end
@@ -163,6 +183,11 @@ platform :ios do
       export_options: {
         method: "ad-hoc",
       }
+    )
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
     )
 
     appcenter_upload(
@@ -184,7 +209,7 @@ platform :ios do
         "Platform" => "iOS",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
   end
 
@@ -201,6 +226,11 @@ platform :ios do
       export_options: {
         method: "ad-hoc",
       }
+    )
+
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
     )
 
     appcenter_upload(
@@ -222,7 +252,7 @@ platform :ios do
         "Platform" => "iOS",
         "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-dev/distribution_groups/publiclink"
       },
-      default_payloads: [:git_branch, :git_author],
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
     )
   end
 
