@@ -18,7 +18,7 @@ class ClubsStateNotifier extends StateNotifier<ApiResult<List<Conversation>>> {
   }
 
   Future<void> getInitialData() async {
-    final _start = DateTime.now();
+    final _start = DateTime.now().subtract(Duration(days: 7));
     final _end = _start.add(const Duration(days: 7));
 
     final response = await read(conversationRepositoryProvider)
@@ -31,11 +31,12 @@ class ClubsStateNotifier extends StateNotifier<ApiResult<List<Conversation>>> {
     final conversations =
         response.getOrElse(() => List<ConversationByDate>.empty());
 
-    final x = conversations.map((e) => e.conversations);
-    final y = x.reduce((value, element) {
-      value!.addAll(element!);
-    });
+    final c = List<Conversation>.empty(growable: true);
 
-    state = ApiResult.data(y!);
+    for (final e in conversations) {
+      c.addAll(e.conversations ?? []);
+    }
+
+    state = ApiResult.data(c);
   }
 }

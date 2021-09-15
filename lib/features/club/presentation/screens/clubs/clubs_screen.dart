@@ -234,9 +234,9 @@ class UpcomingGridTile extends StatelessWidget {
                     height: double.infinity,
                     child: Stack(
                       children: [
-                        if (user?.photo != null)
+                        if (tag?.image != null)
                           Image.network(
-                            user?.photo ?? '',
+                            tag?.image ?? '',
                             height: double.infinity,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -289,6 +289,7 @@ class UpcomingGridTile extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: CircleAvatar(
+                            backgroundImage: NetworkImage(user?.photo ?? ''),
                             backgroundColor:
                                 Theme.of(context).dialogBackgroundColor,
                           ),
