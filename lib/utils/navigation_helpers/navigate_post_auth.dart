@@ -4,11 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../core/push_notfications/push_notifications.dart';
 import '../../features/auth/domain/entity/user_entity.dart';
 import '../../features/auth/domain/entity/user_profile_entity.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../routes.gr.dart';
 
 const sequence = [
@@ -18,6 +18,7 @@ const sequence = [
   ProfileImageScreenRoute.name,
   ProfileBioScreenRoute.name,
   ProfileSetupScreenRoute.name,
+  // ProfileEmailScreenRoute.name,
   ProfileRequestScreenRoute.name,
   HomeScreenRoute.name,
 ];
@@ -38,7 +39,7 @@ void navigatePostAuth(
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   final router = AutoRouter.of(_navigator.currentContext!).root;
 
-  String routeName = _findNextRoute(profile);
+  String routeName = _findNextRoute(profile, user);
   final desiredIndex = sequence.indexOf(routeName);
 
   final currentRoute = router.topRoute.name;
@@ -48,7 +49,7 @@ void navigatePostAuth(
     if (editMode) {
       index = nextIndex;
     } else {
-      while (shouldShow(sequence[index], profile) == false) {
+      while (shouldShow(sequence[index], profile, user) == false) {
         index++;
       }
     }
@@ -80,12 +81,14 @@ PageRouteInfo _createPageRouteInfo(String name, bool editMode) {
       return ProfileSetupScreenRoute(editMode: editMode);
     case ProfileRequestScreenRoute.name:
       return ProfileRequestScreenRoute(editMode: editMode);
+    case ProfileEmailScreenRoute.name:
+      return ProfileEmailScreenRoute(editMode: editMode);
     default:
       return HomeScreenRoute();
   }
 }
 
-bool shouldShow(String name, UserProfile? profile) {
+bool shouldShow(String name, UserProfile? profile, User? user) {
   if (profile == null) {
     return true;
   }
@@ -103,15 +106,18 @@ bool shouldShow(String name, UserProfile? profile) {
     case ProfileSetupScreenRoute.name:
       return profile.linkedinUrl == null;
     case ProfileRequestScreenRoute.name:
-      return profile.allowMeetingRequest == null;
+      return profile.allowMeetingRequest == null ||
+          profile.allowMeetingRequest == false;
+    case ProfileEmailScreenRoute.name:
+      return user?.email == null;
     default:
       return true;
   }
 }
 
-String _findNextRoute(UserProfile? profile) {
+String _findNextRoute(UserProfile? profile, User? user) {
   int index = 0;
-  while (shouldShow(sequence[index], profile) == false) {
+  while (shouldShow(sequence[index], profile, user) == false) {
     index++;
   }
   return sequence[index];

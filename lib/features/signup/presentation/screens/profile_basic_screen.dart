@@ -8,7 +8,6 @@ import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';

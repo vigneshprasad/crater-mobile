@@ -320,6 +320,9 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   Future<List<Profile>> getMeetingRequestUsersFromRemote() async {
     final response = await apiService.getMeetingRequestUsers();
     if (response.statusCode == 200) {
+      if (response.bodyString == "[]") {
+        return List.empty();
+      }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as List;
       return jsonList

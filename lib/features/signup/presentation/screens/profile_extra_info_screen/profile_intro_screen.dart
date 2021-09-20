@@ -1,20 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/signup/data/repository/profile_meta_repository_impl.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_multi_select_dropdown/base_multi_select_dropdown.dart';
-import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../data/models/profile_extra_meta/profile_extra_meta.dart';
+import '../../../data/repository/profile_meta_repository_impl.dart';
 import '../../widgets/profile_footer.dart';
 import '../../widgets/profile_header.dart';
 import '../../widgets/profile_intro_form/profile_form_dropdown.dart';

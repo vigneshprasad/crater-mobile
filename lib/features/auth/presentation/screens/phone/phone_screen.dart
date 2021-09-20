@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/error/failures.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,7 +41,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   @override
   Widget build(BuildContext context) {
     const verify = 'Submit';
-    final heading = 'Enter your phone number';
+    const heading = 'Enter your phone number';
     const subtitle = 'You will receive an OTP via SMS';
     final enterOtp =
         AppLocalizations.of(context)?.translate("phone_verify:enter_otp");
@@ -59,7 +62,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ProfileHeader(
+              const ProfileHeader(
                 title: heading,
                 subtitle: subtitle,
               ),
@@ -139,7 +142,23 @@ class _PhoneScreenState extends State<PhoneScreen> {
     _buildOverlay();
     final response =
         await context.read(authRepositoryProvider).sendOtp(_phoneNumber);
-    response.fold((l) => null, (r) {
+    response.fold((failure) {
+      final message = failure as ServerFailure?;
+      final map = jsonDecode(message?.message.toString() ?? '');
+      final error = map?['username'] as List<String>?;
+      if (error != null) {
+        Fluttertoast.showToast(msg: error.first);
+      } else {
+        Fluttertoast.showToast(
+          msg: failure.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.grey[700],
+          textColor: Colors.white,
+          fontSize: 14,
+        );
+      }
+    }, (r) {
       setState(() {
         _showSmsCodeInput = true;
         otpResponse = '';
@@ -152,15 +171,22 @@ class _PhoneScreenState extends State<PhoneScreen> {
         .read(authRepositoryProvider)
         .verifyOtp(_phoneNumber, _smsCode);
 
-    response.fold((l) {
-      Fluttertoast.showToast(
-        msg: l.toString(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey[700],
-        textColor: Colors.white,
-        fontSize: 14,
-      );
+    response.fold((failure) {
+      final message = failure as ServerFailure?;
+      final map = jsonDecode(message?.message.toString() ?? '');
+      final error = map?['otp'] as List<String>?;
+      if (error != null) {
+        Fluttertoast.showToast(msg: error.first);
+      } else {
+        Fluttertoast.showToast(
+          msg: failure.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.grey[700],
+          textColor: Colors.white,
+          fontSize: 14,
+        );
+      }
     }, (user) async {
       final profileResponse =
           await context.read(authRepositoryProvider).getUserProfile();

@@ -12,6 +12,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/club/presentation/screens/coming_soon/coming_soon_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/gradient_button.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -255,7 +256,19 @@ class HomeScreen extends HookWidget {
           const Spacer(),
           GradientButton(
             title: 'MATCH ME',
-            onPressed: () {
+            onPressed: () async {
+              // await showModalBottomSheet(
+              //   elevation: 10,
+              //   backgroundColor: Colors.transparent,
+              //   context: context,
+              //   isDismissible: false,
+              //   enableDrag: false,
+              //   useRootNavigator: false,
+              //   builder: (context) {
+              //     return const ProfileEmailScreen(editMode: true);
+              //   },
+              // );
+              // return;
               AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
             },
           ),

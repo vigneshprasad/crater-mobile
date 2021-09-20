@@ -37,13 +37,17 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user!;
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    if (user != null) {
+      _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
+        ..add(GetProfileIntroRequestStarted(user: user));
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
-
-    _name = user.name!;
-    _photoUrl = user.photo;
+      _name = user.name!;
+      _photoUrl = user.photo;
+    } else {
+      _name = '';
+      _photoUrl = null;
+    }
 
     if (_photoUrl == null) {
       if (_name.trim().isNotEmpty) {

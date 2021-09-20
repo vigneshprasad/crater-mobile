@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_request_screen.dart';
 
 import 'core/widgets/screens/home_screen/home_screen.dart';
@@ -74,6 +75,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: ProfileTagsScreen, path: "/profile-tags/:editMode?"),
     AutoRoute(page: ProfileImageScreen, path: "/profile-image/:editMode?"),
     AutoRoute(page: ProfileBioScreen, path: "/profile-bio/:editMode?"),
+    AutoRoute(page: ProfileEmailScreen, path: "/profile-email/:editMode?"),
     AutoRoute(
         page: ProfileRequestScreen,
         path: "/profile-request-settings/:editMode?"),
