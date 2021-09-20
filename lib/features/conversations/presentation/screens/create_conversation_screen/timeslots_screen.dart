@@ -7,6 +7,7 @@ import 'package:worknetwork/core/widgets/base/base_date_time_picker/base_date_ti
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen_state.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/reschedule_slot_picker.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -71,9 +72,7 @@ class TimeSlotsScreen extends HookWidget {
                                 const SizedBox(height: AppInsets.xl),
                                 BaseDateTimePicker<DateTime>(
                                   initialValue: _timeslots.value,
-                                  timeSlots: timeslots
-                                      .map((e) => [e.start!, e.end!])
-                                      .toList(),
+                                  timeSlots: timeslots,
                                   getDateTime: (obj) => obj,
                                   maxLength: 3,
                                   onValueChanged: (value) {
@@ -147,6 +146,7 @@ class TimeSlotsScreen extends HookWidget {
 
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
+        await showEmail(context);
 
         AutoRouter.of(context).pushAndPopUntil(
           OnboardingScreenRoute(
@@ -155,6 +155,26 @@ class TimeSlotsScreen extends HookWidget {
         );
 
         // AutoRouter.of(context).pop(optin);
+      },
+    );
+  }
+
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+    if (email != null && email.isNotEmpty) {
+      return;
+    }
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return const ProfileEmailScreen(editMode: true);
       },
     );
   }

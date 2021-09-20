@@ -59,7 +59,8 @@ abstract class MeetingRemoteDatasource {
   Future<bool> postMeetingRequestToRemote(
       List<DateTime> timeSlot, String requestedBy, String requestedTo);
   Future<List<Profile>> getMeetingRequestUsersFromRemote();
-  Future<List<TimeSlot>> getMeetingRequestSlotsFromRemote(String requestedTo);
+  Future<List<List<DateTime>>> getMeetingRequestSlotsFromRemote(
+      String requestedTo);
   Future<MeetingRequest> getMeetingRequestFromRemote(int meetingRequestId);
   Future<List<RequestsByDate>> getMyMeetingRequestFromRemote();
 
@@ -334,18 +335,18 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<List<TimeSlot>> getMeetingRequestSlotsFromRemote(
+  Future<List<List<DateTime>>> getMeetingRequestSlotsFromRemote(
       String requestedTo) async {
     final body = {'requested_to': requestedTo};
     final response = await apiService.getMeetingRequestSlots(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as List;
-      // final jsonList = json as List<List<String>>;
-      return json
-          .map((jsonList) => TimeSlot(
-              start: DateTime.tryParse(jsonList[0] as String),
-              end: DateTime.tryParse(jsonList[1] as String)))
-          .toList();
+      return json.map((dates) {
+        final d = dates as List;
+        return dates.map((times) {
+          return DateTime.tryParse(times as String)!;
+        }).toList();
+      }).toList();
     } else {
       throw ServerException(response.error);
     }

@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -245,7 +246,7 @@ class _ConversationLoaded extends StatelessWidget {
       (failure) {
         Fluttertoast.showToast(msg: failure.message!);
       },
-      (group) {
+      (group) async {
         final now = DateTime.now().toLocal();
         final start = group.start!.toLocal();
         final end = group.end!.toLocal();
@@ -258,12 +259,35 @@ class _ConversationLoaded extends StatelessWidget {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
+
+          await showEmail(context);
+
           AutoRouter.of(context).pushAndPopUntil(
             OnboardingScreenRoute(
                 type: OnboardingType.meetingJoining.toString()),
             predicate: (_) => false,
           );
         }
+      },
+    );
+  }
+
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+    if (email != null && email.isNotEmpty) {
+      return;
+    }
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return const ProfileEmailScreen(editMode: true);
       },
     );
   }

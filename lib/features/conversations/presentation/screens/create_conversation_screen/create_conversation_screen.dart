@@ -321,8 +321,6 @@ class CreateConversationScreen extends HookWidget {
         return const ProfileEmailScreen(editMode: true);
       },
     );
-
-    // await AutoRouter.of(context).push(ProfileEmailScreenRoute(editMode: true));
   }
 
   Future<void> _postGroupOptin(
