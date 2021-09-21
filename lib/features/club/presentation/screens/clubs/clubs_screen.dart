@@ -6,7 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/features/club/presentation/screens/clubs/clubs_screen_state.dart';
-import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -70,64 +70,27 @@ class ClubsScreen extends HookWidget {
           loading: () => Container(),
           error: (e, s) => Container(),
           data: (conversations) {
-            final liveItems = conversations
-                .map((e) => UpcomingGridItem(
-                      conversation: e,
-                      type: GridItemType.live,
-                    ))
-                .toList();
-            final upcomingItems = conversations
-                .map((e) => UpcomingGridItem(
-                      conversation: e,
-                      type: GridItemType.upcoming,
-                    ))
-                .toList();
-            upcomingItems.insert(
-                1,
-                UpcomingGridItem(
-                    title: 'UPCOMING\nSTREAMS',
-                    color: '#B02A2A',
-                    type: GridItemType.title,
-                    icon: const Icon(
-                      Icons.schedule,
-                      size: 80,
-                    )));
+            // final pastItems = conversations
+            //     .map((e) => UpcomingGridItem(
+            //           conversation: e,
+            //           type: GridItemType.past,
+            //         ))
+            //     .toList();
 
-            upcomingItems.insert(
-                upcomingItems.length,
-                UpcomingGridItem(
-                    title: 'PAST\nSTREAMS',
-                    color: '#80D1C3',
-                    type: GridItemType.title,
-                    icon: const Icon(
-                      Icons.movie,
-                      size: 80,
-                    )));
-
-            final pastItems = conversations
-                .map((e) => UpcomingGridItem(
-                      conversation: e,
-                      type: GridItemType.past,
-                    ))
-                .toList();
-
-            final items = liveItems;
-            items.addAll(upcomingItems);
-            items.addAll(pastItems);
             return StaggeredGridView.countBuilder(
               padding: const EdgeInsets.all(8),
               crossAxisCount: 2,
-              itemCount: items.length,
+              itemCount: conversations.length,
               itemBuilder: (BuildContext context, int index) {
-                switch (items[index].type) {
+                switch (conversations[index].type) {
                   case GridItemType.title:
-                    return UpcomingGridTitleTile(items[index]);
+                    return UpcomingGridTitleTile(conversations[index]);
                   default:
-                    return UpcomingGridTile(items[index]);
+                    return UpcomingGridTile(conversations[index]);
                 }
               },
               staggeredTileBuilder: (int index) {
-                switch (items[index].type) {
+                switch (conversations[index].type) {
                   case GridItemType.upcoming:
                     return const StaggeredTile.count(1, 1.5);
                   case GridItemType.title:
@@ -187,7 +150,7 @@ enum GridItemType {
 }
 
 class UpcomingGridItem {
-  final Conversation? conversation;
+  final Webinar? conversation;
   final String? title;
   final Icon? icon;
   final String? color;
@@ -308,26 +271,27 @@ class UpcomingGridTile extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: Colors.white, width: 0.5),
-                                  ),
-                                  child: Text(
-                                    tag?.name ?? '',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
+                                if (tag?.name?.isNotEmpty ?? false)
+                                  Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: Colors.white, width: 0.5),
+                                    ),
+                                    child: Text(
+                                      tag?.name ?? '',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                      ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              topic?.articleDetail?.title ?? '',
+                              item.conversation?.description ?? '',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             )
@@ -340,79 +304,6 @@ class UpcomingGridTile extends StatelessWidget {
               ],
             ),
           )),
-        ));
-  }
-}
-
-class LiveGridTile extends StatelessWidget {
-  final GridItemType type;
-  const LiveGridTile(
-    this.type, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).dialogBackgroundColor.withAlpha(50),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/images/img_drawer_image.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  if (type == GridItemType.live)
-                    Container(
-                      margin: const EdgeInsets.only(top: 8, left: 12),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.red,
-                      ),
-                      child: Text('LIVE'),
-                    ),
-                  if (type == GridItemType.past)
-                    Center(
-                      child: Icon(Icons.play_circle, size: 80),
-                    )
-                ],
-              ),
-            ),
-            ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              title: const Text('Vivan Puri'),
-              subtitle: const Text(
-                'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              leading: const CircleAvatar(
-                backgroundColor: Colors.black,
-              ),
-              trailing: Chip(
-                visualDensity: VisualDensity.compact,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                label: const Text(
-                  'Marketing',
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.transparent,
-                side: const BorderSide(color: Colors.white),
-              ),
-            ),
-          ],
         ));
   }
 }

@@ -139,4 +139,18 @@ class _$ConversationApiService extends ConversationApiService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getLiveClubs() {
+    final $url = '/groups/public/conversations/webinars/live';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getUpcomingClubs() {
+    final $url = '/groups/public/conversations/webinars/upcoming';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

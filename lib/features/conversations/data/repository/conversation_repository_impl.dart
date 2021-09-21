@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -241,6 +242,36 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .postTopicSuggestionToRemote(topic);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Webinar>>> getLiveClubs() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getLiveClubsfromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Webinar>>> getUpcomingClubs() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getUpcomingClubsfromRemote();
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

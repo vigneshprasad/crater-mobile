@@ -169,8 +169,8 @@ class _$MeetsApiService extends MeetsApiService {
   @override
   Future<Response<dynamic>> getMeetingRequestSlots(Map<String, dynamic> body) {
     final $url = '/resources/meetings/request/slots/';
-    final $body = body;
-    final $request = Request('GET', $url, client.baseUrl, body: $body);
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -184,8 +184,8 @@ class _$MeetsApiService extends MeetsApiService {
   @override
   Future<Response<dynamic>> getMyMeetingRequest(Map<String, dynamic> body) {
     final $url = '/resources/meetings/request/my/';
-    final $body = body;
-    final $request = Request('GET', $url, client.baseUrl, body: $body);
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 

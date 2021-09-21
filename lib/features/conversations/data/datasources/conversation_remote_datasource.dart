@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -86,6 +87,12 @@ abstract class ConversationRemoteDatasource {
   // Post an instant conversation to remote server
   /// Throws [ServerException]
   Future<Topic> postTopicSuggestionToRemote(Topic topic);
+
+  /// Get All Conversation for user from start to end date
+  /// Throws [ServerException] on error
+  Future<List<Webinar>> getLiveClubsfromRemote();
+
+  Future<List<Webinar>> getUpcomingClubsfromRemote();
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -295,6 +302,33 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Topic.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getLiveClubsfromRemote() async {
+    final response = await read(conversationApiServiceProvider).getLiveClubs();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getUpcomingClubsfromRemote() async {
+    final response =
+        await read(conversationApiServiceProvider).getUpcomingClubs();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }
