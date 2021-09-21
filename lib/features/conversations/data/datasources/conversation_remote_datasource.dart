@@ -90,9 +90,9 @@ abstract class ConversationRemoteDatasource {
 
   /// Get All Conversation for user from start to end date
   /// Throws [ServerException] on error
-  Future<List<Webinar>> getLiveClubsfromRemote();
+  Future<List<Webinar>> getLiveClubsfromRemote({String? userId});
 
-  Future<List<Webinar>> getUpcomingClubsfromRemote();
+  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -308,8 +308,9 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getLiveClubsfromRemote() async {
-    final response = await read(conversationApiServiceProvider).getLiveClubs();
+  Future<List<Webinar>> getLiveClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getLiveClubs(userId);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -321,9 +322,9 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getUpcomingClubsfromRemote() async {
+  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId}) async {
     final response =
-        await read(conversationApiServiceProvider).getUpcomingClubs();
+        await read(conversationApiServiceProvider).getUpcomingClubs(userId);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList

@@ -29,8 +29,8 @@ class _$WebinarTearOff {
       int? medium,
       bool? closed,
       DateTime? closedAt,
-      Topic? topicDetail,
-      ConversationUser? hostDetail,
+      @JsonKey(name: 'topic_detail') Topic? topicDetail,
+      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       bool? isLive,
       int? liveCount,
@@ -71,7 +71,9 @@ mixin _$Webinar {
   int? get medium => throw _privateConstructorUsedError;
   bool? get closed => throw _privateConstructorUsedError;
   DateTime? get closedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'topic_detail')
   Topic? get topicDetail => throw _privateConstructorUsedError;
+  @JsonKey(name: 'host_detail')
   ConversationUser? get hostDetail => throw _privateConstructorUsedError;
   int? get type => throw _privateConstructorUsedError;
   bool? get isLive => throw _privateConstructorUsedError;
@@ -96,8 +98,8 @@ abstract class $WebinarCopyWith<$Res> {
       int? medium,
       bool? closed,
       DateTime? closedAt,
-      Topic? topicDetail,
-      ConversationUser? hostDetail,
+      @JsonKey(name: 'topic_detail') Topic? topicDetail,
+      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       bool? isLive,
       int? liveCount,
@@ -229,8 +231,8 @@ abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
       int? medium,
       bool? closed,
       DateTime? closedAt,
-      Topic? topicDetail,
-      ConversationUser? hostDetail,
+      @JsonKey(name: 'topic_detail') Topic? topicDetail,
+      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       bool? isLive,
       int? liveCount,
@@ -341,8 +343,8 @@ class _$_Webinar implements _Webinar {
       this.medium,
       this.closed,
       this.closedAt,
-      this.topicDetail,
-      this.hostDetail,
+      @JsonKey(name: 'topic_detail') this.topicDetail,
+      @JsonKey(name: 'host_detail') this.hostDetail,
       this.type,
       this.isLive,
       this.liveCount,
@@ -368,8 +370,10 @@ class _$_Webinar implements _Webinar {
   @override
   final DateTime? closedAt;
   @override
+  @JsonKey(name: 'topic_detail')
   final Topic? topicDetail;
   @override
+  @JsonKey(name: 'host_detail')
   final ConversationUser? hostDetail;
   @override
   final int? type;
@@ -464,8 +468,8 @@ abstract class _Webinar implements Webinar {
       int? medium,
       bool? closed,
       DateTime? closedAt,
-      Topic? topicDetail,
-      ConversationUser? hostDetail,
+      @JsonKey(name: 'topic_detail') Topic? topicDetail,
+      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       bool? isLive,
       int? liveCount,
@@ -490,8 +494,10 @@ abstract class _Webinar implements Webinar {
   @override
   DateTime? get closedAt => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'topic_detail')
   Topic? get topicDetail => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'host_detail')
   ConversationUser? get hostDetail => throw _privateConstructorUsedError;
   @override
   int? get type => throw _privateConstructorUsedError;

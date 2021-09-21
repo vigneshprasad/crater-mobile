@@ -19,12 +19,13 @@ _$_Webinar _$_$_WebinarFromJson(Map<String, dynamic> json) {
     closedAt: json['closedAt'] == null
         ? null
         : DateTime.parse(json['closedAt'] as String),
-    topicDetail: json['topicDetail'] == null
+    topicDetail: json['topic_detail'] == null
         ? null
-        : Topic.fromJson(json['topicDetail'] as Map<String, dynamic>),
-    hostDetail: json['hostDetail'] == null
+        : Topic.fromJson(json['topic_detail'] as Map<String, dynamic>),
+    hostDetail: json['host_detail'] == null
         ? null
-        : ConversationUser.fromJson(json['hostDetail'] as Map<String, dynamic>),
+        : ConversationUser.fromJson(
+            json['host_detail'] as Map<String, dynamic>),
     type: json['type'] as int?,
     isLive: json['isLive'] as bool?,
     liveCount: json['liveCount'] as int?,
@@ -42,8 +43,8 @@ Map<String, dynamic> _$_$_WebinarToJson(_$_Webinar instance) =>
       'medium': instance.medium,
       'closed': instance.closed,
       'closedAt': instance.closedAt?.toIso8601String(),
-      'topicDetail': instance.topicDetail,
-      'hostDetail': instance.hostDetail,
+      'topic_detail': instance.topicDetail,
+      'host_detail': instance.hostDetail,
       'type': instance.type,
       'isLive': instance.isLive,
       'liveCount': instance.liveCount,

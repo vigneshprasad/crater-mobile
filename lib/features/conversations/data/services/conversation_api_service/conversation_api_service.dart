@@ -74,8 +74,8 @@ abstract class ConversationApiService extends ChopperService {
       @Body() Map<String, dynamic> body);
 
   @Get(path: 'public/conversations/webinars/live')
-  Future<Response> getLiveClubs();
+  Future<Response> getLiveClubs(@Query() String? host);
 
   @Get(path: 'public/conversations/webinars/upcoming')
-  Future<Response> getUpcomingClubs();
+  Future<Response> getUpcomingClubs(@Query() String? host);
 }

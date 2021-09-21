@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
@@ -128,7 +129,10 @@ class GetProfileNotifier
       connections: connections,
       meta: meta,
     );
-    state = AsyncValue<_ProfileScreenState>.data(_profileScreenState);
+
+    if (mounted) {
+      state = AsyncValue<_ProfileScreenState>.data(_profileScreenState);
+    }
   }
 }
 

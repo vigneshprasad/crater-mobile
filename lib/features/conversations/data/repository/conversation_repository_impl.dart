@@ -253,7 +253,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getLiveClubs() async {
+  Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getLiveClubsfromRemote();
@@ -268,7 +268,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getUpcomingClubs() async {
+  Future<Either<Failure, List<Webinar>>> getUpcomingClubs(
+      {String? userId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getUpcomingClubsfromRemote();

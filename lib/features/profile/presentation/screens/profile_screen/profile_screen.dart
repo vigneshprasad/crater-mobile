@@ -12,6 +12,7 @@ import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_tab.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -90,8 +91,9 @@ class ProfileScreen extends HookWidget {
                 alignment: Alignment.bottomLeft,
                 child: const TabBar(
                   tabs: [
+                    Tab(text: 'Streams'),
                     Tab(text: 'About'),
-                    Tab(text: 'Connections'),
+                    Tab(text: 'Club'),
                   ],
                 ),
               ),
@@ -109,13 +111,15 @@ class ProfileScreen extends HookWidget {
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
-            length: 2,
+            length: 3,
             child: SafeArea(
+              bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   _appBar(context, state.profile),
                 ],
                 body: TabBarView(children: [
+                  ProfileStreamsTab(userId),
                   _AboutTab(
                     profile: state.profile,
                     objectives: state.objectives,
@@ -315,7 +319,7 @@ class _AboutTab extends HookWidget {
             'ABOUT',
             bgText: 'CREATOR',
           ),
-          const SizedBox(height: AppInsets.sm),
+          const SizedBox(height: AppInsets.l),
           if (profile.introduction != null ||
               profile.generatedIntroduction != null)
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -366,11 +370,10 @@ class _AboutTab extends HookWidget {
           const SizedBox(height: AppInsets.xxl),
           _Interests(interests),
           const SizedBox(height: AppInsets.xxl),
-          if (profile.allowMeetingRequest == true)
-            const UnderlinedText(
-              'CONNECT',
-              bgText: 'SOCIAL MEDIA',
-            ),
+          const UnderlinedText(
+            'CONNECT',
+            bgText: 'SOCIAL MEDIA',
+          ),
           const SizedBox(height: AppInsets.l),
           _buildLinkedInButton(),
           const SizedBox(height: AppInsets.xxl),

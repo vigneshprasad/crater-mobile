@@ -44,7 +44,7 @@ class ClubsStateNotifier
   }
 
   void updateData() {
-    final items = upcomingClubs;
+    final items = List<UpcomingGridItem>.from(upcomingClubs);
     if (items.isNotEmpty) {
       items.insert(
           1,

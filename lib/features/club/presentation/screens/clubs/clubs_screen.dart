@@ -178,6 +178,10 @@ class UpcomingGridTile extends StatelessWidget {
     final user = conversation.hostDetail;
     final topic = conversation.topicDetail;
     final tag = topic?.root;
+    String description = topic?.name ?? ' ';
+    if (description.isEmpty) {
+      description = item.conversation?.description ?? '';
+    }
     return InkWell(
         onTap: () {
           AutoRouter.of(context)
@@ -197,9 +201,9 @@ class UpcomingGridTile extends StatelessWidget {
                     height: double.infinity,
                     child: Stack(
                       children: [
-                        if (tag?.image != null)
+                        if (topic?.image != null)
                           Image.network(
-                            tag?.image ?? '',
+                            topic?.image ?? '',
                             height: double.infinity,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -259,6 +263,7 @@ class UpcomingGridTile extends StatelessWidget {
                         ),
                       Expanded(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -291,7 +296,7 @@ class UpcomingGridTile extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              item.conversation?.description ?? '',
+                              description,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             )

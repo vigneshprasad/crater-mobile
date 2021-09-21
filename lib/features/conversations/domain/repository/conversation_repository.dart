@@ -46,7 +46,6 @@ abstract class ConversationRepository {
   Future<Either<Failure, Conversation>> postCreateInstantConversation(
       Conversation conversation);
   Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
-
-  Future<Either<Failure, List<Webinar>>> getLiveClubs();
-  Future<Either<Failure, List<Webinar>>> getUpcomingClubs();
+  Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
+  Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
 }
