@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
@@ -36,20 +37,10 @@ class ProfileScreen extends HookWidget {
     @PathParam('allowEdit') required this.allowEdit,
   });
 
-  Size _textSize(String text, TextStyle style, BuildContext context) {
-    final maxWidth = MediaQuery.of(context).size.width;
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 100,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 200, maxWidth: maxWidth - 100);
-    return textPainter.size;
-  }
+  static const tabs = ["Streams", "About", "Club"];
 
-  Widget _appBar(BuildContext context, Profile profile) {
-    final size = _textSize(profile.introduction ?? '',
-        Theme.of(context).textTheme.bodyText1!, context);
-
+  Widget _appBar(
+      BuildContext context, Profile profile, ValueNotifier<int> index) {
     return SliverAppBar(
       expandedHeight: 240,
       flexibleSpace: FlexibleSpaceBar(
@@ -89,12 +80,27 @@ class ProfileScreen extends HookWidget {
                 height: 30,
                 color: Theme.of(context).scaffoldBackgroundColor,
                 alignment: Alignment.bottomLeft,
-                child: const TabBar(
-                  tabs: [
-                    Tab(text: 'Streams'),
-                    Tab(text: 'About'),
-                    Tab(text: 'Club'),
-                  ],
+                child: TabBar(
+                  onTap: (i) {
+                    index.value = i;
+                  },
+                  tabs: tabs
+                      .map((e) => Tab(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(e),
+                              Container(
+                                margin: const EdgeInsets.only(top: 4),
+                                width: 20,
+                                height: 1,
+                                color: index.value == tabs.indexOf(e)
+                                    ? HexColor.fromHex('#9146FF')
+                                    : null,
+                              )
+                            ],
+                          )))
+                      .toList(),
                 ),
               ),
             ],
@@ -108,27 +114,30 @@ class ProfileScreen extends HookWidget {
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId));
 
+    final index = useState(0);
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
-            length: 3,
+            length: tabs.length,
             child: SafeArea(
               bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  _appBar(context, state.profile),
+                  _appBar(context, state.profile, index),
                 ],
-                body: TabBarView(children: [
-                  ProfileStreamsTab(userId),
-                  _AboutTab(
-                    profile: state.profile,
-                    objectives: state.objectives,
-                    interests: state.interests,
-                    meta: state.meta,
-                    showLogout: allowEdit,
-                  ),
-                  _ClubTab(state.connections!),
-                ]),
+                body: TabBarView(
+                  children: [
+                    ProfileStreamsTab(userId),
+                    _AboutTab(
+                      profile: state.profile,
+                      objectives: state.objectives,
+                      interests: state.interests,
+                      meta: state.meta,
+                      showLogout: allowEdit,
+                    ),
+                    _ClubTab(state.connections!),
+                  ],
+                ),
               ),
             )),
       ),
