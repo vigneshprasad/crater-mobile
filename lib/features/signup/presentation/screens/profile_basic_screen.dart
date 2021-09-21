@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -36,14 +36,16 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user!;
+    final name = BlocProvider.of<AuthBloc>(context).state.user?.name;
 
     _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
 
-    if (user.name != null && user.name!.trim().isNotEmpty) {
-      final name = user.name!.split(' ');
-      _firstNameController.text = name.first;
-      _lastNameController.text = name.last;
+    if (name != null && name.trim().isNotEmpty) {
+      final parts = name.split(' ');
+      _firstNameController.text = parts.first;
+      if (parts.length > 1) {
+        _lastNameController.text = parts.last;
+      }
     } else if (widget.editMode == false) {
       SharedPreferences.getInstance().then((prefs) {
         final provider = prefs.getString('AuthProvider');
@@ -139,8 +141,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context)
-        .push(ProfileTagsScreenRoute(editMode: widget.editMode));
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressedSubmit() {
@@ -156,6 +157,8 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
     if (state is PatchProfileBasicRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserUpdateRecieved(user: state.user));
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
       _goToNextScreen();
     }
   }

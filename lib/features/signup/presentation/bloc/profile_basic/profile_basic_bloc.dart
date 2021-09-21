@@ -48,15 +48,14 @@ class ProfileBasicBloc extends Bloc<ProfileBasicEvent, ProfileBasicState> {
       PostProfileBasicRequestStarted event) async* {
     yield const ProfileBasicRequestLoading();
 
-    // Update Profile
-    final updateOrError = await postUserProfile(
-        UCPostUserProfileIntroParams(body: {'name': event.name}));
-
     // Update User
     final user = UserModel(name: event.name);
     final patchOrError = await patchUser(PatchUserParams(user: user));
     final updatedUser = patchOrError.getOrElse(() => user);
 
+    // Update Profile
+    final updateOrError = await postUserProfile(
+        UCPostUserProfileIntroParams(body: {'name': event.name}));
     yield updateOrError.fold(
       (failure) => ProfileBasicRequestError(error: failure),
       (updatedProfile) {

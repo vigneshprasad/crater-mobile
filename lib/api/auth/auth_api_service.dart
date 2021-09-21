@@ -1,8 +1,12 @@
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/config_reader/config_reader.dart';
 
 part 'auth_api_service.chopper.dart';
+
+final authApiServiceProvider =
+    Provider<AuthApiService>((_) => AuthApiService.create());
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class AuthApiService extends ChopperService {
@@ -21,9 +25,7 @@ abstract class AuthApiService extends ChopperService {
   }
 
   @Post(path: 'login/')
-  Future<Response> loginWithEmail(
-    @Body() Map<String, dynamic> body,
-  );
+  Future<Response> loginWithEmail(@Body() Map<String, dynamic> body);
 
   @Post(path: 'registration/')
   Future<Response> registerWithEmail(@Body() Map<String, dynamic> body);

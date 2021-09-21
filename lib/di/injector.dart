@@ -9,6 +9,7 @@ import 'package:worknetwork/features/meeting/data/datasources/dyte_remote_dataso
 import 'package:worknetwork/features/meeting/data/repository/dyte_repository_impl.dart';
 import 'package:worknetwork/features/meeting/data/services/dyte_api_service.dart';
 import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
+import 'package:worknetwork/api/auth/otp_api_service.dart';
 
 import '../api/articles/articles_api_service.dart';
 import '../api/auth/auth_api_service.dart';
@@ -451,6 +452,7 @@ class Di {
 
     // Api Services
     container.registerInstance(AuthApiService.create());
+    container.registerInstance(OtpApiService.create());
     container.registerInstance(UserApiService.create());
     container.registerInstance(MasterClassApiService.create());
     container.registerInstance(PointsApiService.create());

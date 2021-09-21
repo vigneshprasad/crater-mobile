@@ -1,9 +1,14 @@
 import 'package:hive/hive.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/user_model.dart';
 import '../models/user_profile_model.dart';
+
+final authLocalDatasourceProvider = Provider<AuthLocalDataSource>((ref) {
+  return AuthLocalDataSourceImpl();
+});
 
 abstract class AuthLocalDataSource {
   /// Gets cached [UserModel] from cache

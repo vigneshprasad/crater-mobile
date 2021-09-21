@@ -79,8 +79,8 @@ class _$AuthInjector extends AuthInjector {
           c<AuthRemoteDataSource>(),
           c<AuthLocalDataSource>(),
           c<NetworkInfo>()))
-      ..registerSingleton<AuthRemoteDataSource>((c) =>
-          AuthRemoteDataSourceImpl(c<AuthApiService>(), c<UserApiService>()))
+      ..registerSingleton<AuthRemoteDataSource>((c) => AuthRemoteDataSourceImpl(
+          c<AuthApiService>(), c<UserApiService>(), c<OtpApiService>()))
       ..registerSingleton<AuthLocalDataSource>((c) => AuthLocalDataSourceImpl())
       ..registerSingleton((c) => UCGetUser(c<AuthRepository>()))
       ..registerSingleton(

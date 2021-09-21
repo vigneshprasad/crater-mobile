@@ -1,0 +1,260 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Deploy a new PROD version to the AppCenter"
+  lane :prod do
+    sh "flutter build apk -t lib/main_prod.dart"
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
+    appcenter_upload(
+      api_token: '46757081e5a45f8aebaf353c0572dce3dc6f61f0',
+      owner_name: 'WorkNetwork',
+      app_name: "Worknetwork-Prod-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "PROD",
+        "Platform" => "Android",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-prod-1/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+  end
+
+
+  desc "Deploy a new PREPROD version to the AppCenter"
+  lane :preprod do
+    sh "flutter build apk -t lib/main_preprod.dart"
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
+    appcenter_upload(
+      api_token: 'dfe6deeaba47844cecefa25b76f1ea7612d7b718',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "PRE-PROD",
+        "Platform" => "Android",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-1/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+
+  end
+
+
+  desc "Deploy a new DEV version to the AppCenter"
+  lane :dev do
+    sh "flutter build apk -t lib/main_dev.dart"
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
+    appcenter_upload(
+      api_token: '29123c2e43984fdf2bfa3155c865a2ef12f5a18d',
+      owner_name: 'WorkNetwork',
+      app_name: "Worknetwork-Dev-1",
+      destinations: "PublicLink",
+      destination_type: "group",
+      file: "./build/app/outputs/flutter-apk/app-release.apk"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "DEV",
+        "Platform" => "Android",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-dev-1/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+
+  end
+
+
+  desc "Generate APKs for PlayStore Upload"
+  lane :apks do
+    sh "flutter build apk --split-per-abi -t lib/main_prod.dart"
+  end
+
+end
+
+
+
+# iOS Lanes
+platform :ios do
+
+  desc "Deploy a new PROD version to the AppCenter"
+  lane :prod do
+
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      configuration: "Release",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-prod.ipa",
+      include_symbols: false, # dSYM generation
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+    
+    appcenter_upload(
+      api_token: '08c864ccf81aaddfcb83e642b03c766a0357b583',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-Prod",
+      destinations: "PublicLink",
+      destination_type: "group",
+      upload_build_only: true,
+      file: "./build/ios/flutter-ipa/app-prod.ipa"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "PROD",
+        "Platform" => "iOS",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-prod/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+
+  end
+
+
+  desc "Deploy a new PREPROD version to the AppCenter"
+  lane :preprod do
+
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      configuration: "ReleasePreProd",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-preprod.ipa",
+      include_symbols: false, # dSYM generation
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+    
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+
+    appcenter_upload(
+      api_token: 'e3a3e8773e4e09550ed962bf5b63068a0142f17e',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork",
+      destinations: "PublicLink",
+      destination_type: "group",
+      upload_build_only: true,
+      file: "./build/ios/flutter-ipa/app-preprod.ipa"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "PRE-PROD",
+        "Platform" => "iOS",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+  end
+
+
+  desc "Deploy a new DEV version to the AppCenter"
+  lane :dev do
+    
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      configuration: "ReleaseDev",
+      output_directory: "./build/ios/flutter-ipa/",
+      output_name: "app-dev.ipa",
+      include_symbols: false, # dSYM generation
+      export_options: {
+        method: "ad-hoc",
+      }
+    )
+
+    changelog_from_git_commits(
+      merge_commit_filtering: "exclude_merges",
+      pretty: "- %s"
+    )
+
+    appcenter_upload(
+      api_token: '1b37dabb62bbef209820cf65da0162ed403ac17b',
+      owner_name: 'WorkNetwork',
+      app_name: "WorkNetwork-Dev",
+      destinations: "PublicLink",
+      destination_type: "group",
+      upload_build_only: true,
+      file: "./build/ios/flutter-ipa/app-dev.ipa"
+    )
+
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "New Build Ready",
+      channel: "#app-builds",
+      payload: {
+        "Build Type" => "DEV",
+        "Platform" => "iOS",
+        "Download URL" => "https://install.appcenter.ms/orgs/worknetwork/apps/worknetwork-dev/distribution_groups/publiclink"
+      },
+      default_payloads: [:git_branch, :git_author, :last_git_commit],
+    )
+  end
+
+
+end

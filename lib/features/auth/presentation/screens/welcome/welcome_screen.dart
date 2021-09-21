@@ -206,17 +206,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
             child: Flex(
               direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  flex: 5,
-                  child: BaseLargeButton(
-                    text: 'Login',
-                    onPressed: () => openBottomSheet(context, isSignUp: false),
-                  ),
-                ),
-                Flexible(
-                  child: Container(),
-                ),
+                // Flexible(
+                //   flex: 5,
+                //   child: BaseLargeButton(
+                //     text: 'Login',
+                //     onPressed: () => openBottomSheet(context, isSignUp: false),
+                //   ),
+                // ),
+                // Flexible(
+                //   child: Container(),
+                // ),
                 Flexible(
                   flex: 5,
                   child: BaseLargeButton(
@@ -233,6 +234,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
+    _openPhoneAuthScreen(isSignUp, context);
+
+    return;
+
     showModalBottomSheet(
       elevation: 10,
       isScrollControlled: true,
@@ -291,7 +296,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     if (!isSignUp)
                       BaseContainer(
                         child: SizedBox(
-                          width: double.infinity,
+                          width: buttonWidth,
                           height: buttonHeight,
                           child: SocialAuthButton(
                             provider: SocialAuthProviders.google,
@@ -367,6 +372,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                         ),
                       ),
+                    if (!isSignUp)
+                      BaseContainer(
+                        child: SizedBox(
+                          width: buttonWidth,
+                          height: buttonHeight,
+                          child: SocialAuthButton(
+                            provider: SocialAuthProviders.phone,
+                            isLarge: true,
+                            isSignUp: isSignUp,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _openPhoneAuthScreen(isSignUp, context);
+                            },
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -399,6 +420,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void _openSignupAuthScreen(bool showSignup, BuildContext context) {
     final state = showSignup ? "signup" : "signin";
     AutoRouter.of(context).push(AuthScreenRoute(state: state));
+  }
+
+  void _openPhoneAuthScreen(bool isSignUp, BuildContext context) {
+    final state = isSignUp ? "signup" : "signin";
+    AutoRouter.of(context).push(PhoneScreenRoute(state: state));
   }
 }
 

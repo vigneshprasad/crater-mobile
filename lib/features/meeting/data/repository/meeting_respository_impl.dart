@@ -236,7 +236,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, List<TimeSlot>>> getMeetingRequestSlots(
+  Future<Either<Failure, List<List<DateTime>>>> getMeetingRequestSlots(
       String requestedTo) async {
     try {
       final response =

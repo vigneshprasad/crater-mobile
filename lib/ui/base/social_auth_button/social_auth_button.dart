@@ -75,6 +75,16 @@ class SocialAuthButton extends StatelessWidget {
       _textColor = Colors.white;
     }
 
+    if (provider == SocialAuthProviders.phone) {
+      _child = Icon(
+        Icons.phone,
+        color: Colors.white,
+        size: _iconSize,
+      );
+      _buttonColor = Theme.of(context).backgroundColor;
+      _textColor = Colors.white;
+    }
+
     if (isLarge) {
       final name = _nameForProvider(provider, isSignUp);
       _child = Padding(
@@ -121,8 +131,8 @@ class SocialAuthButton extends StatelessWidget {
         return "Google";
       case SocialAuthProviders.email:
         return "Email";
-      default:
-        return "";
+      case SocialAuthProviders.phone:
+        return "Phone";
     }
   }
 }

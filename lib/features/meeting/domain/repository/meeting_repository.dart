@@ -48,7 +48,7 @@ abstract class MeetingRepository {
   Future<Either<Failure, bool>> postMeetingRequest(
       List<DateTime> timeSlot, String requestedBy, String requestedTo);
   Future<Either<Failure, List<Profile>>> getMeetingRequestUsers();
-  Future<Either<Failure, List<TimeSlot>>> getMeetingRequestSlots(
+  Future<Either<Failure, List<List<DateTime>>>> getMeetingRequestSlots(
       String requestedTo);
   Future<Either<Failure, MeetingRequest>> getMeetingRequest(
       int meetingRequestId);
