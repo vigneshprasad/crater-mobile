@@ -30,6 +30,7 @@ class ProfileStreamsTab extends HookWidget {
                 loading: () => Container(),
                 error: (e, s) => Container(),
                 data: (conversations) {
+                  if (conversations.isEmpty) return Container();
                   return SizedBox(
                       height: 350,
                       child: Column(
@@ -52,6 +53,7 @@ class ProfileStreamsTab extends HookWidget {
                 loading: () => Container(),
                 error: (e, s) => Container(),
                 data: (conversations) {
+                  if (conversations.isEmpty) return Container();
                   return SizedBox(
                       height: 300,
                       child: Column(

@@ -256,7 +256,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getLiveClubsfromRemote();
+          .getLiveClubsfromRemote(userId: userId);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
@@ -272,7 +272,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
       {String? userId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getUpcomingClubsfromRemote();
+          .getUpcomingClubsfromRemote(userId: userId);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
