@@ -336,7 +336,7 @@ packages:
       name: dyte_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.20"
+    version: "0.1.1"
   equatable:
     dependency: "direct main"
     description:
@@ -867,7 +867,7 @@ packages:
       name: onesignal_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.3"
   package_config:
     dependency: transitive
     description:
@@ -972,7 +972,7 @@ packages:
       name: phone_number
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.0+1"
+    version: "0.12.0+1"
   platform:
     dependency: transitive
     description:

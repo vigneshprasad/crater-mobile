@@ -65,11 +65,11 @@ dependencies:
   lint: ^1.5.3
   lottie: ^1.1.0
   metadata_fetch: ^0.4.1
-  onesignal_flutter: ^3.1.0
+  onesignal_flutter: ^3.2.3
   package_info: ^2.0.2
   path_provider: ^2.0.2
   permission_handler: ^8.1.3
-  phone_number: ^0.11.0+1
+  phone_number: ^0.12.0+1
   sentry: ^5.1.0
   share: ^2.0.4
   shared_preferences: ^2.0.6
@@ -82,7 +82,7 @@ dependencies:
   intercom_flutter: ^5.0.0
   linkedin_login: ^2.0.1
   bordered_text: ^2.0.0
-  dyte_client: ^0.0.20
+  dyte_client: ^0.1.1
   timeago: ^3.1.0
   flutter_staggered_grid_view: ^0.4.0
   carousel_slider: ^4.0.0
