@@ -40,7 +40,11 @@ class UserProfileNavItem extends StatelessWidget {
             ),
           );
         } else {
-          return Container();
+          return CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: kProfileIconSize / 2,
+            backgroundImage: AppImageAssets.defaultAvatar,
+          );
         }
       },
     );

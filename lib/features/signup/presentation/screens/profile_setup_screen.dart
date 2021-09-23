@@ -62,7 +62,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         const heading = 'Want to grow your influence?';
         const subHeading =
             'Enable your matches to discover you on other platforms';
-        final user = authState.user!;
 
         return BlocProvider.value(
           value: _bloc,
@@ -77,7 +76,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       title: heading,
                       subtitle: subHeading,
                     ),
-                    _buildProfileForm(context, user),
+                    _buildProfileForm(context),
                     const Spacer(),
                     ProfileFooter(
                       onSkip: _goToNextScreen,
@@ -102,7 +101,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     }
   }
 
-  Widget _buildProfileForm(BuildContext context, User user) {
+  Widget _buildProfileForm(BuildContext context) {
     final linkedinLabel =
         AppLocalizations.of(context)?.translate("linkedin:placeholder");
     return Padding(

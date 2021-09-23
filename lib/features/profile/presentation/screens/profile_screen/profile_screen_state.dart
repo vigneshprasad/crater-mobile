@@ -65,14 +65,14 @@ class GetProfileNotifier
       _authRepository.getUserProfile(),
     ]);
 
-    for (int i = 0; i < response.length; i++) {
-      final data = response[i];
-      if (data.isLeft()) {
-        final error = data.swap().getOrElse(() => ServerFailure());
-        state = AsyncValue<_ProfileScreenState>.error(error);
-        return;
-      }
-    }
+    // for (int i = 0; i < response.length; i++) {
+    //   final data = response[i];
+    //   if (data.isLeft()) {
+    //     final error = data.swap().getOrElse(() => ServerFailure());
+    //     state = AsyncValue<_ProfileScreenState>.error(error);
+    //     return;
+    //   }
+    // }
 
     final _profile =
         response[0].getOrElse(() => Profile(uuid: _profileId)) as Profile;

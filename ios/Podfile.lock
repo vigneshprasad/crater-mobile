@@ -1,8 +1,8 @@
 PODS:
-  - agora_rtc_engine (4.0.6):
-    - AgoraRtcEngine_iOS (= 3.4.6)
+  - agora_rtc_engine (4.0.7):
+    - AgoraRtcEngine_iOS (= 3.5.0.3)
     - Flutter
-  - AgoraRtcEngine_iOS (3.4.6)
+  - AgoraRtcEngine_iOS (3.5.0.3)
   - Amplitude-iOS (4.8.2)
   - Analytics (3.7.0)
   - AppAuth (1.4.0):
@@ -270,8 +270,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  agora_rtc_engine: d3178bd63d453a2d0111bd45475f17ce1fcc754d
-  AgoraRtcEngine_iOS: 8aa4a8e46bd81963607857b1d46703b93e4de156
+  agora_rtc_engine: 0820b82b3a71a8fcaf8b27c000622e671349f0ba
+  AgoraRtcEngine_iOS: ff8e085161ea98c917173783a899882f884dd9ef
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
@@ -319,7 +319,7 @@ SPEC CHECKSUMS:
   Segment-Amplitude: 1b3b02a2e92f4b08a413a72bf7aa44f78566ab3b
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sign_in_with_apple: 34f3f5456a45fd7ac5fb42905e2ad31dae061b4a
+  sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
@@ -330,4 +330,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ecd7b6b88f2ea09499c75293987841c2964dd0c9
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

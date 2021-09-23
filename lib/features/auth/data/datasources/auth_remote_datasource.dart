@@ -200,7 +200,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await userApiService.patchUser(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return UserModel.fromJson(json);
+      final model = AuthResponseModel.fromJson(json);
+      return model.toUserModel();
+      // final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      // return UserModel.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

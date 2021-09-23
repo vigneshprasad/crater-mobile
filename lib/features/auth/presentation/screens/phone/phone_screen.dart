@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:worknetwork/constants/theme.dart';
@@ -11,6 +12,7 @@ import 'package:worknetwork/core/widgets/base/base_container/base_container.dart
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
@@ -191,8 +193,21 @@ class _PhoneScreenState extends State<PhoneScreen> {
       final profileResponse =
           await context.read(authRepositoryProvider).getUserProfile();
       final profile = profileResponse.getOrElse(() => UserProfile());
+      final _ = BlocProvider.of<AuthBloc>(context)
+        ..add(AuthUserUpdateRecieved(user: user))
+        ..add(AuthUserProfileUpdateRecieved(profile: profile));
+
       context.read(userLeapProvider).setUserData(user);
-      navigatePostAuth(user, profile: profile);
+      // analytics.initSdk();
+      // analytics.identify(properties: getUserTraitsFromModel(user));
+      // analytics.trackEvent(
+      //   eventName: AnalyticsEvents.signUpEmail,
+      //   properties: {
+      //     "email": user.email,
+      //     "intent": user.intent,
+      //   },
+      // );
+      // navigatePostAuth(user, profile: profile);
     });
   }
 

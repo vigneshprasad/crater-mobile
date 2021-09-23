@@ -36,14 +36,20 @@ class _ProfileRequestScreenState extends State<ProfileRequestScreen> {
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user!;
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>();
+    if (user != null) {
+      _bloc.add(GetProfileIntroRequestStarted(user: user));
+    }
 
-    allowMeetingRequests =
-        BlocProvider.of<AuthBloc>(context).state.profile?.allowMeetingRequest ??
-            true;
+    if (widget.editMode) {
+      allowMeetingRequests = BlocProvider.of<AuthBloc>(context)
+              .state
+              .profile
+              ?.allowMeetingRequest ??
+          true;
+    }
     super.initState();
   }
 

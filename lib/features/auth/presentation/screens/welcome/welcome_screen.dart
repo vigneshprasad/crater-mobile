@@ -99,7 +99,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSuccess) {
-          navigatePostAuth(state.user, profile: state.profile);
+          // navigatePostAuth(state.user, profile: state.profile);
         } else if (state is AuthRequestFailure) {
           _handleRequestError(state);
         }

@@ -17,6 +17,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isRedirected = false;
+
   @override
   void initState() {
     final authBloc = BlocProvider.of<AuthBloc>(context);
@@ -43,7 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
       AutoRouter.of(context).root.popAndPush(const WelcomeScreenRoute());
     }
 
-    if (state is AuthStateSuccess) {
+    if (state is AuthStateSuccess && !isRedirected) {
+      isRedirected = true;
       context.read(userLeapProvider).setUserData(state.user!);
       navigatePostAuth(state.user, profile: state.profile);
     }
