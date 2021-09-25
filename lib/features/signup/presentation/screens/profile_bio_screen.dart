@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -33,6 +32,8 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   final TextEditingController _bioController = TextEditingController();
   late ProfileIntroBloc _bloc;
   late Map<String, dynamic> _values;
+  OverlayEntry? _overlay;
+
   @override
   void initState() {
     _values = {};
@@ -147,6 +148,8 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      _overlay = _buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: {ProfileIntroElement.introduction: _bioController.text},
       ));
@@ -158,7 +161,25 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
     if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

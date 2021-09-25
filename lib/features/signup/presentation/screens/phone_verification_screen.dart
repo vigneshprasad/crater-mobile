@@ -118,6 +118,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                 Text(enterOtp!, style: labelStyle),
                               if (_showSmsCodeInput)
                                 CodeInput(
+                                  focusNode: FocusNode(),
                                   length: 4,
                                   onChange: (value) {
                                     setState(() {

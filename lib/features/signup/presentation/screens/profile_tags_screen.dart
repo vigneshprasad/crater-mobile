@@ -34,6 +34,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   late List<UserTag> selectedTags;
   late List<PickerItem> items;
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -98,6 +99,10 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
                                 ObjectivesPicker(
                                   objectives: items,
                                   onPressedItem: _onPressedObjectiveItem,
+                                )
+                              else
+                                const Center(
+                                  child: CircularProgressIndicator(),
                                 ),
                               const SizedBox(height: AppInsets.xxl),
                             ],
@@ -127,6 +132,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     } else if (state is PostProfileTagsRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.user));
+      _overlay?.remove();
       goToNextScreen();
     }
   }
@@ -139,6 +145,9 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     if (selectedTags.isEmpty) {
       return;
     }
+
+    _overlay = _buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
     _bloc.add(PostProfileTagsRequestStarted(
         tagIds: selectedTags.map((e) => e.pk!).toList()));
   }
@@ -159,5 +168,22 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
               ))
           .toList();
     });
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

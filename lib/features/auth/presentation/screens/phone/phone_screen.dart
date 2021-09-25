@@ -39,6 +39,21 @@ class _PhoneScreenState extends State<PhoneScreen> {
   late String _smsCode;
   late bool _validOtp = false;
   String otpResponse = '';
+  late FocusNode myFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +119,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     if (_showSmsCodeInput) Text(enterOtp!, style: labelStyle),
                     if (_showSmsCodeInput)
                       CodeInput(
+                        focusNode: myFocusNode,
                         length: 4,
                         onChange: (value) {
                           setState(() {
@@ -141,9 +157,14 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 
   Future<void> _postNewPhoneNumber() async {
-    _buildOverlay();
+    final _overlay = _buildLoaderOverlay();
+
+    Overlay.of(context)?.insert(_overlay);
     final response =
         await context.read(authRepositoryProvider).sendOtp(_phoneNumber);
+
+    _overlay.remove();
+
     response.fold((failure) {
       final message = failure as ServerFailure?;
       final map = jsonDecode(message?.message.toString() ?? '');
@@ -165,10 +186,14 @@ class _PhoneScreenState extends State<PhoneScreen> {
         _showSmsCodeInput = true;
         otpResponse = '';
       });
+      myFocusNode.requestFocus();
     });
   }
 
   Future<void> _postSmsCode() async {
+    final _overlay = _buildLoaderOverlay();
+
+    Overlay.of(context)?.insert(_overlay);
     final response = await context
         .read(authRepositoryProvider)
         .verifyOtp(_phoneNumber, _smsCode);
@@ -177,6 +202,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
       final message = failure as ServerFailure?;
       final map = jsonDecode(message?.message.toString() ?? '');
       final error = map?['otp'] as List<String>?;
+
+      _overlay.remove();
+
       if (error != null) {
         Fluttertoast.showToast(msg: error.first);
       } else {
@@ -193,11 +221,15 @@ class _PhoneScreenState extends State<PhoneScreen> {
       final profileResponse =
           await context.read(authRepositoryProvider).getUserProfile();
       final profile = profileResponse.getOrElse(() => UserProfile());
+
+      _overlay.remove();
+
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserUpdateRecieved(user: user))
         ..add(AuthUserProfileUpdateRecieved(profile: profile));
 
       context.read(userLeapProvider).setUserData(user);
+
       // analytics.initSdk();
       // analytics.identify(properties: getUserTraitsFromModel(user));
       // analytics.trackEvent(
@@ -217,33 +249,20 @@ class _PhoneScreenState extends State<PhoneScreen> {
     });
   }
 
-  Widget _buildOverlay() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black.withOpacity(0.7),
-      child: Center(
-        child: Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            color: Theme.of(context).dialogBackgroundColor,
-            borderRadius: BorderRadius.circular(8.0),
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SizedBox(
-                height: 32,
-                width: 32,
-                child: CircularProgressIndicator(),
-              ),
-              SizedBox(height: AppInsets.xl),
-              Text("Loading..."),
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

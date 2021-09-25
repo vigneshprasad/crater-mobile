@@ -44,6 +44,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> editedFieldIds = [];
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -161,6 +162,8 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void submitAnswers() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      _overlay = _buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: _values,
         photo: _photo,
@@ -216,7 +219,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     } else if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
+      _overlay?.remove();
       goToNextScreen();
     }
   }
@@ -224,5 +227,22 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void goToNextScreen() {
     AutoRouter.of(context)
         .push(ProfileImageScreenRoute(editMode: widget.editMode));
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

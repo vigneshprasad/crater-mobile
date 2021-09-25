@@ -33,6 +33,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   late ProfileBasicBloc _bloc;
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -147,9 +148,29 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate();
     if (isValid ?? false) {
+      _overlay = _buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
+
       final name = '${_firstNameController.text} ${_lastNameController.text}';
       _bloc.add(PostProfileBasicRequestStarted(name: name));
     }
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _profileSetupBlocListener(
@@ -159,6 +180,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
           .add(AuthUserUpdateRecieved(user: state.user));
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }

@@ -34,6 +34,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   File? _photo;
   String? _photoUrl;
   late String _name;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -116,6 +117,9 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
+    _overlay = _buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
+
     if (_photo == null) {
       _bloc.add(PostProfileIntroRequestStarted(values: {
         'photo_url': _photoUrl,
@@ -135,8 +139,25 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
     if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
+      _overlay?.remove();
       _goToNextScreen();
     }
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -36,6 +36,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final TextEditingController _linkedInController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   late ProfileSetupBloc _bloc;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -97,6 +98,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     if (state is PostUserProfileRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }
@@ -153,6 +155,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate();
     if (isValid ?? false) {
+      _overlay = _buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileRequestStarted(
         linkedinUrl: _linkedInController.text,
       ));
@@ -161,5 +165,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   void _goToNextScreen() {
     navigateNextProfileStep(editMode: widget.editMode);
+  }
+
+  OverlayEntry _buildLoaderOverlay() {
+    return OverlayEntry(
+      builder: (context) {
+        return Container(
+          color: Colors.black.withOpacity(0.6),
+          child: const Center(
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
