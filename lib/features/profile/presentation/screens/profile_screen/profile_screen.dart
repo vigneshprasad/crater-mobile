@@ -13,6 +13,7 @@ import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_tab.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
@@ -42,6 +43,7 @@ class ProfileScreen extends HookWidget {
   Widget _appBar(
       BuildContext context, Profile profile, ValueNotifier<int> index) {
     return SliverAppBar(
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
       expandedHeight: 240,
       flexibleSpace: FlexibleSpaceBar(
           background: _ProfileBody(
@@ -50,9 +52,7 @@ class ProfileScreen extends HookWidget {
       )),
       pinned: true,
       floating: true,
-      elevation: 0.5,
       shadowColor: Colors.grey,
-      forceElevated: true,
       actions: [
         if (allowEdit)
           Padding(
@@ -70,15 +70,15 @@ class ProfileScreen extends HookWidget {
         )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 30),
-        child: SizedBox(
-          height: 30,
+        preferredSize: const Size(double.infinity, 40),
+        child: Container(
+          color: Theme.of(context).dialogBackgroundColor,
+          height: 40,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
               Container(
                 height: 30,
-                color: Theme.of(context).scaffoldBackgroundColor,
                 alignment: Alignment.bottomLeft,
                 child: TabBar(
                   onTap: (i) {
@@ -135,7 +135,8 @@ class ProfileScreen extends HookWidget {
                       meta: state.meta,
                       showLogout: allowEdit,
                     ),
-                    _ClubTab(state.connections!),
+                    // _ClubTab(state.connections!),
+                    ConnectionList(userId: userId),
                   ],
                 ),
               ),
@@ -146,8 +147,8 @@ class ProfileScreen extends HookWidget {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Column(
-              children: const [
-                LinearProgressIndicator(),
+              children: [
+                LinearProgressIndicator(color: Theme.of(context).accentColor),
               ],
             ),
           ),
@@ -193,7 +194,7 @@ class _ProfileBody extends HookWidget {
                 child: _buildImage(profile, 40),
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   profile.name!,
                   style: Theme.of(context).textTheme.subtitle2,
@@ -204,11 +205,11 @@ class _ProfileBody extends HookWidget {
         ),
         if (showConnect)
           Positioned(
-              bottom: 54,
+              bottom: 50,
               right: 20,
               child: GradientButton(
                 onPressed: () => _showTimeSlots(context),
-                title: 'CONNECT',
+                title: 'JOIN CLUB',
               ))
       ],
     );
@@ -441,7 +442,7 @@ class UnderlinedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const showBGText = false;
+    const showBGText = true;
     if (!showBGText) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

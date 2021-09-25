@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
@@ -122,7 +124,10 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
             const SizedBox(height: AppInsets.xxl),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(
+              child: SizedBox(
+                width: 180,
+                child: BaseLargeButton(
+                  text: 'Copy from LinkedIn',
                   onPressed: () async {
                     try {
                       final _ =
@@ -132,7 +137,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                           'https://www.linkedin.com/in/me/detail/contact-info/');
                     }
                   },
-                  child: const Text('Copy From LinkedIn')),
+                  outlined: true,
+                ),
+              ),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -148,7 +155,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
-      _overlay = _buildLoaderOverlay();
+      _overlay = buildLoaderOverlay();
       Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: {ProfileIntroElement.introduction: _bioController.text},
@@ -166,20 +173,4 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
     }
   }
 
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

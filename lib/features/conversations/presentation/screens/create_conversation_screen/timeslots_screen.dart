@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/base/base_date_time_picker/base_date_time_picker.dart.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen_state.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/reschedule_slot_picker.dart';
@@ -126,7 +127,7 @@ class TimeSlotsScreen extends HookWidget {
     List<MeetingInterest> interests,
     List<DateTime> timeslots,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
     final response =
@@ -175,17 +176,6 @@ class TimeSlotsScreen extends HookWidget {
       isScrollControlled: true,
       builder: (context) {
         return const ProfileEmailScreen(editMode: true);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
       },
     );
   }

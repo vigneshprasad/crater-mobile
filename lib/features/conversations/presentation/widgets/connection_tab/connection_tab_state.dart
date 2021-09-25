@@ -9,9 +9,10 @@ import '../../../../profile/data/repository/profile_repository_impl.dart';
 import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
 import '../../../../signup/data/repository/signup_repository_impl.dart';
 
-final connectionStateProvider =
-    StateNotifierProvider<ConnectionStateNotifier, ApiResult<List<Profile>>>(
-        (ref) => ConnectionStateNotifier(ref.read));
+final connectionStateProvider = StateNotifierProvider.family<
+    ConnectionStateNotifier, ApiResult<List<Profile>>, String>((ref, userId) {
+  return ConnectionStateNotifier(ref.read, userId);
+});
 final requestStateProvider =
     StateNotifierProvider<RequestStateNotifier, ApiResult<List<Profile>>>(
         (ref) => RequestStateNotifier(ref.read));
@@ -55,9 +56,11 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
   late bool loadingPage;
   bool allLoaded = false;
   late List<Profile> allProfiles;
+  final String userId;
 
   ConnectionStateNotifier(
     this.read,
+    this.userId,
   ) : super(ApiResult<List<Profile>>.loading()) {
     getProfileList('');
   }
@@ -68,7 +71,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     loadingPage = true;
     state = ApiResult<List<Profile>>.loading();
     final response = await read(profileRepositoryProvider)
-        .retrieveProfiles(tags, page, pageSize);
+        .retrieveProfiles(tags, page, pageSize, userId);
 
     state = response.fold(
       (failure) {
@@ -79,6 +82,9 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
         allProfiles = profiles;
         loadingPage = false;
         allLoaded = profiles.isEmpty || profiles.length < pageSize;
+        if (userId.isNotEmpty) {
+          allLoaded = true;
+        }
         return ApiResult<List<Profile>>.data(allProfiles);
       },
     );
@@ -94,7 +100,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     loadingPage = true;
     page = page + 1;
     final response = await read(profileRepositoryProvider)
-        .retrieveProfiles(tags, page, pageSize);
+        .retrieveProfiles(tags, page, pageSize, userId);
 
     state = response.fold(
       (failure) {

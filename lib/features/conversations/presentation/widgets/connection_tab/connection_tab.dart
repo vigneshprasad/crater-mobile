@@ -20,35 +20,19 @@ import '../../screens/create_conversation_screen/timeslots_screen.dart';
 import 'connection_tab_state.dart';
 
 class ConnectionTab extends HookWidget {
-  UserTag allTag = UserTag(name: 'All');
-  UserTag? selectedTag;
+  final UserTag allTag = UserTag(name: 'All');
 
   @override
   Widget build(BuildContext context) {
-    final connectionState = useProvider(connectionStateProvider);
     final tagsState = useProvider(tagStateProvider);
-
-    final requestState = useProvider(requestStateProvider);
-
-    final user = BlocProvider.of<AuthBloc>(context).state.profile;
-
-    final _controller = useScrollController();
-    _controller.addListener(() {
-      // reached End of scroll
-      if (_controller.offset >= _controller.position.maxScrollExtent &&
-          !_controller.position.outOfRange) {
-        context
-            .read(connectionStateProvider.notifier)
-            .getNextPageProfileList(selectedTag?.pk?.toString() ?? '');
-      }
-    });
+    final selectedTag = useState<UserTag?>(null);
     return RefreshIndicator(
       displacement: 96.00,
       onRefresh: () {
         final futures = [
           context
-              .read(connectionStateProvider.notifier)
-              .getProfileList(selectedTag?.pk?.toString() ?? ''),
+              .read(connectionStateProvider('').notifier)
+              .getProfileList(selectedTag.value?.pk?.toString() ?? ''),
           context.read(tagStateProvider.notifier).getTagList(),
         ];
 
@@ -58,7 +42,7 @@ class ConnectionTab extends HookWidget {
         children: [
           tagsState.when(
             loading: () => Container(),
-            error: (err, st) => Container(
+            error: (err, st) => SizedBox(
               height: 200,
               width: 200,
               child: Center(
@@ -66,7 +50,7 @@ class ConnectionTab extends HookWidget {
               ),
             ),
             data: (tags) {
-              selectedTag = selectedTag ?? allTag;
+              selectedTag.value = selectedTag.value ?? allTag;
               tags = [allTag] + tags;
               return SizedBox(
                 height: 50,
@@ -82,24 +66,24 @@ class ConnectionTab extends HookWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        selected: selectedTag?.name == tags[index].name,
+                        selected: selectedTag.value?.name == tags[index].name,
                         showCheckmark: false,
                         selectedColor: Colors.white,
                         label: Text(
                           tags[index].name ?? '',
                           style: TextStyle(
-                              color: selectedTag?.name == tags[index].name
+                              color: selectedTag.value?.name == tags[index].name
                                   ? Colors.black
                                   : Colors.white),
                         ),
                         backgroundColor: Colors.black,
-                        side: BorderSide(color: Colors.white),
+                        side: const BorderSide(color: Colors.white),
                         onSelected: (value) {
-                          selectedTag = tags[index];
+                          selectedTag.value = tags[index];
                           context
-                              .read(connectionStateProvider.notifier)
+                              .read(connectionStateProvider('').notifier)
                               .getProfileList(
-                                  selectedTag?.pk?.toString() ?? '');
+                                  selectedTag.value?.pk?.toString() ?? '');
                         },
                       ),
                     );
@@ -108,60 +92,91 @@ class ConnectionTab extends HookWidget {
               );
             },
           ),
-          connectionState.when(
-            loading: () => const CircularProgressIndicator(),
-            error: (err, st) => Container(
-              height: 200,
-              width: 200,
-              color: Colors.red,
-            ),
-            data: (profiles) => Expanded(
-              child: ListView.builder(
-                padding:
-                    const EdgeInsets.only(left: 20, right: 20, bottom: 100),
-                itemCount: profiles.length +
-                    (context.read(connectionStateProvider.notifier).allLoaded
-                        ? 0
-                        : 1),
-                controller: _controller,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == profiles.length) {
-                    return const Padding(
-                      padding: EdgeInsets.all(40.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (index == 0)
-                        connectableProfiles(context, requestState, user?.pk),
-                      if (index == 0)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: UnderlinedText(
-                            'MATCH ME',
-                            bgText: 'CURATED',
-                          ),
-                        ),
-                      _Connection(
-                        user: profiles[index],
-                        authUserPk: user?.pk, //TODO: pass auth user pk.
-                        showConnect: false,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          )
+          ConnectionList(tag: selectedTag.value?.pk.toString()),
         ],
       ),
     );
   }
+}
 
-  Widget connectableProfiles(BuildContext context,
-      ApiResult<List<Profile>> requestState, int? userPk) {
+class ConnectionList extends HookWidget {
+  final String? tag;
+  final String userId;
+
+  const ConnectionList({Key? key, this.tag, this.userId = ''})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final user = BlocProvider.of<AuthBloc>(context).state.profile;
+    final _controller = useScrollController();
+    _controller.addListener(() {
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        context
+            .read(connectionStateProvider(userId).notifier)
+            .getNextPageProfileList(tag ?? '');
+      }
+    });
+    final connectionState = useProvider(connectionStateProvider(userId));
+    return connectionState.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, st) => Center(
+        child: Text(err.toString()),
+      ),
+      data: (profiles) => Expanded(
+        child: ListView.builder(
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 100),
+          itemCount: profiles.length +
+              (context.read(connectionStateProvider(userId).notifier).allLoaded
+                  ? 0
+                  : 1),
+          controller: _controller,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == profiles.length) {
+              return Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).accentColor,
+                )),
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (index == 0 && userId.isEmpty) ConnectableList(user?.pk),
+                if (index == 0)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: UnderlinedText(
+                      'MATCH ME',
+                      bgText: 'CURATED',
+                    ),
+                  ),
+                _Connection(
+                  user: profiles[index],
+                  authUserPk: user?.pk, //TODO: pass auth user pk.
+                  showConnect: false,
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ConnectableList extends HookWidget {
+  final int? userPk;
+
+  const ConnectableList(this.userPk);
+
+  @override
+  Widget build(BuildContext context) {
+    final requestState = useProvider(requestStateProvider);
     return requestState.when(
       loading: () => Container(),
       error: (err, st) => Container(),
@@ -182,7 +197,7 @@ class ConnectionTab extends HookWidget {
                   _Connection(
                     user: profiles[index],
                     authUserPk: userPk, //TODO: pass auth user pk.
-                    showConnect: (profiles[index].pk == userPk ? false : true),
+                    showConnect: profiles[index].pk != userPk,
                   ),
                 ],
               ),
@@ -259,15 +274,12 @@ class _Connection extends StatelessWidget {
                           child: BaseContainer(
                             radius: 30,
                             child: SizedBox(
-                              width: 90,
-                              height: 32,
-                              child: BaseLargeButton(
+                              width: 100,
+                              height: 30,
+                              child: GradientButton(
                                 onPressed: () => _showTimeSlots(context),
-                                child: const Text(
-                                  'CONNECT',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
+                                title: 'CONNECT',
+                                fontSize: 10,
                               ),
                             ),
                           ),

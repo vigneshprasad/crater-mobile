@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -16,7 +17,6 @@ import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
 import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -164,8 +164,8 @@ class _ConversationLoaded extends StatelessWidget {
               ),
             )),
           ),
-          BaseContainer(
-            disableAnimation: true,
+          Container(
+            color: Theme.of(context).dialogBackgroundColor,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
@@ -177,7 +177,6 @@ class _ConversationLoaded extends StatelessWidget {
                         BaseContainer(
                           radius: 30,
                           child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
                             onPressed: () {
                               context
                                   .read(conversationStateProvider(
@@ -185,24 +184,19 @@ class _ConversationLoaded extends StatelessWidget {
                                       .notifier)
                                   .connectToAudioCall();
                             },
-                            child: Text(AppLocalizations.of(context)?.translate(
+                            text: AppLocalizations.of(context)?.translate(
                                     "conversation_screen:go_live_label") ??
-                                ''),
+                                '',
                           ),
                         )
                       else
-                        BaseContainer(
-                          radius: 30,
-                          child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
+                        BaseLargeButton(
                             onPressed: () {
                               _requestJoinGroup(context);
                             },
-                            child: Text(AppLocalizations.of(context)?.translate(
+                            text: AppLocalizations.of(context)?.translate(
                                     "conversations:join_button_label") ??
-                                ''),
-                          ),
-                        )
+                                '')
                     else
                       RtcConnectionBar(
                         table: conversation,

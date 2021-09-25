@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -162,7 +163,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void submitAnswers() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
-      _overlay = _buildLoaderOverlay();
+      _overlay = buildLoaderOverlay();
       Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: _values,
@@ -227,22 +228,5 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void goToNextScreen() {
     AutoRouter.of(context)
         .push(ProfileImageScreenRoute(editMode: widget.editMode));
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

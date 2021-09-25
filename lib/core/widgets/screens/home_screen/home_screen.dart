@@ -47,7 +47,7 @@ class HomeScreen extends HookWidget {
   static const icons = [
     Icon(Icons.search),
     Icon(Icons.inbox),
-    Icon(Icons.people_alt),
+    Icon(Icons.people_outline),
     UserProfileNavItem(),
   ];
 
@@ -107,25 +107,21 @@ class HomeScreen extends HookWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       drawer: AppDrawer(),
-      bottomNavigationBar: BaseContainer(
-        radius: 0,
-        disableAnimation: true,
-        child: BottomNavigationBar(
-          currentIndex: _tabController.index,
-          iconSize: 28,
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
-          type: BottomNavigationBarType.fixed,
-          items: [0, 1, 2, 3]
-              .map((index) => BottomNavigationBarItem(
-                    icon: icons[index],
-                    label: labels[index],
-                  ))
-              .toList(),
-          onTap: (int index) {
-            _tabController.index = index;
-          },
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        iconSize: 28,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        type: BottomNavigationBarType.fixed,
+        items: [0, 1, 2, 3]
+            .map((index) => BottomNavigationBarItem(
+                  icon: icons[index],
+                  label: labels[index],
+                ))
+            .toList(),
+        onTap: (int index) {
+          _tabController.index = index;
+        },
       ),
       body: SafeArea(
         child: Stack(
@@ -141,36 +137,26 @@ class HomeScreen extends HookWidget {
                       floating: true,
                       title: _activeTab.value != 2
                           ? null
-                          : const UnderlinedText('STREAMS'),
+                          : const UnderlinedText(
+                              'STREAMS',
+                              bgText: 'KNOWLEDGE',
+                            ),
                       centerTitle: true,
                       // pinned: true,
-                      leading: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: BaseContainer(
-                          color: Theme.of(context).backgroundColor,
-                          radius: 30,
-                          child: IconButton(
-                            icon: const Icon(Icons.help),
-                            onPressed: () =>
-                                context.read(intercomProvider).show(email!),
-                          ),
-                        ),
+                      leading: IconButton(
+                        icon: const Icon(Icons.help),
+                        iconSize: 28,
+                        onPressed: () =>
+                            context.read(intercomProvider).show(email!),
                       ),
                       actions: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: BaseContainer(
-                            color: Theme.of(context).backgroundColor,
-                            radius: 30,
-                            child: IconButton(
-                              icon: SvgPicture.asset(
-                                AppSvgAssets.share,
-                              ),
-                              onPressed: () => shareManager.share(context),
-                            ),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            AppSvgAssets.share,
+                            height: 28,
                           ),
+                          onPressed: () => shareManager.share(context),
                         ),
-                        const SizedBox(width: AppInsets.l),
                       ],
                     ),
                   ),
@@ -248,7 +234,7 @@ class HomeScreen extends HookWidget {
       child: Row(
         children: [
           const Text(
-            'Worknetwork\nIntelligence',
+            'Crater\nIntelligence',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const Spacer(),

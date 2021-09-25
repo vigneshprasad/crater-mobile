@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants/theme.dart';
 
 class Logo extends StatelessWidget {
-  static const logoAsset = 'assets/svg/logo.svg';
+  static const logoAsset = 'assets/images/logo.png';
   final bool withText;
   final bool withSubtext;
 
@@ -23,7 +23,7 @@ class Logo extends StatelessWidget {
         children: <Widget>[
           SizedBox(
             height: 48,
-            child: SvgPicture.asset(
+            child: Image.asset(
               logoAsset,
             ),
           ),
@@ -49,7 +49,7 @@ class Logo extends StatelessWidget {
   List<Widget> getTextChildren() {
     return <Widget>[
       const Text(
-        'WorkNetwork',
+        'Crater',
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.w700,
@@ -57,7 +57,7 @@ class Logo extends StatelessWidget {
       ),
       if (withSubtext)
         const Text(
-          'Do more together',
+          'Formerly Worknetwork',
           style: TextStyle(
             fontSize: 14,
           ),

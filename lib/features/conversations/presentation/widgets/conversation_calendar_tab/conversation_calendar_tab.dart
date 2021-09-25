@@ -239,14 +239,19 @@ class _LoadedConversationTab extends HookWidget {
       }
     }
 
-    children.add(SliverToBoxAdapter(
+    // if (children.length == 1) {
+    //   children.add(const SliverToBoxAdapter(
+    //     child: SizedBox(
+    //       height: 300,
+    //     ),
+    //   ));
+    // }
+
+    children.add(SliverFillRemaining(
       child: Center(
-        child: BaseContainer(
-          radius: 30,
-          child: BaseLargeButton(
-            onPressed: onSchedulePressed,
-            text: 'Schedule New',
-          ),
+        child: BaseLargeButton(
+          onPressed: onSchedulePressed,
+          text: 'Schedule New',
         ),
       ),
     ));

@@ -16,7 +16,11 @@ abstract class ProfileRemoteDatasource {
   /// TODO: PUT COMMENTS
   Future<Profile> retrieveProfileFromRemote(String profileId);
   Future<List<Profile>> retrieveProfilesFromRemote(
-      String tags, int page, int pageSize);
+    String tags,
+    int page,
+    int pageSize,
+    String userId,
+  );
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId);
 }
 
@@ -41,14 +45,22 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
     String tags,
     int page,
     int pageSize,
+    String userId,
   ) async {
+    if (userId.isNotEmpty) {
+      return await retrieveConnectionsFromRemote(userId);
+    }
     const searchKeyword = '';
-    final response = await apiService.retrieveProfiles(
-      tags,
-      searchKeyword,
-      page,
-      pageSize,
-    );
+    final response = userId.isEmpty
+        ? await apiService.retrieveProfiles(
+            tags,
+            searchKeyword,
+            page,
+            pageSize,
+          )
+        : await apiService.getUserConnections(
+            userId,
+          );
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as List;
@@ -65,6 +77,9 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
   Future<List<Profile>> retrieveConnectionsFromRemote(String profileId) async {
     final response = await apiService.getUserConnections(profileId);
     if (response.statusCode == 200) {
+      if (response.bodyString == '[]') {
+        return [];
+      }
       final jsonList = jsonDecode(response.bodyString) as Iterable;
 
       return jsonList

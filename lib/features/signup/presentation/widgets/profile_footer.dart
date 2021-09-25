@@ -16,8 +16,8 @@ class ProfileFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final next = AppLocalizations.of(context)?.translate("next");
-    return BaseContainer(
-      disableAnimation: true,
+    return Container(
+      color: Theme.of(context).dialogBackgroundColor,
       child: SafeArea(
         child: Align(
           alignment: Alignment.bottomCenter,
@@ -26,9 +26,13 @@ class ProfileFooter extends StatelessWidget {
             child: Row(
               children: [
                 if (onSkip != null)
-                  TextButton(
-                    onPressed: onSkip,
-                    child: const Text('skip for now'),
+                  SizedBox(
+                    width: 120,
+                    child: BaseLargeButton(
+                      text: 'Skip for now',
+                      onPressed: onSkip,
+                      outlined: true,
+                    ),
                   ),
                 const Spacer(),
                 SizedBox(

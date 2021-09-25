@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_multi_select_dropdown/base_multi_select_dropdown.dart';
@@ -101,7 +102,7 @@ class _ProflieIntroLoaded extends HookWidget {
 
   Future<void> _postProfileData(
       BuildContext context, Map<String, dynamic> data) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
 
@@ -118,23 +119,6 @@ class _ProflieIntroLoaded extends HookWidget {
         BlocProvider.of<AuthBloc>(context)
             .add(AuthUserProfileUpdateRecieved(profile: profile));
         navigateNextProfileStep(editMode: editMode);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
       },
     );
   }

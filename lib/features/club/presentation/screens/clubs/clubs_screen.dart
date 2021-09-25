@@ -37,8 +37,9 @@ class ClubsScreen extends HookWidget {
                       margin: const EdgeInsets.only(top: 4),
                       width: 20,
                       height: 1,
-                      color:
-                          _tab.value == 0 ? HexColor.fromHex('#9146FF') : null,
+                      color: _tab.value == 0
+                          ? Theme.of(context).accentColor
+                          : null,
                     )
                   ],
                 )),
@@ -58,8 +59,9 @@ class ClubsScreen extends HookWidget {
                       margin: const EdgeInsets.only(top: 4),
                       width: 20,
                       height: 1,
-                      color:
-                          _tab.value == 1 ? HexColor.fromHex('#9146FF') : null,
+                      color: _tab.value == 1
+                          ? Theme.of(context).accentColor
+                          : null,
                     )
                   ],
                 )),
@@ -191,7 +193,7 @@ class UpcomingGridTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: GridTile(
               child: Container(
-            color: Theme.of(context).dialogBackgroundColor.withAlpha(50),
+            color: Theme.of(context).dialogBackgroundColor,
             child: Column(
               children: [
                 Expanded(

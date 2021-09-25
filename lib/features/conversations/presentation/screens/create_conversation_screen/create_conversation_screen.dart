@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
@@ -93,8 +94,9 @@ class CreateConversationScreen extends HookWidget {
                                 ),
                               )
                             else
-                              BaseContainer(
-                                disableAnimation: true,
+                              Material(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Theme.of(context).dialogBackgroundColor,
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Column(
@@ -197,8 +199,8 @@ class CreateConversationScreen extends HookWidget {
                     ),
                   ),
                 ),
-                BaseContainer(
-                  disableAnimation: true,
+                Container(
+                  color: Theme.of(context).dialogBackgroundColor,
                   child: SafeArea(
                     child: Padding(
                       padding:
@@ -254,7 +256,7 @@ class CreateConversationScreen extends HookWidget {
     DateTime start,
     List<MeetingInterest> interests,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     final conversation = Conversation(
       topic: topic.id,
       description: topic.description,
@@ -330,7 +332,7 @@ class CreateConversationScreen extends HookWidget {
     MeetingConfig config,
     Topic topic,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final response = await context
         .read(conversationRepositoryProvider)
@@ -356,17 +358,6 @@ class CreateConversationScreen extends HookWidget {
         );
 
         // AutoRouter.of(context).pop(optin);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
       },
     );
   }

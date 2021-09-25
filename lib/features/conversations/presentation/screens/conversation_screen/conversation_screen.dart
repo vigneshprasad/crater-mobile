@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -294,7 +295,7 @@ class _RoundTableLoaded extends HookWidget {
 
   Future<void> postRequestToJoinGroup(BuildContext context,
       ConversationScreenController controller, int group) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final response = await controller.requestToJoinGroup(group);
 
@@ -323,14 +324,6 @@ class _RoundTableLoaded extends HookWidget {
         context
             .read(popupManagerProvider)
             .showPopup(PopupType.conversationJoin, context);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container();
       },
     );
   }

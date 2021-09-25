@@ -82,7 +82,7 @@ class ConversationCard extends StatelessWidget {
         }
       },
       padding: padding,
-      background: Theme.of(context).canvasColor,
+      background: Theme.of(context).dialogBackgroundColor,
       heading: Text(heading!),
       subHeading: Row(
         children: [

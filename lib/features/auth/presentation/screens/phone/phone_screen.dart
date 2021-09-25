@@ -8,13 +8,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
@@ -135,14 +136,12 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     const SizedBox(height: 80),
                     if (_showSmsCodeInput)
                       Center(
-                        child: BaseContainer(
-                          radius: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextButton(
-                              onPressed: _validOtp ? _postSmsCode : null,
-                              child: const Text(verify),
-                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BaseLargeButton(
+                            enabled: _validOtp,
+                            onPressed: _validOtp ? _postSmsCode : null,
+                            text: verify,
                           ),
                         ),
                       ),
@@ -157,7 +156,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 
   Future<void> _postNewPhoneNumber() async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
     final response =
@@ -191,7 +190,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 
   Future<void> _postSmsCode() async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
     final response = await context
@@ -247,22 +246,5 @@ class _PhoneScreenState extends State<PhoneScreen> {
     setState(() {
       _validPhoneNumber = isValid;
     });
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_confirm_sheet.dart';
 
@@ -188,20 +189,9 @@ class MeetingRequestDetailScreen extends HookWidget {
     });
   }
 
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
-      },
-    );
-  }
-
   Future<void> _declineMeetingRequest(
       BuildContext context, MeetingRequest meeting) async {
-    final overlay = _buildLoaderOverlay();
+    final overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlay);
 
     final response = await context

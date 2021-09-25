@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
@@ -148,29 +149,12 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate();
     if (isValid ?? false) {
-      _overlay = _buildLoaderOverlay();
+      _overlay = buildLoaderOverlay();
       Overlay.of(context)?.insert(_overlay!);
 
       final name = '${_firstNameController.text} ${_lastNameController.text}';
       _bloc.add(PostProfileBasicRequestStarted(name: name));
     }
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void _profileSetupBlocListener(

@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/error/failures.dart';
@@ -122,7 +123,7 @@ class ProfileEmailScreen extends HookWidget {
       BuildContext context, FormState? formState, String email) async {
     final isValid = formState?.validate();
     if (isValid ?? false) {
-      final _overlay = _buildLoaderOverlay();
+      final _overlay = buildLoaderOverlay();
 
       Overlay.of(context)?.insert(_overlay);
 
@@ -153,22 +154,5 @@ class ProfileEmailScreen extends HookWidget {
         },
       );
     }
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

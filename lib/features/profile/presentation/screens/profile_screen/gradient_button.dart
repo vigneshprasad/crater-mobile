@@ -7,6 +7,7 @@ class GradientButton extends StatelessWidget {
   final ButtonStyle? style;
   final Gradient? gradient;
   final double thickness;
+  final double? fontSize;
 
   const GradientButton({
     Key? key,
@@ -15,6 +16,7 @@ class GradientButton extends StatelessWidget {
     this.style,
     this.gradient,
     this.thickness = 2,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -54,7 +56,7 @@ class GradientButton extends StatelessWidget {
             style: style,
             child: Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: fontSize ?? 16),
             ),
           ),
         ),

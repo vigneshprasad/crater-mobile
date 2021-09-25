@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -117,7 +118,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _overlay = _buildLoaderOverlay();
+    _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay!);
 
     if (_photo == null) {
@@ -142,22 +143,5 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
       _overlay?.remove();
       _goToNextScreen();
     }
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
   }
 }
