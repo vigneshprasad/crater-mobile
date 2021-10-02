@@ -21,7 +21,7 @@ class _$ProfileApiService extends ProfileApiService {
       String tags, String search, int page, int pageSize) {
     final $url = '/user/auth/network/';
     final $params = <String, dynamic>{
-      'tags': tags,
+      'new_tag': tags,
       'search': search,
       'page': page,
       'page_size': pageSize

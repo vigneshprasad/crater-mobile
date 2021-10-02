@@ -184,12 +184,12 @@ class HomeScreen extends HookWidget {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: floatingButton(_activeTab.value, context),
-            ),
+            // Positioned(
+            //   bottom: 20,
+            //   left: 20,
+            //   right: 20,
+            //   child: floatingButton(_activeTab.value, context),
+            // ),
           ],
         ),
       ),

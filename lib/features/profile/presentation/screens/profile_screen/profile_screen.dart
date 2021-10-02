@@ -142,7 +142,10 @@ class ProfileScreen extends HookWidget {
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   _appBar(context, null, index),
                 ],
-                body: const Center(child: CircularProgressIndicator()),
+                body: Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).accentColor,
+                )),
               ),
             )),
       ),
@@ -205,17 +208,17 @@ class _ProfileBody extends HookWidget {
                               style: Theme.of(context).textTheme.headline6,
                             ),
                             const SizedBox(width: 8),
-                            Icon(
-                              Icons.check_circle_outlined,
-                              color: Theme.of(context).accentColor,
-                            ),
+                            // Icon(
+                            //   Icons.check_circle_outlined,
+                            //   color: Theme.of(context).accentColor,
+                            // ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          '49,765 Followers',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                        // Text(
+                        //   '49,765 Followers',
+                        //   style: Theme.of(context).textTheme.caption,
+                        // ),
                         const SizedBox(height: 8),
                         if (showConnect)
                           Positioned(

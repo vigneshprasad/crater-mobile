@@ -58,7 +58,7 @@ abstract class MeetingRemoteDatasource {
       DateTime timeSlot, int rescheduleRequest);
   Future<bool> postMeetingRequestToRemote(
       List<DateTime> timeSlot, String requestedBy, String requestedTo);
-  Future<List<Profile>> getMeetingRequestUsersFromRemote();
+  Future<List<Profile>> getMeetingRequestUsersFromRemote({String? tag});
   Future<List<List<DateTime>>> getMeetingRequestSlotsFromRemote(
       String requestedTo);
   Future<MeetingRequest> getMeetingRequestFromRemote(int meetingRequestId);
@@ -318,8 +318,8 @@ class MeetingRemoteDatasourceImpl implements MeetingRemoteDatasource {
   }
 
   @override
-  Future<List<Profile>> getMeetingRequestUsersFromRemote() async {
-    final response = await apiService.getMeetingRequestUsers();
+  Future<List<Profile>> getMeetingRequestUsersFromRemote({String? tag}) async {
+    final response = await apiService.getMeetingRequestUsers({'tags': tag});
     if (response.statusCode == 200) {
       if (response.bodyString == "[]") {
         return List.empty();

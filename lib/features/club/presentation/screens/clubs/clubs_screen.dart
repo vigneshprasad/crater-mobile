@@ -35,9 +35,20 @@ class ClubsScreen extends HookWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          'Featured',
-                          style: Theme.of(context).textTheme.headline5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Featured',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              height: 2,
+                              width: 16,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: AppInsets.xl),
@@ -72,7 +83,7 @@ class ClubsScreen extends HookWidget {
               },
               staggeredTileBuilder: (int index) {
                 if (index == 0 && streams.liveClubs.isNotEmpty) {
-                  return const StaggeredTile.count(2, 1.8);
+                  return const StaggeredTile.count(2, 2);
                 }
 
                 final upIndex = index - liveCount;
@@ -174,99 +185,94 @@ class UpcomingGridTile extends StatelessWidget {
             .push(ConversationScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: GridTile(
-            child: Container(
-          color: Theme.of(context).dialogBackgroundColor,
+      child: GridTile(
           child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).dialogBackgroundColor,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(
+        children: [
+          Expanded(
+              child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              color: Theme.of(context).dialogBackgroundColor,
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  if (topic?.image != null)
+                    Image.network(
+                      topic?.image ?? '',
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  if (item.type == GridItemType.upcoming)
+                    LiveTime(date: item.conversation?.start),
+                  if (item.type == GridItemType.past)
+                    const Center(
+                      child: Icon(Icons.play_circle, size: 80),
+                    )
+                ],
+              ),
+            ),
+          )),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(user?.photo ?? ''),
+                    backgroundColor: Theme.of(context).dialogBackgroundColor,
+                    radius: 28,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (topic?.image != null)
-                        Image.network(
-                          topic?.image ?? '',
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      if (item.type == GridItemType.upcoming)
-                        LiveTime(date: item.conversation?.start),
-                      if (item.type == GridItemType.past)
-                        const Center(
-                          child: Icon(Icons.play_circle, size: 80),
-                        )
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: Theme.of(context).textTheme.subtitle2,
+                              maxLines: 2,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          if (tag?.name?.isNotEmpty ?? false)
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                border:
+                                    Border.all(color: Colors.white, width: 0.5),
+                              ),
+                              child: Text(
+                                tag?.name ?? '',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        description,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.caption,
+                      )
                     ],
                   ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(user?.photo ?? ''),
-                        backgroundColor:
-                            Theme.of(context).dialogBackgroundColor,
-                        radius: 28,
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                  maxLines: 2,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              if (tag?.name?.isNotEmpty ?? false)
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: Colors.white, width: 0.5),
-                                  ),
-                                  child: Text(
-                                    tag?.name ?? '',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            description,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        )),
-      ),
+              ],
+            ),
+          )
+        ],
+      )),
     );
   }
 }

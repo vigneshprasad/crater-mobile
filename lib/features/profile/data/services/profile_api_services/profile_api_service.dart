@@ -22,7 +22,7 @@ abstract class ProfileApiService extends ChopperService {
 
   @Get(path: 'network/')
   Future<Response> retrieveProfiles(
-    @Query() String tags,
+    @Query('new_tag') String tags,
     @Query() String search,
     @Query() int page,
     @Query('page_size') int pageSize,

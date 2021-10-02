@@ -36,11 +36,13 @@ class FeaturedList extends HookWidget {
         child: Text(err.toString()),
       ),
       data: (creators) => SizedBox(
-        height: 300,
-        child: ListView.builder(
+        height: 240,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => const SizedBox(width: 20),
           scrollDirection: Axis.horizontal,
           itemCount: creators.length,
           controller: _controller,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           itemBuilder: (BuildContext context, int index) {
             return CreatorCard(
               creator: creators[index],
@@ -75,43 +77,37 @@ class CreatorCard extends StatelessWidget {
             userId: creator.user,
             allowEdit: authUserPk == creator.profileDetail?.pk),
       ),
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: Container(
-            width: 150,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BaseNetworkImage(
-                      imageUrl: creator.profileDetail?.photo,
-                      defaultImage: AppImageAssets.defaultAvatar,
-                      imagebuilder: (context, imageProvider) => Image(
-                        image: imageProvider,
-                        width: 140,
-                        height: 180,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: AppInsets.xl),
-                    Text(
-                      creator.profileDetail?.name ?? '',
-                      style: headingStyle,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: AppInsets.sm),
-                    Text(
-                      '${followerFormat(creator.followerCount)} Followers',
-                      overflow: TextOverflow.ellipsis,
-                      style: bodyStyle,
-                    ),
-                  ],
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BaseNetworkImage(
+                imageUrl: creator.profileDetail?.photo,
+                defaultImage: AppImageAssets.defaultAvatar,
+                imagebuilder: (context, imageProvider) => Image(
+                  image: imageProvider,
+                  width: 140,
+                  height: 180,
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-          )),
+              ),
+              const SizedBox(height: AppInsets.xl),
+              Text(
+                creator.profileDetail?.name ?? '',
+                style: headingStyle,
+                maxLines: 2,
+              ),
+              const SizedBox(height: AppInsets.sm),
+              Text(
+                '${followerFormat(creator.followerCount)} Followers',
+                overflow: TextOverflow.ellipsis,
+                style: bodyStyle,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

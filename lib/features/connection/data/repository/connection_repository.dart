@@ -13,6 +13,7 @@ final connectionRepositoryProvider =
 
 abstract class ConnectionRepository {
   Future<Either<Failure, CreatorResponse>> getCreators({bool certified});
+  Future<Either<Failure, Creator>> getCreator(String id);
 }
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
@@ -26,6 +27,19 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorsFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure('Something went wrong');
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Creator>> getCreator(String id) async {
+    try {
+      final response = await read(connectionRemoteDatasourceProvider)
+          .getCreatorFromRemote(id);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

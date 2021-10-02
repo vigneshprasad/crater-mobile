@@ -17,6 +17,13 @@ class _$ConnectionApiService extends ConnectionApiService {
   final definitionType = ConnectionApiService;
 
   @override
+  Future<Response<dynamic>> getCreator(String id) {
+    final $url = '/crater/creator/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getCreators(Map<String, dynamic> body) {
     final $url = '/crater/creator/';
     final $params = body;
