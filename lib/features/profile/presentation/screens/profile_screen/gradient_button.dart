@@ -30,8 +30,8 @@ class GradientButton extends StatelessWidget {
       HexColor.fromHex('#141D1F'),
       HexColor.fromHex('#29373C'),
     ]);
-    final thickness = 1.0;
-    final radius = 8.0;
+    const thickness = 1.0;
+    const radius = 8.0;
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -49,9 +49,10 @@ class GradientButton extends StatelessWidget {
             gradient: gradientDB,
             borderRadius: BorderRadius.circular(radius),
           ),
-          height: 28,
-          margin: EdgeInsets.all(thickness),
-          child: OutlinedButton(
+          height: 33,
+          margin: const EdgeInsets.all(thickness),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: TextButton(
             onPressed: onPressed,
             style: style,
             child: Text(

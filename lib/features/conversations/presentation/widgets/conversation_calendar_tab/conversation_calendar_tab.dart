@@ -250,6 +250,7 @@ class _LoadedConversationTab extends HookWidget {
     children.add(SliverFillRemaining(
       child: Center(
         child: BaseLargeButton(
+          outlined: true,
           onPressed: onSchedulePressed,
           text: 'Schedule New',
         ),
@@ -258,6 +259,7 @@ class _LoadedConversationTab extends HookWidget {
 
     return RefreshIndicator(
       displacement: 96.00,
+      color: Theme.of(context).accentColor,
       onRefresh: () {
         return controller.getPreviousWeekData();
       },

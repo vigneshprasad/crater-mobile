@@ -95,7 +95,7 @@ class _TopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const borderRadius = BorderRadius.all(Radius.circular(8.00));
+    const borderRadius = BorderRadius.all(Radius.circular(20.00));
     final backgroundColor = HexColor.fromHex('#DDE9FD');
     final headingStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15.00,
@@ -118,45 +118,45 @@ class _TopicCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: BaseContainer(
-                  radius: 10,
-                  child: Material(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: AppInsets.l,
-                        right: AppInsets.l,
-                        left: AppInsets.xl,
-                        bottom: AppInsets.xxl,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              BaseNetworkImage(
-                                imageUrl: topic.image,
-                                defaultImage: AppImageAssets.articleDefault,
-                                imagebuilder: (context, imageProvider) =>
-                                    CircleAvatar(
-                                  radius: 14.00,
-                                  backgroundImage: imageProvider,
-                                ),
+                child: Material(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: AppInsets.l,
+                      right: AppInsets.l,
+                      left: AppInsets.xl,
+                      bottom: AppInsets.xxl,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            BaseNetworkImage(
+                              imageUrl: topic.image,
+                              defaultImage: AppImageAssets.articleDefault,
+                              imagebuilder: (context, imageProvider) =>
+                                  CircleAvatar(
+                                radius: 14.00,
+                                backgroundImage: imageProvider,
                               ),
-                              const SizedBox(width: AppInsets.l),
-                              Text(topic.name ?? '', style: headingStyle),
-                            ],
-                          ),
-                          const SizedBox(height: AppInsets.xl),
-                          Text(
-                            topic.description ?? '',
-                            style: descriptionStyle,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                            ),
+                            const SizedBox(width: AppInsets.l),
+                            Expanded(
+                              child:
+                                  Text(topic.name ?? '', style: headingStyle),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppInsets.xl),
+                        Text(
+                          topic.description ?? '',
+                          style: descriptionStyle,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
                 ),

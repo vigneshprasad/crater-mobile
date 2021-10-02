@@ -9,19 +9,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
+import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
+import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_tab.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/custom_tabs/custom_tabs.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
 import '../../../../meeting/domain/entity/meeting_objective_entity.dart';
@@ -41,44 +38,46 @@ class ProfileScreen extends HookWidget {
   static const tabs = ["Streams", "About", "Club"];
 
   Widget _appBar(
-      BuildContext context, Profile profile, ValueNotifier<int> index) {
+      BuildContext context, Profile? profile, ValueNotifier<int> index) {
     return SliverAppBar(
       backgroundColor: Theme.of(context).dialogBackgroundColor,
-      expandedHeight: 240,
+      expandedHeight: 360,
       flexibleSpace: FlexibleSpaceBar(
           background: _ProfileBody(
         profile: profile,
-        showConnect: profile.canConnect ?? false,
+        showConnect: profile?.canConnect ?? false,
       )),
       pinned: true,
       floating: true,
       shadowColor: Colors.grey,
       actions: [
         if (allowEdit)
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: BaseContainer(
-              radius: 30,
-              child: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => AutoRouter.of(context)
-                      .push(ProfileBasicScreenRoute(editMode: true))),
+          IconButton(
+            icon: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).buttonColor,
+                )),
+            onPressed: () => AutoRouter.of(context).push(
+              ProfileBasicScreenRoute(editMode: true),
             ),
           ),
-        const SizedBox(
-          width: 20,
-        )
       ],
       bottom: PreferredSize(
-        preferredSize: const Size(double.infinity, 40),
+        preferredSize: const Size(double.infinity, 50),
         child: Container(
           color: Theme.of(context).dialogBackgroundColor,
-          height: 40,
+          height: 50,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
               Container(
-                height: 30,
+                height: 32,
                 alignment: Alignment.bottomLeft,
                 child: TabBar(
                   onTap: (i) {
@@ -90,14 +89,6 @@ class ProfileScreen extends HookWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(e),
-                              Container(
-                                margin: const EdgeInsets.only(top: 4),
-                                width: 20,
-                                height: 1,
-                                color: index.value == tabs.indexOf(e)
-                                    ? HexColor.fromHex('#9146FF')
-                                    : null,
-                              )
                             ],
                           )))
                       .toList(),
@@ -143,16 +134,17 @@ class ProfileScreen extends HookWidget {
             )),
       ),
       loading: () => Scaffold(
-        appBar: BaseAppBar(),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              children: [
-                LinearProgressIndicator(color: Theme.of(context).accentColor),
-              ],
-            ),
-          ),
-        ),
+        body: DefaultTabController(
+            length: tabs.length,
+            child: SafeArea(
+              bottom: false,
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  _appBar(context, null, index),
+                ],
+                body: const Center(child: CircularProgressIndicator()),
+              ),
+            )),
       ),
       error: (error, stackTrace) => Center(
         child: Text(error.toString()),
@@ -162,7 +154,7 @@ class ProfileScreen extends HookWidget {
 }
 
 class _ProfileBody extends HookWidget {
-  final Profile profile;
+  final Profile? profile;
   final bool showConnect;
 
   const _ProfileBody({
@@ -176,7 +168,7 @@ class _ProfileBody extends HookWidget {
       alignment: Alignment.topLeft,
       children: [
         SizedBox(
-          height: 150,
+          height: 200,
           child: Image.asset(
             'assets/images/img_drawer_image.png',
             width: double.infinity,
@@ -186,31 +178,60 @@ class _ProfileBody extends HookWidget {
         Positioned(
           bottom: 50,
           left: 20,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
             children: [
-              BaseContainer(
-                radius: 40,
-                child: _buildImage(profile, 40),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  profile.name!,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).accentColor, width: 2.5),
+                      borderRadius: BorderRadius.circular(56),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: _buildImage(profile, 40),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  if (profile != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              profile?.name ?? '',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.check_circle_outlined,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '49,765 Followers',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        const SizedBox(height: 8),
+                        if (showConnect)
+                          Positioned(
+                              bottom: 50,
+                              right: 20,
+                              child: GradientButton(
+                                onPressed: () => _showTimeSlots(context),
+                                title: 'JOIN CLUB',
+                              ))
+                      ],
+                    ),
+                ],
               ),
             ],
           ),
         ),
-        if (showConnect)
-          Positioned(
-              bottom: 50,
-              right: 20,
-              child: GradientButton(
-                onPressed: () => _showTimeSlots(context),
-                title: 'JOIN CLUB',
-              ))
       ],
     );
   }
@@ -226,14 +247,14 @@ class _ProfileBody extends HookWidget {
             topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
             topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
           ),
-          child: TimeSlotsScreen(profileId: profile.uuid!),
+          child: TimeSlotsScreen(profileId: profile!.uuid!),
         );
       },
     );
   }
 
-  Widget _buildImage(Profile profile, double radius) {
-    final photo = profile.photo;
+  Widget _buildImage(Profile? profile, double radius) {
+    final photo = profile?.photo;
     if (photo != null) {
       return CachedNetworkImage(
         imageUrl: photo,
@@ -325,9 +346,9 @@ class _AboutTab extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const UnderlinedText(
-            'ABOUT',
-            bgText: 'CREATOR',
+          Text(
+            'About Me',
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(height: AppInsets.l),
           if (profile.introduction != null ||
@@ -342,14 +363,14 @@ class _AboutTab extends HookWidget {
                   profile.introduction!,
                 )
             ]),
-          const SizedBox(height: AppInsets.xxl),
+          const SizedBox(height: 40),
           if (meta?.isNotEmpty ?? false)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const UnderlinedText(
-                  'SNAPSHOT',
-                  bgText: 'CREATOR',
+                Text(
+                  'Snapshot',
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 const SizedBox(height: AppInsets.l),
                 Column(
@@ -380,9 +401,9 @@ class _AboutTab extends HookWidget {
           const SizedBox(height: AppInsets.xxl),
           _Interests(interests),
           const SizedBox(height: AppInsets.xxl),
-          const UnderlinedText(
-            'CONNECT',
-            bgText: 'SOCIAL MEDIA',
+          Text(
+            'Connect',
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(height: AppInsets.l),
           _buildLinkedInButton(),

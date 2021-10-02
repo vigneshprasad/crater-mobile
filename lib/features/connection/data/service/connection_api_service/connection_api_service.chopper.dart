@@ -1,0 +1,26 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'connection_api_service.dart';
+
+// **************************************************************************
+// ChopperGenerator
+// **************************************************************************
+
+// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
+class _$ConnectionApiService extends ConnectionApiService {
+  _$ConnectionApiService([ChopperClient? client]) {
+    if (client == null) return;
+    this.client = client;
+  }
+
+  @override
+  final definitionType = ConnectionApiService;
+
+  @override
+  Future<Response<dynamic>> getCreators(Map<String, dynamic> body) {
+    final $url = '/crater/creator/';
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+}

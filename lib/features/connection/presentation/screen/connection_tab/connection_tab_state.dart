@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
 
 import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../../profile/data/repository/profile_repository_impl.dart';
 import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
@@ -13,9 +15,11 @@ final connectionStateProvider = StateNotifierProvider.family<
     ConnectionStateNotifier, ApiResult<List<Profile>>, String>((ref, userId) {
   return ConnectionStateNotifier(ref.read, userId);
 });
+
 final requestStateProvider =
     StateNotifierProvider<RequestStateNotifier, ApiResult<List<Profile>>>(
         (ref) => RequestStateNotifier(ref.read));
+
 final tagStateProvider =
     StateNotifierProvider<TagStateNotifier, ApiResult<List<UserTag>>>(
         (ref) => TagStateNotifier(ref.read));

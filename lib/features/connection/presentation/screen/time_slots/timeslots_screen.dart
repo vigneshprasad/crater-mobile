@@ -41,7 +41,8 @@ class TimeSlotsScreen extends HookWidget {
 
     final _scrollControiler = useScrollController();
 
-    return ScaffoldContainer(
+    return Container(
+      color: Theme.of(context).dialogBackgroundColor,
       child: state.when(
         loading: () => _Loader(),
         data: (timeslots) {

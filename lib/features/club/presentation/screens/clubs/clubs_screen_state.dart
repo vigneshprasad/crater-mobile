@@ -7,19 +7,30 @@ import '../../../../../core/error/failures/failures.dart';
 import '../../../../conversations/data/repository/conversation_repository_impl.dart';
 import 'clubs_screen.dart';
 
-final clubsStateProvider = StateNotifierProvider<ClubsStateNotifier,
-    ApiResult<List<UpcomingGridItem>>>((ref) => ClubsStateNotifier(ref.read));
+final clubsStateProvider =
+    StateNotifierProvider<ClubsStateNotifier, ApiResult<StreamPage>>(
+        (ref) => ClubsStateNotifier(ref.read));
 
-class ClubsStateNotifier
-    extends StateNotifier<ApiResult<List<UpcomingGridItem>>> {
+class StreamPage {
+  final List<UpcomingGridItem> liveClubs;
+  final List<UpcomingGridItem> upcomingClubs;
+
+  StreamPage({
+    required this.liveClubs,
+    required this.upcomingClubs,
+  });
+}
+
+class ClubsStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   final Reader read;
 
   List<UpcomingGridItem> liveClubs = [];
+  List<UpcomingGridItem> featuredClubs = [];
   List<UpcomingGridItem> upcomingClubs = [];
 
-  ClubsStateNotifier(this.read)
-      : super(ApiResult<List<UpcomingGridItem>>.loading()) {
+  ClubsStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
     getLiveData();
+    getFeaturedData();
     getUpcomingData();
   }
 
@@ -47,9 +58,9 @@ class ClubsStateNotifier
     final items = List<UpcomingGridItem>.from(upcomingClubs);
     if (items.isNotEmpty) {
       items.insert(
-          1,
+          0,
           UpcomingGridItem(
-              title: 'UPCOMING\nSTREAMS',
+              title: 'Going Live Soon',
               color: '#B02A2A',
               type: GridItemType.title,
               icon: const Icon(
@@ -68,7 +79,10 @@ class ClubsStateNotifier
       //           size: 80,
       //         )));
     }
-    state = ApiResult.data(liveClubs + items);
+    state = ApiResult.data(StreamPage(
+      liveClubs: liveClubs + featuredClubs,
+      upcomingClubs: items,
+    ));
   }
 
   Future<void> getLiveData() async {
@@ -84,6 +98,25 @@ class ClubsStateNotifier
         .map((e) => UpcomingGridItem(
               conversation: e,
               type: GridItemType.live,
+            ))
+        .toList();
+    updateData();
+  }
+
+  Future<void> getFeaturedData() async {
+    final response =
+        await read(conversationRepositoryProvider).getFeaturedClubs();
+
+    if (response.isLeft()) {
+      throw response.swap().getOrElse(() => ServerFailure());
+    }
+
+    final webinars = response.getOrElse(() => List<Webinar>.empty());
+
+    featuredClubs = webinars
+        .map((e) => UpcomingGridItem(
+              conversation: e,
+              type: GridItemType.featured,
             ))
         .toList();
     updateData();

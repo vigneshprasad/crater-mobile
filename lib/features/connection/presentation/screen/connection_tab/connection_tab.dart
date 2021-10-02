@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/api_result/api_result.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -15,8 +15,6 @@ import '../../../../../core/widgets/base/base_network_image/base_network_image.d
 import '../../../../../routes.gr.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
-import '../../../../profile/presentation/screens/profile_screen/gradient_button.dart';
-import '../../screens/create_conversation_screen/timeslots_screen.dart';
 import 'connection_tab_state.dart';
 
 class ConnectionTab extends HookWidget {
@@ -28,6 +26,7 @@ class ConnectionTab extends HookWidget {
     final selectedTag = useState<UserTag?>(null);
     return RefreshIndicator(
       displacement: 96.00,
+      color: Theme.of(context).accentColor,
       onRefresh: () {
         final futures = [
           context
@@ -92,6 +91,7 @@ class ConnectionTab extends HookWidget {
               );
             },
           ),
+          FeaturedList(),
           ConnectionList(tag: selectedTag.value?.pk.toString()),
         ],
       ),
@@ -121,13 +121,16 @@ class ConnectionList extends HookWidget {
     });
     final connectionState = useProvider(connectionStateProvider(userId));
     return connectionState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Center(
+          child: CircularProgressIndicator(
+        color: Theme.of(context).accentColor,
+      )),
       error: (err, st) => Center(
         child: Text(err.toString()),
       ),
       data: (profiles) => Expanded(
         child: ListView.builder(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 100),
+          padding: const EdgeInsets.only(bottom: 100),
           itemCount: profiles.length +
               (context.read(connectionStateProvider(userId).notifier).allLoaded
                   ? 0
@@ -222,17 +225,15 @@ class _Connection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.generatedIntroduction ?? '';
-    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 16,
-        );
-    final bodyStyle = Theme.of(context).textTheme.bodyText2;
+    final headingStyle = Theme.of(context).textTheme.subtitle1;
+    final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
         ProfileScreenRoute(
             userId: user.uuid!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           child: Container(
             decoration: BoxDecoration(
                 // color:
@@ -262,31 +263,20 @@ class _Connection extends StatelessWidget {
                       if (description.isNotEmpty)
                         Text(
                           description,
-                          maxLines: 2,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: bodyStyle,
                         ),
-                      if (showConnect == true)
-                        const SizedBox(height: AppInsets.xl),
-                      if (showConnect == true)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: BaseContainer(
-                            radius: 30,
-                            child: SizedBox(
-                              width: 100,
-                              height: 30,
-                              child: GradientButton(
-                                onPressed: () => _showTimeSlots(context),
-                                title: 'CONNECT',
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        )
                     ],
                   ),
                 ),
+                if (showConnect == true) const SizedBox(height: AppInsets.xl),
+                if (showConnect == true)
+                  BaseLargeButton(
+                    onPressed: () => _showTimeSlots(context),
+                    text: 'Connect',
+                    outlined: true,
+                  )
               ],
             ),
           )),

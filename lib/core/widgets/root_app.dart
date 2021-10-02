@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
@@ -87,46 +88,68 @@ class RootApp extends HookWidget {
               //   ],
               // builder:
               (context, child) {
-            final lightBlue = HexColor.fromHex('#101010');
-            final darkBlue = Colors.black;
+            final lightBlue = HexColor.fromHex('#1F2127');
+            final borderColor = HexColor.fromHex('#272728');
+            const darkBlue = Colors.black;
+            final splashColor = HexColor.fromHex('782BE8');
             // HexColor.fromHex('#121823');
-            final black = darkBlue;
+            const black = darkBlue;
             //HexColor.fromHex("#10141C");
             final buttonColor = HexColor.fromHex('#9146FF');
             return Theme(
               data: AppTheme.darkTheme.copyWith(
                 backgroundColor: darkBlue,
-                splashFactory: const NoSplashFactory(),
+                // splashFactory: const NoSplashFactory(),
+                splashColor: splashColor,
                 highlightColor: Colors.transparent,
                 primaryColor: buttonColor,
                 scaffoldBackgroundColor: darkBlue,
-                canvasColor: darkBlue,
+                canvasColor: lightBlue,
+                outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    side: BorderSide(
+                      color: borderColor,
+                      width: 2,
+                    ),
+                    // backgroundColor: darkBlue,
+                    primary: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                ),
                 bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                  backgroundColor: lightBlue,
-                  selectedItemColor: Colors.white,
-                  unselectedItemColor: Colors.white38,
+                  selectedItemColor: buttonColor,
                 ),
                 appBarTheme: AppBarTheme(
-                    iconTheme: IconThemeData(color: buttonColor),
-                    color: black,
-                    elevation: 0,
-                    actionsIconTheme: IconThemeData(color: buttonColor)),
+                  iconTheme: IconThemeData(color: buttonColor),
+                  color: black,
+                  elevation: 0,
+                  actionsIconTheme: IconThemeData(color: buttonColor),
+                ),
                 buttonTheme: ButtonThemeData(
                   buttonColor: buttonColor,
                   colorScheme: const ColorScheme.dark(),
                 ),
                 elevatedButtonTheme: ElevatedButtonThemeData(
-                    style: ElevatedButton.styleFrom(primary: buttonColor)),
+                  style: ElevatedButton.styleFrom(primary: buttonColor),
+                ),
                 textButtonTheme: TextButtonThemeData(
-                    style: TextButton.styleFrom(primary: buttonColor)),
-                indicatorColor: Colors.transparent,
+                  style: TextButton.styleFrom(primary: buttonColor),
+                ),
+                indicatorColor: buttonColor,
                 tabBarTheme: const TabBarTheme(
                   indicatorSize: TabBarIndicatorSize.label,
                 ),
                 buttonColor: buttonColor,
                 dialogBackgroundColor: lightBlue,
-                floatingActionButtonTheme:
-                    FloatingActionButtonThemeData(backgroundColor: buttonColor),
+                floatingActionButtonTheme: FloatingActionButtonThemeData(
+                  backgroundColor: buttonColor,
+                ),
                 accentColor: buttonColor,
               ),
               child: child!,

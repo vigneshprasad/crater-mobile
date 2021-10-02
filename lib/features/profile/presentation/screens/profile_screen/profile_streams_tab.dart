@@ -68,8 +68,7 @@ class ProfileStreamsTab extends HookWidget {
                             options: CarouselOptions(
                               height: 250.0,
                               enlargeCenterPage: true,
-                              viewportFraction: 0.4,
-                              // enableInfiniteScroll: false,
+                              enableInfiniteScroll: false,
                             ),
                             items: conversations.map((c) {
                               return Builder(

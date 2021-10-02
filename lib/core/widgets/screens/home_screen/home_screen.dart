@@ -8,6 +8,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -16,7 +17,6 @@ import '../../../../features/auth/presentation/screens/onboarding/onboarding_scr
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/club/presentation/screens/clubs/clubs_screen.dart';
-import '../../../../features/conversations/presentation/widgets/connection_tab/connection_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../features/profile/presentation/screens/profile_screen/gradient_button.dart';
@@ -45,16 +45,16 @@ class HomeScreen extends HookWidget {
   final int? topic;
 
   static const icons = [
-    Icon(Icons.search),
-    Icon(Icons.inbox),
     Icon(Icons.people_outline),
+    Icon(Icons.inbox),
+    Icon(Icons.live_tv),
     UserProfileNavItem(),
   ];
 
   static const labels = [
-    'Community',
-    'My Conversations',
-    'Clubs',
+    'Network',
+    'My Conv',
+    'Streams',
     'Profile',
   ];
 
@@ -109,9 +109,7 @@ class HomeScreen extends HookWidget {
       drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
-        iconSize: 28,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
+        selectedFontSize: 12,
         type: BottomNavigationBarType.fixed,
         items: [0, 1, 2, 3]
             .map((index) => BottomNavigationBarItem(
@@ -135,16 +133,16 @@ class HomeScreen extends HookWidget {
                         context),
                     sliver: SliverAppBar(
                       floating: true,
-                      title: _activeTab.value != 2
-                          ? null
-                          : const UnderlinedText(
-                              'STREAMS',
-                              bgText: 'KNOWLEDGE',
-                            ),
+                      // title: _activeTab.value != 2
+                      //     ? null
+                      //     : const UnderlinedText(
+                      //         'STREAMS',
+                      //         bgText: 'KNOWLEDGE',
+                      //       ),
                       centerTitle: true,
                       // pinned: true,
                       leading: IconButton(
-                        icon: const Icon(Icons.help),
+                        icon: const Icon(Icons.live_help),
                         iconSize: 28,
                         onPressed: () =>
                             context.read(intercomProvider).show(email!),

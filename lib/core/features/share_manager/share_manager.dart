@@ -89,23 +89,25 @@ class ShareBottomSheet extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        launch(
-                          whatsAppUrl,
-                          forceSafariVC: false,
-                        );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/whatsapp.png',
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text('Invite via Whatsapp'),
-                        ],
+                    Center(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          launch(
+                            whatsAppUrl,
+                            forceSafariVC: false,
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/whatsapp.png',
+                              width: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('Invite via Whatsapp'),
+                          ],
+                        ),
                       ),
                     ),
                   ],

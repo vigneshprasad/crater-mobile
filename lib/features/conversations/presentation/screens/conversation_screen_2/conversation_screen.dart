@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -104,6 +105,12 @@ class _ConversationLoaded extends StatelessWidget {
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
+    final article = conversation.topicDetail?.articleDetail;
+
+    final user = conversation.hostDetail;
+    final topic = conversation.topicDetail;
+    final heading =
+        article != null ? article.description : conversation.topicDetail?.name;
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
@@ -123,32 +130,100 @@ class _ConversationLoaded extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: AppInsets.sm),
-                  Text(startDateFormat.format(conversation.start!.toLocal()),
-                      style: dateStyle),
-                  ConversationCard(
-                    conversation: conversation,
-                    hideFooter: true,
-                    onCardPressed: (_) => launch(
-                      conversation.topicDetail!.articleDetail!.websiteUrl!,
-                      customTabsOption: const CustomTabsOption(),
+                  Text(
+                    heading ?? '',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  const SizedBox(height: AppInsets.xxl),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today),
+                      const SizedBox(width: 12),
+                      Text(
+                          startDateFormat.format(conversation.start!.toLocal()),
+                          style: dateStyle),
+                    ],
+                  ),
+                  const SizedBox(height: AppInsets.xxl),
+                  if (topic?.image != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        topic?.image ?? '',
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
+                  const SizedBox(height: AppInsets.xxl),
+                  Text(
+                    'Talking About',
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-                  if (conversation.topicDetail!.articleDetail == null &&
-                      conversation.topicDetail!.description != null)
-                    Text(conversation.topicDetail!.description!),
-                  const SizedBox(height: AppInsets.xl),
-                  Center(
-                    child: Text(
-                        AppLocalizations.of(context)
-                                ?.translate("conversations:speakers_label") ??
-                            '',
-                        style: pageLabelStyle),
+                  const SizedBox(height: AppInsets.l),
+                  Text(conversation.topicDetail?.description ?? ''),
+                  const Divider(thickness: 1, height: 80),
+                  Text(
+                    'Let others know',
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
-                  if (conversation.isSpeaker!)
-                    const SizedBox(height: AppInsets.l),
-                  if (!conversation.isSpeaker!)
-                    const SizedBox(height: AppInsets.xl),
+                  const SizedBox(height: AppInsets.xxl),
+                  const Text('https://crater.club/session/'),
+                  const SizedBox(height: AppInsets.xxl),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: OutlinedButton(
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppSvgAssets.linkedinFilled,
+                                height: 20,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Share',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                      const SizedBox(width: AppInsets.xxl),
+                      Flexible(
+                        child: OutlinedButton(
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppSvgAssets.twitter,
+                                height: 20,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Tweet',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(thickness: 1, height: 80),
+                  Text(
+                    'About Me',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                   if (connection == RtcConnection.disconnected)
                     _SpeakersListWithIntro(
                       speakers: speakers,
@@ -174,29 +249,24 @@ class _ConversationLoaded extends StatelessWidget {
                   children: [
                     if (connection == RtcConnection.disconnected)
                       if (conversation.isSpeaker!)
-                        BaseContainer(
-                          radius: 30,
-                          child: BaseLargeButton(
-                            onPressed: () {
-                              context
-                                  .read(conversationStateProvider(
-                                          conversation.id!)
-                                      .notifier)
-                                  .connectToAudioCall();
-                            },
-                            text: AppLocalizations.of(context)?.translate(
-                                    "conversation_screen:go_live_label") ??
-                                '',
-                          ),
+                        BaseLargeButton(
+                          onPressed: () {
+                            context
+                                .read(
+                                    conversationStateProvider(conversation.id!)
+                                        .notifier)
+                                .connectToAudioCall();
+                          },
+                          text: AppLocalizations.of(context)?.translate(
+                                  "conversation_screen:go_live_label") ??
+                              '',
                         )
                       else
                         BaseLargeButton(
                             onPressed: () {
                               _requestJoinGroup(context);
                             },
-                            text: AppLocalizations.of(context)?.translate(
-                                    "conversations:join_button_label") ??
-                                '')
+                            text: 'RSVP for this session')
                     else
                       RtcConnectionBar(
                         table: conversation,
@@ -328,7 +398,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    final bodyStyle = Theme.of(context).textTheme.bodyText2;
+    final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
         ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
@@ -351,10 +421,10 @@ class _SpeakerWithIntro extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(user.name ?? '', style: headingStyle),
-                  const SizedBox(height: AppInsets.sm),
+                  const SizedBox(height: AppInsets.l),
                   Text(
                     description ?? '',
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
                   )
