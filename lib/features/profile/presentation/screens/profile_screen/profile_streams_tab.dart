@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/club/presentation/screens/clubs/clubs_screen.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_state.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:worknetwork/features/profile/presentation/widget/underline_text.dart';
 
 import '../../../../../routes.gr.dart';
 

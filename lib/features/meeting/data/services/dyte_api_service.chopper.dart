@@ -22,4 +22,11 @@ class _$DyteApiService extends DyteApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getRoomRequest(int meetingId) {
+    final $url = '/integrations/dyte/participant/$meetingId/connect/';
+    final $request = Request('POST', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

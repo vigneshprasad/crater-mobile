@@ -5,11 +5,11 @@ import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../conversations/data/repository/conversation_repository_impl.dart';
-import 'clubs_screen.dart';
+import 'stream_screen.dart';
 
-final clubsStateProvider =
-    StateNotifierProvider<ClubsStateNotifier, ApiResult<StreamPage>>(
-        (ref) => ClubsStateNotifier(ref.read));
+final streamStateProvider =
+    StateNotifierProvider<StreamStateNotifier, ApiResult<StreamPage>>(
+        (ref) => StreamStateNotifier(ref.read));
 
 class StreamPage {
   final List<UpcomingGridItem> liveClubs;
@@ -21,14 +21,14 @@ class StreamPage {
   });
 }
 
-class ClubsStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
+class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   final Reader read;
 
   List<UpcomingGridItem> liveClubs = [];
   List<UpcomingGridItem> featuredClubs = [];
   List<UpcomingGridItem> upcomingClubs = [];
 
-  ClubsStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
+  StreamStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
     getLiveData();
     getFeaturedData();
     getUpcomingData();

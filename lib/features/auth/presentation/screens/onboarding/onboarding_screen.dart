@@ -6,6 +6,7 @@ import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -210,6 +211,7 @@ class OnboardingScreen extends HookWidget {
         default:
           return _ActionButton(
             label: e.title,
+            isDismiss: true,
             onTap: () {
               AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
                   predicate: (route) => false);
@@ -292,27 +294,21 @@ class _PageContent extends StatelessWidget {
 class _ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
+  final bool isDismiss;
 
   const _ActionButton({
     Key? key,
     required this.label,
     this.onTap,
+    this.isDismiss = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: BaseContainer(
-        radius: 30.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppInsets.xl,
-            horizontal: 24,
-          ),
-          child: Text(label, style: Theme.of(context).textTheme.button),
-        ),
-      ),
+    return BaseLargeButton(
+      outlined: isDismiss,
+      onPressed: onTap,
+      text: label,
     );
   }
 }

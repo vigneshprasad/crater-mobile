@@ -2,9 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/features/share_manager/share_manager.dart';
+import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_card.dart';
+import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
+import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -23,15 +28,22 @@ import 'conversation_calendar_tab_state.dart';
 
 const kLeftPaddingForDate = 20.00;
 
+final homeScreenScrollController =
+    Provider.autoDispose<ScrollController>((ref) {
+  final controller = ScrollController();
+  ref.onDispose(() {
+    controller.dispose();
+  });
+  return controller;
+});
+
 class ConversationCalendarTab extends HookWidget {
   final ConversationTabType type;
-  final ScrollController controller;
   final String name;
   final VoidCallback onSchedulePressed;
 
   const ConversationCalendarTab({
     required this.type,
-    required this.controller,
     required this.name,
     required this.onSchedulePressed,
   });
@@ -39,19 +51,35 @@ class ConversationCalendarTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final intialState = useProvider(initialStateProvider(type));
+    final _scrollController = useProvider(homeScreenScrollController);
+    final shareManager = useProvider(shareManagerProvider);
 
-    return ScaffoldContainer(
-      child: intialState.when(
-        loading: () => ConversationTabShimmer(),
-        data: (results) => _LoadedConversationTab(
-          type: type,
-          name: name,
-          onSchedulePressed: onSchedulePressed,
-          onReload: () {},
-        ),
-        error: (err, st) => _Loader(message: err.toString()),
-      ),
-    );
+    return NestedScrollView(
+        controller: _scrollController,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverAppBar(
+                floating: true,
+                centerTitle: true,
+                leading: HelpButton(),
+                actions: [ShareButton()],
+              ),
+            ),
+          ];
+        },
+        body: DefaultStickyHeaderController(
+            child: intialState.when(
+          loading: () => ConversationTabShimmer(),
+          data: (results) => _LoadedConversationTab(
+            type: type,
+            name: name,
+            onSchedulePressed: onSchedulePressed,
+            onReload: () {},
+          ),
+          error: (err, st) => _Loader(message: err.toString()),
+        )));
   }
 }
 

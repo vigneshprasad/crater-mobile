@@ -23,4 +23,7 @@ abstract class DyteApiService extends ChopperService {
 
   @Get(path: 'participants/{meetingId}/')
   Future<Response> getDyteCredsRequest(@Path() int meetingId);
+
+  @Post(path: 'participant/{meetingId}/connect/', optionalBody: true)
+  Future<Response> getRoomRequest(@Path() int meetingId);
 }

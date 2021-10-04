@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
-import 'package:worknetwork/features/meeting/data/models/dyte_request_model.dart';
+import 'package:worknetwork/features/meeting/data/models/dyte_meeting_model.dart';
 import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
 
 final getDyteCredsNotifierProvider = StateNotifierProvider.autoDispose
@@ -28,7 +28,8 @@ class GetDyteCredsNotifier
   Future<void> retrieveProfile() async {
     state = const AsyncValue<_DyteMeetingScreenState>.loading();
 
-    final response = await _meetingRepository.getDyteCredsRequest(_meetingId);
+    // final response = await _meetingRepository.getDyteCredsRequest(_meetingId);
+    final response = await _meetingRepository.getRoom(_meetingId);
 
     if (response.isLeft()) {
       state = AsyncValue<_DyteMeetingScreenState>.error(
@@ -36,11 +37,11 @@ class GetDyteCredsNotifier
       return;
     }
 
-    final dyteInfo = response.getOrElse(() => DyteRequestModel());
+    final dyteInfo = response.getOrElse(() => const DyteMeeting());
 
     final _profileScreenState = _DyteMeetingScreenState(
-      room: dyteInfo.meetingDetail?.room ?? '',
-      token: dyteInfo.token ?? '',
+      room: dyteInfo.dyteMeetingDetail?.roomName ?? '',
+      token: dyteInfo.authToken ?? '',
     );
     state = AsyncValue<_DyteMeetingScreenState>.data(_profileScreenState);
   }

@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
@@ -17,7 +17,6 @@ import '../../../../../constants/theme.dart';
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
@@ -26,7 +25,6 @@ import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
-import '../../widgets/conversation_card/conversation_card.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
 import '../../widgets/speakers_table/speakers_table.dart';
@@ -101,13 +99,11 @@ class _ConversationLoaded extends StatelessWidget {
     // Styles
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.bodyText2;
-    final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
     final article = conversation.topicDetail?.articleDetail;
 
-    final user = conversation.hostDetail;
     final topic = conversation.topicDetail;
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
@@ -168,12 +164,13 @@ class _ConversationLoaded extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   const SizedBox(height: AppInsets.xxl),
-                  const Text('https://crater.club/session/'),
+                  Text('https://crater.club/session/${conversation.id}'),
                   const SizedBox(height: AppInsets.xxl),
                   Row(
                     children: [
                       Flexible(
                         child: OutlinedButton(
+                          onPressed: () {},
                           child: Row(
                             children: [
                               SvgPicture.asset(
@@ -183,7 +180,7 @@ class _ConversationLoaded extends StatelessWidget {
                               const SizedBox(
                                 width: 8,
                               ),
-                              Expanded(
+                              const Expanded(
                                 child: Text(
                                   'Share',
                                   textAlign: TextAlign.center,
@@ -191,12 +188,12 @@ class _ConversationLoaded extends StatelessWidget {
                               ),
                             ],
                           ),
-                          onPressed: () {},
                         ),
                       ),
                       const SizedBox(width: AppInsets.xxl),
                       Flexible(
                         child: OutlinedButton(
+                          onPressed: () {},
                           child: Row(
                             children: [
                               SvgPicture.asset(
@@ -206,7 +203,7 @@ class _ConversationLoaded extends StatelessWidget {
                               const SizedBox(
                                 width: 8,
                               ),
-                              Expanded(
+                              const Expanded(
                                 child: Text(
                                   'Tweet',
                                   textAlign: TextAlign.center,
@@ -214,7 +211,6 @@ class _ConversationLoaded extends StatelessWidget {
                               ),
                             ],
                           ),
-                          onPressed: () {},
                         ),
                       ),
                     ],
@@ -251,11 +247,12 @@ class _ConversationLoaded extends StatelessWidget {
                       if (conversation.isSpeaker!)
                         BaseLargeButton(
                           onPressed: () {
-                            context
-                                .read(
-                                    conversationStateProvider(conversation.id!)
-                                        .notifier)
-                                .connectToAudioCall();
+                            // context
+                            //     .read(
+                            //         conversationStateProvider(conversation.id!)
+                            //             .notifier)
+                            //     .connectToAudioCall();
+                            startDyteMeeting(context);
                           },
                           text: AppLocalizations.of(context)?.translate(
                                   "conversation_screen:go_live_label") ??
@@ -280,6 +277,11 @@ class _ConversationLoaded extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void startDyteMeeting(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {

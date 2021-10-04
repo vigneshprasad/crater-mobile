@@ -35,7 +35,7 @@ packages:
       name: appsflyer_sdk
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.3.2-nullsafety.0"
+    version: "6.3.5+3"
   archive:
     dependency: transitive
     description:
@@ -315,7 +315,7 @@ packages:
       name: dartz
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.0-nullsafety.2"
+    version: "0.10.0"
   device_info:
     dependency: "direct main"
     description:

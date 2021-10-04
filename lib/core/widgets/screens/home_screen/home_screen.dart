@@ -4,50 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
+import 'package:worknetwork/features/profile/presentation/widget/gradient_button.dart';
 
-import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
 import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
-import '../../../../features/club/presentation/screens/clubs/clubs_screen.dart';
+import '../../../../features/club/presentation/screens/streams/stream_screen.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
-import '../../../../features/profile/presentation/screens/profile_screen/gradient_button.dart';
 import '../../../../features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../analytics/analytics.dart';
 import '../../../color/color.dart';
-import '../../../features/share_manager/share_manager.dart';
-import '../../../integrations/intercom/intercom_provider.dart';
 import '../../base/base_container/base_container.dart';
 import '../../base/base_large_button/base_large_button.dart';
 import 'home_tab_controller_provider.dart';
-
-final homeScreenScrollController =
-    Provider.autoDispose<ScrollController>((ref) {
-  final controller = ScrollController();
-  ref.onDispose(() {
-    controller.dispose();
-  });
-  return controller;
-});
 
 class HomeScreen extends HookWidget {
   final int? tab;
   final int? topic;
 
   static const icons = [
+    Icon(Icons.live_tv),
     Icon(Icons.people_outline),
     Icon(Icons.inbox),
-    Icon(Icons.live_tv),
     UserProfileNavItem(),
   ];
 
@@ -72,8 +58,7 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = useProvider(homeScreenScrollController);
-    final shareManager = useProvider(shareManagerProvider);
+    // final _scrollController = useProvider(homeScreenScrollController);
     final _tabController =
         useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
 
@@ -106,7 +91,7 @@ class HomeScreen extends HookWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      drawer: AppDrawer(),
+      // drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
         selectedFontSize: 12,
@@ -121,75 +106,22 @@ class HomeScreen extends HookWidget {
           _tabController.index = index;
         },
       ),
-      body: SafeArea(
-        child: Stack(
+      body: HomeTabControllerProvider(
+        controller: _tabController,
+        child: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _tabController,
           children: [
-            NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: SliverAppBar(
-                      floating: true,
-                      // title: _activeTab.value != 2
-                      //     ? null
-                      //     : const UnderlinedText(
-                      //         'STREAMS',
-                      //         bgText: 'KNOWLEDGE',
-                      //       ),
-                      centerTitle: true,
-                      // pinned: true,
-                      leading: IconButton(
-                        icon: const Icon(Icons.live_help),
-                        iconSize: 28,
-                        onPressed: () =>
-                            context.read(intercomProvider).show(email!),
-                      ),
-                      actions: [
-                        IconButton(
-                          icon: SvgPicture.asset(
-                            AppSvgAssets.share,
-                            height: 28,
-                          ),
-                          onPressed: () => shareManager.share(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                ];
+            StreamTab(),
+            ConnectionTab(),
+            ConversationCalendarTab(
+              type: ConversationTabType.my,
+              name: name,
+              onSchedulePressed: () {
+                AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
               },
-              body: DefaultStickyHeaderController(
-                child: HomeTabControllerProvider(
-                  controller: _tabController,
-                  child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    children: [
-                      ClubsScreen(),
-                      ConnectionTab(),
-                      ConversationCalendarTab(
-                        type: ConversationTabType.my,
-                        controller: _scrollController,
-                        name: name,
-                        onSchedulePressed: () {
-                          AutoRouter.of(context)
-                              .push(TopicsListRoute(showTitle: true));
-                        },
-                      ),
-                      ProfileScreen(user?.pk ?? '', allowEdit: true)
-                    ],
-                  ),
-                ),
-              ),
             ),
-            // Positioned(
-            //   bottom: 20,
-            //   left: 20,
-            //   right: 20,
-            //   child: floatingButton(_activeTab.value, context),
-            // ),
+            ProfileScreen(user?.pk ?? '', allowEdit: true)
           ],
         ),
       ),

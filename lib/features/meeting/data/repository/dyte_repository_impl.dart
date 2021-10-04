@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:worknetwork/features/meeting/data/datasources/dyte_remote_datasource.dart';
+import 'package:worknetwork/features/meeting/data/models/dyte_meeting_model.dart';
 import 'package:worknetwork/features/meeting/data/models/dyte_request_model.dart';
 import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
 
@@ -23,6 +24,16 @@ class DyteRepositoryImpl implements DyteRepository {
     try {
       final response =
           await remoteDatasource.getDyteCredsRequestFromRemote(meetingId);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DyteMeeting>> getRoom(int meetingId) async {
+    try {
+      final response = await remoteDatasource.getRoomFromRemote(meetingId);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));

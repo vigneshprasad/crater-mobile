@@ -11,11 +11,11 @@ PODS:
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
   - appsflyer_sdk (6.2.0):
-    - AppsFlyerFramework (= 6.3.2)
+    - AppsFlyerFramework (= 6.3.5)
     - Flutter
-  - AppsFlyerFramework (6.3.2):
-    - AppsFlyerFramework/Main (= 6.3.2)
-  - AppsFlyerFramework/Main (6.3.2)
+  - AppsFlyerFramework (6.3.5):
+    - AppsFlyerFramework/Main (= 6.3.5)
+  - AppsFlyerFramework/Main (6.3.5)
   - device_info (0.0.1):
     - Flutter
   - dyte_client (0.0.1):
@@ -275,8 +275,8 @@ SPEC CHECKSUMS:
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  appsflyer_sdk: ca0dc5172a2bd2bdf32b3272a9729c203aa8fba7
-  AppsFlyerFramework: c66d79d965ccc2f44fd5db3df3d214428cc7665a
+  appsflyer_sdk: b5dc59a4f6ec5703c62a85a26da35ea28c571bbe
+  AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   dyte_client: bc489239cdde60efba48b5c57ac520fc29b4a665
   DyteSdk: 23a1eccce38d16de2592030113722d80c3aa2c99

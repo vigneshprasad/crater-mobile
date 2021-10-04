@@ -28,7 +28,7 @@ dependencies:
     sdk: flutter
   agora_rtc_engine: ^4.0.7
   animated_text_kit: ^4.2.1
-  appsflyer_sdk: ^6.3.2-nullsafety.0
+  appsflyer_sdk: ^6.3.5+3
   auto_route: ^2.2.0
   bloc: ^7.0.0
   cached_network_image: ^3.1.0
@@ -36,7 +36,7 @@ dependencies:
   chopper: ^4.0.1
   cupertino_icons: ^1.0.3
   custom_rounded_rectangle_border: ^0.2.0-nullsafety.0
-  dartz: ^0.10.0-nullsafety.2
+  dartz: ^0.10.0
   internet_connection_checker: ^0.0.1+2
   device_info: ^2.0.2
   equatable: ^2.0.3
