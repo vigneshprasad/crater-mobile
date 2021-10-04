@@ -52,16 +52,16 @@ class HomeScreen extends HookWidget {
   ];
 
   static const labels = [
+    'Streams',
     'Network',
     'My Conv',
-    'Streams',
     'Profile',
   ];
 
   static const analyticsLabels = [
+    "all_conversations_tab_viewed",
     'community_tab_viewed',
     "my_conversations_tab_viewed",
-    "all_conversations_tab_viewed",
     "profile_tab_viewed",
   ];
 
@@ -167,6 +167,7 @@ class HomeScreen extends HookWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     controller: _tabController,
                     children: [
+                      ClubsScreen(),
                       ConnectionTab(),
                       ConversationCalendarTab(
                         type: ConversationTabType.my,
@@ -177,7 +178,6 @@ class HomeScreen extends HookWidget {
                               .push(TopicsListRoute(showTitle: true));
                         },
                       ),
-                      ClubsScreen(),
                       ProfileScreen(user?.pk ?? '', allowEdit: true)
                     ],
                   ),
