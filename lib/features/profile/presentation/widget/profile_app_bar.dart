@@ -48,13 +48,13 @@ class ProfileAppBar extends HookWidget {
       pinned: true,
       floating: true,
       shadowColor: Colors.grey,
-      leading: IconButton(
-        icon: const Icon(Icons.live_help),
-        iconSize: 28,
-        onPressed: () => context.read(intercomProvider).show(email!),
-      ),
+      // leading: IconButton(
+      //   icon: const Icon(Icons.live_help),
+      //   iconSize: 28,
+      //   onPressed: () => context.read(intercomProvider).show(email!),
+      // ),
       actions: [
-        if (allowEdit) ShareButton(),
+        // if (allowEdit) ShareButton(),
         if (allowEdit)
           IconButton(
             icon: Container(

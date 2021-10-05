@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
 import 'package:worknetwork/features/connection/presentation/widget/connectable_list/connectable_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import 'package:worknetwork/features/profile/presentation/widget/underline_text.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
@@ -23,76 +23,71 @@ class ConnectionTab extends HookWidget {
   Widget build(BuildContext context) {
     final tagsState = useProvider(tagStateProvider);
     return SafeArea(
-      child: RefreshIndicator(
-        displacement: 96.00,
-        color: Theme.of(context).accentColor,
-        onRefresh: () {
-          final futures = [
-            context.read(tagStateProvider.notifier).getTagList(),
-          ];
+      child: NestedScrollView(
+        headerSliverBuilder: (context, _) => const [
+          HomeAppBar(
+            title: 'Network',
+          )
+        ],
+        body: RefreshIndicator(
+          displacement: 96.00,
+          color: Theme.of(context).accentColor,
+          onRefresh: () {
+            final futures = [
+              context.read(tagStateProvider.notifier).getTagList(),
+            ];
 
-          return Future.wait(futures);
-        },
-        child: tagsState.when(
-          loading: () => Container(),
-          error: (err, st) => Center(child: Text(err.toString())),
-          data: (tags) {
-            return ListView.builder(
-              itemCount: tags.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (index == 0)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text('Network',
-                                style: Theme.of(context).textTheme.headline5),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
-                                height: 3,
-                                width: 16,
-                                color: Theme.of(context).accentColor),
-                          ),
-                          const SizedBox(height: 40),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text('Crater Featured',
-                                style: Theme.of(context).textTheme.headline6),
-                          ),
-                          const SizedBox(height: 20),
-                          FeaturedList(),
-                          const SizedBox(height: 40),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text('Member only',
-                                style: Theme.of(context).textTheme.headline6),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              'Let the AI match you or request a meeting with your preferences',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
-                      ),
-                    ConnectableList(tag: tags[index]),
-                    const SizedBox(height: 40)
-                  ],
-                );
-              },
-            );
+            return Future.wait(futures);
           },
+          child: tagsState.when(
+            loading: () => Container(),
+            error: (err, st) => Center(child: Text(err.toString())),
+            data: (tags) {
+              return ListView.builder(
+                itemCount: tags.length,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (index == 0)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text('Crater Featured',
+                                  style: Theme.of(context).textTheme.headline6),
+                            ),
+                            const SizedBox(height: 20),
+                            FeaturedList(),
+                            const SizedBox(height: 40),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text('Member only',
+                                  style: Theme.of(context).textTheme.headline6),
+                            ),
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                'Let the AI match you or request a meeting with your preferences',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
+                      ConnectableList(tag: tags[index]),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

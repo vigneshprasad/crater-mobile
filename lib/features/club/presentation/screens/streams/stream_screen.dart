@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
 import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
@@ -24,31 +25,9 @@ class StreamTab extends HookWidget {
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (context, isexpanded) {
-          return [
-            SliverAppBar(
-              expandedHeight: 80,
-              actions: [
-                HelpButton(),
-                ShareButton(),
-              ],
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.only(left: 32.0, top: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Featured',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      height: 2,
-                      width: 16,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ],
-                ),
-              ),
+          return const [
+            HomeAppBar(
+              title: 'Featured',
             )
           ];
         },

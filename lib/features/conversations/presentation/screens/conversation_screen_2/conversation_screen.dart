@@ -239,7 +239,7 @@ class _ConversationLoaded extends StatelessWidget {
             color: Theme.of(context).dialogBackgroundColor,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

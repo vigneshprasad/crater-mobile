@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/core/features/share_manager/share_manager.dart';
 import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
+import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_card.dart';
 import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
 import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
@@ -54,32 +55,30 @@ class ConversationCalendarTab extends HookWidget {
     final _scrollController = useProvider(homeScreenScrollController);
     final shareManager = useProvider(shareManagerProvider);
 
-    return NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                floating: true,
-                centerTitle: true,
-                leading: HelpButton(),
-                actions: [ShareButton()],
+    return SafeArea(
+      child: NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: const HomeAppBar(title: 'My Conversations'),
               ),
+            ];
+          },
+          body: DefaultStickyHeaderController(
+              child: intialState.when(
+            loading: () => ConversationTabShimmer(),
+            data: (results) => _LoadedConversationTab(
+              type: type,
+              name: name,
+              onSchedulePressed: onSchedulePressed,
+              onReload: () {},
             ),
-          ];
-        },
-        body: DefaultStickyHeaderController(
-            child: intialState.when(
-          loading: () => ConversationTabShimmer(),
-          data: (results) => _LoadedConversationTab(
-            type: type,
-            name: name,
-            onSchedulePressed: onSchedulePressed,
-            onReload: () {},
-          ),
-          error: (err, st) => _Loader(message: err.toString()),
-        )));
+            error: (err, st) => _Loader(message: err.toString()),
+          ))),
+    );
   }
 }
 

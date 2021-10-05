@@ -22,7 +22,7 @@ class ProfileFooter extends StatelessWidget {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
             child: Row(
               children: [
                 if (onSkip != null)

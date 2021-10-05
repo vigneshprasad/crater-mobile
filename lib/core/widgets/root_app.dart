@@ -92,12 +92,22 @@ class RootApp extends HookWidget {
             final borderColor = HexColor.fromHex('#272728');
             const darkBlue = Colors.black;
             final splashColor = HexColor.fromHex('782BE8');
-            // HexColor.fromHex('#121823');
+            final grey = HexColor.fromHex('#808190');
             const black = darkBlue;
             //HexColor.fromHex("#10141C");
             final buttonColor = HexColor.fromHex('#9146FF');
             return Theme(
               data: AppTheme.darkTheme.copyWith(
+                textTheme: TextTheme(
+                  headline5: TextStyle(fontWeight: FontWeight.bold),
+                  headline6: TextStyle(fontWeight: FontWeight.bold),
+                  headline4: TextStyle(fontWeight: FontWeight.bold),
+                  caption: TextStyle(fontSize: 14, color: grey),
+                  subtitle1: TextStyle(fontWeight: FontWeight.bold),
+                  subtitle2: TextStyle(fontWeight: FontWeight.bold),
+                  button: TextStyle(fontWeight: FontWeight.bold),
+                ),
+
                 backgroundColor: darkBlue,
                 // splashFactory: const NoSplashFactory(),
                 splashColor: splashColor,
