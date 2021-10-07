@@ -174,6 +174,7 @@ class ShareBottomSheet extends StatelessWidget {
                             child: const Icon(
                               Icons.ios_share,
                               size: iconSize - 16,
+                              color: Colors.white,
                             ),
                           ),
                           onPressed: () {

@@ -18,7 +18,7 @@ class HomeAppBar extends StatelessWidget {
         ShareButton(),
       ],
       flexibleSpace: Padding(
-        padding: const EdgeInsets.only(left: 32.0, top: 16),
+        padding: const EdgeInsets.only(left: 20.0, top: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

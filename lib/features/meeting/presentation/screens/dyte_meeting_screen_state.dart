@@ -37,7 +37,7 @@ class GetDyteCredsNotifier
       return;
     }
 
-    final dyteInfo = response.getOrElse(() => const DyteMeeting());
+    final dyteInfo = response.getOrElse(() => DyteMeeting());
 
     final _profileScreenState = _DyteMeetingScreenState(
       room: dyteInfo.dyteMeetingDetail?.roomName ?? '',

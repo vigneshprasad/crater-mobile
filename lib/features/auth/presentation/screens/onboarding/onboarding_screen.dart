@@ -11,7 +11,6 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/share_manager/share_manager.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../bloc/auth_bloc.dart';
 import 'models/onboarding_slide_content.dart';
 import 'onboarding_screen_state.dart';
@@ -115,7 +114,7 @@ class OnboardingScreen extends HookWidget {
                 child: SizedBox(
                   height: kbottomBarHeight,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: _buildActionButtons(
                       context,
                       pageController,
@@ -185,7 +184,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(topic: 0),
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
                   predicate: (route) => false);
               AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
             },
@@ -195,7 +194,7 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(topic: 2),
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
                   predicate: (route) => false);
             },
           );
@@ -231,7 +230,7 @@ class _BaseLayout extends StatelessWidget {
           height: MediaQuery.of(context).size.height * kHeaderFraction,
           color: Colors.transparent,
         ),
-        const Expanded(child: BaseContainer()),
+        Expanded(child: Container()),
       ],
     );
   }
@@ -247,13 +246,8 @@ class _PageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 18,
-          color: Colors.white54,
-        );
-    final subheadStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 20,
-        );
+    final headingStyle = Theme.of(context).textTheme.headline6;
+    final subheadStyle = Theme.of(context).textTheme.subtitle1;
     return Column(
       children: [
         SizedBox(
@@ -276,7 +270,7 @@ class _PageContent extends StatelessWidget {
                   style: headingStyle,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
                 Text(
                   content.subHeading,
                   style: subheadStyle,
@@ -305,10 +299,15 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseLargeButton(
-      outlined: isDismiss,
-      onPressed: onTap,
-      text: label,
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: BaseLargeButton(
+          outlined: isDismiss,
+          onPressed: onTap,
+          text: label,
+        ),
+      ),
     );
   }
 }

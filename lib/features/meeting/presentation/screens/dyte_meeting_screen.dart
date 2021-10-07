@@ -16,12 +16,11 @@ class DyteMeetingScreen extends HookWidget {
   Widget build(BuildContext context) {
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
-    return profileState.when(
-      data: (state) => Scaffold(
-          appBar: BaseAppBar(),
-          extendBody: true,
-          extendBodyBehindAppBar: true,
-          body: SizedBox(
+    return Scaffold(
+        appBar: BaseAppBar(),
+        body: profileState.when(
+          data: (state) => ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 200),
             child: DyteMeeting(
               roomName: state.room,
               authToken: state.token,
@@ -31,22 +30,15 @@ class DyteMeetingScreen extends HookWidget {
                 });
               },
             ),
-          )),
-      loading: () => Scaffold(
-        appBar: BaseAppBar(),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              children: const [
-                LinearProgressIndicator(),
-              ],
+          ),
+          loading: () => Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
             ),
           ),
-        ),
-      ),
-      error: (error, stackTrace) => Center(
-        child: Text(error.toString()),
-      ),
-    );
+          error: (error, stackTrace) => Center(
+            child: Text(error.toString()),
+          ),
+        ));
   }
 }

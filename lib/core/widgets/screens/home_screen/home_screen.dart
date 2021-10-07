@@ -2,47 +2,25 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/components/home_tab_bar/home_tab_bar.dart';
 import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
-import 'package:worknetwork/features/profile/presentation/widget/gradient_button.dart';
 
-import '../../../../constants/theme.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
-import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 import '../../../../features/club/presentation/screens/streams/stream_screen.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab.dart';
 import '../../../../features/conversations/presentation/widgets/conversation_calendar_tab/conversation_calendar_tab_state.dart';
 import '../../../../features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import '../../../../routes.gr.dart';
-import '../../../../ui/components/app_drawer/app_drawer.dart';
 import '../../../analytics/analytics.dart';
-import '../../../color/color.dart';
-import '../../base/base_container/base_container.dart';
-import '../../base/base_large_button/base_large_button.dart';
 import 'home_tab_controller_provider.dart';
 
 class HomeScreen extends HookWidget {
   final int? tab;
-  final int? topic;
-
-  static const icons = [
-    Icon(Icons.live_tv),
-    Icon(Icons.people_outline),
-    Icon(Icons.inbox),
-    UserProfileNavItem(),
-  ];
-
-  static const labels = [
-    'Streams',
-    'Network',
-    'My Conv',
-    'Profile',
-  ];
 
   static const analyticsLabels = [
     "all_conversations_tab_viewed",
@@ -51,23 +29,19 @@ class HomeScreen extends HookWidget {
     "profile_tab_viewed",
   ];
 
-  const HomeScreen({
-    @PathParam() this.tab = 0,
-    @PathParam() this.topic = 0,
-  });
+  static const tabCount = 4;
+
+  const HomeScreen({@PathParam() this.tab = 0});
 
   @override
   Widget build(BuildContext context) {
-    // final _scrollController = useProvider(homeScreenScrollController);
     final _tabController =
-        useTabController(initialLength: labels.length, initialIndex: tab ?? 0);
+        useTabController(initialLength: tabCount, initialIndex: tab ?? 0);
 
     final _activeTab = useState(tab ?? 0);
-    final _activeTopic = useState(topic ?? 0);
 
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     final name = user?.name?.split(' ').first ?? '';
-    final email = user?.email;
 
     useEffect(() {
       void _tabChangeListener() {
@@ -92,20 +66,7 @@ class HomeScreen extends HookWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       // drawer: AppDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _tabController.index,
-        selectedFontSize: 12,
-        type: BottomNavigationBarType.fixed,
-        items: [0, 1, 2, 3]
-            .map((index) => BottomNavigationBarItem(
-                  icon: icons[index],
-                  label: labels[index],
-                ))
-            .toList(),
-        onTap: (int index) {
-          _tabController.index = index;
-        },
-      ),
+      bottomNavigationBar: HomeTabBar(tabController: _tabController),
       body: HomeTabControllerProvider(
         controller: _tabController,
         child: TabBarView(
@@ -128,112 +89,6 @@ class HomeScreen extends HookWidget {
     );
   }
 
-  Widget floatingButton(int acticeTab, BuildContext context) {
-    switch (acticeTab) {
-      case 0:
-        return matchMeButton(context);
-      // case 2:
-      //   return earlyAccessButton(context);
-      default:
-        return Container();
-    }
-  }
-
-  FloatingActionButtonLocation floatingButtonLocation(int acticeTab) {
-    switch (acticeTab) {
-      case 2:
-        return FloatingActionButtonLocation.centerFloat;
-      default:
-        return FloatingActionButtonLocation.endFloat;
-    }
-  }
-
-  Container matchMeButton(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            HexColor.fromHex('#3C3B3B'),
-            HexColor.fromHex('#4E4E4E'),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      width: double.infinity,
-      child: Row(
-        children: [
-          const Text(
-            'Crater\nIntelligence',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const Spacer(),
-          GradientButton(
-            title: 'MATCH ME',
-            onPressed: () async {
-              // await showModalBottomSheet(
-              //   elevation: 10,
-              //   backgroundColor: Colors.transparent,
-              //   context: context,
-              //   isDismissible: false,
-              //   enableDrag: false,
-              //   useRootNavigator: false,
-              //   builder: (context) {
-              //     return const ProfileEmailScreen(editMode: true);
-              //   },
-              // );
-              // return;
-              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container earlyAccessButton(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            HexColor.fromHex('#3C3B3B'),
-            HexColor.fromHex('#4E4E4E'),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      width: double.infinity,
-      child: Row(
-        children: [
-          const Text(
-            'For mentors\n& creators',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const Spacer(),
-          GradientButton(
-            title: 'EARLY ACCESS',
-            onPressed: () async {
-              final user = BlocProvider.of<AuthBloc>(context).state.user;
-              final email = user?.email;
-              final url =
-                  'https://worknetwork.typeform.com/to/DXvutVaB#email=$email';
-              await launch(
-                url,
-                customTabsOption: const CustomTabsOption(
-                  enableUrlBarHiding: true,
-                  extraCustomTabs: [],
-                  showPageTitle: false,
-                  enableInstantApps: false,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _navigateToHome(BuildContext context) async {
     final onboarding = ProviderContainer().read(onboardingProvider);
 
@@ -245,81 +100,4 @@ class HomeScreen extends HookWidget {
           predicate: (_) => false);
     }
   }
-}
-
-Future<int?> startConversation(BuildContext context) {
-  return showModalBottomSheet(
-      elevation: 10,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) {
-        return ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-              topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-            ),
-            child: Container(
-              color: Theme.of(context).backgroundColor,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 30,
-                    runSpacing: 30,
-                    children: [
-                      Text(
-                        'Start a conversation',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Text(
-                        'What type of conversation would you like to have?',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      BaseContainer(
-                        child: SizedBox(
-                          width: 80,
-                          height: 80,
-                          child: BaseLargeButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(0);
-                            },
-                            child: const Text('1:1'),
-                          ),
-                        ),
-                      ),
-                      BaseContainer(
-                        child: SizedBox(
-                          width: 80,
-                          height: 80,
-                          child: BaseLargeButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(1);
-                            },
-                            child: const Text('AMA'),
-                          ),
-                        ),
-                      ),
-                      BaseContainer(
-                        child: SizedBox(
-                          width: 80,
-                          height: 80,
-                          child: BaseLargeButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(2);
-                            },
-                            child: const Text(
-                              'Round\nTable',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ));
-      });
 }

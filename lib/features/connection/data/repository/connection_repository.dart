@@ -13,7 +13,7 @@ final connectionRepositoryProvider =
 
 abstract class ConnectionRepository {
   Future<Either<Failure, CreatorResponse>> getCreators({bool certified});
-  Future<Either<Failure, Creator>> getCreator(String id);
+  Future<Either<Failure, Creator>> getCreator(int id);
 }
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
@@ -36,7 +36,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<Either<Failure, Creator>> getCreator(String id) async {
+  Future<Either<Failure, Creator>> getCreator(int id) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorFromRemote(id);

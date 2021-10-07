@@ -11,7 +11,7 @@ final connectionRemoteDatasourceProvider = Provider<ConnectionRemoteDatasource>(
 
 abstract class ConnectionRemoteDatasource {
   Future<CreatorResponse> getCreatorsFromRemote({bool certified});
-  Future<Creator> getCreatorFromRemote(String id);
+  Future<Creator> getCreatorFromRemote(int id);
 }
 
 class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
@@ -35,7 +35,7 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
   }
 
   @override
-  Future<Creator> getCreatorFromRemote(String id) async {
+  Future<Creator> getCreatorFromRemote(int id) async {
     final response = await read(connectionApiServiceProvider).getCreator(id);
     if (response.statusCode == 200) {
       if (response.bodyString == '[]') {

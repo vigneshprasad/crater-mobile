@@ -27,17 +27,17 @@ class FeaturedList extends HookWidget {
       }
     });
     final connectionState = useProvider(featuredConnectionStateProvider(''));
-    return connectionState.when(
-      loading: () => Center(
-          child: CircularProgressIndicator(
-        color: Theme.of(context).accentColor,
-      )),
-      error: (err, st) => Center(
-        child: Text(err.toString()),
-      ),
-      data: (creators) => SizedBox(
-        height: 240,
-        child: ListView.separated(
+    return SizedBox(
+      height: 240,
+      child: connectionState.when(
+        loading: () => Center(
+            child: CircularProgressIndicator(
+          color: Theme.of(context).accentColor,
+        )),
+        error: (err, st) => Center(
+          child: Text(err.toString()),
+        ),
+        data: (creators) => ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(width: 20),
           scrollDirection: Axis.horizontal,
           itemCount: creators.length,
@@ -82,14 +82,16 @@ class CreatorCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BaseNetworkImage(
-                imageUrl: creator.profileDetail?.photo,
-                defaultImage: AppImageAssets.defaultAvatar,
-                imagebuilder: (context, imageProvider) => Image(
-                  image: imageProvider,
-                  width: 140,
-                  height: 180,
-                  fit: BoxFit.cover,
+              SizedBox(
+                width: 140,
+                height: 180,
+                child: BaseNetworkImage(
+                  imageUrl: creator.profileDetail?.photo,
+                  defaultImage: AppImageAssets.defaultAvatar,
+                  imagebuilder: (context, imageProvider) => Image(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: AppInsets.xl),

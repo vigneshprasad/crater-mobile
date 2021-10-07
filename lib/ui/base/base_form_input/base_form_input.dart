@@ -55,7 +55,6 @@ class BaseFormInput extends StatelessWidget {
       validator: validator,
       autofocus: autoFocus,
       onChanged: onChanged,
-      style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
           prefixIcon: icon,
           enabledBorder: const OutlineInputBorder(

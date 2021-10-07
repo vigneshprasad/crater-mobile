@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/features/share_manager/share_manager.dart';
 import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
@@ -27,7 +28,7 @@ class ProfileAppBar extends HookWidget {
   final bool allowEdit;
   final List<String> tabs;
   final BuildContext context;
-  final Profile? profile;
+  final UserProfile? profile;
   final ValueNotifier<int> index;
 
   @override

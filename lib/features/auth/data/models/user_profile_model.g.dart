@@ -53,13 +53,15 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       companyName: fields[33] as String?,
       allowMeetingRequest: fields[34] as bool?,
       canConnect: fields[35] as bool?,
+      generatedIntroduction: fields[36] as String?,
+      linkedIn: fields[37] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(36)
+      ..writeByte(38)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -131,7 +133,11 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(34)
       ..write(obj.allowMeetingRequest)
       ..writeByte(35)
-      ..write(obj.canConnect);
+      ..write(obj.canConnect)
+      ..writeByte(36)
+      ..write(obj.generatedIntroduction)
+      ..writeByte(37)
+      ..write(obj.linkedIn);
   }
 
   @override
@@ -189,6 +195,8 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
     companyName: json['company_name'] as String?,
     allowMeetingRequest: json['allow_meeting_request'] as bool?,
     canConnect: json['can_connect'] as bool?,
+    generatedIntroduction: json['generated_introduction'] as String?,
+    linkedIn: json['linkedin'] as String?,
   );
 }
 
@@ -230,4 +238,6 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'company_name': instance.companyName,
       'allow_meeting_request': instance.allowMeetingRequest,
       'can_connect': instance.canConnect,
+      'generated_introduction': instance.generatedIntroduction,
+      'linkedin': instance.linkedIn,
     };

@@ -19,7 +19,6 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class PhoneScreen extends StatefulWidget {
   final String state;

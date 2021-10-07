@@ -145,6 +145,14 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: "can_connect")
   final bool? canConnect;
 
+  @HiveField(36)
+  @JsonKey(name: 'generated_introduction')
+  final String? generatedIntroduction;
+
+  @HiveField(37)
+  @JsonKey(name: "linkedin")
+  String? linkedIn;
+
   UserProfileModel({
     this.pk,
     this.additionalInformation,
@@ -182,43 +190,48 @@ class UserProfileModel extends UserProfile {
     this.companyName,
     this.allowMeetingRequest,
     this.canConnect,
+    this.generatedIntroduction,
+    this.linkedIn,
   }) : super(
-            pk: pk,
-            additionalInformation: additionalInformation,
-            cover: cover,
-            coverFile: coverFile,
-            coverThumbnail: coverThumbnail,
-            coverTranscoder: coverTranscoder,
-            focus: focus,
-            instagram: instagram,
-            instagramId: instagramId,
-            instagramUsername: instagramUsername,
-            introduction: introduction,
-            isCoverVideo: isCoverVideo,
-            isInstagramSet: isInstagramSet,
-            linkedinUrl: linkedinUrl,
-            name: name,
-            photo: photo,
-            photoUrl: photoUrl,
-            publicIntroduction: publicIntroduction,
-            publicProfile: publicProfile,
-            role: role,
-            tagLine: tagLine,
-            tagList: tagList,
-            uuid: uuid,
-            educationLevel: educationLevel,
-            yearsOfExperience: yearsOfExperience,
-            companyType: companyType,
-            sector: sector,
-            tags: tags,
-            numberOfEmployees: numberOfEmployees,
-            projectType: projectType,
-            stageOfCompany: stageOfCompany,
-            aspiration: aspiration,
-            profileIntroUpdated: profileIntroUpdated,
-            companyName: companyName,
-            allowMeetingRequest: allowMeetingRequest,
-            canConnect: canConnect);
+          pk: pk,
+          additionalInformation: additionalInformation,
+          cover: cover,
+          coverFile: coverFile,
+          coverThumbnail: coverThumbnail,
+          coverTranscoder: coverTranscoder,
+          focus: focus,
+          instagram: instagram,
+          instagramId: instagramId,
+          instagramUsername: instagramUsername,
+          introduction: introduction,
+          isCoverVideo: isCoverVideo,
+          isInstagramSet: isInstagramSet,
+          linkedinUrl: linkedinUrl,
+          name: name,
+          photo: photo,
+          photoUrl: photoUrl,
+          publicIntroduction: publicIntroduction,
+          publicProfile: publicProfile,
+          role: role,
+          tagLine: tagLine,
+          tagList: tagList,
+          uuid: uuid,
+          educationLevel: educationLevel,
+          yearsOfExperience: yearsOfExperience,
+          companyType: companyType,
+          sector: sector,
+          tags: tags,
+          numberOfEmployees: numberOfEmployees,
+          projectType: projectType,
+          stageOfCompany: stageOfCompany,
+          aspiration: aspiration,
+          profileIntroUpdated: profileIntroUpdated,
+          companyName: companyName,
+          allowMeetingRequest: allowMeetingRequest,
+          canConnect: canConnect,
+          generatedIntroduction: generatedIntroduction,
+          linkedIn: linkedIn,
+        );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       _$UserProfileModelFromJson(json);

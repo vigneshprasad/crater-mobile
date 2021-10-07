@@ -10,9 +10,9 @@ import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
-import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 import 'package:worknetwork/features/profile/presentation/widget/interest_list.dart';
 import 'package:worknetwork/features/profile/presentation/widget/objective_list.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
@@ -20,7 +20,7 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import '../../../../../routes.gr.dart';
 
 class AboutTab extends HookWidget {
-  final Profile profile;
+  final UserProfile profile;
   final List<MeetingObjective> objectives;
   final List<MeetingInterest> interests;
   final Map<String, String>? meta;

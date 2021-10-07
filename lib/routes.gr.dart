@@ -88,10 +88,8 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (data) {
           final pathParams = data.pathParams;
           final args = data.argsAs<HomeScreenRouteArgs>(
-              orElse: () => HomeScreenRouteArgs(
-                  tab: pathParams.optInt('tab'),
-                  topic: pathParams.optInt('topic')));
-          return _i4.HomeScreen(tab: args.tab, topic: args.topic);
+              orElse: () => HomeScreenRouteArgs(tab: pathParams.optInt('tab')));
+          return _i4.HomeScreen(tab: args.tab);
         }),
     TopicsTabRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -425,21 +423,19 @@ class SplashScreenRoute extends _i1.PageRouteInfo {
 }
 
 class HomeScreenRoute extends _i1.PageRouteInfo<HomeScreenRouteArgs> {
-  HomeScreenRoute({int? tab, int? topic})
+  HomeScreenRoute({int? tab})
       : super(name,
             path: '/home/:tab?',
-            args: HomeScreenRouteArgs(tab: tab, topic: topic),
-            rawPathParams: {'tab': tab, 'topic': topic});
+            args: HomeScreenRouteArgs(tab: tab),
+            rawPathParams: {'tab': tab});
 
   static const String name = 'HomeScreenRoute';
 }
 
 class HomeScreenRouteArgs {
-  const HomeScreenRouteArgs({this.tab, this.topic});
+  const HomeScreenRouteArgs({this.tab});
 
   final int? tab;
-
-  final int? topic;
 }
 
 class TopicsTabRoute extends _i1.PageRouteInfo<TopicsTabRouteArgs> {

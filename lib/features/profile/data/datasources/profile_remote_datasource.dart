@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/profile_entity/profile_entity.dart';
@@ -14,7 +16,7 @@ final profileRemoteDatasourceProvider =
 
 abstract class ProfileRemoteDatasource {
   /// TODO: PUT COMMENTS
-  Future<Profile> retrieveProfileFromRemote(String profileId);
+  Future<UserProfile> retrieveProfileFromRemote(String profileId);
   Future<List<Profile>> retrieveProfilesFromRemote(
     String tags,
     int page,
@@ -30,11 +32,11 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
   ProfileRemoteImpl(this.apiService);
 
   @override
-  Future<Profile> retrieveProfileFromRemote(String profileId) async {
+  Future<UserProfile> retrieveProfileFromRemote(String profileId) async {
     final response = await apiService.retrieveProfile(profileId);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return Profile.fromJson(json);
+      return UserProfileModel.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

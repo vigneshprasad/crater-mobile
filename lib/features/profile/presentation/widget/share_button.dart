@@ -12,7 +12,7 @@ class ShareButton extends HookWidget {
     return IconButton(
       icon: SvgPicture.asset(
         AppSvgAssets.share,
-        height: 28,
+        height: 24,
       ),
       onPressed: () => shareManager.share(context),
     );

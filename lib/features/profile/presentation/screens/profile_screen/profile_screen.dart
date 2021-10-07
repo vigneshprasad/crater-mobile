@@ -44,8 +44,8 @@ class ProfileScreen extends HookWidget {
                   ProfileStreamsTab(userId),
                   AboutTab(
                     profile: state.profile,
-                    objectives: state.objectives,
-                    interests: state.interests,
+                    objectives: [],
+                    interests: [],
                     meta: state.meta,
                     showLogout: allowEdit,
                   ),

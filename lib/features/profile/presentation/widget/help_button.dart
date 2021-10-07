@@ -8,10 +8,11 @@ class HelpButton extends HookWidget {
   Widget build(BuildContext context) {
     final intercom = context.read(intercomProvider);
     return IconButton(
-      icon: const Icon(Icons.live_help),
-      iconSize: 28,
-      onPressed: () => intercom.show('email!'),
+      icon: const Icon(
+        Icons.help,
+        color: Colors.white,
+      ),
+      onPressed: () => intercom.show(context),
     );
-    ;
   }
 }

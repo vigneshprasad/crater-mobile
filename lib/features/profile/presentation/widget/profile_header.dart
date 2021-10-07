@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
-import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import 'gradient_button.dart';
 
 class ProfileHeader extends HookWidget {
-  final Profile? profile;
+  final UserProfile? profile;
   final bool showConnect;
   final double height;
 
@@ -26,9 +26,9 @@ class ProfileHeader extends HookWidget {
       children: [
         SizedBox(
           height: height,
-          child: (profile?.photo != null)
+          child: (profile?.coverFile != null)
               ? Image.network(
-                  profile?.photo ?? '',
+                  profile?.coverFile ?? '',
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
@@ -112,7 +112,7 @@ class ProfileHeader extends HookWidget {
     );
   }
 
-  Widget _buildImage(Profile? profile, double radius) {
+  Widget _buildImage(UserProfile? profile, double radius) {
     final photo = profile?.photo;
     if (photo != null) {
       return CachedNetworkImage(

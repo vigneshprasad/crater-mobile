@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
-import 'package:worknetwork/core/widgets/base/base_large_button/base_large_button.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -99,13 +98,13 @@ class RootApp extends HookWidget {
             return Theme(
               data: AppTheme.darkTheme.copyWith(
                 textTheme: TextTheme(
-                  headline5: TextStyle(fontWeight: FontWeight.bold),
-                  headline6: TextStyle(fontWeight: FontWeight.bold),
-                  headline4: TextStyle(fontWeight: FontWeight.bold),
+                  headline5: const TextStyle(fontWeight: FontWeight.bold),
+                  headline6: const TextStyle(fontWeight: FontWeight.bold),
+                  headline4: const TextStyle(fontWeight: FontWeight.bold),
                   caption: TextStyle(fontSize: 14, color: grey),
-                  subtitle1: TextStyle(fontWeight: FontWeight.bold),
-                  subtitle2: TextStyle(fontWeight: FontWeight.bold),
-                  button: TextStyle(fontWeight: FontWeight.bold),
+                  // subtitle1: const TextStyle(fontWeight: FontWeight.bold),
+                  subtitle2: const TextStyle(fontWeight: FontWeight.bold),
+                  button: const TextStyle(fontWeight: FontWeight.bold),
                 ),
 
                 backgroundColor: darkBlue,

@@ -4,18 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
-import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
-import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
 import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class StreamTab extends HookWidget {
   @override
@@ -43,45 +37,26 @@ class StreamTab extends HookWidget {
                 itemBuilder: (BuildContext context, int index) {
                   if (index == 0 && streams.liveClubs.isNotEmpty) {
                     return SizedBox(
-                        // height: 300,
+                        height: 280,
                         child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 20.0),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Text(
-                        //         'Featured',
-                        //         style: Theme.of(context).textTheme.headline5,
-                        //       ),
-                        //       const SizedBox(height: 8),
-                        //       Container(
-                        //         height: 2,
-                        //         width: 16,
-                        //         color: Theme.of(context).accentColor,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // const SizedBox(height: AppInsets.xl),
-                        CarouselSlider(
-                          options: CarouselOptions(
-                            height: 280.0,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                          ),
-                          items: streams.liveClubs.map((c) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return LiveGridTile(c);
-                              },
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ));
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                height: 280.0,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: false,
+                              ),
+                              items: streams.liveClubs.map((c) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return LiveGridTile(c);
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ));
                   }
                   final upIndex = index - liveCount;
                   switch (streams.upcomingClubs[upIndex].type) {
@@ -91,13 +66,12 @@ class StreamTab extends HookWidget {
                     default:
                       return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child:
-                              UpcomingGridTile(streams.upcomingClubs[upIndex]));
+                          child: LiveGridTile(streams.upcomingClubs[upIndex]));
                   }
                 },
                 staggeredTileBuilder: (int index) {
                   if (index == 0 && streams.liveClubs.isNotEmpty) {
-                    return const StaggeredTile.count(2, 2);
+                    return const StaggeredTile.count(2, 1.6);
                   }
 
                   final upIndex = index - liveCount;

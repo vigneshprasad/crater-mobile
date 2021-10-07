@@ -266,6 +266,10 @@ class _LoadedConversationTab extends HookWidget {
       }
     }
 
+    if (children.length == 1 && emptyStateAdded == false) {
+      children.add(_EmptyOptinsState());
+      emptyStateAdded = true;
+    }
     // if (children.length == 1) {
     //   children.add(const SliverToBoxAdapter(
     //     child: SizedBox(
@@ -274,12 +278,14 @@ class _LoadedConversationTab extends HookWidget {
     //   ));
     // }
 
-    children.add(SliverFillRemaining(
-      child: Center(
-        child: BaseLargeButton(
-          outlined: true,
-          onPressed: onSchedulePressed,
-          text: 'Schedule New',
+    children.add(SliverToBoxAdapter(
+      child: SizedBox(
+        height: 100,
+        child: Center(
+          child: BaseLargeButton(
+            onPressed: onSchedulePressed,
+            text: 'Schedule New',
+          ),
         ),
       ),
     ));
@@ -325,6 +331,7 @@ class _EmptyOptinsState extends StatelessWidget {
             ),
             const SizedBox(height: AppInsets.xl),
             Text(heading ?? '', style: headingStyle),
+            const SizedBox(height: AppInsets.xl),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Text(

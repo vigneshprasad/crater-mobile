@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+// import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
@@ -26,8 +28,6 @@ import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart'
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
-import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
-import '../../widgets/speakers_table/speakers_table.dart';
 import 'conversation_screen_state.dart';
 
 class ConversationScreen extends HookWidget {
@@ -76,8 +76,10 @@ class ConversationScreen extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: CircularProgressIndicator(
+        color: Theme.of(context).accentColor,
+      ),
     );
   }
 }
@@ -107,6 +109,7 @@ class _ConversationLoaded extends StatelessWidget {
     final topic = conversation.topicDetail;
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
+    final shareText = Uri.encodeQueryComponent(heading ?? '');
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
@@ -152,12 +155,19 @@ class _ConversationLoaded extends StatelessWidget {
                       ),
                     ),
                   const SizedBox(height: AppInsets.xxl),
-                  Text(
-                    'Talking About',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: AppInsets.l),
-                  Text(conversation.topicDetail?.description ?? ''),
+                  if (conversation.topicDetail?.description?.isNotEmpty ??
+                      false)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Talking About',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(height: AppInsets.l),
+                        Text(conversation.topicDetail?.description ?? ''),
+                      ],
+                    ),
                   const Divider(thickness: 1, height: 80),
                   Text(
                     'Let others know',
@@ -170,12 +180,17 @@ class _ConversationLoaded extends StatelessWidget {
                     children: [
                       Flexible(
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final url =
+                                'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
+                            launch(url, forceSafariVC: false);
+                          },
                           child: Row(
                             children: [
                               SvgPicture.asset(
-                                AppSvgAssets.linkedinFilled,
-                                height: 20,
+                                AppSvgAssets.linkedin,
+                                color: Colors.white,
+                                height: 24,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -193,12 +208,17 @@ class _ConversationLoaded extends StatelessWidget {
                       const SizedBox(width: AppInsets.xxl),
                       Flexible(
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final url =
+                                'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
+                            launch(url, forceSafariVC: false);
+                          },
                           child: Row(
                             children: [
                               SvgPicture.asset(
-                                AppSvgAssets.twitter,
-                                height: 20,
+                                AppSvgAssets.twitterBlack,
+                                height: 24,
+                                color: Colors.white,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -220,17 +240,10 @@ class _ConversationLoaded extends StatelessWidget {
                     'About Me',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  if (connection == RtcConnection.disconnected)
-                    _SpeakersListWithIntro(
-                      speakers: speakers,
-                      authUserPk: authUserPK!,
-                    )
-                  else
-                    SpeakersTable(
-                      speakers: speakers,
-                      chairSize: 60,
-                      isLive: connection == RtcConnection.connected,
-                    ),
+                  _SpeakerWithIntro(
+                    user: conversation.hostDetail!,
+                    authUserPk: authUserPK!,
+                  )
                 ],
               ),
             )),
@@ -239,36 +252,56 @@ class _ConversationLoaded extends StatelessWidget {
             color: Theme.of(context).dialogBackgroundColor,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (connection == RtcConnection.disconnected)
-                      if (conversation.isSpeaker!)
-                        BaseLargeButton(
+                    if (conversation.isSpeaker ?? false)
+                      if (conversation.host == authUserPK)
+                        Expanded(
+                            child: BaseLargeButton(
                           onPressed: () {
-                            // context
-                            //     .read(
-                            //         conversationStateProvider(conversation.id!)
-                            //             .notifier)
-                            //     .connectToAudioCall();
                             startDyteMeeting(context);
                           },
                           text: AppLocalizations.of(context)?.translate(
                                   "conversation_screen:go_live_label") ??
                               '',
-                        )
+                        ))
+                      else if (true ||
+                          conversation.start!.isAfter(DateTime.now()
+                              .subtract(const Duration(minutes: 5))))
+                        Expanded(
+                            child: BaseLargeButton(
+                          onPressed: () {
+                            startDyteMeeting(context);
+                          },
+                          text: AppLocalizations.of(context)?.translate(
+                                  "conversation_screen:go_live_label") ??
+                              '',
+                        ))
                       else
-                        BaseLargeButton(
+                        Expanded(
+                          child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: Theme.of(context).accentColor)),
+                              child: Text(
+                                'You will be notified when ${conversation.hostDetail?.name} is live',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.button,
+                              )),
+                        )
+                    else
+                      Expanded(
+                        child: BaseLargeButton(
                             onPressed: () {
                               _requestJoinGroup(context);
                             },
-                            text: 'RSVP for this session')
-                    else
-                      RtcConnectionBar(
-                        table: conversation,
-                        connection: connection,
-                      ),
+                            text: 'RSVP for this session'),
+                      )
                   ],
                 ),
               ),
@@ -397,9 +430,7 @@ class _SpeakerWithIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.email;
-    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 16,
-        );
+    final headingStyle = Theme.of(context).textTheme.subtitle2;
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
@@ -408,6 +439,7 @@ class _SpeakerWithIntro extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BaseNetworkImage(
               imageUrl: user.photo,
@@ -423,10 +455,10 @@ class _SpeakerWithIntro extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(user.name ?? '', style: headingStyle),
-                  const SizedBox(height: AppInsets.l),
+                  const SizedBox(height: AppInsets.sm),
                   Text(
                     description ?? '',
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
                   )
