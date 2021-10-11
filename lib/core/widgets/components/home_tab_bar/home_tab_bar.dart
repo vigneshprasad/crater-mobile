@@ -30,7 +30,7 @@ class HomeTabBar extends StatelessWidget {
       ),
       const BottomNavigationBarItem(
           label: 'Network', icon: Icon(Icons.people_outline)),
-      const BottomNavigationBarItem(label: 'My Conv', icon: Icon(Icons.inbox)),
+      const BottomNavigationBarItem(label: 'My', icon: Icon(Icons.inbox)),
       const BottomNavigationBarItem(
           label: 'Profile', icon: UserProfileNavItem()),
     ];

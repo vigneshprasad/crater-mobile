@@ -30,7 +30,6 @@ class ConnectionTab extends HookWidget {
           )
         ],
         body: RefreshIndicator(
-          displacement: 96.00,
           color: Theme.of(context).accentColor,
           onRefresh: () {
             final futures = [

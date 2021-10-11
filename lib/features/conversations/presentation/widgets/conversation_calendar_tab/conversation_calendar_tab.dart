@@ -279,12 +279,13 @@ class _LoadedConversationTab extends HookWidget {
     // }
 
     children.add(SliverToBoxAdapter(
-      child: SizedBox(
-        height: 100,
-        child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: SizedBox(
+          width: double.infinity,
           child: BaseLargeButton(
             onPressed: onSchedulePressed,
-            text: 'Schedule New',
+            text: 'Network with peers',
           ),
         ),
       ),
@@ -309,36 +310,27 @@ class _LoadedConversationTab extends HookWidget {
 class _EmptyOptinsState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final heading = AppLocalizations.of(context)
-        ?.translate("my_conversations:empty_state_heading");
-    final subheading = AppLocalizations.of(context)
-        ?.translate("my_conversations:empty_state_subeading");
-    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 18.00,
-        );
-    final subheadingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 14.00,
-        );
+    const heading = 'Upcoming conversations';
+    const subheading =
+        'You have no upcoming conversations. At crater you can a curated set of peers for live 1:1 conversations. All you have to do is opt-in';
+    final headingStyle = Theme.of(context).textTheme.headline6;
+    final subheadingStyle = Theme.of(context).textTheme.bodyText2;
     return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 480.00,
+      child: Padding(
+        padding: const EdgeInsets.all(40),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppInsets.xxl),
-            Image(
-              image: AppImageAssets.emptyCalendar,
-              width: MediaQuery.of(context).size.width * 0.8,
+            const Image(
+              image: AppImageAssets.meetingScheduled,
             ),
-            const SizedBox(height: AppInsets.xl),
-            Text(heading ?? '', style: headingStyle),
-            const SizedBox(height: AppInsets.xl),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Text(
-                subheading ?? '',
-                textAlign: TextAlign.center,
-                style: subheadingStyle,
-              ),
+            const SizedBox(height: AppInsets.xxl),
+            Text(heading, style: headingStyle),
+            const SizedBox(height: AppInsets.xxl),
+            Text(
+              subheading,
+              style: subheadingStyle,
             ),
           ],
         ),

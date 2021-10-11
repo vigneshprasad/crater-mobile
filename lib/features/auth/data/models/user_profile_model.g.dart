@@ -55,13 +55,22 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       canConnect: fields[35] as bool?,
       generatedIntroduction: fields[36] as String?,
       linkedIn: fields[37] as String?,
+      educationLevelDetail: fields[38] as UserProfileFieldDetailModel?,
+      companiesInvestedDetail: fields[46] as UserProfileFieldDetailModel?,
+      companyTypeAdvisedDetail: fields[42] as UserProfileFieldDetailModel?,
+      companyTypeDetail: fields[40] as UserProfileFieldDetailModel?,
+      numberOfEmployeesDetail: fields[43] as UserProfileFieldDetailModel?,
+      projectTypeDetail: fields[44] as UserProfileFieldDetailModel?,
+      sectorDetail: fields[39] as UserProfileFieldDetailModel?,
+      stageOfCompanyDetail: fields[45] as UserProfileFieldDetailModel?,
+      yearOfExperienceDetail: fields[41] as UserProfileFieldDetailModel?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(38)
+      ..writeByte(47)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -137,7 +146,25 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(36)
       ..write(obj.generatedIntroduction)
       ..writeByte(37)
-      ..write(obj.linkedIn);
+      ..write(obj.linkedIn)
+      ..writeByte(38)
+      ..write(obj.educationLevelDetail)
+      ..writeByte(39)
+      ..write(obj.sectorDetail)
+      ..writeByte(40)
+      ..write(obj.companyTypeDetail)
+      ..writeByte(41)
+      ..write(obj.yearOfExperienceDetail)
+      ..writeByte(42)
+      ..write(obj.companyTypeAdvisedDetail)
+      ..writeByte(43)
+      ..write(obj.numberOfEmployeesDetail)
+      ..writeByte(44)
+      ..write(obj.projectTypeDetail)
+      ..writeByte(45)
+      ..write(obj.stageOfCompanyDetail)
+      ..writeByte(46)
+      ..write(obj.companiesInvestedDetail);
   }
 
   @override
@@ -197,6 +224,42 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
     canConnect: json['can_connect'] as bool?,
     generatedIntroduction: json['generated_introduction'] as String?,
     linkedIn: json['linkedin'] as String?,
+    educationLevelDetail: json['education_level_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['education_level_detail'] as Map<String, dynamic>),
+    companiesInvestedDetail: json['companies_invested_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['companies_invested_detail'] as Map<String, dynamic>),
+    companyTypeAdvisedDetail: json['company_type_advised_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_advised_detail'] as Map<String, dynamic>),
+    companyTypeDetail: json['company_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_detail'] as Map<String, dynamic>),
+    numberOfEmployeesDetail: json['number_of_employees_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['number_of_employees_detail'] as Map<String, dynamic>),
+    projectTypeDetail: json['project_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['project_type_detail'] as Map<String, dynamic>),
+    sectorDetail: json['sector_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['sector_detail'] as Map<String, dynamic>),
+    stageOfCompanyDetail: json['stage_of_company_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['stage_of_company_detail'] as Map<String, dynamic>),
+    yearOfExperienceDetail: json['year_of_experience_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['year_of_experience_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -240,4 +303,13 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'can_connect': instance.canConnect,
       'generated_introduction': instance.generatedIntroduction,
       'linkedin': instance.linkedIn,
+      'education_level_detail': instance.educationLevelDetail,
+      'sector_detail': instance.sectorDetail,
+      'company_type_detail': instance.companyTypeDetail,
+      'year_of_experience_detail': instance.yearOfExperienceDetail,
+      'company_type_advised_detail': instance.companyTypeAdvisedDetail,
+      'number_of_employees_detail': instance.numberOfEmployeesDetail,
+      'project_type_detail': instance.projectTypeDetail,
+      'stage_of_company_detail': instance.stageOfCompanyDetail,
+      'companies_invested_detail': instance.companiesInvestedDetail,
     };

@@ -1,20 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
 
 import 'gradient_button.dart';
 
 class ProfileHeader extends HookWidget {
   final UserProfile? profile;
+  final Creator? creator;
   final bool showConnect;
   final double height;
 
   const ProfileHeader({
     required this.profile,
+    this.creator,
     required this.showConnect,
     required this.height,
   });
@@ -24,15 +29,20 @@ class ProfileHeader extends HookWidget {
     return Stack(
       alignment: Alignment.topLeft,
       children: [
-        SizedBox(
+        Container(
           height: height,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: (profile?.coverFile != null)
               ? Image.network(
                   profile?.coverFile ?? '',
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
-              : null,
+              : Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
         ),
         Positioned(
           bottom: 50,
@@ -59,22 +69,28 @@ class ProfileHeader extends HookWidget {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              profile?.name ?? '',
-                              style: Theme.of(context).textTheme.headline6,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 200),
+                              child: Text(
+                                profile?.name ?? '',
+                                style: Theme.of(context).textTheme.headline6,
+                                maxLines: 3,
+                              ),
                             ),
                             const SizedBox(width: 8),
-                            // Icon(
-                            //   Icons.check_circle_outlined,
-                            //   color: Theme.of(context).accentColor,
-                            // ),
+                            if (creator != null && creator!.certified == true)
+                              Icon(
+                                Icons.check_circle_outlined,
+                                color: Theme.of(context).accentColor,
+                              ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        // Text(
-                        //   '49,765 Followers',
-                        //   style: Theme.of(context).textTheme.caption,
-                        // ),
+                        if (creator != null)
+                          Text(
+                            '${followerFormat(creator!.followerCount)} Followers',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
                         const SizedBox(height: 8),
                         if (showConnect)
                           Positioned(

@@ -25,69 +25,83 @@ class StreamTab extends HookWidget {
             )
           ];
         },
-        body: clubsProvider.when(
-            loading: () => Container(),
-            error: (e, s) => Container(),
-            data: (streams) {
-              final liveCount = streams.liveClubs.isNotEmpty ? 1 : 0;
-              return StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.all(8),
-                crossAxisCount: 2,
-                itemCount: streams.upcomingClubs.length + liveCount,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0 && streams.liveClubs.isNotEmpty) {
-                    return SizedBox(
-                        height: 280,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            CarouselSlider(
-                              options: CarouselOptions(
-                                height: 280.0,
-                                enlargeCenterPage: true,
-                                enableInfiniteScroll: false,
-                              ),
-                              items: streams.liveClubs.map((c) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return LiveGridTile(c);
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ));
-                  }
-                  final upIndex = index - liveCount;
-                  switch (streams.upcomingClubs[upIndex].type) {
-                    case GridItemType.title:
-                      return UpcomingGridTitleTile(
-                          streams.upcomingClubs[upIndex]);
-                    default:
-                      return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: LiveGridTile(streams.upcomingClubs[upIndex]));
-                  }
-                },
-                staggeredTileBuilder: (int index) {
-                  if (index == 0 && streams.liveClubs.isNotEmpty) {
-                    return const StaggeredTile.count(2, 1.6);
-                  }
+        body: RefreshIndicator(
+          color: Theme.of(context).accentColor,
+          onRefresh: () {
+            final futures = [
+              context.read(streamStateProvider.notifier).getLiveData(),
+              context.read(streamStateProvider.notifier).getFeaturedData(),
+              context.read(streamStateProvider.notifier).getUpcomingData(),
+            ];
 
-                  final upIndex = index - liveCount;
-                  switch (streams.upcomingClubs[upIndex].type) {
-                    case GridItemType.upcoming:
-                      return const StaggeredTile.count(2, 1.5);
-                    case GridItemType.title:
-                      return const StaggeredTile.count(2, 0.3);
-                    default:
-                      return const StaggeredTile.count(2, 1.5);
-                  }
-                },
-                mainAxisSpacing: 40.0,
-                crossAxisSpacing: 40.0,
-              );
-            }),
+            return Future.wait(futures);
+          },
+          child: clubsProvider.when(
+              loading: () => Container(),
+              error: (e, s) => Container(),
+              data: (streams) {
+                final liveCount = streams.liveClubs.isNotEmpty ? 1 : 0;
+                return StaggeredGridView.countBuilder(
+                  padding: const EdgeInsets.all(8),
+                  crossAxisCount: 2,
+                  itemCount: streams.upcomingClubs.length + liveCount,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0 && streams.liveClubs.isNotEmpty) {
+                      return SizedBox(
+                          height: 280,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                  height: 280.0,
+                                  enlargeCenterPage: true,
+                                  enableInfiniteScroll: false,
+                                ),
+                                items: streams.liveClubs.map((c) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return LiveGridTile(c);
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ));
+                    }
+                    final upIndex = index - liveCount;
+                    switch (streams.upcomingClubs[upIndex].type) {
+                      case GridItemType.title:
+                        return UpcomingGridTitleTile(
+                            streams.upcomingClubs[upIndex]);
+                      default:
+                        return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: UpcomingGridTile(
+                                streams.upcomingClubs[upIndex]));
+                    }
+                  },
+                  staggeredTileBuilder: (int index) {
+                    if (index == 0 && streams.liveClubs.isNotEmpty) {
+                      return const StaggeredTile.count(2, 1.6);
+                    }
+
+                    final upIndex = index - liveCount;
+                    switch (streams.upcomingClubs[upIndex].type) {
+                      case GridItemType.upcoming:
+                        return const StaggeredTile.count(2, 1.5);
+                      case GridItemType.title:
+                        return const StaggeredTile.count(2, 0.3);
+                      default:
+                        return const StaggeredTile.count(2, 1.5);
+                    }
+                  },
+                  mainAxisSpacing: 40.0,
+                  crossAxisSpacing: 40.0,
+                );
+              }),
+        ),
       ),
     );
   }

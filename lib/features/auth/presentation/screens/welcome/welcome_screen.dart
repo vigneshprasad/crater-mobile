@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkedin_login/linkedin_login.dart';
+import 'package:video_player/video_player.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -34,6 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late AuthBloc _authBloc;
   late TabController _tabController;
   late int _activeIndex;
+  late VideoPlayerController _controller;
 
   final List<Widget> _tabs = const [
     _ImageSlide(
@@ -78,6 +80,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
     _authBloc = BlocProvider.of<AuthBloc>(context);
+
+    _controller = VideoPlayerController.asset('assets/video/intro.mp4');
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+    _controller.play();
+
     super.initState();
   }
 
@@ -85,6 +97,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void dispose() {
     _tabController.removeListener(_tabChangeListener);
     _tabController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -108,22 +121,71 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             return ScaffoldContainer(
-              child: SafeArea(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    TabBarView(
-                      controller: _tabController,
-                      children: _tabs,
+              child: Stack(
+                // fit: StackFit.passthrough,
+                children: [
+                  SizedBox.expand(
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: SizedBox(
+                        width: _controller.value.size.width,
+                        height: _controller.value.size.height,
+                        child: VideoPlayer(_controller),
+                      ),
                     ),
-                    Positioned(
-                      bottom: 20,
-                      child: _buildViewContent(context),
+                  ),
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 40),
+                          Row(
+                            children: [
+                              const Spacer(),
+                              Text(
+                                'Welcome to',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Crater',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Join interactive live streams with professional creators & mentors, network with like minds & take part in live auctions.',
+                            style: Theme.of(context).textTheme.subtitle2,
+                            textAlign: TextAlign.center,
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: 160,
+                            child: BaseLargeButton(
+                              text: 'Login',
+                              onPressed: () => openBottomSheet(context),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    if (state.isSubmitting != null && state.isSubmitting!)
-                      _buildOverlay(context)
-                  ],
-                ),
+                  ),
+                  // TabBarView(
+                  //   controller: _tabController,
+                  //   children: _tabs,
+                  // ),
+
+                  if (state.isSubmitting != null && state.isSubmitting!)
+                    _buildOverlay(context)
+                ],
               ),
             );
           },
@@ -190,47 +252,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     } else {
       Fluttertoast.showToast(msg: 'Some error occurred');
     }
-  }
-
-  Widget _buildViewContent(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 100,
-      child: Column(
-        children: [
-          _SlideIndicator(
-            length: _tabs.length,
-            activeIndex: _activeIndex,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Flexible(
-                //   flex: 5,
-                //   child: BaseLargeButton(
-                //     text: 'Login',
-                //     onPressed: () => openBottomSheet(context, isSignUp: false),
-                //   ),
-                // ),
-                // Flexible(
-                //   child: Container(),
-                // ),
-                Flexible(
-                  flex: 5,
-                  child: BaseLargeButton(
-                    text: 'Get Started',
-                    onPressed: () => openBottomSheet(context),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void openBottomSheet(BuildContext context, {bool isSignUp = true}) {

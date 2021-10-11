@@ -1,18 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/core/features/share_manager/share_manager.dart';
-import 'package:worknetwork/core/integrations/intercom/intercom_provider.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
-import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/profile/presentation/widget/profile_header.dart';
-import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
 
 import '../../../../../../routes.gr.dart';
 
@@ -23,19 +14,22 @@ class ProfileAppBar extends HookWidget {
     required this.context,
     required this.profile,
     required this.index,
+    this.creator,
   });
 
   final bool allowEdit;
   final List<String> tabs;
   final BuildContext context;
   final UserProfile? profile;
+  final Creator? creator;
   final ValueNotifier<int> index;
 
   @override
   Widget build(BuildContext context) {
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
-    final email = user?.email;
-    const height = 320.0;
+    double height = 320.0;
+    // if (profile?.coverFile == null) {
+    //   height = 200;
+    // }
     const tabHeight = 50.0;
     return SliverAppBar(
       backgroundColor: Theme.of(context).dialogBackgroundColor,
@@ -44,18 +38,13 @@ class ProfileAppBar extends HookWidget {
           background: ProfileHeader(
         height: height - 120,
         profile: profile,
+        creator: creator,
         showConnect: profile?.canConnect ?? false,
       )),
       pinned: true,
       floating: true,
       shadowColor: Colors.grey,
-      // leading: IconButton(
-      //   icon: const Icon(Icons.live_help),
-      //   iconSize: 28,
-      //   onPressed: () => context.read(intercomProvider).show(email!),
-      // ),
       actions: [
-        // if (allowEdit) ShareButton(),
         if (allowEdit)
           IconButton(
             icon: Container(

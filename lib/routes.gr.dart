@@ -353,8 +353,10 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<ProfileScreenRouteArgs>(
               orElse: () => ProfileScreenRouteArgs(
                   userId: pathParams.getString('userId'),
+                  createrId: pathParams.optInt('createrId'),
                   allowEdit: pathParams.getBool('allowEdit')));
-          return _i38.ProfileScreen(args.userId, allowEdit: args.allowEdit);
+          return _i38.ProfileScreen(args.userId,
+              createrId: args.createrId, allowEdit: args.allowEdit);
         })
   };
 
@@ -969,19 +971,28 @@ class NewPasswordScreenRouteArgs {
 }
 
 class ProfileScreenRoute extends _i1.PageRouteInfo<ProfileScreenRouteArgs> {
-  ProfileScreenRoute({required String userId, required bool allowEdit})
+  ProfileScreenRoute(
+      {required String userId, int? createrId, required bool allowEdit})
       : super(name,
             path: '/profile-detail/:userId/:allowEdit',
-            args: ProfileScreenRouteArgs(userId: userId, allowEdit: allowEdit),
-            rawPathParams: {'userId': userId, 'allowEdit': allowEdit});
+            args: ProfileScreenRouteArgs(
+                userId: userId, createrId: createrId, allowEdit: allowEdit),
+            rawPathParams: {
+              'userId': userId,
+              'createrId': createrId,
+              'allowEdit': allowEdit
+            });
 
   static const String name = 'ProfileScreenRoute';
 }
 
 class ProfileScreenRouteArgs {
-  const ProfileScreenRouteArgs({required this.userId, required this.allowEdit});
+  const ProfileScreenRouteArgs(
+      {required this.userId, this.createrId, required this.allowEdit});
 
   final String userId;
+
+  final int? createrId;
 
   final bool allowEdit;
 }

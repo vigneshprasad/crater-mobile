@@ -74,6 +74,7 @@ class AboutTab extends HookWidget {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width: 150,
@@ -83,8 +84,11 @@ class AboutTab extends HookWidget {
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Text(
-                                    e.value,
+                                  Expanded(
+                                    child: Text(
+                                      e.value,
+                                      maxLines: 2,
+                                    ),
                                   ),
                                 ],
                               ),

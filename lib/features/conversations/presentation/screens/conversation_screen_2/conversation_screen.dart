@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
@@ -88,8 +89,9 @@ class _ConversationLoaded extends StatelessWidget {
   final Conversation conversation;
   final List<RtcUser> speakers;
   final RtcConnection connection;
+  OverlayEntry? overlayEntry;
 
-  const _ConversationLoaded({
+  _ConversationLoaded({
     Key? key,
     required this.conversation,
     required this.speakers,
@@ -110,6 +112,14 @@ class _ConversationLoaded extends StatelessWidget {
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
     final shareText = Uri.encodeQueryComponent(heading ?? '');
+
+    final now = DateTime.now().toLocal();
+    const timeBefore = Duration(minutes: 5);
+    final start = conversation.start!.toLocal().subtract(timeBefore);
+    final end = conversation.end!.toLocal();
+
+    final isOngoing = now.isAfter(start) && now.isBefore(end);
+
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
@@ -258,28 +268,27 @@ class _ConversationLoaded extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (conversation.isSpeaker ?? false)
-                      if (conversation.host == authUserPK)
-                        Expanded(
-                            child: BaseLargeButton(
-                          onPressed: () {
-                            startDyteMeeting(context);
-                          },
-                          text: AppLocalizations.of(context)?.translate(
-                                  "conversation_screen:go_live_label") ??
-                              '',
-                        ))
-                      else if (true ||
-                          conversation.start!.isAfter(DateTime.now()
-                              .subtract(const Duration(minutes: 5))))
-                        Expanded(
-                            child: BaseLargeButton(
-                          onPressed: () {
-                            startDyteMeeting(context);
-                          },
-                          text: AppLocalizations.of(context)?.translate(
-                                  "conversation_screen:go_live_label") ??
-                              '',
-                        ))
+                      if (isOngoing)
+                        if (conversation.host == authUserPK)
+                          Expanded(
+                              child: BaseLargeButton(
+                            onPressed: () {
+                              startDyteMeeting(context);
+                            },
+                            text: AppLocalizations.of(context)?.translate(
+                                    "conversation_screen:go_live_label") ??
+                                '',
+                          ))
+                        else
+                          Expanded(
+                              child: BaseLargeButton(
+                            onPressed: () {
+                              startDyteMeeting(context);
+                            },
+                            text: AppLocalizations.of(context)?.translate(
+                                    "conversation_screen:go_live_label") ??
+                                '',
+                          ))
                       else
                         Expanded(
                           child: Container(
@@ -318,12 +327,16 @@ class _ConversationLoaded extends StatelessWidget {
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
+    overlayEntry = buildLoaderOverlay();
     final response = await context
         .read(conversationStateProvider(conversation.id!).notifier)
         .postRequestToJoinGroup();
 
     response.fold(
-      (failure) => Fluttertoast.showToast(msg: failure.message!),
+      (failure) {
+        overlayEntry?.remove();
+        Fluttertoast.showToast(msg: failure.message!);
+      },
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
         analytics.trackEvent(
@@ -343,9 +356,12 @@ class _ConversationLoaded extends StatelessWidget {
 
     response.fold(
       (failure) {
+        overlayEntry?.remove();
         Fluttertoast.showToast(msg: failure.message!);
       },
       (group) async {
+        overlayEntry?.remove();
+
         final now = DateTime.now().toLocal();
         final start = group.start!.toLocal();
         final end = group.end!.toLocal();

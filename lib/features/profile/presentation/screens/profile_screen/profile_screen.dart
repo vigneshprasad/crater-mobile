@@ -12,20 +12,26 @@ import 'profile_screen_state.dart';
 
 class ProfileScreen extends HookWidget {
   final String userId;
+  final int? createrId;
   final bool allowEdit;
 
   const ProfileScreen(
     @PathParam('userId') this.userId, {
+    @PathParam('createrId') this.createrId,
     @PathParam('allowEdit') required this.allowEdit,
   });
 
-  static const tabs = ["Streams", "About", "Club"];
+  static const tabs = ["About", "Streams", "Club"];
 
   @override
   Widget build(BuildContext context) {
     final profileState = useProvider(getProfileNotifierProvider(userId));
 
-    final index = useState(0);
+    useProvider(getProfileNotifierProvider(userId).notifier)
+        .retrieveProfile(creatorId: createrId);
+
+    final index = useState(createrId != null ? 1 : 0);
+
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
@@ -37,18 +43,19 @@ class ProfileScreen extends HookWidget {
                     tabs: tabs,
                     context: context,
                     profile: state.profile,
+                    creator: state.creator,
                     index: index),
               ],
               body: TabBarView(
                 children: [
-                  ProfileStreamsTab(userId),
                   AboutTab(
                     profile: state.profile,
-                    objectives: [],
-                    interests: [],
+                    objectives: const [],
+                    interests: const [],
                     meta: state.meta,
                     showLogout: allowEdit,
                   ),
+                  ProfileStreamsTab(userId),
                   ConnectionList(userId: userId),
                 ],
               ),
@@ -56,6 +63,7 @@ class ProfileScreen extends HookWidget {
       ),
       loading: () => Scaffold(
         body: DefaultTabController(
+            initialIndex: index.value,
             length: tabs.length,
             child: SafeArea(
               bottom: false,
