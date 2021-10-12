@@ -68,12 +68,12 @@ class ArticleCard extends StatelessWidget {
       if (article.websiteUrl == null) return;
       await launch(
         article.websiteUrl!,
-        customTabsOption: CustomTabsOption(
+        option: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          animation: CustomTabsSystemAnimation.slideIn(),
+          // animation: CustomTabsSystemAnimation.slideIn(),
           extraCustomTabs: const <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',

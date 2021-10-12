@@ -13,7 +13,7 @@ class CustomTabImpl implements CustomTabs {
     try {
       await launch(
         link,
-        customTabsOption: const CustomTabsOption(
+        option: const CustomTabsOption(
           toolbarColor: AppTheme.primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,

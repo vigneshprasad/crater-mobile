@@ -17,6 +17,8 @@ class DyteMeetingScreen extends HookWidget {
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
     return Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
         appBar: BaseAppBar(),
         body: profileState.when(
           data: (state) => ConstrainedBox(

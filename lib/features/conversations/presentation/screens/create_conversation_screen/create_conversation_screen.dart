@@ -90,7 +90,7 @@ class CreateConversationScreen extends HookWidget {
                                 showFooter: false,
                                 onTap: () => launch(
                                   topic.articleDetail?.websiteUrl ?? '',
-                                  customTabsOption: const CustomTabsOption(),
+                                  option: const CustomTabsOption(),
                                 ),
                               )
                             else

@@ -195,7 +195,7 @@ class AppDrawer extends StatelessWidget {
     try {
       await launch(
         AppConstants.whatsNewPageLink,
-        customTabsOption: CustomTabsOption(
+        option: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,
