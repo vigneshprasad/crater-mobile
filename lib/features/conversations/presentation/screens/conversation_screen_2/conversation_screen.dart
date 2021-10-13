@@ -299,7 +299,7 @@ class _ConversationLoaded extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (conversation.isSpeaker ?? false)
+                      if (conversation.attendees?.contains(authUserPK) ?? false)
                         if (isOngoing)
                           if (conversation.host == authUserPK)
                             Expanded(
@@ -364,6 +364,8 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _requestJoinGroup(BuildContext context) async {
     overlayEntry = buildLoaderOverlay();
+    Overlay.of(context)?.insert(overlayEntry!);
+
     final response = await context
         .read(conversationStateProvider(conversation.id!).notifier)
         .postRequestToJoinGroup();

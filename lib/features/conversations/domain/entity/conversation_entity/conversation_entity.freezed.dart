@@ -24,6 +24,7 @@ class _$ConversationTearOff {
       {int? id,
       String? host,
       List<String>? speakers,
+      List<String>? attendees,
       int? topic,
       String? description,
       List<int>? interests,
@@ -45,6 +46,8 @@ class _$ConversationTearOff {
           List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list')
+          List<ConversationUser>? attendeesDetailList,
       @JsonKey(name: 'is_speaker')
           bool? isSpeaker,
       @JsonKey(name: 'is_past')
@@ -53,6 +56,7 @@ class _$ConversationTearOff {
       id: id,
       host: host,
       speakers: speakers,
+      attendees: attendees,
       topic: topic,
       description: description,
       interests: interests,
@@ -68,6 +72,7 @@ class _$ConversationTearOff {
       hostDetail: hostDetail,
       interestsDetailList: interestsDetailList,
       speakersDetailList: speakersDetailList,
+      attendeesDetailList: attendeesDetailList,
       isSpeaker: isSpeaker,
       isPast: isPast,
     );
@@ -86,6 +91,7 @@ mixin _$Conversation {
   int? get id => throw _privateConstructorUsedError;
   String? get host => throw _privateConstructorUsedError;
   List<String>? get speakers => throw _privateConstructorUsedError;
+  List<String>? get attendees => throw _privateConstructorUsedError;
   int? get topic => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<int>? get interests => throw _privateConstructorUsedError;
@@ -109,6 +115,9 @@ mixin _$Conversation {
   @JsonKey(name: 'speakers_detail_list')
   List<ConversationUser>? get speakersDetailList =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'attendees_detail_list')
+  List<ConversationUser>? get attendeesDetailList =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: 'is_speaker')
   bool? get isSpeaker => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_past')
@@ -129,6 +138,7 @@ abstract class $ConversationCopyWith<$Res> {
       {int? id,
       String? host,
       List<String>? speakers,
+      List<String>? attendees,
       int? topic,
       String? description,
       List<int>? interests,
@@ -150,6 +160,8 @@ abstract class $ConversationCopyWith<$Res> {
           List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list')
+          List<ConversationUser>? attendeesDetailList,
       @JsonKey(name: 'is_speaker')
           bool? isSpeaker,
       @JsonKey(name: 'is_past')
@@ -172,6 +184,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
     Object? id = freezed,
     Object? host = freezed,
     Object? speakers = freezed,
+    Object? attendees = freezed,
     Object? topic = freezed,
     Object? description = freezed,
     Object? interests = freezed,
@@ -187,6 +200,7 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
     Object? hostDetail = freezed,
     Object? interestsDetailList = freezed,
     Object? speakersDetailList = freezed,
+    Object? attendeesDetailList = freezed,
     Object? isSpeaker = freezed,
     Object? isPast = freezed,
   }) {
@@ -202,6 +216,10 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       speakers: speakers == freezed
           ? _value.speakers
           : speakers // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      attendees: attendees == freezed
+          ? _value.attendees
+          : attendees // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       topic: topic == freezed
           ? _value.topic
@@ -262,6 +280,10 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
       speakersDetailList: speakersDetailList == freezed
           ? _value.speakersDetailList
           : speakersDetailList // ignore: cast_nullable_to_non_nullable
+              as List<ConversationUser>?,
+      attendeesDetailList: attendeesDetailList == freezed
+          ? _value.attendeesDetailList
+          : attendeesDetailList // ignore: cast_nullable_to_non_nullable
               as List<ConversationUser>?,
       isSpeaker: isSpeaker == freezed
           ? _value.isSpeaker
@@ -308,6 +330,7 @@ abstract class _$ConversationCopyWith<$Res>
       {int? id,
       String? host,
       List<String>? speakers,
+      List<String>? attendees,
       int? topic,
       String? description,
       List<int>? interests,
@@ -329,6 +352,8 @@ abstract class _$ConversationCopyWith<$Res>
           List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list')
+          List<ConversationUser>? attendeesDetailList,
       @JsonKey(name: 'is_speaker')
           bool? isSpeaker,
       @JsonKey(name: 'is_past')
@@ -355,6 +380,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
     Object? id = freezed,
     Object? host = freezed,
     Object? speakers = freezed,
+    Object? attendees = freezed,
     Object? topic = freezed,
     Object? description = freezed,
     Object? interests = freezed,
@@ -370,6 +396,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
     Object? hostDetail = freezed,
     Object? interestsDetailList = freezed,
     Object? speakersDetailList = freezed,
+    Object? attendeesDetailList = freezed,
     Object? isSpeaker = freezed,
     Object? isPast = freezed,
   }) {
@@ -385,6 +412,10 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
       speakers: speakers == freezed
           ? _value.speakers
           : speakers // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      attendees: attendees == freezed
+          ? _value.attendees
+          : attendees // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       topic: topic == freezed
           ? _value.topic
@@ -446,6 +477,10 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
           ? _value.speakersDetailList
           : speakersDetailList // ignore: cast_nullable_to_non_nullable
               as List<ConversationUser>?,
+      attendeesDetailList: attendeesDetailList == freezed
+          ? _value.attendeesDetailList
+          : attendeesDetailList // ignore: cast_nullable_to_non_nullable
+              as List<ConversationUser>?,
       isSpeaker: isSpeaker == freezed
           ? _value.isSpeaker
           : isSpeaker // ignore: cast_nullable_to_non_nullable
@@ -465,6 +500,7 @@ class _$_Conversation implements _Conversation {
       {this.id,
       this.host,
       this.speakers,
+      this.attendees,
       this.topic,
       this.description,
       this.interests,
@@ -480,6 +516,7 @@ class _$_Conversation implements _Conversation {
       @JsonKey(name: 'host_detail') this.hostDetail,
       @JsonKey(name: 'interests_detail_list') this.interestsDetailList,
       @JsonKey(name: 'speakers_detail_list') this.speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list') this.attendeesDetailList,
       @JsonKey(name: 'is_speaker') this.isSpeaker,
       @JsonKey(name: 'is_past') this.isPast});
 
@@ -492,6 +529,8 @@ class _$_Conversation implements _Conversation {
   final String? host;
   @override
   final List<String>? speakers;
+  @override
+  final List<String>? attendees;
   @override
   final int? topic;
   @override
@@ -529,6 +568,9 @@ class _$_Conversation implements _Conversation {
   @JsonKey(name: 'speakers_detail_list')
   final List<ConversationUser>? speakersDetailList;
   @override
+  @JsonKey(name: 'attendees_detail_list')
+  final List<ConversationUser>? attendeesDetailList;
+  @override
   @JsonKey(name: 'is_speaker')
   final bool? isSpeaker;
   @override
@@ -537,7 +579,7 @@ class _$_Conversation implements _Conversation {
 
   @override
   String toString() {
-    return 'Conversation(id: $id, host: $host, speakers: $speakers, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, relevancy: $relevancy, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, isSpeaker: $isSpeaker, isPast: $isPast)';
+    return 'Conversation(id: $id, host: $host, speakers: $speakers, attendees: $attendees, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, relevancy: $relevancy, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, attendeesDetailList: $attendeesDetailList, isSpeaker: $isSpeaker, isPast: $isPast)';
   }
 
   @override
@@ -551,6 +593,9 @@ class _$_Conversation implements _Conversation {
             (identical(other.speakers, speakers) ||
                 const DeepCollectionEquality()
                     .equals(other.speakers, speakers)) &&
+            (identical(other.attendees, attendees) ||
+                const DeepCollectionEquality()
+                    .equals(other.attendees, attendees)) &&
             (identical(other.topic, topic) ||
                 const DeepCollectionEquality().equals(other.topic, topic)) &&
             (identical(other.description, description) ||
@@ -591,6 +636,9 @@ class _$_Conversation implements _Conversation {
             (identical(other.speakersDetailList, speakersDetailList) ||
                 const DeepCollectionEquality()
                     .equals(other.speakersDetailList, speakersDetailList)) &&
+            (identical(other.attendeesDetailList, attendeesDetailList) ||
+                const DeepCollectionEquality()
+                    .equals(other.attendeesDetailList, attendeesDetailList)) &&
             (identical(other.isSpeaker, isSpeaker) ||
                 const DeepCollectionEquality()
                     .equals(other.isSpeaker, isSpeaker)) &&
@@ -604,6 +652,7 @@ class _$_Conversation implements _Conversation {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(host) ^
       const DeepCollectionEquality().hash(speakers) ^
+      const DeepCollectionEquality().hash(attendees) ^
       const DeepCollectionEquality().hash(topic) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(interests) ^
@@ -619,6 +668,7 @@ class _$_Conversation implements _Conversation {
       const DeepCollectionEquality().hash(hostDetail) ^
       const DeepCollectionEquality().hash(interestsDetailList) ^
       const DeepCollectionEquality().hash(speakersDetailList) ^
+      const DeepCollectionEquality().hash(attendeesDetailList) ^
       const DeepCollectionEquality().hash(isSpeaker) ^
       const DeepCollectionEquality().hash(isPast);
 
@@ -638,6 +688,7 @@ abstract class _Conversation implements Conversation {
       {int? id,
       String? host,
       List<String>? speakers,
+      List<String>? attendees,
       int? topic,
       String? description,
       List<int>? interests,
@@ -659,6 +710,8 @@ abstract class _Conversation implements Conversation {
           List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list')
+          List<ConversationUser>? attendeesDetailList,
       @JsonKey(name: 'is_speaker')
           bool? isSpeaker,
       @JsonKey(name: 'is_past')
@@ -673,6 +726,8 @@ abstract class _Conversation implements Conversation {
   String? get host => throw _privateConstructorUsedError;
   @override
   List<String>? get speakers => throw _privateConstructorUsedError;
+  @override
+  List<String>? get attendees => throw _privateConstructorUsedError;
   @override
   int? get topic => throw _privateConstructorUsedError;
   @override
@@ -710,6 +765,10 @@ abstract class _Conversation implements Conversation {
   @override
   @JsonKey(name: 'speakers_detail_list')
   List<ConversationUser>? get speakersDetailList =>
+      throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'attendees_detail_list')
+  List<ConversationUser>? get attendeesDetailList =>
       throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'is_speaker')

@@ -12,6 +12,8 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
     host: json['host'] as String?,
     speakers:
         (json['speakers'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    attendees:
+        (json['attendees'] as List<dynamic>?)?.map((e) => e as String).toList(),
     topic: json['topic'] as int?,
     description: json['description'] as String?,
     interests:
@@ -41,6 +43,9 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
     speakersDetailList: (json['speakers_detail_list'] as List<dynamic>?)
         ?.map((e) => ConversationUser.fromJson(e as Map<String, dynamic>))
         .toList(),
+    attendeesDetailList: (json['attendees_detail_list'] as List<dynamic>?)
+        ?.map((e) => ConversationUser.fromJson(e as Map<String, dynamic>))
+        .toList(),
     isSpeaker: json['is_speaker'] as bool?,
     isPast: json['is_past'] as bool?,
   );
@@ -51,6 +56,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'id': instance.id,
       'host': instance.host,
       'speakers': instance.speakers,
+      'attendees': instance.attendees,
       'topic': instance.topic,
       'description': instance.description,
       'interests': instance.interests,
@@ -66,6 +72,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'host_detail': instance.hostDetail,
       'interests_detail_list': instance.interestsDetailList,
       'speakers_detail_list': instance.speakersDetailList,
+      'attendees_detail_list': instance.attendeesDetailList,
       'is_speaker': instance.isSpeaker,
       'is_past': instance.isPast,
     };

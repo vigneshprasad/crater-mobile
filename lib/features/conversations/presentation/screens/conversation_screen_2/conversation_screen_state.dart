@@ -73,7 +73,11 @@ class ConversationState extends StateNotifier<ApiResult<Conversation>> {
   }
 
   Future<Either<Failure, ConversationRequest>> postRequestToJoinGroup() async {
-    final request = ConversationRequest(group: _groupId);
+    final request = ConversationRequest(
+      group: _groupId,
+      participantType: ParticpantType.attendee,
+      status: RequestStatus.accepted,
+    );
     final response = await read(conversationRepositoryProvider)
         .postRequestToJoinGroup(request);
 
