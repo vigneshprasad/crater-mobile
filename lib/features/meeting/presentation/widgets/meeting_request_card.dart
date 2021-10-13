@@ -2,6 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/color/color.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_model.dart';
+import 'package:worknetwork/features/meeting/data/models/meeting_request_model.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
@@ -30,8 +33,22 @@ class MeetingRequestCard extends StatelessWidget {
 
     BoxBorder _border;
     final background = Theme.of(context).backgroundColor;
+
+    Color borderColor = Colors.white;
+    switch (meeting.status) {
+      case MeetingRequestStatus.confirmed:
+        borderColor = HexColor.fromHex("#9146FF");
+        break;
+      case MeetingRequestStatus.pendingApproval:
+        borderColor = HexColor.fromHex("#FFCA5F");
+        break;
+      case MeetingRequestStatus.declined:
+        borderColor = HexColor.fromHex("#FC6675");
+        break;
+      default:
+    }
     _border = Border.all(
-      color: isRequester ? Colors.orange : Theme.of(context).primaryColor,
+      color: borderColor,
       width: 2.00,
     );
 

@@ -133,6 +133,38 @@ flutter:
     - family: WorkNetIcons
       fonts:
         - asset: assets/icons/WorkNetIcons.ttf
+    - family: Roobert
+      fonts:
+        - asset: assets/fonts/Roobert/Roobert-Light.otf
+          weight: 300
+        - asset: assets/fonts/Roobert/Roobert-LightItalic.otf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/Roobert/Roobert-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Roobert/Roobert-RegularItalic.otf
+          style: italic
+          weight: 400
+        - asset: assets/fonts/Roobert/Roobert-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Roobert/Roobert-MediumItalic.otf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Roobert/Roobert-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Roobert/Roobert-SemiBoldItalic.otf
+          style: italic
+          weight: 600
+        - asset: assets/fonts/Roobert/Roobert-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Roobert/Roobert-BoldItalic.otf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/Roobert/Roobert-Heavy.otf
+          weight: 900
+        - asset: assets/fonts/Roobert/Roobert-HeavyItalic.otf
+          style: italic
+          weight: 900
     - family: Aeonik
       fonts:
         - asset: assets/fonts/Aeonik-Air.ttf

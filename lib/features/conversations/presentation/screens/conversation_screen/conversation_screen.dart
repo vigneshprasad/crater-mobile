@@ -146,8 +146,8 @@ class _RoundTableLoaded extends HookWidget {
                   ),
                   ConversationCard(
                     conversation: table,
-                    hideFooter: true,
-                    onCardPressed: (_) {},
+                    // hideFooter: true,
+                    // onCardPressed: (_) {},
                   ),
                   const SizedBox(height: AppInsets.l),
                   if (table.topicDetail!.articleDetail == null)

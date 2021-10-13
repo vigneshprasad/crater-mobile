@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 // import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -119,7 +120,7 @@ class _ConversationLoaded extends StatelessWidget {
     final end = conversation.end!.toLocal();
 
     final isOngoing = now.isAfter(start) && now.isBefore(end);
-
+    final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
@@ -129,7 +130,7 @@ class _ConversationLoaded extends StatelessWidget {
         }
         return true;
       },
-      child: Column(
+      child: Stack(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -143,7 +144,7 @@ class _ConversationLoaded extends StatelessWidget {
                     heading ?? '',
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  const SizedBox(height: AppInsets.xxl),
+                  const SizedBox(height: 40),
                   Row(
                     children: [
                       const Icon(Icons.calendar_today),
@@ -174,17 +175,44 @@ class _ConversationLoaded extends StatelessWidget {
                           'Talking About',
                           style: Theme.of(context).textTheme.headline6,
                         ),
-                        const SizedBox(height: AppInsets.l),
+                        const SizedBox(height: AppInsets.xxl),
                         Text(conversation.topicDetail?.description ?? ''),
                       ],
                     ),
                   const Divider(thickness: 1, height: 80),
                   Text(
                     'Let others know',
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(height: AppInsets.xxl),
-                  Text('https://crater.club/session/${conversation.id}'),
+                  InkWell(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: link));
+                      Fluttertoast.showToast(msg: 'Copied to clipboard');
+                    },
+                    child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).canvasColor,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(width: 2, color: Colors.white10),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(link),
+                            const Spacer(),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(Icons.copy),
+                            ),
+                          ],
+                        )),
+                  ),
                   const SizedBox(height: AppInsets.xxl),
                   Row(
                     children: [
@@ -253,65 +281,73 @@ class _ConversationLoaded extends StatelessWidget {
                   _SpeakerWithIntro(
                     user: conversation.hostDetail!,
                     authUserPk: authUserPK!,
-                  )
+                  ),
+                  const SizedBox(height: 200)
                 ],
               ),
             )),
           ),
-          Container(
-            color: Theme.of(context).dialogBackgroundColor,
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: SafeArea(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (conversation.isSpeaker ?? false)
-                      if (isOngoing)
-                        if (conversation.host == authUserPK)
-                          Expanded(
-                              child: BaseLargeButton(
-                            onPressed: () {
-                              startDyteMeeting(context);
-                            },
-                            text: AppLocalizations.of(context)?.translate(
-                                    "conversation_screen:go_live_label") ??
-                                '',
-                          ))
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                child: Container(
+                  color: Theme.of(context).backgroundColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (conversation.isSpeaker ?? false)
+                        if (isOngoing)
+                          if (conversation.host == authUserPK)
+                            Expanded(
+                                child: BaseLargeButton(
+                              onPressed: () {
+                                startDyteMeeting(context);
+                              },
+                              text: AppLocalizations.of(context)?.translate(
+                                      "conversation_screen:go_live_label") ??
+                                  '',
+                            ))
+                          else
+                            Expanded(
+                                child: BaseLargeButton(
+                              onPressed: () {
+                                startDyteMeeting(context);
+                              },
+                              text: AppLocalizations.of(context)?.translate(
+                                      "conversation_screen:go_live_label") ??
+                                  '',
+                            ))
                         else
                           Expanded(
-                              child: BaseLargeButton(
-                            onPressed: () {
-                              startDyteMeeting(context);
-                            },
-                            text: AppLocalizations.of(context)?.translate(
-                                    "conversation_screen:go_live_label") ??
-                                '',
-                          ))
+                            child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: Theme.of(context).accentColor,
+                                      width: 2,
+                                    )),
+                                child: Text(
+                                  'You will be notified when ${conversation.hostDetail?.name} is live',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                )),
+                          )
                       else
                         Expanded(
-                          child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                      color: Theme.of(context).accentColor)),
-                              child: Text(
-                                'You will be notified when ${conversation.hostDetail?.name} is live',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.button,
-                              )),
+                          child: BaseLargeButton(
+                              onPressed: () {
+                                _requestJoinGroup(context);
+                              },
+                              text: 'RSVP for this session'),
                         )
-                    else
-                      Expanded(
-                        child: BaseLargeButton(
-                            onPressed: () {
-                              _requestJoinGroup(context);
-                            },
-                            text: 'RSVP for this session'),
-                      )
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

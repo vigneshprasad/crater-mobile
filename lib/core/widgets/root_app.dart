@@ -87,33 +87,40 @@ class RootApp extends HookWidget {
               //   ],
               // builder:
               (context, child) {
-            final lightBlue = HexColor.fromHex('#1F2127');
+            final canvasColor = HexColor.fromHex('#1F2127');
             final borderColor = HexColor.fromHex('#272728');
-            const darkBlue = Colors.black;
+            const backgroundColor = Colors.black;
             final splashColor = HexColor.fromHex('782BE8');
             final grey = HexColor.fromHex('#808190');
-            const black = darkBlue;
             //HexColor.fromHex("#10141C");
             final buttonColor = HexColor.fromHex('#9146FF');
             return Theme(
               data: AppTheme.darkTheme.copyWith(
                 textTheme: TextTheme(
-                  headline5: const TextStyle(fontWeight: FontWeight.bold),
-                  headline6: const TextStyle(fontWeight: FontWeight.bold),
-                  headline4: const TextStyle(fontWeight: FontWeight.bold),
-                  caption: TextStyle(fontSize: 14, color: grey),
+                  headline5: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline6: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline4: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline3: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  caption: TextStyle(
+                      fontSize: 14, color: grey, fontFamily: "Roobert"),
                   // subtitle1: const TextStyle(fontWeight: FontWeight.bold),
-                  subtitle2: const TextStyle(fontWeight: FontWeight.bold),
-                  button: const TextStyle(fontWeight: FontWeight.bold),
+                  subtitle2: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  button: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
                 ),
 
-                backgroundColor: darkBlue,
+                backgroundColor: backgroundColor,
                 // splashFactory: const NoSplashFactory(),
                 splashColor: splashColor,
                 highlightColor: Colors.transparent,
                 primaryColor: buttonColor,
-                scaffoldBackgroundColor: darkBlue,
-                canvasColor: lightBlue,
+                scaffoldBackgroundColor: backgroundColor,
+                canvasColor: canvasColor,
                 outlinedButtonTheme: OutlinedButtonThemeData(
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -136,7 +143,7 @@ class RootApp extends HookWidget {
                 ),
                 appBarTheme: AppBarTheme(
                   iconTheme: IconThemeData(color: buttonColor),
-                  color: black,
+                  color: backgroundColor,
                   elevation: 0,
                   actionsIconTheme: IconThemeData(color: buttonColor),
                 ),
@@ -155,7 +162,7 @@ class RootApp extends HookWidget {
                   indicatorSize: TabBarIndicatorSize.label,
                 ),
                 buttonColor: buttonColor,
-                dialogBackgroundColor: lightBlue,
+                dialogBackgroundColor: canvasColor,
                 floatingActionButtonTheme: FloatingActionButtonThemeData(
                   backgroundColor: buttonColor,
                 ),
