@@ -34,7 +34,7 @@ class LocalStorageImpl implements LocalStorage {
     // Register Adapters
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(UserProfileModelAdapter());
-    Hive.registerAdapter(UserProfileFieldDetailModelAdapter());
+    // Hive.registerAdapter(UserProfileFieldDetailModelAdapter());
     Hive.registerAdapter(UserTagModelAdapter());
     Hive.registerAdapter(PostModelAdapter());
     Hive.registerAdapter(CommentModelAdapter());
@@ -64,8 +64,8 @@ class LocalStorageImpl implements LocalStorage {
     // Open Boxes
     await Hive.openBox<UserModel>(AppHiveBoxes.userModelBox);
     await Hive.openBox<UserProfileModel>(AppHiveBoxes.userProfileModelBox);
-    await Hive.openBox<UserProfileFieldDetailModel>(
-        AppHiveBoxes.userProfileFieldDetailBox);
+    // await Hive.openBox<UserProfileFieldDetailModel>(
+    //     AppHiveBoxes.userProfileFieldDetailBox);
     await Hive.openBox<PostModel>(AppHiveBoxes.postsBox);
     await Hive.openBox<CommentModel>(AppHiveBoxes.commentsBox);
     await Hive.openBox<ChatUserModel>(AppHiveBoxes.chatUserBox);
@@ -85,9 +85,9 @@ class LocalStorageImpl implements LocalStorage {
   Future<void> deleteStorage() async {
     await Hive.box<UserModel>(AppHiveBoxes.userModelBox).clear();
     await Hive.box<UserProfileModel>(AppHiveBoxes.userProfileModelBox).clear();
-    await Hive.box<UserProfileFieldDetailModel>(
-            AppHiveBoxes.userProfileFieldDetailBox)
-        .clear();
+    // await Hive.box<UserProfileFieldDetailModel>(
+    //         AppHiveBoxes.userProfileFieldDetailBox)
+    //     .clear();
     await Hive.box<PostModel>(AppHiveBoxes.postsBox).clear();
     await Hive.box<CommentModel>(AppHiveBoxes.commentsBox).clear();
     await Hive.box<ChatUserModel>(AppHiveBoxes.chatUserBox).clear();

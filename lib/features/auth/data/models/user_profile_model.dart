@@ -154,39 +154,39 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: "linkedin")
   String? linkedIn;
 
-  @HiveField(38)
+  // @HiveField(38)
   @JsonKey(name: 'education_level_detail')
   final UserProfileFieldDetailModel? educationLevelDetail;
 
-  @HiveField(39)
+  // @HiveField(39)
   @JsonKey(name: 'sector_detail')
   final UserProfileFieldDetailModel? sectorDetail;
 
-  @HiveField(40)
+  // @HiveField(40)
   @JsonKey(name: 'company_type_detail')
   final UserProfileFieldDetailModel? companyTypeDetail;
 
-  @HiveField(41)
+  // @HiveField(41)
   @JsonKey(name: 'year_of_experience_detail')
   final UserProfileFieldDetailModel? yearOfExperienceDetail;
 
-  @HiveField(42)
+  // @HiveField(42)
   @JsonKey(name: 'company_type_advised_detail')
   final UserProfileFieldDetailModel? companyTypeAdvisedDetail;
 
-  @HiveField(43)
+  // @HiveField(43)
   @JsonKey(name: 'number_of_employees_detail')
   final UserProfileFieldDetailModel? numberOfEmployeesDetail;
 
-  @HiveField(44)
+  // @HiveField(44)
   @JsonKey(name: 'project_type_detail')
   final UserProfileFieldDetailModel? projectTypeDetail;
 
-  @HiveField(45)
+  // @HiveField(45)
   @JsonKey(name: 'stage_of_company_detail')
   final UserProfileFieldDetailModel? stageOfCompanyDetail;
 
-  @HiveField(46)
+  // @HiveField(46)
   @JsonKey(name: 'companies_invested_detail')
   final UserProfileFieldDetailModel? companiesInvestedDetail;
 

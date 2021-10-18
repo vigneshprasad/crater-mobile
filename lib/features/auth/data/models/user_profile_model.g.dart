@@ -55,22 +55,13 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       canConnect: fields[35] as bool?,
       generatedIntroduction: fields[36] as String?,
       linkedIn: fields[37] as String?,
-      educationLevelDetail: fields[38] as UserProfileFieldDetailModel?,
-      companiesInvestedDetail: fields[46] as UserProfileFieldDetailModel?,
-      companyTypeAdvisedDetail: fields[42] as UserProfileFieldDetailModel?,
-      companyTypeDetail: fields[40] as UserProfileFieldDetailModel?,
-      numberOfEmployeesDetail: fields[43] as UserProfileFieldDetailModel?,
-      projectTypeDetail: fields[44] as UserProfileFieldDetailModel?,
-      sectorDetail: fields[39] as UserProfileFieldDetailModel?,
-      stageOfCompanyDetail: fields[45] as UserProfileFieldDetailModel?,
-      yearOfExperienceDetail: fields[41] as UserProfileFieldDetailModel?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(47)
+      ..writeByte(38)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -146,25 +137,7 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(36)
       ..write(obj.generatedIntroduction)
       ..writeByte(37)
-      ..write(obj.linkedIn)
-      ..writeByte(38)
-      ..write(obj.educationLevelDetail)
-      ..writeByte(39)
-      ..write(obj.sectorDetail)
-      ..writeByte(40)
-      ..write(obj.companyTypeDetail)
-      ..writeByte(41)
-      ..write(obj.yearOfExperienceDetail)
-      ..writeByte(42)
-      ..write(obj.companyTypeAdvisedDetail)
-      ..writeByte(43)
-      ..write(obj.numberOfEmployeesDetail)
-      ..writeByte(44)
-      ..write(obj.projectTypeDetail)
-      ..writeByte(45)
-      ..write(obj.stageOfCompanyDetail)
-      ..writeByte(46)
-      ..write(obj.companiesInvestedDetail);
+      ..write(obj.linkedIn);
   }
 
   @override

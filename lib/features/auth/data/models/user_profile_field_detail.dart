@@ -5,7 +5,7 @@ import 'package:worknetwork/features/auth/domain/entity/user_profile_field_detai
 
 part 'user_profile_field_detail.g.dart';
 
-@HiveType(typeId: AppHiveTypeIds.userProfileFieldDetail)
+// @HiveType(typeId: AppHiveTypeIds.userProfileFieldDetail)
 @JsonSerializable()
 class UserProfileFieldDetailModel extends UserProfileFieldDetail {
   @HiveField(0)
