@@ -132,161 +132,157 @@ class _ConversationLoaded extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppInsets.xl, vertical: AppInsets.l),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    heading ?? '',
-                    style: Theme.of(context).textTheme.headline4,
+          SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppInsets.xl, vertical: AppInsets.l),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  heading ?? '',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  children: [
+                    const Icon(Icons.calendar_today),
+                    const SizedBox(width: 12),
+                    Text(startDateFormat.format(conversation.start!.toLocal()),
+                        style: dateStyle),
+                  ],
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                if (topic?.image != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      topic?.image ?? '',
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  const SizedBox(height: 40),
-                  Row(
+                const SizedBox(height: AppInsets.xxl),
+                if (conversation.topicDetail?.description?.isNotEmpty ?? false)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.calendar_today),
-                      const SizedBox(width: 12),
                       Text(
-                          startDateFormat.format(conversation.start!.toLocal()),
-                          style: dateStyle),
+                        'Talking About',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(height: AppInsets.xxl),
+                      Text(conversation.topicDetail?.description ?? ''),
                     ],
                   ),
-                  const SizedBox(height: AppInsets.xxl),
-                  if (topic?.image != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        topic?.image ?? '',
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                const Divider(thickness: 1, height: 80),
+                Text(
+                  'Let others know',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: link));
+                    Fluttertoast.showToast(msg: 'Copied to clipboard');
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(width: 2, color: Colors.white10),
                       ),
-                    ),
-                  const SizedBox(height: AppInsets.xxl),
-                  if (conversation.topicDetail?.description?.isNotEmpty ??
-                      false)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Talking About',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        const SizedBox(height: AppInsets.xxl),
-                        Text(conversation.topicDetail?.description ?? ''),
-                      ],
-                    ),
-                  const Divider(thickness: 1, height: 80),
-                  Text(
-                    'Let others know',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const SizedBox(height: AppInsets.xxl),
-                  InkWell(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: link));
-                      Fluttertoast.showToast(msg: 'Copied to clipboard');
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(width: 2, color: Colors.white10),
-                        ),
+                      child: Row(
+                        children: [
+                          Text(link),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).backgroundColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.copy),
+                          ),
+                        ],
+                      )),
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          final url =
+                              'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
+                          launch(url, forceSafariVC: false);
+                        },
                         child: Row(
                           children: [
-                            Text(link),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).backgroundColor,
-                                borderRadius: BorderRadius.circular(8),
+                            SvgPicture.asset(
+                              AppSvgAssets.linkedin,
+                              color: Colors.white,
+                              height: 24,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'Share',
+                                textAlign: TextAlign.center,
                               ),
-                              child: const Icon(Icons.copy),
                             ),
                           ],
-                        )),
-                  ),
-                  const SizedBox(height: AppInsets.xxl),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            final url =
-                                'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
-                            launch(url, forceSafariVC: false);
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppSvgAssets.linkedin,
-                                color: Colors.white,
-                                height: 24,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Expanded(
-                                child: Text(
-                                  'Share',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
-                      const SizedBox(width: AppInsets.xxl),
-                      Flexible(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            final url =
-                                'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
-                            launch(url, forceSafariVC: false);
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppSvgAssets.twitterBlack,
-                                height: 24,
-                                color: Colors.white,
+                    ),
+                    const SizedBox(width: AppInsets.xxl),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          final url =
+                              'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
+                          launch(url, forceSafariVC: false);
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppSvgAssets.twitterBlack,
+                              height: 24,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'Tweet',
+                                textAlign: TextAlign.center,
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Expanded(
-                                child: Text(
-                                  'Tweet',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  const Divider(thickness: 1, height: 80),
-                  Text(
-                    'About Me',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  _SpeakerWithIntro(
-                    user: conversation.hostDetail!,
-                    authUserPk: authUserPK!,
-                  ),
-                  const SizedBox(height: 200)
-                ],
-              ),
-            )),
-          ),
+                    ),
+                  ],
+                ),
+                const Divider(thickness: 1, height: 80),
+                Text(
+                  'About Me',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                _SpeakerWithIntro(
+                  user: conversation.hostDetail!,
+                  authUserPk: authUserPK!,
+                ),
+                const SizedBox(height: 200)
+              ],
+            ),
+          )),
           Positioned(
             bottom: 0,
             left: 0,
@@ -446,32 +442,6 @@ class _ConversationLoaded extends StatelessWidget {
   }
 }
 
-class _SpeakersListWithIntro extends StatelessWidget {
-  final List<RtcUser> speakers;
-  final String authUserPk;
-  const _SpeakersListWithIntro({
-    Key? key,
-    required this.speakers,
-    required this.authUserPk,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> children = [];
-
-    for (final speaker in speakers) {
-      children.add(_SpeakerWithIntro(
-        user: speaker.userInfo!,
-        authUserPk: authUserPk,
-      ));
-    }
-
-    return Column(
-      children: children,
-    );
-  }
-}
-
 class _SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
   final String authUserPk;
@@ -504,7 +474,7 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppInsets.xl),
-            Flexible(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

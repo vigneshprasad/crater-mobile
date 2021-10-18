@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
@@ -53,6 +54,8 @@ Future<void> mainCommon(String configPath, String env) async {
       ),
     ),
     (error, stackTrace) async {
+      // To check RELEASE mode issue
+      // Fluttertoast.showToast(msg: 'some exception' + stackTrace.toString());
       await logger.captureException(
         exception: error,
         stackTrace: stackTrace,
@@ -61,6 +64,8 @@ Future<void> mainCommon(String configPath, String env) async {
   );
 
   FlutterError.onError = (details, {bool forceReport = false}) {
+    // To check RELEASE mode issue
+    // Fluttertoast.showToast(msg: 'some error' + details.exceptionAsString());
     logger.captureException(
       exception: details.exception,
       stackTrace: details.stack,

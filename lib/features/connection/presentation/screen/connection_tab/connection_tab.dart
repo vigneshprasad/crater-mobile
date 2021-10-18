@@ -122,44 +122,42 @@ class ConnectionList extends HookWidget {
       error: (err, st) => Center(
         child: Text(err.toString()),
       ),
-      data: (profiles) => Expanded(
-        child: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 100),
-          itemCount: profiles.length +
-              (context.read(connectionStateProvider(userId).notifier).allLoaded
-                  ? 0
-                  : 1),
-          controller: _controller,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == profiles.length) {
-              return Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).accentColor,
-                )),
-              );
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (index == 0)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: UnderlinedText(
-                      'MATCH ME',
-                      bgText: 'CURATED',
-                    ),
-                  ),
-                _Connection(
-                  user: profiles[index],
-                  authUserPk: user?.pk, //TODO: pass auth user pk.
-                  showConnect: false,
-                ),
-              ],
+      data: (profiles) => ListView.builder(
+        padding: const EdgeInsets.only(bottom: 100),
+        itemCount: profiles.length +
+            (context.read(connectionStateProvider(userId).notifier).allLoaded
+                ? 0
+                : 1),
+        controller: _controller,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == profiles.length) {
+            return Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Center(
+                  child: CircularProgressIndicator(
+                color: Theme.of(context).accentColor,
+              )),
             );
-          },
-        ),
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (index == 0)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  child: UnderlinedText(
+                    'MATCH ME',
+                    bgText: 'CURATED',
+                  ),
+                ),
+              _Connection(
+                user: profiles[index],
+                authUserPk: user?.pk, //TODO: pass auth user pk.
+                showConnect: false,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
