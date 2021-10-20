@@ -132,7 +132,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                           });
                         },
                       ),
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 20),
                     if (_showSmsCodeInput)
                       Center(
                         child: Padding(

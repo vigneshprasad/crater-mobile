@@ -208,7 +208,7 @@ class UpcomingGridTile extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   if (item.type == GridItemType.upcoming)
-                    LiveTime(date: item.conversation?.start),
+                    LiveTime(date: item.conversation?.start?.toLocal()),
                   if (item.type == GridItemType.past)
                     const Center(
                       child: Icon(Icons.play_circle, size: 80),
@@ -374,7 +374,7 @@ class LiveGridTile extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       if (item.type == GridItemType.featured)
-                        LiveTime(date: item.conversation?.start),
+                        LiveTime(date: item.conversation?.start?.toLocal()),
                       if (item.type == GridItemType.live)
                         Container(
                           margin: const EdgeInsets.only(top: 8, left: 12),

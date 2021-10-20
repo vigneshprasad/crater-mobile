@@ -19,7 +19,7 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - dyte_client (0.0.1):
-    - DyteSdk
+    - DyteSdk (~> 1.0)
     - Flutter
   - DyteSdk (1.11)
   - FBSDKCoreKit (11.0.1):
@@ -278,7 +278,7 @@ SPEC CHECKSUMS:
   appsflyer_sdk: b5dc59a4f6ec5703c62a85a26da35ea28c571bbe
   AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  dyte_client: bc489239cdde60efba48b5c57ac520fc29b4a665
+  dyte_client: 4ee4d2e9b8dff0f4ae5a6e2fd09a19c7d9ebd062
   DyteSdk: 23a1eccce38d16de2592030113722d80c3aa2c99
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616

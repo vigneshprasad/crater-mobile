@@ -50,7 +50,10 @@ class ProfileStreamsTab extends HookWidget {
                 }),
             const SizedBox(height: 40),
             upcomingProvider.when(
-                loading: () => Container(),
+                loading: () => Center(
+                        child: CircularProgressIndicator(
+                      color: Theme.of(context).accentColor,
+                    )),
                 error: (e, s) => Container(),
                 data: (conversations) {
                   if (conversations.isEmpty) return Container();

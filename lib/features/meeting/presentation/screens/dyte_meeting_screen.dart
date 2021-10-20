@@ -21,8 +21,8 @@ class DyteMeetingScreen extends HookWidget {
         extendBodyBehindAppBar: true,
         appBar: BaseAppBar(),
         body: profileState.when(
-          data: (state) => ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 200),
+          data: (state) => Transform.scale(
+            scale: 0.9,
             child: DyteMeeting(
               roomName: state.room,
               authToken: state.token,

@@ -18,11 +18,12 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppInsets.med),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 48,
+            height: 128,
+            width: 128,
             child: Image.asset(
               logoAsset,
             ),
@@ -40,7 +41,7 @@ class Logo extends StatelessWidget {
       ),
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: getTextChildren(),
       )
     ];
@@ -49,17 +50,18 @@ class Logo extends StatelessWidget {
   List<Widget> getTextChildren() {
     return <Widget>[
       const Text(
-        'Crater',
+        'CRATER',
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.w700,
         ),
       ),
+      const SizedBox(height: 20),
       if (withSubtext)
         const Text(
           'Formerly Worknetwork',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
           ),
         )
     ];

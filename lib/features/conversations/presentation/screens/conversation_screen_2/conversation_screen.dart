@@ -119,7 +119,11 @@ class _ConversationLoaded extends StatelessWidget {
     final start = conversation.start!.toLocal().subtract(timeBefore);
     final end = conversation.end!.toLocal();
 
-    final isOngoing = now.isAfter(start) && now.isBefore(end);
+    final isOngoing =
+        now.isAfter(conversation.start!.toLocal()) && now.isBefore(end);
+
+    final canHost = now.isAfter(start) && now.isBefore(end);
+
     final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
       onWillPop: () async {
@@ -296,27 +300,24 @@ class _ConversationLoaded extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (conversation.attendees?.contains(authUserPK) ?? false)
-                        if (isOngoing)
-                          if (conversation.host == authUserPK)
-                            Expanded(
-                                child: BaseLargeButton(
-                              onPressed: () {
-                                startDyteMeeting(context);
-                              },
-                              text: AppLocalizations.of(context)?.translate(
-                                      "conversation_screen:go_live_label") ??
-                                  '',
-                            ))
-                          else
-                            Expanded(
-                                child: BaseLargeButton(
-                              onPressed: () {
-                                startDyteMeeting(context);
-                              },
-                              text: AppLocalizations.of(context)?.translate(
-                                      "conversation_screen:go_live_label") ??
-                                  '',
-                            ))
+                        if (conversation.host == authUserPK && canHost)
+                          Expanded(
+                              child: BaseLargeButton(
+                            onPressed: () {
+                              startDyteMeeting(context);
+                            },
+                            text: "Go Live",
+                          ))
+                        else if (isOngoing)
+                          Expanded(
+                              child: BaseLargeButton(
+                            onPressed: () {
+                              startDyteMeeting(context);
+                            },
+                            text: AppLocalizations.of(context)?.translate(
+                                    "conversation_screen:go_live_label") ??
+                                '',
+                          ))
                         else
                           Expanded(
                             child: Container(

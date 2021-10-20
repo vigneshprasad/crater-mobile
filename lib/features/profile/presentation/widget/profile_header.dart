@@ -30,81 +30,85 @@ class ProfileHeader extends HookWidget {
       alignment: Alignment.topLeft,
       children: [
         Container(
-          height: height,
           color: Theme.of(context).scaffoldBackgroundColor,
           child: (profile?.coverFile != null)
-              ? Image.network(
-                  profile?.coverFile ?? '',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                )
-              : Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
+              ? Image.network(profile?.coverFile ?? '',
+                  fit: BoxFit.cover, width: double.infinity, height: height)
+              : Image.asset('assets/images/logo.png',
+                  fit: BoxFit.cover, width: double.infinity, height: height),
         ),
         Positioned(
-          bottom: 50,
-          left: 20,
-          child: Column(
-            children: [
-              Row(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            color: Theme.of(context).canvasColor,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 16, bottom: 50),
+              child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).accentColor, width: 2.5),
-                      borderRadius: BorderRadius.circular(56),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _buildImage(profile, 40),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  if (profile != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).accentColor, width: 2.5),
+                          borderRadius: BorderRadius.circular(56),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: _buildImage(profile, 40),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      if (profile != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 200),
-                              child: Text(
-                                profile?.name ?? '',
-                                style: Theme.of(context).textTheme.headline6,
-                                maxLines: 3,
-                              ),
+                            Row(
+                              children: [
+                                ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 200),
+                                  child: Text(
+                                    profile?.name ?? '',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                if (creator != null &&
+                                    creator!.certified == true)
+                                  Icon(
+                                    Icons.check_circle_outlined,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            if (creator != null && creator!.certified == true)
-                              Icon(
-                                Icons.check_circle_outlined,
-                                color: Theme.of(context).accentColor,
+                            const SizedBox(height: 8),
+                            if (creator != null)
+                              Text(
+                                '${followerFormat(creator!.followerCount)} Followers',
+                                style: Theme.of(context).textTheme.caption,
                               ),
+                            const SizedBox(height: 8),
+                            if (showConnect)
+                              Positioned(
+                                  bottom: 50,
+                                  right: 20,
+                                  child: GradientButton(
+                                    onPressed: () => _showTimeSlots(context),
+                                    title: 'JOIN CLUB',
+                                  ))
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        if (creator != null)
-                          Text(
-                            '${followerFormat(creator!.followerCount)} Followers',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                        const SizedBox(height: 8),
-                        if (showConnect)
-                          Positioned(
-                              bottom: 50,
-                              right: 20,
-                              child: GradientButton(
-                                onPressed: () => _showTimeSlots(context),
-                                title: 'JOIN CLUB',
-                              ))
-                      ],
-                    ),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ],

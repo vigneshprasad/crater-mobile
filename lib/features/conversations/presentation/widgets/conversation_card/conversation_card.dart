@@ -57,7 +57,7 @@ class ConversationCard extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     if (type == GridItemType.upcoming)
-                      LiveTime(date: conversation.start),
+                      LiveTime(date: conversation.start?.toLocal()),
                     if (type == GridItemType.past)
                       const Center(
                         child: Icon(Icons.play_circle, size: 80),

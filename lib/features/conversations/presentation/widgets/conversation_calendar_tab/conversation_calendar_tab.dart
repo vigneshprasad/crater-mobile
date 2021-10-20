@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -63,13 +64,16 @@ class ConversationCalendarTab extends HookWidget {
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: const HomeAppBar(title: 'My Conversations'),
+                sliver: const HomeAppBar(title: 'Streams'),
               ),
             ];
           },
           body: DefaultStickyHeaderController(
               child: intialState.when(
-            loading: () => ConversationTabShimmer(),
+            loading: () => Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
+            )),
             data: (results) => _LoadedConversationTab(
               type: type,
               name: name,
@@ -204,30 +208,39 @@ class _LoadedConversationTab extends HookWidget {
       if (week.future != null) {
         /// Add Conversations
         for (final date in week.conversations) {
-          children.addAll([
-            SliverStickyHeader.builder(
-              overlapsContent: true,
-              builder: (context, state) {
-                return _DateLabel(date: date.date);
-              },
-              sliver: SliverPadding(
-                padding: const EdgeInsets.only(
-                  left: kLeftPaddingForDate,
-                  bottom: AppInsets.xl,
-                  top: 60,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return ConversationCard(
-                          conversation: date.conversations![index]);
-                    },
-                    childCount: date.conversations?.length ?? 0,
-                  ),
-                ),
+          children.add(
+            SliverToBoxAdapter(
+              child: SizedBox(
+                  height: 280,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: 280.0,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                        ),
+                        items: date.conversations!.map((c) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return ConversationCard(conversation: c);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  )),
+            ),
+          );
+          children.add(
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.0),
+                child: AccentTitle(title: '1:1 Conversations'),
               ),
             ),
-          ]);
+          );
         }
       } else {
         if (week.optins.isEmpty) {
@@ -292,13 +305,14 @@ class _LoadedConversationTab extends HookWidget {
     ));
 
     return RefreshIndicator(
-      displacement: 96.00,
+      // displacement: 96.00,
       color: Theme.of(context).accentColor,
       onRefresh: () {
-        return controller.getPreviousWeekData();
+        return controller.getInitialData();
       },
       child: CustomScrollView(
         slivers: [
+          const SliverPadding(padding: EdgeInsets.only(bottom: 20.00)),
           ...children,
           const SliverPadding(padding: EdgeInsets.only(bottom: 140.00)),
         ],
