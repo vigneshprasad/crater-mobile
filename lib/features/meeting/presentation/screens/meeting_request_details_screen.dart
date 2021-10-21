@@ -120,8 +120,9 @@ class MeetingRequestDetailScreen extends HookWidget {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
     List<Widget> buttons = [];
     final dateFormat = DateFormat('• hh:mm a, EEEE, d MMMM\n');
-    final timeSlots =
-        meetingRequest.timeSlots?.map((e) => dateFormat.format(e)).join('');
+    final timeSlots = meetingRequest.timeSlots
+        ?.map((e) => dateFormat.format(e.toLocal()))
+        .join('');
     final meetingLabel = 'The meeting is requested at: \n$timeSlots';
 
     final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(

@@ -21,8 +21,7 @@ class DyteMeetingScreen extends HookWidget {
         extendBodyBehindAppBar: true,
         appBar: BaseAppBar(),
         body: profileState.when(
-          data: (state) => Transform.scale(
-            scale: 0.9,
+          data: (state) => SafeArea(
             child: DyteMeeting(
               roomName: state.room,
               authToken: state.token,

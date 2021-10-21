@@ -117,7 +117,9 @@ class _ConversationLoaded extends StatelessWidget {
     final now = DateTime.now().toLocal();
     const timeBefore = Duration(minutes: 5);
     final start = conversation.start!.toLocal().subtract(timeBefore);
-    final end = conversation.end!.toLocal();
+
+    const timeAfter = Duration(minutes: 30);
+    final end = conversation.end!.toLocal().add(timeAfter);
 
     final isOngoing =
         now.isAfter(conversation.start!.toLocal()) && now.isBefore(end);
@@ -402,9 +404,9 @@ class _ConversationLoaded extends StatelessWidget {
         final end = group.end!.toLocal();
 
         if (now.isAfter(start) && now.isBefore(end)) {
-          context
-              .read(conversationStateProvider(conversation.id!).notifier)
-              .connectToAudioCall();
+          // context
+          //     .read(conversationStateProvider(conversation.id!).notifier)
+          //     .connectToAudioCall();
         } else {
           context
               .read(popupManagerProvider)

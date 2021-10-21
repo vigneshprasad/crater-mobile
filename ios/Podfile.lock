@@ -21,7 +21,7 @@ PODS:
   - dyte_client (0.0.1):
     - DyteSdk (~> 1.0)
     - Flutter
-  - DyteSdk (1.11)
+  - DyteSdk (1.13)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
   - FBSDKCoreKit/Core (11.0.1):
@@ -50,7 +50,7 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.7.0):
+  - FirebaseCoreDiagnostics (8.8.0):
     - GoogleDataTransport (~> 9.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
@@ -77,7 +77,7 @@ PODS:
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
-  - GoogleDataTransport (9.1.0):
+  - GoogleDataTransport (9.1.2):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -85,9 +85,9 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/Environment (7.5.2):
+  - GoogleUtilities/Environment (7.6.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.5.2):
+  - GoogleUtilities/Logger (7.6.0):
     - GoogleUtilities/Environment
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
@@ -108,7 +108,7 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - OneSignal (3.8.0)
+  - OneSignal (3.8.1)
   - onesignal_flutter (3.2.3):
     - Flutter
     - OneSignalXCFramework (= 3.7.0)
@@ -279,7 +279,7 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   dyte_client: 4ee4d2e9b8dff0f4ae5a6e2fd09a19c7d9ebd062
-  DyteSdk: 23a1eccce38d16de2592030113722d80c3aa2c99
+  DyteSdk: 61c9a76523fe67e69ea20f6425c8bbccf3d4869f
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
@@ -287,7 +287,7 @@ SPEC CHECKSUMS:
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
   FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
-  FirebaseCoreDiagnostics: b63732f581a1c6a453ec7241f9ab60b3a5bd3450
+  FirebaseCoreDiagnostics: fe77f42da6329d6d83d21fd9d621a6b704413bfc
   FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
@@ -296,9 +296,9 @@ SPEC CHECKSUMS:
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
-  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
+  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
+  GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
@@ -307,7 +307,7 @@ SPEC CHECKSUMS:
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  OneSignal: bb3c8da4467f2b48a89398da5ff107ba70cff06e
+  OneSignal: b44755cd425704bdef8d8912030ed26619446773
   onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
   OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
