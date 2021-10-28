@@ -19,6 +19,7 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class PhoneScreen extends StatefulWidget {
   final String state;
@@ -198,7 +199,11 @@ class _PhoneScreenState extends State<PhoneScreen> {
 
     response.fold((failure) {
       final message = failure as ServerFailure?;
-      final map = jsonDecode(message?.message.toString() ?? '');
+
+      Map? map;
+      try {
+        map = jsonDecode(message?.message.toString() ?? '') as Map?;
+      } catch (e) {}
       final error = map?['otp'] as List<String>?;
 
       _overlay.remove();
@@ -223,8 +228,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
       _overlay.remove();
 
       final _ = BlocProvider.of<AuthBloc>(context)
-        ..add(AuthUserUpdateRecieved(user: user))
-        ..add(AuthUserProfileUpdateRecieved(profile: profile));
+        ..add(AuthCompleted(user: user, profile: profile));
 
       context.read(userLeapProvider).setUserData(user);
 
@@ -237,7 +241,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
       //     "intent": user.intent,
       //   },
       // );
-      // navigatePostAuth(user, profile: profile);
+      navigatePostAuth(user, profile: profile);
     });
   }
 

@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/connection/data/models/creator_response.dart';
-import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
-import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/community_list_state.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../auth/domain/entity/user_tag_entity.dart';
@@ -20,12 +18,12 @@ final tagStateProvider =
     StateNotifierProvider<TagStateNotifier, ApiResult<List<UserTag>>>(
         (ref) => TagStateNotifier(ref.read));
 
-class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
+class ConnectionStateNotifier
+    extends ProfileListStateNotifier<ApiResult<List<Profile>>> {
   final Reader read;
   final pageSize = 10;
   int page = 1;
   late bool loadingPage;
-  bool allLoaded = false;
   late List<Profile> allProfiles;
   final String userId;
 
@@ -36,6 +34,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     getProfileList('');
   }
 
+  @override
   Future<Either<Failure, List<Profile>>> getProfileList(String tags) async {
     page = 1;
     allLoaded = false;
@@ -63,6 +62,7 @@ class ConnectionStateNotifier extends StateNotifier<ApiResult<List<Profile>>> {
     return response;
   }
 
+  @override
   Future<Either<Failure, List<Profile>>?> getNextPageProfileList(
       String tags) async {
     if (loadingPage == true || allLoaded == true) {

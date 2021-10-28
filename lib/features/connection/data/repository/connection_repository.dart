@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
 import 'package:worknetwork/features/connection/data/datasource/connection_remote_datasource.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 
@@ -12,8 +13,11 @@ final connectionRepositoryProvider =
     Provider<ConnectionRepository>((ref) => ConnectionRepositoryImpl(ref.read));
 
 abstract class ConnectionRepository {
-  Future<Either<Failure, CreatorResponse>> getCreators({bool certified});
+  Future<Either<Failure, CreatorResponse>> getCreators(int page,
+      {bool certified});
   Future<Either<Failure, Creator>> getCreator(int id);
+  Future<Either<Failure, List<Profile>>> getCommunityMembers(
+      String community, int page);
 }
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
@@ -22,11 +26,11 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   ConnectionRepositoryImpl(this.read);
 
   @override
-  Future<Either<Failure, CreatorResponse>> getCreators(
+  Future<Either<Failure, CreatorResponse>> getCreators(int page,
       {bool certified = true}) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
-          .getCreatorsFromRemote();
+          .getCreatorsFromRemote(page, certified: certified);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
@@ -40,6 +44,20 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorFromRemote(id);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure('Something went wrong');
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Profile>>> getCommunityMembers(
+      String community, int page) async {
+    try {
+      final response = await read(connectionRemoteDatasourceProvider)
+          .getCommunityMembersFromRemote(community, page);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_about.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_tab.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/community_list.dart';
 import 'package:worknetwork/features/profile/presentation/widget/profile_app_bar.dart';
 
 import 'profile_screen_state.dart';
@@ -56,7 +56,10 @@ class ProfileScreen extends HookWidget {
                     showLogout: allowEdit,
                   ),
                   ProfileStreamsTab(userId),
-                  ConnectionList(userId: userId),
+                  CommunityList(
+                    userId: userId,
+                    // community: state.creator?.defaultCommunity?.id.toString(),
+                  ),
                 ],
               ),
             )),

@@ -22,16 +22,27 @@ class ConnectableList extends HookWidget {
   Widget build(BuildContext context) {
     final requestState =
         useProvider(connectableStateProvider(tag.pk.toString()));
+    final _controller = useScrollController();
+    _controller.addListener(() {
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        context
+            .read(connectableStateProvider(tag.pk.toString()).notifier)
+            .getNextPageConnectableProfileList(tag.pk.toString());
+      }
+    });
     return requestState.when(
         loading: () => Container(),
         error: (err, st) => Container(),
         data: (profiles) => SizedBox(
             height: profiles.isEmpty ? 0 : 280,
             child: ListView.separated(
+                controller: _controller,
                 separatorBuilder: (context, index) => const SizedBox(width: 8),
                 scrollDirection: Axis.horizontal,
                 itemCount: profiles.length,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.only(left: 20, right: 80),
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
                     children: [

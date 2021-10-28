@@ -10,6 +10,7 @@ import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -142,10 +143,13 @@ class AboutTab extends HookWidget {
   }
 
   Future<void> _handleLogout(BuildContext context) async {
-    BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
+    final _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay);
+    // BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
+    _overlay.remove();
     AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
         predicate: (route) => false);
   }

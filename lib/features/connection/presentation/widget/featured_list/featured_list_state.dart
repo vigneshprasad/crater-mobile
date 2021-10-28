@@ -35,7 +35,7 @@ class FeaturedConnectionStateNotifier
     allLoaded = false;
     loadingPage = true;
     state = ApiResult<List<Creator>>.loading();
-    final response = await read(connectionRepositoryProvider).getCreators();
+    final response = await read(connectionRepositoryProvider).getCreators(page);
 
     state = response.fold(
       (failure) {
@@ -64,7 +64,7 @@ class FeaturedConnectionStateNotifier
     }
     loadingPage = true;
     page = page + 1;
-    final response = await read(connectionRepositoryProvider).getCreators();
+    final response = await read(connectionRepositoryProvider).getCreators(page);
 
     state = response.fold(
       (failure) {

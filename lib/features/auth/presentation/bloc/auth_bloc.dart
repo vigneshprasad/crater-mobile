@@ -81,6 +81,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthStateSuccess(user: event.user, profile: state.profile);
     } else if (event is AuthUserProfileUpdateRecieved) {
       yield AuthStateSuccess(user: state.user, profile: event.profile);
+    } else if (event is AuthCompleted) {
+      yield AuthStateSuccess(user: event.user, profile: event.profile);
     }
   }
 

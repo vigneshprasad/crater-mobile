@@ -94,6 +94,19 @@ class AuthUserUpdateRecieved extends AuthEvent {
   List<Object> get props => [user];
 }
 
+class AuthCompleted extends AuthEvent {
+  final User user;
+  final UserProfile profile;
+
+  const AuthCompleted({
+    required this.user,
+    required this.profile,
+  });
+
+  @override
+  List<Object> get props => [user, profile];
+}
+
 class AuthLinkedTokenRecieved extends AuthEvent {
   final String token;
 

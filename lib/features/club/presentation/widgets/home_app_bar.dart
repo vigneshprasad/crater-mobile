@@ -14,7 +14,7 @@ class HomeAppBar extends StatelessWidget {
     return SliverAppBar(
       expandedHeight: 80,
       actions: [
-        HelpButton(),
+        // HelpButton(),
         ShareButton(),
       ],
       flexibleSpace: AccentTitle(title: title),

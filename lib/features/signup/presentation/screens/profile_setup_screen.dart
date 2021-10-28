@@ -141,12 +141,23 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 child: BaseLargeButton(
                   text: 'Copy from LinkedIn',
                   onPressed: () async {
+                    const deepLink = 'linkedin://in/me/detail/contact-info/';
+                    const webLink =
+                        'https://www.linkedin.com/in/me/detail/contact-info/';
                     try {
-                      final _ =
-                          await launch('linkedin://in/me/detail/contact-info/');
+                      if (await canLaunch(deepLink)) {
+                        final _ = await launch(deepLink, forceSafariVC: false);
+                      } else {
+                        await launch(
+                          webLink,
+                          forceSafariVC: false,
+                        );
+                      }
                     } catch (e) {
                       await launch(
-                          'https://www.linkedin.com/in/me/detail/contact-info/');
+                        webLink,
+                        forceSafariVC: false,
+                      );
                     }
                   },
                   outlined: true,

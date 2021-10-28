@@ -42,12 +42,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void listenAuthState(BuildContext context, AuthState state) {
     if (state is AuthStateFailure) {
+      isRedirected = true;
       AutoRouter.of(context).root.popAndPush(const WelcomeScreenRoute());
     }
 
     if (state is AuthStateSuccess && !isRedirected) {
       isRedirected = true;
-      context.read(userLeapProvider).setUserData(state.user!);
+      if (state.user != null) {
+        context.read(userLeapProvider).setUserData(state.user!);
+      }
       navigatePostAuth(state.user, profile: state.profile);
     }
   }

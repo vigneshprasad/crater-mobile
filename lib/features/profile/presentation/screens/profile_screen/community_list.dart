@@ -1,0 +1,191 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab_state.dart';
+import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
+import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+
+import 'community_list_state.dart';
+
+class CommunityList extends HookWidget {
+  final String? tag;
+  final String userId;
+  final String? community;
+
+  const CommunityList({Key? key, this.tag, this.userId = '', this.community})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final user = BlocProvider.of<AuthBloc>(context).state.profile;
+    final _controller = useScrollController();
+    final provider = community != null
+        ? communityStateProvider(community!)
+        : connectionStateProvider(userId);
+    final state = useProvider(provider);
+
+    _controller.addListener(() {
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        context.read(provider.notifier).getNextPageProfileList(tag ?? '');
+      }
+    });
+    return state.when(
+      loading: () => Center(
+          child: CircularProgressIndicator(
+        color: Theme.of(context).accentColor,
+      )),
+      error: (err, st) => Center(
+        child: Text(err.toString()),
+      ),
+      data: (profiles) => profiles.isEmpty
+          ? SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.nature_people,
+                      size: 100, color: Colors.white24),
+                  Text('No one here yet...',
+                      style: Theme.of(context).textTheme.caption)
+                ],
+              ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.only(bottom: 100),
+              itemCount: profiles.length +
+                  (context.read(provider.notifier).allLoaded ? 0 : 1),
+              controller: _controller,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == profiles.length) {
+                  return Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Theme.of(context).accentColor,
+                    )),
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // if (index == 0)
+                    //   const Padding(
+                    //     padding: EdgeInsets.symmetric(vertical: 12.0),
+                    //     child: UnderlinedText(
+                    //       'MATCH ME',
+                    //       bgText: 'CURATED',
+                    //     ),
+                    //   ),
+                    _Connection(
+                      user: profiles[index],
+                      authUserPk: user?.pk, //TODO: pass auth user pk.
+                      showConnect: false,
+                    ),
+                  ],
+                );
+              },
+            ),
+    );
+  }
+}
+
+class _Connection extends StatelessWidget {
+  final Profile user;
+  final int? authUserPk;
+  final bool showConnect;
+  const _Connection({
+    Key? key,
+    required this.user,
+    this.authUserPk,
+    required this.showConnect,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final description = user.introduction ?? user.generatedIntroduction ?? '';
+    final headingStyle = Theme.of(context).textTheme.subtitle1;
+    final bodyStyle = Theme.of(context).textTheme.caption;
+    return InkWell(
+      onTap: () => AutoRouter.of(context).push(
+        ProfileScreenRoute(
+            userId: user.uuid!, allowEdit: authUserPk == user.pk),
+      ),
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          child: Container(
+            decoration: BoxDecoration(
+                // color:
+                //     Theme.of(context).dialogBackgroundColor.withAlpha(50),
+                borderRadius: BorderRadius.circular(20)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 72,
+                  child: BaseNetworkImage(
+                    imageUrl: user.photo,
+                    defaultImage: AppImageAssets.defaultAvatar,
+                    imagebuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundImage: imageProvider,
+                      radius: 36,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppInsets.xl),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.name ?? '', style: headingStyle),
+                      if (description.isNotEmpty)
+                        const SizedBox(height: AppInsets.sm),
+                      if (description.isNotEmpty)
+                        Text(
+                          description,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: bodyStyle,
+                        ),
+                    ],
+                  ),
+                ),
+                if (showConnect == true) const SizedBox(height: AppInsets.xl),
+                if (showConnect == true)
+                  BaseLargeButton(
+                    onPressed: () => _showTimeSlots(context),
+                    text: 'Connect',
+                    outlined: true,
+                  )
+              ],
+            ),
+          )),
+    );
+  }
+
+  Future<void> _showTimeSlots(BuildContext context) async {
+    showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: TimeSlotsScreen(profileId: user.uuid!),
+        );
+      },
+    );
+  }
+}

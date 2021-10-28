@@ -16,6 +16,10 @@ class ConnectableListStateNotifier
   final Reader read;
   final String tag;
   late bool loadingPage;
+  final pageSize = 10;
+  int page = 1;
+  late List<Profile> allProfiles;
+  bool allLoaded = false;
 
   ConnectableListStateNotifier(this.read, this.tag)
       : super(ApiResult<List<Profile>>.loading()) {
@@ -25,16 +29,50 @@ class ConnectableListStateNotifier
   Future<Either<Failure, List<Profile>>> getConnectableProfileList(
       String tags) async {
     state = ApiResult<List<Profile>>.loading();
-
-    final response =
-        await read(profileRepositoryProvider).retrieveProfiles(tags, 1, 5, '');
+    page = 1;
+    allLoaded = false;
+    loadingPage = true;
+    final response = await read(profileRepositoryProvider)
+        .retrieveProfiles(tags, page, pageSize, '');
 
     state = response.fold(
       (failure) {
+        loadingPage = false;
         return ApiResult<List<Profile>>.error(null);
       },
       (profiles) {
-        return ApiResult<List<Profile>>.data(profiles);
+        allProfiles = profiles;
+        loadingPage = false;
+        allLoaded = profiles.isEmpty || profiles.length < pageSize;
+
+        return ApiResult<List<Profile>>.data(allProfiles);
+      },
+    );
+
+    return response;
+  }
+
+  Future<Either<Failure, List<Profile>>?> getNextPageConnectableProfileList(
+      String tags) async {
+    if (loadingPage == true || allLoaded == true) {
+      return null;
+    }
+    loadingPage = true;
+    page = page + 1;
+
+    final response = await read(profileRepositoryProvider)
+        .retrieveProfiles(tags, page, pageSize, '');
+
+    state = response.fold(
+      (failure) {
+        loadingPage = false;
+        return ApiResult<List<Profile>>.error(null);
+      },
+      (profiles) {
+        allProfiles += profiles;
+        loadingPage = false;
+        allLoaded = profiles.isEmpty || profiles.length < pageSize;
+        return ApiResult<List<Profile>>.data(allProfiles);
       },
     );
 
