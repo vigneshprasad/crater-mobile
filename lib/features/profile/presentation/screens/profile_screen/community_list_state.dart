@@ -42,7 +42,7 @@ class CommunityStateNotifier
     loadingPage = true;
     state = ApiResult<List<Profile>>.loading();
     final response = await read(connectionRepositoryProvider)
-        .getCommunityMembers(community, 0);
+        .getCommunityMembers(community, page);
 
     state = response.fold(
       (failure) {
@@ -53,9 +53,6 @@ class CommunityStateNotifier
         allProfiles = profiles;
         loadingPage = false;
         allLoaded = profiles.isEmpty || profiles.length < pageSize;
-        if (community.isNotEmpty) {
-          allLoaded = true;
-        }
         return ApiResult<List<Profile>>.data(allProfiles);
       },
     );
