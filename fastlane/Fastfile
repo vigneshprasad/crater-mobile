@@ -180,6 +180,7 @@ platform :ios do
       output_directory: "./build/ios/flutter-ipa/",
       output_name: "app-preprod.ipa",
       include_symbols: false, # dSYM generation
+      export_xcargs: "-allowProvisioningUpdates",
       export_options: {
         method: "ad-hoc",
       }
