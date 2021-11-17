@@ -58,6 +58,7 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
     final body = {
       "community": community,
       "page": page,
+      'page_size': 10,
     };
     final response =
         await read(connectionApiServiceProvider).getCommunityMembers(body);
@@ -69,11 +70,11 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as List;
 
-      return jsonList.map((communityMember) {
-        final profile =
-            communityMember['profile_detail'] as Map<String, String>;
-        return Profile.fromJson(profile);
+      final list = jsonList.map((communityMember) {
+        final profile = communityMember['profile_detail'] as Map?;
+        return Profile.fromJson(profile as Map<String, dynamic>);
       }).toList();
+      return list;
     } else {
       throw ServerException(response.error);
     }

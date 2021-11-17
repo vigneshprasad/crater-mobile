@@ -58,7 +58,7 @@ class ProfileScreen extends HookWidget {
                   ProfileStreamsTab(userId),
                   CommunityList(
                     userId: userId,
-                    // community: state.creator?.defaultCommunity?.id.toString(),
+                    community: state.creator?.defaultCommunity?.id.toString(),
                   ),
                 ],
               ),

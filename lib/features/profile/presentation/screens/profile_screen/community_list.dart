@@ -132,6 +132,7 @@ class _Connection extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 72,
+                  height: 72,
                   child: BaseNetworkImage(
                     imageUrl: user.photo,
                     defaultImage: AppImageAssets.defaultAvatar,
