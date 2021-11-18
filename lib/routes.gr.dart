@@ -21,25 +21,27 @@ import 'features/auth/presentation/screens/welcome/welcome_screen.dart' as _i7;
 import 'features/chat/presentation/screens/chat_screen.dart' as _i17;
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart'
     as _i18;
+import 'features/club/presentation/screens/past_stream/past_stream_screen.dart'
+    as _i39;
 import 'features/community/presentation/screens/create_post.dart' as _i16;
 import 'features/community/presentation/screens/post_screen.dart' as _i21;
 import 'features/conversations/domain/entity/topic_entity/topic_entity.dart'
-    as _i44;
+    as _i45;
 import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart'
     as _i28;
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_screen.dart'
     as _i29;
 import 'features/conversations/presentation/screens/create_conversation_screen/create_conversation_state.dart'
-    as _i45;
+    as _i46;
 import 'features/conversations/presentation/widgets/topics_list/topics_list.dart'
     as _i6;
 import 'features/conversations/presentation/widgets/topics_tab/topics_tab.dart'
     as _i5;
-import 'features/meeting/domain/entity/meeting_config_entity.dart' as _i39;
-import 'features/meeting/domain/entity/meeting_interest_entity.dart' as _i42;
-import 'features/meeting/domain/entity/meeting_objective_entity.dart' as _i41;
+import 'features/meeting/domain/entity/meeting_config_entity.dart' as _i40;
+import 'features/meeting/domain/entity/meeting_interest_entity.dart' as _i43;
+import 'features/meeting/domain/entity/meeting_objective_entity.dart' as _i42;
 import 'features/meeting/domain/entity/user_meeting_preference_entity.dart'
-    as _i40;
+    as _i41;
 import 'features/meeting/presentation/screens/meeting_details_screen.dart'
     as _i23;
 import 'features/meeting/presentation/screens/meeting_request_details_screen.dart'
@@ -51,7 +53,7 @@ import 'features/notification/presentation/screens/notifications_screen.dart'
 import 'features/points/presentation/screens/points_faq_screen.dart' as _i27;
 import 'features/profile/presentation/screens/profile_screen/profile_screen.dart'
     as _i38;
-import 'features/rewards/domain/entity/package_entity.dart' as _i43;
+import 'features/rewards/domain/entity/package_entity.dart' as _i44;
 import 'features/rewards/presentation/screens/package_detail_screen.dart'
     as _i25;
 import 'features/rewards/presentation/screens/package_purchase_screen.dart'
@@ -357,6 +359,15 @@ class AppRouter extends _i1.RootStackRouter {
                   allowEdit: pathParams.getBool('allowEdit')));
           return _i38.ProfileScreen(args.userId,
               createrId: args.createrId, allowEdit: args.allowEdit);
+        }),
+    PastStreamScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<PastStreamScreenRouteArgs>(
+              orElse: () =>
+                  PastStreamScreenRouteArgs(id: pathParams.optInt('id')));
+          return _i39.PastStreamScreen(id: args.id);
         })
   };
 
@@ -414,7 +425,8 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(NewPasswordScreenRoute.name,
             path: '/new-password/:params?'),
         _i1.RouteConfig(ProfileScreenRoute.name,
-            path: '/profile-detail/:userId/:allowEdit')
+            path: '/profile-detail/:userId/:allowEdit'),
+        _i1.RouteConfig(PastStreamScreenRoute.name, path: '/past-stream/:id')
       ];
 }
 
@@ -661,10 +673,10 @@ class RegisterMeetingScreenRoute
     extends _i1.PageRouteInfo<RegisterMeetingScreenRouteArgs> {
   RegisterMeetingScreenRoute(
       {_i2.Key? key,
-      required _i39.MeetingConfig config,
-      required _i40.UserMeetingPreference preference,
-      required List<_i41.MeetingObjective> objectives,
-      required List<_i42.MeetingInterest> interests})
+      required _i40.MeetingConfig config,
+      required _i41.UserMeetingPreference preference,
+      required List<_i42.MeetingObjective> objectives,
+      required List<_i43.MeetingInterest> interests})
       : super(name,
             path: '/register-meeting',
             args: RegisterMeetingScreenRouteArgs(
@@ -687,13 +699,13 @@ class RegisterMeetingScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i39.MeetingConfig config;
+  final _i40.MeetingConfig config;
 
-  final _i40.UserMeetingPreference preference;
+  final _i41.UserMeetingPreference preference;
 
-  final List<_i41.MeetingObjective> objectives;
+  final List<_i42.MeetingObjective> objectives;
 
-  final List<_i42.MeetingInterest> interests;
+  final List<_i43.MeetingInterest> interests;
 }
 
 class MeetingDetailScreenRoute
@@ -754,7 +766,7 @@ class PackageDetailScreenRouteArgs {
 
 class PackagePurchaseScreenRoute
     extends _i1.PageRouteInfo<PackagePurchaseScreenRouteArgs> {
-  PackagePurchaseScreenRoute({_i2.Key? key, required _i43.Package package})
+  PackagePurchaseScreenRoute({_i2.Key? key, required _i44.Package package})
       : super(name,
             path: '/package-purchase',
             args: PackagePurchaseScreenRouteArgs(key: key, package: package));
@@ -767,7 +779,7 @@ class PackagePurchaseScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i43.Package package;
+  final _i44.Package package;
 }
 
 class PointsFaqScreenRoute extends _i1.PageRouteInfo {
@@ -797,8 +809,8 @@ class CreateConversationScreenRoute
     extends _i1.PageRouteInfo<CreateConversationScreenRouteArgs> {
   CreateConversationScreenRoute(
       {_i2.Key? key,
-      required _i44.Topic topic,
-      required _i45.ConversationType type})
+      required _i45.Topic topic,
+      required _i46.ConversationType type})
       : super(name,
             path: '/create-conversation',
             args: CreateConversationScreenRouteArgs(
@@ -813,9 +825,9 @@ class CreateConversationScreenRouteArgs {
 
   final _i2.Key? key;
 
-  final _i44.Topic topic;
+  final _i45.Topic topic;
 
-  final _i45.ConversationType type;
+  final _i46.ConversationType type;
 }
 
 class ProfileIntroScreenRoute
@@ -995,4 +1007,21 @@ class ProfileScreenRouteArgs {
   final int? createrId;
 
   final bool allowEdit;
+}
+
+class PastStreamScreenRoute
+    extends _i1.PageRouteInfo<PastStreamScreenRouteArgs> {
+  PastStreamScreenRoute({int? id})
+      : super(name,
+            path: '/past-stream/:id',
+            args: PastStreamScreenRouteArgs(id: id),
+            rawPathParams: {'id': id});
+
+  static const String name = 'PastStreamScreenRoute';
+}
+
+class PastStreamScreenRouteArgs {
+  const PastStreamScreenRouteArgs({this.id});
+
+  final int? id;
 }

@@ -48,6 +48,10 @@ _$_Conversation _$_$_ConversationFromJson(Map<String, dynamic> json) {
         .toList(),
     isSpeaker: json['is_speaker'] as bool?,
     isPast: json['is_past'] as bool?,
+    recordingDetails: json['recording_details'] == null
+        ? null
+        : RecordingDetails.fromJson(
+            json['recording_details'] as Map<String, dynamic>),
   );
 }
 
@@ -75,6 +79,7 @@ Map<String, dynamic> _$_$_ConversationToJson(_$_Conversation instance) =>
       'attendees_detail_list': instance.attendeesDetailList,
       'is_speaker': instance.isSpeaker,
       'is_past': instance.isPast,
+      'recording_details': instance.recordingDetails,
     };
 
 K _$enumDecode<K, V>(
@@ -123,6 +128,18 @@ const _$ConversationMediumEnumMap = {
   ConversationMedium.audio: 0,
   ConversationMedium.audioVideo: 1,
 };
+
+_$_RecordingDetails _$_$_RecordingDetailsFromJson(Map<String, dynamic> json) {
+  return _$_RecordingDetails(
+    recording: json['recording'] as String?,
+  );
+}
+
+Map<String, dynamic> _$_$_RecordingDetailsToJson(
+        _$_RecordingDetails instance) =>
+    <String, dynamic>{
+      'recording': instance.recording,
+    };
 
 _$_ConversationUser _$_$_ConversationUserFromJson(Map<String, dynamic> json) {
   return _$_ConversationUser(

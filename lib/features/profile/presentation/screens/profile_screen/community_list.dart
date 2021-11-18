@@ -90,7 +90,7 @@ class CommunityList extends HookWidget {
                     _Connection(
                       user: profiles[index],
                       authUserPk: user?.pk, //TODO: pass auth user pk.
-                      showConnect: false,
+                      showConnect: true,
                     ),
                   ],
                 );

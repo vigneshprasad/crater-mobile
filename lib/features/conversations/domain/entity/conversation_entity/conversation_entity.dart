@@ -48,10 +48,21 @@ abstract class Conversation with _$Conversation {
         List<ConversationUser>? attendeesDetailList,
     @JsonKey(name: 'is_speaker') bool? isSpeaker,
     @JsonKey(name: 'is_past') bool? isPast,
+    @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
   }) = _Conversation;
 
   factory Conversation.fromJson(Map<String, dynamic> json) =>
       _$ConversationFromJson(json);
+}
+
+@freezed
+abstract class RecordingDetails with _$RecordingDetails {
+  factory RecordingDetails({
+    String? recording,
+  }) = _RecordingDetails;
+
+  factory RecordingDetails.fromJson(Map<String, dynamic> json) =>
+      _$RecordingDetailsFromJson(json);
 }
 
 @freezed

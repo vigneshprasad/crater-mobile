@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
+import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
@@ -81,6 +82,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
         path: "/profile-request-settings/:editMode?"),
     AutoRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
     AutoRoute(page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
+    AutoRoute(page: PastStreamScreen, path: "/past-stream/:id"),
   ],
 )
 class $AppRouter {}

@@ -20,6 +20,7 @@ class ProfileStreamsTab extends HookWidget {
     final liveProvider = useProvider(profileLiveStreamsStateProvider(userId));
     final upcomingProvider =
         useProvider(profileUpcomingStreamsStateProvider(userId));
+    final pastProvider = useProvider(profilePastStreamsStateProvider(userId));
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -36,9 +37,12 @@ class ProfileStreamsTab extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const UnderlinedText(
-                            'LIVE',
-                            bgText: 'STREAMS',
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              'Live streams',
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
                           ),
                           const SizedBox(height: AppInsets.xl),
                           SizedBox(
@@ -58,20 +62,70 @@ class ProfileStreamsTab extends HookWidget {
                 data: (conversations) {
                   if (conversations.isEmpty) return Container();
                   return SizedBox(
-                    height: 280,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 280.0,
-                        enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
-                      ),
-                      items: conversations.map((c) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return UpcomingGridTile(c);
-                          },
-                        );
-                      }).toList(),
+                    height: 320,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            'Upcoming streams',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                        const SizedBox(height: AppInsets.xxl),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 280.0,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                          ),
+                          items: conversations.map((c) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return UpcomingGridTile(c);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            const SizedBox(height: 40),
+            pastProvider.when(
+                loading: () => Container(),
+                error: (e, s) => Container(),
+                data: (conversations) {
+                  if (conversations.isEmpty) return Container();
+                  return SizedBox(
+                    height: 320,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            'Past streams',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                        const SizedBox(height: AppInsets.xxl),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 280.0,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                          ),
+                          items: conversations.map((c) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return UpcomingGridTile(c);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   );
                 }),

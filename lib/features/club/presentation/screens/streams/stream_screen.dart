@@ -32,6 +32,7 @@ class StreamTab extends HookWidget {
               context.read(streamStateProvider.notifier).getLiveData(),
               context.read(streamStateProvider.notifier).getFeaturedData(),
               context.read(streamStateProvider.notifier).getUpcomingData(),
+              context.read(streamStateProvider.notifier).getPastData(),
             ];
 
             return Future.wait(futures);
@@ -107,6 +108,34 @@ class StreamTab extends HookWidget {
   }
 }
 
+class SimilarStream extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final clubsProvider = useProvider(streamStateProvider);
+
+    return clubsProvider.when(
+        loading: () => Container(),
+        error: (e, s) => Container(),
+        data: (streams) {
+          return StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.all(8),
+            crossAxisCount: 2,
+            itemCount: streams.pastClubs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: UpcomingGridTile(streams.pastClubs[index]));
+            },
+            staggeredTileBuilder: (int index) {
+              return const StaggeredTile.count(2, 1.5);
+            },
+            mainAxisSpacing: 40.0,
+            crossAxisSpacing: 40.0,
+          );
+        });
+  }
+}
+
 class UpcomingGridTitleTile extends StatelessWidget {
   final UpcomingGridItem item;
   const UpcomingGridTitleTile(
@@ -120,15 +149,24 @@ class UpcomingGridTitleTile extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20.0),
       child: Wrap(
         spacing: 8,
-        children: [
-          Text('Going', style: Theme.of(context).textTheme.headline6),
-          Text('live',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.copyWith(color: Theme.of(context).accentColor)),
-          Text('soon', style: Theme.of(context).textTheme.headline6),
-        ],
+        children: item.title == 'Going Live Soon'
+            ? [
+                Text('Going', style: Theme.of(context).textTheme.headline6),
+                Text('live',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(color: Theme.of(context).accentColor)),
+                Text('soon', style: Theme.of(context).textTheme.headline6),
+              ]
+            : [
+                Text('Past', style: Theme.of(context).textTheme.headline6),
+                Text('Streams',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(color: Theme.of(context).accentColor)),
+              ],
       ),
     );
   }
@@ -177,15 +215,20 @@ class UpcomingGridTile extends StatelessWidget {
     }
     String title = user?.name ?? '';
 
-    if (item.type == GridItemType.upcoming) {
+    if (item.type == GridItemType.upcoming || item.type == GridItemType.past) {
       title = topic?.name ?? '';
       description = user?.name ?? '';
     }
 
     return InkWell(
       onTap: () {
-        AutoRouter.of(context)
-            .push(ConversationScreenRoute(id: conversation.id));
+        if (item.type == GridItemType.upcoming) {
+          AutoRouter.of(context)
+              .push(ConversationScreenRoute(id: conversation.id));
+        } else if (item.type == GridItemType.past) {
+          AutoRouter.of(context)
+              .push(PastStreamScreenRoute(id: conversation.id));
+        }
       },
       borderRadius: BorderRadius.circular(12),
       child: GridTile(

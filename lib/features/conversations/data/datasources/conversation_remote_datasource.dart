@@ -94,6 +94,8 @@ abstract class ConversationRemoteDatasource {
 
   Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
 
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId});
+
   Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId});
 }
 
@@ -327,6 +329,20 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId}) async {
     final response =
         await read(conversationApiServiceProvider).getUpcomingClubs(userId);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getPastClubs(userId);
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList

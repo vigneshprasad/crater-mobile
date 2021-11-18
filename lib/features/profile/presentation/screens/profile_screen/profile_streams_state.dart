@@ -79,3 +79,41 @@ class ProfileUpcomingStateNotifier
     state = ApiResult.data(upcomingClubs);
   }
 }
+
+final profilePastStreamsStateProvider = StateNotifierProvider.family<
+    ProfilePastStateNotifier,
+    ApiResult<List<UpcomingGridItem>>,
+    String>((ref, userId) => ProfilePastStateNotifier(ref.read, userId));
+
+class ProfilePastStateNotifier
+    extends StateNotifier<ApiResult<List<UpcomingGridItem>>> {
+  final Reader read;
+  final String userId;
+
+  List<UpcomingGridItem> liveClubs = [];
+
+  ProfilePastStateNotifier(this.read, this.userId)
+      : super(ApiResult<List<UpcomingGridItem>>.loading()) {
+    getData();
+  }
+
+  Future<void> getData() async {
+    final response =
+        await read(conversationRepositoryProvider).getPastClubs(userId: userId);
+
+    if (response.isLeft()) {
+      throw response.swap().getOrElse(() => ServerFailure());
+    }
+
+    final webinars = response.getOrElse(() => List<Webinar>.empty());
+
+    final upcomingClubs = webinars
+        .map((e) => UpcomingGridItem(
+              conversation: e,
+              type: GridItemType.past,
+            ))
+        .toList();
+
+    state = ApiResult.data(upcomingClubs);
+  }
+}

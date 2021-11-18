@@ -284,6 +284,21 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
+  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId}) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getPastClubsfromRemote(userId: userId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Webinar>>> getFeaturedClubs(
       {String? userId}) async {
     try {
