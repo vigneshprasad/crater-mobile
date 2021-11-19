@@ -124,7 +124,7 @@ class _ConversationLoaded extends StatelessWidget {
     final isOngoing =
         now.isAfter(conversation.start!.toLocal()) && now.isBefore(end);
 
-    final canHost = now.isAfter(start) && now.isBefore(end);
+    final canHost = now.isAfter(start) && now.isBefore(end) || true;
 
     final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(

@@ -26,6 +26,16 @@ class DyteMeetingScreen extends HookWidget {
               roomName: state.room,
               authToken: state.token,
               onInit: (DyteMeetingHandler meeting) async {
+                final config = {
+                  'header': false,
+                  'controlBarElements': {
+                    'plugins': false,
+                    'participants': false,
+                    'chat': false,
+                    'polls': false,
+                  },
+                };
+                meeting.updateUIConfig(config);
                 meeting.events.on('meetingEnd', context, (ev, c) {
                   AutoRouter.of(context).pop();
                 });

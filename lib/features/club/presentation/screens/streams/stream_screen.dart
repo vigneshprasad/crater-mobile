@@ -7,6 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/webinar_screen.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/routes.gr.dart';
@@ -223,8 +224,14 @@ class UpcomingGridTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (item.type == GridItemType.upcoming) {
-          AutoRouter.of(context)
-              .push(ConversationScreenRoute(id: conversation.id));
+          // AutoRouter.of(context)
+          //     .push(ConversationScreenRoute(id: conversation.id));
+
+          final link = 'https://crater.club/session/${conversation.id}';
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => WebinarScreen(
+                    webUrl: link,
+                  )));
         } else if (item.type == GridItemType.past) {
           AutoRouter.of(context)
               .push(PastStreamScreenRoute(id: conversation.id));
@@ -391,8 +398,13 @@ class LiveGridTile extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AutoRouter.of(context)
-            .push(ConversationScreenRoute(id: conversation.id));
+        final link = 'https://crater.club/session/${conversation.id}';
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => WebinarScreen(
+                  webUrl: link,
+                )));
+        // AutoRouter.of(context)
+        //     .push(ConversationScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
       child: ClipRRect(
