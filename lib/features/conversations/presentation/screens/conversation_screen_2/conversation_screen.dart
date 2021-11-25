@@ -118,13 +118,14 @@ class _ConversationLoaded extends StatelessWidget {
     const timeBefore = Duration(minutes: 5);
     final start = conversation.start!.toLocal().subtract(timeBefore);
 
-    const timeAfter = Duration(minutes: 30);
-    final end = conversation.end!.toLocal().add(timeAfter);
+    const timeAfter = Duration(minutes: 60);
+    final end = conversation.start!.toLocal().add(timeAfter);
 
-    final isOngoing =
-        now.isAfter(conversation.start!.toLocal()) && now.isBefore(end);
+    final canJoin = now.isAfter(start) && now.isBefore(end);
 
-    final canHost = now.isAfter(start) && now.isBefore(end) || true;
+    final canHost = conversation.host == authUserPK &&
+        now.isAfter(start) &&
+        now.isBefore(end);
 
     final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
@@ -302,7 +303,7 @@ class _ConversationLoaded extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (conversation.attendees?.contains(authUserPK) ?? false)
-                        if (conversation.host == authUserPK && canHost)
+                        if (canHost) // HOST
                           Expanded(
                               child: BaseLargeButton(
                             onPressed: () {
@@ -310,7 +311,7 @@ class _ConversationLoaded extends StatelessWidget {
                             },
                             text: "Go Live",
                           ))
-                        else if (isOngoing)
+                        else if (canJoin) // AUDIENCE
                           Expanded(
                               child: BaseLargeButton(
                             onPressed: () {

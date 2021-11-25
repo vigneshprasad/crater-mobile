@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -224,14 +225,22 @@ class UpcomingGridTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (item.type == GridItemType.upcoming) {
-          // AutoRouter.of(context)
-          //     .push(ConversationScreenRoute(id: conversation.id));
+          AutoRouter.of(context)
+              .push(ConversationScreenRoute(id: conversation.id));
 
-          final link = 'https://crater.club/session/${conversation.id}';
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => WebinarScreen(
-                    webUrl: link,
-                  )));
+          // final link = 'https://crater.club/session/${conversation.id}';
+
+          // launch(link,
+          //     option: const CustomTabsOption(
+          //         enableDefaultShare: false,
+          //         enableInstantApps: false,
+          //         enableUrlBarHiding: true,
+          //         showPageTitle: false,
+          //         toolbarColor: Colors.black));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => WebinarScreen(
+          //           webUrl: link,
+          //         )));
         } else if (item.type == GridItemType.past) {
           AutoRouter.of(context)
               .push(PastStreamScreenRoute(id: conversation.id));
@@ -398,13 +407,22 @@ class LiveGridTile extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        final link = 'https://crater.club/session/${conversation.id}';
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => WebinarScreen(
-                  webUrl: link,
-                )));
-        // AutoRouter.of(context)
-        //     .push(ConversationScreenRoute(id: conversation.id));
+        // final link =
+        //     'https://penitence-pre-prod.vercel.app/session/${conversation.id}';
+
+        // launch(link,
+        //     option: const CustomTabsOption(
+        //         enableDefaultShare: false,
+        //         enableInstantApps: false,
+        //         enableUrlBarHiding: true,
+        //         showPageTitle: false,
+        //         toolbarColor: Colors.black));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => WebinarScreen(
+        //           webUrl: link,
+        //         )));
+        AutoRouter.of(context)
+            .push(ConversationScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
       child: ClipRRect(

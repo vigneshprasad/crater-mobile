@@ -16,6 +16,26 @@ class DyteMeetingScreen extends HookWidget {
   Widget build(BuildContext context) {
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
+    final meetingHandler = useState<DyteMeetingHandler?>(null);
+
+    const uiConfig = {
+      'header': false,
+      'controlBarElements': {
+        'plugins': false,
+        'participants': false,
+        'chat': false,
+        'polls': false,
+      },
+    };
+
+    useEffect(() {
+      return () {
+        meetingHandler.value?.events.clear();
+        meetingHandler.value?.events.removeAllByEvent('meetingEnd');
+        meetingHandler.dispose();
+      };
+    }, []);
+
     return Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
@@ -25,18 +45,11 @@ class DyteMeetingScreen extends HookWidget {
             child: DyteMeeting(
               roomName: state.room,
               authToken: state.token,
-              onInit: (DyteMeetingHandler meeting) async {
-                final config = {
-                  'header': false,
-                  'controlBarElements': {
-                    'plugins': false,
-                    'participants': false,
-                    'chat': false,
-                    'polls': false,
-                  },
-                };
-                meeting.updateUIConfig(config);
-                meeting.events.on('meetingEnd', context, (ev, c) {
+              uiConfig: uiConfig,
+              onInit: (DyteMeetingHandler handler) async {
+                meetingHandler.value = handler;
+
+                handler.events.on('meetingEnd', context, (ev, c) {
                   AutoRouter.of(context).pop();
                 });
               },

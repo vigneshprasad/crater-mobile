@@ -13,6 +13,7 @@ class WebinarScreen extends StatelessWidget {
           initialUrl: webUrl,
           allowsInlineMediaPlayback: true,
           javascriptMode: JavascriptMode.unrestricted,
+          debuggingEnabled: true,
         ),
       ),
     );

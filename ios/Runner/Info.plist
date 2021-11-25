@@ -86,10 +86,8 @@
 	<string>This app needs speech recognition permission to improve your audio quality.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Octicons.ttf</string>
 		<string>MaterialIcons.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>Entypo.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -116,7 +114,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+	<false/>
 	<key>com.claimsforce.segment.TRACK_APPLICATION_LIFECYCLE_EVENTS</key>
 	<true/>
 	<key>com.claimsforce.segment.WRITE_KEY</key>
