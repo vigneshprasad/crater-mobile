@@ -170,7 +170,7 @@ class OnboardingScreen extends HookWidget {
 
               launch(
                 'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user?.email}',
-                option: const CustomTabsOption(
+                customTabsOption: const CustomTabsOption(
                   enableUrlBarHiding: true,
                   extraCustomTabs: [],
                   showPageTitle: false,

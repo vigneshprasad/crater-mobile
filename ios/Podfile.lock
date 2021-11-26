@@ -1,8 +1,4 @@
 PODS:
-  - agora_rtc_engine (4.0.7):
-    - AgoraRtcEngine_iOS (= 3.5.0.3)
-    - Flutter
-  - AgoraRtcEngine_iOS (3.5.0.3)
   - Amplitude-iOS (4.8.2)
   - Analytics (3.7.0)
   - AppAuth (1.4.0):
@@ -148,7 +144,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - dyte_client (from `.symlinks/plugins/dyte_client/ios`)
@@ -181,7 +176,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AgoraRtcEngine_iOS
     - Amplitude-iOS
     - Analytics
     - AppAuth
@@ -212,8 +206,6 @@ SPEC REPOS:
     - UserLeapKit
 
 EXTERNAL SOURCES:
-  agora_rtc_engine:
-    :path: ".symlinks/plugins/agora_rtc_engine/ios"
   appsflyer_sdk:
     :path: ".symlinks/plugins/appsflyer_sdk/ios"
   device_info:
@@ -270,8 +262,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  agora_rtc_engine: 0820b82b3a71a8fcaf8b27c000622e671349f0ba
-  AgoraRtcEngine_iOS: ff8e085161ea98c917173783a899882f884dd9ef
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7

@@ -68,7 +68,7 @@ class ArticleCard extends StatelessWidget {
       if (article.websiteUrl == null) return;
       await launch(
         article.websiteUrl!,
-        option: CustomTabsOption(
+        customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,

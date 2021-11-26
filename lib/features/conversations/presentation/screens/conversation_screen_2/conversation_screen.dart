@@ -50,10 +50,10 @@ class ConversationScreen extends HookWidget {
       if (overlayProvider.entry != null) {
         overlayProvider.removeOverlayEntry();
         if (overlayProvider.groupId != null && overlayProvider.groupId != id) {
-          context
-              .read(
-                  conversationStateProvider(overlayProvider.groupId!).notifier)
-              .leaveAudioCall();
+          // context
+          //     .read(
+          //         conversationStateProvider(overlayProvider.groupId!).notifier)
+          //     .leaveAudioCall();
         }
       }
 

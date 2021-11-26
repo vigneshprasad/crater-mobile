@@ -166,7 +166,7 @@ class PostCard extends StatelessWidget {
     try {
       await launch(
         link,
-        option: CustomTabsOption(
+        customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,

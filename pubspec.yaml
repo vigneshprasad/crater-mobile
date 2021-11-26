@@ -26,7 +26,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  agora_rtc_engine: ^4.0.7
   animated_text_kit: ^4.2.1
   appsflyer_sdk: ^6.3.5+3
   auto_route: ^2.2.0
@@ -42,7 +41,7 @@ dependencies:
   equatable: ^2.0.3
   firebase_dynamic_links: ^2.0.7
   flutter_bloc: ^7.0.1
-  flutter_custom_tabs: ^0.7.0
+  flutter_custom_tabs: ^1.0.3
   flutter_facebook_auth: ^3.5.0
   flutter_hooks: ^0.17.0
   flutter_html: ^2.1.0
