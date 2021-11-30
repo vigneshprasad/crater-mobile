@@ -14,10 +14,10 @@ PODS:
   - AppsFlyerFramework/Main (6.3.5)
   - device_info (0.0.1):
     - Flutter
-  - dyte_client (0.0.3):
+  - dyte_client (0.0.4):
     - DyteSdk (~> 1.20)
     - Flutter
-  - DyteSdk (1.26)
+  - DyteSdk (1.28)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
   - FBSDKCoreKit/Core (11.0.1):
@@ -268,8 +268,8 @@ SPEC CHECKSUMS:
   appsflyer_sdk: b5dc59a4f6ec5703c62a85a26da35ea28c571bbe
   AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  dyte_client: 280fa074a5d0bfc6de8fd1fda84e2360d42130e5
-  DyteSdk: 3042b951bdea586999774e0a35be21c3cd02a21b
+  dyte_client: 57e194a318747eb78243004dc9166489734ed54b
+  DyteSdk: 36adfe9370dbd4b52d99f351eb9787ec11a4e265
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
@@ -318,6 +318,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: ec786ce4972a628de2f7a9dcf6a6013e4c535e88
+PODFILE CHECKSUM: 5627c2f90936e1eac2356b7c53ee7f2211ef8874
 
 COCOAPODS: 1.11.2
