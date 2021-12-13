@@ -1,29 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 
 class PastStreamScreen extends HookWidget {
@@ -71,27 +65,8 @@ class _ConversationLoaded extends HookWidget {
 
   OverlayEntry? overlayEntry;
 
-  late VideoPlayerController _controller;
-
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      _controller = VideoPlayerController.network(
-          conversation.recordingDetails!.recording!);
-
-      _controller.addListener(() {
-        // setState(() {});
-      });
-      _controller.setLooping(false);
-      _controller.initialize().then((_) {
-        // return setState(() {});
-      });
-
-      return () {
-        _controller.dispose();
-      };
-    });
-
     // Styles
     final startDateFormat = DateFormat("dd MMM yyyy, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.caption;
@@ -115,46 +90,9 @@ class _ConversationLoaded extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (topic?.image != null)
-                InkWell(
-                  onTap: () {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  },
-                  child: Container(
-                      color: Theme.of(context).dialogBackgroundColor,
-                      width: double.infinity,
-                      child: Stack(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: _controller.value.isInitialized
-                                ? _controller.value.aspectRatio
-                                : 16.0 / 9.0,
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: <Widget>[
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    topic?.image ?? '',
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                VideoPlayer(_controller),
-                                _ControlsOverlay(controller: _controller),
-                                VideoProgressIndicator(_controller,
-                                    allowScrubbing: true),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
+              StreamVideoPlayer(
+                conversation: conversation,
+              ),
               const SizedBox(height: AppInsets.xxl),
               Text(
                 heading ?? '',
@@ -181,9 +119,14 @@ class _ConversationLoaded extends HookWidget {
                   ],
                 ),
               const Divider(thickness: 1, height: 40),
-              _SpeakerWithIntro(
-                user: conversation.hostDetail!,
-                authUserPk: authUserPK!,
+              Column(
+                children: conversation.speakersDetailList
+                        ?.map((speaker) => _SpeakerWithIntro(
+                              user: speaker,
+                              authUserPk: authUserPK!,
+                            ))
+                        .toList() ??
+                    [],
               ),
               const Divider(thickness: 1, height: 40),
               similarStreamProvider.when(
@@ -258,22 +201,105 @@ class _ConversationLoaded extends HookWidget {
   }
 }
 
-class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({Key? key, required this.controller})
+class StreamVideoPlayer extends StatefulWidget {
+  const StreamVideoPlayer({Key? key, required this.conversation})
       : super(key: key);
 
-  static const _examplePlaybackRates = [
-    0.25,
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-    // 3.0,
-    // 5.0,
-    // 10.0,
-  ];
+  final Conversation conversation;
 
-  final VideoPlayerController controller;
+  @override
+  _StreamVideoPlayerState createState() => _StreamVideoPlayerState();
+}
+
+class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    _controller = VideoPlayerController.network(
+        widget.conversation.recordingDetails?.recording ?? '');
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(false);
+    _controller.initialize().then((_) {
+      return setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        if (_controller.value.isPlaying) {
+          _controller.pause();
+        } else {
+          _controller.play();
+        }
+      },
+      child: Container(
+          color: Theme.of(context).dialogBackgroundColor,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: _controller.value.isInitialized
+                    ? _controller.value.aspectRatio
+                    : 16.0 / 9.0,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.conversation.topicDetail?.image ?? '',
+                        height: double.infinity,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    VideoPlayer(_controller),
+                    _ControlsOverlay(isPlaying: _controller.value.isPlaying),
+                    VideoProgressIndicator(
+                      _controller,
+                      allowScrubbing: true,
+                      padding: EdgeInsets.only(
+                        top: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+class _ControlsOverlay extends StatelessWidget {
+  const _ControlsOverlay({Key? key, required this.isPlaying}) : super(key: key);
+
+  // static const _examplePlaybackRates = [
+  //   0.25,
+  //   0.5,
+  //   1.0,
+  //   1.5,
+  //   2.0,
+  //   3.0,
+  //   5.0,
+  //   10.0,
+  // ];
+
+  final bool isPlaying;
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +308,7 @@ class _ControlsOverlay extends StatelessWidget {
         AnimatedSwitcher(
           duration: Duration(milliseconds: 50),
           reverseDuration: Duration(milliseconds: 200),
-          child: controller.value.isPlaying
+          child: isPlaying
               ? SizedBox.shrink()
               : Container(
                   color: Colors.black26,
@@ -296,11 +322,11 @@ class _ControlsOverlay extends StatelessWidget {
                   ),
                 ),
         ),
-        GestureDetector(
-          onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
-          },
-        ),
+        // GestureDetector(
+        //   onTap: () {
+        //     controller.value.isPlaying ? controller.pause() : controller.play();
+        //   },
+        // ),
         // Align(
         //     alignment: Alignment.topRight,
         //     child: IconButton(

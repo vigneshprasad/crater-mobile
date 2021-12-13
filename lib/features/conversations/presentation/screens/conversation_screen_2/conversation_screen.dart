@@ -121,11 +121,14 @@ class _ConversationLoaded extends StatelessWidget {
     const timeAfter = Duration(minutes: 60);
     final end = conversation.start!.toLocal().add(timeAfter);
 
-    final canJoin = now.isAfter(start) && now.isBefore(end);
+    final isClosed = conversation.closed ?? false;
+
+    final canJoin = now.isAfter(start) && now.isBefore(end) && !isClosed;
 
     final canHost = conversation.host == authUserPK &&
         now.isAfter(start) &&
-        now.isBefore(end);
+        now.isBefore(end) &&
+        !isClosed;
 
     final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
@@ -279,12 +282,17 @@ class _ConversationLoaded extends StatelessWidget {
                 ),
                 const Divider(thickness: 1, height: 80),
                 Text(
-                  'About Me',
+                  'Speakers',
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                _SpeakerWithIntro(
-                  user: conversation.hostDetail!,
-                  authUserPk: authUserPK!,
+                Column(
+                  children: conversation.speakersDetailList
+                          ?.map((speaker) => _SpeakerWithIntro(
+                                user: speaker,
+                                authUserPk: authUserPK!,
+                              ))
+                          .toList() ??
+                      [],
                 ),
                 const SizedBox(height: 200)
               ],
