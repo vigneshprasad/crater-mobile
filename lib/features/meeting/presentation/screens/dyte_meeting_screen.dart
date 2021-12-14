@@ -18,6 +18,8 @@ class DyteMeetingScreen extends HookWidget {
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
 
+    final canGoBack = useState(false);
+
     const uiConfig = {
       'header': false,
       'controlBarElements': {
@@ -32,37 +34,44 @@ class DyteMeetingScreen extends HookWidget {
       return () {
         meetingHandler.value?.events.clear();
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
+        meetingHandler.value = null;
         meetingHandler.dispose();
       };
     }, []);
 
-    return Scaffold(
-        extendBody: true,
-        extendBodyBehindAppBar: true,
-        appBar: BaseAppBar(),
-        body: profileState.when(
-          data: (state) => SafeArea(
-            child: DyteMeeting(
-              roomName: state.room,
-              authToken: state.token,
-              uiConfig: uiConfig,
-              onInit: (DyteMeetingHandler handler) async {
-                meetingHandler.value = handler;
+    return WillPopScope(
+      onWillPop: () async {
+        return canGoBack.value;
+      },
+      child: Scaffold(
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          // appBar: BaseAppBar(),
+          body: profileState.when(
+            data: (state) => SafeArea(
+              child: DyteMeeting(
+                roomName: state.room,
+                authToken: state.token,
+                uiConfig: uiConfig,
+                onInit: (DyteMeetingHandler handler) async {
+                  meetingHandler.value = handler;
 
-                handler.events.on('meetingEnd', context, (ev, c) {
-                  AutoRouter.of(context).pop();
-                });
-              },
+                  handler.events.on('meetingEnd', context, (ev, c) {
+                    canGoBack.value = true;
+                    AutoRouter.of(context).pop();
+                  });
+                },
+              ),
             ),
-          ),
-          loading: () => Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).accentColor,
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).accentColor,
+              ),
             ),
-          ),
-          error: (error, stackTrace) => Center(
-            child: Text(error.toString()),
-          ),
-        ));
+            error: (error, stackTrace) => Center(
+              child: Text(error.toString()),
+            ),
+          )),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/core/features/share_manager/share_manager.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_card.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -164,7 +165,19 @@ class _LoadedConversationTab extends HookWidget {
           ),
         ]);
       }
+      bool oneOnOneTitleAdded = false;
       for (final date in week.requests) {
+        if (!oneOnOneTitleAdded) {
+          oneOnOneTitleAdded = true;
+          children.add(
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.0),
+                child: AccentTitle(title: '1:1 Conversations'),
+              ),
+            ),
+          );
+        }
         children.addAll([
           SliverStickyHeader.builder(
             overlapsContent: true,
@@ -174,7 +187,7 @@ class _LoadedConversationTab extends HookWidget {
             sliver: SliverPadding(
               padding: const EdgeInsets.only(
                 left: kLeftPaddingForDate,
-                bottom: AppInsets.xl,
+                bottom: AppInsets.sm,
                 top: 60,
               ),
               sliver: SliverList(
@@ -199,7 +212,11 @@ class _LoadedConversationTab extends HookWidget {
       }
       if (week.future != null) {
         /// Add Conversations
-        for (final date in week.conversations) {
+        List<Conversation> allConversations = [];
+        week.conversations.forEach((element) {
+          allConversations.addAll(element.conversations ?? []);
+        });
+        if (allConversations.isNotEmpty) {
           children.add(
             SliverToBoxAdapter(
               child: SizedBox(
@@ -213,7 +230,7 @@ class _LoadedConversationTab extends HookWidget {
                           enlargeCenterPage: true,
                           enableInfiniteScroll: false,
                         ),
-                        items: date.conversations!.map((c) {
+                        items: allConversations.map((c) {
                           return Builder(
                             builder: (BuildContext context) {
                               return ConversationCard(conversation: c);
@@ -223,14 +240,6 @@ class _LoadedConversationTab extends HookWidget {
                       ),
                     ],
                   )),
-            ),
-          );
-          children.add(
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 40.0),
-                child: AccentTitle(title: '1:1 Conversations'),
-              ),
             ),
           );
         }

@@ -119,15 +119,22 @@ class _ConversationLoaded extends HookWidget {
                   ],
                 ),
               const Divider(thickness: 1, height: 40),
-              Column(
-                children: conversation.speakersDetailList
-                        ?.map((speaker) => _SpeakerWithIntro(
-                              user: speaker,
-                              authUserPk: authUserPK!,
-                            ))
-                        .toList() ??
-                    [],
-              ),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  'Speakers',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                Column(
+                  children: conversation.speakersDetailList
+                          ?.map((speaker) => _SpeakerWithIntro(
+                                user: speaker,
+                                authUserPk: authUserPK!,
+                              ))
+                          .toList() ??
+                      [],
+                )
+              ]),
               const Divider(thickness: 1, height: 40),
               similarStreamProvider.when(
                   loading: () => Container(),
@@ -135,16 +142,13 @@ class _ConversationLoaded extends HookWidget {
                   data: (conversations) {
                     if (conversations.pastClubs.isEmpty) return Container();
                     return SizedBox(
-                      height: 320,
+                      height: 340,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              'Similar streams',
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
+                          Text(
+                            'Similar streams',
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                           const SizedBox(height: AppInsets.xxl),
                           CarouselSlider(
