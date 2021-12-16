@@ -51,7 +51,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> updateUserToCache(UserModel user) async {
     final cached = userBox.get(rootUserKey);
-    final updated = user.copyWith(token: cached?.token ?? '');
+    final token = user.token ?? cached?.token ?? '';
+    final updated = user.copyWith(token: token);
     await userBox.put(rootUserKey, updated);
   }
 

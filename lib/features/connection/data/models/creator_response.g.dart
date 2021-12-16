@@ -32,9 +32,9 @@ _$_Creator _$_$_CreatorFromJson(Map<String, dynamic> json) {
   return _$_Creator(
     id: json['id'] as int? ?? 0,
     user: json['user'] as String? ?? '',
-    numberOfSubscribers: json['number_of_subscribers'] as int,
+    numberOfSubscribers: json['number_of_subscribers'] as int?,
     certified: json['certified'] as bool? ?? false,
-    followerCount: json['follower_count'] as int,
+    followerCount: json['follower_count'] as int?,
     order: json['order'] as int? ?? 0,
     defaultCommunity: json['default_community'] == null
         ? null

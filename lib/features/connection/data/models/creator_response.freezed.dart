@@ -281,9 +281,9 @@ class _$CreatorTearOff {
   _Creator call(
       {int id = 0,
       String user = '',
-      @JsonKey(name: 'number_of_subscribers') int numberOfSubscribers = 0,
+      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers = 0,
       bool certified = false,
-      @JsonKey(name: 'follower_count') int followerCount = 0,
+      @JsonKey(name: 'follower_count') int? followerCount = 0,
       int order = 0,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail}) {
@@ -312,10 +312,10 @@ mixin _$Creator {
   int get id => throw _privateConstructorUsedError;
   String get user => throw _privateConstructorUsedError;
   @JsonKey(name: 'number_of_subscribers')
-  int get numberOfSubscribers => throw _privateConstructorUsedError;
+  int? get numberOfSubscribers => throw _privateConstructorUsedError;
   bool get certified => throw _privateConstructorUsedError;
   @JsonKey(name: 'follower_count')
-  int get followerCount =>
+  int? get followerCount =>
       throw _privateConstructorUsedError; // @Default(0)dynamic type,
   int get order => throw _privateConstructorUsedError;
   @JsonKey(name: 'default_community')
@@ -335,9 +335,9 @@ abstract class $CreatorCopyWith<$Res> {
   $Res call(
       {int id,
       String user,
-      @JsonKey(name: 'number_of_subscribers') int numberOfSubscribers,
+      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
       bool certified,
-      @JsonKey(name: 'follower_count') int followerCount,
+      @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail});
@@ -377,7 +377,7 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
       numberOfSubscribers: numberOfSubscribers == freezed
           ? _value.numberOfSubscribers
           : numberOfSubscribers // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       certified: certified == freezed
           ? _value.certified
           : certified // ignore: cast_nullable_to_non_nullable
@@ -385,7 +385,7 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
       followerCount: followerCount == freezed
           ? _value.followerCount
           : followerCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       order: order == freezed
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -432,9 +432,9 @@ abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
   $Res call(
       {int id,
       String user,
-      @JsonKey(name: 'number_of_subscribers') int numberOfSubscribers,
+      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
       bool certified,
-      @JsonKey(name: 'follower_count') int followerCount,
+      @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail});
@@ -477,7 +477,7 @@ class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
       numberOfSubscribers: numberOfSubscribers == freezed
           ? _value.numberOfSubscribers
           : numberOfSubscribers // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       certified: certified == freezed
           ? _value.certified
           : certified // ignore: cast_nullable_to_non_nullable
@@ -485,7 +485,7 @@ class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
       followerCount: followerCount == freezed
           ? _value.followerCount
           : followerCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       order: order == freezed
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -526,13 +526,13 @@ class _$_Creator implements _Creator {
   final String user;
   @override
   @JsonKey(name: 'number_of_subscribers')
-  final int numberOfSubscribers;
+  final int? numberOfSubscribers;
   @JsonKey(defaultValue: false)
   @override
   final bool certified;
   @override
   @JsonKey(name: 'follower_count')
-  final int followerCount;
+  final int? followerCount;
   @JsonKey(defaultValue: 0)
   @override // @Default(0)dynamic type,
   final int order;
@@ -602,9 +602,9 @@ abstract class _Creator implements Creator {
   const factory _Creator(
       {int id,
       String user,
-      @JsonKey(name: 'number_of_subscribers') int numberOfSubscribers,
+      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
       bool certified,
-      @JsonKey(name: 'follower_count') int followerCount,
+      @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail}) = _$_Creator;
@@ -617,12 +617,12 @@ abstract class _Creator implements Creator {
   String get user => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'number_of_subscribers')
-  int get numberOfSubscribers => throw _privateConstructorUsedError;
+  int? get numberOfSubscribers => throw _privateConstructorUsedError;
   @override
   bool get certified => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'follower_count')
-  int get followerCount => throw _privateConstructorUsedError;
+  int? get followerCount => throw _privateConstructorUsedError;
   @override // @Default(0)dynamic type,
   int get order => throw _privateConstructorUsedError;
   @override

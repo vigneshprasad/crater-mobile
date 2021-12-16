@@ -24,9 +24,11 @@ abstract class Creator with _$Creator {
   const factory Creator({
     @Default(0) int id,
     @Default('') String user,
-    @JsonKey(name: 'number_of_subscribers') @Default(0) int numberOfSubscribers,
+    @JsonKey(name: 'number_of_subscribers')
+    @Default(0)
+        int? numberOfSubscribers,
     @Default(false) bool certified,
-    @JsonKey(name: 'follower_count') @Default(0) int followerCount,
+    @JsonKey(name: 'follower_count') @Default(0) int? followerCount,
     // @Default(0)dynamic type,
     @Default(0) int order,
     @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,

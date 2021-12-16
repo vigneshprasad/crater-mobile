@@ -45,7 +45,7 @@ class CommunityList extends HookWidget {
         color: Theme.of(context).accentColor,
       )),
       error: (err, st) => Center(
-        child: Text(err.toString()),
+        child: err == null ? Container() : Text(err.toString()),
       ),
       data: (profiles) => profiles.isEmpty
           ? SizedBox(
@@ -90,7 +90,7 @@ class CommunityList extends HookWidget {
                     _Connection(
                       user: profiles[index],
                       authUserPk: user?.pk, //TODO: pass auth user pk.
-                      showConnect: true,
+                      showConnect: user?.canConnect ?? false,
                     ),
                   ],
                 );

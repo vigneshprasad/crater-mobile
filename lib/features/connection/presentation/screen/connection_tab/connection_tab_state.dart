@@ -76,7 +76,7 @@ class ConnectionStateNotifier
     state = response.fold(
       (failure) {
         loadingPage = false;
-        return ApiResult<List<Profile>>.error(null);
+        return ApiResult<List<Profile>>.data(allProfiles);
       },
       (profiles) {
         allProfiles += profiles;

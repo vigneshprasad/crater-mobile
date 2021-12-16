@@ -45,8 +45,7 @@ class FeaturedConnectionStateNotifier
       (profiles) {
         allProfiles = profiles.results;
         loadingPage = false;
-        allLoaded =
-            profiles.results.isEmpty || profiles.results.length < pageSize;
+        allLoaded = profiles.count == allProfiles.length;
         if (userId.isNotEmpty) {
           allLoaded = true;
         }
@@ -69,13 +68,13 @@ class FeaturedConnectionStateNotifier
     state = response.fold(
       (failure) {
         loadingPage = false;
-        return ApiResult<List<Creator>>.error(null);
+        return ApiResult<List<Creator>>.data(allProfiles);
       },
       (profiles) {
         allProfiles += profiles.results;
         loadingPage = false;
-        allLoaded =
-            profiles.results.isEmpty || profiles.results.length < pageSize;
+        allLoaded = profiles.count == allProfiles.length;
+
         return ApiResult<List<Creator>>.data(allProfiles);
       },
     );
