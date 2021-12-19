@@ -47,7 +47,7 @@ class ProfileStreamsTab extends HookWidget {
                           const SizedBox(height: AppInsets.xl),
                           SizedBox(
                             height: 300,
-                            child: UpcomingGridTile(conversations[0]),
+                            child: LiveGridTile(conversations[0]),
                           ),
                         ],
                       ));
