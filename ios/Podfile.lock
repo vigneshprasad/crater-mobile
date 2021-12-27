@@ -104,7 +104,7 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - OneSignal (3.9.1)
+  - OneSignal (3.10.0)
   - onesignal_flutter (3.2.3):
     - Flutter
     - OneSignalXCFramework (= 3.7.0)
@@ -297,7 +297,7 @@ SPEC CHECKSUMS:
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  OneSignal: 5df10ecd1efb83b5df69c6281ac97097b011cf2f
+  OneSignal: 198da4de73fb7bd6e45bc04221a7f16efca057ad
   onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
   OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
