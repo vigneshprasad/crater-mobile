@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -245,6 +246,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             icon: Icons.duo,
             text: "Join call",
             onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      DyteMeetingScreen(meetingId: widget.meetingId)));
+              return;
               if (meeting?.link != null) {
                 KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
               }
@@ -280,6 +285,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           icon: Icons.duo,
           text: "Join call",
           onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    DyteMeetingScreen(meetingId: widget.meetingId)));
+            return;
             if (meeting?.link != null) {
               KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
             }

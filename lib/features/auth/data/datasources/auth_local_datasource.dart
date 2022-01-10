@@ -1,9 +1,14 @@
 import 'package:hive/hive.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/user_model.dart';
 import '../models/user_profile_model.dart';
+
+final authLocalDatasourceProvider = Provider<AuthLocalDataSource>((ref) {
+  return AuthLocalDataSourceImpl();
+});
 
 abstract class AuthLocalDataSource {
   /// Gets cached [UserModel] from cache
@@ -46,7 +51,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> updateUserToCache(UserModel user) async {
     final cached = userBox.get(rootUserKey);
-    final updated = user.copyWith(token: cached?.token ?? '');
+    final token = user.token ?? cached?.token ?? '';
+    final updated = user.copyWith(token: token);
     await userBox.put(rootUserKey, updated);
   }
 

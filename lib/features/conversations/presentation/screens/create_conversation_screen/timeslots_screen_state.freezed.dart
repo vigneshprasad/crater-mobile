@@ -20,7 +20,7 @@ class _$TimeSlotsStateTearOff {
     return _TimeSlotsStateLoading();
   }
 
-  _TimeSlotsStateData data(List<TimeSlot> timeslots) {
+  _TimeSlotsStateData data(List<List<DateTime>> timeslots) {
     return _TimeSlotsStateData(
       timeslots,
     );
@@ -42,14 +42,14 @@ mixin _$TimeSlotsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<TimeSlot> timeslots) data,
+    required TResult Function(List<List<DateTime>> timeslots) data,
     required TResult Function(Failure error, StackTrace? stackTrace) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<TimeSlot> timeslots)? data,
+    TResult Function(List<List<DateTime>> timeslots)? data,
     TResult Function(Failure error, StackTrace? stackTrace)? error,
     required TResult orElse(),
   }) =>
@@ -129,7 +129,7 @@ class _$_TimeSlotsStateLoading implements _TimeSlotsStateLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<TimeSlot> timeslots) data,
+    required TResult Function(List<List<DateTime>> timeslots) data,
     required TResult Function(Failure error, StackTrace? stackTrace) error,
   }) {
     return loading();
@@ -139,7 +139,7 @@ class _$_TimeSlotsStateLoading implements _TimeSlotsStateLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<TimeSlot> timeslots)? data,
+    TResult Function(List<List<DateTime>> timeslots)? data,
     TResult Function(Failure error, StackTrace? stackTrace)? error,
     required TResult orElse(),
   }) {
@@ -183,7 +183,7 @@ abstract class _$TimeSlotsStateDataCopyWith<$Res> {
   factory _$TimeSlotsStateDataCopyWith(
           _TimeSlotsStateData value, $Res Function(_TimeSlotsStateData) then) =
       __$TimeSlotsStateDataCopyWithImpl<$Res>;
-  $Res call({List<TimeSlot> timeslots});
+  $Res call({List<List<DateTime>> timeslots});
 }
 
 /// @nodoc
@@ -205,7 +205,7 @@ class __$TimeSlotsStateDataCopyWithImpl<$Res>
       timeslots == freezed
           ? _value.timeslots
           : timeslots // ignore: cast_nullable_to_non_nullable
-              as List<TimeSlot>,
+              as List<List<DateTime>>,
     ));
   }
 }
@@ -216,7 +216,7 @@ class _$_TimeSlotsStateData implements _TimeSlotsStateData {
   _$_TimeSlotsStateData(this.timeslots);
 
   @override
-  final List<TimeSlot> timeslots;
+  final List<List<DateTime>> timeslots;
 
   @override
   String toString() {
@@ -245,7 +245,7 @@ class _$_TimeSlotsStateData implements _TimeSlotsStateData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<TimeSlot> timeslots) data,
+    required TResult Function(List<List<DateTime>> timeslots) data,
     required TResult Function(Failure error, StackTrace? stackTrace) error,
   }) {
     return data(timeslots);
@@ -255,7 +255,7 @@ class _$_TimeSlotsStateData implements _TimeSlotsStateData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<TimeSlot> timeslots)? data,
+    TResult Function(List<List<DateTime>> timeslots)? data,
     TResult Function(Failure error, StackTrace? stackTrace)? error,
     required TResult orElse(),
   }) {
@@ -291,9 +291,10 @@ class _$_TimeSlotsStateData implements _TimeSlotsStateData {
 }
 
 abstract class _TimeSlotsStateData implements TimeSlotsState {
-  factory _TimeSlotsStateData(List<TimeSlot> timeslots) = _$_TimeSlotsStateData;
+  factory _TimeSlotsStateData(List<List<DateTime>> timeslots) =
+      _$_TimeSlotsStateData;
 
-  List<TimeSlot> get timeslots => throw _privateConstructorUsedError;
+  List<List<DateTime>> get timeslots => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$TimeSlotsStateDataCopyWith<_TimeSlotsStateData> get copyWith =>
       throw _privateConstructorUsedError;
@@ -378,7 +379,7 @@ class _$_TimeSlotsStateError implements _TimeSlotsStateError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<TimeSlot> timeslots) data,
+    required TResult Function(List<List<DateTime>> timeslots) data,
     required TResult Function(Failure error, StackTrace? stackTrace) error,
   }) {
     return error(this.error, stackTrace);
@@ -388,7 +389,7 @@ class _$_TimeSlotsStateError implements _TimeSlotsStateError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<TimeSlot> timeslots)? data,
+    TResult Function(List<List<DateTime>> timeslots)? data,
     TResult Function(Failure error, StackTrace? stackTrace)? error,
     required TResult orElse(),
   }) {

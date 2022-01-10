@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -32,6 +34,8 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   final TextEditingController _bioController = TextEditingController();
   late ProfileIntroBloc _bloc;
   late Map<String, dynamic> _values;
+  OverlayEntry? _overlay;
+
   @override
   void initState() {
     _values = {};
@@ -80,7 +84,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                 ),
                 ProfileFooter(
                   onSave: _onPressedSubmit,
-                  onSkip: _onPressedSkip,
+                  onSkip: _goToNextScreen,
                 )
               ],
             ),
@@ -120,7 +124,10 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
             const SizedBox(height: AppInsets.xxl),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(
+              child: SizedBox(
+                width: 180,
+                child: BaseLargeButton(
+                  text: 'Copy from LinkedIn',
                   onPressed: () async {
                     try {
                       final _ =
@@ -130,7 +137,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                           'https://www.linkedin.com/in/me/detail/contact-info/');
                     }
                   },
-                  child: const Text('Copy From LinkedIn')),
+                  outlined: true,
+                ),
+              ),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -140,16 +149,14 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context).push(const ProfileSetupScreenRoute());
-  }
-
-  void _onPressedSkip() {
-    _goToNextScreen();
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      _overlay = buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: {ProfileIntroElement.introduction: _bioController.text},
       ));
@@ -161,7 +168,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
     if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }
+
 }

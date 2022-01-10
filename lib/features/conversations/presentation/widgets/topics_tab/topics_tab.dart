@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -200,23 +201,12 @@ class TopicsTab extends HookWidget {
     }
   }
 
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
-      },
-    );
-  }
-
   Future<bool> _postTopicSuggestion(
     BuildContext context,
     String topic,
     TopicType type,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
 

@@ -17,7 +17,7 @@ final appUrl =
     Uri.encodeComponent('https://worknetwork.onelink.me/KbQv/AppStore');
 final shareText = Uri.encodeComponent(AppConstants.defaultShareText);
 final summary = Uri.encodeComponent("Know any relevant people?");
-const hashtags = 'worknetwork';
+const hashtags = 'crater';
 final twitterUrl = 'https://twitter.com/share?text=$shareText';
 // final twitterUrl =
 // 'https://twitter.com/share?url=$appUrl&text=$shareText&via=1WorkNetwork&hashtags=$hashtags';
@@ -89,9 +89,8 @@ class ShareBottomSheet extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    BaseContainer(
-                      radius: 30,
-                      child: TextButton(
+                    Center(
+                      child: OutlinedButton(
                         onPressed: () {
                           launch(
                             whatsAppUrl,
@@ -175,6 +174,7 @@ class ShareBottomSheet extends StatelessWidget {
                             child: const Icon(
                               Icons.ios_share,
                               size: iconSize - 16,
+                              color: Colors.white,
                             ),
                           ),
                           onPressed: () {

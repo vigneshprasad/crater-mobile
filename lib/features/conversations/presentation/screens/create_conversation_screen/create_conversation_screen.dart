@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -90,8 +94,9 @@ class CreateConversationScreen extends HookWidget {
                                 ),
                               )
                             else
-                              BaseContainer(
-                                disableAnimation: true,
+                              Material(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Theme.of(context).dialogBackgroundColor,
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Column(
@@ -194,8 +199,8 @@ class CreateConversationScreen extends HookWidget {
                     ),
                   ),
                 ),
-                BaseContainer(
-                  disableAnimation: true,
+                Container(
+                  color: Theme.of(context).dialogBackgroundColor,
                   child: SafeArea(
                     child: Padding(
                       padding:
@@ -251,7 +256,7 @@ class CreateConversationScreen extends HookWidget {
     DateTime start,
     List<MeetingInterest> interests,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     final conversation = Conversation(
       topic: topic.id,
       description: topic.description,
@@ -276,7 +281,7 @@ class CreateConversationScreen extends HookWidget {
         _overlay.remove();
         Fluttertoast.showToast(msg: failure.message!);
       },
-      (conversation) {
+      (conversation) async {
         _overlay.remove();
 
         final analytics = KiwiContainer().resolve<Analytics>();
@@ -287,12 +292,35 @@ class CreateConversationScreen extends HookWidget {
               "topic": conversation.topic,
               "topic_name": conversation.topicDetail?.name,
             });
+
+        await showEmail(context);
+
         AutoRouter.of(context).pushAndPopUntil(
           OnboardingScreenRoute(
               type: OnboardingType.groupMeetingCreation.toString()),
           predicate: (_) => false,
         );
         // AutoRouter.of(context).pop(conversation);
+      },
+    );
+  }
+
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+    if (email != null && email.isNotEmpty) {
+      return;
+    }
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return const ProfileEmailScreen(editMode: true);
       },
     );
   }
@@ -304,7 +332,7 @@ class CreateConversationScreen extends HookWidget {
     MeetingConfig config,
     Topic topic,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final response = await context
         .read(conversationRepositoryProvider)
@@ -321,6 +349,8 @@ class CreateConversationScreen extends HookWidget {
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
+        await showEmail(context);
+
         AutoRouter.of(context).pushAndPopUntil(
           OnboardingScreenRoute(
               type: OnboardingType.oneOnOneMeetingCreation.toString()),
@@ -328,17 +358,6 @@ class CreateConversationScreen extends HookWidget {
         );
 
         // AutoRouter.of(context).pop(optin);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
       },
     );
   }

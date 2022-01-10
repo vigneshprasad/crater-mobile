@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -44,6 +45,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> editedFieldIds = [];
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -161,6 +163,8 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   void submitAnswers() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      _overlay = buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: _values,
         photo: _photo,
@@ -216,7 +220,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
     } else if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
+      _overlay?.remove();
       goToNextScreen();
     }
   }

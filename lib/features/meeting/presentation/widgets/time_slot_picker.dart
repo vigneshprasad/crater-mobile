@@ -217,7 +217,7 @@ class _TimeSlotTab extends StatelessWidget {
         );
     final border =
         selected ? Border.all(color: Theme.of(context).primaryColor) : null;
-    final color = Theme.of(context).canvasColor;
+    final color = Theme.of(context).dialogBackgroundColor;
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.xl),
       child: Material(
@@ -237,20 +237,18 @@ class _TimeSlotTab extends StatelessWidget {
                   style: labelStyle,
                 ),
                 const SizedBox(height: 12),
-                BaseContainer(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(8),
-                      border: border,
-                    ),
-                    width: 44,
-                    height: 44,
-                    child: Center(
-                      child: Text(
-                        formatter.format(dateParsed),
-                        style: labelStyle,
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(8),
+                    border: border,
+                  ),
+                  width: 44,
+                  height: 44,
+                  child: Center(
+                    child: Text(
+                      formatter.format(dateParsed),
+                      style: labelStyle,
                     ),
                   ),
                 ),
@@ -289,29 +287,26 @@ class _TimeSlot extends StatelessWidget {
         selected ? Border.all(color: Theme.of(context).primaryColor) : null;
     return Container(
       padding: const EdgeInsets.all(AppInsets.xxl),
-      child: BaseContainer(
-        radius: 12,
-        child: Material(
-          color: Theme.of(context).canvasColor,
+      child: Material(
+        color: Theme.of(context).dialogBackgroundColor,
+        borderRadius: borderRadius,
+        child: InkWell(
           borderRadius: borderRadius,
-          child: InkWell(
-            borderRadius: borderRadius,
-            onTap: onTap,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl,
-                vertical: AppInsets.xl,
-              ),
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-              ),
-              child: Text(
-                label,
-                style: labelStyle,
-                textAlign: TextAlign.center,
-              ),
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppInsets.xl,
+              vertical: AppInsets.xl,
+            ),
+            decoration: BoxDecoration(
+              border: border,
+              borderRadius: borderRadius,
+            ),
+            child: Text(
+              label,
+              style: labelStyle,
+              textAlign: TextAlign.center,
             ),
           ),
         ),

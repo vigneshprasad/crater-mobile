@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
@@ -35,6 +35,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   late List<UserTag> selectedTags;
   late List<PickerItem> items;
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -99,6 +100,10 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
                                 ObjectivesPicker(
                                   objectives: items,
                                   onPressedItem: _onPressedObjectiveItem,
+                                )
+                              else
+                                const Center(
+                                  child: CircularProgressIndicator(),
                                 ),
                               const SizedBox(height: AppInsets.xxl),
                             ],
@@ -128,18 +133,22 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     } else if (state is PostProfileTagsRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.user));
+      _overlay?.remove();
       goToNextScreen();
     }
   }
 
   void goToNextScreen() {
-    AutoRouter.of(context).push(const ProfileExtraInfoScreenRoute());
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressSubmit() {
     if (selectedTags.isEmpty) {
       return;
     }
+
+    _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
     _bloc.add(PostProfileTagsRequestStarted(
         tagIds: selectedTags.map((e) => e.pk!).toList()));
   }

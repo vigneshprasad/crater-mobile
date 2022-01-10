@@ -26,6 +26,7 @@ abstract class Conversation with _$Conversation {
     int? id,
     String? host,
     List<String>? speakers,
+    List<String>? attendees,
     int? topic,
     String? description,
     List<int>? interests,
@@ -43,12 +44,25 @@ abstract class Conversation with _$Conversation {
         List<MeetingInterestModel>? interestsDetailList,
     @JsonKey(name: 'speakers_detail_list')
         List<ConversationUser>? speakersDetailList,
+    @JsonKey(name: 'attendees_detail_list')
+        List<ConversationUser>? attendeesDetailList,
     @JsonKey(name: 'is_speaker') bool? isSpeaker,
     @JsonKey(name: 'is_past') bool? isPast,
+    @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
   }) = _Conversation;
 
   factory Conversation.fromJson(Map<String, dynamic> json) =>
       _$ConversationFromJson(json);
+}
+
+@freezed
+abstract class RecordingDetails with _$RecordingDetails {
+  factory RecordingDetails({
+    String? recording,
+  }) = _RecordingDetails;
+
+  factory RecordingDetails.fromJson(Map<String, dynamic> json) =>
+      _$RecordingDetailsFromJson(json);
 }
 
 @freezed

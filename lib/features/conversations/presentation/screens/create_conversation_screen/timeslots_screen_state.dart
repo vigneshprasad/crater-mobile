@@ -17,7 +17,8 @@ final getTimeslotsNotifier = StateNotifierProvider.autoDispose
 @freezed
 abstract class TimeSlotsState with _$TimeSlotsState {
   factory TimeSlotsState.loading() = _TimeSlotsStateLoading;
-  factory TimeSlotsState.data(List<TimeSlot> timeslots) = _TimeSlotsStateData;
+  factory TimeSlotsState.data(List<List<DateTime>> timeslots) =
+      _TimeSlotsStateData;
   factory TimeSlotsState.error(Failure error, [StackTrace? stackTrace]) =
       _TimeSlotsStateError;
 }
@@ -52,7 +53,7 @@ class GetTimeSlotsNotifier extends StateNotifier<TimeSlotsState> {
       }
     }
 
-    final slots = response[0].getOrElse(() => List<TimeSlot>.empty());
+    final slots = response[0].getOrElse(() => List<List<DateTime>>.empty());
 
     state = TimeSlotsState.data(slots);
   }

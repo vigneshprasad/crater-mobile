@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/base/base_date_time_picker/base_date_time_picker.dart.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_screen/timeslots_screen_state.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/reschedule_slot_picker.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -39,7 +41,8 @@ class TimeSlotsScreen extends HookWidget {
 
     final _scrollControiler = useScrollController();
 
-    return ScaffoldContainer(
+    return Container(
+      color: Theme.of(context).dialogBackgroundColor,
       child: state.when(
         loading: () => _Loader(),
         data: (timeslots) {
@@ -71,9 +74,7 @@ class TimeSlotsScreen extends HookWidget {
                                 const SizedBox(height: AppInsets.xl),
                                 BaseDateTimePicker<DateTime>(
                                   initialValue: _timeslots.value,
-                                  timeSlots: timeslots
-                                      .map((e) => [e.start!, e.end!])
-                                      .toList(),
+                                  timeSlots: timeslots,
                                   getDateTime: (obj) => obj,
                                   maxLength: 3,
                                   onValueChanged: (value) {
@@ -127,7 +128,7 @@ class TimeSlotsScreen extends HookWidget {
     List<MeetingInterest> interests,
     List<DateTime> timeslots,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
     final response =
@@ -147,6 +148,7 @@ class TimeSlotsScreen extends HookWidget {
 
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
+        await showEmail(context);
 
         AutoRouter.of(context).pushAndPopUntil(
           OnboardingScreenRoute(
@@ -159,13 +161,22 @@ class TimeSlotsScreen extends HookWidget {
     );
   }
 
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+    if (email != null && email.isNotEmpty) {
+      return;
+    }
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
       builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
+        return const ProfileEmailScreen(editMode: true);
       },
     );
   }

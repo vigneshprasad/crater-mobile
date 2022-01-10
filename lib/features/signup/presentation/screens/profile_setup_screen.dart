@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/theme.dart';
@@ -19,6 +22,13 @@ import '../widgets/profile_footer.dart';
 import '../widgets/profile_header.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
+  final bool editMode;
+
+  const ProfileSetupScreen({
+    Key? key,
+    @PathParam("editMode") required this.editMode,
+  }) : super(key: key);
+
   @override
   _ProfileSetupScreenState createState() => _ProfileSetupScreenState();
 }
@@ -28,6 +38,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final TextEditingController _linkedInController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   late ProfileSetupBloc _bloc;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -54,7 +65,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         const heading = 'Want to grow your influence?';
         const subHeading =
             'Enable your matches to discover you on other platforms';
-        final user = authState.user!;
 
         return BlocProvider.value(
           value: _bloc,
@@ -69,10 +79,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       title: heading,
                       subtitle: subHeading,
                     ),
-                    _buildProfileForm(context, user),
+                    _buildProfileForm(context),
                     const Spacer(),
                     ProfileFooter(
-                      onSkip: _onPressedSkip,
+                      onSkip: _goToNextScreen,
                       onSave: _onPressedSubmit,
                     )
                   ],
@@ -90,11 +100,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     if (state is PostUserProfileRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }
 
-  Widget _buildProfileForm(BuildContext context, User user) {
+  Widget _buildProfileForm(BuildContext context) {
     final linkedinLabel =
         AppLocalizations.of(context)?.translate("linkedin:placeholder");
     return Padding(
@@ -122,19 +133,36 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ? "This field is required"
                   : null,
             ),
+            const SizedBox(height: AppInsets.xxl),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(
+              child: SizedBox(
+                width: 180,
+                child: BaseLargeButton(
+                  text: 'Copy from LinkedIn',
                   onPressed: () async {
+                    const deepLink = 'linkedin://in/me/detail/contact-info/';
+                    const webLink =
+                        'https://www.linkedin.com/in/me/detail/contact-info/';
                     try {
-                      final _ =
-                          await launch('linkedin://in/me/detail/contact-info/');
+                      if (await canLaunch(deepLink)) {
+                        final _ = await launch(deepLink, forceSafariVC: false);
+                      } else {
+                        await launch(
+                          webLink,
+                          forceSafariVC: false,
+                        );
+                      }
                     } catch (e) {
                       await launch(
-                          'https://www.linkedin.com/in/me/detail/contact-info/');
+                        webLink,
+                        forceSafariVC: false,
+                      );
                     }
                   },
-                  child: const Text('Copy From LinkedIn')),
+                  outlined: true,
+                ),
+              ),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -146,23 +174,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void _onPressedSubmit() {
     final isValid = _formKey.currentState?.validate();
     if (isValid ?? false) {
+      _overlay = buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileRequestStarted(
         linkedinUrl: _linkedInController.text,
       ));
     }
   }
 
-  void _onPressedSkip() {
-    _goToNextScreen();
-  }
-
   void _goToNextScreen() {
-    final bloc = BlocProvider.of<AuthBloc>(context);
-    if (bloc.state.user?.phoneNumberVerified ?? false) {
-      AutoRouter.of(context)
-          .pushAndPopUntil(HomeScreenRoute(tab: 0), predicate: (_) => false);
-    } else {
-      AutoRouter.of(context).push(const PhoneVerificationScreenRoute());
-    }
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 }

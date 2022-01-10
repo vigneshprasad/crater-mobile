@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.9.8+34
+version: 2.1+37
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -26,9 +26,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  agora_rtc_engine: ^4.0.6
   animated_text_kit: ^4.2.1
-  appsflyer_sdk: ^6.3.2-nullsafety.0
+  appsflyer_sdk: ^6.3.5+3
   auto_route: ^2.2.0
   bloc: ^7.0.0
   cached_network_image: ^3.1.0
@@ -36,13 +35,13 @@ dependencies:
   chopper: ^4.0.1
   cupertino_icons: ^1.0.3
   custom_rounded_rectangle_border: ^0.2.0-nullsafety.0
-  dartz: ^0.10.0-nullsafety.2
+  dartz: ^0.10.0
   internet_connection_checker: ^0.0.1+2
   device_info: ^2.0.2
   equatable: ^2.0.3
   firebase_dynamic_links: ^2.0.7
   flutter_bloc: ^7.0.1
-  flutter_custom_tabs: ^1.0.2
+  flutter_custom_tabs: ^1.0.3
   flutter_facebook_auth: ^3.5.0
   flutter_hooks: ^0.17.0
   flutter_html: ^2.1.0
@@ -61,27 +60,32 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.0.1
   kiwi: ^3.0.0
-  libphonenumber: ^2.0.1
+  libphonenumber: ^2.0.2
   lint: ^1.5.3
   lottie: ^1.1.0
   metadata_fetch: ^0.4.1
-  onesignal_flutter: ^3.1.0
+  onesignal_flutter: ^3.2.3
   package_info: ^2.0.2
   path_provider: ^2.0.2
-  permission_handler: ^8.1.3
-  phone_number: ^0.11.0+1
+  permission_handler: ^8.1.6
+  phone_number: ^0.12.0+1
   sentry: ^5.1.0
   share: ^2.0.4
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
-  sign_in_with_apple: ^3.0.0
+  sign_in_with_apple: ^3.1.0
   url_launcher: ^6.0.9
   uuid: ^3.0.4
-  video_player: ^2.1.10
+  video_player: ^2.2.3
   web_socket_channel: ^2.1.0
   intercom_flutter: ^5.0.0
   linkedin_login: ^2.0.1
   bordered_text: ^2.0.0
+  dyte_client: ^0.4.1
+  timeago: ^3.1.0
+  flutter_staggered_grid_view: ^0.4.0
+  carousel_slider: ^4.0.0
+  webview_flutter: ^2.0.13
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +116,7 @@ flutter:
     - assets/lottie/
     - assets/svg/
     - assets/icons/
+    - assets/video/
     - lang/en.json
     - config/
 
@@ -128,6 +133,38 @@ flutter:
     - family: WorkNetIcons
       fonts:
         - asset: assets/icons/WorkNetIcons.ttf
+    - family: Roobert
+      fonts:
+        - asset: assets/fonts/Roobert/Roobert-Light.otf
+          weight: 300
+        - asset: assets/fonts/Roobert/Roobert-LightItalic.otf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/Roobert/Roobert-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Roobert/Roobert-RegularItalic.otf
+          style: italic
+          weight: 400
+        - asset: assets/fonts/Roobert/Roobert-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Roobert/Roobert-MediumItalic.otf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Roobert/Roobert-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Roobert/Roobert-SemiBoldItalic.otf
+          style: italic
+          weight: 600
+        - asset: assets/fonts/Roobert/Roobert-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Roobert/Roobert-BoldItalic.otf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/Roobert/Roobert-Heavy.otf
+          weight: 900
+        - asset: assets/fonts/Roobert/Roobert-HeavyItalic.otf
+          style: italic
+          weight: 900
     - family: Aeonik
       fonts:
         - asset: assets/fonts/Aeonik-Air.ttf

@@ -86,18 +86,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final ModalRoute<dynamic>? parentRoute = ModalRoute.of(context);
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
-    final IconData icon = useCloseButton ? Icons.close : Icons.arrow_back;
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: BaseContainer(
-        radius: 30,
-        color: Theme.of(context).backgroundColor,
-        child: IconButton(
-          icon: Icon(icon),
-          color: color,
-          onPressed: () => AutoRouter.of(context).pop(),
-        ),
-      ),
+    final IconData icon = useCloseButton ? Icons.close : Icons.arrow_back_ios;
+    return IconButton(
+      icon: Icon(icon),
+      color: color,
+      onPressed: () => AutoRouter.of(context).pop(),
     );
   }
 }

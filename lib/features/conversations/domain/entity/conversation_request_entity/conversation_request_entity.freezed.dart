@@ -23,11 +23,15 @@ class _$ConversationRequestTearOff {
   _ConversationRequest call(
       {int? pk,
       int? group,
-      @JsonKey(name: "group_detail") Conversation? groupDetail}) {
+      @JsonKey(name: "group_detail") Conversation? groupDetail,
+      @JsonKey(name: "participant_type") ParticpantType? participantType,
+      RequestStatus? status}) {
     return _ConversationRequest(
       pk: pk,
       group: group,
       groupDetail: groupDetail,
+      participantType: participantType,
+      status: status,
     );
   }
 
@@ -45,6 +49,9 @@ mixin _$ConversationRequest {
   int? get group => throw _privateConstructorUsedError;
   @JsonKey(name: "group_detail")
   Conversation? get groupDetail => throw _privateConstructorUsedError;
+  @JsonKey(name: "participant_type")
+  ParticpantType? get participantType => throw _privateConstructorUsedError;
+  RequestStatus? get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +67,9 @@ abstract class $ConversationRequestCopyWith<$Res> {
   $Res call(
       {int? pk,
       int? group,
-      @JsonKey(name: "group_detail") Conversation? groupDetail});
+      @JsonKey(name: "group_detail") Conversation? groupDetail,
+      @JsonKey(name: "participant_type") ParticpantType? participantType,
+      RequestStatus? status});
 
   $ConversationCopyWith<$Res>? get groupDetail;
 }
@@ -79,6 +88,8 @@ class _$ConversationRequestCopyWithImpl<$Res>
     Object? pk = freezed,
     Object? group = freezed,
     Object? groupDetail = freezed,
+    Object? participantType = freezed,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed
@@ -93,6 +104,14 @@ class _$ConversationRequestCopyWithImpl<$Res>
           ? _value.groupDetail
           : groupDetail // ignore: cast_nullable_to_non_nullable
               as Conversation?,
+      participantType: participantType == freezed
+          ? _value.participantType
+          : participantType // ignore: cast_nullable_to_non_nullable
+              as ParticpantType?,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RequestStatus?,
     ));
   }
 
@@ -118,7 +137,9 @@ abstract class _$ConversationRequestCopyWith<$Res>
   $Res call(
       {int? pk,
       int? group,
-      @JsonKey(name: "group_detail") Conversation? groupDetail});
+      @JsonKey(name: "group_detail") Conversation? groupDetail,
+      @JsonKey(name: "participant_type") ParticpantType? participantType,
+      RequestStatus? status});
 
   @override
   $ConversationCopyWith<$Res>? get groupDetail;
@@ -140,6 +161,8 @@ class __$ConversationRequestCopyWithImpl<$Res>
     Object? pk = freezed,
     Object? group = freezed,
     Object? groupDetail = freezed,
+    Object? participantType = freezed,
+    Object? status = freezed,
   }) {
     return _then(_ConversationRequest(
       pk: pk == freezed
@@ -154,6 +177,14 @@ class __$ConversationRequestCopyWithImpl<$Res>
           ? _value.groupDetail
           : groupDetail // ignore: cast_nullable_to_non_nullable
               as Conversation?,
+      participantType: participantType == freezed
+          ? _value.participantType
+          : participantType // ignore: cast_nullable_to_non_nullable
+              as ParticpantType?,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RequestStatus?,
     ));
   }
 }
@@ -162,7 +193,11 @@ class __$ConversationRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ConversationRequest implements _ConversationRequest {
   _$_ConversationRequest(
-      {this.pk, this.group, @JsonKey(name: "group_detail") this.groupDetail});
+      {this.pk,
+      this.group,
+      @JsonKey(name: "group_detail") this.groupDetail,
+      @JsonKey(name: "participant_type") this.participantType,
+      this.status});
 
   factory _$_ConversationRequest.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationRequestFromJson(json);
@@ -174,10 +209,15 @@ class _$_ConversationRequest implements _ConversationRequest {
   @override
   @JsonKey(name: "group_detail")
   final Conversation? groupDetail;
+  @override
+  @JsonKey(name: "participant_type")
+  final ParticpantType? participantType;
+  @override
+  final RequestStatus? status;
 
   @override
   String toString() {
-    return 'ConversationRequest(pk: $pk, group: $group, groupDetail: $groupDetail)';
+    return 'ConversationRequest(pk: $pk, group: $group, groupDetail: $groupDetail, participantType: $participantType, status: $status)';
   }
 
   @override
@@ -190,7 +230,12 @@ class _$_ConversationRequest implements _ConversationRequest {
                 const DeepCollectionEquality().equals(other.group, group)) &&
             (identical(other.groupDetail, groupDetail) ||
                 const DeepCollectionEquality()
-                    .equals(other.groupDetail, groupDetail)));
+                    .equals(other.groupDetail, groupDetail)) &&
+            (identical(other.participantType, participantType) ||
+                const DeepCollectionEquality()
+                    .equals(other.participantType, participantType)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
   }
 
   @override
@@ -198,7 +243,9 @@ class _$_ConversationRequest implements _ConversationRequest {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(pk) ^
       const DeepCollectionEquality().hash(group) ^
-      const DeepCollectionEquality().hash(groupDetail);
+      const DeepCollectionEquality().hash(groupDetail) ^
+      const DeepCollectionEquality().hash(participantType) ^
+      const DeepCollectionEquality().hash(status);
 
   @JsonKey(ignore: true)
   @override
@@ -214,10 +261,11 @@ class _$_ConversationRequest implements _ConversationRequest {
 
 abstract class _ConversationRequest implements ConversationRequest {
   factory _ConversationRequest(
-          {int? pk,
-          int? group,
-          @JsonKey(name: "group_detail") Conversation? groupDetail}) =
-      _$_ConversationRequest;
+      {int? pk,
+      int? group,
+      @JsonKey(name: "group_detail") Conversation? groupDetail,
+      @JsonKey(name: "participant_type") ParticpantType? participantType,
+      RequestStatus? status}) = _$_ConversationRequest;
 
   factory _ConversationRequest.fromJson(Map<String, dynamic> json) =
       _$_ConversationRequest.fromJson;
@@ -229,6 +277,11 @@ abstract class _ConversationRequest implements ConversationRequest {
   @override
   @JsonKey(name: "group_detail")
   Conversation? get groupDetail => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "participant_type")
+  ParticpantType? get participantType => throw _privateConstructorUsedError;
+  @override
+  RequestStatus? get status => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationRequestCopyWith<_ConversationRequest> get copyWith =>

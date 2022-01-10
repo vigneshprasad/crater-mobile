@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../config_reader/config_reader.dart';
 
@@ -15,8 +18,13 @@ class IntercomProvider {
     );
   }
 
-  Future<void> show(String email) async {
-    await Intercom.registerIdentifiedUser(email: email);
+  Future<void> show(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+    if (email != null) {
+      await Intercom.registerIdentifiedUser(email: email);
+    } else {
+      await Intercom.registerUnidentifiedUser();
+    }
     final device = await OneSignal.shared.getDeviceState();
     final token = device?.pushToken;
     if (token != null) {

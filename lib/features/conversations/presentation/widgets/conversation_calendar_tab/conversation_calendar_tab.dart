@@ -1,37 +1,44 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/core/features/share_manager/share_manager.dart';
+import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/widgets/meeting_request_card.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/extensions/date_time_extensions.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_large_button/base_large_button.dart';
-import '../../../../../utils/app_localizations.dart';
 import '../../../../meeting/presentation/widgets/oneonone_card.dart';
 import '../conversation_card/conversation_card.dart';
-import '../conversation_tab_shimmer/conversation_tab_shimmer.dart';
 import '../optin_card/optin_card.dart';
 import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
 import 'conversation_calendar_tab_state.dart';
 
 const kLeftPaddingForDate = 20.00;
 
+final homeScreenScrollController =
+    Provider.autoDispose<ScrollController>((ref) {
+  final controller = ScrollController();
+  ref.onDispose(() {
+    controller.dispose();
+  });
+  return controller;
+});
+
 class ConversationCalendarTab extends HookWidget {
   final ConversationTabType type;
-  final ScrollController controller;
   final String name;
   final VoidCallback onSchedulePressed;
 
   const ConversationCalendarTab({
     required this.type,
-    required this.controller,
     required this.name,
     required this.onSchedulePressed,
   });
@@ -39,18 +46,35 @@ class ConversationCalendarTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final intialState = useProvider(initialStateProvider(type));
+    final _scrollController = useProvider(homeScreenScrollController);
+    final shareManager = useProvider(shareManagerProvider);
 
-    return ScaffoldContainer(
-      child: intialState.when(
-        loading: () => ConversationTabShimmer(),
-        data: (results) => _LoadedConversationTab(
-          type: type,
-          name: name,
-          onSchedulePressed: onSchedulePressed,
-          onReload: () {},
-        ),
-        error: (err, st) => _Loader(message: err.toString()),
-      ),
+    return SafeArea(
+      child: NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: const HomeAppBar(title: 'Streams'),
+              ),
+            ];
+          },
+          body: DefaultStickyHeaderController(
+              child: intialState.when(
+            loading: () => Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
+            )),
+            data: (results) => _LoadedConversationTab(
+              type: type,
+              name: name,
+              onSchedulePressed: onSchedulePressed,
+              onReload: () {},
+            ),
+            error: (err, st) => _Loader(message: err.toString()),
+          ))),
     );
   }
 }
@@ -141,7 +165,19 @@ class _LoadedConversationTab extends HookWidget {
           ),
         ]);
       }
+      bool oneOnOneTitleAdded = false;
       for (final date in week.requests) {
+        if (!oneOnOneTitleAdded) {
+          oneOnOneTitleAdded = true;
+          children.add(
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.0),
+                child: AccentTitle(title: '1:1 Conversations'),
+              ),
+            ),
+          );
+        }
         children.addAll([
           SliverStickyHeader.builder(
             overlapsContent: true,
@@ -151,7 +187,7 @@ class _LoadedConversationTab extends HookWidget {
             sliver: SliverPadding(
               padding: const EdgeInsets.only(
                 left: kLeftPaddingForDate,
-                bottom: AppInsets.xl,
+                bottom: AppInsets.sm,
                 top: 60,
               ),
               sliver: SliverList(
@@ -176,31 +212,36 @@ class _LoadedConversationTab extends HookWidget {
       }
       if (week.future != null) {
         /// Add Conversations
-        for (final date in week.conversations) {
-          children.addAll([
-            SliverStickyHeader.builder(
-              overlapsContent: true,
-              builder: (context, state) {
-                return _DateLabel(date: date.date);
-              },
-              sliver: SliverPadding(
-                padding: const EdgeInsets.only(
-                  left: kLeftPaddingForDate,
-                  bottom: AppInsets.xl,
-                  top: 60,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return ConversationCard(
-                          conversation: date.conversations![index]);
-                    },
-                    childCount: date.conversations?.length ?? 0,
-                  ),
-                ),
-              ),
+        List<Conversation> allConversations = [];
+        week.conversations.forEach((element) {
+          allConversations.addAll(element.conversations ?? []);
+        });
+        if (allConversations.isNotEmpty) {
+          children.add(
+            SliverToBoxAdapter(
+              child: SizedBox(
+                  height: 280,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: 280.0,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                        ),
+                        items: allConversations.map((c) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return ConversationCard(conversation: c);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  )),
             ),
-          ]);
+          );
         }
       } else {
         if (week.optins.isEmpty) {
@@ -239,25 +280,40 @@ class _LoadedConversationTab extends HookWidget {
       }
     }
 
+    if (children.length == 1 && emptyStateAdded == false) {
+      children.add(_EmptyOptinsState());
+      emptyStateAdded = true;
+    }
+    // if (children.length == 1) {
+    //   children.add(const SliverToBoxAdapter(
+    //     child: SizedBox(
+    //       height: 300,
+    //     ),
+    //   ));
+    // }
+
     children.add(SliverToBoxAdapter(
-      child: Center(
-        child: BaseContainer(
-          radius: 30,
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: SizedBox(
+          width: double.infinity,
           child: BaseLargeButton(
             onPressed: onSchedulePressed,
-            text: 'Schedule New',
+            text: 'Network with peers',
           ),
         ),
       ),
     ));
 
     return RefreshIndicator(
-      displacement: 96.00,
+      // displacement: 96.00,
+      color: Theme.of(context).accentColor,
       onRefresh: () {
-        return controller.getPreviousWeekData();
+        return controller.getInitialData();
       },
       child: CustomScrollView(
         slivers: [
+          const SliverPadding(padding: EdgeInsets.only(bottom: 20.00)),
           ...children,
           const SliverPadding(padding: EdgeInsets.only(bottom: 140.00)),
         ],
@@ -269,35 +325,27 @@ class _LoadedConversationTab extends HookWidget {
 class _EmptyOptinsState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final heading = AppLocalizations.of(context)
-        ?.translate("my_conversations:empty_state_heading");
-    final subheading = AppLocalizations.of(context)
-        ?.translate("my_conversations:empty_state_subeading");
-    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 18.00,
-        );
-    final subheadingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 14.00,
-        );
+    const heading = 'Upcoming conversations';
+    const subheading =
+        'You have no upcoming conversations. At crater you can a curated set of peers for live 1:1 conversations. All you have to do is opt-in';
+    final headingStyle = Theme.of(context).textTheme.headline6;
+    final subheadingStyle = Theme.of(context).textTheme.bodyText2;
     return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 480.00,
+      child: Padding(
+        padding: const EdgeInsets.all(40),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppInsets.xxl),
-            Image(
-              image: AppImageAssets.emptyCalendar,
-              width: MediaQuery.of(context).size.width * 0.8,
+            const Image(
+              image: AppImageAssets.meetingScheduled,
             ),
-            const SizedBox(height: AppInsets.xl),
-            Text(heading ?? '', style: headingStyle),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Text(
-                subheading ?? '',
-                textAlign: TextAlign.center,
-                style: subheadingStyle,
-              ),
+            const SizedBox(height: AppInsets.xxl),
+            Text(heading, style: headingStyle),
+            const SizedBox(height: AppInsets.xxl),
+            Text(
+              subheading,
+              style: subheadingStyle,
             ),
           ],
         ),

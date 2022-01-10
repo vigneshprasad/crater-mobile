@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_field_detail_entity.dart';
 
 import 'user_tag_entity.dart';
 
@@ -39,6 +40,17 @@ class UserProfile extends HiveObject {
   final String? companyName;
   final bool? allowMeetingRequest;
   final bool? canConnect;
+  final String? generatedIntroduction;
+  final String? linkedIn;
+  final UserProfileFieldDetail? educationLevelDetail;
+  final UserProfileFieldDetail? companiesInvestedDetail;
+  final UserProfileFieldDetail? companyTypeAdvisedDetail;
+  final UserProfileFieldDetail? companyTypeDetail;
+  final UserProfileFieldDetail? numberOfEmployeesDetail;
+  final UserProfileFieldDetail? projectTypeDetail;
+  final UserProfileFieldDetail? sectorDetail;
+  final UserProfileFieldDetail? stageOfCompanyDetail;
+  final UserProfileFieldDetail? yearOfExperienceDetail;
 
   UserProfile({
     this.pk,
@@ -77,5 +89,16 @@ class UserProfile extends HiveObject {
     this.companyName,
     this.allowMeetingRequest,
     this.canConnect,
+    this.generatedIntroduction,
+    this.linkedIn,
+    this.educationLevelDetail,
+    this.companiesInvestedDetail,
+    this.companyTypeAdvisedDetail,
+    this.companyTypeDetail,
+    this.numberOfEmployeesDetail,
+    this.projectTypeDetail,
+    this.sectorDetail,
+    this.stageOfCompanyDetail,
+    this.yearOfExperienceDetail,
   });
 }

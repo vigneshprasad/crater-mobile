@@ -1,17 +1,15 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/code_input/code_input.dart';
 import '../../../../ui/base/phone_number_input/phone_number_input.dart';
 import '../../../../utils/app_localizations.dart';
+import '../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/phone_verify/phone_verify_bloc.dart';
 import '../widgets/profile_header.dart';
@@ -120,6 +118,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                 Text(enterOtp!, style: labelStyle),
                               if (_showSmsCodeInput)
                                 CodeInput(
+                                  focusNode: FocusNode(),
                                   length: 4,
                                   onChange: (value) {
                                     setState(() {
@@ -179,7 +178,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         fontSize: 14,
       );
       Future.delayed(const Duration(seconds: 1), () {
-        AutoRouter.of(context).push(const ProfileRequestScreenRoute());
+        final user = BlocProvider.of<AuthBloc>(context).state.user;
+        final profile = BlocProvider.of<AuthBloc>(context).state.profile;
+        navigatePostAuth(user, profile: profile);
       });
     }
   }

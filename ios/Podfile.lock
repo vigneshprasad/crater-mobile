@@ -1,8 +1,4 @@
 PODS:
-  - agora_rtc_engine (4.0.6):
-    - AgoraRtcEngine_iOS (= 3.4.6)
-    - Flutter
-  - AgoraRtcEngine_iOS (3.4.6)
   - Amplitude-iOS (4.8.2)
   - Analytics (3.7.0)
   - AppAuth (1.4.0):
@@ -11,13 +7,17 @@ PODS:
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
   - appsflyer_sdk (6.2.0):
-    - AppsFlyerFramework (= 6.3.2)
+    - AppsFlyerFramework (= 6.3.5)
     - Flutter
-  - AppsFlyerFramework (6.3.2):
-    - AppsFlyerFramework/Main (= 6.3.2)
-  - AppsFlyerFramework/Main (6.3.2)
+  - AppsFlyerFramework (6.3.5):
+    - AppsFlyerFramework/Main (= 6.3.5)
+  - AppsFlyerFramework/Main (6.3.5)
   - device_info (0.0.1):
     - Flutter
+  - dyte_client (0.0.4):
+    - DyteSdk (~> 1.20)
+    - Flutter
+  - DyteSdk (1.29)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
   - FBSDKCoreKit/Core (11.0.1):
@@ -46,10 +46,10 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.4.0):
-    - GoogleDataTransport (~> 9.0)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.10.0):
+    - GoogleDataTransport (~> 9.1)
+    - GoogleUtilities/Environment (~> 7.6)
+    - GoogleUtilities/Logger (~> 7.6)
     - nanopb (~> 2.30908.0)
   - FirebaseDynamicLinks (8.3.0):
     - FirebaseCore (~> 8.0)
@@ -73,7 +73,7 @@ PODS:
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
-  - GoogleDataTransport (9.1.0):
+  - GoogleDataTransport (9.1.2):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -81,14 +81,14 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/Environment (7.5.0):
+  - GoogleUtilities/Environment (7.6.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.5.0):
+  - GoogleUtilities/Logger (7.6.0):
     - GoogleUtilities/Environment
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.6.1)
+  - GTMSessionFetcher/Core (1.7.0)
   - image_picker (0.0.1):
     - Flutter
   - Intercom (10.0.3)
@@ -104,18 +104,18 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - OneSignal (3.6.0)
-  - onesignal_flutter (3.1.0):
+  - OneSignal (3.10.0)
+  - onesignal_flutter (3.2.3):
     - Flutter
-    - OneSignalXCFramework (= 3.5.3)
-  - OneSignalXCFramework (3.5.3)
+    - OneSignalXCFramework (= 3.7.0)
+  - OneSignalXCFramework (3.7.0)
   - package_info (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
-  - phone_number (0.11.0):
+  - phone_number (0.12.0):
     - Flutter
     - PhoneNumberKit/PhoneNumberKitCore (= 3.3.3)
   - PhoneNumberKit/PhoneNumberKitCore (3.3.3)
@@ -144,9 +144,9 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
+  - dyte_client (from `.symlinks/plugins/dyte_client/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
@@ -176,11 +176,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AgoraRtcEngine_iOS
     - Amplitude-iOS
     - Analytics
     - AppAuth
     - AppsFlyerFramework
+    - DyteSdk
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
     - FBSDKLoginKit
@@ -206,12 +206,12 @@ SPEC REPOS:
     - UserLeapKit
 
 EXTERNAL SOURCES:
-  agora_rtc_engine:
-    :path: ".symlinks/plugins/agora_rtc_engine/ios"
   appsflyer_sdk:
     :path: ".symlinks/plugins/appsflyer_sdk/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
+  dyte_client:
+    :path: ".symlinks/plugins/dyte_client/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_dynamic_links:
@@ -262,14 +262,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  agora_rtc_engine: d3178bd63d453a2d0111bd45475f17ce1fcc754d
-  AgoraRtcEngine_iOS: 8aa4a8e46bd81963607857b1d46703b93e4de156
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  appsflyer_sdk: ca0dc5172a2bd2bdf32b3272a9729c203aa8fba7
-  AppsFlyerFramework: c66d79d965ccc2f44fd5db3df3d214428cc7665a
+  appsflyer_sdk: b5dc59a4f6ec5703c62a85a26da35ea28c571bbe
+  AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  dyte_client: 57e194a318747eb78243004dc9166489734ed54b
+  DyteSdk: acab9d83dce009bbb3365771c8b42f2bb63b0f47
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
@@ -277,7 +277,7 @@ SPEC CHECKSUMS:
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
   FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
-  FirebaseCoreDiagnostics: cad03be1904b975f845e632f2720c3337da27faf
+  FirebaseCoreDiagnostics: 56fb7216d87e0e6ec2feddefa9d8a392fe8b2c18
   FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
@@ -286,30 +286,30 @@ SPEC CHECKSUMS:
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
-  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
+  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
+  GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
   Intercom: 7a58cfdfaa67a2f98f7256cd5d09c87fbc29cb7d
   intercom_flutter: 38838a418f85a7c38ebee69609e4ff800aabb633
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  OneSignal: fba3971064be02510de1d8b9c90fabd749da2e52
-  onesignal_flutter: 79eb89d25249b078d3c358fb7827b22909f7fbed
-  OneSignalXCFramework: 4e08d8353adec161c3d9174e2572c849e1225c9f
+  OneSignal: 198da4de73fb7bd6e45bc04221a7f16efca057ad
+  onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
+  OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  phone_number: aaf1197d6ff991ac59640e7f73472e06f2efac95
+  phone_number: 667dd76f1ae3ee67ac0cb95d6b603c3a5aa7077e
   PhoneNumberKit: 4ce83273551c4d2ae10b7361162f4283dd02835f
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Segment-Amplitude: 1b3b02a2e92f4b08a413a72bf7aa44f78566ab3b
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sign_in_with_apple: 34f3f5456a45fd7ac5fb42905e2ad31dae061b4a
+  sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
@@ -318,6 +318,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: ffa43710ac26ae7d11aa040edda2d37b7004a474
+PODFILE CHECKSUM: 5627c2f90936e1eac2356b7c53ee7f2211ef8874
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

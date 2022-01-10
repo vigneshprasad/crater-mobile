@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -33,16 +35,21 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   File? _photo;
   String? _photoUrl;
   late String _name;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user!;
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>();
+    if (user != null) {
+      _bloc.add(GetProfileIntroRequestStarted(user: user));
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
-
-    _name = user.name!;
-    _photoUrl = user.photo;
+      _name = user.name ?? '';
+      _photoUrl = user.photo;
+    } else {
+      _name = '';
+      _photoUrl = null;
+    }
 
     if (_photoUrl == null) {
       if (_name.trim().isNotEmpty) {
@@ -111,6 +118,9 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
+    _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
+
     if (_photo == null) {
       _bloc.add(PostProfileIntroRequestStarted(values: {
         'photo_url': _photoUrl,
@@ -123,21 +133,14 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void _goToNextScreen() {
-    AutoRouter.of(context)
-        .push(ProfileBioScreenRoute(editMode: widget.editMode));
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {
-    if (state is ProfileIntroRequestLoaded) {
-    } else if (state is PatchProfileIntroRequestLoaded) {
+    if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
-      _goToNextScreen();
-    } else if (state is PatchProfileIntroRequestLoaded) {
-      final _ = BlocProvider.of<AuthBloc>(context)
-        ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
+      _overlay?.remove();
       _goToNextScreen();
     }
   }

@@ -35,7 +35,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
   final FocusNode _inputFocus = FocusNode();
   final TextEditingController _controller = TextEditingController();
   late List<Country> _countries;
-  late Country _selectedCountry;
+  Country? _selectedCountry;
   late bool _isFocused;
   late bool _isValid;
 
@@ -164,11 +164,13 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
   }
 
   void _textEditingListener() {
-    if (widget.autoValidate && _controller.text.isNotEmpty) {
+    if (widget.autoValidate &&
+        _controller.text.isNotEmpty &&
+        _selectedCountry != null) {
       final parsedPhoneNumberString =
           _controller.text.replaceAll(RegExp(r'[^\d+]'), '');
-      final isoCode = _selectedCountry.isoCode;
-      final value = "+${_selectedCountry.countryCode}$parsedPhoneNumberString";
+      final isoCode = _selectedCountry!.isoCode;
+      final value = "+${_selectedCountry!.countryCode}$parsedPhoneNumberString";
 
       if (widget.onChange != null) {
         widget.onChange!(value);

@@ -5,7 +5,7 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../bloc/auth_bloc.dart';
 
-const kProfileIconSize = 28.00;
+const kProfileIconSize = 24.00;
 
 class UserProfileNavItem extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -40,7 +40,11 @@ class UserProfileNavItem extends StatelessWidget {
             ),
           );
         } else {
-          return Container();
+          return const CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: kProfileIconSize / 2,
+            backgroundImage: AppImageAssets.defaultAvatar,
+          );
         }
       },
     );

@@ -225,10 +225,11 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, List<Profile>>> getMeetingRequestUsers() async {
+  Future<Either<Failure, List<Profile>>> getMeetingRequestUsers(
+      {String? tag}) async {
     try {
       final response =
-          await remoteDatasource.getMeetingRequestUsersFromRemote();
+          await remoteDatasource.getMeetingRequestUsersFromRemote(tag: tag);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -236,7 +237,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
   }
 
   @override
-  Future<Either<Failure, List<TimeSlot>>> getMeetingRequestSlots(
+  Future<Either<Failure, List<List<DateTime>>>> getMeetingRequestSlots(
       String requestedTo) async {
     try {
       final response =

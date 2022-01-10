@@ -15,6 +15,8 @@ class AppHiveBoxes {
   static const packagesBox = "PACKAGES_MODEL_BOX";
   static const pointRuleBox = "POINTS_RULE_BOX";
   static const pointFaqBox = "POINTS_FAQ_BOX";
+  // static const userProfileFieldDetailBox =
+  //     "USER_PROFILE_FIELD_DETAIL_MODEL_BOX";
 }
 
 class AppHiveTypeIds {
@@ -37,4 +39,5 @@ class AppHiveTypeIds {
   static const packageProvider = 17;
   static const pointsFaq = 18;
   static const pointsRule = 19;
+  // static const userProfileFieldDetail = 20;
 }

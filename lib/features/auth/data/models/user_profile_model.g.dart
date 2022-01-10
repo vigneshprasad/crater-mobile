@@ -53,13 +53,15 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       companyName: fields[33] as String?,
       allowMeetingRequest: fields[34] as bool?,
       canConnect: fields[35] as bool?,
+      generatedIntroduction: fields[36] as String?,
+      linkedIn: fields[37] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(36)
+      ..writeByte(38)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -131,7 +133,11 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(34)
       ..write(obj.allowMeetingRequest)
       ..writeByte(35)
-      ..write(obj.canConnect);
+      ..write(obj.canConnect)
+      ..writeByte(36)
+      ..write(obj.generatedIntroduction)
+      ..writeByte(37)
+      ..write(obj.linkedIn);
   }
 
   @override
@@ -189,6 +195,44 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
     companyName: json['company_name'] as String?,
     allowMeetingRequest: json['allow_meeting_request'] as bool?,
     canConnect: json['can_connect'] as bool?,
+    generatedIntroduction: json['generated_introduction'] as String?,
+    linkedIn: json['linkedin'] as String?,
+    educationLevelDetail: json['education_level_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['education_level_detail'] as Map<String, dynamic>),
+    companiesInvestedDetail: json['companies_invested_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['companies_invested_detail'] as Map<String, dynamic>),
+    companyTypeAdvisedDetail: json['company_type_advised_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_advised_detail'] as Map<String, dynamic>),
+    companyTypeDetail: json['company_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_detail'] as Map<String, dynamic>),
+    numberOfEmployeesDetail: json['number_of_employees_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['number_of_employees_detail'] as Map<String, dynamic>),
+    projectTypeDetail: json['project_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['project_type_detail'] as Map<String, dynamic>),
+    sectorDetail: json['sector_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['sector_detail'] as Map<String, dynamic>),
+    stageOfCompanyDetail: json['stage_of_company_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['stage_of_company_detail'] as Map<String, dynamic>),
+    yearOfExperienceDetail: json['year_of_experience_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['year_of_experience_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -230,4 +274,15 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'company_name': instance.companyName,
       'allow_meeting_request': instance.allowMeetingRequest,
       'can_connect': instance.canConnect,
+      'generated_introduction': instance.generatedIntroduction,
+      'linkedin': instance.linkedIn,
+      'education_level_detail': instance.educationLevelDetail,
+      'sector_detail': instance.sectorDetail,
+      'company_type_detail': instance.companyTypeDetail,
+      'year_of_experience_detail': instance.yearOfExperienceDetail,
+      'company_type_advised_detail': instance.companyTypeAdvisedDetail,
+      'number_of_employees_detail': instance.numberOfEmployeesDetail,
+      'project_type_detail': instance.projectTypeDetail,
+      'stage_of_company_detail': instance.stageOfCompanyDetail,
+      'companies_invested_detail': instance.companiesInvestedDetail,
     };

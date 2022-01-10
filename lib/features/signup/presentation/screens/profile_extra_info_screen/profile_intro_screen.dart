@@ -1,19 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/signup/data/repository/profile_meta_repository_impl.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../../constants/theme.dart';
 import '../../../../../core/widgets/base/base_multi_select_dropdown/base_multi_select_dropdown.dart';
-import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../data/models/profile_extra_meta/profile_extra_meta.dart';
+import '../../../data/repository/profile_meta_repository_impl.dart';
 import '../../widgets/profile_footer.dart';
 import '../../widgets/profile_header.dart';
 import '../../widgets/profile_intro_form/profile_form_dropdown.dart';
@@ -23,16 +23,27 @@ import 'profile_extra_info_state.dart';
 typedef FormValueChangeCallback<T> = void Function(String key, T value);
 
 class ProfileExtraInfoScreen extends HookWidget {
+  final bool editMode;
+
+  const ProfileExtraInfoScreen({
+    Key? key,
+    @PathParam("editMode") required this.editMode,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final profile = BlocProvider.of<AuthBloc>(context).state.profile;
-    final state = useProvider(
-        profileFormMetaStateProvider(profile?.tagList?.first.pk ?? 0));
+    final tag =
+        profile?.tagList?.isNotEmpty == true ? profile?.tagList?.first.pk : 0;
+    final state = useProvider(profileFormMetaStateProvider(tag ?? 0));
     return Scaffold(
       appBar: BaseAppBar(),
       body: state.when(
         loading: () => Container(),
-        data: (meta) => _ProflieIntroLoaded(meta: meta),
+        data: (meta) => _ProflieIntroLoaded(
+          meta: meta,
+          editMode: editMode,
+        ),
         error: (err, st) => Container(),
       ),
     );
@@ -41,9 +52,11 @@ class ProfileExtraInfoScreen extends HookWidget {
 
 class _ProflieIntroLoaded extends HookWidget {
   final ProfileExtraMeta meta;
+  final bool editMode;
 
   const _ProflieIntroLoaded({
     required this.meta,
+    required this.editMode,
   });
 
   @override
@@ -89,7 +102,7 @@ class _ProflieIntroLoaded extends HookWidget {
 
   Future<void> _postProfileData(
       BuildContext context, Map<String, dynamic> data) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
 
@@ -103,24 +116,9 @@ class _ProflieIntroLoaded extends HookWidget {
         Fluttertoast.showToast(msg: failure.message!);
       },
       (profile) {
-        AutoRouter.of(context).push(ProfileImageScreenRoute(editMode: false));
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Colors.black.withOpacity(0.6),
-          child: const Center(
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
+        BlocProvider.of<AuthBloc>(context)
+            .add(AuthUserProfileUpdateRecieved(profile: profile));
+        navigateNextProfileStep(editMode: editMode);
       },
     );
   }

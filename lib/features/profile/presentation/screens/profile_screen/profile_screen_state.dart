@@ -1,157 +1,109 @@
 import 'package:equatable/equatable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/domain/repository/auth_repository.dart';
-import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
-import 'package:worknetwork/features/signup/domain/repository/profile_intro_repository.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 
-import '../../../../../core/error/failures.dart';
-import '../../../../meeting/domain/entity/meeting_interest_entity.dart';
-import '../../../../meeting/domain/entity/meeting_objective_entity.dart';
-import '../../../../meeting/domain/entity/user_meeting_preference_entity.dart';
-import '../../../../meeting/domain/repository/meeting_repository.dart';
 import '../../../data/repository/profile_repository_impl.dart';
-import '../../../domain/entity/profile_entity/profile_entity.dart';
 import '../../../domain/repository/profile_repository.dart';
 
 final getProfileNotifierProvider = StateNotifierProvider.autoDispose
     .family<GetProfileNotifier, AsyncValue<_ProfileScreenState>, String>(
         (ref, profileId) {
   final repository = ref.read(profileRepositoryProvider);
-  final meetingRepository = KiwiContainer().resolve<MeetingRepository>();
-  final authRepository = KiwiContainer().resolve<AuthRepository>();
-  final profileIntroRepository =
-      KiwiContainer().resolve<ProfileIntroRepository>();
+  final connectionRepository = ref.read(connectionRepositoryProvider);
 
   return GetProfileNotifier(
     repository,
-    meetingRepository,
+    connectionRepository,
     profileId,
-    profileIntroRepository,
-    authRepository,
   );
 });
 
 class GetProfileNotifier
     extends StateNotifier<AsyncValue<_ProfileScreenState>> {
   final ProfileRepository _repository;
-  final AuthRepository _authRepository;
-  final MeetingRepository _meetingRepository;
-  final ProfileIntroRepository _profileIntroRepository;
+  final ConnectionRepository _connectionRepository;
   final String _profileId;
 
   GetProfileNotifier(
     this._repository,
-    this._meetingRepository,
+    this._connectionRepository,
     this._profileId,
-    this._profileIntroRepository,
-    this._authRepository,
   ) : super(const AsyncValue<_ProfileScreenState>.loading()) {
-    retrieveProfile();
+    // retrieveProfile();
   }
 
-  Future<void> retrieveProfile() async {
-    state = const AsyncValue<_ProfileScreenState>.loading();
-    final response = await Future.wait([
-      _repository.retrieveProfile(_profileId),
-      _meetingRepository.getMeetingPreference(),
-      _repository.retrieveConnections(_profileId),
-      _profileIntroRepository.getCompanies(),
-      _profileIntroRepository.getEducations(),
-      _profileIntroRepository.getExperiences(),
-      _profileIntroRepository.getSectors(),
-      _authRepository.getUserProfile(),
-    ]);
-
-    for (int i = 0; i < response.length; i++) {
-      final data = response[i];
-      if (data.isLeft()) {
-        final error = data.swap().getOrElse(() => ServerFailure());
-        state = AsyncValue<_ProfileScreenState>.error(error);
-        return;
-      }
-    }
-
+  Future<void> retrieveProfile({int? creatorId}) async {
+    final profileResponse = await _repository.retrieveProfile(_profileId);
     final _profile =
-        response[0].getOrElse(() => Profile(uuid: _profileId)) as Profile;
-    final UserMeetingPreference _preference = response[1]
-        .getOrElse(() => UserMeetingPreference()) as UserMeetingPreference;
-    final connections =
-        response[2].getOrElse(() => List<Profile>.empty()) as List<Profile>;
+        profileResponse.getOrElse(() => UserProfile(uuid: _profileId));
 
-    final companies =
-        response[3].getOrElse(() => List<ProfileIntroMeta>.empty())
-            as List<ProfileIntroMeta>;
-    final educations =
-        response[4].getOrElse(() => List<ProfileIntroMeta>.empty())
-            as List<ProfileIntroMeta>;
-    final experiences =
-        response[5].getOrElse(() => List<ProfileIntroMeta>.empty())
-            as List<ProfileIntroMeta>;
-    final sectors = response[6].getOrElse(() => List<ProfileIntroMeta>.empty())
-        as List<ProfileIntroMeta>;
-    final user = response[7].getOrElse(() => UserProfile()) as UserProfile;
+    Creator? _creator;
+    if (creatorId != null) {
+      final creatorResponse = await _connectionRepository.getCreator(creatorId);
+      _creator = creatorResponse.getOrElse(() => const Creator());
+    }
 
     final Map<String, String> meta = {};
-    if (_profile.tag?.first.name != null) {
-      meta['Profession'] = _profile.tag?.first.name ?? '';
+    if (_profile.tagList?.first.name != null) {
+      meta['Profession'] = _profile.tagList?.first.name ?? '';
     }
-    if (user.sector != null) {
-      meta['Sector'] =
-          sectors.firstWhere((element) => element.value == user.sector).name ??
-              '';
+    if (_profile.sectorDetail != null) {
+      meta['Sector'] = _profile.sectorDetail?.name ?? '';
     }
-    if (user.companyType != null) {
-      meta['Working with'] = companies
-              .firstWhere((element) => element.value == user.companyType)
-              .name ??
-          '';
+    if (_profile.companyType != null) {
+      meta['Working with'] = _profile.companyTypeDetail?.name ?? '';
     }
-    if (user.yearsOfExperience != null) {
-      meta['Years of experience'] = experiences
-              .firstWhere((element) => element.value == user.yearsOfExperience)
-              .name ??
-          '';
+    if (_profile.yearsOfExperience != null) {
+      meta['Years of experience'] = _profile.yearOfExperienceDetail?.name ?? '';
     }
-    if (user.educationLevel != null) {
-      meta['Level of education'] = educations
-              .firstWhere((element) => element.value == user.educationLevel)
-              .name ??
-          '';
+    if (_profile.educationLevel != null) {
+      meta['Level of education'] = _profile.educationLevelDetail?.name ?? '';
+    }
+    if (_profile.projectType != null) {
+      meta['Project'] = _profile.projectTypeDetail?.name ?? '';
+    }
+    if (_profile.stageOfCompany != null) {
+      meta['Stage of Company'] = _profile.stageOfCompanyDetail?.name ?? '';
+    }
+    if (_profile.companiesInvestedDetail != null) {
+      meta['Invested in companies'] =
+          _profile.companiesInvestedDetail?.name ?? '';
+    }
+    if (_profile.numberOfEmployeesDetail != null) {
+      meta['Employees count'] = _profile.numberOfEmployeesDetail?.name ?? '';
+    }
+    if (_profile.companyTypeAdvisedDetail != null) {
+      meta['Company Advised'] = _profile.companyTypeAdvisedDetail?.name ?? '';
     }
 
     final _ProfileScreenState _profileScreenState = _ProfileScreenState(
       profile: _profile,
-      interests: _preference.interests ?? [],
-      objectives: _preference.objectives ?? [],
-      connections: connections,
       meta: meta,
+      creator: _creator,
     );
-    state = AsyncValue<_ProfileScreenState>.data(_profileScreenState);
+
+    if (mounted) {
+      state = AsyncValue<_ProfileScreenState>.data(_profileScreenState);
+    }
   }
 }
 
 class _ProfileScreenState extends Equatable {
-  final Profile profile;
-  final List<MeetingInterest> interests;
-  final List<MeetingObjective> objectives;
-  final List<Profile>? connections;
+  final UserProfile profile;
   final Map<String, String> meta;
+  final Creator? creator;
 
   const _ProfileScreenState({
     required this.profile,
-    required this.interests,
-    required this.objectives,
-    this.connections,
     required this.meta,
+    this.creator,
   });
 
   @override
   List<Object> get props => [
         profile,
-        interests,
-        objectives,
         meta,
       ];
 }

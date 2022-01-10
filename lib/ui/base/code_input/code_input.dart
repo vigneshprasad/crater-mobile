@@ -10,13 +10,15 @@ class CodeInput extends StatefulWidget {
   final int length;
   final OnChangeCallback? onChange;
   final OnValidCallback? onValidChange;
+  final FocusNode focusNode;
 
-  const CodeInput({
-    Key? key,
-    required this.length,
-    this.onChange,
-    this.onValidChange,
-  }) : super(key: key);
+  const CodeInput(
+      {Key? key,
+      required this.length,
+      this.onChange,
+      this.onValidChange,
+      required this.focusNode})
+      : super(key: key);
 
   @override
   _CodeInputState createState() => _CodeInputState();
@@ -30,7 +32,7 @@ class _CodeInputState extends State<CodeInput> {
   @override
   void initState() {
     _valuesList = List.generate(widget.length, (index) => "");
-    _focusNode = FocusNode();
+    _focusNode = widget.focusNode;
     _controller = TextEditingController();
     _controller.addListener(_textChangeListener);
     super.initState();

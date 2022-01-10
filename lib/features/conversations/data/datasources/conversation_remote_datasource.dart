@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -86,6 +87,16 @@ abstract class ConversationRemoteDatasource {
   // Post an instant conversation to remote server
   /// Throws [ServerException]
   Future<Topic> postTopicSuggestionToRemote(Topic topic);
+
+  /// Get All Conversation for user from start to end date
+  /// Throws [ServerException] on error
+  Future<List<Webinar>> getLiveClubsfromRemote({String? userId});
+
+  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
+
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId});
+
+  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId});
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -295,6 +306,67 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Topic.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getLiveClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getLiveClubs(userId);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getUpcomingClubs(userId);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getPastClubs(userId);
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getFeaturedClubs();
+    if (response.statusCode == 200) {
+      if (response.bodyString == "[]") {
+        return List.empty();
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = json['results'] as List;
+      // final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }

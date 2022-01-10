@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
@@ -57,7 +58,7 @@ class RootApp extends HookWidget {
         child: MaterialApp.router(
           routerDelegate: _appRouter.delegate(),
           routeInformationParser: _appRouter.defaultRouteParser(),
-          title: 'WorkNetwork',
+          title: 'Crater',
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -86,41 +87,85 @@ class RootApp extends HookWidget {
               //   ],
               // builder:
               (context, child) {
-            final lightBlue = HexColor.fromHex('#283950');
-            final darkBlue = HexColor.fromHex('#121823');
-            final black = darkBlue;
+            final canvasColor = HexColor.fromHex('#1F2127');
+            final borderColor = HexColor.fromHex('#272728');
+            const backgroundColor = Colors.black;
+            final splashColor = HexColor.fromHex('782BE8');
+            final grey = HexColor.fromHex('#808190');
             //HexColor.fromHex("#10141C");
-            final buttonColor = HexColor.fromHex('#C67F70');
+            final buttonColor = HexColor.fromHex('#9146FF');
             return Theme(
               data: AppTheme.darkTheme.copyWith(
-                backgroundColor: darkBlue,
-                splashFactory: const NoSplashFactory(),
+                textTheme: TextTheme(
+                  headline5: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline6: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline4: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline3: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  caption: TextStyle(
+                      fontSize: 14, color: grey, fontFamily: "Roobert"),
+                  // subtitle1: const TextStyle(fontWeight: FontWeight.bold),
+                  subtitle2: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  button: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                ),
+
+                backgroundColor: backgroundColor,
+                // splashFactory: const NoSplashFactory(),
+                splashColor: splashColor,
                 highlightColor: Colors.transparent,
                 primaryColor: buttonColor,
-                scaffoldBackgroundColor: darkBlue,
-                canvasColor: darkBlue,
+                scaffoldBackgroundColor: backgroundColor,
+                canvasColor: canvasColor,
+                outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    side: BorderSide(
+                      color: borderColor,
+                      width: 2,
+                    ),
+                    // backgroundColor: darkBlue,
+                    primary: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                ),
                 bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                  backgroundColor: black,
-                  selectedItemColor: Colors.white,
-                  unselectedItemColor: Colors.white38,
+                  selectedItemColor: buttonColor,
                 ),
                 appBarTheme: AppBarTheme(
-                    iconTheme: IconThemeData(color: buttonColor),
-                    color: black,
-                    elevation: 0,
-                    actionsIconTheme: IconThemeData(color: buttonColor)),
+                  iconTheme: IconThemeData(color: buttonColor),
+                  color: backgroundColor,
+                  elevation: 0,
+                  actionsIconTheme: IconThemeData(color: buttonColor),
+                ),
                 buttonTheme: ButtonThemeData(
-                  buttonColor: darkBlue,
+                  buttonColor: buttonColor,
                   colorScheme: const ColorScheme.dark(),
                 ),
-                indicatorColor: Colors.transparent,
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(primary: buttonColor),
+                ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(primary: buttonColor),
+                ),
+                indicatorColor: buttonColor,
                 tabBarTheme: const TabBarTheme(
                   indicatorSize: TabBarIndicatorSize.label,
                 ),
                 buttonColor: buttonColor,
-                dialogBackgroundColor: lightBlue,
-                floatingActionButtonTheme:
-                    FloatingActionButtonThemeData(backgroundColor: buttonColor),
+                dialogBackgroundColor: canvasColor,
+                floatingActionButtonTheme: FloatingActionButtonThemeData(
+                  backgroundColor: buttonColor,
+                ),
                 accentColor: buttonColor,
               ),
               child: child!,
@@ -169,4 +214,23 @@ class NoSplash extends InteractiveInkFeature {
 
   @override
   void paintFeature(Canvas canvas, Matrix4 transform) {}
+}
+
+OverlayEntry buildLoaderOverlay() {
+  return OverlayEntry(
+    builder: (context) {
+      return Container(
+        color: Colors.black.withOpacity(0.6),
+        child: Center(
+          child: SizedBox(
+            width: 36,
+            height: 36,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

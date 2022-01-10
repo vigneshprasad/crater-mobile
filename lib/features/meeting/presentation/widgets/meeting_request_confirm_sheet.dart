@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/data/repository/meeting_respository_impl.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -52,22 +53,11 @@ class MeetingRequestConfirmSheet extends HookWidget {
     );
   }
 
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
-      },
-    );
-  }
-
   Future<void> _submit(BuildContext context, DateTime? selectedSlot) async {
     if (selectedSlot == null) {
       return;
     }
-    final overlay = _buildLoaderOverlay();
+    final overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlay);
 
     final response = await context

@@ -25,7 +25,7 @@ class RootProvider extends StatefulWidget {
 
 class _RootProviderState extends State<RootProvider> {
   late AuthBloc _authBloc;
-  late WebsocketBloc _websocketBloc;
+  // late WebsocketBloc _websocketBloc;
   late NotificationBloc _notificationBloc;
   late MeetingBloc _meetingBloc;
   late RewardsBloc _rewardsBloc;
@@ -36,7 +36,7 @@ class _RootProviderState extends State<RootProvider> {
   @override
   void initState() {
     _authBloc = KiwiContainer().resolve<AuthBloc>();
-    _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
+    // _websocketBloc = KiwiContainer().resolve<WebsocketBloc>();
     _notificationBloc = KiwiContainer().resolve<NotificationBloc>();
     _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
     _rewardsBloc = KiwiContainer().resolve<RewardsBloc>();
@@ -49,7 +49,7 @@ class _RootProviderState extends State<RootProvider> {
   @override
   void dispose() {
     _authBloc.close();
-    _websocketBloc.close();
+    // _websocketBloc.close();
     _notificationBloc.close();
     _meetingBloc.close();
     _rewardsBloc.close();
@@ -64,9 +64,9 @@ class _RootProviderState extends State<RootProvider> {
         BlocProvider.value(
           value: _authBloc,
         ),
-        BlocProvider.value(
-          value: _websocketBloc,
-        ),
+        // BlocProvider.value(
+        //   value: _websocketBloc,
+        // ),
         BlocProvider.value(
           value: _meetingBloc,
         ),

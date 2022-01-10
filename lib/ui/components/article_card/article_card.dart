@@ -73,7 +73,7 @@ class ArticleCard extends StatelessWidget {
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          animation: CustomTabsSystemAnimation.slideIn(),
+          // animation: CustomTabsSystemAnimation.slideIn(),
           extraCustomTabs: const <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',
