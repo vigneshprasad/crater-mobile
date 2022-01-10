@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
