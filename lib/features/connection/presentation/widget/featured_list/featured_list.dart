@@ -28,7 +28,7 @@ class FeaturedList extends HookWidget {
     });
     final connectionState = useProvider(featuredConnectionStateProvider(''));
     return SizedBox(
-      height: 240,
+      height: 220,
       child: connectionState.when(
         loading: () => Center(
             child: CircularProgressIndicator(
@@ -101,12 +101,12 @@ class CreatorCard extends StatelessWidget {
                 style: headingStyle,
                 maxLines: 2,
               ),
-              const SizedBox(height: AppInsets.sm),
-              Text(
-                '${followerFormat(creator.numberOfSubscribers ?? 0)} Followers',
-                overflow: TextOverflow.ellipsis,
-                style: bodyStyle,
-              ),
+              // const SizedBox(height: AppInsets.sm),
+              // Text(
+              //   '${followerFormat(creator.numberOfSubscribers ?? 0)} Followers',
+              //   overflow: TextOverflow.ellipsis,
+              //   style: bodyStyle,
+              // ),
             ],
           ),
         ],

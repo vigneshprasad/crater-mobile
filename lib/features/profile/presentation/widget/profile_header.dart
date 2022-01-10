@@ -87,12 +87,12 @@ class ProfileHeader extends HookWidget {
                                   ),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            if (creator != null)
-                              Text(
-                                '${followerFormat(creator?.numberOfSubscribers ?? 0)} Followers',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
+                            // const SizedBox(height: 8),
+                            // if (creator != null)
+                            //   Text(
+                            //     '${followerFormat(creator?.numberOfSubscribers ?? 0)} Followers',
+                            //     style: Theme.of(context).textTheme.caption,
+                            //   ),
                             const SizedBox(height: 8),
                             if (showConnect)
                               Positioned(
