@@ -6,18 +6,18 @@ import '../../../../constants/theme.dart';
 typedef GetDateTimeCallback<T> = DateTime Function(T obj);
 
 class BaseDateTimePicker<T> extends StatefulWidget {
-  final List<T> initialValue;
+  final List<T>? initialValue;
   final List<List<T>> timeSlots;
   final GetDateTimeCallback<T> getDateTime;
   final int maxLength;
   final double height;
-  final ValueChanged<List<T>> onValueChanged;
+  final ValueChanged<List<T>>? onValueChanged;
 
   const BaseDateTimePicker({
-    Key key,
+    Key? key,
     this.initialValue,
-    @required this.timeSlots,
-    this.getDateTime,
+    required this.timeSlots,
+    required this.getDateTime,
     this.maxLength = 1,
     this.height = 236,
     this.onValueChanged,
@@ -29,10 +29,10 @@ class BaseDateTimePicker<T> extends StatefulWidget {
 
 class _BaseDateTimePickerState<T> extends State<BaseDateTimePicker<T>>
     with SingleTickerProviderStateMixin {
-  TabController _controller;
-  List<DateTime> _displayDays;
-  List<T> _value;
-  int _activeTab;
+  late TabController _controller;
+  late List<DateTime> _displayDays;
+  late List<T> _value;
+  late int _activeTab;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _BaseDateTimePickerState<T> extends State<BaseDateTimePicker<T>>
   @override
   Widget build(BuildContext context) {
     final selectedLength = _value.length;
-    return Container(
+    return SizedBox(
       height: widget.height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -104,7 +104,7 @@ class _BaseDateTimePickerState<T> extends State<BaseDateTimePicker<T>>
                         setState(() {
                           _value = updated;
                           if (widget.onValueChanged != null) {
-                            widget.onValueChanged(_value);
+                            widget.onValueChanged!(_value);
                           }
                         });
                       },
@@ -129,11 +129,11 @@ class _DateSlotPickerBody<T> extends StatelessWidget {
   final GetDateTimeCallback<T> getDateTime;
 
   const _DateSlotPickerBody({
-    Key key,
-    @required this.timeslots,
-    @required this.selected,
-    @required this.onSlotPressed,
-    @required this.getDateTime,
+    Key? key,
+    required this.timeslots,
+    required this.selected,
+    required this.onSlotPressed,
+    required this.getDateTime,
   }) : super(key: key);
 
   @override
@@ -166,18 +166,18 @@ class _TimeSlot<T> extends StatelessWidget {
   final T value;
 
   const _TimeSlot({
-    Key key,
-    @required this.active,
-    @required this.time,
-    @required this.onPressed,
-    @required this.value,
+    Key? key,
+    required this.active,
+    required this.time,
+    required this.onPressed,
+    required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final timeformat = DateFormat('hh:mm a');
     final primaryColor = Theme.of(context).primaryColor;
-    final textStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           color: active ? primaryColor : Colors.white,
         );
     final borderRadius = BorderRadius.circular(6.0);
@@ -197,7 +197,7 @@ class _TimeSlot<T> extends StatelessWidget {
                     width: 2,
                   )
                 : Border.all(
-                    color: Colors.grey[300],
+                    color: Colors.grey[300]!,
                     width: 2,
                   ),
             borderRadius: borderRadius,
@@ -231,16 +231,16 @@ class _DatesTabBar extends StatelessWidget {
   final ValueChanged<DateTime> onTabPressed;
 
   const _DatesTabBar({
-    Key key,
-    @required this.dates,
-    @required this.selected,
+    Key? key,
+    required this.dates,
+    required this.selected,
     this.height = 48,
-    this.onTabPressed,
+    required this.onTabPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -261,10 +261,10 @@ class _DateTab extends StatelessWidget {
   final ValueChanged<DateTime> onPressed;
 
   const _DateTab({
-    Key key,
-    @required this.date,
-    @required this.active,
-    @required this.onPressed,
+    Key? key,
+    required this.date,
+    required this.active,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -275,7 +275,7 @@ class _DateTab extends StatelessWidget {
     final BoxDecoration decoration = BoxDecoration(
       borderRadius: borerRadius,
     );
-    final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final textStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
         );
     return Padding(
@@ -305,7 +305,7 @@ class _DateTab extends StatelessWidget {
                 ),
                 Text(
                   dateFormat.format(date),
-                  style: textStyle.copyWith(fontWeight: FontWeight.w500),
+                  style: textStyle?.copyWith(fontWeight: FontWeight.w500),
                 )
               ],
             ),

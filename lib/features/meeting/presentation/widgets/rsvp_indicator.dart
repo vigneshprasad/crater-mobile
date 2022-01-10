@@ -11,15 +11,16 @@ class RsvpIndicator extends StatelessWidget {
   final bool showIndicator;
 
   const RsvpIndicator({
-    Key key,
-    @required this.participant,
-    @required this.showIndicator,
+    Key? key,
+    required this.participant,
+    required this.showIndicator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      overflow: Overflow.visible,
+      // overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: [
         _buildImagePreview(context),
         if (showIndicator) _buildStatusIndicator(context),
@@ -55,7 +56,7 @@ class RsvpIndicator extends StatelessWidget {
         height: 16,
         width: 16,
         decoration: BoxDecoration(
-          color: MeetingRsvpUtils.getRsvpStatusColor(participant.rsvp.status),
+          color: MeetingRsvpUtils.getRsvpStatusColor(participant.rsvp!.status!),
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white,

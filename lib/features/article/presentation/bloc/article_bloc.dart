@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/usecase/aysnc_usecase.dart';
 import '../../domain/entity/article_entity.dart';
@@ -18,11 +17,9 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   final UCGetArticleWebsites getArticleWebsites;
 
   ArticleBloc({
-    @required this.getArticles,
-    @required this.getArticleWebsites,
-  })  : assert(getArticleWebsites != null),
-        assert(getArticles != null),
-        super(const ArticleInitial());
+    required this.getArticles,
+    required this.getArticleWebsites,
+  }) : super(const ArticleInitial());
 
   @override
   Stream<ArticleState> mapEventToState(

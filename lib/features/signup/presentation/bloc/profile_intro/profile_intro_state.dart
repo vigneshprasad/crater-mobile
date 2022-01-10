@@ -2,15 +2,15 @@ part of 'profile_intro_bloc.dart';
 
 abstract class ProfileIntroState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const ProfileIntroState({
-    this.loading,
+    required this.loading,
     this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ProfileIntroInitial extends ProfileIntroState {
@@ -31,7 +31,7 @@ class ProfileIntroRequestLoading extends ProfileIntroState {
 
 class ProfileIntroRequestError extends ProfileIntroState {
   const ProfileIntroRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -42,26 +42,28 @@ class ProfileIntroRequestLoaded extends ProfileIntroState {
   final List<ProfileIntroQuestion> questions;
 
   const ProfileIntroRequestLoaded({
-    @required this.questions,
+    required this.questions,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, questions];
+  List<Object> get props =>
+      error != null ? [loading, error!, questions] : [loading, questions];
 }
 
 class PatchProfileIntroRequestLoaded extends ProfileIntroState {
   final UserProfile profile;
 
   const PatchProfileIntroRequestLoaded({
-    @required this.profile,
+    required this.profile,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, profile];
+  List<Object> get props =>
+      error != null ? [loading, error!, profile] : [loading, profile];
 }

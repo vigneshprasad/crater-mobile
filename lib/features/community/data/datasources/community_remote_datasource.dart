@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../../../../api/post/post_api_service.dart';
@@ -32,7 +31,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
   final PostApiService apiService;
 
   CommunityRemoteDatasourceImpl({
-    @required this.apiService,
+    required this.apiService,
   });
 
   @override
@@ -42,11 +41,12 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final responseModel = PostsPageApiResponse.fromJson(json);
-      final pages = (responseModel.count / pageSize).ceil();
+      final pages = (responseModel.count ?? 0 / pageSize).ceil();
       return PageApiResponse<Post>(
+        pageSize: pageSize,
         count: responseModel.count,
         currentPage: responseModel.currentPage,
-        results: responseModel.results.cast<Post>(),
+        results: responseModel.results?.cast<Post>(),
         fromCache: false,
         pages: pages,
       );
@@ -124,11 +124,13 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final responseModel = CommentsPageApiResponse.fromJson(json);
-      final pages = (responseModel.results.length / pageSize).ceil();
-      final resultsUpdated =
-          responseModel.results.map((e) => e.copyWith(postId: postId)).toList();
+      final pages = (responseModel.results?.length ?? 0 / pageSize).ceil();
+      final resultsUpdated = responseModel.results
+          ?.map((e) => e.copyWith(postId: postId))
+          .toList();
       return PageApiResponse<Comment>(
         count: responseModel.count,
+        pageSize: pageSize,
         currentPage: responseModel.currentPage,
         results: resultsUpdated,
         fromCache: false,

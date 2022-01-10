@@ -2,13 +2,13 @@ part of 'notification_bloc.dart';
 
 @immutable
 class NotificationState extends Equatable {
-  final int count;
-  final int currentPage;
-  final int pages;
-  final int pageSize;
-  final List<Notification> notifications;
+  final int? count;
+  final int? currentPage;
+  final int? pages;
+  final int? pageSize;
+  final List<Notification>? notifications;
   final bool loading;
-  final dynamic error;
+  final Object? error;
 
   const NotificationState({
     this.count,
@@ -17,27 +17,30 @@ class NotificationState extends Equatable {
     this.pageSize,
     this.notifications,
     this.error,
-    this.loading,
+    required this.loading,
   });
 
   @override
-  List<Object> get props => [
-        count,
-        currentPage,
-        pages,
-        pageSize,
-        notifications,
-        error,
-        loading,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      loading,
+    ];
+    if (pages != null) temp.add(pages!);
+    if (count != null) temp.add(count!);
+    if (currentPage != null) temp.add(currentPage!);
+    if (notifications != null) temp.add(notifications!);
+    if (pageSize != null) temp.add(pageSize!);
+    if (error != null) temp.add(error!);
+    return temp;
+  }
 
   NotificationState copyWith({
-    int count,
-    int currentPage,
-    int pages,
-    int pageSize,
-    List<Notification> notifications,
-    bool loading,
+    int? count,
+    int? currentPage,
+    int? pages,
+    int? pageSize,
+    List<Notification>? notifications,
+    bool? loading,
     dynamic error,
   }) {
     return NotificationState(
@@ -67,10 +70,10 @@ class NotificationInitial extends NotificationState {
 
 class GetNotificationsReceived extends NotificationState {
   const GetNotificationsReceived({
-    @required int count,
-    @required int currentPage,
-    @required int pages,
-    @required List<Notification> results,
+    int? count,
+    int? currentPage,
+    int? pages,
+    List<Notification>? results,
   }) : super(
           count: count,
           currentPage: currentPage,

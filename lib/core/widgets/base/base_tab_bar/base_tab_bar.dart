@@ -7,9 +7,9 @@ class BaseTabBar extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget> tabs;
 
   const BaseTabBar({
-    Key key,
-    @required this.controller,
-    @required this.tabs,
+    Key? key,
+    required this.controller,
+    required this.tabs,
   })  : assert(controller.length == tabs.length),
         super(key: key);
 
@@ -21,10 +21,10 @@ class BaseTabBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _BaseTabBarState extends State<BaseTabBar> {
-  int _currentIndex;
-  List<GlobalKey> _tabKeys;
-  double indicatorWidth;
-  double indicatorPosition;
+  late int _currentIndex;
+  late List<GlobalKey> _tabKeys;
+  late double indicatorWidth;
+  late double indicatorPosition;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _BaseTabBarState extends State<BaseTabBar> {
     indicatorWidth = 0;
     indicatorPosition = 0;
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => setIndicatorWidth(context));
+        ?.addPostFrameCallback((_) => setIndicatorWidth(context));
     widget.controller.addListener(_onIndexChange);
     super.initState();
   }
@@ -85,12 +85,11 @@ class _BaseTabBarState extends State<BaseTabBar> {
 
   void setIndicatorWidth(BuildContext context) {
     final GlobalKey _tabKey = _tabKeys[_currentIndex];
-    final RenderBox renderBox =
-        _tabKey.currentContext.findRenderObject() as RenderBox;
+    final renderBox = _tabKey.currentContext?.findRenderObject() as RenderBox?;
 
-    final width = renderBox.size.width;
+    final width = renderBox?.size.width;
 
-    if (width.isFinite) {
+    if (width != null && width.isFinite) {
       setState(() {
         indicatorWidth = width;
       });
@@ -134,11 +133,10 @@ class _BaseTabBarState extends State<BaseTabBar> {
 
   void _updateIndicatorPosition() {
     final GlobalKey _tabKey = _tabKeys[_currentIndex];
-    final RenderBox renderBox =
-        _tabKey.currentContext.findRenderObject() as RenderBox;
+    final renderBox = _tabKey.currentContext?.findRenderObject() as RenderBox?;
 
-    final offset = renderBox.localToGlobal(const Offset(0, 0));
-    if (offset.dx > 0) {
+    final offset = renderBox?.localToGlobal(const Offset(0, 0));
+    if (offset != null && offset.dx > 0) {
       setState(() {
         indicatorPosition = offset.dx - AppInsets.xl;
       });
@@ -150,13 +148,13 @@ class BaseTab extends StatelessWidget {
   final String text;
 
   const BaseTab({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 15,
         );
     return Container(

@@ -4,7 +4,7 @@ part 'push_notification_data.freezed.dart';
 part 'push_notification_data.g.dart';
 
 PushType enumFromType(dynamic source) {
-  return _$enumDecodeNullable(_$PushTypeEnumMap, source);
+  return _$enumDecode(_$PushTypeEnumMap, source);
 }
 
 enum PushType {
@@ -27,7 +27,7 @@ abstract class ConversationNotificationData
     with _$ConversationNotificationData {
   @Implements(PushNotificationBase)
   factory ConversationNotificationData({
-    @JsonKey(name: "obj_type") PushType type,
+    @JsonKey(name: "obj_type") required PushType type,
     @Default(PushType.conversation) @JsonKey(name: "group_id") groupId,
   }) = _ConversationNotificationData;
 

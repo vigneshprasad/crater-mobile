@@ -10,20 +10,20 @@ class MultiSelectDropdown<T> extends StatefulWidget {
   final List<T> items;
   final LabelGetterFunc<T> labelGetter;
   final OnChangeItems<T> onChangeItems;
-  final int maxLength;
+  final int? maxLength;
   final bool error;
   final String label;
   final List<T> initialValue;
 
   const MultiSelectDropdown({
-    Key key,
+    Key? key,
     this.maxLength,
     this.error = false,
     this.initialValue = const [],
-    @required this.label,
-    @required this.items,
-    @required this.labelGetter,
-    @required this.onChangeItems,
+    required this.label,
+    required this.items,
+    required this.labelGetter,
+    required this.onChangeItems,
   }) : super(key: key);
 
   @override
@@ -31,8 +31,8 @@ class MultiSelectDropdown<T> extends StatefulWidget {
 }
 
 class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
-  List<T> _selectedItems;
-  List<DropdownMenuItem<T>> _items;
+  late List<T> _selectedItems;
+  late List<DropdownMenuItem<T>> _items;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(fontSize: 15, color: Colors.grey[500]);
+        ?.copyWith(fontSize: 15, color: Colors.grey[500]);
     final border = widget.error
         ? Border.all(width: 2, color: Theme.of(context).errorColor)
         : null;
@@ -72,7 +72,8 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
         ),
         child: Stack(
           fit: StackFit.passthrough,
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: [
             DropdownButtonHideUnderline(
               child: ButtonTheme(
@@ -83,7 +84,7 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                   isExpanded: true,
                   items: _items,
                   onChanged: widget.maxLength != null
-                      ? (_selectedItems.length >= widget.maxLength
+                      ? (_selectedItems.length >= widget.maxLength!
                           ? null
                           : _onChangedDropdownValue)
                       : _onChangedDropdownValue,
@@ -140,7 +141,8 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
     widget.onChangeItems(_selectedItems);
   }
 
-  void _onChangedDropdownValue(T value) {
+  void _onChangedDropdownValue(T? value) {
+    if (value == null) return;
     setState(() {
       _selectedItems = (_selectedItems..add(value));
       _items = _updatedDropdownItems(_selectedItems);
@@ -182,19 +184,21 @@ class MultiSelectDropdownFormField<T> extends FormField<List<T>> {
 
   MultiSelectDropdownFormField({
     List<T> initialValue = const [],
-    FormFieldSetter<List<T>> onSaved,
-    FormFieldValidator<List<T>> validator,
+    FormFieldSetter<List<T>?>? onSaved,
+    FormFieldValidator<List<T>?>? validator,
     bool autovalidate = false,
-    this.items,
-    this.labelGetter,
-    this.onChangeItems,
-    this.maxLength,
-    this.label,
+    required this.items,
+    required this.labelGetter,
+    required this.onChangeItems,
+    required this.maxLength,
+    required this.label,
   }) : super(
             initialValue: initialValue,
             onSaved: onSaved,
             validator: validator,
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
             builder: (state) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +217,7 @@ class MultiSelectDropdownFormField<T> extends FormField<List<T>> {
                     },
                   ),
                   if (state.hasError) const SizedBox(height: AppInsets.med),
-                  if (state.hasError) BaseErrorText(text: state.errorText)
+                  if (state.hasError) BaseErrorText(text: state.errorText!)
                 ],
               );
             });

@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -9,7 +8,7 @@ class UCGetAuthentication implements AsyncUseCase<bool, NoParams> {
   final AuthRepository repository;
 
   UCGetAuthentication({
-    @required this.repository,
+    required this.repository,
   });
 
   @override

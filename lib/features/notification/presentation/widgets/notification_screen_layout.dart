@@ -7,9 +7,9 @@ class NotificationScreenLayout extends StatelessWidget {
   final int itemCount;
 
   const NotificationScreenLayout({
-    Key key,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    Key? key,
+    required this.itemBuilder,
+    required this.itemCount,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

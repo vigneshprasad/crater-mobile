@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../core/features/websocket/data/models/ws_request.dart';
@@ -11,8 +10,8 @@ class SetChatRequestParams {
   final int page;
 
   const SetChatRequestParams({
-    @required this.user,
-    @required this.page,
+    required this.user,
+    required this.page,
   });
 
   factory SetChatRequestParams.fromJson(Map<String, dynamic> json) =>
@@ -24,7 +23,7 @@ class SetChatRequestParams {
 class SetChatRequest extends WSRequest {
   const SetChatRequest({
     WSRequestType type = WSRequestType.setUserChat,
-    @required SetChatRequestParams message,
+    required SetChatRequestParams message,
   }) : super(
           type: type,
           message: message,
@@ -39,7 +38,7 @@ class SetChatRequest extends WSRequest {
 class ChatMessageRequest extends WSRequest {
   const ChatMessageRequest({
     WSRequestType type = WSRequestType.sendMessageToUser,
-    @required String message,
+    required String message,
   }) : super(
           type: type,
           message: message,

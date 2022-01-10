@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,7 +21,7 @@ class CreateConversationSheet extends PopupRoute<Topic> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -82,11 +83,11 @@ class _SheetIndicator extends StatelessWidget {
 }
 
 class _SheetHeader extends StatelessWidget {
-  final Topic topic;
-  final VoidCallback onBackPress;
+  final Topic? topic;
+  final VoidCallback? onBackPress;
 
   const _SheetHeader({
-    Key key,
+    Key? key,
     this.topic,
     this.onBackPress,
   }) : super(key: key);
@@ -96,13 +97,13 @@ class _SheetHeader extends StatelessWidget {
     final style = Theme.of(context).textTheme.headline6;
     if (topic == null) {
       final label =
-          AppLocalizations.of(context).translate("roundtable_sheet:heading");
+          AppLocalizations.of(context)?.translate("roundtable_sheet:heading");
       final style = Theme.of(context).textTheme.headline6;
       return SizedBox(
         height: 72,
         child: Center(
           child: Text(
-            label,
+            label!,
             style: style,
             textAlign: TextAlign.center,
           ),
@@ -118,7 +119,7 @@ class _SheetHeader extends StatelessWidget {
               onPressed: onBackPress,
             ),
             Text(
-              topic.name,
+              topic?.name ?? '',
               style: style,
             ),
           ],
@@ -132,13 +133,13 @@ class _SheetContent extends HookWidget {
   final ScrollController controller;
 
   const _SheetContent({
-    @required this.controller,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
-    final _topic = useState<Topic>(null);
-    final getTopicsProvider = useProvider(getRootTopicsProvider);
+    final _topic = useState<Topic?>(null);
+    final getTopicsProvider = useProvider(getRootTopicsProvider.notifier);
 
     return Material(
       color: Colors.transparent,
@@ -164,7 +165,7 @@ class _SheetContent extends HookWidget {
             _TopicsList(
               onPressedItem: (topic) {
                 _topic.value = topic;
-                _onPressTopic(_topic.value, context);
+                _onPressTopic(topic, context);
               },
             ),
           ],
@@ -175,17 +176,17 @@ class _SheetContent extends HookWidget {
 
   Future<void> _onPressTopic(Topic topic, BuildContext context) async {
     final response = await context
-        .read(getRootTopicsProvider)
-        .getTopicsForParentTopic(topic.id);
+        .read(getRootTopicsProvider.notifier)
+        .getTopicsForParentTopic(topic.id!);
 
     response.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
         Navigator.pop(context);
       },
       (topics) {
         if (topics.isEmpty) {
-          ExtendedNavigator.of(context).pop(topic);
+          AutoRouter.of(context).pop(topic);
         }
       },
     );
@@ -193,10 +194,10 @@ class _SheetContent extends HookWidget {
 }
 
 class _Loader extends StatelessWidget {
-  final Failure error;
+  final Failure? error;
 
   const _Loader({
-    Key key,
+    Key? key,
     this.error,
   }) : super(key: key);
 
@@ -230,7 +231,7 @@ class _Error extends StatelessWidget {
 }
 
 class _TopicsList extends HookWidget {
-  final ValueChanged<Topic> onPressedItem;
+  final ValueChanged<Topic>? onPressedItem;
 
   const _TopicsList({
     this.onPressedItem,
@@ -238,7 +239,7 @@ class _TopicsList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getTopicsState = useProvider(getRootTopicsProvider.state);
+    final getTopicsState = useProvider(getRootTopicsProvider);
 
     return getTopicsState.when(
       loading: () => const _Loader(),
@@ -249,7 +250,7 @@ class _TopicsList extends HookWidget {
               category: topics[index],
               onItemPressed: (value) {
                 if (onPressedItem != null) {
-                  onPressedItem(value);
+                  onPressedItem!(value);
                 }
               },
             ),
@@ -267,9 +268,9 @@ class _TopicItem extends StatelessWidget {
   final ValueChanged<Topic> onItemPressed;
 
   const _TopicItem({
-    Key key,
-    @required this.category,
-    @required this.onItemPressed,
+    Key? key,
+    required this.category,
+    required this.onItemPressed,
   }) : super(key: key);
 
   @override
@@ -280,7 +281,7 @@ class _TopicItem extends StatelessWidget {
       color: Colors.white,
       child: ListTile(
         title: Text(
-          category.name,
+          category.name ?? '',
           style: labelStyle,
         ),
         trailing: Icon(

@@ -5,9 +5,9 @@ class ImageThumb extends StatelessWidget {
   final VoidCallback onClosePress;
 
   const ImageThumb({
-    Key key,
-    @required this.image,
-    @required this.onClosePress,
+    Key? key,
+    required this.image,
+    required this.onClosePress,
   }) : super(key: key);
 
   @override
@@ -38,9 +38,9 @@ class ImageThumb extends StatelessWidget {
 }
 
 class CloseButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
-  const CloseButton({Key key, this.onPressed}) : super(key: key);
+  const CloseButton({Key? key, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

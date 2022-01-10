@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/attribution/attribution_manager.dart';
@@ -19,26 +18,26 @@ abstract class Analytics {
   /// tracks properties of a user to service.
   /// throws => [AnalyticsException]
   Future<void> identify({
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   });
 
   /// Makes track event call to Analytics Service
   /// logs custom event to anlytics service.
   /// throws => [AnalyticsException]
   Future<void> trackEvent({
-    @required String eventName,
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    required String eventName,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   });
 
   /// Makes track Screen call to Analytics Service
   /// logs screen loaded event to anlytics service.
   /// throws => [AnalyticsException]
   Future<void> trackScreen({
-    @required String screenName,
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    required String screenName,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   });
 
   /// Makes reset call to Analytics Service
@@ -78,8 +77,8 @@ class AnalyticsImpl implements Analytics {
 
   @override
   Future<void> identify({
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   }) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
@@ -95,9 +94,9 @@ class AnalyticsImpl implements Analytics {
 
   @override
   Future<void> trackEvent({
-    String eventName,
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    required String eventName,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   }) async {
     final isConnected = await networkInfo.isConnected;
     final appsflyer = ProviderContainer().read(attributionManagerProvider);
@@ -117,9 +116,9 @@ class AnalyticsImpl implements Analytics {
 
   @override
   Future<void> trackScreen({
-    String screenName,
-    Map<String, dynamic> properties,
-    Map<String, dynamic> options,
+    required String screenName,
+    Map<String, dynamic>? properties,
+    Map<String, dynamic>? options,
   }) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {

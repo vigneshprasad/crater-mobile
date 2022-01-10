@@ -7,14 +7,14 @@ import '../../domain/entity/profile_intro_question.dart';
 
 class AutoSizeTextField extends StatefulWidget {
   const AutoSizeTextField({
-    Key key,
-    @required this.element,
-    @required this.onValuesChange,
+    Key? key,
+    required this.element,
+    required this.onValuesChange,
     this.value,
   }) : super(key: key);
 
   final ProfileIntroElement element;
-  final String value;
+  final String? value;
   final Function(String, dynamic) onValuesChange;
 
   static const charWidth = 10;
@@ -34,18 +34,18 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
 
   double getWidth() {
     if (widget.element.width != null) {
-      return widget.element.width;
+      return widget.element.width!;
     }
 
-    final length = max(widget.element.placeholder.length, text.length);
+    final length = max(widget.element.placeholder!.length, text.length);
     final width =
         (length * AutoSizeTextField.charWidth + AutoSizeTextField.padding)
             .toDouble();
     return max(width, 120);
   }
 
-  double width;
-  String text;
+  double? width;
+  String text = '';
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +53,19 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
       width: width,
       margin: const EdgeInsets.only(right: 4),
       child: BaseFormInput(
-          initialValue: widget.value,
-          label: widget.element.placeholder,
-          key: Key(widget.element.id),
+          initialValue: widget.value ?? '',
+          label: widget.element.placeholder!,
+          key: Key(widget.element.id!),
           autovalidate: false,
           minLines: widget.element.lines,
           validator: (value) {
-            if (widget.element.optional) {
+            if (widget.element.optional!) {
               return null;
             }
-            return value.isEmpty ? 'Enter ${widget.element.id}' : null;
+            return value!.isEmpty ? 'Enter ${widget.element.id}' : null;
           },
           onChanged: (value) {
-            widget.onValuesChange(widget.element.id, value);
+            widget.onValuesChange(widget.element.id!, value);
             text = value;
             setState(() {
               width = getWidth();

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../constants/theme.dart';
 
 class CheckoutButton extends MaterialButton {
-  final double width;
+  final double? width;
 
   const CheckoutButton({
-    @required Widget child,
-    @required VoidCallback onPressed,
-    Color textColor,
+    required Widget child,
+    required VoidCallback onPressed,
+    Color? textColor,
     this.width,
   }) : super(
           onPressed: onPressed,
@@ -33,7 +33,7 @@ class CheckoutButton extends MaterialButton {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
         ),
-        textStyle: theme.textTheme.button.copyWith(
+        textStyle: theme.textTheme.button?.copyWith(
           fontSize: 15,
           color: textColor ?? buttonTheme.getTextColor(this),
         ),

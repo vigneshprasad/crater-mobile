@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/style.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
 
 import '../../../../constants/theme.dart';
@@ -16,7 +16,7 @@ class PackageDetailModal extends ModalRoute<void> {
   final Package package;
 
   PackageDetailModal({
-    @required this.package,
+    required this.package,
   });
 
   @override
@@ -26,7 +26,7 @@ class PackageDetailModal extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   bool get maintainState => true;
@@ -59,9 +59,9 @@ class PackageDetailModal extends ModalRoute<void> {
     return SafeArea(
       child: NotificationListener<DraggableScrollableNotification>(
         onNotification: (notification) {
-          final _navigator = ExtendedNavigator.of(context);
-          if (notification.extent <= 0.25 && _navigator.canPop()) {
-            _navigator.popUntilPath(Routes.packageDetailScreen);
+          final _navigator = AutoRouter.of(context);
+          if (notification.extent <= 0.25 && _navigator.canPopSelfOrChildren) {
+            _navigator.popUntilRouteWithName(PackageDetailScreenRoute.name);
             return true;
           }
           return false;
@@ -78,14 +78,14 @@ class _PackageDetailView extends StatelessWidget {
   final Package package;
 
   const _PackageDetailView({
-    Key key,
-    @required this.package,
+    Key? key,
+    required this.package,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final checkoutButtonText =
-        AppLocalizations.of(context).translate("rewards:checkout_button");
+        AppLocalizations.of(context)?.translate("rewards:checkout_button");
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -114,12 +114,11 @@ class _PackageDetailView extends StatelessWidget {
                   textTheme: ButtonTextTheme.primary,
                 ),
                 onPressed: () {
-                  ExtendedNavigator.of(context).popAndPush(
-                    Routes.packagePurchaseScreen,
-                    arguments: PackagePurchaseScreenArguments(package: package),
+                  AutoRouter.of(context).popAndPush(
+                    PackagePurchaseScreenRoute(package: package),
                   );
                 },
-                child: Text(checkoutButtonText),
+                child: Text(checkoutButtonText!),
               ),
             ),
           ),
@@ -142,7 +141,7 @@ class _PackageDetailView extends StatelessWidget {
                   delegate: _ModalAppBar(
                     package: package,
                     onPressedClose: () {
-                      ExtendedNavigator.of(context).pop();
+                      AutoRouter.of(context).pop();
                     },
                   ),
                 ),
@@ -181,8 +180,6 @@ class _PackageDetailView extends StatelessWidget {
                           'li': (
                             RenderContext context,
                             Widget parsedChild,
-                            Map<String, String> attributes,
-                            dom.Element element,
                           ) {
                             return Padding(
                               padding:
@@ -228,8 +225,8 @@ class _ModalAppBar extends SliverPersistentHeaderDelegate {
   final VoidCallback onPressedClose;
 
   _ModalAppBar({
-    @required this.onPressedClose,
-    @required this.package,
+    required this.onPressedClose,
+    required this.package,
   });
 
   @override
@@ -272,11 +269,11 @@ class _ModalAppBar extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildPackageInfo(BuildContext context) {
-    final providerNameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final providerNameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14,
           color: Colors.grey[500],
         );
-    final packageNameStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final packageNameStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 17,
           color: Colors.grey[700],
         );
@@ -286,9 +283,9 @@ class _ModalAppBar extends SliverPersistentHeaderDelegate {
       locale: 'en-in',
     );
     final discountedPrice =
-        currency.format(package.maxPrice - package.maxDiscount);
+        currency.format(package.maxPrice! - package.maxDiscount!);
     final maxPrice = currency.format(package.maxPrice);
-    final priceStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final priceStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14,
         );
 
@@ -298,14 +295,14 @@ class _ModalAppBar extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            package.provider.name,
+            package.provider!.name!,
             style: providerNameStyle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: AppInsets.sm),
           Text(
-            package.title,
+            package.title!,
             style: packageNameStyle,
           ),
           const SizedBox(height: AppInsets.med),
@@ -318,7 +315,7 @@ class _ModalAppBar extends SliverPersistentHeaderDelegate {
                 ),
                 TextSpan(
                   text: maxPrice,
-                  style: priceStyle.copyWith(
+                  style: priceStyle?.copyWith(
                     color: Colors.grey[500],
                     decoration: TextDecoration.lineThrough,
                   ),

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kiwi/kiwi.dart';
@@ -24,9 +25,9 @@ class DrawerItem extends Equatable {
   final String label;
 
   const DrawerItem({
-    @required this.icon,
-    @required this.key,
-    @required this.label,
+    required this.icon,
+    required this.key,
+    required this.label,
   });
 
   @override
@@ -87,12 +88,12 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _buildInfoSection(BuildContext context, AuthStateSuccess state) {
-    final nameStyle = Theme.of(context).textTheme.headline5.copyWith(
+    final nameStyle = Theme.of(context).textTheme.headline5?.copyWith(
           fontSize: 16,
           color: Colors.white,
           fontWeight: FontWeight.w600,
         );
-    final emailStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final emailStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           fontSize: 13,
           color: Colors.white.withOpacity(0.7),
         );
@@ -106,12 +107,12 @@ class AppDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                state.user.name ?? "",
+                state.user!.name ?? "",
                 style: nameStyle,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                state.user.email ?? "",
+                state.user!.email ?? "",
                 style: emailStyle,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -123,9 +124,9 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _buildImageAvatar(AuthStateSuccess state) {
-    if (state.user.photo != null) {
+    if (state.user!.photo != null) {
       return CachedNetworkImage(
-        imageUrl: state.user.photo,
+        imageUrl: state.user!.photo!,
         errorWidget: (context, url, error) {
           return const CircleAvatar(
             backgroundImage: AppImageAssets.defaultAvatar,
@@ -170,8 +171,8 @@ class AppDrawer extends StatelessWidget {
         _handleLogout(context);
         break;
       case DrawerItemKeys.account:
-        ExtendedNavigator.of(context).push(
-            Routes.profileScreen(userId: authState.user.pk, allowEdit: true));
+        AutoRouter.of(context).push(
+            ProfileScreenRoute(userId: authState.user!.pk!, allowEdit: true));
         break;
       case DrawerItemKeys.whatsnew:
         _openWhatsnewPage(context);
@@ -186,20 +187,20 @@ class AppDrawer extends StatelessWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
-    ExtendedNavigator.of(context)
-        .pushAndRemoveUntil(Routes.welcomeScreen, (route) => false);
+    AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
+        predicate: (route) => false);
   }
 
   Future<void> _openWhatsnewPage(BuildContext context) async {
     try {
       await launch(
         AppConstants.whatsNewPageLink,
-        option: CustomTabsOption(
+        customTabsOption: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          extraCustomTabs: <String>[
+          extraCustomTabs: const <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',
             // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx

@@ -10,7 +10,7 @@ import '../models/post_model.dart';
 abstract class CommunityLocalDatasource {
   Future<void> persistPostsToCache(List<Post> results);
   List<Post> getPostsfromCache();
-  Post getPostFromCache(int postId);
+  Post? getPostFromCache(int postId);
   Future<void> deletePostfromCache(int postId);
   List<Comment> getCommentsFromCache(int postId);
   Future<void> persistCommentsToCache(List<Comment> results);
@@ -29,7 +29,7 @@ class CommunityLocalDatasourceImpl implements CommunityLocalDatasource {
   }
 
   @override
-  Post getPostFromCache(int postId) {
+  Post? getPostFromCache(int postId) {
     if (_postsBox.isEmpty) {
       throw CacheException("${_postsBox.name} is empty");
     }

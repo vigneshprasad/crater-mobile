@@ -7,16 +7,22 @@ import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 
 final topicsStateProvider =
-    StateNotifierProvider((ref) => TopicsStateNotifier(ref.read));
+    StateNotifierProvider<TopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => TopicsStateNotifier(ref));
+
+final amaTopicsStateProvider =
+    StateNotifierProvider<AMATopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => AMATopicsStateNotifier(ref));
 
 final articleTopicsStateProiver =
-    StateNotifierProvider((ref) => ArticleTopicsStateNotifier(ref.read));
+    StateNotifierProvider<ArticleTopicsStateNotifier, ApiResult<List<Topic>>>(
+        (ref) => ArticleTopicsStateNotifier(ref));
 
 class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
-  final Reader read;
+  final ProviderReference ref;
 
   TopicsStateNotifier(
-    this.read,
+    this.ref,
   ) : super(ApiResult<List<Topic>>.loading()) {
     getTopicsList();
   }
@@ -24,7 +30,30 @@ class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
   Future<Either<Failure, List<Topic>>> getTopicsList() async {
     state = ApiResult<List<Topic>>.loading();
     final response =
-        await read(conversationRepositoryProvider).getAllTopics(null);
+        await ref.read(conversationRepositoryProvider).getAllTopics(null);
+
+    state = response.fold(
+      (failure) => ApiResult<List<Topic>>.error(failure),
+      (topics) => ApiResult<List<Topic>>.data(topics),
+    );
+
+    return response;
+  }
+}
+
+class AMATopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
+  final ProviderReference ref;
+
+  AMATopicsStateNotifier(
+    this.ref,
+  ) : super(ApiResult<List<Topic>>.loading()) {
+    getTopicsList();
+  }
+
+  Future<Either<Failure, List<Topic>>> getTopicsList() async {
+    state = ApiResult<List<Topic>>.loading();
+    final response =
+        await ref.read(conversationRepositoryProvider).getAllAMATopics();
 
     state = response.fold(
       (failure) => ApiResult<List<Topic>>.error(failure),
@@ -36,9 +65,9 @@ class TopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
 }
 
 class ArticleTopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
-  final Reader read;
+  final ProviderReference ref;
 
-  ArticleTopicsStateNotifier(this.read)
+  ArticleTopicsStateNotifier(this.ref)
       : super(ApiResult<List<Topic>>.loading()) {
     getAllArticleTopcs();
   }
@@ -46,7 +75,7 @@ class ArticleTopicsStateNotifier extends StateNotifier<ApiResult<List<Topic>>> {
   Future<Either<Failure, List<Topic>>> getAllArticleTopcs() async {
     state = ApiResult<List<Topic>>.loading();
     final response =
-        await read(conversationRepositoryProvider).getAllArticleTopics();
+        await ref.read(conversationRepositoryProvider).getAllArticleTopics();
 
     state = response.fold(
       (failure) => ApiResult<List<Topic>>.error(failure),

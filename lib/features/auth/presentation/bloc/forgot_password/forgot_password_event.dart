@@ -8,7 +8,7 @@ class ForgotPasswordRequestStarted extends ForgotPasswordEvent {
   final String email;
 
   const ForgotPasswordRequestStarted({
-    @required this.email,
+    required this.email,
   });
 
   @override
@@ -21,7 +21,7 @@ class ForgotPasswordEmailChanged extends ForgotPasswordEvent {
   final String email;
 
   const ForgotPasswordEmailChanged({
-    this.email,
+    required this.email,
   });
 
   @override

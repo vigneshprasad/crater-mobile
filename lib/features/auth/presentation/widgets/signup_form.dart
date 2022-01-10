@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/theme.dart';
@@ -18,7 +18,7 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  AuthBloc _authBloc;
+  late AuthBloc _authBloc;
 
   @override
   void initState() {
@@ -38,12 +38,9 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    final String email =
-        AppLocalizations.of(context).translate("input_label_email");
-    final String password =
-        AppLocalizations.of(context).translate("input_password");
-    final String name =
-        AppLocalizations.of(context).translate("input_label_name");
+    final email = AppLocalizations.of(context)?.translate("input_label_email");
+    final password = AppLocalizations.of(context)?.translate("input_password");
+    final name = AppLocalizations.of(context)?.translate("input_label_name");
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
@@ -51,7 +48,7 @@ class _SignupFormState extends State<SignupForm> {
         if (state.isSubmitting == null) {
           isEnabled = true;
         } else {
-          isEnabled = !state.isSubmitting;
+          isEnabled = !state.isSubmitting!;
         }
         return Form(
           key: _formKey,
@@ -62,10 +59,12 @@ class _SignupFormState extends State<SignupForm> {
                 BaseFormInput(
                   enabled: isEnabled,
                   controller: _nameController,
-                  label: name,
+                  label: name!,
                   autovalidate: false,
                   validator: (value) {
-                    return value.isEmpty ? 'Name is Required' : null;
+                    return value == null || value.isEmpty
+                        ? 'Name is Required'
+                        : null;
                   },
                 ),
                 const SizedBox(
@@ -74,11 +73,11 @@ class _SignupFormState extends State<SignupForm> {
                 BaseFormInput(
                   enabled: isEnabled,
                   controller: _emailController,
-                  label: email,
+                  label: email!,
                   validator: (text) {
-                    if (text.isEmpty) return null;
+                    if (text == null || text.isEmpty) return null;
                     if (state.isEmailValid == null) return null;
-                    return !state.isEmailValid ? 'Invalid Email' : null;
+                    return !state.isEmailValid! ? 'Invalid Email' : null;
                   },
                 ),
                 const SizedBox(
@@ -88,10 +87,10 @@ class _SignupFormState extends State<SignupForm> {
                   controller: _passwordController,
                   enabled: isEnabled,
                   maxLines: 1,
-                  label: password,
+                  label: password!,
                   obscureText: true,
                   validator: (text) {
-                    if (text.isEmpty) return null;
+                    if (text == null || text.isEmpty) return null;
                     return !state.isPasswordValid ? 'Invalid Password' : null;
                   },
                 ),
@@ -118,8 +117,8 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void _onRegisterEmailPressed() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid ?? false) {
       _authBloc.add(AuthRegisterEmailPressed(
         name: _nameController.text,
         email: _emailController.text,

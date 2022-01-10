@@ -7,10 +7,10 @@ import '../../../../../ui/base/base_input/base_input.dart';
 class EditableTextField extends HookWidget {
   final String text;
   final bool editable;
-  final ValueChanged<String> onValueChanged;
+  final ValueChanged<String>? onValueChanged;
 
   const EditableTextField({
-    @required this.text,
+    required this.text,
     this.editable = false,
     this.onValueChanged,
   });
@@ -18,7 +18,7 @@ class EditableTextField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final editMode = useState(false);
-    final descriptionStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final descriptionStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
           color: Colors.grey[600],
         );
@@ -34,10 +34,8 @@ class EditableTextField extends HookWidget {
           Flexible(
             fit: FlexFit.tight,
             child: BaseInput(
-              maxLines: null,
               focusNode: _textInputFocus,
               controller: _textController,
-              label: null,
             ),
           ),
         if (!editMode.value)
@@ -57,7 +55,7 @@ class EditableTextField extends HookWidget {
             onToggle: () {
               if (editMode.value) {
                 if (onValueChanged != null) {
-                  onValueChanged(_textController.text);
+                  onValueChanged!(_textController.text);
                 }
               }
               editMode.value = !editMode.value;
@@ -76,9 +74,9 @@ class _ToggleButton extends StatelessWidget {
   final VoidCallback onToggle;
 
   const _ToggleButton({
-    Key key,
-    @required this.enabled,
-    @required this.onToggle,
+    Key? key,
+    required this.enabled,
+    required this.onToggle,
   }) : super(key: key);
 
   @override
@@ -95,7 +93,7 @@ class _ToggleButton extends StatelessWidget {
         customBorder: const CircleBorder(),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Icon(icon, color: iconColor),
           ),
         ),

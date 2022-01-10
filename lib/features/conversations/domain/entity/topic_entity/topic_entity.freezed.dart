@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'topic_entity.dart';
 
@@ -8,6 +8,10 @@ part of 'topic_entity.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Topic _$TopicFromJson(Map<String, dynamic> json) {
   return _Topic.fromJson(json);
 }
@@ -16,20 +20,20 @@ Topic _$TopicFromJson(Map<String, dynamic> json) {
 class _$TopicTearOff {
   const _$TopicTearOff();
 
-// ignore: unused_element
   _Topic call(
-      {int id,
-      String name,
-      String image,
-      @JsonKey(name: 'is_active') bool active,
-      int parent,
-      String description,
-      int article,
-      @JsonKey(name: 'is_approved') bool approved,
-      String creator,
-      Topic root,
-      int groupCount,
-      @JsonKey(name: 'article_detail') Article articleDetail}) {
+      {int? id,
+      String? name,
+      String? image,
+      @JsonKey(name: "is_active") bool? active,
+      int? parent,
+      String? description,
+      int? article,
+      @JsonKey(name: "is_approved") bool? approved,
+      String? creator,
+      Topic? root,
+      int? groupCount,
+      TopicType? type,
+      @JsonKey(name: "article_detail") Article? articleDetail}) {
     return _Topic(
       id: id,
       name: name,
@@ -42,41 +46,41 @@ class _$TopicTearOff {
       creator: creator,
       root: root,
       groupCount: groupCount,
+      type: type,
       articleDetail: articleDetail,
     );
   }
 
-// ignore: unused_element
   Topic fromJson(Map<String, Object> json) {
     return Topic.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Topic = _$TopicTearOff();
 
 /// @nodoc
 mixin _$Topic {
-  int get id;
-  String get name;
-  String get image;
-  @JsonKey(name: 'is_active')
-  bool get active;
-  int get parent;
-  String get description;
-  int get article;
-  @JsonKey(name: 'is_approved')
-  bool get approved;
-  String get creator;
-  Topic get root;
-  int get groupCount;
-  @JsonKey(name: 'article_detail')
-  Article get articleDetail;
+  int? get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+  @JsonKey(name: "is_active")
+  bool? get active => throw _privateConstructorUsedError;
+  int? get parent => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  int? get article => throw _privateConstructorUsedError;
+  @JsonKey(name: "is_approved")
+  bool? get approved => throw _privateConstructorUsedError;
+  String? get creator => throw _privateConstructorUsedError;
+  Topic? get root => throw _privateConstructorUsedError;
+  int? get groupCount => throw _privateConstructorUsedError;
+  TopicType? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: "article_detail")
+  Article? get articleDetail => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TopicCopyWith<Topic> get copyWith;
+  $TopicCopyWith<Topic> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -84,21 +88,22 @@ abstract class $TopicCopyWith<$Res> {
   factory $TopicCopyWith(Topic value, $Res Function(Topic) then) =
       _$TopicCopyWithImpl<$Res>;
   $Res call(
-      {int id,
-      String name,
-      String image,
-      @JsonKey(name: 'is_active') bool active,
-      int parent,
-      String description,
-      int article,
-      @JsonKey(name: 'is_approved') bool approved,
-      String creator,
-      Topic root,
-      int groupCount,
-      @JsonKey(name: 'article_detail') Article articleDetail});
+      {int? id,
+      String? name,
+      String? image,
+      @JsonKey(name: "is_active") bool? active,
+      int? parent,
+      String? description,
+      int? article,
+      @JsonKey(name: "is_approved") bool? approved,
+      String? creator,
+      Topic? root,
+      int? groupCount,
+      TopicType? type,
+      @JsonKey(name: "article_detail") Article? articleDetail});
 
-  $TopicCopyWith<$Res> get root;
-  $ArticleCopyWith<$Res> get articleDetail;
+  $TopicCopyWith<$Res>? get root;
+  $ArticleCopyWith<$Res>? get articleDetail;
 }
 
 /// @nodoc
@@ -111,54 +116,94 @@ class _$TopicCopyWithImpl<$Res> implements $TopicCopyWith<$Res> {
 
   @override
   $Res call({
-    Object id = freezed,
-    Object name = freezed,
-    Object image = freezed,
-    Object active = freezed,
-    Object parent = freezed,
-    Object description = freezed,
-    Object article = freezed,
-    Object approved = freezed,
-    Object creator = freezed,
-    Object root = freezed,
-    Object groupCount = freezed,
-    Object articleDetail = freezed,
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? image = freezed,
+    Object? active = freezed,
+    Object? parent = freezed,
+    Object? description = freezed,
+    Object? article = freezed,
+    Object? approved = freezed,
+    Object? creator = freezed,
+    Object? root = freezed,
+    Object? groupCount = freezed,
+    Object? type = freezed,
+    Object? articleDetail = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as int,
-      name: name == freezed ? _value.name : name as String,
-      image: image == freezed ? _value.image : image as String,
-      active: active == freezed ? _value.active : active as bool,
-      parent: parent == freezed ? _value.parent : parent as int,
-      description:
-          description == freezed ? _value.description : description as String,
-      article: article == freezed ? _value.article : article as int,
-      approved: approved == freezed ? _value.approved : approved as bool,
-      creator: creator == freezed ? _value.creator : creator as String,
-      root: root == freezed ? _value.root : root as Topic,
-      groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      active: active == freezed
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      parent: parent == freezed
+          ? _value.parent
+          : parent // ignore: cast_nullable_to_non_nullable
+              as int?,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      article: article == freezed
+          ? _value.article
+          : article // ignore: cast_nullable_to_non_nullable
+              as int?,
+      approved: approved == freezed
+          ? _value.approved
+          : approved // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      creator: creator == freezed
+          ? _value.creator
+          : creator // ignore: cast_nullable_to_non_nullable
+              as String?,
+      root: root == freezed
+          ? _value.root
+          : root // ignore: cast_nullable_to_non_nullable
+              as Topic?,
+      groupCount: groupCount == freezed
+          ? _value.groupCount
+          : groupCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TopicType?,
       articleDetail: articleDetail == freezed
           ? _value.articleDetail
-          : articleDetail as Article,
+          : articleDetail // ignore: cast_nullable_to_non_nullable
+              as Article?,
     ));
   }
 
   @override
-  $TopicCopyWith<$Res> get root {
+  $TopicCopyWith<$Res>? get root {
     if (_value.root == null) {
       return null;
     }
-    return $TopicCopyWith<$Res>(_value.root, (value) {
+
+    return $TopicCopyWith<$Res>(_value.root!, (value) {
       return _then(_value.copyWith(root: value));
     });
   }
 
   @override
-  $ArticleCopyWith<$Res> get articleDetail {
+  $ArticleCopyWith<$Res>? get articleDetail {
     if (_value.articleDetail == null) {
       return null;
     }
-    return $ArticleCopyWith<$Res>(_value.articleDetail, (value) {
+
+    return $ArticleCopyWith<$Res>(_value.articleDetail!, (value) {
       return _then(_value.copyWith(articleDetail: value));
     });
   }
@@ -170,23 +215,24 @@ abstract class _$TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
       __$TopicCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id,
-      String name,
-      String image,
-      @JsonKey(name: 'is_active') bool active,
-      int parent,
-      String description,
-      int article,
-      @JsonKey(name: 'is_approved') bool approved,
-      String creator,
-      Topic root,
-      int groupCount,
-      @JsonKey(name: 'article_detail') Article articleDetail});
+      {int? id,
+      String? name,
+      String? image,
+      @JsonKey(name: "is_active") bool? active,
+      int? parent,
+      String? description,
+      int? article,
+      @JsonKey(name: "is_approved") bool? approved,
+      String? creator,
+      Topic? root,
+      int? groupCount,
+      TopicType? type,
+      @JsonKey(name: "article_detail") Article? articleDetail});
 
   @override
-  $TopicCopyWith<$Res> get root;
+  $TopicCopyWith<$Res>? get root;
   @override
-  $ArticleCopyWith<$Res> get articleDetail;
+  $ArticleCopyWith<$Res>? get articleDetail;
 }
 
 /// @nodoc
@@ -200,91 +246,131 @@ class __$TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
-    Object name = freezed,
-    Object image = freezed,
-    Object active = freezed,
-    Object parent = freezed,
-    Object description = freezed,
-    Object article = freezed,
-    Object approved = freezed,
-    Object creator = freezed,
-    Object root = freezed,
-    Object groupCount = freezed,
-    Object articleDetail = freezed,
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? image = freezed,
+    Object? active = freezed,
+    Object? parent = freezed,
+    Object? description = freezed,
+    Object? article = freezed,
+    Object? approved = freezed,
+    Object? creator = freezed,
+    Object? root = freezed,
+    Object? groupCount = freezed,
+    Object? type = freezed,
+    Object? articleDetail = freezed,
   }) {
     return _then(_Topic(
-      id: id == freezed ? _value.id : id as int,
-      name: name == freezed ? _value.name : name as String,
-      image: image == freezed ? _value.image : image as String,
-      active: active == freezed ? _value.active : active as bool,
-      parent: parent == freezed ? _value.parent : parent as int,
-      description:
-          description == freezed ? _value.description : description as String,
-      article: article == freezed ? _value.article : article as int,
-      approved: approved == freezed ? _value.approved : approved as bool,
-      creator: creator == freezed ? _value.creator : creator as String,
-      root: root == freezed ? _value.root : root as Topic,
-      groupCount: groupCount == freezed ? _value.groupCount : groupCount as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      active: active == freezed
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      parent: parent == freezed
+          ? _value.parent
+          : parent // ignore: cast_nullable_to_non_nullable
+              as int?,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      article: article == freezed
+          ? _value.article
+          : article // ignore: cast_nullable_to_non_nullable
+              as int?,
+      approved: approved == freezed
+          ? _value.approved
+          : approved // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      creator: creator == freezed
+          ? _value.creator
+          : creator // ignore: cast_nullable_to_non_nullable
+              as String?,
+      root: root == freezed
+          ? _value.root
+          : root // ignore: cast_nullable_to_non_nullable
+              as Topic?,
+      groupCount: groupCount == freezed
+          ? _value.groupCount
+          : groupCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TopicType?,
       articleDetail: articleDetail == freezed
           ? _value.articleDetail
-          : articleDetail as Article,
+          : articleDetail // ignore: cast_nullable_to_non_nullable
+              as Article?,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_Topic implements _Topic {
   _$_Topic(
       {this.id,
       this.name,
       this.image,
-      @JsonKey(name: 'is_active') this.active,
+      @JsonKey(name: "is_active") this.active,
       this.parent,
       this.description,
       this.article,
-      @JsonKey(name: 'is_approved') this.approved,
+      @JsonKey(name: "is_approved") this.approved,
       this.creator,
       this.root,
       this.groupCount,
-      @JsonKey(name: 'article_detail') this.articleDetail});
+      this.type,
+      @JsonKey(name: "article_detail") this.articleDetail});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
       _$_$_TopicFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
-  final String name;
+  final String? name;
   @override
-  final String image;
+  final String? image;
   @override
-  @JsonKey(name: 'is_active')
-  final bool active;
+  @JsonKey(name: "is_active")
+  final bool? active;
   @override
-  final int parent;
+  final int? parent;
   @override
-  final String description;
+  final String? description;
   @override
-  final int article;
+  final int? article;
   @override
-  @JsonKey(name: 'is_approved')
-  final bool approved;
+  @JsonKey(name: "is_approved")
+  final bool? approved;
   @override
-  final String creator;
+  final String? creator;
   @override
-  final Topic root;
+  final Topic? root;
   @override
-  final int groupCount;
+  final int? groupCount;
   @override
-  @JsonKey(name: 'article_detail')
-  final Article articleDetail;
+  final TopicType? type;
+  @override
+  @JsonKey(name: "article_detail")
+  final Article? articleDetail;
 
   @override
   String toString() {
-    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, article: $article, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount, articleDetail: $articleDetail)';
+    return 'Topic(id: $id, name: $name, image: $image, active: $active, parent: $parent, description: $description, article: $article, approved: $approved, creator: $creator, root: $root, groupCount: $groupCount, type: $type, articleDetail: $articleDetail)';
   }
 
   @override
@@ -318,6 +404,8 @@ class _$_Topic implements _Topic {
             (identical(other.groupCount, groupCount) ||
                 const DeepCollectionEquality()
                     .equals(other.groupCount, groupCount)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.articleDetail, articleDetail) ||
                 const DeepCollectionEquality()
                     .equals(other.articleDetail, articleDetail)));
@@ -337,6 +425,7 @@ class _$_Topic implements _Topic {
       const DeepCollectionEquality().hash(creator) ^
       const DeepCollectionEquality().hash(root) ^
       const DeepCollectionEquality().hash(groupCount) ^
+      const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(articleDetail);
 
   @JsonKey(ignore: true)
@@ -352,49 +441,52 @@ class _$_Topic implements _Topic {
 
 abstract class _Topic implements Topic {
   factory _Topic(
-      {int id,
-      String name,
-      String image,
-      @JsonKey(name: 'is_active') bool active,
-      int parent,
-      String description,
-      int article,
-      @JsonKey(name: 'is_approved') bool approved,
-      String creator,
-      Topic root,
-      int groupCount,
-      @JsonKey(name: 'article_detail') Article articleDetail}) = _$_Topic;
+      {int? id,
+      String? name,
+      String? image,
+      @JsonKey(name: "is_active") bool? active,
+      int? parent,
+      String? description,
+      int? article,
+      @JsonKey(name: "is_approved") bool? approved,
+      String? creator,
+      Topic? root,
+      int? groupCount,
+      TopicType? type,
+      @JsonKey(name: "article_detail") Article? articleDetail}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
 
   @override
-  int get id;
+  int? get id => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String? get name => throw _privateConstructorUsedError;
   @override
-  String get image;
+  String? get image => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'is_active')
-  bool get active;
+  @JsonKey(name: "is_active")
+  bool? get active => throw _privateConstructorUsedError;
   @override
-  int get parent;
+  int? get parent => throw _privateConstructorUsedError;
   @override
-  String get description;
+  String? get description => throw _privateConstructorUsedError;
   @override
-  int get article;
+  int? get article => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'is_approved')
-  bool get approved;
+  @JsonKey(name: "is_approved")
+  bool? get approved => throw _privateConstructorUsedError;
   @override
-  String get creator;
+  String? get creator => throw _privateConstructorUsedError;
   @override
-  Topic get root;
+  Topic? get root => throw _privateConstructorUsedError;
   @override
-  int get groupCount;
+  int? get groupCount => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'article_detail')
-  Article get articleDetail;
+  TopicType? get type => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: "article_detail")
+  Article? get articleDetail => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$TopicCopyWith<_Topic> get copyWith;
+  _$TopicCopyWith<_Topic> get copyWith => throw _privateConstructorUsedError;
 }

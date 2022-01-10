@@ -1,9 +1,12 @@
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/config_reader/config_reader.dart';
 import '../interceptors/authorized_interceptor.dart';
 
 part 'tags_api_service.chopper.dart';
+
+final tagsApiServiceProvider = Provider((_) => TagsApiService.create());
 
 @ChopperApi(baseUrl: "/tags/")
 abstract class TagsApiService extends ChopperService {

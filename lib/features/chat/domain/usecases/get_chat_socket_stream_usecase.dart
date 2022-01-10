@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -10,7 +9,7 @@ class UCGetChatSocketStream implements SyncUseCase<Stream<dynamic>, NoParams> {
   final ChatRepository repository;
 
   UCGetChatSocketStream({
-    @required this.repository,
+    required this.repository,
   });
 
   @override

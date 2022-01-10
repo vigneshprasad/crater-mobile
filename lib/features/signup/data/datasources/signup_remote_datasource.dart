@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../../../api/tags/tags_api_service.dart';
 import '../../../../api/user/user_api_service.dart';
 import '../../../../core/error/exceptions.dart';
@@ -8,6 +10,12 @@ import '../../../auth/domain/entity/user_tag_entity.dart';
 import '../../domain/entity/user_objective_entity.dart';
 import '../models/api_models.dart';
 import '../models/user_objective_model.dart';
+
+final signupRemoteDatasourceProvider = Provider<SignupRemoteDatasource>((ref) {
+  final tagsApiService = ref.read(tagsApiServiceProvider);
+  final userApiService = ref.read(userApiServiceProvider);
+  return SignupRemoteDatasourceImpl(tagsApiService, userApiService);
+});
 
 abstract class SignupRemoteDatasource {
   Future<List<UserObjective>> getUserObjectivesFromRemote();

@@ -1,101 +1,47 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../constants/theme.dart';
-
-class HomeTabItem extends Equatable {
-  final String label;
-  final String id;
-
-  const HomeTabItem({
-    @required this.label,
-    @required this.id,
-  });
-
-  @override
-  List<Object> get props => [
-        label,
-        id,
-      ];
-}
+import 'package:flutter_svg/svg.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 
 class HomeTabBar extends StatelessWidget {
-  final TabController controller;
-  final Color backgroundColor;
-  final List<HomeTabItem> tabs;
-
   const HomeTabBar({
-    Key key,
-    this.backgroundColor = Colors.transparent,
-    @required this.tabs,
-    @required this.controller,
-  }) : super(key: key);
+    Key? key,
+    required TabController tabController,
+  })  : _tabController = tabController,
+        super(key: key);
+
+  final TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => _TabItem(
-          item: tabs[index],
-          active: index == controller.index,
+    final tabs = [
+      BottomNavigationBarItem(
+        label: 'Streams',
+        icon: SvgPicture.asset(
+          AppSvgAssets.streams,
+          color: Colors.white,
+          width: 20,
         ),
-        itemCount: tabs.length,
-      ),
-    );
-  }
-}
-
-class _TabItem extends StatelessWidget {
-  final bool active;
-  final HomeTabItem item;
-
-  const _TabItem({
-    Key key,
-    @required this.item,
-    @required this.active,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: active ? Colors.grey[800] : Colors.grey[400],
-        );
-    return Material(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppInsets.med,
-        ),
-        decoration: BoxDecoration(
-          border: active
-              ? Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 4.00,
-                  ),
-                )
-              : null,
-        ),
-        child: Center(
-          child: InkWell(
-            borderRadius: BorderRadius.all(Radius.circular(24.00)),
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: AppInsets.med,
-                horizontal: AppInsets.l,
-              ),
-              child: Text(
-                item.label,
-                style: labelStyle,
-              ),
-            ),
-          ),
+        activeIcon: SvgPicture.asset(
+          AppSvgAssets.streams,
+          color: Theme.of(context).accentColor,
+          width: 20,
         ),
       ),
+      const BottomNavigationBarItem(
+          label: 'Network', icon: Icon(Icons.people_outline)),
+      const BottomNavigationBarItem(label: 'My', icon: Icon(Icons.inbox)),
+      const BottomNavigationBarItem(
+          label: 'Profile', icon: UserProfileNavItem()),
+    ];
+    return BottomNavigationBar(
+      currentIndex: _tabController.index,
+      selectedFontSize: 12,
+      type: BottomNavigationBarType.fixed,
+      items: tabs,
+      onTap: (int index) {
+        _tabController.index = index;
+      },
     );
   }
 }

@@ -15,7 +15,7 @@ class RewardsGetPackageStarted extends RewardsEvent {
   final int packageId;
 
   const RewardsGetPackageStarted({
-    @required this.packageId,
+    required this.packageId,
   });
 
   @override
@@ -29,10 +29,10 @@ class RewardsPostPackageRequestStarted extends RewardsEvent {
   final int pointsApplied;
 
   const RewardsPostPackageRequestStarted({
-    @required this.quantity,
-    @required this.requestedBy,
-    @required this.package,
-    @required this.pointsApplied,
+    required this.quantity,
+    required this.requestedBy,
+    required this.package,
+    required this.pointsApplied,
   });
 
   @override

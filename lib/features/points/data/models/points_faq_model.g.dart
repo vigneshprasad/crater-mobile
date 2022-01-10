@@ -17,11 +17,11 @@ class PointsFaqModelAdapter extends TypeAdapter<PointsFaqModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PointsFaqModel(
-      pk: fields[0] as int,
-      category: fields[1] as String,
-      question: fields[2] as String,
-      answer: fields[3] as String,
-      order: fields[4] as int,
+      pk: fields[0] as int?,
+      category: fields[1] as String?,
+      question: fields[2] as String?,
+      answer: fields[3] as String?,
+      order: fields[4] as int?,
     );
   }
 
@@ -58,11 +58,11 @@ class PointsFaqModelAdapter extends TypeAdapter<PointsFaqModel> {
 
 PointsFaqModel _$PointsFaqModelFromJson(Map<String, dynamic> json) {
   return PointsFaqModel(
-    pk: json['pk'] as int,
-    category: json['category'] as String,
-    question: json['question'] as String,
-    answer: json['answer'] as String,
-    order: json['order'] as int,
+    pk: json['pk'] as int?,
+    category: json['category'] as String?,
+    question: json['question'] as String?,
+    answer: json['answer'] as String?,
+    order: json['order'] as int?,
   );
 }
 

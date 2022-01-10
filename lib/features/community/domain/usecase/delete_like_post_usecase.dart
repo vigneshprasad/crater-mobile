@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCDeleteLikePost implements AsyncUseCase<Like, DeleteLikeParams> {
   final CommunityRepository repository;
 
   UCDeleteLikePost({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -24,7 +23,7 @@ class DeleteLikeParams extends Equatable {
   final int postId;
 
   const DeleteLikeParams({
-    this.postId,
+    required this.postId,
   });
 
   @override

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -7,6 +8,11 @@ import '../../domain/entity/user_objective_entity.dart';
 import '../../domain/repository/signup_repository.dart';
 import '../datasources/signup_remote_datasource.dart';
 import '../models/api_models.dart';
+
+final signupRepositoryProvider = Provider<SignupRepository>((ref) {
+  final remoteDataSource = ref.read(signupRemoteDatasourceProvider);
+  return SignupRepositoryImpl(remoteDataSource);
+});
 
 class SignupRepositoryImpl implements SignupRepository {
   final SignupRemoteDatasource remoteDatasource;

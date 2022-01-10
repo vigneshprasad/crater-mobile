@@ -1,9 +1,12 @@
 import 'package:chopper/chopper.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/config_reader/config_reader.dart';
 import '../interceptors/authorized_interceptor.dart';
 
 part 'meets_api_service.chopper.dart';
+
+final meetsApiServiceProvider = Provider((_) => MeetsApiService.create());
 
 @ChopperApi(baseUrl: '/resources/')
 abstract class MeetsApiService extends ChopperService {
@@ -74,4 +77,27 @@ abstract class MeetsApiService extends ChopperService {
   @Post(path: 'meetings/reschedule/accepted/')
   Future<Response> postConfirmRescheduleRequest(
       @Body() Map<String, dynamic> body);
+
+  @Post(path: 'meetings/request/')
+  Future<Response> postMeetingRequest(@Body() Map<String, dynamic> body);
+
+  @Get(path: 'meetings/request/users/')
+  Future<Response> getMeetingRequestUsers(
+      @QueryMap() Map<String, dynamic> body);
+
+  @Get(path: 'meetings/request/slots/')
+  Future<Response> getMeetingRequestSlots(
+      @QueryMap() Map<String, dynamic> body);
+
+  @Get(path: 'meetings/request/{meetingRequestId}/')
+  Future<Response> getMeetingRequest(@Path() int meetingRequestId);
+
+  @Get(path: 'meetings/request/my/')
+  Future<Response> getMyMeetingRequest(@QueryMap() Map<String, dynamic> body);
+
+  @Post(path: 'meetings/request/accepted/')
+  Future<Response> postAcceptMeetingRequest(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'meetings/request/declined/')
+  Future<Response> postDeclineMeetingRequest(@Body() Map<String, dynamic> body);
 }

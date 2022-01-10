@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -10,6 +11,13 @@ import '../datasources/auth_local_datasource.dart';
 import '../datasources/auth_remote_datasource.dart';
 import '../models/user_model.dart';
 import '../models/user_profile_model.dart';
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final remoteDataSource = ref.read(authRemoteDatasourceProvider);
+  final localDataSource = ref.read(authLocalDatasourceProvider);
+  final networkInfo = ref.read(networkInfoProvider);
+  return AuthRepositoryImpl(remoteDataSource, localDataSource, networkInfo);
+});
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -184,6 +192,27 @@ class AuthRepositoryImpl implements AuthRepository {
       Map<String, String> body) async {
     try {
       final response = await remoteDataSource.postNewPasswordToRemote(body);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendOtp(String phone) async {
+    try {
+      final response = await remoteDataSource.sendOtp(phone);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> verifyOtp(String phone, String otp) async {
+    try {
+      final response = await remoteDataSource.verifyOtp(phone, otp);
+      localDataSource.setUserToCache(response);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

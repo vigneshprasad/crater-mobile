@@ -8,7 +8,7 @@ part of 'time_slot_model.dart';
 
 TimeSlotModel _$TimeSlotModelFromJson(Map<String, dynamic> json) {
   return TimeSlotModel(
-    pk: json['pk'] as int,
+    pk: json['pk'] as int?,
     end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
     start:
         json['start'] == null ? null : DateTime.parse(json['start'] as String),

@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -38,21 +43,21 @@ class CreateConversationScreen extends HookWidget {
   final _interestFormFieldKey = GlobalKey<FormFieldState>();
 
   CreateConversationScreen({
-    Key key,
-    @required this.topic,
-    @required this.type,
+    Key? key,
+    required this.topic,
+    required this.type,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(getCreateTableMetaNotifier(type).state);
+    final state = useProvider(getCreateTableMetaNotifier(type));
     final topicStyle = Theme.of(context).textTheme.headline6;
     final _interests = useState<List<MeetingInterest>>([]);
-    final _timeslots = useState<List<TimeSlot>>();
-    final _instantTimeSlot = useState<DateTime>();
+    final _timeslots = useState<List<TimeSlot>>([]);
+    final _instantTimeSlot = useState<DateTime?>(null);
     final _formStep = useState<int>(0);
     final descriptionStyle =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white70);
+        Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white70);
 
     final _scrollControiler = useScrollController();
 
@@ -84,14 +89,14 @@ class CreateConversationScreen extends HookWidget {
                                 topic: topic,
                                 showFooter: false,
                                 onTap: () => launch(
-                                  topic.articleDetail.websiteUrl,
-                                  option: const CustomTabsOption(),
+                                  topic.articleDetail?.websiteUrl ?? '',
+                                  customTabsOption: const CustomTabsOption(),
                                 ),
                               )
                             else
-                              BaseContainer(
-                                disableAnimation: true,
-                                radius: 8,
+                              Material(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Theme.of(context).dialogBackgroundColor,
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Column(
@@ -99,13 +104,13 @@ class CreateConversationScreen extends HookWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        topic.name,
+                                        topic.name ?? '',
                                         style: topicStyle,
                                       ),
                                       const SizedBox(height: AppInsets.l),
                                       if (topic.description != null)
                                         Text(
-                                          topic.description,
+                                          topic.description!,
                                           style: descriptionStyle,
                                         ),
                                     ],
@@ -121,8 +126,9 @@ class CreateConversationScreen extends HookWidget {
                                   Center(
                                     child: _FormLabel(
                                       heading: AppLocalizations.of(context)
-                                          .translate(
-                                              "conversations:interests_label"),
+                                              ?.translate(
+                                                  "conversations:interests_label") ??
+                                          '',
                                       subheading: "Pick atleast 3 options",
                                     ),
                                   ),
@@ -131,12 +137,12 @@ class CreateConversationScreen extends HookWidget {
                                     key: _interestFormFieldKey,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    options: meta.interests,
+                                    options: meta.interests!,
                                     onSaved: (value) {
-                                      _interests.value = value;
+                                      _interests.value = value ?? [];
                                     },
                                     validator: (value) {
-                                      if (value.length < 3) {
+                                      if (value == null || value.length < 3) {
                                         return "Please select atleast 3 types of people.";
                                       }
                                       return null;
@@ -153,18 +159,20 @@ class CreateConversationScreen extends HookWidget {
                                   Center(
                                     child: _FormLabel(
                                         heading: AppLocalizations.of(context)
-                                            .translate(
-                                                "conversations:time_slot_label")),
+                                                ?.translate(
+                                                    "conversations:time_slot_label") ??
+                                            ''),
                                   ),
                                   const SizedBox(height: AppInsets.xl),
                                   if (type == ConversationType.curated)
                                     TimeSlotFormField(
                                       initialValue: const [],
-                                      slots: meta.config.availableTimeSlots,
+                                      slots:
+                                          meta.config?.availableTimeSlots ?? {},
                                       onChange: (slots) =>
                                           _timeslots.value = slots,
                                       validator: (value) {
-                                        if (value.isEmpty) {
+                                        if (value == null || value.isEmpty) {
                                           return "Please select atleast 1 slots.";
                                         }
                                         return null;
@@ -172,7 +180,7 @@ class CreateConversationScreen extends HookWidget {
                                     ),
                                   if (type == ConversationType.instant)
                                     DateTimeFormField(
-                                      slots: meta.timeSlots,
+                                      slots: meta.timeSlots!,
                                       onChanged: (value) =>
                                           _instantTimeSlot.value = value,
                                       validator: (value) {
@@ -191,20 +199,21 @@ class CreateConversationScreen extends HookWidget {
                     ),
                   ),
                 ),
-                BaseContainer(
-                  disableAnimation: true,
+                Container(
+                  color: Theme.of(context).dialogBackgroundColor,
                   child: SafeArea(
                     child: Padding(
                       padding:
                           const EdgeInsets.symmetric(vertical: AppInsets.xxl),
                       child: Center(
                         child: BaseLargeButton(
-                          text: AppLocalizations.of(context).translate(
+                          text: AppLocalizations.of(context)?.translate(
                               _formStep.value == 0 ? 'next' : "confirm"),
                           onPressed: () {
                             if (_formStep.value == 0) {
                               if (_interestFormFieldKey.currentState
-                                  .validate()) {
+                                      ?.validate() ??
+                                  false) {
                                 _scrollControiler.animateTo(0,
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.ease);
@@ -212,18 +221,19 @@ class CreateConversationScreen extends HookWidget {
                                         const Duration(milliseconds: 300))
                                     .then((value) => _formStep.value = 1);
                               }
-                            } else if (_formKey.currentState.validate()) {
+                            } else if (_formKey.currentState?.validate() ??
+                                false) {
                               if (type == ConversationType.curated) {
                                 _postGroupOptin(
                                   context,
                                   _interests.value,
                                   _timeslots.value,
-                                  meta.config,
+                                  meta.config!,
                                   topic,
                                 );
                               } else {
                                 _postInstantConversation(context,
-                                    _instantTimeSlot.value, _interests.value);
+                                    _instantTimeSlot.value!, _interests.value);
                               }
                             }
                           },
@@ -246,19 +256,22 @@ class CreateConversationScreen extends HookWidget {
     DateTime start,
     List<MeetingInterest> interests,
   ) async {
-    final _overlay = _buildLoaderOverlay();
+    final _overlay = buildLoaderOverlay();
     final conversation = Conversation(
       topic: topic.id,
       description: topic.description,
       start: start.toLocal(),
-      interests: interests.map((e) => e.pk).toList(),
+      interests: interests
+          .where((element) => element.pk != null)
+          .map((e) => e.pk!)
+          .toList(),
       privacy: ConversationPrivacy.public,
       medium: ConversationMedium.audio,
       closed: false,
       maxSpeakers: 6,
     );
 
-    Overlay.of(context).insert(_overlay);
+    Overlay.of(context)?.insert(_overlay);
     final response = await context
         .read(conversationRepositoryProvider)
         .postCreateInstantConversation(conversation);
@@ -266,9 +279,9 @@ class CreateConversationScreen extends HookWidget {
     response.fold(
       (failure) {
         _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
-      (conversation) {
+      (conversation) async {
         _overlay.remove();
 
         final analytics = KiwiContainer().resolve<Analytics>();
@@ -277,14 +290,37 @@ class CreateConversationScreen extends HookWidget {
             properties: {
               "id": conversation.id,
               "topic": conversation.topic,
-              "topic_name": conversation.topicDetail.name,
+              "topic_name": conversation.topicDetail?.name,
             });
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
-          Routes.onboardingScreen(
+
+        await showEmail(context);
+
+        AutoRouter.of(context).pushAndPopUntil(
+          OnboardingScreenRoute(
               type: OnboardingType.groupMeetingCreation.toString()),
-          (_) => false,
+          predicate: (_) => false,
         );
-        // ExtendedNavigator.of(context).pop(conversation);
+        // AutoRouter.of(context).pop(conversation);
+      },
+    );
+  }
+
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+    if (email != null && email.isNotEmpty) {
+      return;
+    }
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return const ProfileEmailScreen(editMode: true);
       },
     );
   }
@@ -296,8 +332,8 @@ class CreateConversationScreen extends HookWidget {
     MeetingConfig config,
     Topic topic,
   ) async {
-    final _overlay = _buildLoaderOverlay();
-    Overlay.of(context).insert(_overlay);
+    final _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay);
     final response = await context
         .read(conversationRepositoryProvider)
         .postGroupOptin(interests, timeslots, config, topic);
@@ -305,7 +341,7 @@ class CreateConversationScreen extends HookWidget {
     response.fold(
       (failure) {
         _overlay.remove();
-        Fluttertoast.showToast(msg: failure.message);
+        Fluttertoast.showToast(msg: failure.message!);
       },
       (optin) async {
         _overlay.remove();
@@ -313,24 +349,15 @@ class CreateConversationScreen extends HookWidget {
         // final popupManager = context.read(popupManagerProvider);
         // await popupManager.showPopup(PopupType.conversationOptIn, context);
 
-        ExtendedNavigator.of(context).pushAndRemoveUntil(
-          Routes.onboardingScreen(
+        await showEmail(context);
+
+        AutoRouter.of(context).pushAndPopUntil(
+          OnboardingScreenRoute(
               type: OnboardingType.oneOnOneMeetingCreation.toString()),
-          (_) => false,
+          predicate: (_) => false,
         );
 
-        // ExtendedNavigator.of(context).pop(optin);
-      },
-    );
-  }
-
-  OverlayEntry _buildLoaderOverlay() {
-    return OverlayEntry(
-      builder: (context) {
-        return Container(
-          color: Theme.of(context).backgroundColor.withOpacity(0.8),
-          child: _Loader(),
-        );
+        // AutoRouter.of(context).pop(optin);
       },
     );
   }
@@ -338,20 +365,20 @@ class CreateConversationScreen extends HookWidget {
 
 class _FormLabel extends StatelessWidget {
   final String heading;
-  final String subheading;
+  final String? subheading;
 
   const _FormLabel({
-    Key key,
-    @required this.heading,
+    Key? key,
+    required this.heading,
     this.subheading,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headingStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 16,
         );
-    final subheadingStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final subheadingStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 14,
           color: Colors.grey,
         );
@@ -365,7 +392,7 @@ class _FormLabel extends StatelessWidget {
         if (subheading != null) const SizedBox(height: AppInsets.sm),
         if (subheading != null)
           Text(
-            subheading,
+            subheading!,
             style: subheadingStyle,
           )
       ],
@@ -389,8 +416,8 @@ class _Loader extends StatelessWidget {
 class _NoConfig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final label = AppLocalizations.of(context).translate("error:generic");
-    final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith();
+    final label = AppLocalizations.of(context)?.translate("error:generic");
+    final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith();
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -400,7 +427,7 @@ class _NoConfig extends StatelessWidget {
             image: AppImageAssets.meetingsEmpty,
             width: 240,
           ),
-          Text(label, style: labelStyle),
+          Text(label!, style: labelStyle),
         ],
       ),
     );

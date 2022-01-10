@@ -13,7 +13,7 @@ part 'notification_state.dart';
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final UCGetNotificationPageRequest getNotifications;
   NotificationBloc({
-    @required this.getNotifications,
+    required this.getNotifications,
   }) : super(const NotificationInitial());
 
   @override

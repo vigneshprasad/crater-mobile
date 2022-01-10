@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -14,8 +13,8 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
   final ChatInboxRemoteDataSource remoteDataSource;
 
   ChatInboxRepositoryImpl({
-    @required this.localDataSource,
-    @required this.remoteDataSource,
+    required this.localDataSource,
+    required this.remoteDataSource,
   });
 
   @override
@@ -27,10 +26,10 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
   ) async {
     try {
       await remoteDataSource.sendGetAllUsersRequest(
-        search,
-        filter,
-        page,
-        latestMesssages,
+        search: search,
+        filter: filter,
+        page: page,
+        latestMessages: latestMesssages,
       );
       final cached = localDataSource.getChatUsersFromCache(search);
       return Right(PageSocketResponse<ChatUser>(
@@ -56,8 +55,8 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
 
   @override
   Future<Either<Failure, void>> sendStarChatUser({
-    @required String user,
-    @required bool isStarred,
+    required String user,
+    required bool isStarred,
   }) async {
     try {
       await remoteDataSource.sendStarUserRequest(
@@ -72,7 +71,7 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
 
   @override
   Future<Either<Failure, ChatUser>> recievedUserChatStarChange(
-      {bool isStarred, String user}) async {
+      {required bool isStarred, required String user}) async {
     try {
       final updated = await localDataSource.updateUserStarredInCache(
           userId: user, isStarred: isStarred);
@@ -87,10 +86,10 @@ class ChatInboxRepositoryImpl implements ChatInboxRepository {
       String search, String filter, int page, String latestMesssages) async {
     try {
       await remoteDataSource.sendGetAllUsersRequest(
-        search,
-        filter,
-        page,
-        latestMesssages,
+        search: search,
+        filter: filter,
+        page: page,
+        latestMessages: latestMesssages,
       );
       return const Right(null);
     } on WebsocketServerException {

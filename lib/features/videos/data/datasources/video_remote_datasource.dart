@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import '../../../../api/masterclass/masterclass_api_service.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entity/video_entity.dart';
@@ -17,7 +15,7 @@ class VideoRemoteDatasourceImpl implements VideoRemoteDatasource {
   final MasterClassApiService apiService;
 
   VideoRemoteDatasourceImpl({
-    @required this.apiService,
+    required this.apiService,
   });
 
   @override

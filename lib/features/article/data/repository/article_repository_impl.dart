@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -17,9 +16,9 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final NetworkInfo networkInfo;
 
   ArticleRepositoryImpl({
-    @required this.remoteDatasource,
-    @required this.localDatasource,
-    @required this.networkInfo,
+    required this.remoteDatasource,
+    required this.localDatasource,
+    required this.networkInfo,
   });
 
   @override
@@ -30,7 +29,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
       try {
         final response = await remoteDatasource.getArticePageFromRemote(
             page, pageSize, websiteTag);
-        await localDatasource.persistArticlesToCache(response.results);
+        await localDatasource.persistArticlesToCache(response.results!);
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -41,6 +40,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
         return Right(PageApiResponse<Article>(
           count: cached.length,
           pages: 1,
+          pageSize: pageSize,
           currentPage: 1,
           fromCache: true,
           results: cached,

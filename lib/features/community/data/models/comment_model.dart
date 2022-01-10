@@ -13,28 +13,28 @@ part 'comment_model.g.dart';
 @JsonSerializable()
 class CommentModel extends Comment {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String message;
+  final String? message;
 
   @HiveField(2)
   @JsonKey(name: 'creator_id')
-  final String creatorId;
+  final String? creatorId;
 
   @HiveField(3)
   @JsonKey(name: 'creator_name')
-  final String creatorName;
+  final String? creatorName;
 
   @HiveField(4)
   @JsonKey(name: 'creator_photo')
-  final String creatorPhoto;
+  final String? creatorPhoto;
 
   @HiveField(5)
-  final DateTime created;
+  final DateTime? created;
 
   @HiveField(6)
-  final int postId;
+  final int? postId;
 
   CommentModel({
     this.pk,
@@ -58,13 +58,13 @@ class CommentModel extends Comment {
   Map<String, dynamic> toJson() => _$CommentModelToJson(this);
 
   CommentModel copyWith({
-    int pk,
-    String message,
-    String creatorId,
-    String creatorName,
-    String creatorPhoto,
-    DateTime created,
-    int postId,
+    int? pk,
+    String? message,
+    String? creatorId,
+    String? creatorName,
+    String? creatorPhoto,
+    DateTime? created,
+    int? postId,
   }) {
     return CommentModel(
       pk: pk ?? this.pk,

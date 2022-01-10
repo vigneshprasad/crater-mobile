@@ -4,12 +4,12 @@ import '../../../constants/theme.dart';
 
 class TabHeader extends StatelessWidget {
   final String heading;
-  final String subHeading;
-  final Widget action;
+  final String? subHeading;
+  final Widget? action;
 
   const TabHeader({
-    Key key,
-    @required this.heading,
+    Key? key,
+    required this.heading,
     this.subHeading,
     this.action,
   }) : super(key: key);
@@ -33,21 +33,21 @@ class TabHeader extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline5
-                        .copyWith(fontWeight: FontWeight.w700),
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                 const SizedBox(height: AppPadding.tiny),
                 if (subHeading != null)
                   Text(
-                    subHeading,
+                    subHeading!,
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
-                        .copyWith(color: Colors.black45),
+                        ?.copyWith(color: Colors.black45),
                   ),
               ],
             ),
           ),
-          if (action != null) action
+          if (action != null) action!
         ],
       ),
     );

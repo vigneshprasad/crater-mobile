@@ -1,39 +1,39 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+// import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/analytics/analytics.dart';
 import '../../../../../core/analytics/anlytics_events.dart';
-import '../../../../../core/custom_tabs/custom_tabs.dart';
 import '../../../../../core/features/popup_manager/popup_manager.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_large_button/base_large_button.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
-import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
-import '../../widgets/conversation_card/conversation_card.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
-import '../../widgets/rtc_connection_bar/rtc_connection_bar.dart';
-import '../../widgets/speakers_table/speakers_table.dart';
 import 'conversation_screen_state.dart';
 
 class ConversationScreen extends HookWidget {
-  final int id;
+  final int? id;
 
   const ConversationScreen({
     @PathParam("id") this.id,
@@ -41,18 +41,19 @@ class ConversationScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final conversationState = useProvider(conversationStateProvider(id).state);
-    final speakers = useProvider(conversationSpeakersState(id).state);
-    final connectionProvider = useProvider(rtcConnectionProvider(id));
+    final conversationState = useProvider(conversationStateProvider(id!));
+    final speakers = useProvider(conversationSpeakersState(id!));
+    final connectionProvider = useProvider(rtcConnectionProvider(id!));
     final overlayProvider = useProvider(conversationOverlayProvider);
 
     useEffect(() {
       if (overlayProvider.entry != null) {
         overlayProvider.removeOverlayEntry();
-        if (overlayProvider.groupId != id) {
-          context
-              .read(conversationStateProvider(overlayProvider.groupId))
-              .leaveAudioCall();
+        if (overlayProvider.groupId != null && overlayProvider.groupId != id) {
+          // context
+          //     .read(
+          //         conversationStateProvider(overlayProvider.groupId!).notifier)
+          //     .leaveAudioCall();
         }
       }
 
@@ -77,8 +78,10 @@ class ConversationScreen extends HookWidget {
 class _Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: CircularProgressIndicator(
+        color: Theme.of(context).accentColor,
+      ),
     );
   }
 }
@@ -87,126 +90,272 @@ class _ConversationLoaded extends StatelessWidget {
   final Conversation conversation;
   final List<RtcUser> speakers;
   final RtcConnection connection;
+  OverlayEntry? overlayEntry;
 
-  const _ConversationLoaded({
-    Key key,
-    this.conversation,
-    this.speakers,
-    this.connection,
+  _ConversationLoaded({
+    Key? key,
+    required this.conversation,
+    required this.speakers,
+    required this.connection,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Styles
-    final rootTopicStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14,
-        );
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.bodyText2;
-    final pageLabelStyle = Theme.of(context).textTheme.headline6;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
+    final article = conversation.topicDetail?.articleDetail;
+
+    final topic = conversation.topicDetail;
+    final heading =
+        article != null ? article.description : conversation.topicDetail?.name;
+    final shareText = Uri.encodeQueryComponent(heading ?? '');
+
+    final now = DateTime.now().toLocal();
+    const timeBefore = Duration(minutes: 5);
+    final start = conversation.start!.toLocal().subtract(timeBefore);
+
+    const timeAfter = Duration(minutes: 60);
+    final end = conversation.start!.toLocal().add(timeAfter);
+
+    final isClosed = conversation.closed ?? false;
+
+    final canJoin = now.isAfter(start) && now.isBefore(end) && !isClosed;
+
+    final canHost = conversation.host == authUserPK &&
+        now.isAfter(start) &&
+        now.isBefore(end) &&
+        !isClosed;
+
+    final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
       onWillPop: () async {
         if (connection != RtcConnection.disconnected) {
           context
-              .read(conversationStateProvider(conversation.id))
+              .read(conversationStateProvider(conversation.id!).notifier)
               .createAudioCallOverlay(context);
         }
         return true;
       },
-      child: Column(
+      child: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppInsets.xl, vertical: AppInsets.l),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: AppInsets.sm),
-                  Text(startDateFormat.format(conversation.start.toLocal()),
-                      style: dateStyle),
-                  ConversationCard(
-                    conversation: conversation,
-                    hideFooter: true,
-                    onCardPressed: (_) => launch(
-                      conversation.topicDetail.articleDetail.websiteUrl,
-                      option: const CustomTabsOption(),
+          SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppInsets.xl, vertical: AppInsets.l),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  heading ?? '',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  children: [
+                    const Icon(Icons.calendar_today),
+                    const SizedBox(width: 12),
+                    Text(startDateFormat.format(conversation.start!.toLocal()),
+                        style: dateStyle),
+                  ],
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                if (topic?.image != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      topic?.image ?? '',
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  if (conversation.topicDetail.articleDetail == null)
-                    Text(conversation.topicDetail.description),
-                  const SizedBox(height: AppInsets.xl),
-                  Center(
-                    child: Text(
-                        AppLocalizations.of(context)
-                            .translate("conversations:speakers_label"),
-                        style: pageLabelStyle),
+                const SizedBox(height: AppInsets.xxl),
+                if (conversation.topicDetail?.description?.isNotEmpty ?? false)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Talking About',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(height: AppInsets.xxl),
+                      Text(conversation.topicDetail?.description ?? ''),
+                    ],
                   ),
-                  if (conversation.isSpeaker)
-                    const SizedBox(height: AppInsets.l),
-                  if (!conversation.isSpeaker)
-                    const SizedBox(height: AppInsets.xl),
-                  if (connection == RtcConnection.disconnected)
-                    _SpeakersListWithIntro(
-                      speakers: speakers,
-                      authUserPk: authUserPK,
-                    )
-                  else
-                    SpeakersTable(
-                      speakers: speakers,
-                      chairSize: 60,
-                      isLive: connection == RtcConnection.connected,
+                const Divider(thickness: 1, height: 80),
+                Text(
+                  'Let others know',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: link));
+                    Fluttertoast.showToast(msg: 'Copied to clipboard');
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(width: 2, color: Colors.white10),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(link),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).backgroundColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.copy),
+                          ),
+                        ],
+                      )),
+                ),
+                const SizedBox(height: AppInsets.xxl),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          final url =
+                              'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
+                          launch(url, forceSafariVC: false);
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppSvgAssets.linkedin,
+                              color: Colors.white,
+                              height: 24,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'Share',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                ],
-              ),
-            )),
-          ),
-          BaseContainer(
-            disableAnimation: true,
+                    const SizedBox(width: AppInsets.xxl),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          final url =
+                              'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
+                          launch(url, forceSafariVC: false);
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppSvgAssets.twitterBlack,
+                              height: 24,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'Tweet',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(thickness: 1, height: 80),
+                Text(
+                  'Speakers',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Column(
+                  children: conversation.speakersDetailList
+                          ?.map((speaker) => _SpeakerWithIntro(
+                                user: speaker,
+                                authUserPk: authUserPK!,
+                              ))
+                          .toList() ??
+                      [],
+                ),
+                const SizedBox(height: 200)
+              ],
+            ),
+          )),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppInsets.xxl),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (connection == RtcConnection.disconnected)
-                      if (conversation.isSpeaker)
-                        BaseContainer(
-                          radius: 30,
-                          child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                child: Container(
+                  color: Theme.of(context).backgroundColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (conversation.attendees?.contains(authUserPK) ?? false)
+                        if (canHost) // HOST
+                          Expanded(
+                              child: BaseLargeButton(
                             onPressed: () {
-                              context
-                                  .read(conversationStateProvider(
-                                      conversation.id))
-                                  .connectToAudioCall();
+                              startDyteMeeting(context);
                             },
-                            child: Text(AppLocalizations.of(context).translate(
-                                "conversation_screen:go_live_label")),
-                          ),
-                        )
+                            text: "Go Live",
+                          ))
+                        else if (canJoin) // AUDIENCE
+                          Expanded(
+                              child: BaseLargeButton(
+                            onPressed: () {
+                              startDyteMeeting(context);
+                            },
+                            text: AppLocalizations.of(context)?.translate(
+                                    "conversation_screen:go_live_label") ??
+                                '',
+                          ))
+                        else
+                          Expanded(
+                            child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: Theme.of(context).accentColor,
+                                      width: 2,
+                                    )),
+                                child: Text(
+                                  'You will be notified when ${conversation.hostDetail?.name} is live',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                )),
+                          )
                       else
-                        BaseContainer(
-                          radius: 30,
+                        Expanded(
                           child: BaseLargeButton(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            onPressed: () {
-                              _requestJoinGroup(context);
-                            },
-                            child: Text(AppLocalizations.of(context)
-                                .translate("conversations:join_button_label")),
-                          ),
+                              onPressed: () {
+                                _requestJoinGroup(context);
+                              },
+                              text: 'RSVP for this session'),
                         )
-                    else
-                      RtcConnectionBar(
-                        table: conversation,
-                        connection: connection,
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -216,13 +365,24 @@ class _ConversationLoaded extends StatelessWidget {
     );
   }
 
+  void startDyteMeeting(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
+  }
+
   Future<void> _requestJoinGroup(BuildContext context) async {
+    overlayEntry = buildLoaderOverlay();
+    Overlay.of(context)?.insert(overlayEntry!);
+
     final response = await context
-        .read(conversationStateProvider(conversation.id))
+        .read(conversationStateProvider(conversation.id!).notifier)
         .postRequestToJoinGroup();
 
     response.fold(
-      (failure) => Fluttertoast.showToast(msg: failure.message),
+      (failure) {
+        overlayEntry?.remove();
+        Fluttertoast.showToast(msg: failure.message!);
+      },
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
         analytics.trackEvent(
@@ -237,65 +397,59 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _updateConversation(BuildContext context) async {
     final response = await context
-        .read(conversationStateProvider(conversation.id))
+        .read(conversationStateProvider(conversation.id!).notifier)
         .retrieveConversation();
 
     response.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message);
+        overlayEntry?.remove();
+        Fluttertoast.showToast(msg: failure.message!);
       },
-      (group) {
+      (group) async {
+        overlayEntry?.remove();
+
         final now = DateTime.now().toLocal();
-        final start = group.start.toLocal();
-        final end = group.end.toLocal();
+        final start = group.start!.toLocal();
+        final end = group.end!.toLocal();
 
         if (now.isAfter(start) && now.isBefore(end)) {
-          context
-              .read(conversationStateProvider(conversation.id))
-              .connectToAudioCall();
+          // context
+          //     .read(conversationStateProvider(conversation.id!).notifier)
+          //     .connectToAudioCall();
         } else {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
-          ExtendedNavigator.of(context).pushAndRemoveUntil(
-            Routes.onboardingScreen(
+
+          await showEmail(context);
+
+          AutoRouter.of(context).pushAndPopUntil(
+            OnboardingScreenRoute(
                 type: OnboardingType.meetingJoining.toString()),
-            (_) => false,
+            predicate: (_) => false,
           );
         }
       },
     );
   }
-}
 
-class _SpeakersListWithIntro extends StatelessWidget {
-  final List<RtcUser> speakers;
-  final String authUserPk;
-  const _SpeakersListWithIntro({
-    Key key,
-    this.speakers,
-    @required this.authUserPk,
-  }) : super(key: key);
+  Future<void> showEmail(BuildContext context) async {
+    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
 
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> children = [];
-    // if (table.host != null) {
-    //   children.add(_SpeakerWithIntro(
-    //     user: table.hostDetail,
-    //     authUserPk: authUserPk,
-    //   ));
-    // }
-
-    for (final speaker in speakers) {
-      children.add(_SpeakerWithIntro(
-        user: speaker.userInfo,
-        authUserPk: authUserPk,
-      ));
+    if (email != null && email.isNotEmpty) {
+      return;
     }
-
-    return Column(
-      children: children,
+    await showModalBottomSheet(
+      elevation: 10,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return const ProfileEmailScreen(editMode: true);
+      },
     );
   }
 }
@@ -304,25 +458,24 @@ class _SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
   final String authUserPk;
   const _SpeakerWithIntro({
-    Key key,
-    @required this.user,
-    @required this.authUserPk,
+    Key? key,
+    required this.user,
+    required this.authUserPk,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final description = user.introduction ?? user.email;
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 16,
-        );
-    final bodyStyle = Theme.of(context).textTheme.bodyText2;
+    final headingStyle = Theme.of(context).textTheme.subtitle2;
+    final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
-      onTap: () => ExtendedNavigator.of(context).push(
-        Routes.profileScreen(userId: user.pk, allowEdit: authUserPk == user.pk),
+      onTap: () => AutoRouter.of(context).push(
+        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BaseNetworkImage(
               imageUrl: user.photo,
@@ -333,14 +486,14 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppInsets.xl),
-            Flexible(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.name, style: headingStyle),
+                  Text(user.name ?? '', style: headingStyle),
                   const SizedBox(height: AppInsets.sm),
                   Text(
-                    description,
+                    description ?? '',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
@@ -349,77 +502,6 @@ class _SpeakerWithIntro extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleDetailCard extends StatelessWidget {
-  final Article article;
-
-  const _ArticleDetailCard({
-    Key key,
-    @required this.article,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14.00,
-          fontWeight: FontWeight.w500,
-          color: Colors.black87,
-        );
-    final contentStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 12.0,
-          color: Colors.black54,
-        );
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-          side: BorderSide(width: 2.00, color: Colors.grey[300]),
-        ),
-        color: Colors.white,
-        type: MaterialType.card,
-        child: InkWell(
-          onTap: () {
-            KiwiContainer().resolve<CustomTabs>().openLink(article.websiteUrl);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppInsets.l,
-              horizontal: AppInsets.l,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BaseNetworkImage(
-                      imageUrl: article.articleSourceDetail.image,
-                      defaultImage: AppImageAssets.videoPlaceholder,
-                      imagebuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 12.00,
-                      ),
-                    ),
-                    const SizedBox(width: AppInsets.l),
-                    Text(article.articleSourceDetail.name,
-                        style: sourceLabelStyle),
-                  ],
-                ),
-                const SizedBox(height: AppInsets.l),
-                Text(
-                  article.title,
-                  maxLines: 3,
-                  style: contentStyle,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

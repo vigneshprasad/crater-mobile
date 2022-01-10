@@ -8,14 +8,13 @@ part of 'api_models.dart';
 
 PostsPageApiResponse _$PostsPageApiResponseFromJson(Map<String, dynamic> json) {
   return PostsPageApiResponse(
-    count: json['count'] as int,
-    currentPage: json['current_page'] as int,
-    next: json['next'] as String,
-    previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : PostModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    count: json['count'] as int?,
+    currentPage: json['current_page'] as int?,
+    next: json['next'] as String?,
+    previous: json['previous'] as String?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => PostModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -32,14 +31,13 @@ Map<String, dynamic> _$PostsPageApiResponseToJson(
 CommentsPageApiResponse _$CommentsPageApiResponseFromJson(
     Map<String, dynamic> json) {
   return CommentsPageApiResponse(
-    count: json['count'] as int,
-    currentPage: json['current_page'] as int,
-    next: json['next'] as String,
-    previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : CommentModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    count: json['count'] as int?,
+    currentPage: json['current_page'] as int?,
+    next: json['next'] as String?,
+    previous: json['previous'] as String?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => CommentModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

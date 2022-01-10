@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -20,8 +20,8 @@ class ProfileBasicScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileBasicScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -32,19 +32,22 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
-  ProfileBasicBloc _bloc;
+  late ProfileBasicBloc _bloc;
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final name = BlocProvider.of<AuthBloc>(context).state.user?.name;
 
     _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
 
-    if (user.name != null && user.name.trim().isNotEmpty) {
-      final name = user.name.split(' ');
-      _firstNameController.text = name.first;
-      _lastNameController.text = name.last;
+    if (name != null && name.trim().isNotEmpty) {
+      final parts = name.split(' ');
+      _firstNameController.text = parts.first;
+      if (parts.length > 1) {
+        _lastNameController.text = parts.last;
+      }
     } else if (widget.editMode == false) {
       SharedPreferences.getInstance().then((prefs) {
         final provider = prefs.getString('AuthProvider');
@@ -61,7 +64,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String heading = 'Lets get started';
+    const heading = 'Lets get started';
 
     return BlocProvider.value(
       value: _bloc,
@@ -78,7 +81,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ProfileHeader(title: heading),
+                      const ProfileHeader(title: heading),
                       _buildProfileForm(context),
                     ],
                   ),
@@ -105,8 +108,8 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   }
 
   Widget _buildProfileForm(BuildContext context) {
-    final firstnameLabel = 'Your first name';
-    final lastnameLabel = 'Your last name';
+    const firstnameLabel = 'Your first name';
+    const lastnameLabel = 'Your last name';
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppInsets.xxl, vertical: AppInsets.l),
@@ -119,16 +122,18 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
               controller: _firstNameController,
               autovalidate: false,
               label: firstnameLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
             BaseFormInput(
               controller: _lastNameController,
               autovalidate: false,
               label: lastnameLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -138,13 +143,15 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   }
 
   void _goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileTagsScreen(editMode: widget.editMode));
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressedSubmit() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid ?? false) {
+      _overlay = buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
+
       final name = '${_firstNameController.text} ${_lastNameController.text}';
       _bloc.add(PostProfileBasicRequestStarted(name: name));
     }
@@ -155,6 +162,9 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
     if (state is PatchProfileBasicRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserUpdateRecieved(user: state.user));
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }

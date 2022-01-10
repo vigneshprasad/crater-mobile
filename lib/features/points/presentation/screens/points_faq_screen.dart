@@ -14,9 +14,10 @@ class PointsFaqScreen extends StatefulWidget {
 }
 
 class _PointsFaqScreenState extends State<PointsFaqScreen> {
-  List<PointsFaq> faqs;
-  List<PointsRule> rules;
-  PointsBloc _bloc;
+  late List<PointsFaq> faqs;
+  late List<PointsRule> rules;
+  // ignore: unused_field
+  late PointsBloc _bloc;
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
       listener: _blocListener,
       child: Scaffold(
         appBar: BaseAppBar(
-          title: Text("Points Faq's"),
+          title: const Text("Points Faq's"),
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(
@@ -63,11 +64,11 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
   }
 
   List<Widget> _buildFaqList(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final headingStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           color: Theme.of(context).primaryColor,
           fontSize: 16,
         );
-    final answerStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final answerStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
           color: Colors.grey[600],
         );
@@ -77,12 +78,12 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                faq.question,
+                faq.question!,
                 style: headingStyle,
               ),
               const SizedBox(height: AppInsets.med),
               Text(
-                faq.answer,
+                faq.answer!,
                 style: answerStyle,
               ),
               const SizedBox(height: AppInsets.xl),
@@ -93,15 +94,15 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
   }
 
   Widget _buildPointsRules(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final headingStyle = Theme.of(context).textTheme.subtitle2?.copyWith(
           color: Theme.of(context).primaryColor,
           fontSize: 16,
         );
     final question =
-        AppLocalizations.of(context).translate("rewards:wn_coins_question");
+        AppLocalizations.of(context)?.translate("rewards:wn_coins_question");
     final answer =
-        AppLocalizations.of(context).translate("rewards:wn_coins_answer");
-    final answerStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+        AppLocalizations.of(context)?.translate("rewards:wn_coins_answer");
+    final answerStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
           color: Colors.grey[600],
         );
@@ -109,12 +110,12 @@ class _PointsFaqScreenState extends State<PointsFaqScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          question,
+          question!,
           style: headingStyle,
         ),
         const SizedBox(height: AppInsets.med),
         Text(
-          answer,
+          answer!,
           style: answerStyle,
         ),
         const SizedBox(height: AppInsets.xl),
@@ -133,17 +134,17 @@ class _RulesRow extends StatelessWidget {
   final PointsRule rule;
 
   const _RulesRow({
-    Key key,
-    @required this.rule,
+    Key? key,
+    required this.rule,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ruleStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final ruleStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           fontSize: 15,
           color: Colors.grey[700],
         );
-    final scoreStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final scoreStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 15,
           color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w500,
@@ -154,7 +155,7 @@ class _RulesRow extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              rule.desc,
+              rule.desc!,
               style: ruleStyle,
             ),
           ),

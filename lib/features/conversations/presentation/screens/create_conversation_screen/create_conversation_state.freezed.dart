@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'create_conversation_state.dart';
 
@@ -9,72 +9,74 @@ part of 'create_conversation_state.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$TableMetaStateTearOff {
   const _$TableMetaStateTearOff();
 
-// ignore: unused_element
   _TableMetaStateLoading loading() {
     return _TableMetaStateLoading();
   }
 
-// ignore: unused_element
   _TableMetaStateData data(CreateTableMeta meta) {
     return _TableMetaStateData(
       meta,
     );
   }
 
-// ignore: unused_element
-  _TableMetaStateError error(Failure error, [StackTrace stackTrace]) {
+  _TableMetaStateError error(Failure error, [StackTrace? stackTrace]) {
     return _TableMetaStateError(
       error,
       stackTrace,
     );
   }
 
-// ignore: unused_element
   _TableMetaStateNoConfig emptyConfig() {
     return _TableMetaStateNoConfig();
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $TableMetaState = _$TableMetaStateTearOff();
 
 /// @nodoc
 mixin _$TableMetaState {
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(CreateTableMeta meta),
-    @required TResult error(Failure error, StackTrace stackTrace),
-    @required TResult emptyConfig(),
-  });
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(CreateTableMeta meta) data,
+    required TResult Function(Failure error, StackTrace? stackTrace) error,
+    required TResult Function() emptyConfig,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(CreateTableMeta meta),
-    TResult error(Failure error, StackTrace stackTrace),
-    TResult emptyConfig(),
-    @required TResult orElse(),
-  });
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(CreateTableMeta meta)? data,
+    TResult Function(Failure error, StackTrace? stackTrace)? error,
+    TResult Function()? emptyConfig,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_TableMetaStateLoading value),
-    @required TResult data(_TableMetaStateData value),
-    @required TResult error(_TableMetaStateError value),
-    @required TResult emptyConfig(_TableMetaStateNoConfig value),
-  });
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TableMetaStateLoading value) loading,
+    required TResult Function(_TableMetaStateData value) data,
+    required TResult Function(_TableMetaStateError value) error,
+    required TResult Function(_TableMetaStateNoConfig value) emptyConfig,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_TableMetaStateLoading value),
-    TResult data(_TableMetaStateData value),
-    TResult error(_TableMetaStateError value),
-    TResult emptyConfig(_TableMetaStateNoConfig value),
-    @required TResult orElse(),
-  });
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_TableMetaStateLoading value)? loading,
+    TResult Function(_TableMetaStateData value)? data,
+    TResult Function(_TableMetaStateError value)? error,
+    TResult Function(_TableMetaStateNoConfig value)? emptyConfig,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -114,6 +116,7 @@ class __$TableMetaStateLoadingCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_TableMetaStateLoading implements _TableMetaStateLoading {
   _$_TableMetaStateLoading();
 
@@ -132,29 +135,24 @@ class _$_TableMetaStateLoading implements _TableMetaStateLoading {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(CreateTableMeta meta),
-    @required TResult error(Failure error, StackTrace stackTrace),
-    @required TResult emptyConfig(),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(CreateTableMeta meta) data,
+    required TResult Function(Failure error, StackTrace? stackTrace) error,
+    required TResult Function() emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return loading();
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(CreateTableMeta meta),
-    TResult error(Failure error, StackTrace stackTrace),
-    TResult emptyConfig(),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(CreateTableMeta meta)? data,
+    TResult Function(Failure error, StackTrace? stackTrace)? error,
+    TResult Function()? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading();
     }
@@ -163,29 +161,24 @@ class _$_TableMetaStateLoading implements _TableMetaStateLoading {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_TableMetaStateLoading value),
-    @required TResult data(_TableMetaStateData value),
-    @required TResult error(_TableMetaStateError value),
-    @required TResult emptyConfig(_TableMetaStateNoConfig value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TableMetaStateLoading value) loading,
+    required TResult Function(_TableMetaStateData value) data,
+    required TResult Function(_TableMetaStateError value) error,
+    required TResult Function(_TableMetaStateNoConfig value) emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return loading(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_TableMetaStateLoading value),
-    TResult data(_TableMetaStateData value),
-    TResult error(_TableMetaStateError value),
-    TResult emptyConfig(_TableMetaStateNoConfig value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_TableMetaStateLoading value)? loading,
+    TResult Function(_TableMetaStateData value)? data,
+    TResult Function(_TableMetaStateError value)? error,
+    TResult Function(_TableMetaStateNoConfig value)? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading(this);
     }
@@ -220,18 +213,18 @@ class __$TableMetaStateDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object meta = freezed,
+    Object? meta = freezed,
   }) {
     return _then(_TableMetaStateData(
-      meta == freezed ? _value.meta : meta as CreateTableMeta,
+      meta == freezed
+          ? _value.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as CreateTableMeta,
     ));
   }
 
   @override
   $CreateTableMetaCopyWith<$Res> get meta {
-    if (_value.meta == null) {
-      return null;
-    }
     return $CreateTableMetaCopyWith<$Res>(_value.meta, (value) {
       return _then(_value.copyWith(meta: value));
     });
@@ -239,8 +232,9 @@ class __$TableMetaStateDataCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_TableMetaStateData implements _TableMetaStateData {
-  _$_TableMetaStateData(this.meta) : assert(meta != null);
+  _$_TableMetaStateData(this.meta);
 
   @override
   final CreateTableMeta meta;
@@ -269,29 +263,24 @@ class _$_TableMetaStateData implements _TableMetaStateData {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(CreateTableMeta meta),
-    @required TResult error(Failure error, StackTrace stackTrace),
-    @required TResult emptyConfig(),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(CreateTableMeta meta) data,
+    required TResult Function(Failure error, StackTrace? stackTrace) error,
+    required TResult Function() emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return data(meta);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(CreateTableMeta meta),
-    TResult error(Failure error, StackTrace stackTrace),
-    TResult emptyConfig(),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(CreateTableMeta meta)? data,
+    TResult Function(Failure error, StackTrace? stackTrace)? error,
+    TResult Function()? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (data != null) {
       return data(meta);
     }
@@ -300,29 +289,24 @@ class _$_TableMetaStateData implements _TableMetaStateData {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_TableMetaStateLoading value),
-    @required TResult data(_TableMetaStateData value),
-    @required TResult error(_TableMetaStateError value),
-    @required TResult emptyConfig(_TableMetaStateNoConfig value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TableMetaStateLoading value) loading,
+    required TResult Function(_TableMetaStateData value) data,
+    required TResult Function(_TableMetaStateError value) error,
+    required TResult Function(_TableMetaStateNoConfig value) emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return data(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_TableMetaStateLoading value),
-    TResult data(_TableMetaStateData value),
-    TResult error(_TableMetaStateError value),
-    TResult emptyConfig(_TableMetaStateNoConfig value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_TableMetaStateLoading value)? loading,
+    TResult Function(_TableMetaStateData value)? data,
+    TResult Function(_TableMetaStateError value)? error,
+    TResult Function(_TableMetaStateNoConfig value)? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (data != null) {
       return data(this);
     }
@@ -333,9 +317,10 @@ class _$_TableMetaStateData implements _TableMetaStateData {
 abstract class _TableMetaStateData implements TableMetaState {
   factory _TableMetaStateData(CreateTableMeta meta) = _$_TableMetaStateData;
 
-  CreateTableMeta get meta;
+  CreateTableMeta get meta => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$TableMetaStateDataCopyWith<_TableMetaStateData> get copyWith;
+  _$TableMetaStateDataCopyWith<_TableMetaStateData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -343,7 +328,7 @@ abstract class _$TableMetaStateErrorCopyWith<$Res> {
   factory _$TableMetaStateErrorCopyWith(_TableMetaStateError value,
           $Res Function(_TableMetaStateError) then) =
       __$TableMetaStateErrorCopyWithImpl<$Res>;
-  $Res call({Failure error, StackTrace stackTrace});
+  $Res call({Failure error, StackTrace? stackTrace});
 }
 
 /// @nodoc
@@ -359,24 +344,31 @@ class __$TableMetaStateErrorCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object error = freezed,
-    Object stackTrace = freezed,
+    Object? error = freezed,
+    Object? stackTrace = freezed,
   }) {
     return _then(_TableMetaStateError(
-      error == freezed ? _value.error : error as Failure,
-      stackTrace == freezed ? _value.stackTrace : stackTrace as StackTrace,
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as Failure,
+      stackTrace == freezed
+          ? _value.stackTrace
+          : stackTrace // ignore: cast_nullable_to_non_nullable
+              as StackTrace?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_TableMetaStateError implements _TableMetaStateError {
-  _$_TableMetaStateError(this.error, [this.stackTrace]) : assert(error != null);
+  _$_TableMetaStateError(this.error, [this.stackTrace]);
 
   @override
   final Failure error;
   @override
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   @override
   String toString() {
@@ -408,29 +400,24 @@ class _$_TableMetaStateError implements _TableMetaStateError {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(CreateTableMeta meta),
-    @required TResult error(Failure error, StackTrace stackTrace),
-    @required TResult emptyConfig(),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(CreateTableMeta meta) data,
+    required TResult Function(Failure error, StackTrace? stackTrace) error,
+    required TResult Function() emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return error(this.error, stackTrace);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(CreateTableMeta meta),
-    TResult error(Failure error, StackTrace stackTrace),
-    TResult emptyConfig(),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(CreateTableMeta meta)? data,
+    TResult Function(Failure error, StackTrace? stackTrace)? error,
+    TResult Function()? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this.error, stackTrace);
     }
@@ -439,29 +426,24 @@ class _$_TableMetaStateError implements _TableMetaStateError {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_TableMetaStateLoading value),
-    @required TResult data(_TableMetaStateData value),
-    @required TResult error(_TableMetaStateError value),
-    @required TResult emptyConfig(_TableMetaStateNoConfig value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TableMetaStateLoading value) loading,
+    required TResult Function(_TableMetaStateData value) data,
+    required TResult Function(_TableMetaStateError value) error,
+    required TResult Function(_TableMetaStateNoConfig value) emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return error(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_TableMetaStateLoading value),
-    TResult data(_TableMetaStateData value),
-    TResult error(_TableMetaStateError value),
-    TResult emptyConfig(_TableMetaStateNoConfig value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_TableMetaStateLoading value)? loading,
+    TResult Function(_TableMetaStateData value)? data,
+    TResult Function(_TableMetaStateError value)? error,
+    TResult Function(_TableMetaStateNoConfig value)? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this);
     }
@@ -470,13 +452,14 @@ class _$_TableMetaStateError implements _TableMetaStateError {
 }
 
 abstract class _TableMetaStateError implements TableMetaState {
-  factory _TableMetaStateError(Failure error, [StackTrace stackTrace]) =
+  factory _TableMetaStateError(Failure error, [StackTrace? stackTrace]) =
       _$_TableMetaStateError;
 
-  Failure get error;
-  StackTrace get stackTrace;
+  Failure get error => throw _privateConstructorUsedError;
+  StackTrace? get stackTrace => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$TableMetaStateErrorCopyWith<_TableMetaStateError> get copyWith;
+  _$TableMetaStateErrorCopyWith<_TableMetaStateError> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -499,6 +482,7 @@ class __$TableMetaStateNoConfigCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_TableMetaStateNoConfig implements _TableMetaStateNoConfig {
   _$_TableMetaStateNoConfig();
 
@@ -517,29 +501,24 @@ class _$_TableMetaStateNoConfig implements _TableMetaStateNoConfig {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(CreateTableMeta meta),
-    @required TResult error(Failure error, StackTrace stackTrace),
-    @required TResult emptyConfig(),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(CreateTableMeta meta) data,
+    required TResult Function(Failure error, StackTrace? stackTrace) error,
+    required TResult Function() emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return emptyConfig();
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(CreateTableMeta meta),
-    TResult error(Failure error, StackTrace stackTrace),
-    TResult emptyConfig(),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(CreateTableMeta meta)? data,
+    TResult Function(Failure error, StackTrace? stackTrace)? error,
+    TResult Function()? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (emptyConfig != null) {
       return emptyConfig();
     }
@@ -548,29 +527,24 @@ class _$_TableMetaStateNoConfig implements _TableMetaStateNoConfig {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_TableMetaStateLoading value),
-    @required TResult data(_TableMetaStateData value),
-    @required TResult error(_TableMetaStateError value),
-    @required TResult emptyConfig(_TableMetaStateNoConfig value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TableMetaStateLoading value) loading,
+    required TResult Function(_TableMetaStateData value) data,
+    required TResult Function(_TableMetaStateError value) error,
+    required TResult Function(_TableMetaStateNoConfig value) emptyConfig,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
-    assert(emptyConfig != null);
     return emptyConfig(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_TableMetaStateLoading value),
-    TResult data(_TableMetaStateData value),
-    TResult error(_TableMetaStateError value),
-    TResult emptyConfig(_TableMetaStateNoConfig value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_TableMetaStateLoading value)? loading,
+    TResult Function(_TableMetaStateData value)? data,
+    TResult Function(_TableMetaStateError value)? error,
+    TResult Function(_TableMetaStateNoConfig value)? emptyConfig,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (emptyConfig != null) {
       return emptyConfig(this);
     }

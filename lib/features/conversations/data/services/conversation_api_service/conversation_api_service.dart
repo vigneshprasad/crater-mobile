@@ -31,7 +31,10 @@ abstract class ConversationApiService extends ChopperService {
       @Query() DateTime start, @Query() DateTime end);
 
   @Get(path: 'topic/')
-  Future<Response> getAllTopics(@Query() int parent);
+  Future<Response> getAllTopics(@Query() int? parent);
+
+  @Get(path: 'topic/ama/')
+  Future<Response> getAllAMATopics();
 
   @Get(path: 'topic/articles/')
   Future<Response> getAllArticleTopics();
@@ -65,4 +68,20 @@ abstract class ConversationApiService extends ChopperService {
 
   @Post(path: 'requests/')
   Future<Response> postConversationRequest(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'topic/suggest/')
+  Future<Response> postTopicSuggestionRequest(
+      @Body() Map<String, dynamic> body);
+
+  @Get(path: 'public/conversations/webinars/live')
+  Future<Response> getLiveClubs(@Query() String? host);
+
+  @Get(path: 'public/conversations/webinars/upcoming')
+  Future<Response> getUpcomingClubs(@Query() String? host);
+
+  @Get(path: 'public/conversations/webinars/past')
+  Future<Response> getPastClubs(@Query() String? host);
+
+  @Get(path: 'public/conversations/webinars/featured')
+  Future<Response> getFeaturedClubs();
 }

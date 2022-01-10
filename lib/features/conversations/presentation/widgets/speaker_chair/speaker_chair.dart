@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:custom_rounded_rectangle_border/custom_rounded_rectangle_border.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -20,11 +21,11 @@ class SpeakerChair extends StatelessWidget {
   final double avtarSize;
 
   const SpeakerChair({
-    Key key,
-    @required this.speaker,
-    @required this.avtarSize,
-    @required this.position,
-    @required this.isLive,
+    Key? key,
+    required this.speaker,
+    required this.avtarSize,
+    required this.position,
+    required this.isLive,
   }) : super(key: key);
 
   @override
@@ -34,7 +35,7 @@ class SpeakerChair extends StatelessWidget {
     final iconSize = avtarSize - (borderWidth + padding) * 2;
     final primaryColor = Theme.of(context).backgroundColor;
     final borderSide = BorderSide(color: primaryColor, width: 3);
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
 
     return Container(
       padding: const EdgeInsets.all(2),
@@ -68,7 +69,7 @@ class SpeakerChair extends StatelessWidget {
           speaker != null && (speaker is ConversationUser || speaker is RtcUser)
               ? (speaker is ConversationUser)
                   ? BaseNetworkImage(
-                      imageUrl: (speaker as ConversationUser).photo,
+                      imageUrl: (speaker as ConversationUser?)?.photo,
                       defaultImage: AppImageAssets.defaultAvatar,
                       imagebuilder: (context, imageProvider) => Container(
                         width: iconSize,
@@ -82,8 +83,8 @@ class SpeakerChair extends StatelessWidget {
                     )
                   : InkWell(
                       onTap: () {
-                        ExtendedNavigator.of(context).push(Routes.profileScreen(
-                            userId: speaker.pk,
+                        AutoRouter.of(context).push(ProfileScreenRoute(
+                            userId: (speaker as ConversationUser?)!.pk!,
                             allowEdit: speaker.pk == authUserPK));
                       },
                       child: SpeakerAvatar(

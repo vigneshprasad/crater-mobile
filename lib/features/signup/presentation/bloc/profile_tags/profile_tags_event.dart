@@ -15,7 +15,7 @@ class PostProfileTagsRequestStarted extends ProfileTagsEvent {
   final List<int> tagIds;
 
   const PostProfileTagsRequestStarted({
-    @required this.tagIds,
+    required this.tagIds,
   });
 
   @override

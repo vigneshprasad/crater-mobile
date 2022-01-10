@@ -17,14 +17,14 @@ class VideoModelAdapter extends TypeAdapter<VideoModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VideoModel(
-      pk: fields[0] as int,
-      author: fields[1] as String,
-      cover: fields[2] as String,
-      created: fields[3] as String,
-      description: fields[4] as String,
-      position: fields[5] as String,
-      thumbnail: fields[6] as String,
-      tags: (fields[7] as List)?.cast<VideoTagModel>(),
+      pk: fields[0] as int?,
+      author: fields[1] as String?,
+      cover: fields[2] as String?,
+      created: fields[3] as String?,
+      description: fields[4] as String?,
+      position: fields[5] as String?,
+      thumbnail: fields[6] as String?,
+      tags: (fields[7] as List?)?.cast<VideoTagModel>(),
     );
   }
 
@@ -67,18 +67,16 @@ class VideoModelAdapter extends TypeAdapter<VideoModel> {
 
 VideoModel _$VideoModelFromJson(Map<String, dynamic> json) {
   return VideoModel(
-    pk: json['pk'] as int,
-    author: json['author'] as String,
-    cover: json['cover'] as String,
-    created: json['created'] as String,
-    description: json['description'] as String,
-    position: json['position'] as String,
-    thumbnail: json['thumbnail'] as String,
-    tags: (json['tags'] as List)
-        ?.map((e) => e == null
-            ? null
-            : VideoTagModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    pk: json['pk'] as int?,
+    author: json['author'] as String?,
+    cover: json['cover'] as String?,
+    created: json['created'] as String?,
+    description: json['description'] as String?,
+    position: json['position'] as String?,
+    thumbnail: json['thumbnail'] as String?,
+    tags: (json['tags'] as List<dynamic>?)
+        ?.map((e) => VideoTagModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

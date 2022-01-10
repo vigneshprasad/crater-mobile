@@ -12,12 +12,12 @@ class DiscountSlider extends StatefulWidget {
   final ValueChanged<double> onChanged;
 
   const DiscountSlider({
-    Key key,
-    @required this.maxUserPoints,
-    @required this.maxPoints,
-    @required this.maxDiscount,
-    @required this.value,
-    @required this.onChanged,
+    Key? key,
+    required this.maxUserPoints,
+    required this.maxPoints,
+    required this.maxDiscount,
+    required this.value,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class DiscountSlider extends StatefulWidget {
 }
 
 class _DiscountSliderState extends State<DiscountSlider> {
-  double _value;
+  late double _value;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14,
           color: Colors.grey[400],
         );
@@ -46,7 +46,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
     );
     final minVal = currency.format(0);
     final maxVal = currency.format(widget.maxDiscount);
-    return Container(
+    return SizedBox(
       height: 172,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

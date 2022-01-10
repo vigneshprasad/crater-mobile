@@ -9,7 +9,7 @@ class AppConstants {
   static const defaultShareText = """
     Hey, 
 
-    I would like to invite you to WorkNetwork. A place to meet & converse with relevant professionals to trade knowledge & grow your business/career, while building authentic relationships. Here’s the link: https://worknetwork.onelink.me/KbQv/AppStore. 
+    I would like to invite you to WorkNetwork. A place to meet & converse with relevant professionals to trade knowledge & grow your business/career, while building authentic relationships. Here’s the link: https://worknetwork.onelink.me/KbQv/join. 
   """;
 
   static const defaultAvatar = {
@@ -147,11 +147,14 @@ class AppImageAssets {
 
 class AppSvgAssets {
   static const googleColored = "assets/svg/google.svg";
+  static const linkedin = "assets/svg/linkedin.svg";
   static const linkedinFilled = "assets/svg/linkedin-fill.svg";
   static const facebook = "assets/svg/facebook.svg";
   static const apple = "assets/svg/apple-logo.svg";
   static const twitter = "assets/svg/twitter.svg";
+  static const twitterBlack = "assets/svg/twitter-black.svg";
   static const share = "assets/svg/share.svg";
+  static const streams = "assets/svg/streams.svg";
 }
 
 class AppLottieAssets {

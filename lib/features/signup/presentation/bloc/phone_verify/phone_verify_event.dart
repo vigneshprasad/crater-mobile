@@ -11,7 +11,7 @@ class PostNewPhoneNumberRequestStarted extends PhoneVerifyEvent {
   final String phoneNumber;
 
   const PostNewPhoneNumberRequestStarted({
-    @required this.phoneNumber,
+    required this.phoneNumber,
   });
 
   @override
@@ -23,8 +23,8 @@ class PostSmsCodeRequestStarted extends PhoneVerifyEvent {
   final String smsCode;
 
   const PostSmsCodeRequestStarted({
-    @required this.smsCode,
-    @required this.phoneNumber,
+    required this.smsCode,
+    required this.phoneNumber,
   });
 
   @override

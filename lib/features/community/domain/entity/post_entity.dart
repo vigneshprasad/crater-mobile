@@ -4,23 +4,23 @@ import 'package:hive/hive.dart';
 import 'comment_entity.dart';
 
 class Post extends HiveObject {
-  final int pk;
-  final String message;
-  final int group;
-  final String groupName;
-  final List<String> filesUrls;
-  final List<FileData> filesData;
-  final String creator;
-  final String creatorName;
-  final bool isCreatorApproved;
-  final String creatorPhoto;
-  final String created;
-  final int likes;
-  final bool myLike;
-  final bool isFollowed;
-  final bool isReported;
-  final int comments;
-  final List<Comment> latestComments;
+  final int? pk;
+  final String? message;
+  final int? group;
+  final String? groupName;
+  final List<String>? filesUrls;
+  final List<FileData>? filesData;
+  final String? creator;
+  final String? creatorName;
+  final bool? isCreatorApproved;
+  final String? creatorPhoto;
+  final String? created;
+  final int? likes;
+  final bool? myLike;
+  final bool? isFollowed;
+  final bool? isReported;
+  final int? comments;
+  final List<Comment>? latestComments;
 
   Post({
     this.pk,
@@ -43,23 +43,23 @@ class Post extends HiveObject {
   });
 
   Post copyWith({
-    int pk,
-    String message,
-    int group,
-    String groupName,
-    List<String> filesUrls,
-    List<FileData> filesData,
-    String creator,
-    String creatorName,
-    bool isCreatorApproved,
-    String creatorPhoto,
-    String created,
-    int likes,
-    bool myLike,
-    bool isFollowed,
-    bool isReported,
-    int comments,
-    List<Comment> latestComments,
+    int? pk,
+    String? message,
+    int? group,
+    String? groupName,
+    List<String>? filesUrls,
+    List<FileData>? filesData,
+    String? creator,
+    String? creatorName,
+    bool? isCreatorApproved,
+    String? creatorPhoto,
+    String? created,
+    int? likes,
+    bool? myLike,
+    bool? isFollowed,
+    bool? isReported,
+    int? comments,
+    List<Comment>? latestComments,
   }) {
     return Post(
       pk: pk ?? this.pk,
@@ -91,9 +91,9 @@ class FileData extends Equatable {
   final String thumbnail;
 
   const FileData({
-    this.file,
-    this.isVideo,
-    this.thumbnail,
+    required this.file,
+    required this.isVideo,
+    required this.thumbnail,
   });
 
   @override

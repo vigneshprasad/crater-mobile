@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../domain/entity/video_entity.dart';
 import '../../../domain/usecase/get_videos_list_usecase.dart';
@@ -14,7 +13,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   final UCGetVideosListPage getVideos;
 
   VideoBloc({
-    @required this.getVideos,
+    required this.getVideos,
   }) : super(const VideoInitial());
 
   @override

@@ -14,11 +14,11 @@ class ProfileInlineQuestion extends StatelessWidget {
   final bool animateText;
 
   const ProfileInlineQuestion({
-    Key key,
-    this.elements,
-    this.values,
-    this.onValuesChange,
-    this.animateText,
+    Key? key,
+    required this.elements,
+    required this.values,
+    required this.onValuesChange,
+    required this.animateText,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -33,50 +33,46 @@ class ProfileInlineQuestion extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    animateText == true
-                        ? TyperAnimatedTextKit(
-                            totalRepeatCount: 1,
-                            repeatForever: false,
-                            text: [element.value],
-                            textStyle: Theme.of(context).textTheme.bodyText1,
-                          )
-                        : Text(
-                            element.value,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
+                    if (animateText == true)
+                      AnimatedTextKit(
+                        totalRepeatCount: 1,
+                        animatedTexts: [
+                          TyperAnimatedText(element.value!,
+                              textStyle: Theme.of(context).textTheme.bodyText1)
+                        ],
+                      )
+                    else
+                      Text(
+                        element.value!,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                   ],
                 ),
               );
-              break;
 
             case ProfileIntroElementType.text:
               return AutoSizeTextField(
                   value: values[element.id]?.toString(),
                   element: element,
                   onValuesChange: onValuesChange);
-              break;
 
             case ProfileIntroElementType.dropdown:
               return AutoSizeDropdown(
                   value: values[element.id] != null
-                      ? element.options.firstWhere((option) =>
+                      ? element.options!.firstWhere((option) =>
                           option.value == (values[element.id] as int))
                       : null,
                   element: element,
                   onValuesChange: onValuesChange);
-              break;
 
             case ProfileIntroElementType.multiselect:
               return AutoSizeMultiSelectDropdown(
-                  initialValue:
-                      (values[element.id] as List<ProfileIntroMeta>) ?? [],
+                  initialValue: values[element.id] as List<ProfileIntroMeta>,
                   element: element,
                   onValuesChange: onValuesChange);
-              break;
 
             case ProfileIntroElementType.newline:
               return const SizedBox(width: double.infinity, height: 40);
-              break;
 
             default:
               return Container();

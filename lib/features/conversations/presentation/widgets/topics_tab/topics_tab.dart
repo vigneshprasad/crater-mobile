@@ -1,176 +1,261 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
-import '../../../../../constants/theme.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import '../../../../../routes.gr.dart';
-import '../../../../../utils/app_localizations.dart';
-import '../../../domain/entity/optin_entity/optin_entity.dart';
+import '../../../../../ui/base/base_form_input/base_form_input.dart';
+import '../../../data/repository/conversation_repository_impl.dart';
+import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/topic_entity/topic_entity.dart';
 import '../../screens/create_conversation_screen/create_conversation_state.dart';
 import '../article_topic_card/article_topic_card.dart';
-import '../sliver_obstruction_injector/sliver_obstruction_injector.dart';
+import '../topics_list/topics_list.dart';
 import 'topics_tab_state.dart';
 
 class TopicsTab extends HookWidget {
-  final String name;
+  final ValueNotifier<int> topic;
 
-  const TopicsTab({@required this.name});
+  TopicsTab({
+    required this.topic,
+  });
+
+  final titles = [
+    'Pick a 1:1 topic you wish to discuss',
+    'On what would you like to host an AMA?',
+    'What would you like to speak about?',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final topicsState = useProvider(topicsStateProvider.state);
-    final articlesState = useProvider(articleTopicsStateProiver.state);
+    final articlesState = useProvider(articleTopicsStateProiver);
+    final _tabController = useTabController(
+        initialLength: titles.length, initialIndex: topic.value);
+    final _textController = useTextEditingController();
+    final _topicSuggestion = useState('');
 
-    return RefreshIndicator(
-      displacement: 96.00,
-      onRefresh: () {
-        final futures = [
-          context.read(topicsStateProvider).getTopicsList(),
-          context.read(articleTopicsStateProiver).getAllArticleTopcs(),
-        ];
+    final user = BlocProvider.of<AuthBloc>(context).state.user;
+    final name = user?.name?.split(' ').first ?? '';
 
-        return Future.wait(futures);
-      },
+    useEffect(() {
+      _tabController.index = topic.value;
+      return;
+    });
+
+    _tabController.addListener(() {
+      topic.value = _tabController.index;
+    });
+    return DefaultTabController(
+      length: 3,
       child: ScaffoldContainer(
-        child: CustomScrollView(
-          slivers: [
-            SliverObstructionInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            ),
-            SliverToBoxAdapter(
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              pinned: true,
+              // toolbarHeight: 0,
+
+              // automaticallyImplyLeading: false,
+              bottom: PreferredSize(
+                preferredSize: const Size(300, 50),
                 child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Hi $name',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TabBar(
+                    controller: _tabController,
+                    onTap: (value) {
+                      topic.value = value;
+                    },
+                    tabs: const [
+                      Tab(text: '1:1'),
+                      Tab(text: 'AMA'),
+                      Tab(text: 'Round Table'),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Set up a 1:1 or group conversation by picking a topic',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            )),
-            topicsState.maybeWhen(
-              data: (data) {
-                Widget child;
-                if (data.isNotEmpty) {
-                  child = Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xxl,
-                      vertical: AppInsets.xl,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate("topic_tab:suggested_topic_heading"),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  );
-                }
-                return SliverToBoxAdapter(
-                  child: child,
-                );
-              },
-              orElse: () => const SliverToBoxAdapter(),
-            ),
-            topicsState.when(
-              loading: () => _SliverLoader(child: Container()),
-              error: (err, st) => _SliverLoader(child: Container()),
-              data: (topics) => _TopicsGrid(
-                topics: topics,
+                ),
               ),
             ),
-            const SliverPadding(padding: EdgeInsets.only(top: AppInsets.med)),
-            articlesState.maybeWhen(
-              data: (topics) {
-                Widget child = Container();
-                if (topics.isNotEmpty) {
-                  child = Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xxl,
-                      vertical: AppInsets.xl,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .translate("topic_tab:article_topic_headings"),
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  );
-                }
-                return SliverToBoxAdapter(
-                  child: child,
-                );
-              },
-              orElse: () => const SliverToBoxAdapter(),
-            ),
-            articlesState.when(
-              loading: () => _SliverLoader(child: Container()),
-              error: (err, st) => _SliverLoader(child: Container()),
-              data: (topics) => _ArticleTopicList(topics: topics),
-            ),
-            const SliverPadding(padding: EdgeInsets.only(top: 112.00)),
           ],
-        ),
-      ),
-    );
-  }
-}
+          body: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: (topic.value != 0) ? 140 : 50,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        name,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        titles[topic.value],
+                        maxLines: 2,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(color: Colors.grey),
+                      ),
+                      if (topic.value != 0)
+                        Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            Center(
+                              child: SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: BaseFormInput(
+                                        label: 'Suggest a topic',
+                                        controller: _textController,
+                                        onChanged: (text) =>
+                                            _topicSuggestion.value = text,
+                                      ),
+                                    ),
+                                    if (_topicSuggestion.value.isNotEmpty)
+                                      SizedBox(
+                                        width: 80,
+                                        child: MaterialButton(
+                                          onPressed: () async {
+                                            final result =
+                                                await _postTopicSuggestion(
+                                              context,
+                                              _topicSuggestion.value,
+                                              typeForIndex(topic.value),
+                                            );
+                                            if (result) {
+                                              _textController.text = '';
+                                              _topicSuggestion.value = '';
+                                            }
+                                          },
+                                          child: const Text('Submit'),
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    TopicsList(showTitle: false),
+                    AMATopicsList(),
+                    RefreshIndicator(
+                        onRefresh: () {
+                          final futures = [
+                            context
+                                .read(articleTopicsStateProiver.notifier)
+                                .getAllArticleTopcs(),
+                          ];
 
-class _SliverLoader extends StatelessWidget {
-  final Widget child;
-
-  const _SliverLoader({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: child,
-    );
-  }
-}
-
-class _TopicsGrid extends StatelessWidget {
-  final List<Topic> topics;
-
-  const _TopicsGrid({
-    Key key,
-    @required this.topics,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.only(
-        left: AppInsets.xl,
-        right: AppInsets.xl,
-        top: AppInsets.xl,
-        bottom: AppInsets.xl,
-      ),
-      sliver: SliverGrid(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => _TopicGridCard(
-            topic: topics[index],
+                          return Future.wait(futures);
+                        },
+                        child: articlesState.when(
+                          loading: () => Container(),
+                          error: (err, st) => Container(),
+                          data: (topics) => Column(
+                            children: [
+                              Expanded(
+                                  child: _ArticleTopicList(topics: topics)),
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+            ],
           ),
-          childCount: topics.length,
         ),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 40,
-          mainAxisSpacing: 28,
-          childAspectRatio: 3,
-        ),
+      ),
+    );
+  }
+
+  TopicType typeForIndex(int index) {
+    switch (index) {
+      case 1:
+        return TopicType.ama;
+      case 2:
+        return TopicType.group;
+      default:
+        return TopicType.group;
+    }
+  }
+
+  Future<bool> _postTopicSuggestion(
+    BuildContext context,
+    String topic,
+    TopicType type,
+  ) async {
+    final _overlay = buildLoaderOverlay();
+
+    Overlay.of(context)?.insert(_overlay);
+
+    final response = await context
+        .read(conversationRepositoryProvider)
+        .postTopicSuggestion(Topic(
+          name: topic,
+          type: type,
+        ));
+
+    return response.fold(
+      (failure) {
+        _overlay.remove();
+        Fluttertoast.showToast(msg: failure.message!);
+        return false;
+      },
+      (topic) {
+        _overlay.remove();
+
+        final conversationType = type == TopicType.ama
+            ? ConversationType.instant
+            : ConversationType.ama;
+        AutoRouter.of(context)
+            .push(CreateConversationScreenRoute(
+                topic: topic, type: conversationType))
+            .then(
+          (value) {
+            if (value is Conversation) {
+              HomeTabControllerProvider.of(context)?.controller.animateTo(1);
+              AutoRouter.of(context)
+                  .push(ConversationScreenRoute(id: value.id));
+            }
+          },
+        );
+
+        return true;
+      },
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -180,87 +265,15 @@ class _ArticleTopicList extends StatelessWidget {
   final List<Topic> topics;
 
   const _ArticleTopicList({
-    Key key,
-    @required this.topics,
+    Key? key,
+    required this.topics,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.only(
-        left: AppInsets.xl,
-        right: AppInsets.xl,
-      ),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => ArticleTopicCard(topic: topics[index]),
-          childCount: topics.length,
-        ),
-      ),
-    );
-  }
-}
-
-class _TopicGridCard extends StatelessWidget {
-  final Topic topic;
-  const _TopicGridCard({
-    Key key,
-    @required this.topic,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const cardRadius = BorderRadius.all(Radius.circular(8.00));
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 15.00,
-        );
-    return BaseContainer(
-      radius: 8,
-      child: Material(
-        borderRadius: cardRadius,
-        child: GestureDetector(
-          onTap: () {
-            ExtendedNavigator.of(context)
-                .push(Routes.createConversationScreen,
-                    arguments: CreateConversationScreenArguments(
-                        topic: topic, type: ConversationType.curated))
-                .then((value) {
-              if (value is Optin) {
-                HomeTabControllerProvider.of(context).controller.animateTo(2);
-              }
-            });
-          },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  child: (topic.image != null)
-                      ? Image.network(
-                          topic.image,
-                          width: 56,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(),
-                ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                width: 100,
-                child: Text(
-                  topic.name,
-                  style: labelStyle,
-                  maxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return ListView.builder(
+      itemBuilder: (context, index) => ArticleTopicCard(topic: topics[index]),
+      itemCount: topics.length,
     );
   }
 }

@@ -15,7 +15,7 @@ class PostObjectivesRequestStarted extends ObjectivesEvent {
   final List<UserObjective> objectives;
 
   const PostObjectivesRequestStarted({
-    @required this.objectives,
+    required this.objectives,
   });
 
   @override

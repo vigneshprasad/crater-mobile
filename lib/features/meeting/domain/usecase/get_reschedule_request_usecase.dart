@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -24,7 +23,7 @@ class GetRescheduleRequestParams extends Equatable {
   final int meetingId;
 
   const GetRescheduleRequestParams({
-    @required this.meetingId,
+    required this.meetingId,
   });
 
   @override

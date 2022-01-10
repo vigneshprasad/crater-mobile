@@ -1,9 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
@@ -26,20 +25,22 @@ class RootApp extends HookWidget {
     StatusBarColor.setTheme(ThemeType.light);
 
     await userleapProvider.initSdk();
-    await deepLinkManager.handleDeepLink();
+    await deepLinkManager.handleDeepLink(context);
     await attributionProvider.intializeSdk();
     await KiwiContainer().resolve<Analytics>().initSdk();
   }
+
+  late AppRouter _appRouter;
 
   @override
   Widget build(BuildContext context) {
     useEffect(() {
       initApp(context);
+      final _navigatorKey =
+          KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+      _appRouter = AppRouter(_navigatorKey);
       return;
     }, []);
-
-    final GlobalKey<NavigatorState> _navigatorKey =
-        KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -51,8 +52,10 @@ class RootApp extends HookWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: RootProvider(
-        child: MaterialApp(
-          title: 'WorkNetwork',
+        child: MaterialApp.router(
+          routerDelegate: _appRouter.delegate(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
+          title: 'Crater',
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -61,8 +64,8 @@ class RootApp extends HookWidget {
           localeResolutionCallback: (locale, supportedLocales) {
             // Check if the current device locale is supported
             for (final Locale supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode &&
-                  supportedLocale.countryCode == locale.countryCode) {
+              if (supportedLocale.languageCode == locale?.languageCode &&
+                  supportedLocale.countryCode == locale?.countryCode) {
                 return supportedLocale;
               }
             }
@@ -71,44 +74,100 @@ class RootApp extends HookWidget {
             return supportedLocales.first;
           },
           debugShowCheckedModeBanner: false,
-          builder: ExtendedNavigator.builder<Router>(
-            router: Router(),
-            initialRoute: "/",
-            navigatorKey: _navigatorKey,
-            observers: [
-              SegmentObserver(),
-            ],
-            builder: (context, child) {
-              final lightBlue = HexColor.fromHex('#283950');
-              final darkBlue = HexColor.fromHex('#121823');
-              final buttonColor = HexColor.fromHex('#C67F70');
-              return Theme(
-                data: AppTheme.darkTheme.copyWith(
-                  backgroundColor: darkBlue,
-                  splashFactory: const NoSplashFactory(),
-                  highlightColor: Colors.transparent,
-                  primaryColor: buttonColor,
-                  scaffoldBackgroundColor: darkBlue,
-                  canvasColor: darkBlue,
-                  appBarTheme: AppBarTheme(
-                      iconTheme: IconThemeData(color: buttonColor),
-                      color: darkBlue,
-                      elevation: 0,
-                      actionsIconTheme: IconThemeData(color: buttonColor)),
-                  buttonTheme: ButtonThemeData(
-                    buttonColor: darkBlue,
-                    colorScheme: const ColorScheme.dark(),
-                  ),
-                  buttonColor: buttonColor,
-                  dialogBackgroundColor: lightBlue,
-                  floatingActionButtonTheme: FloatingActionButtonThemeData(
-                      backgroundColor: buttonColor),
-                  accentColor: buttonColor,
+          builder:
+              // AutoRouter.builder<Router>(
+              //   router: Router(),
+              //   initialRoute: "/",
+              //   navigatorKey: _navigatorKey,
+              //   observers: [
+              //     SegmentObserver(),
+              //   ],
+              // builder:
+              (context, child) {
+            final canvasColor = HexColor.fromHex('#1F2127');
+            final borderColor = HexColor.fromHex('#272728');
+            const backgroundColor = Colors.black;
+            final splashColor = HexColor.fromHex('782BE8');
+            final grey = HexColor.fromHex('#808190');
+            //HexColor.fromHex("#10141C");
+            final buttonColor = HexColor.fromHex('#9146FF');
+            return Theme(
+              data: AppTheme.darkTheme.copyWith(
+                textTheme: TextTheme(
+                  headline5: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline6: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline4: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  headline3: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  caption: TextStyle(
+                      fontSize: 14, color: grey, fontFamily: "Roobert"),
+                  // subtitle1: const TextStyle(fontWeight: FontWeight.bold),
+                  subtitle2: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
+                  button: const TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: "Roobert"),
                 ),
-                child: child,
-              );
-            },
-          ),
+
+                backgroundColor: backgroundColor,
+                // splashFactory: const NoSplashFactory(),
+                splashColor: splashColor,
+                highlightColor: Colors.transparent,
+                primaryColor: buttonColor,
+                scaffoldBackgroundColor: backgroundColor,
+                canvasColor: canvasColor,
+                outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    side: BorderSide(
+                      color: borderColor,
+                      width: 2,
+                    ),
+                    // backgroundColor: darkBlue,
+                    primary: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                ),
+                bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                  selectedItemColor: buttonColor,
+                ),
+                appBarTheme: AppBarTheme(
+                  iconTheme: IconThemeData(color: buttonColor),
+                  color: backgroundColor,
+                  elevation: 0,
+                  actionsIconTheme: IconThemeData(color: buttonColor),
+                ),
+                buttonTheme: ButtonThemeData(
+                  buttonColor: buttonColor,
+                  colorScheme: const ColorScheme.dark(),
+                ),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(primary: buttonColor),
+                ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(primary: buttonColor),
+                ),
+                indicatorColor: buttonColor,
+                tabBarTheme: const TabBarTheme(
+                  indicatorSize: TabBarIndicatorSize.label,
+                ),
+                buttonColor: buttonColor,
+                dialogBackgroundColor: canvasColor,
+                floatingActionButtonTheme: FloatingActionButtonThemeData(
+                  backgroundColor: buttonColor,
+                ),
+                accentColor: buttonColor,
+              ),
+              child: child!,
+            );
+          },
         ),
       ),
     );
@@ -119,19 +178,18 @@ class NoSplashFactory extends InteractiveInkFeatureFactory {
   const NoSplashFactory();
 
   @override
-  InteractiveInkFeature create({
-    MaterialInkController controller,
-    RenderBox referenceBox,
-    Offset position,
-    Color color,
-    TextDirection textDirection,
-    bool containedInkWell = false,
-    Rect Function() rectCallback,
-    BorderRadius borderRadius,
-    ShapeBorder customBorder,
-    double radius,
-    VoidCallback onRemoved,
-  }) {
+  InteractiveInkFeature create(
+      {required MaterialInkController controller,
+      required RenderBox referenceBox,
+      required Offset position,
+      required Color color,
+      required TextDirection textDirection,
+      bool containedInkWell = false,
+      RectCallback? rectCallback,
+      BorderRadius? borderRadius,
+      ShapeBorder? customBorder,
+      double? radius,
+      VoidCallback? onRemoved}) {
     return NoSplash(
       controller: controller,
       referenceBox: referenceBox,
@@ -141,15 +199,35 @@ class NoSplashFactory extends InteractiveInkFeatureFactory {
 
 class NoSplash extends InteractiveInkFeature {
   NoSplash({
-    @required MaterialInkController controller,
-    @required RenderBox referenceBox,
+    MaterialInkController? controller,
+    RenderBox? referenceBox,
   })  : assert(controller != null),
         assert(referenceBox != null),
         super(
-          controller: controller,
-          referenceBox: referenceBox,
+          controller: controller!,
+          referenceBox: referenceBox!,
+          color: Colors.transparent,
         );
 
   @override
   void paintFeature(Canvas canvas, Matrix4 transform) {}
+}
+
+OverlayEntry buildLoaderOverlay() {
+  return OverlayEntry(
+    builder: (context) {
+      return Container(
+        color: Colors.black.withOpacity(0.6),
+        child: Center(
+          child: SizedBox(
+            width: 36,
+            height: 36,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

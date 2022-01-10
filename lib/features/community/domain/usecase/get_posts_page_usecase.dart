@@ -25,8 +25,8 @@ class GetPostPageParams extends Equatable {
   final int page;
 
   const GetPostPageParams({
-    this.pageSize,
-    this.page,
+    required this.pageSize,
+    required this.page,
   });
 
   @override

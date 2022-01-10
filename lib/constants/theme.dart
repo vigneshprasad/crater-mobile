@@ -51,8 +51,10 @@ mixin AppTheme {
     canvasColor: canvasColor,
     backgroundColor: Colors.grey[100],
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    textSelectionHandleColor: primaryColor,
-    cursorColor: primaryColor,
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionHandleColor: primaryColor,
+      cursorColor: primaryColor,
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
@@ -98,6 +100,6 @@ mixin AppInsets {
 
 mixin AppBorderRadius {
   static const textInput = 12.0;
-  static const largeButton = 24.0;
+  static const largeButton = 8.0;
   static const bottomSheetRadius = 24.0;
 }

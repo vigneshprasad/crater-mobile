@@ -12,8 +12,8 @@ part 'profile_intro_meta_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.userTag)
 @JsonSerializable()
 class ProfileIntroMetaModel extends ProfileIntroMeta {
-  final int value;
-  final String name;
+  final int? value;
+  final String? name;
 
   ProfileIntroMetaModel({
     this.value,

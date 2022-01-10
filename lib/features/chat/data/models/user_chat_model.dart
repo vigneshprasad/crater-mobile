@@ -13,22 +13,22 @@ part 'user_chat_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.userChat)
 class UserChatModel extends UserChat {
   @HiveField(0)
-  final String recieverId;
+  final String? recieverId;
 
   @HiveField(1)
-  final ChatUserModel receiverUser;
+  final ChatUserModel? receiverUser;
 
   @HiveField(2)
-  final int page;
+  final int? page;
 
   @HiveField(3)
-  final int pages;
+  final int? pages;
 
   @HiveField(4)
-  final HiveList<ChatMessageModel> messages;
+  final HiveList<ChatMessageModel>? messages;
 
   @HiveField(5)
-  final int unreadCount;
+  final int? unreadCount;
 
   UserChatModel({
     this.recieverId,
@@ -47,12 +47,12 @@ class UserChatModel extends UserChat {
         );
 
   UserChatModel copyWith({
-    String recieverId,
-    ChatUserModel receiverUser,
-    int page,
-    int pages,
-    HiveList<ChatMessageModel> messages,
-    int unreadCount,
+    String? recieverId,
+    ChatUserModel? receiverUser,
+    int? page,
+    int? pages,
+    HiveList<ChatMessageModel>? messages,
+    int? unreadCount,
   }) {
     return UserChatModel(
       recieverId: recieverId ?? this.recieverId,

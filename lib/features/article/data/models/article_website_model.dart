@@ -12,9 +12,14 @@ part 'article_website_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.articleWebsite)
 @JsonSerializable()
 class ArticleWebsiteModel extends ArticleWebsite {
-  final int pk;
-  final String name;
-  final String url;
+  @HiveField(0)
+  final int? pk;
+
+  @HiveField(1)
+  final String? name;
+
+  @HiveField(2)
+  final String? url;
 
   ArticleWebsiteModel({
     this.pk,

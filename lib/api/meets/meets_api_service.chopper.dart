@@ -8,7 +8,7 @@ part of 'meets_api_service.dart';
 
 // ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
 class _$MeetsApiService extends MeetsApiService {
-  _$MeetsApiService([ChopperClient client]) {
+  _$MeetsApiService([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
@@ -146,6 +146,63 @@ class _$MeetsApiService extends MeetsApiService {
   Future<Response<dynamic>> postConfirmRescheduleRequest(
       Map<String, dynamic> body) {
     final $url = '/resources/meetings/reschedule/accepted/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postMeetingRequest(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequestUsers(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/users/';
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequestSlots(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/slots/';
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMeetingRequest(int meetingRequestId) {
+    final $url = '/resources/meetings/request/$meetingRequestId/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getMyMeetingRequest(Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/my/';
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postAcceptMeetingRequest(
+      Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/accepted/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postDeclineMeetingRequest(
+      Map<String, dynamic> body) {
+    final $url = '/resources/meetings/request/declined/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);

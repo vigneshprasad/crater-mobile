@@ -13,19 +13,19 @@ part 'points_faq_model.g.dart';
 @HiveType(typeId: AppHiveTypeIds.pointsFaq)
 class PointsFaqModel extends PointsFaq {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
-  final String category;
+  final String? category;
 
   @HiveField(2)
-  final String question;
+  final String? question;
 
   @HiveField(3)
-  final String answer;
+  final String? answer;
 
   @HiveField(4)
-  final int order;
+  final int? order;
 
   PointsFaqModel({
     this.pk,

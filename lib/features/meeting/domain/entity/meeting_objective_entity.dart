@@ -10,10 +10,10 @@ enum ObjectiveType {
 }
 
 class MeetingObjective extends Equatable {
-  final String icon;
-  final String name;
-  final int pk;
-  final ObjectiveType type;
+  final String? icon;
+  final String? name;
+  final int? pk;
+  final ObjectiveType? type;
 
   const MeetingObjective({
     this.icon,
@@ -23,10 +23,12 @@ class MeetingObjective extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        icon,
-        name,
-        pk,
-        type,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (icon != null) temp.add(icon!);
+    if (name != null) temp.add(name!);
+    if (pk != null) temp.add(pk!);
+    if (type != null) temp.add(type!);
+    return temp;
+  }
 }

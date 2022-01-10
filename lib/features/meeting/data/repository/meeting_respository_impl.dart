@@ -1,5 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:worknetwork/features/meeting/domain/entity/meeting_request_entity.dart';
+import 'package:worknetwork/features/meeting/domain/entity/requests_by_date_entity.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -17,13 +21,22 @@ import '../../domain/repository/meeting_repository.dart';
 import '../datasources/meetings_remote_datasource.dart';
 import '../models/meeting_rsvp_model.dart';
 
+final meetingRepositoryProvider = Provider<MeetingRepository>((ref) {
+  final remoteDataSource = ref.read(meetingRemoteDatasourceProvider);
+  return MeetingRepositoryImpl(
+    remoteDatasource: remoteDataSource,
+    networkInfo:
+        NetworkInfoImpl(connectionChecker: InternetConnectionChecker()),
+  );
+});
+
 class MeetingRepositoryImpl implements MeetingRepository {
   final MeetingRemoteDatasource remoteDatasource;
   final NetworkInfo networkInfo;
 
   MeetingRepositoryImpl({
-    @required this.remoteDatasource,
-    @required this.networkInfo,
+    required this.remoteDatasource,
+    required this.networkInfo,
   });
 
   @override
@@ -33,6 +46,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
     if (isConnected) {
       try {
         final response = await remoteDatasource.getMeetingConfigFromRemote();
+        if (response == null) return Left(CacheFailure());
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -97,6 +111,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
   Future<Either<Failure, UserMeetingPreference>> getMeetingPreference() async {
     try {
       final response = await remoteDatasource.getMeetingPreferenceFromRemote();
+      if (response == null) return Right(UserMeetingPreference());
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));
@@ -109,6 +124,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
     try {
       final response =
           await remoteDatasource.getPastMeetingPreferenceFromRemote();
+      if (response == null) return Left(ServerFailure());
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));
@@ -117,7 +133,7 @@ class MeetingRepositoryImpl implements MeetingRepository {
 
   @override
   Future<Either<Failure, List<MeetingsByDate>>> getMeetingsByDate(
-      {bool past}) async {
+      {bool? past}) async {
     try {
       final response =
           await remoteDatasource.getMeetingsByDateFromRemote(past: past);
@@ -190,6 +206,88 @@ class MeetingRepositoryImpl implements MeetingRepository {
     try {
       final response = await remoteDatasource
           .postConfirmRescheduleRequestToRemote(timeSlot, rescheduleRequest);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postMeetingRequest(
+      List<DateTime> timeSlot, String requestedBy, String requestedTo) async {
+    try {
+      final response = await remoteDatasource.postMeetingRequestToRemote(
+          timeSlot, requestedBy, requestedTo);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Profile>>> getMeetingRequestUsers(
+      {String? tag}) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingRequestUsersFromRemote(tag: tag);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<List<DateTime>>>> getMeetingRequestSlots(
+      String requestedTo) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingRequestSlotsFromRemote(requestedTo);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MeetingRequest>> getMeetingRequest(
+      int meetingRequestId) async {
+    try {
+      final response =
+          await remoteDatasource.getMeetingRequestFromRemote(meetingRequestId);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RequestsByDate>>> getMyMeetingRequest() async {
+    try {
+      final response = await remoteDatasource.getMyMeetingRequestFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postAcceptMeetingRequest(
+      int meetingRequestId, DateTime timeSlot) async {
+    try {
+      final response = await remoteDatasource.postAcceptMeetingRequestToRemote(
+          meetingRequestId, timeSlot);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postDeclineMeetingRequest(
+      int meetingRequestId) async {
+    try {
+      final response = await remoteDatasource
+          .postDeclineMeetingRequestToRemote(meetingRequestId);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));

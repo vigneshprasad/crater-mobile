@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../../constants/theme.dart';
@@ -16,10 +17,10 @@ class TimeSlotPicker extends StatefulWidget {
   final TimeSlotTappedCallback onSlotTap;
 
   const TimeSlotPicker({
-    Key key,
+    Key? key,
     this.value = const [],
-    @required this.slots,
-    @required this.onSlotTap,
+    required this.slots,
+    required this.onSlotTap,
   }) : super(key: key);
 
   @override
@@ -27,9 +28,9 @@ class TimeSlotPicker extends StatefulWidget {
 }
 
 class _TimeSlotPickerState extends State<TimeSlotPicker> {
-  int _activePage;
-  PageController _pageController;
-  List<_TimeSlotItem> _dateSlots;
+  late int _activePage;
+  late PageController _pageController;
+  late List<_TimeSlotItem> _dateSlots;
 
   @override
   void initState() {
@@ -87,7 +88,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
   List<Widget> _buildPages(BuildContext context, List<_TimeSlotItem> slots) {
     return slots.map(
       (slot) {
-        final List<List<TimeSlot>> rows = slot.timeSlots.fold(
+        final List<List<TimeSlot?>> rows = slot.timeSlots.fold(
           [[]],
           (list, timeSlot) => list.last.length == 2
               ? (list..add([timeSlot]))
@@ -96,7 +97,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
 
         rows.map((row) {
           if (row.length < 2) {
-            final filler = List(2 - row.length);
+            final filler = List.filled(2 - row.length, 0);
             row.addAll(filler.map((e) => null));
           }
         }).toList();
@@ -151,12 +152,12 @@ class TimeSlotFormField extends FormField<List<TimeSlot>> {
   final TimeSelectedChangeCallback onChange;
 
   TimeSlotFormField({
-    List<TimeSlot> initialValue,
-    FormFieldSetter<List<TimeSlot>> onSaved,
-    FormFieldValidator<List<TimeSlot>> validator,
+    List<TimeSlot>? initialValue,
+    FormFieldSetter<List<TimeSlot>>? onSaved,
+    FormFieldValidator<List<TimeSlot>>? validator,
     bool autovalidate = false,
-    @required this.slots,
-    @required this.onChange,
+    required this.slots,
+    required this.onChange,
   }) : super(
           initialValue: initialValue,
           onSaved: onSaved,
@@ -170,11 +171,11 @@ class TimeSlotFormField extends FormField<List<TimeSlot>> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TimeSlotPicker(
-                  value: state.value,
+                  value: state.value!,
                   slots: slots,
                   onSlotTap: (slot) {
-                    final selected = state.value.contains(slot);
-                    final updated = [...state.value];
+                    final selected = state.value!.contains(slot);
+                    final updated = [...state.value!];
                     if (selected) {
                       updated.remove(slot);
                     } else {
@@ -186,7 +187,7 @@ class TimeSlotFormField extends FormField<List<TimeSlot>> {
                 ),
                 if (state.hasError)
                   BaseErrorText(
-                    text: state.errorText,
+                    text: state.errorText!,
                   )
               ],
             );
@@ -200,10 +201,10 @@ class _TimeSlotTab extends StatelessWidget {
   final bool selected;
 
   const _TimeSlotTab({
-    Key key,
-    @required this.date,
-    @required this.onTap,
-    @required this.selected,
+    Key? key,
+    required this.date,
+    required this.onTap,
+    required this.selected,
   }) : super(key: key);
 
   @override
@@ -211,13 +212,12 @@ class _TimeSlotTab extends StatelessWidget {
     final formatter = DateFormat("dd");
     final weekFormatter = DateFormat("E");
     final dateParsed = DateTime.parse(date);
-    final labelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final labelStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
-    final border = selected
-        ? Border.all(width: 1, color: Theme.of(context).primaryColor)
-        : null;
-    final color = Theme.of(context).canvasColor;
+    final border =
+        selected ? Border.all(color: Theme.of(context).primaryColor) : null;
+    final color = Theme.of(context).dialogBackgroundColor;
     return Container(
       margin: const EdgeInsets.only(right: AppInsets.xl),
       child: Material(
@@ -237,20 +237,18 @@ class _TimeSlotTab extends StatelessWidget {
                   style: labelStyle,
                 ),
                 const SizedBox(height: 12),
-                BaseContainer(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(8),
-                      border: border,
-                    ),
-                    width: 44,
-                    height: 44,
-                    child: Center(
-                      child: Text(
-                        formatter.format(dateParsed),
-                        style: labelStyle,
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(8),
+                    border: border,
+                  ),
+                  width: 44,
+                  height: 44,
+                  child: Center(
+                    child: Text(
+                      formatter.format(dateParsed),
+                      style: labelStyle,
                     ),
                   ),
                 ),
@@ -269,10 +267,10 @@ class _TimeSlot extends StatelessWidget {
   final VoidCallback onTap;
 
   const _TimeSlot({
-    Key key,
-    @required this.slot,
-    @required this.selected,
-    @required this.onTap,
+    Key? key,
+    required this.slot,
+    required this.selected,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -280,39 +278,35 @@ class _TimeSlot extends StatelessWidget {
     final borderRadius = BorderRadius.circular(12);
     final timeFormatter = DateFormat("hh:mm a");
     final startTime = slot.start;
-    final label = timeFormatter.format(startTime.toLocal());
-    final labelStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final label = timeFormatter.format(startTime!.toLocal());
+    final labelStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           fontSize: 13,
           color: selected ? Theme.of(context).primaryColor : Colors.white,
         );
-    final border = selected
-        ? Border.all(color: Theme.of(context).primaryColor, width: 1)
-        : null;
+    final border =
+        selected ? Border.all(color: Theme.of(context).primaryColor) : null;
     return Container(
       padding: const EdgeInsets.all(AppInsets.xxl),
-      child: BaseContainer(
-        radius: 12,
-        child: Material(
-          color: Theme.of(context).canvasColor,
+      child: Material(
+        color: Theme.of(context).dialogBackgroundColor,
+        borderRadius: borderRadius,
+        child: InkWell(
           borderRadius: borderRadius,
-          child: InkWell(
-            borderRadius: borderRadius,
-            onTap: onTap,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl,
-                vertical: AppInsets.xl,
-              ),
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-              ),
-              child: Text(
-                label,
-                style: labelStyle,
-                textAlign: TextAlign.center,
-              ),
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppInsets.xl,
+              vertical: AppInsets.xl,
+            ),
+            decoration: BoxDecoration(
+              border: border,
+              borderRadius: borderRadius,
+            ),
+            child: Text(
+              label,
+              style: labelStyle,
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -326,8 +320,8 @@ class _TimeSlotItem extends Equatable {
   final List<TimeSlot> timeSlots;
 
   const _TimeSlotItem({
-    @required this.date,
-    @required this.timeSlots,
+    required this.date,
+    required this.timeSlots,
   });
 
   @override

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -13,6 +12,7 @@ enum SocialAuthProviders {
   linkedin,
   apple,
   email,
+  phone,
 }
 
 class UCGetSocialAuthToken
@@ -20,7 +20,7 @@ class UCGetSocialAuthToken
   final SocialAuthRepository repository;
 
   UCGetSocialAuthToken({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -29,8 +29,6 @@ class UCGetSocialAuthToken
     switch (params.provider) {
       case SocialAuthProviders.google:
         return repository.getGoogleAccessToken();
-      case SocialAuthProviders.linkedin:
-        return repository.getLinkedInAccessToken();
       case SocialAuthProviders.facebook:
         return repository.getFacebookAccessToken();
       case SocialAuthProviders.apple:
@@ -45,7 +43,7 @@ class SocialAuthTokenParams extends Equatable {
   final SocialAuthProviders provider;
 
   const SocialAuthTokenParams({
-    this.provider,
+    required this.provider,
   });
 
   @override

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -21,16 +21,16 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   final UCWebSocketAddToSink addToSink;
   final UCWebSocketClose socketClose;
   final AuthBloc authBloc;
-  StreamSubscription _authBlocSub;
+  StreamSubscription? _authBlocSub;
 
   WebsocketBloc({
-    @required this.connectionState,
-    @required this.connect,
-    @required this.addToSink,
-    @required this.authBloc,
-    @required this.socketClose,
+    required this.connectionState,
+    required this.connect,
+    required this.addToSink,
+    required this.authBloc,
+    required this.socketClose,
   }) : super(WebsocketInitial()) {
-    _authBlocSub ??= authBloc.listen((authState) {
+    _authBlocSub ??= authBloc.stream.listen((authState) {
       if (authState is AuthStateSuccess) {
         if (state is! WebSocketConnected) {
           add(const WebSocketInitConnect());

@@ -6,9 +6,9 @@ class RegisterMeetingButton extends MaterialButton {
   final String label;
 
   const RegisterMeetingButton({
-    Key key,
-    @required this.label,
-    @required VoidCallback onPressed,
+    Key? key,
+    required this.label,
+    required VoidCallback onPressed,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -34,7 +34,7 @@ class RegisterMeetingButton extends MaterialButton {
           ),
           child: Text(
             label,
-            style: theme.textTheme.button.copyWith(
+            style: theme.textTheme.button?.copyWith(
               color: buttonTheme.getTextColor(this),
             ),
           ),

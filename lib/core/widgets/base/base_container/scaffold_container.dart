@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ScaffoldContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
-  const ScaffoldContainer({Key key, this.child}) : super(key: key);
+  const ScaffoldContainer({Key? key, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +11,16 @@ class ScaffoldContainer extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        // begin: const Alignment(0.0, -1.0),
-        // end: const Alignment(0.0, 0.0),
-        // colors: [
-        //   Theme.of(context).canvasColor,
-        //   Theme.of(context).scaffoldBackgroundColor,
-        // ],)
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
+          gradient: LinearGradient(
+        begin: const Alignment(0.0, -1.0),
+        end: const Alignment(0.0, -0.999),
+        colors: [
+          Theme.of(context).appBarTheme.color!,
+          Theme.of(context).scaffoldBackgroundColor,
+        ],
+      )
+          // color: Theme.of(context).scaffoldBackgroundColor,
+          ),
       child: child,
     );
   }

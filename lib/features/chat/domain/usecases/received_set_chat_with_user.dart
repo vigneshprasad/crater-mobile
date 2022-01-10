@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -14,7 +13,7 @@ class UCReceivedSetChatWithUser
   final ChatRepository repository;
 
   UCReceivedSetChatWithUser({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -37,11 +36,11 @@ class ReceivedSetChatParams extends Equatable {
   final int unreadCount;
 
   const ReceivedSetChatParams({
-    this.messages,
-    this.receiverUser,
-    this.page,
-    this.pages,
-    this.unreadCount,
+    required this.messages,
+    required this.receiverUser,
+    required this.page,
+    required this.pages,
+    required this.unreadCount,
   });
 
   @override

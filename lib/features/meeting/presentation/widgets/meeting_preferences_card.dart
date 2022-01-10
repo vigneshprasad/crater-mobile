@@ -16,24 +16,24 @@ class MeetingPreferencesCard extends StatelessWidget {
   final VoidCallback onTapCard;
 
   const MeetingPreferencesCard({
-    Key key,
-    @required this.preference,
-    @required this.objectives,
-    @required this.interests,
-    @required this.meetingConfig,
-    @required this.onTapCard,
+    Key? key,
+    required this.preference,
+    required this.objectives,
+    required this.interests,
+    required this.meetingConfig,
+    required this.onTapCard,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headinStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final headinStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 17,
         );
     final subheadStyle = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(fontSize: 14, color: Colors.grey[500]);
-    final startDate = DateTime.parse(meetingConfig.weekStartDate);
+        ?.copyWith(fontSize: 14, color: Colors.grey[500]);
+    final startDate = DateTime.parse(meetingConfig.weekStartDate ?? '');
     final dateFormat = DateFormat("d MMMM");
     final subhead =
         "Update your preferences for the week of ${dateFormat.format(startDate)}.";
@@ -91,7 +91,7 @@ class MeetingPreferencesCard extends StatelessWidget {
               ),
               _PreferenceItemDisplay(
                 label: "Your Objective",
-                child: Text(_getSelectedObjective().name),
+                child: Text(_getSelectedObjective().name ?? ''),
               ),
               _PreferenceItemDisplay(
                 label: "Your Preferences",
@@ -105,7 +105,7 @@ class MeetingPreferencesCard extends StatelessWidget {
                       ),
                       child: Chip(
                         backgroundColor: Theme.of(context).primaryColor,
-                        label: Text(interest.name),
+                        label: Text(interest.name ?? ''),
                         labelStyle: const TextStyle(
                           fontSize: 12,
                           color: Colors.white,
@@ -123,26 +123,28 @@ class MeetingPreferencesCard extends StatelessWidget {
   }
 
   List<TimeSlot> _getSelectedTimeSlots() {
-    return meetingConfig.availableTimeSlots.entries.fold(
-      [],
-      (previousValue, element) {
-        for (final timeSlot in element.value) {
-          if (preference.timeSlots.contains(timeSlot.pk)) {
-            previousValue.add(timeSlot);
-          }
-        }
-        return previousValue;
-      },
-    );
+    return meetingConfig.availableTimeSlots?.entries.fold(
+          [],
+          (previousValue, element) {
+            for (final timeSlot in element.value) {
+              if (preference.timeSlots?.contains(timeSlot.pk) ?? false) {
+                previousValue?.add(timeSlot);
+              }
+            }
+            return previousValue;
+          },
+        ) ??
+        [];
   }
 
   MeetingObjective _getSelectedObjective() {
-    return MeetingObjective();
+    return const MeetingObjective(
+        icon: '', name: '', pk: 0, type: ObjectiveType.lookingFor);
   }
 
   List<MeetingInterest> _getSelectedInterests() {
     return interests.fold([], (previousValue, element) {
-      if (preference.interests.contains(element.pk)) {
+      if (preference.interests?.contains(element) ?? false) {
         previousValue.add(element);
       }
       return previousValue;
@@ -151,13 +153,13 @@ class MeetingPreferencesCard extends StatelessWidget {
 }
 
 class _PreferenceItemDisplay extends StatelessWidget {
-  final String label;
+  final String? label;
   final Widget child;
 
   const _PreferenceItemDisplay({
-    Key key,
-    this.label,
-    @required this.child,
+    Key? key,
+    required this.label,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -168,7 +170,7 @@ class _PreferenceItemDisplay extends StatelessWidget {
       children: [
         if (label != null)
           Text(
-            label,
+            label!,
             style: labelStyle,
           ),
         const SizedBox(height: AppInsets.med),

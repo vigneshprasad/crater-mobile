@@ -12,7 +12,7 @@ class UCGetMeetingPreferences
   UCGetMeetingPreferences(this.repository);
 
   @override
-  Future<Either<Failure, UserMeetingPreference>> call(NoParams params) {
+  Future<Either<Failure, UserMeetingPreference?>> call(NoParams params) {
     return repository.getMeetingPreference();
   }
 }

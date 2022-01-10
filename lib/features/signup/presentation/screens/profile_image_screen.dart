@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_container/scaffold_container.dart';
@@ -20,8 +22,8 @@ class ProfileImageScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileImageScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -29,20 +31,25 @@ class ProfileImageScreen extends StatefulWidget {
 }
 
 class _ProfileImageScreenState extends State<ProfileImageScreen> {
-  ProfileIntroBloc _bloc;
-  File _photo;
-  String _photoUrl;
-  String _name;
+  late ProfileIntroBloc _bloc;
+  File? _photo;
+  String? _photoUrl;
+  late String _name;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>();
+    if (user != null) {
+      _bloc.add(GetProfileIntroRequestStarted(user: user));
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
-
-    _name = user.name;
-    _photoUrl = user.photo;
+      _name = user.name ?? '';
+      _photoUrl = user.photo;
+    } else {
+      _name = '';
+      _photoUrl = null;
+    }
 
     if (_photoUrl == null) {
       if (_name.trim().isNotEmpty) {
@@ -64,8 +71,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-      final title = 'Want to add a photo?';
-      final info =
+      const title = 'Want to add a photo?';
+      const info =
           'Users with photos see a 70% increase in the number of people joining their group conversations';
 
       return BlocProvider.value(
@@ -84,7 +91,7 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                ProfileHeader(
+                                const ProfileHeader(
                                   title: title,
                                   subtitle: info,
                                 ),
@@ -111,22 +118,29 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   }
 
   void submitAnswers() {
-    _bloc.add(ProfilePhotoRequestStarted(
-      photo: _photo,
-    ));
+    _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
+
+    if (_photo == null) {
+      _bloc.add(PostProfileIntroRequestStarted(values: {
+        'photo_url': _photoUrl,
+      }));
+    } else {
+      _bloc.add(ProfilePhotoRequestStarted(
+        photo: _photo!,
+      ));
+    }
   }
 
   void _goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileBioScreen(editMode: widget.editMode));
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _blocListener(BuildContext context, ProfileIntroState state) {
-    if (state is ProfileIntroRequestLoaded) {
-    } else if (state is PatchProfileIntroRequestLoaded) {
+    if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
-
+      _overlay?.remove();
       _goToNextScreen();
     }
   }

@@ -16,20 +16,16 @@ class VideoTab extends StatefulWidget {
 }
 
 class _VideoTabState extends State<VideoTab> {
-  bool _fromCache;
-  int _currentPage;
-  int _pages;
-  List<Video> _videos;
-  Completer<void> _completer;
-  VideoBloc _bloc;
+  late int _currentPage;
+  late List<Video> _videos;
+  Completer<void>? _completer;
+  late VideoBloc _bloc;
   final _pageSize = 10;
 
   @override
   void initState() {
-    _fromCache = false;
     _currentPage = 1;
     _videos = [];
-    _pages = 1;
     _completer = Completer<void>();
     _bloc = BlocProvider.of<VideoBloc>(context)
       ..add(
@@ -39,15 +35,14 @@ class _VideoTabState extends State<VideoTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String heading =
-        AppLocalizations.of(context).translate('videos:title');
-    final String subHeading =
-        AppLocalizations.of(context).translate('videos:subtitle');
+    final heading = AppLocalizations.of(context)?.translate('videos:title');
+    final subHeading =
+        AppLocalizations.of(context)?.translate('videos:subtitle');
     return BlocConsumer<VideoBloc, VideoState>(
       listener: _blocListener,
       builder: (context, state) {
         return HomeTabLayout(
-          heading: heading,
+          heading: heading!,
           subHeading: subHeading,
           onRefresh: _onRefreshList,
           slivers: [
@@ -72,10 +67,8 @@ class _VideoTabState extends State<VideoTab> {
       _completer?.complete();
       _completer = Completer<void>();
       setState(() {
-        _currentPage = state.currentPage;
-        _fromCache = state.fromCache;
-        _pages = state.pages;
-        _videos = [..._videos, ...state.videos];
+        _currentPage = state.currentPage!;
+        _videos = [..._videos, ...state.videos!];
       });
     }
   }
@@ -92,6 +85,6 @@ class _VideoTabState extends State<VideoTab> {
     });
     _bloc.add(
         GetVideosListRequestStarted(page: _currentPage, pageSize: _pageSize));
-    return _completer.future;
+    return _completer!.future;
   }
 }

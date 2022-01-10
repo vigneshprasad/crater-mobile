@@ -12,8 +12,8 @@ class GetCommunityPageRequestStarted extends CommunityEvent {
   final int pageSize;
 
   const GetCommunityPageRequestStarted({
-    @required this.page,
-    @required this.pageSize,
+    required this.page,
+    required this.pageSize,
   });
 
   @override
@@ -24,7 +24,7 @@ class DeletePostRequestStarted extends CommunityEvent {
   final int postId;
 
   const DeletePostRequestStarted({
-    @required this.postId,
+    required this.postId,
   });
 
   @override
@@ -36,8 +36,8 @@ class CreateLikePostRequest extends CommunityEvent {
   final String userId;
 
   const CreateLikePostRequest({
-    this.postId,
-    this.userId,
+    required this.postId,
+    required this.userId,
   });
 
   @override
@@ -48,7 +48,7 @@ class DeleteLikePostRequest extends CommunityEvent {
   final int postId;
 
   const DeleteLikePostRequest({
-    this.postId,
+    required this.postId,
   });
 
   @override
@@ -59,7 +59,7 @@ class NewPostCreated extends CommunityEvent {
   final Post post;
 
   const NewPostCreated({
-    @required this.post,
+    required this.post,
   });
 
   @override

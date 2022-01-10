@@ -8,21 +8,21 @@ part 'responses.g.dart';
 
 @JsonSerializable()
 class SetChatUserResponse extends WSResponse {
-  final String user;
-  final String introduction;
-  final String name;
-  final int page;
-  final int pages;
-  final List<ChatMessageModel> results;
+  final String? user;
+  final String? introduction;
+  final String? name;
+  final int? page;
+  final int? pages;
+  final List<ChatMessageModel>? results;
 
   @JsonKey(name: "user_data")
-  final ChatUserModel userData;
+  final ChatUserModel? userData;
 
   @JsonKey(name: "additional_information")
-  final String additionalInformation;
+  final String? additionalInformation;
 
   @JsonKey(name: "tag_line")
-  final String tagLine;
+  final String? tagLine;
 
   SetChatUserResponse({
     WSResponseType type = WSResponseType.loadChatMessages,
@@ -44,27 +44,27 @@ class SetChatUserResponse extends WSResponse {
 
 @JsonSerializable()
 class SentMessageResponse extends WSResponse {
-  final String message;
-  final String file;
-  final String filename;
-  final String fileFormat;
-  final String sender;
-  final String receiver;
-  final int pk;
-  final String photo;
-  final String created;
+  final String? message;
+  final String? file;
+  final String? filename;
+  final String? fileFormat;
+  final String? sender;
+  final String? receiver;
+  final int? pk;
+  final String? photo;
+  final String? created;
 
   @JsonKey(name: "is_read")
-  final bool isRead;
+  final bool? isRead;
 
   @JsonKey(name: "sender_id")
-  final String senderId;
+  final String? senderId;
 
   @JsonKey(name: "receiver_id")
-  final String receiverId;
+  final String? receiverId;
 
   @JsonKey(name: "is_support")
-  final bool isSupport;
+  final bool? isSupport;
 
   SentMessageResponse({
     WSResponseType type = WSResponseType.getUserMessage,
@@ -108,36 +108,36 @@ class SentMessageResponse extends WSResponse {
 
 @JsonSerializable()
 class ChatMessageNotificationResponse extends WSResponse {
-  final String created;
-  final String name;
-  final String photo;
-  final String message;
+  final String? created;
+  final String? name;
+  final String? photo;
+  final String? message;
 
-  final String pk;
+  final String? pk;
 
   @JsonKey(name: "sender")
-  final String senderName;
+  final String? senderName;
 
   @JsonKey(name: "receiver")
-  final String receiverName;
+  final String? receiverName;
 
   @JsonKey(name: "is_starred")
-  final bool isStarred;
+  final bool? isStarred;
 
   @JsonKey(name: "latest_message")
-  final ChatMessageModel latestMessage;
+  final ChatMessageModel? latestMessage;
 
   @JsonKey(name: "message_id")
-  final int messageId;
+  final int? messageId;
 
   @JsonKey(name: "receiver_id")
-  final String recieverId;
+  final String? recieverId;
 
   @JsonKey(name: "sender_id")
-  final String senderId;
+  final String? senderId;
 
   @JsonKey(name: "unread_count")
-  final int unreadCount;
+  final int? unreadCount;
 
   ChatMessageNotificationResponse({
     WSResponseType type = WSResponseType.getUserNotification,

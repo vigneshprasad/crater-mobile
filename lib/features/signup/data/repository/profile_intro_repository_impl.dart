@@ -23,7 +23,7 @@ class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
   Future<Either<Failure, List<String>>> getProfileIntroQuestions(
       User user) async {
     try {
-      final name = user?.name?.split(' ')?.first ?? '';
+      final name = user.name?.split(' ').first ?? '';
       final questions = [
         '$name is currently working with a {${ProfileIntroElement.companyType}} ,',
         'operating in the {${ProfileIntroElement.sector}} sector.',
@@ -79,7 +79,7 @@ class ProfileIntroRepositoryImpl implements ProfileIntroRepository {
 
   @override
   Future<Either<Failure, UserProfile>> postUserProfileIntro(
-      Map<String, dynamic> body, File photo) async {
+      Map<String, dynamic> body, File? photo) async {
     try {
       final response = await remoteDatasource.postUserProfile(body, photo);
       await localDataSource.setUserProfileToCache(response as UserProfileModel);

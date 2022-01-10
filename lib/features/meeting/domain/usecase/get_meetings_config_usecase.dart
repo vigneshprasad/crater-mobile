@@ -11,7 +11,7 @@ class UCGetMeetingConfig implements AsyncUseCase<MeetingConfig, NoParams> {
   UCGetMeetingConfig(this.repository);
 
   @override
-  Future<Either<Failure, MeetingConfig>> call(NoParams params) {
+  Future<Either<Failure, MeetingConfig?>> call(NoParams params) {
     return repository.getMeetingsCoonfigs();
   }
 }

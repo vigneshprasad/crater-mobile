@@ -1,235 +1,131 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/theme.dart';
-import '../../../../../core/color/color.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+
 import '../../../../../routes.gr.dart';
-import '../../../../article/domain/entity/article_entity/article_entity.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../layouts/calendar_card_layout/calendar_card_layout.dart';
 
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
-  final ValueChanged<Conversation> onCardPressed;
-  final bool hideFooter;
-
   const ConversationCard({
-    Key key,
-    @required this.conversation,
-    this.onCardPressed,
-    this.hideFooter,
+    required this.conversation,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 13.00,
-          color: Colors.white70,
-        );
-    final isFull = conversation.speakers.length >= conversation.maxSpeakers;
-    final now = DateTime.now();
-    final difference = conversation.start.toLocal().difference(now).inMinutes;
-
-    final isSoon = difference > 0 && difference <= 30;
-    final startTime = difference <= 30 ? "In $difference minutes" : "";
-    final dateFormat = DateFormat.jm();
-
-    BoxBorder _border;
-
-    if (!conversation.isPast) {
-      if (conversation.isSpeaker) {
-        _border = Border.all(
-          color: AppTheme.blueAccentDark,
-          width: 2.00,
-        );
-      } else {
-        if (isFull) {
-          _border = Border.all(
-            color: Theme.of(context).errorColor,
-            width: 2.00,
-          );
-        }
-      }
+    // final conversation = item;
+    final user = conversation.hostDetail;
+    final topic = conversation.topicDetail;
+    final tag = topic?.root;
+    String description = user?.introduction ?? topic?.name ?? ' ';
+    if (description.isEmpty) {
+      description = conversation.description ?? '';
+    }
+    String title = user?.name ?? '';
+    const type = GridItemType.upcoming;
+    if (type == GridItemType.upcoming) {
+      title = topic?.name ?? '';
+      description = user?.name ?? '';
     }
 
-    final article = conversation.topicDetail.articleDetail;
-
-    final heading =
-        article != null ? article.description : conversation.topicDetail.name;
-    final padding = article != null && article.description.isEmpty
-        ? const EdgeInsets.symmetric(
-            horizontal: AppInsets.xl,
-          )
-        : const EdgeInsets.symmetric(
-            vertical: AppInsets.xl,
-            horizontal: AppInsets.xl,
-          );
-
-    return CalendarCardLayout(
-      onPressed: () {
-        if (onCardPressed != null) {
-          onCardPressed(conversation);
-        } else {
-          ExtendedNavigator.of(context)
-              .push(Routes.conversationScreen(id: conversation.id));
-        }
+    return InkWell(
+      onTap: () {
+        AutoRouter.of(context)
+            .push(ConversationScreenRoute(id: conversation.id));
       },
-      padding: padding,
-      background: Theme.of(context).canvasColor,
-      heading: Text(heading),
-      subHeading: Row(
-        children: [
-          const Spacer(),
-          if (isSoon) Text(startTime, style: subheadStyle),
-        ],
-      ),
-      border: _border,
-      child: Column(
-        children: [
-          if (conversation.topicDetail.articleDetail != null)
-            _ArticleDetailCard(article: conversation.topicDetail.articleDetail),
-          if (hideFooter != true)
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      borderRadius: BorderRadius.circular(12),
+      child: SizedBox(
+        height: 300,
+        child: Column(
+          children: [
+            Expanded(
+                child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                color: Theme.of(context).dialogBackgroundColor,
+                width: double.infinity,
+                height: double.infinity,
+                child: Stack(
                   children: [
-                    Text(dateFormat.format(conversation.start.toLocal())),
-                    Text("Relevancy: ${conversation.relevancy}%",
-                        style: subheadStyle),
+                    if (topic?.image != null)
+                      Image.network(
+                        topic?.image ?? '',
+                        height: double.infinity,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    if (type == GridItemType.upcoming)
+                      LiveTime(date: conversation.start?.toLocal()),
+                    if (type == GridItemType.past)
+                      const Center(
+                        child: Icon(Icons.play_circle, size: 80),
+                      )
                   ],
                 ),
-                Expanded(
-                  child: _SpeakersAvatarList(
-                      speakers: conversation.speakersDetailList),
-                ),
-                const SizedBox(width: 20),
-                BaseContainer(
-                    radius: 30,
-                    child: Container(
-                      color: Theme.of(context).canvasColor,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_forward),
-                        onPressed: () => ExtendedNavigator.of(context).push(
-                            Routes.conversationScreen(id: conversation.id)),
-                      ),
-                    )),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ArticleDetailCard extends StatelessWidget {
-  final Article article;
-
-  const _ArticleDetailCard({
-    Key key,
-    @required this.article,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final sourceLabelStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 14.00,
-          color: Colors.black,
-          fontWeight: FontWeight.w500,
-        );
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppInsets.xl),
-      child: Material(
-        borderRadius: const BorderRadius.all(Radius.circular(8.00)),
-        color: HexColor.fromHex('#DDE9FD'),
-        type: MaterialType.card,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppInsets.l,
-            horizontal: AppInsets.l,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+              ),
+            )),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
                 children: [
-                  BaseNetworkImage(
-                    imageUrl: article.articleSourceDetail.image,
-                    defaultImage: AppImageAssets.videoPlaceholder,
-                    imagebuilder: (context, imageProvider) => CircleAvatar(
-                      backgroundImage: imageProvider,
-                      radius: 12.00,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(user?.photo ?? ''),
+                      backgroundColor: Theme.of(context).dialogBackgroundColor,
+                      radius: 28,
                     ),
                   ),
-                  const SizedBox(width: AppInsets.l),
-                  Text(article.articleSourceDetail.name,
-                      style: sourceLabelStyle),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                title,
+                                style: Theme.of(context).textTheme.subtitle2,
+                                maxLines: 2,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            if (tag?.name?.isNotEmpty ?? false)
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: Colors.white, width: 0.5),
+                                ),
+                                child: Text(
+                                  tag?.name ?? '',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          description,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: AppInsets.l),
-              Text(
-                article.title,
-                style: const TextStyle(color: Colors.black),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
-  }
-}
-
-class _SpeakersAvatarList extends StatelessWidget {
-  final List<ConversationUser> speakers;
-
-  const _SpeakersAvatarList({
-    Key key,
-    @required this.speakers,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 36.00,
-      child: Stack(
-        fit: StackFit.expand,
-        children: _buildItemList(context),
-      ),
-    );
-  }
-
-  List<Widget> _buildItemList(BuildContext context) {
-    final List<Widget> children = [];
-    const background = Color(0xFFCDDAFD);
-
-    for (int index = 0; index < speakers.length; index++) {
-      final speaker = speakers[index];
-      children.add(
-        Positioned(
-          right: 20.00 * index,
-          child: BaseNetworkImage(
-            defaultImage: AppImageAssets.defaultAvatar,
-            imageUrl: speaker.photo,
-            imagebuilder: (context, imageProvider) => Container(
-              width: 32.00,
-              height: 32.00,
-              decoration: BoxDecoration(
-                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                shape: BoxShape.circle,
-                border: Border.all(color: background, width: 2.00),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return children;
   }
 }

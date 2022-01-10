@@ -9,26 +9,26 @@ class OptinCard extends StatelessWidget {
   final Optin optin;
 
   const OptinCard({
-    Key key,
-    @required this.optin,
+    Key? key,
+    required this.optin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final label =
-        AppLocalizations.of(context).translate("conversations:scheduling");
+        AppLocalizations.of(context)?.translate("conversations:scheduling");
     final dateFormat = DateFormat.jm();
     return CalendarCardLayout(
-      heading: Text(optin.topicDetail.name),
+      heading: Text(optin.topicDetail?.name ?? ''),
       subHeading:
-          Text(dateFormat.format(optin.timeSlotList.first.start.toLocal())),
+          Text(dateFormat.format(optin.timeSlotList!.first.start!.toLocal())),
       border: Border.all(
         color: const Color(0xFFFFCB77),
         width: 2.00,
       ),
       child: Row(
         children: [
-          Text(label),
+          Text(label!),
         ],
       ),
     );

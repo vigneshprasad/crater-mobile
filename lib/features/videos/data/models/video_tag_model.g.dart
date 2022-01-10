@@ -17,8 +17,8 @@ class VideoTagModelAdapter extends TypeAdapter<VideoTagModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VideoTagModel(
-      pk: fields[0] as int,
-      name: fields[1] as String,
+      pk: fields[0] as int?,
+      name: fields[1] as String?,
     );
   }
 
@@ -49,8 +49,8 @@ class VideoTagModelAdapter extends TypeAdapter<VideoTagModel> {
 
 VideoTagModel _$VideoTagModelFromJson(Map<String, dynamic> json) {
   return VideoTagModel(
-    pk: json['pk'] as int,
-    name: json['name'] as String,
+    pk: json['pk'] as int?,
+    name: json['name'] as String?,
   );
 }
 

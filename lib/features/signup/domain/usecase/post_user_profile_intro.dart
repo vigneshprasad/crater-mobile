@@ -23,10 +23,13 @@ class UCPostUserProfileIntro
 
 class UCPostUserProfileIntroParams extends Equatable {
   final Map<String, dynamic> body;
-  final File photo;
+  final File? photo;
 
-  const UCPostUserProfileIntroParams({this.body, this.photo});
+  const UCPostUserProfileIntroParams({
+    required this.body,
+    this.photo,
+  });
 
   @override
-  List<Object> get props => [body, photo];
+  List<Object> get props => photo != null ? [body, photo!] : [body];
 }

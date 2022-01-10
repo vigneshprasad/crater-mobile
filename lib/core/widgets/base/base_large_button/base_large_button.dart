@@ -8,14 +8,14 @@ enum ButtonStyle {
 }
 
 class BaseLargeButton extends MaterialButton {
-  final double width;
-  final ButtonThemeData buttonTheme;
+  final double? width;
+  final ButtonThemeData? buttonTheme;
   final ButtonStyle style;
 
   const BaseLargeButton({
-    @required Widget child,
-    @required VoidCallback onPressed,
-    Color textColor,
+    required Widget child,
+    required VoidCallback onPressed,
+    Color? textColor,
     this.width,
     this.buttonTheme,
     this.style = ButtonStyle.fill,
@@ -26,9 +26,9 @@ class BaseLargeButton extends MaterialButton {
         );
 
   const BaseLargeButton.outline({
-    @required Widget child,
-    @required VoidCallback onPressed,
-    Color textColor,
+    required Widget child,
+    required VoidCallback onPressed,
+    Color? textColor,
     this.width,
     this.buttonTheme,
     this.style = ButtonStyle.outline,

@@ -7,10 +7,10 @@ class BaseLargeIconButton extends MaterialButton {
   final String text;
 
   const BaseLargeIconButton({
-    @required VoidCallback onPressed,
-    @required this.icon,
-    @required this.text,
-    Widget child,
+    required VoidCallback onPressed,
+    required this.icon,
+    required this.text,
+    Widget? child,
   }) : super(
           onPressed: onPressed,
           child: child,

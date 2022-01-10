@@ -1,16 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../../core/config_reader/config_reader.dart';
 import '../../../../core/error/exceptions.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../domain/entity/access_token.dart';
 
 abstract class SocialAuthRemoteDataSource {
-  Future<AccessToken> getLinkedInAccessToken();
   Future<AccessToken> getGoogleAccessToken();
   Future<AccessToken> getFacebookAccessToken();
   Future<AccessToken> getAppleAccessToken();
@@ -18,11 +14,11 @@ abstract class SocialAuthRemoteDataSource {
 
 class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
   final GoogleSignIn googleSignIn;
-  final FacebookLogin facebookLogin;
+  final fb.FacebookAuth facebookLogin;
 
   SocialAuthRemoteDataSourceImpl({
-    @required this.googleSignIn,
-    @required this.facebookLogin,
+    required this.googleSignIn,
+    required this.facebookLogin,
   });
 
   @override
@@ -46,14 +42,16 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
 
   @override
   Future<AccessToken> getFacebookAccessToken() async {
-    facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     try {
       await facebookLogin.logOut();
-      final result = await facebookLogin.logIn(["email"]);
-      final token = result.accessToken.token;
-      return AccessToken(token);
+      final result = await facebookLogin.login(
+          permissions: ['email'], loginBehavior: fb.LoginBehavior.webViewOnly);
+      if (result.status == fb.LoginStatus.success) {
+        return AccessToken(result.accessToken!.token);
+      }
+      throw ServerException(result.message);
     } catch (error) {
-      throw ServerException(error);
+      throw ServerException();
     }
   }
 
@@ -65,21 +63,8 @@ class SocialAuthRemoteDataSourceImpl implements SocialAuthRemoteDataSource {
 
     try {
       final account = await googleSignIn.signIn();
-      final auth = await account.authentication;
-      return AccessToken(auth.accessToken);
-    } catch (error) {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<AccessToken> getLinkedInAccessToken() async {
-    try {
-      final token = await LinkedInLogin.loginForAccessToken(
-          appBar: BaseAppBar(
-        title: const Text("LinkedIn Auth"),
-      ));
-      return AccessToken(token);
+      final auth = await account?.authentication;
+      return AccessToken(auth!.accessToken!);
     } catch (error) {
       throw ServerException();
     }

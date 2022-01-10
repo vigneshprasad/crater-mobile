@@ -14,9 +14,8 @@ part 'new_password_state.dart';
 class NewPasswordBloc extends Bloc<NewPasswordEvent, NewPasswordState> {
   final UCPostNewPassword postNewPassword;
   NewPasswordBloc({
-    @required this.postNewPassword,
-  })  : assert(postNewPassword != null),
-        super(const NewPasswordInitial());
+    required this.postNewPassword,
+  }) : super(const NewPasswordInitial());
 
   @override
   Stream<NewPasswordState> mapEventToState(
@@ -35,7 +34,7 @@ class NewPasswordBloc extends Bloc<NewPasswordEvent, NewPasswordState> {
       NewPasswordRequestStarted event) async* {
     yield state.loading();
 
-    Map<String, String> body = Map.from(
+    final Map<String, String> body = Map.from(
         Uri.parse('http://worknetwork.in/?${event.query}').queryParameters);
 
     body['new_password'] = event.password;

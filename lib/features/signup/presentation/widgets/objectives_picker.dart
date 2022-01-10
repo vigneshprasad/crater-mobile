@@ -4,10 +4,10 @@ import 'objective_cell.dart';
 
 class PickerItem {
   final String name;
-  final String icon;
+  final String? icon;
   final bool selected;
 
-  PickerItem({this.name, this.icon, this.selected = false});
+  PickerItem({required this.name, this.icon, this.selected = false});
 }
 
 class ObjectivesPicker extends StatelessWidget {
@@ -16,15 +16,13 @@ class ObjectivesPicker extends StatelessWidget {
   static const column = 2;
 
   const ObjectivesPicker({
-    Key key,
-    @required this.objectives,
-    @required this.onPressedItem,
-  })  : assert(objectives != null),
-        assert(onPressedItem != null),
-        super(key: key);
+    Key? key,
+    required this.objectives,
+    required this.onPressedItem,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final List<List<PickerItem>> rows = objectives.fold(
+    final List<List<PickerItem?>> rows = objectives.fold(
       [[]],
       (list, objective) => list.last.length == column
           ? (list..add([objective]))
@@ -33,7 +31,7 @@ class ObjectivesPicker extends StatelessWidget {
 
     rows.map((row) {
       if (row.length < column) {
-        final filler = List(column - row.length);
+        final filler = List.filled(column - row.length, 0);
         row.addAll(filler.map((e) => null));
       }
     }).toList();

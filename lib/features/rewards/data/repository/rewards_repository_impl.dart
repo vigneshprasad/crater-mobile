@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -16,9 +15,9 @@ class RewardsRepositoryImpl implements RewardsRepository {
   final RewardsRemoteDatasource remoteDatasource;
 
   RewardsRepositoryImpl({
-    @required this.networkInfo,
-    @required this.localDatasource,
-    @required this.remoteDatasource,
+    required this.networkInfo,
+    required this.localDatasource,
+    required this.remoteDatasource,
   });
 
   @override
@@ -57,7 +56,8 @@ class RewardsRepositoryImpl implements RewardsRepository {
     } else {
       try {
         final package = localDatasource.getPackageFromCache(packageId);
-        return Right(package);
+        if (package != null) return Right(package);
+        return Left(CacheFailure());
       } on CacheException catch (error) {
         return Left(CacheFailure(error));
       }

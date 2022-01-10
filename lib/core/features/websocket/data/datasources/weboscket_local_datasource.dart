@@ -6,10 +6,10 @@ import '../../../../error/exceptions.dart';
 
 abstract class WebSocketLocalDataSource {
   /// Local Websocket channel to Backendx
-  WebSocketChannel channel;
+  WebSocketChannel? channel;
 
   /// Stream controller for websocket channel
-  StreamController streamcontroller;
+  StreamController? streamcontroller;
 
   /// Close Websocket Channel Sonk
   /// @error => [WebSocketCloseException]
@@ -18,16 +18,16 @@ abstract class WebSocketLocalDataSource {
 
 class WebsocketLocalDataSourceImpl implements WebSocketLocalDataSource {
   @override
-  WebSocketChannel channel;
+  WebSocketChannel? channel;
 
   @override
-  StreamController streamcontroller = StreamController.broadcast();
+  StreamController? streamcontroller = StreamController.broadcast();
 
   @override
   Future<void> closeConnection() async {
     try {
-      await streamcontroller.close();
-      await channel.sink.close();
+      await streamcontroller?.close();
+      await channel?.sink.close();
     } catch (error) {
       throw WebSocketCloseException();
     }

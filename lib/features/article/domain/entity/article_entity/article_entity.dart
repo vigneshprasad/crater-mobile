@@ -8,15 +8,15 @@ part 'article_entity.g.dart';
 @freezed
 abstract class Article with _$Article {
   factory Article({
-    int pk,
-    String title,
-    String description,
-    String image,
-    String tag,
-    @JsonKey(name: "website_tag") String websiteTag,
-    @JsonKey(name: "website_url") String websiteUrl,
+    int? pk,
+    String? title,
+    String? description,
+    String? image,
+    String? tag,
+    @JsonKey(name: "website_tag") String? websiteTag,
+    @JsonKey(name: "website_url") String? websiteUrl,
     @JsonKey(name: "website_tag_detail")
-        ArticleWebsiteSource articleSourceDetail,
+        ArticleWebsiteSource? articleSourceDetail,
   }) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) =>

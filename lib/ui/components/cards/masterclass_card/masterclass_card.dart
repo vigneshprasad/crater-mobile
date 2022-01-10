@@ -11,8 +11,8 @@ class MasterclassCard extends StatelessWidget {
   final Video item;
 
   const MasterclassCard({
-    Key key,
-    @required this.item,
+    Key? key,
+    required this.item,
   }) : super(key: key);
 
   @override
@@ -26,9 +26,8 @@ class MasterclassCard extends StatelessWidget {
         splashColor: Colors.grey[200],
         onTap: () {
           if (item.thumbnail != null) {
-            ExtendedNavigator.of(context).push(
-              Routes.videoPlayerScreen,
-              arguments: VideoPlayerScreenArguments(videoId: item.pk),
+            AutoRouter.of(context).push(
+              VideoPlayerScreenRoute(videoId: item.pk!),
             );
           }
         },
@@ -44,9 +43,9 @@ class MasterclassCard extends StatelessWidget {
   }
 
   Widget _buildVideoThumbnail(BuildContext context) {
-    final ImageProvider<dynamic> image = item.thumbnail == null
+    final ImageProvider<Object> image = item.thumbnail == null
         ? AppImageAssets.videoPlaceholder
-        : CachedNetworkImageProvider(item.thumbnail) as ImageProvider;
+        : CachedNetworkImageProvider(item.thumbnail!) as ImageProvider;
     return Container(
       width: double.infinity,
       height: 180,
@@ -77,11 +76,11 @@ class MasterclassCard extends StatelessWidget {
 
   Widget _buildVideoInfo(BuildContext context) {
     final headingStyle =
-        Theme.of(context).textTheme.headline6.copyWith(fontSize: 16);
+        Theme.of(context).textTheme.headline6?.copyWith(fontSize: 16);
     final bodyStyle = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(fontSize: 14, color: Colors.grey[600]);
+        ?.copyWith(fontSize: 14, color: Colors.grey[600]);
     return Padding(
       padding: const EdgeInsets.only(
         top: AppInsets.xl,
@@ -92,10 +91,10 @@ class MasterclassCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(item.author, style: headingStyle),
+          Text(item.author ?? '', style: headingStyle),
           const SizedBox(height: AppInsets.sm),
           Text(
-            item.description,
+            item.description ?? '',
             style: bodyStyle,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,

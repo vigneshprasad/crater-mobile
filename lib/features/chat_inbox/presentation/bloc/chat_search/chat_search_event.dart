@@ -10,23 +10,29 @@ abstract class ChatSearchEvent extends Equatable {
 class SendSearchUsersRequestStarted extends ChatSearchEvent {
   final String search;
   final int page;
-  final bool strict;
-  final String filter;
+  final bool? strict;
+  final String? filter;
 
   const SendSearchUsersRequestStarted({
-    this.search,
-    this.page,
+    required this.search,
+    required this.page,
     this.strict,
     this.filter,
   });
 
   @override
-  List<Object> get props => [
-        search,
-        page,
-        strict,
-        filter,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [search, page];
+
+    if (filter != null) {
+      temp.add(filter!);
+    }
+
+    if (strict != null) {
+      temp.add(strict!);
+    }
+    return temp;
+  }
 }
 
 class WebSocketBlocConnected extends ChatSearchEvent {
@@ -37,7 +43,7 @@ class SearchResultsReceived extends ChatSearchEvent {
   final GetSearchAllUsersResponse response;
 
   const SearchResultsReceived({
-    @required this.response,
+    required this.response,
   });
 
   @override

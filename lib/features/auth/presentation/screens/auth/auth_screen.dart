@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_linkedin/linkedloginflutter.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../../../../constants/theme.dart';
-import '../../../../../core/config_reader/config_reader.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
@@ -29,8 +28,8 @@ class AuthScreen extends StatefulWidget {
   final String state;
 
   const AuthScreen({
-    Key key,
-    @PathParam("state") this.state = "signup",
+    Key? key,
+    @PathParam("state") required this.state,
   }) : super(key: key);
 
   @override
@@ -38,18 +37,12 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthBloc _authBloc;
-  int _formIndex;
+  late AuthBloc _authBloc;
+  late int _formIndex;
 
   @override
   void initState() {
     _formIndex = widget.state == "signup" ? 0 : 1;
-    LinkedInLogin.initialize(
-      context,
-      clientId: ConfigReader.getLinkedInClientId(),
-      clientSecret: ConfigReader.getLinkedInSecret(),
-      redirectUri: ConfigReader.getLinkedInRedirect(),
-    );
     _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
@@ -65,7 +58,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSuccess) {
-          context.read(userLeapProvider).setUserData(state.user);
+          context.read(userLeapProvider).setUserData(state.user!);
           navigatePostAuth(state.user, profile: state.profile);
         } else if (state is AuthRequestFailure) {
           _handleRequestError(state);
@@ -88,7 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ],
                     ),
                   ),
-                  if (state.isSubmitting != null && state.isSubmitting)
+                  if (state.isSubmitting != null && state.isSubmitting!)
                     _buildOverlay(context)
                 ],
               ),
@@ -107,18 +100,18 @@ class _AuthScreenState extends State<AuthScreen> {
         context: context,
         builder: (context) {
           final title =
-              AppLocalizations.of(context).translate("auth:login_fail_title");
+              AppLocalizations.of(context)?.translate("auth:login_fail_title");
           final dismiss =
-              AppLocalizations.of(context).translate("dismiss").toUpperCase();
+              AppLocalizations.of(context)?.translate("dismiss")?.toUpperCase();
           return AlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: Text(json["non_field_errors"][0] as String),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
-                  ExtendedNavigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 },
-                child: Text(dismiss),
+                child: Text(dismiss!),
               )
             ],
           );
@@ -144,14 +137,14 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
+            children: const [
+              SizedBox(
                 height: 32,
                 width: 32,
                 child: CircularProgressIndicator(),
               ),
-              const SizedBox(height: AppInsets.xl),
-              const Text("Loading..."),
+              SizedBox(height: AppInsets.xl),
+              Text("Loading..."),
             ],
           ),
         ),

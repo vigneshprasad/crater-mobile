@@ -15,7 +15,7 @@ class PostProfileRequestStarted extends ProfileSetupEvent {
   final String linkedinUrl;
 
   const PostProfileRequestStarted({
-    @required this.linkedinUrl,
+    required this.linkedinUrl,
   });
 
   @override

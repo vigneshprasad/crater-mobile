@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_field_detail.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
 import '../../domain/entity/user_profile_entity.dart';
@@ -14,132 +15,230 @@ part 'user_profile_model.g.dart';
 @JsonSerializable()
 class UserProfileModel extends UserProfile {
   @HiveField(0)
-  final int pk;
+  final int? pk;
 
   @HiveField(1)
   @JsonKey(name: "additional_information")
-  final String additionalInformation;
+  final String? additionalInformation;
 
   @HiveField(2)
-  final int cover;
+  final int? cover;
 
   @HiveField(3)
   @JsonKey(name: "cover_file")
-  final String coverFile;
+  final String? coverFile;
 
   @HiveField(4)
   @JsonKey(name: "cover_thumbnail")
-  final String coverThumbnail;
+  final String? coverThumbnail;
 
   @HiveField(5)
   @JsonKey(name: "cover_transcoder")
-  final String coverTranscoder;
+  final String? coverTranscoder;
 
   @HiveField(6)
-  final String focus;
+  final String? focus;
 
   @HiveField(7)
-  final String instagram;
+  final String? instagram;
 
   @HiveField(8)
   @JsonKey(name: "instagram_id")
-  final String instagramId;
+  final String? instagramId;
 
   @HiveField(9)
   @JsonKey(name: "instagram_username")
-  final String instagramUsername;
+  final String? instagramUsername;
 
   @HiveField(10)
-  final String introduction;
+  final String? introduction;
 
   @HiveField(11)
   @JsonKey(name: "is_cover_video")
-  final bool isCoverVideo;
+  final bool? isCoverVideo;
 
   @HiveField(12)
   @JsonKey(name: "is_instagram_set")
-  final bool isInstagramSet;
+  final bool? isInstagramSet;
 
   @HiveField(13)
   @JsonKey(name: "linkedin_url")
-  final String linkedinUrl;
+  final String? linkedinUrl;
 
   @HiveField(14)
-  final String name;
+  final String? name;
 
   @HiveField(15)
-  final String photo;
+  final String? photo;
 
   @HiveField(16)
-  final String photoUrl;
+  final String? photoUrl;
 
   @HiveField(17)
   @JsonKey(name: "public_introduction")
-  final String publicIntroduction;
+  final String? publicIntroduction;
 
   @HiveField(18)
   @JsonKey(name: "public_profile")
-  final bool publicProfile;
+  final bool? publicProfile;
 
   @HiveField(19)
-  final String role;
+  final String? role;
 
   @HiveField(20)
   @JsonKey(name: "tag_line")
-  final String tagLine;
+  final String? tagLine;
 
   @HiveField(21)
   @JsonKey(name: "tag_list")
-  final List<UserTagModel> tagList;
+  final List<UserTagModel>? tagList;
 
   @HiveField(22)
-  final String uuid;
+  final String? uuid;
 
   @HiveField(23)
   @JsonKey(name: 'education_level')
-  final int educationLevel;
+  final int? educationLevel;
 
   @HiveField(24)
   @JsonKey(name: 'years_of_experience')
-  final int yearsOfExperience;
+  final int? yearsOfExperience;
 
   @HiveField(25)
   @JsonKey(name: 'company_type')
-  final int companyType;
+  final int? companyType;
 
   @HiveField(26)
   @JsonKey(name: 'sector')
-  final int sector;
+  final int? sector;
 
-  UserProfileModel({
-    this.pk,
-    this.additionalInformation,
-    this.cover,
-    this.coverFile,
-    this.coverThumbnail,
-    this.coverTranscoder,
-    this.focus,
-    this.instagram,
-    this.instagramId,
-    this.instagramUsername,
-    this.introduction,
-    this.isCoverVideo,
-    this.isInstagramSet,
-    this.linkedinUrl,
-    this.name,
-    this.photo,
-    this.photoUrl,
-    this.publicIntroduction,
-    this.publicProfile,
-    this.role,
-    this.tagLine,
-    this.tagList,
-    this.uuid,
-    this.educationLevel,
-    this.yearsOfExperience,
-    this.companyType,
-    this.sector,
-  }) : super(
+  @HiveField(27)
+  final List<int>? tags;
+
+  @HiveField(28)
+  @JsonKey(name: 'number_of_employees')
+  final int? numberOfEmployees;
+
+  @HiveField(29)
+  @JsonKey(name: 'project_type')
+  final int? projectType;
+
+  @HiveField(30)
+  @JsonKey(name: 'stage_of_company')
+  final int? stageOfCompany;
+
+  @HiveField(31)
+  final int? aspiration;
+
+  @HiveField(32)
+  @JsonKey(name: 'profile_intro_updated')
+  final bool? profileIntroUpdated;
+
+  @HiveField(33)
+  @JsonKey(name: 'company_name')
+  final String? companyName;
+
+  @HiveField(34)
+  @JsonKey(name: 'allow_meeting_request')
+  final bool? allowMeetingRequest;
+
+  @HiveField(35)
+  @JsonKey(name: "can_connect")
+  final bool? canConnect;
+
+  @HiveField(36)
+  @JsonKey(name: 'generated_introduction')
+  final String? generatedIntroduction;
+
+  @HiveField(37)
+  @JsonKey(name: "linkedin")
+  String? linkedIn;
+
+  // @HiveField(38)
+  @JsonKey(name: 'education_level_detail')
+  final UserProfileFieldDetailModel? educationLevelDetail;
+
+  // @HiveField(39)
+  @JsonKey(name: 'sector_detail')
+  final UserProfileFieldDetailModel? sectorDetail;
+
+  // @HiveField(40)
+  @JsonKey(name: 'company_type_detail')
+  final UserProfileFieldDetailModel? companyTypeDetail;
+
+  // @HiveField(41)
+  @JsonKey(name: 'year_of_experience_detail')
+  final UserProfileFieldDetailModel? yearOfExperienceDetail;
+
+  // @HiveField(42)
+  @JsonKey(name: 'company_type_advised_detail')
+  final UserProfileFieldDetailModel? companyTypeAdvisedDetail;
+
+  // @HiveField(43)
+  @JsonKey(name: 'number_of_employees_detail')
+  final UserProfileFieldDetailModel? numberOfEmployeesDetail;
+
+  // @HiveField(44)
+  @JsonKey(name: 'project_type_detail')
+  final UserProfileFieldDetailModel? projectTypeDetail;
+
+  // @HiveField(45)
+  @JsonKey(name: 'stage_of_company_detail')
+  final UserProfileFieldDetailModel? stageOfCompanyDetail;
+
+  // @HiveField(46)
+  @JsonKey(name: 'companies_invested_detail')
+  final UserProfileFieldDetailModel? companiesInvestedDetail;
+
+  UserProfileModel(
+      {this.pk,
+      this.additionalInformation,
+      this.cover,
+      this.coverFile,
+      this.coverThumbnail,
+      this.coverTranscoder,
+      this.focus,
+      this.instagram,
+      this.instagramId,
+      this.instagramUsername,
+      this.introduction,
+      this.isCoverVideo,
+      this.isInstagramSet,
+      this.linkedinUrl,
+      this.name,
+      this.photo,
+      this.photoUrl,
+      this.publicIntroduction,
+      this.publicProfile,
+      this.role,
+      this.tagLine,
+      this.tagList,
+      this.uuid,
+      this.educationLevel,
+      this.yearsOfExperience,
+      this.companyType,
+      this.sector,
+      this.tags,
+      this.numberOfEmployees,
+      this.projectType,
+      this.stageOfCompany,
+      this.aspiration,
+      this.profileIntroUpdated,
+      this.companyName,
+      this.allowMeetingRequest,
+      this.canConnect,
+      this.generatedIntroduction,
+      this.linkedIn,
+      this.educationLevelDetail,
+      this.companiesInvestedDetail,
+      this.companyTypeAdvisedDetail,
+      this.companyTypeDetail,
+      this.numberOfEmployeesDetail,
+      this.projectTypeDetail,
+      this.sectorDetail,
+      this.stageOfCompanyDetail,
+      this.yearOfExperienceDetail})
+      : super(
           pk: pk,
           additionalInformation: additionalInformation,
           cover: cover,
@@ -167,6 +266,26 @@ class UserProfileModel extends UserProfile {
           yearsOfExperience: yearsOfExperience,
           companyType: companyType,
           sector: sector,
+          tags: tags,
+          numberOfEmployees: numberOfEmployees,
+          projectType: projectType,
+          stageOfCompany: stageOfCompany,
+          aspiration: aspiration,
+          profileIntroUpdated: profileIntroUpdated,
+          companyName: companyName,
+          allowMeetingRequest: allowMeetingRequest,
+          canConnect: canConnect,
+          generatedIntroduction: generatedIntroduction,
+          linkedIn: linkedIn,
+          educationLevelDetail: educationLevelDetail,
+          companiesInvestedDetail: companiesInvestedDetail,
+          companyTypeAdvisedDetail: companyTypeAdvisedDetail,
+          companyTypeDetail: companyTypeDetail,
+          numberOfEmployeesDetail: numberOfEmployeesDetail,
+          projectTypeDetail: projectTypeDetail,
+          sectorDetail: sectorDetail,
+          stageOfCompanyDetail: stageOfCompanyDetail,
+          yearOfExperienceDetail: yearOfExperienceDetail,
         );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>

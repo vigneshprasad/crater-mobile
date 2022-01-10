@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'calendar_week_data.dart';
 
@@ -9,18 +9,21 @@ part of 'calendar_week_data.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$CalendarWeekDataTearOff {
   const _$CalendarWeekDataTearOff();
 
-// ignore: unused_element
   _CalendarWeekData call(
-      {bool future,
-      DateTime start,
-      DateTime end,
+      {bool? future,
+      DateTime? start,
+      DateTime? end,
       List<ConversationByDate> conversations = const [],
       List<OptinsByDate> optins = const [],
-      List<MeetingsByDate> meetings = const []}) {
+      List<MeetingsByDate> meetings = const [],
+      List<RequestsByDate> requests = const []}) {
     return _CalendarWeekData(
       future: future,
       start: start,
@@ -28,25 +31,28 @@ class _$CalendarWeekDataTearOff {
       conversations: conversations,
       optins: optins,
       meetings: meetings,
+      requests: requests,
     );
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $CalendarWeekData = _$CalendarWeekDataTearOff();
 
 /// @nodoc
 mixin _$CalendarWeekData {
-  bool get future;
-  DateTime get start;
-  DateTime get end;
-  List<ConversationByDate> get conversations;
-  List<OptinsByDate> get optins;
-  List<MeetingsByDate> get meetings;
+  bool? get future => throw _privateConstructorUsedError;
+  DateTime? get start => throw _privateConstructorUsedError;
+  DateTime? get end => throw _privateConstructorUsedError;
+  List<ConversationByDate> get conversations =>
+      throw _privateConstructorUsedError;
+  List<OptinsByDate> get optins => throw _privateConstructorUsedError;
+  List<MeetingsByDate> get meetings => throw _privateConstructorUsedError;
+  List<RequestsByDate> get requests => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CalendarWeekDataCopyWith<CalendarWeekData> get copyWith;
+  $CalendarWeekDataCopyWith<CalendarWeekData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,12 +61,13 @@ abstract class $CalendarWeekDataCopyWith<$Res> {
           CalendarWeekData value, $Res Function(CalendarWeekData) then) =
       _$CalendarWeekDataCopyWithImpl<$Res>;
   $Res call(
-      {bool future,
-      DateTime start,
-      DateTime end,
+      {bool? future,
+      DateTime? start,
+      DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings});
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests});
 }
 
 /// @nodoc
@@ -74,24 +81,43 @@ class _$CalendarWeekDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object future = freezed,
-    Object start = freezed,
-    Object end = freezed,
-    Object conversations = freezed,
-    Object optins = freezed,
-    Object meetings = freezed,
+    Object? future = freezed,
+    Object? start = freezed,
+    Object? end = freezed,
+    Object? conversations = freezed,
+    Object? optins = freezed,
+    Object? meetings = freezed,
+    Object? requests = freezed,
   }) {
     return _then(_value.copyWith(
-      future: future == freezed ? _value.future : future as bool,
-      start: start == freezed ? _value.start : start as DateTime,
-      end: end == freezed ? _value.end : end as DateTime,
+      future: future == freezed
+          ? _value.future
+          : future // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      start: start == freezed
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      end: end == freezed
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       conversations: conversations == freezed
           ? _value.conversations
-          : conversations as List<ConversationByDate>,
-      optins: optins == freezed ? _value.optins : optins as List<OptinsByDate>,
+          : conversations // ignore: cast_nullable_to_non_nullable
+              as List<ConversationByDate>,
+      optins: optins == freezed
+          ? _value.optins
+          : optins // ignore: cast_nullable_to_non_nullable
+              as List<OptinsByDate>,
       meetings: meetings == freezed
           ? _value.meetings
-          : meetings as List<MeetingsByDate>,
+          : meetings // ignore: cast_nullable_to_non_nullable
+              as List<MeetingsByDate>,
+      requests: requests == freezed
+          ? _value.requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<RequestsByDate>,
     ));
   }
 }
@@ -104,12 +130,13 @@ abstract class _$CalendarWeekDataCopyWith<$Res>
       __$CalendarWeekDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool future,
-      DateTime start,
-      DateTime end,
+      {bool? future,
+      DateTime? start,
+      DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings});
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests});
 }
 
 /// @nodoc
@@ -125,29 +152,49 @@ class __$CalendarWeekDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object future = freezed,
-    Object start = freezed,
-    Object end = freezed,
-    Object conversations = freezed,
-    Object optins = freezed,
-    Object meetings = freezed,
+    Object? future = freezed,
+    Object? start = freezed,
+    Object? end = freezed,
+    Object? conversations = freezed,
+    Object? optins = freezed,
+    Object? meetings = freezed,
+    Object? requests = freezed,
   }) {
     return _then(_CalendarWeekData(
-      future: future == freezed ? _value.future : future as bool,
-      start: start == freezed ? _value.start : start as DateTime,
-      end: end == freezed ? _value.end : end as DateTime,
+      future: future == freezed
+          ? _value.future
+          : future // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      start: start == freezed
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      end: end == freezed
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       conversations: conversations == freezed
           ? _value.conversations
-          : conversations as List<ConversationByDate>,
-      optins: optins == freezed ? _value.optins : optins as List<OptinsByDate>,
+          : conversations // ignore: cast_nullable_to_non_nullable
+              as List<ConversationByDate>,
+      optins: optins == freezed
+          ? _value.optins
+          : optins // ignore: cast_nullable_to_non_nullable
+              as List<OptinsByDate>,
       meetings: meetings == freezed
           ? _value.meetings
-          : meetings as List<MeetingsByDate>,
+          : meetings // ignore: cast_nullable_to_non_nullable
+              as List<MeetingsByDate>,
+      requests: requests == freezed
+          ? _value.requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<RequestsByDate>,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_CalendarWeekData implements _CalendarWeekData {
   _$_CalendarWeekData(
       {this.future,
@@ -155,17 +202,15 @@ class _$_CalendarWeekData implements _CalendarWeekData {
       this.end,
       this.conversations = const [],
       this.optins = const [],
-      this.meetings = const []})
-      : assert(conversations != null),
-        assert(optins != null),
-        assert(meetings != null);
+      this.meetings = const [],
+      this.requests = const []});
 
   @override
-  final bool future;
+  final bool? future;
   @override
-  final DateTime start;
+  final DateTime? start;
   @override
-  final DateTime end;
+  final DateTime? end;
   @JsonKey(defaultValue: const [])
   @override
   final List<ConversationByDate> conversations;
@@ -175,10 +220,13 @@ class _$_CalendarWeekData implements _CalendarWeekData {
   @JsonKey(defaultValue: const [])
   @override
   final List<MeetingsByDate> meetings;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<RequestsByDate> requests;
 
   @override
   String toString() {
-    return 'CalendarWeekData(future: $future, start: $start, end: $end, conversations: $conversations, optins: $optins, meetings: $meetings)';
+    return 'CalendarWeekData(future: $future, start: $start, end: $end, conversations: $conversations, optins: $optins, meetings: $meetings, requests: $requests)';
   }
 
   @override
@@ -198,7 +246,10 @@ class _$_CalendarWeekData implements _CalendarWeekData {
                 const DeepCollectionEquality().equals(other.optins, optins)) &&
             (identical(other.meetings, meetings) ||
                 const DeepCollectionEquality()
-                    .equals(other.meetings, meetings)));
+                    .equals(other.meetings, meetings)) &&
+            (identical(other.requests, requests) ||
+                const DeepCollectionEquality()
+                    .equals(other.requests, requests)));
   }
 
   @override
@@ -209,7 +260,8 @@ class _$_CalendarWeekData implements _CalendarWeekData {
       const DeepCollectionEquality().hash(end) ^
       const DeepCollectionEquality().hash(conversations) ^
       const DeepCollectionEquality().hash(optins) ^
-      const DeepCollectionEquality().hash(meetings);
+      const DeepCollectionEquality().hash(meetings) ^
+      const DeepCollectionEquality().hash(requests);
 
   @JsonKey(ignore: true)
   @override
@@ -219,26 +271,31 @@ class _$_CalendarWeekData implements _CalendarWeekData {
 
 abstract class _CalendarWeekData implements CalendarWeekData {
   factory _CalendarWeekData(
-      {bool future,
-      DateTime start,
-      DateTime end,
+      {bool? future,
+      DateTime? start,
+      DateTime? end,
       List<ConversationByDate> conversations,
       List<OptinsByDate> optins,
-      List<MeetingsByDate> meetings}) = _$_CalendarWeekData;
+      List<MeetingsByDate> meetings,
+      List<RequestsByDate> requests}) = _$_CalendarWeekData;
 
   @override
-  bool get future;
+  bool? get future => throw _privateConstructorUsedError;
   @override
-  DateTime get start;
+  DateTime? get start => throw _privateConstructorUsedError;
   @override
-  DateTime get end;
+  DateTime? get end => throw _privateConstructorUsedError;
   @override
-  List<ConversationByDate> get conversations;
+  List<ConversationByDate> get conversations =>
+      throw _privateConstructorUsedError;
   @override
-  List<OptinsByDate> get optins;
+  List<OptinsByDate> get optins => throw _privateConstructorUsedError;
   @override
-  List<MeetingsByDate> get meetings;
+  List<MeetingsByDate> get meetings => throw _privateConstructorUsedError;
+  @override
+  List<RequestsByDate> get requests => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$CalendarWeekDataCopyWith<_CalendarWeekData> get copyWith;
+  _$CalendarWeekDataCopyWith<_CalendarWeekData> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -5,13 +5,13 @@ import '../../../../../constants/app_constants.dart';
 import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
 import '../../bloc/auth_bloc.dart';
 
-const kProfileIconSize = 36.00;
+const kProfileIconSize = 24.00;
 
 class UserProfileNavItem extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const UserProfileNavItem({
-    Key key,
+    Key? key,
     this.onPressed,
   }) : super(key: key);
 
@@ -24,7 +24,7 @@ class UserProfileNavItem extends StatelessWidget {
             customBorder: const CircleBorder(),
             onTap: onPressed,
             child: BaseNetworkImage(
-              imageUrl: state.user.photo,
+              imageUrl: state.user?.photo,
               defaultImage: AppImageAssets.defaultAvatar,
               imagebuilder: (context, imageProvider) {
                 return Container(
@@ -40,7 +40,11 @@ class UserProfileNavItem extends StatelessWidget {
             ),
           );
         } else {
-          return Container();
+          return const CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: kProfileIconSize / 2,
+            backgroundImage: AppImageAssets.defaultAvatar,
+          );
         }
       },
     );

@@ -9,10 +9,10 @@ class VideoScreenLayout extends StatelessWidget {
   final Video featureVideo;
 
   const VideoScreenLayout({
-    Key key,
-    this.featureVideo,
-    @required this.videoPlayer,
-    @required this.playlist,
+    Key? key,
+    required this.featureVideo,
+    required this.videoPlayer,
+    required this.playlist,
   }) : super(key: key);
 
   @override
@@ -33,11 +33,11 @@ class VideoScreenLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildVideoDetails(BuildContext context, Video featureVideo) {
-    final headingStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+  Widget _buildVideoDetails(BuildContext context, Video? featureVideo) {
+    final headingStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
           fontWeight: FontWeight.w500,
         );
-    final subheadStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+    final subheadStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
           color: Colors.grey[400],
           height: 1.2,
           fontSize: 13,
@@ -49,7 +49,7 @@ class VideoScreenLayout extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(
             vertical: AppInsets.l, horizontal: AppInsets.xl),
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: RichText(
             overflow: TextOverflow.ellipsis,

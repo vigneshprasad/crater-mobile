@@ -13,9 +13,9 @@ class ArticlesGetPageRequestStarted extends ArticleEvent {
   final int websiteTag;
 
   const ArticlesGetPageRequestStarted({
-    @required this.page,
-    @required this.pageSize,
-    @required this.websiteTag,
+    required this.page,
+    required this.pageSize,
+    required this.websiteTag,
   });
 
   @override

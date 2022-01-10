@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -14,7 +14,7 @@ import 'models/push_notification_data/push_notification_data.dart';
 abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
-  Future<String> getPushToken();
+  Future<String?> getPushToken();
   void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
@@ -25,8 +25,8 @@ class PushNotificationsImpl implements PushNotifications {
   @override
   Future<String> getSubscriptionToken() async {
     final Completer<String> _completer = Completer();
-    final sub = await OneSignal.shared.getPermissionSubscriptionState();
-    final userId = sub.subscriptionStatus.userId;
+    final device = await OneSignal.shared.getDeviceState();
+    final userId = device?.userId;
     if (userId == null) {
       OneSignal.shared.setSubscriptionObserver((changes) {
         if (changes.to.userId != null) {
@@ -40,9 +40,10 @@ class PushNotificationsImpl implements PushNotifications {
   }
 
   @override
-  Future<String> getPushToken() async {
-    final sub = await OneSignal.shared.getPermissionSubscriptionState();
-    return sub.subscriptionStatus.pushToken;
+  Future<String?> getPushToken() async {
+    final device = await OneSignal.shared.getDeviceState();
+
+    return device?.pushToken;
   }
 
   @override
@@ -51,56 +52,69 @@ class PushNotificationsImpl implements PushNotifications {
   }
 
   @override
-  void handleNotificationsPressed(OSNotificationOpenedResult result) {
-    if (result.notification.payload.additionalData == null) {
+  Future<void> handleNotificationsPressed(
+      OSNotificationOpenedResult result) async {
+    if (result.notification.additionalData == null) {
       return;
     }
 
-    final objTyp = result.notification.payload.additionalData["obj_type"];
-    final json = result.notification.payload.additionalData;
+    final isIntercomPush =
+        await Intercom.isIntercomPush(result.notification.rawPayload!);
+    if (isIntercomPush) {
+      await Intercom.handlePush(result.notification.rawPayload!);
+      return;
+    }
+
+    final objTyp = result.notification.additionalData?["obj_type"];
+    final json = result.notification.additionalData;
 
     final PushType type = enumFromType(objTyp);
     final _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
 
     if (type == PushType.chatMessage) {
-      final message = ChatMessageModel.fromJson(json);
-      _navigatorKey.currentState.pushNamed(Routes.chatScreen,
-          arguments: ChatScreenArguments(recieverId: message.senderId));
+      final message = ChatMessageModel.fromJson(json!);
+      _navigatorKey.currentState?.pushNamed(ChatScreenRoute.name,
+          arguments: ChatScreenRouteArgs(recieverId: message.senderId!));
     } else if (type == PushType.conversation) {
-      final data = ConversationNotificationData.fromJson(json);
+      final ConversationNotificationData data =
+          ConversationNotificationData.fromJson(json!);
 
-      _navigatorKey.currentState
-          .pushNamed(Routes.conversationScreen(id: data.groupId));
+      _navigatorKey.currentState?.pushNamed(ConversationScreenRoute.name,
+          arguments: ConversationScreenRouteArgs(id: data.groupId as int));
     } else if (type == PushType.upcomingMeeting) {
       if (_navigatorKey.currentWidget is! HomeScreen) {
-        _navigatorKey.currentState.pushNamed(Routes.homeScreen(tab: 0));
+        _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name);
       }
     } else if (type == PushType.createConversation) {
-      ExtendedNavigator.root.push(Routes.homeScreen(tab: 1));
+      _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name,
+          arguments: const HomeScreenRouteArgs(tab: 1));
     }
   }
 
   @override
   Future<void> initSdk() async {
-    final settings = {
+    final _ = {
       OSiOSSettings.autoPrompt: false,
       OSiOSSettings.inAppLaunchUrl: false,
     };
+    //TODO: iOS settings
 
-    await OneSignal.shared.init(
-      ConfigReader.getOneSignalAppId(),
-      iOSSettings: settings,
-    );
+    OneSignal.shared.setAppId(ConfigReader.getOneSignalAppId());
 
-    await OneSignal.shared.setSubscription(true);
+    // await OneSignal.shared.init(
+    //   ,
+    //   iOSSettings: settings,
+    // );
+
+    // await OneSignal.shared.setSubscription(true);
 
     final consent = await OneSignal.shared.requiresUserPrivacyConsent();
     if (consent) {
       OneSignal.shared.consentGranted(true);
     }
 
-    OneSignal.shared
-        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+    // OneSignal.shared
+    //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
@@ -116,7 +130,7 @@ class PushNotificationsImpl implements PushNotifications {
   void setEventHandlers() {
     OneSignal.shared.setSubscriptionObserver(subscriptionsChangeHandler);
 
-    OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
+    // OneSignal.shared.setNotificationReceivedHandler(handleNotificationReceived);
 
     OneSignal.shared.setNotificationOpenedHandler(handleNotificationsPressed);
   }

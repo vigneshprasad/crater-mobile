@@ -14,7 +14,7 @@ abstract class ProfileIntroRemoteDatasource {
   Future<List<ProfileIntroMeta>> getSectorsFromRemote();
   Future<List<ProfileIntroMeta>> getExperiencesFromRemote();
   Future<List<ProfileIntroMeta>> getEducationsFromRemote();
-  Future<UserProfile> postUserProfile(Map<String, dynamic> body, File photo);
+  Future<UserProfile> postUserProfile(Map<String, dynamic> body, File? photo);
 }
 
 class ProfileIntroRemoteDatasourceImpl implements ProfileIntroRemoteDatasource {
@@ -76,13 +76,14 @@ class ProfileIntroRemoteDatasourceImpl implements ProfileIntroRemoteDatasource {
 
   @override
   Future<UserProfile> postUserProfile(
-      Map<String, dynamic> body, File photo) async {
+      Map<String, dynamic> body, File? photo) async {
+    final newBody = Map<String, dynamic>.from(body);
     if (photo != null) {
       final file = FileConverter.getBase64FormateFile(photo.path);
-      body['photo'] = file;
+      newBody['photo'] = file;
     }
 
-    final response = await profileIntroApiService.postUserProfile(body);
+    final response = await profileIntroApiService.postUserProfile(newBody);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserProfileModel.fromJson(json);

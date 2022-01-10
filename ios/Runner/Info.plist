@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>WorkNetwork</string>
+	<string>Crater</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -62,6 +62,10 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>This app needs music permission to play your audio meetings.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>We will use your Bluetooth to access your Bluetooth headphones.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We will use your Bluetooth to access your Bluetooth headphones.</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app needs calendar permission</string>
 	<key>NSCameraUsageDescription</key>
@@ -80,6 +84,11 @@
 	<string>This app needs photo permission to share imaages on the community.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This app needs speech recognition permission to improve your audio quality.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -105,7 +114,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+	<false/>
 	<key>com.claimsforce.segment.TRACK_APPLICATION_LIFECYCLE_EVENTS</key>
 	<true/>
 	<key>com.claimsforce.segment.WRITE_KEY</key>

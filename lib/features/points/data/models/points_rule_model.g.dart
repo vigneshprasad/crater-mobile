@@ -17,9 +17,9 @@ class PointsRuleModelAdapter extends TypeAdapter<PointsRuleModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PointsRuleModel(
-      pointsKey: fields[0] as int,
-      desc: fields[1] as String,
-      pointsValue: fields[2] as int,
+      pointsKey: fields[0] as int?,
+      desc: fields[1] as String?,
+      pointsValue: fields[2] as int?,
     );
   }
 
@@ -52,9 +52,9 @@ class PointsRuleModelAdapter extends TypeAdapter<PointsRuleModel> {
 
 PointsRuleModel _$PointsRuleModelFromJson(Map<String, dynamic> json) {
   return PointsRuleModel(
-    pointsKey: json['key'] as int,
-    desc: json['desc'] as String,
-    pointsValue: json['points_value'] as int,
+    pointsKey: json['key'] as int?,
+    desc: json['desc'] as String?,
+    pointsValue: json['points_value'] as int?,
   );
 }
 

@@ -11,14 +11,14 @@ typedef RefreshCallback = Future<void> Function();
 class HomeScreenBodyLayout extends StatelessWidget {
   final double expandedHeight;
   final String heading;
-  final String subheading;
+  final String? subheading;
   final Widget body;
 
   const HomeScreenBodyLayout({
-    Key key,
+    Key? key,
     this.expandedHeight = 116,
-    @required this.heading,
-    @required this.body,
+    required this.heading,
+    required this.body,
     this.subheading,
   }) : super(key: key);
 
@@ -42,8 +42,8 @@ class HomeScreenBodyLayout extends StatelessWidget {
                       color: Colors.black87,
                       icon: const Icon(WorkNetIcons.notification),
                       onPressed: () {
-                        ExtendedNavigator.of(context)
-                            .push(Routes.notificationsScreen);
+                        AutoRouter.of(context)
+                            .push(const NotificationsScreenRoute());
                       },
                     )
                   ],

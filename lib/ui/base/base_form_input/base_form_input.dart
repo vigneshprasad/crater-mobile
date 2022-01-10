@@ -4,23 +4,23 @@ import '../../../constants/theme.dart';
 
 class BaseFormInput extends StatelessWidget {
   final String label;
-  final Widget icon;
+  final Widget? icon;
   final TextInputType keyboardType;
   final bool obscureText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool autovalidate;
   final bool autocorrect;
   final bool enabled;
   final bool autoFocus;
-  final FormFieldValidator<String> validator;
-  final int maxLines;
-  final int minLines;
-  final ValueChanged<String> onChanged;
-  final String initialValue;
+  final FormFieldValidator<String>? validator;
+  final int? maxLines;
+  final int? minLines;
+  final ValueChanged<String>? onChanged;
+  final String? initialValue;
 
   const BaseFormInput({
-    Key key,
-    @required this.label,
+    Key? key,
+    required this.label,
     this.icon,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -55,7 +55,6 @@ class BaseFormInput extends StatelessWidget {
       validator: validator,
       autofocus: autoFocus,
       onChanged: onChanged,
-      style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
           prefixIcon: icon,
           enabledBorder: const OutlineInputBorder(
@@ -76,7 +75,7 @@ class BaseFormInput extends StatelessWidget {
           ),
           filled: true,
           hintText: label,
-          hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+          hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
                 fontSize: 15,
                 color: Colors.grey,
               ),

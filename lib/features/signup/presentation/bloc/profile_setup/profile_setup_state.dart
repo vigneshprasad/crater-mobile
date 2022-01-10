@@ -2,15 +2,15 @@ part of 'profile_setup_bloc.dart';
 
 abstract class ProfileSetupState extends Equatable {
   final bool loading;
-  final Failure error;
+  final Failure? error;
 
   const ProfileSetupState({
-    @required this.loading,
-    @required this.error,
+    required this.loading,
+    required this.error,
   });
 
   @override
-  List<Object> get props => [loading, error];
+  List<Object> get props => error != null ? [loading, error!] : [loading];
 }
 
 class ProfileSetupInitial extends ProfileSetupState {
@@ -31,7 +31,7 @@ class ProfileSetupRequestLoading extends ProfileSetupState {
 
 class ProfileSetupRequestError extends ProfileSetupState {
   const ProfileSetupRequestError({
-    @required Failure error,
+    required Failure error,
   }) : super(
           loading: false,
           error: error,
@@ -42,21 +42,22 @@ class ProfileUserTagsRequestLoaded extends ProfileSetupState {
   final List<UserTag> tags;
 
   const ProfileUserTagsRequestLoaded({
-    this.tags,
+    required this.tags,
   }) : super(
           loading: false,
           error: null,
         );
 
   @override
-  List<Object> get props => [loading, error, tags];
+  List<Object> get props =>
+      error != null ? [loading, error!, tags] : [loading, tags];
 }
 
 class PostUserProfileRequestLoaded extends ProfileSetupState {
   final UserProfile profile;
 
   const PostUserProfileRequestLoaded({
-    @required this.profile,
+    required this.profile,
   }) : super(
           loading: false,
           error: null,

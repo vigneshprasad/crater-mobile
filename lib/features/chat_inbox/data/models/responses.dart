@@ -8,9 +8,9 @@ part 'responses.g.dart';
 @JsonSerializable()
 class GetAllUsersResponse extends WSResponse {
   final dynamic errors;
-  final int page;
-  final int pages;
-  final List<ChatUserModel> results;
+  final int? page;
+  final int? pages;
+  final List<ChatUserModel>? results;
 
   GetAllUsersResponse({
     WSResponseType type = WSResponseType.loadAllUsers,
@@ -28,9 +28,9 @@ class GetAllUsersResponse extends WSResponse {
 @JsonSerializable()
 class GetSearchAllUsersResponse extends WSResponse {
   final dynamic errors;
-  final int page;
-  final int pages;
-  final List<ChatUserModel> results;
+  final int? page;
+  final int? pages;
+  final List<ChatUserModel>? results;
 
   GetSearchAllUsersResponse({
     WSResponseType type = WSResponseType.getSearchAllUsers,

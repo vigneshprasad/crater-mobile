@@ -8,13 +8,12 @@ part of 'videos_api_response.dart';
 
 VideosApiResponse _$VideosApiResponseFromJson(Map<String, dynamic> json) {
   return VideosApiResponse(
-    count: json['count'] as int,
-    next: json['next'] as String,
-    previous: json['previous'] as String,
-    results: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : VideoModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    count: json['count'] as int?,
+    next: json['next'] as String?,
+    previous: json['previous'] as String?,
+    results: (json['results'] as List<dynamic>?)
+        ?.map((e) => VideoModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

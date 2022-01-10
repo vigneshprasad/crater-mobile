@@ -11,10 +11,10 @@ class SpeakerAvatar extends HookWidget {
   final double avtarSize;
 
   const SpeakerAvatar({
-    Key key,
-    @required this.user,
-    @required this.isLive,
-    this.avtarSize,
+    Key? key,
+    required this.user,
+    required this.isLive,
+    required this.avtarSize,
   }) : super(key: key);
 
   Future<void> _hideVoiceIndicator(
@@ -29,7 +29,6 @@ class SpeakerAvatar extends HookWidget {
 
   Future<void> _showVoiceIndicator(
       AnimationController controller, ValueNotifier<bool> visible) async {
-    print("hello");
     try {
       visible.value = true;
       await controller.forward().orCancel;
@@ -45,11 +44,6 @@ class SpeakerAvatar extends HookWidget {
       duration: const Duration(milliseconds: 100),
       vsync: ticker,
     );
-    final opacity = isLive
-        ? user.online
-            ? 1.0
-            : 0.4
-        : 1.0;
     final showVoiceActivity = useState(false);
     useEffect(() {
       if (user.online) {
@@ -71,13 +65,13 @@ class SpeakerAvatar extends HookWidget {
           height: avtarSize,
           child: Stack(
             fit: StackFit.expand,
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: [
               if (showVoiceActivity.value)
                 _AnimatedAudioInteraction(controller: _animationController),
               Align(
                 child: BaseNetworkImage(
-                  imageUrl: user.userInfo.photo,
+                  imageUrl: user.userInfo?.photo ?? '',
                   defaultImage: AppImageAssets.defaultAvatar,
                   imagebuilder: (context, imageProvider) => Container(
                     width: avtarSize,
@@ -116,7 +110,7 @@ class _AnimatedAudioInteraction extends StatelessWidget {
   final Animation<double> opacity;
   final Animation<double> size;
   _AnimatedAudioInteraction({
-    this.controller,
+    required this.controller,
   })  : opacity = Tween<double>(
           begin: 0.0,
           end: 1.0,
@@ -161,8 +155,8 @@ class _MicrophoneIcon extends StatelessWidget {
   final bool micEnabled;
 
   const _MicrophoneIcon({
-    Key key,
-    this.micEnabled,
+    Key? key,
+    required this.micEnabled,
   }) : super(key: key);
 
   @override

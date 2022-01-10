@@ -7,10 +7,10 @@ part 'videos_api_response.g.dart';
 
 @JsonSerializable()
 class VideosApiResponse extends Equatable {
-  final int count;
-  final String next;
-  final String previous;
-  final List<VideoModel> results;
+  final int? count;
+  final String? next;
+  final String? previous;
+  final List<VideoModel>? results;
 
   const VideosApiResponse({
     this.count,
@@ -20,12 +20,14 @@ class VideosApiResponse extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        count,
-        next,
-        previous,
-        results,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (count != null) temp.add(count!);
+    if (next != null) temp.add(next!);
+    if (previous != null) temp.add(previous!);
+    if (results != null) temp.add(results!);
+    return temp;
+  }
 
   factory VideosApiResponse.fromJson(Map<String, dynamic> json) =>
       _$VideosApiResponseFromJson(json);

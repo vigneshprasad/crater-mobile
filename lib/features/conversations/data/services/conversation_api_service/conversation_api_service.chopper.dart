@@ -8,7 +8,7 @@ part of 'conversation_api_service.dart';
 
 // ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
 class _$ConversationApiService extends ConversationApiService {
-  _$ConversationApiService([ChopperClient client]) {
+  _$ConversationApiService([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
@@ -35,10 +35,17 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
-  Future<Response<dynamic>> getAllTopics(int parent) {
+  Future<Response<dynamic>> getAllTopics(int? parent) {
     final $url = '/groups/topic/';
     final $params = <String, dynamic>{'parent': parent};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAllAMATopics() {
+    final $url = '/groups/topic/ama/';
+    final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -121,6 +128,46 @@ class _$ConversationApiService extends ConversationApiService {
     final $url = '/groups/requests/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postTopicSuggestionRequest(
+      Map<String, dynamic> body) {
+    final $url = '/groups/topic/suggest/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getLiveClubs(String? host) {
+    final $url = '/groups/public/conversations/webinars/live';
+    final $params = <String, dynamic>{'host': host};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getUpcomingClubs(String? host) {
+    final $url = '/groups/public/conversations/webinars/upcoming';
+    final $params = <String, dynamic>{'host': host};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getPastClubs(String? host) {
+    final $url = '/groups/public/conversations/webinars/past';
+    final $params = <String, dynamic>{'host': host};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getFeaturedClubs() {
+    final $url = '/groups/public/conversations/webinars/featured';
+    final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketConnection extends Equatable {
@@ -9,8 +8,8 @@ class WebSocketConnection extends Equatable {
   final StreamController streamController;
 
   const WebSocketConnection({
-    @required this.channel,
-    @required this.streamController,
+    required this.channel,
+    required this.streamController,
   });
 
   @override

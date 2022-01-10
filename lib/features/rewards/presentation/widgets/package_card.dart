@@ -11,20 +11,20 @@ class PackageCard extends StatelessWidget {
   final Package package;
 
   const PackageCard({
-    Key key,
-    @required this.package,
+    Key? key,
+    required this.package,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: package.isDark ? AppTheme.darkTheme : Theme.of(context),
+      data: package.isDark! ? AppTheme.darkTheme : Theme.of(context),
       child: Builder(
         builder: (context) {
-          final headingStyle = Theme.of(context).textTheme.headline6.copyWith(
+          final headingStyle = Theme.of(context).textTheme.headline6?.copyWith(
                 fontSize: 20,
               );
-          final descStyle = Theme.of(context).textTheme.bodyText2.copyWith(
+          final descStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
                 height: 1.4,
               );
           final borderRadius = BorderRadius.circular(12);
@@ -37,7 +37,7 @@ class PackageCard extends StatelessWidget {
             child: Material(
               type: MaterialType.card,
               borderRadius: borderRadius,
-              color: HexColor.fromHex(package.color),
+              color: HexColor.fromHex(package.color!),
               child: InkWell(
                 onTap: () => _onTapCard(context),
                 child: Padding(
@@ -50,9 +50,9 @@ class PackageCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(package.title, style: headingStyle),
+                      Text(package.title!, style: headingStyle),
                       const SizedBox(height: AppInsets.l),
-                      Text(package.shortDesc, style: descStyle),
+                      Text(package.shortDesc!, style: descStyle),
                       const SizedBox(height: 32),
                       _buildImage(context),
                     ],
@@ -68,7 +68,7 @@ class PackageCard extends StatelessWidget {
 
   Widget _buildImage(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: package.listImage,
+      imageUrl: package.listImage!,
       imageBuilder: (context, imageProvider) => Center(
         child: Image(
           image: imageProvider,
@@ -80,9 +80,8 @@ class PackageCard extends StatelessWidget {
   }
 
   void _onTapCard(BuildContext context) {
-    ExtendedNavigator.of(context).push(
-      Routes.packageDetailScreen,
-      arguments: PackageDetailScreenArguments(packageId: package.pk),
+    AutoRouter.of(context).push(
+      PackageDetailScreenRoute(packageId: package.pk!),
     );
   }
 }

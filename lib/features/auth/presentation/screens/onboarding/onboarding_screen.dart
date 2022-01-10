@@ -1,16 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
 import '../../../../../core/features/share_manager/share_manager.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
 import '../../bloc/auth_bloc.dart';
 import 'models/onboarding_slide_content.dart';
 import 'onboarding_screen_state.dart';
@@ -35,19 +35,14 @@ class OnboardingScreen extends HookWidget {
     switch (str.replaceFirst('OnboardingType.', '')) {
       case "signupComplete":
         return OnboardingType.signupComplete;
-        break;
       case "oneOnOneMeetingCreation":
         return OnboardingType.oneOnOneMeetingCreation;
-        break;
       case "groupMeetingCreation":
         return OnboardingType.groupMeetingCreation;
-        break;
       case "meetingJoining":
         return OnboardingType.meetingJoining;
-        break;
       case "meetingLeaving":
         return OnboardingType.meetingLeaving;
-        break;
     }
     return OnboardingType.signupComplete;
   }
@@ -59,25 +54,20 @@ class OnboardingScreen extends HookWidget {
         final user = BlocProvider.of<AuthBloc>(context).state.user;
         return signupSlides
             .map((e) => OnboardingSlideContent(
-                  heading: e.heading.replaceFirst('NAME', user.name),
+                  heading: e.heading.replaceFirst('NAME', user?.name ?? ''),
                   subHeading: e.subHeading,
                   image: e.image,
                   buttons: e.buttons,
                 ))
             .toList();
-        break;
       case OnboardingType.oneOnOneMeetingCreation:
         return oneOnOneCreationSlides;
-        break;
       case OnboardingType.groupMeetingCreation:
         return groupCreationSlides;
-        break;
       case OnboardingType.meetingJoining:
         return meetingJoiningSlides;
-        break;
       case OnboardingType.meetingLeaving:
         return meetingLeavingSlides;
-        break;
       default:
         return [];
     }
@@ -92,7 +82,7 @@ class OnboardingScreen extends HookWidget {
 
     useEffect(() {
       void listener() {
-        currentPage.value = pageController.page.floor();
+        currentPage.value = pageController.page!.floor();
       }
 
       pageController.addListener(listener);
@@ -124,7 +114,7 @@ class OnboardingScreen extends HookWidget {
                 child: SizedBox(
                   height: kbottomBarHeight,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: _buildActionButtons(
                       context,
                       pageController,
@@ -158,30 +148,29 @@ class OnboardingScreen extends HookWidget {
                   duration: duration, curve: Curves.easeInOut);
             },
           );
-          break;
         case OnboardingSlideButtonType.invite:
           final shareManager = useProvider(shareManagerProvider);
           return _ActionButton(
             label: e.title,
             onTap: () async {
               await shareManager.share(context);
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
             },
           );
-          break;
         case OnboardingSlideButtonType.feedback:
           return _ActionButton(
             label: e.title,
             onTap: () async {
               final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
 
               launch(
-                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user.email}',
-                option: const CustomTabsOption(
+                'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user?.email}',
+                customTabsOption: const CustomTabsOption(
                   enableUrlBarHiding: true,
                   extraCustomTabs: [],
                   showPageTitle: false,
@@ -190,33 +179,41 @@ class OnboardingScreen extends HookWidget {
               );
             },
           );
-          break;
-        case OnboardingSlideButtonType.startConversation:
+        case OnboardingSlideButtonType.start1on1Conversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
+                  predicate: (route) => false);
+              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
             },
           );
-          break;
+        case OnboardingSlideButtonType.startGroupConversation:
+          return _ActionButton(
+            label: e.title,
+            onTap: () {
+              context.read(onboardingProvider).setOnboardingShown();
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
+                  predicate: (route) => false);
+            },
+          );
         case OnboardingSlideButtonType.joinConversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
               context.read(onboardingProvider).setOnboardingShown();
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 1), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 1),
+                  predicate: (route) => false);
             },
           );
-          break;
         default:
           return _ActionButton(
             label: e.title,
+            isDismiss: true,
             onTap: () {
-              ExtendedNavigator.of(context).pushAndRemoveUntil(
-                  Routes.homeScreen(tab: 0), (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
+                  predicate: (route) => false);
             },
           );
       }
@@ -233,7 +230,7 @@ class _BaseLayout extends StatelessWidget {
           height: MediaQuery.of(context).size.height * kHeaderFraction,
           color: Colors.transparent,
         ),
-        const Expanded(child: BaseContainer()),
+        Expanded(child: Container()),
       ],
     );
   }
@@ -243,19 +240,14 @@ class _PageContent extends StatelessWidget {
   final OnboardingSlideContent content;
 
   const _PageContent({
-    Key key,
-    @required this.content,
+    Key? key,
+    required this.content,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 18,
-          color: Colors.white54,
-        );
-    final subheadStyle = Theme.of(context).textTheme.bodyText1.copyWith(
-          fontSize: 20,
-        );
+    final headingStyle = Theme.of(context).textTheme.headline6;
+    final subheadStyle = Theme.of(context).textTheme.subtitle1;
     return Column(
       children: [
         SizedBox(
@@ -278,7 +270,7 @@ class _PageContent extends StatelessWidget {
                   style: headingStyle,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
                 Text(
                   content.subHeading,
                   style: subheadStyle,
@@ -295,26 +287,25 @@ class _PageContent extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final bool isDismiss;
 
   const _ActionButton({
-    Key key,
-    @required this.label,
+    Key? key,
+    required this.label,
     this.onTap,
+    this.isDismiss = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: BaseContainer(
-        radius: 30.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppInsets.xl,
-            horizontal: 24,
-          ),
-          child: Text(label, style: Theme.of(context).textTheme.button),
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: BaseLargeButton(
+          outlined: isDismiss,
+          onPressed: onTap,
+          text: label,
         ),
       ),
     );
@@ -364,15 +355,12 @@ const signupSlides = [
   ),
   OnboardingSlideContent(
     heading: "",
-    subHeading: "What do you want to do first?",
+    subHeading: "Let’s set up your first 1:1 meeting",
     image: AppImageAssets.splashAI,
     buttons: [
       OnboardingSlideButton(
-          title: 'Start a conversation',
-          type: OnboardingSlideButtonType.startConversation),
-      OnboardingSlideButton(
-          title: 'Join a conversation',
-          type: OnboardingSlideButtonType.joinConversation),
+          title: 'Pick a Topic',
+          type: OnboardingSlideButtonType.start1on1Conversation),
     ],
   ),
 ];
@@ -381,7 +369,7 @@ const oneOnOneCreationSlides = [
   OnboardingSlideContent(
     heading: "You are all set",
     subHeading:
-        "Once your meeting is set up you will get notified & will receive an introduction to your match with the meeting link.",
+        "Once your meeting is set up & you will get notified & will receive an introduction to your match with the meeting link.",
     image: AppImageAssets.splashConversation,
   ),
   OnboardingSlideContent(

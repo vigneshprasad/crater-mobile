@@ -3,43 +3,52 @@ part of 'chat_bloc.dart';
 class ChatState extends Equatable {
   final bool loading;
   final String recieverId;
-  final ChatUser receiverUser;
+  final ChatUser? receiverUser;
   final int page;
   final int pages;
   final List<ChatMessage> messages;
   final int unreadCount;
-  final dynamic error;
+  final Object? error;
 
   const ChatState({
-    this.loading,
-    this.recieverId,
+    required this.loading,
+    required this.recieverId,
     this.receiverUser,
-    this.page,
-    this.pages,
-    this.messages,
-    this.unreadCount,
+    required this.page,
+    required this.pages,
+    required this.messages,
+    required this.unreadCount,
     this.error,
   });
 
   @override
-  List<Object> get props => [
-        loading,
-        recieverId,
-        receiverUser,
-        page,
-        pages,
-        messages,
-        unreadCount,
-      ];
+  List<Object> get props => receiverUser != null
+      ? [
+          loading,
+          recieverId,
+          receiverUser!,
+          page,
+          pages,
+          messages,
+          unreadCount,
+        ]
+      : [
+          loading,
+          recieverId,
+          page,
+          pages,
+          messages,
+          unreadCount,
+        ];
 
   ChatState copyWith({
-    bool loading,
-    String recieverId,
-    ChatUser receiverUser,
-    int page,
-    int pages,
-    List<ChatMessage> messages,
-    int unreadCount,
+    bool? loading,
+    String? recieverId,
+    ChatUser? receiverUser,
+    int? page,
+    int? pages,
+    List<ChatMessage>? messages,
+    int? unreadCount,
     dynamic error,
   }) {
     return ChatState(
@@ -82,13 +91,13 @@ class ChatWebSocketReady extends ChatState {
 
 class ChatMessagePersisted extends ChatState {
   const ChatMessagePersisted({
-    @required String recieverId,
-    @required ChatUser receiverUser,
-    @required int page,
-    @required int pages,
-    @required List<ChatMessage> messages,
-    @required int unreadCount,
-    @required dynamic error,
+    required String recieverId,
+    required ChatUser receiverUser,
+    required int page,
+    required int pages,
+    required List<ChatMessage> messages,
+    required int unreadCount,
+    required dynamic error,
   }) : super(
           loading: false,
           recieverId: recieverId,

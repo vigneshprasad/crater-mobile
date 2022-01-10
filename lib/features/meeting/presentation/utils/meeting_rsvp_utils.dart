@@ -10,7 +10,7 @@ class MeetingRsvpUtils {
       case MeetingRsvpStatus.notAttending:
         return Colors.red;
       case MeetingRsvpStatus.pending:
-        return Colors.yellow[600];
+        return Colors.yellow[600]!;
       case MeetingRsvpStatus.reschedule:
         return Colors.orange;
       default:

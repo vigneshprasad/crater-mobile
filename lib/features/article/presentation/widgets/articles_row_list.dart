@@ -11,8 +11,8 @@ class ArticlesRowList extends StatefulWidget {
   final int websiteTagId;
 
   const ArticlesRowList({
-    Key key,
-    @required this.websiteTagId,
+    Key? key,
+    required this.websiteTagId,
   }) : super(key: key);
 
   @override
@@ -21,16 +21,14 @@ class ArticlesRowList extends StatefulWidget {
 
 class _ArticlesRowListState extends State<ArticlesRowList> {
   final _pageSize = 10;
-  int _pages;
-  int _currentPage;
-  List<Article> _articles;
-  ArticleBloc _bloc;
-  bool _fromCache;
+  late int _currentPage;
+  late List<Article> _articles;
+  // ignore: unused_field
+  late ArticleBloc _bloc;
 
   @override
   void initState() {
     _articles = [];
-    _fromCache = false;
     _currentPage = 1;
     _bloc = BlocProvider.of<ArticleBloc>(context)
       ..add(ArticlesGetPageRequestStarted(
@@ -46,7 +44,7 @@ class _ArticlesRowListState extends State<ArticlesRowList> {
     return BlocConsumer<ArticleBloc, ArticleState>(
       listener: _blocListener,
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           height: 200,
           child: state.loading ? _buildShimmerLayout() : _buildArticlesList(),
         );
@@ -67,8 +65,8 @@ class _ArticlesRowListState extends State<ArticlesRowList> {
 
   Widget _buildShimmerLayout() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300],
-      highlightColor: Colors.grey[200],
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[200]!,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: AppInsets.l),
@@ -87,10 +85,8 @@ class _ArticlesRowListState extends State<ArticlesRowList> {
     if (state is ArticlesPageRequestLoaded &&
         state.websiteTag == widget.websiteTagId) {
       setState(() {
-        _currentPage = state.currentPage;
-        _fromCache = state.fromCache;
-        _articles = [..._articles, ...state.articles];
-        _pages = state.pages;
+        _currentPage = state.currentPage!;
+        _articles = [..._articles, ...state.articles!];
       });
     }
   }

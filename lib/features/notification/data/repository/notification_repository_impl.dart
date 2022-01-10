@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart' hide Notification;
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -16,9 +15,9 @@ class NotificationRepositoryImpl implements NotificationRepository {
   final NetworkInfo networkInfo;
 
   NotificationRepositoryImpl({
-    @required this.localDatasource,
-    @required this.remotDatasource,
-    @required this.networkInfo,
+    required this.localDatasource,
+    required this.remotDatasource,
+    required this.networkInfo,
   });
 
   @override
@@ -29,7 +28,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
       try {
         final data =
             await remotDatasource.getNotifcationsPageFromRemote(pageSize, page);
-        await localDatasource.persistAllNotificationToCache(data.results);
+        await localDatasource.persistAllNotificationToCache(data.results!);
         return Right(data);
       } on ServerException {
         return Left(ServerFailure());

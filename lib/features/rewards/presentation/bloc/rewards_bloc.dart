@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/analytics/analytics.dart';
 import '../../../../core/analytics/anlytics_events.dart';
@@ -24,15 +23,11 @@ class RewardsBloc extends Bloc<RewardsEvent, RewardsState> {
   final UCPostPackageRequest packageRequest;
 
   RewardsBloc({
-    @required this.getPackagesList,
-    @required this.getPackage,
-    @required this.packageRequest,
-    @required this.analytics,
-  })  : assert(getPackagesList != null),
-        assert(getPackage != null),
-        assert(packageRequest != null),
-        assert(analytics != null),
-        super(const RewardsInitial());
+    required this.getPackagesList,
+    required this.getPackage,
+    required this.packageRequest,
+    required this.analytics,
+  }) : super(const RewardsInitial());
 
   @override
   Stream<RewardsState> mapEventToState(
@@ -75,7 +70,7 @@ class RewardsBloc extends Bloc<RewardsEvent, RewardsState> {
             'pk': package.pk,
             'points_conversion': package.pointsConversion,
             'provider': {
-              'name': package.provider.name,
+              'name': package.provider!.name,
             }
           },
         );

@@ -8,7 +8,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   final double maxScrollRatio;
 
   BaseBottomSheetRoute({
-    @required this.child,
+    required this.child,
     this.initialHeightRatio = 0.5,
     this.maxScrollRatio = 1.0,
   });
@@ -20,7 +20,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -66,7 +66,7 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
       Animation<double> secondaryAnimation, Widget child) {
     const begin = Offset(0.0, 1.0);
     const end = Offset.zero;
-    final curve = Curves.ease;
+    const curve = Curves.ease;
 
     final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
     return SlideTransition(

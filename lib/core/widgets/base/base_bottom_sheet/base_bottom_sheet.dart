@@ -4,12 +4,12 @@ import '../../../../constants/theme.dart';
 
 class BaseBottomSheet extends StatelessWidget {
   final bool showIndicator;
-  final Widget child;
+  final Widget? child;
 
   const BaseBottomSheet({
-    Key key,
+    Key? key,
     this.showIndicator = true,
-    @required this.child,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class BaseBottomSheet extends StatelessWidget {
               ),
             ),
           if (showIndicator) const SizedBox(height: AppInsets.xl),
-          if (child != null) child,
+          if (child != null) child!,
         ],
       ),
     );

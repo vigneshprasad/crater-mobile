@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
@@ -16,6 +17,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isRedirected = false;
+
   @override
   void initState() {
     final authBloc = BlocProvider.of<AuthBloc>(context);
@@ -39,11 +42,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void listenAuthState(BuildContext context, AuthState state) {
     if (state is AuthStateFailure) {
-      ExtendedNavigator.of(context).popAndPush(Routes.welcomeScreen);
+      isRedirected = true;
+      AutoRouter.of(context).root.popAndPush(const WelcomeScreenRoute());
     }
 
-    if (state is AuthStateSuccess) {
-      context.read(userLeapProvider).setUserData(state.user);
+    if (state is AuthStateSuccess && !isRedirected) {
+      isRedirected = true;
+      if (state.user != null) {
+        context.read(userLeapProvider).setUserData(state.user!);
+      }
       navigatePostAuth(state.user, profile: state.profile);
     }
   }

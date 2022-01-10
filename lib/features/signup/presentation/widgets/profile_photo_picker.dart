@@ -8,10 +8,10 @@ import '../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
 
 class ProfilePhotoPicker extends StatefulWidget {
-  final String photoUrl;
-  final Function(File) onChoosePhoto;
+  final String? photoUrl;
+  final Function(File)? onChoosePhoto;
 
-  const ProfilePhotoPicker({Key key, this.photoUrl, this.onChoosePhoto})
+  const ProfilePhotoPicker({Key? key, this.photoUrl, this.onChoosePhoto})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class ProfilePhotoPicker extends StatefulWidget {
 }
 
 class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
-  File _image;
+  File? _image;
   final picker = ImagePicker();
 
   @override
@@ -38,12 +38,12 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
             imagebuilder: (context, imageProvider) {
               return CircleAvatar(
                 backgroundImage:
-                    _image != null ? Image.file(_image).image : imageProvider,
+                    _image != null ? Image.file(_image!).image : imageProvider,
                 radius: 100,
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    splashColor: Colors.grey[200].withAlpha(20),
+                    splashColor: Colors.grey[200]!.withAlpha(20),
                     borderRadius: BorderRadius.circular(imageRadius),
                     onTap: _choosePhoto,
                   ),
@@ -74,7 +74,7 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
   }
 
   Future _choosePhoto() async {
-    final pickedFile = await picker.getImage(
+    final pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
         maxWidth: AppConstants.profileImageMaxWidth,
         maxHeight: AppConstants.profileImageMaxWidth);
@@ -90,7 +90,8 @@ class _ProfilePhotoPickerState extends State<ProfilePhotoPicker> {
         debugPrint('No image selected.');
       }
     });
-
-    widget.onChoosePhoto(_image);
+    if (widget.onChoosePhoto != null && _image != null) {
+      widget.onChoosePhoto!(_image!);
+    }
   }
 }

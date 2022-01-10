@@ -9,7 +9,7 @@ abstract class ProfileBasicEvent extends Equatable {
 
 class GetProfileBasicRequestStarted extends ProfileBasicEvent {
   final User user;
-  const GetProfileBasicRequestStarted({@required this.user});
+  const GetProfileBasicRequestStarted({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -18,7 +18,7 @@ class GetProfileBasicRequestStarted extends ProfileBasicEvent {
 class PostProfileBasicRequestStarted extends ProfileBasicEvent {
   final String name;
 
-  const PostProfileBasicRequestStarted({@required this.name});
+  const PostProfileBasicRequestStarted({required this.name});
 
   @override
   List<Object> get props => [name];

@@ -9,11 +9,11 @@ part 'meeting_interest_model.g.dart';
 
 @JsonSerializable()
 class MeetingInterestModel extends MeetingInterest {
-  final int pk;
-  final String name;
-  final String icon;
+  final int? pk;
+  final String? name;
+  final String? icon;
 
-  MeetingInterestModel({
+  const MeetingInterestModel({
     this.pk,
     this.name,
     this.icon,

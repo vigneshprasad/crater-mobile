@@ -9,11 +9,11 @@ part 'package_request_model.g.dart';
 
 @JsonSerializable()
 class PackageRequestModel extends PackageRequest {
-  final int quantity;
-  final String requestedBy;
-  final int package;
-  final int pointsApplied;
-  final PackageRequestStatus status;
+  final int? quantity;
+  final String? requestedBy;
+  final int? package;
+  final int? pointsApplied;
+  final PackageRequestStatus? status;
 
   const PackageRequestModel({
     this.quantity,

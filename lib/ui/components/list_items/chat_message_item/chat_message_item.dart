@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,9 +14,9 @@ class ChatMessageItem extends StatelessWidget {
   final ChatMessage message;
 
   const ChatMessageItem({
-    Key key,
-    @required this.user,
-    @required this.message,
+    Key? key,
+    required this.user,
+    required this.message,
   }) : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class ChatMessageItem extends StatelessWidget {
         topLeft: radius, topRight: radius, bottomLeft: radius);
     const recieverBorderRadius = BorderRadius.only(
         topLeft: radius, topRight: radius, bottomRight: radius);
-    final testStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+    final testStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
           fontSize: 14,
           color: isSender ? Colors.white : Colors.grey[800],
         );
@@ -35,7 +36,7 @@ class ChatMessageItem extends StatelessWidget {
     final timeStampStyle = Theme.of(context)
         .textTheme
         .subtitle2
-        .copyWith(fontSize: 10, color: Colors.grey);
+        ?.copyWith(fontSize: 10, color: Colors.grey);
     return Padding(
       padding: const EdgeInsets.symmetric(
           vertical: AppInsets.med, horizontal: AppInsets.xl),
@@ -58,8 +59,8 @@ class ChatMessageItem extends StatelessWidget {
                       vertical: AppInsets.l, horizontal: AppInsets.l),
                   child: Column(
                     children: [
-                      if (message.message.isNotEmpty)
-                        Text(message.message, style: testStyle),
+                      if (message.message!.isNotEmpty)
+                        Text(message.message!, style: testStyle),
                       if (message.file != null)
                         CachedNetworkImage(
                           placeholder: (context, url) => Container(
@@ -76,7 +77,7 @@ class ChatMessageItem extends StatelessWidget {
                               ),
                             ),
                           ),
-                          imageUrl: message.file,
+                          imageUrl: message.file!,
                           imageBuilder: (context, imageProvider) => Container(
                             width: imageWidth,
                             height: 140,
@@ -100,14 +101,15 @@ class ChatMessageItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    dateFormat.format(DateTime.parse(message.created)),
+                    dateFormat.format(DateTime.parse(message.created!)),
                     style: timeStampStyle,
                   ),
                   Icon(
                     WorkNetIcons.doublecheck,
                     size: 20,
-                    color:
-                        message.isRead ? AppTheme.blueAccent : Colors.grey[400],
+                    color: message.isRead!
+                        ? AppTheme.blueAccent
+                        : Colors.grey[400],
                   ),
                 ],
               ),

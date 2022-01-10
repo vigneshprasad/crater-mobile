@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -26,9 +25,9 @@ class CreateCommentPostParams extends Equatable {
   final int post;
 
   const CreateCommentPostParams({
-    @required this.creator,
-    @required this.message,
-    @required this.post,
+    required this.creator,
+    required this.message,
+    required this.post,
   });
 
   @override

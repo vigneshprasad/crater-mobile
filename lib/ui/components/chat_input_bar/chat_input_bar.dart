@@ -5,13 +5,13 @@ import '../../../constants/work_net_icons_icons.dart';
 import '../../../features/auth/domain/entity/user_entity.dart';
 
 class ChatInputBar extends StatelessWidget {
-  final User user;
-  final TextEditingController controller;
-  final VoidCallback onSubmitPress;
-  final String placeholder;
+  final User? user;
+  final TextEditingController? controller;
+  final VoidCallback? onSubmitPress;
+  final String? placeholder;
 
   const ChatInputBar({
-    Key key,
+    Key? key,
     this.user,
     this.controller,
     this.onSubmitPress,
@@ -24,7 +24,7 @@ class ChatInputBar extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final textStyle = Theme.of(context).textTheme.subtitle1;
     final labelStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.grey);
+        Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.grey);
     return AnimatedContainer(
       duration: const Duration(microseconds: 200),
       width: width,
@@ -43,11 +43,11 @@ class ChatInputBar extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.grey[200],
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[300]),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue[100], width: 2),
+                  borderSide: BorderSide(color: Colors.blue[100]!, width: 2),
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 hintStyle: labelStyle,
@@ -63,10 +63,10 @@ class ChatInputBar extends StatelessWidget {
               splashColor: AppTheme.primarySwatch.shade700,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               onTap: onSubmitPress,
-              child: Container(
+              child: const SizedBox(
                 width: 48,
                 height: 44,
-                child: const Center(
+                child: Center(
                   child: Icon(
                     WorkNetIcons.send,
                     color: Colors.white,

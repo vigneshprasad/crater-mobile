@@ -9,7 +9,7 @@ abstract class ProfileIntroEvent extends Equatable {
 
 class GetProfileIntroRequestStarted extends ProfileIntroEvent {
   final User user;
-  const GetProfileIntroRequestStarted({@required this.user});
+  const GetProfileIntroRequestStarted({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -21,25 +21,27 @@ class GetProfileIntroTagsRequestStarted extends ProfileIntroEvent {
 
 class PostProfileIntroRequestStarted extends ProfileIntroEvent {
   final Map<String, dynamic> values;
-  final File photo;
+  final File? photo;
 
   const PostProfileIntroRequestStarted({
-    @required this.values,
+    required this.values,
     this.photo,
   });
 
   @override
-  List<Object> get props => [
-        values,
-        photo,
-      ];
+  List<Object> get props => photo != null
+      ? [
+          values,
+          photo!,
+        ]
+      : [values];
 }
 
 class ProfilePhotoRequestStarted extends ProfileIntroEvent {
   final File photo;
 
   const ProfilePhotoRequestStarted({
-    @required this.photo,
+    required this.photo,
   });
 
   @override

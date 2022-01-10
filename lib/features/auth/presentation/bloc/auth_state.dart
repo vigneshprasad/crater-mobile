@@ -2,36 +2,41 @@ part of 'auth_bloc.dart';
 
 @immutable
 class AuthState extends Equatable {
-  final User user;
-  final UserProfile profile;
+  final User? user;
+  final UserProfile? profile;
   final bool isAuth;
-  final bool isEmailValid;
+  final bool? isEmailValid;
   final bool isPasswordValid;
-  final bool isSubmitting;
+  final bool? isSubmitting;
   final bool isFailure;
 
-  bool get isFormValid => isEmailValid && isPasswordValid;
+  bool get isFormValid => (isEmailValid ?? false) && isPasswordValid;
 
   const AuthState({
     this.user,
     this.profile,
-    this.isAuth,
-    this.isEmailValid,
-    this.isPasswordValid,
-    this.isSubmitting,
-    this.isFailure,
+    this.isAuth = false,
+    this.isEmailValid = false,
+    this.isPasswordValid = false,
+    this.isSubmitting = false,
+    this.isFailure = false,
   });
 
   @override
-  List<Object> get props => [
-        user,
-        profile,
-        isAuth,
-        isEmailValid,
-        isPasswordValid,
-        isSubmitting,
-        isFailure,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      isAuth,
+      isPasswordValid,
+      isFailure,
+    ];
+
+    if (user != null) temp.add(user!);
+    if (isSubmitting != null) temp.add(isSubmitting!);
+    if (isEmailValid != null) temp.add(isEmailValid!);
+    if (profile != null) temp.add(profile!);
+
+    return temp;
+  }
 
   AuthState loading() {
     return copyWith(
@@ -42,8 +47,8 @@ class AuthState extends Equatable {
   }
 
   AuthState update({
-    bool isEmailValid,
-    bool isPasswordValid,
+    bool? isEmailValid,
+    bool? isPasswordValid,
   }) {
     return copyWith(
       isEmailValid: isEmailValid,
@@ -54,13 +59,13 @@ class AuthState extends Equatable {
   }
 
   AuthState copyWith({
-    User user,
-    UserProfile profile,
-    bool isAuth,
-    bool isEmailValid,
-    bool isPasswordValid,
-    bool isSubmitting,
-    bool isFailure,
+    User? user,
+    UserProfile? profile,
+    bool? isAuth,
+    bool? isEmailValid,
+    bool? isPasswordValid,
+    bool? isSubmitting,
+    bool? isFailure,
   }) {
     return AuthState(
       user: user ?? this.user,
@@ -89,8 +94,8 @@ class AuthStateInitial extends AuthState {
 
 class AuthStateSuccess extends AuthState {
   const AuthStateSuccess({
-    @required User user,
-    @required UserProfile profile,
+    User? user,
+    UserProfile? profile,
   }) : super(
           user: user,
           profile: profile,
@@ -115,21 +120,26 @@ class AuthStateFailure extends AuthState {
         );
 
   @override
-  List<Object> get props => [
-        user,
-        profile,
-        isAuth,
-        isEmailValid,
-        isPasswordValid,
-        isSubmitting,
-        isFailure,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      isAuth,
+      isPasswordValid,
+      isFailure,
+    ];
+
+    if (user != null) temp.add(user!);
+    if (isSubmitting != null) temp.add(isSubmitting!);
+    if (isEmailValid != null) temp.add(isEmailValid!);
+    if (profile != null) temp.add(profile!);
+
+    return temp;
+  }
 }
 
 class AuthRequestFailure extends AuthState {
   final dynamic error;
 
-  const AuthRequestFailure({@required this.error})
+  const AuthRequestFailure({required this.error})
       : super(
           user: null,
           isSubmitting: false,
@@ -140,12 +150,17 @@ class AuthRequestFailure extends AuthState {
         );
 
   @override
-  List<Object> get props => [
-        user,
-        isAuth,
-        isEmailValid,
-        isPasswordValid,
-        isSubmitting,
-        isFailure,
-      ];
+  List<Object> get props {
+    final List<Object> temp = [
+      isAuth,
+      isPasswordValid,
+      isFailure,
+    ];
+
+    if (user != null) temp.add(user!);
+    if (isEmailValid != null) temp.add(isEmailValid!);
+    if (isSubmitting != null) temp.add(isSubmitting!);
+
+    return temp;
+  }
 }

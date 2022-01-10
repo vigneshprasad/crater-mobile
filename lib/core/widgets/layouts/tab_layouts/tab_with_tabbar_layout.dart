@@ -8,15 +8,15 @@ import '../../components/home_screen_app_bar/home_screen_app_bar.dart';
 
 class TabWithTabbarLayout extends StatelessWidget {
   final String heading;
-  final String subheading;
+  final String? subheading;
   final Widget tabbar;
   final Widget body;
 
   const TabWithTabbarLayout({
-    Key key,
-    @required this.tabbar,
-    @required this.heading,
-    @required this.body,
+    Key? key,
+    required this.tabbar,
+    required this.heading,
+    required this.body,
     this.subheading,
   }) : super(key: key);
 
@@ -39,8 +39,8 @@ class TabWithTabbarLayout extends StatelessWidget {
                       color: Colors.black87,
                       icon: const Icon(WorkNetIcons.notification),
                       onPressed: () {
-                        ExtendedNavigator.of(context)
-                            .push(Routes.notificationsScreen);
+                        AutoRouter.of(context)
+                            .push(const NotificationsScreenRoute());
                       },
                     )
                   ],
@@ -57,15 +57,15 @@ class TabWithTabbarLayout extends StatelessWidget {
 
 class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
   final List<Widget> appBarActions;
-  final String heading;
-  final String subHeading;
-  final Color color;
+  final String? heading;
+  final String? subHeading;
+  final Color? color;
   final Widget tabbar;
 
   PersistentTabbarLayout({
-    @required this.appBarActions,
-    @required this.heading,
-    @required this.tabbar,
+    required this.appBarActions,
+    this.heading,
+    required this.tabbar,
     this.subHeading,
     this.color,
   });
@@ -108,10 +108,10 @@ class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
                       children: [
                         if (heading != null)
                           Text(
-                            heading,
+                            heading!,
                             textAlign: TextAlign.start,
                             style:
-                                Theme.of(context).textTheme.headline5.copyWith(
+                                Theme.of(context).textTheme.headline5?.copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 24,
                                     ),
@@ -119,9 +119,9 @@ class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
                         const SizedBox(height: AppPadding.tiny),
                         if (subHeading != null)
                           Text(
-                            subHeading,
+                            subHeading!,
                             style:
-                                Theme.of(context).textTheme.subtitle1.copyWith(
+                                Theme.of(context).textTheme.subtitle1?.copyWith(
                                       color: Colors.grey[500],
                                     ),
                             maxLines: 1,
@@ -137,13 +137,13 @@ class PersistentTabbarLayout extends SliverPersistentHeaderDelegate {
                 child: HomeScreenAppBar(
                   title: Opacity(
                     opacity: offset,
-                    child: Text(heading, style: AppTheme.appBarTitle),
+                    child: Text(heading!, style: AppTheme.appBarTitle),
                   ),
                 ),
               ),
               Positioned(
                 bottom: 0,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 56,
                   child: tabbar,

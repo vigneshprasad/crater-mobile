@@ -9,6 +9,6 @@ part 'api_result.freezed.dart';
 abstract class ApiResult<T> with _$ApiResult<T> {
   factory ApiResult.loading() = _ApiResultLoading<T>;
   factory ApiResult.data(T data) = _ApiResultData<T>;
-  factory ApiResult.error(Failure error, [StackTrace stackTrace]) =
+  factory ApiResult.error(Failure? error, [StackTrace? stackTrace]) =
       _ApiResultError<T>;
 }

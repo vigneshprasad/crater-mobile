@@ -1,17 +1,17 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
+import '../../../../utils/navigation_helpers/navigate_post_auth.dart';
 import '../../../auth/domain/entity/user_tag_entity.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../social_auth/domain/usecase/get_social_auth_token.dart';
 import '../bloc/profile_tags/profile_tags_bloc.dart';
 import '../widgets/objectives_picker.dart';
 import '../widgets/profile_footer.dart';
@@ -21,8 +21,8 @@ class ProfileTagsScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileTagsScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -30,11 +30,12 @@ class ProfileTagsScreen extends StatefulWidget {
 }
 
 class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
-  ProfileTagsBloc _bloc;
-  List<UserTag> tags;
-  List<UserTag> selectedTags;
-  List<PickerItem> items;
+  late ProfileTagsBloc _bloc;
+  late List<UserTag> tags;
+  late List<UserTag> selectedTags;
+  late List<PickerItem> items;
   bool allowSkip = false;
+  OverlayEntry? _overlay;
 
   @override
   void initState() {
@@ -69,13 +70,13 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
   Widget build(BuildContext context) {
     items = tags
         .map((e) => PickerItem(
-              name: e.name,
+              name: e.name ?? '',
               selected: selectedTags.contains(e),
             ))
         .toList();
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        String heading = 'Currently you are a';
+        const heading = 'Currently you are a';
 
         return BlocProvider.value(
           value: _bloc,
@@ -94,11 +95,15 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ProfileHeader(title: heading),
+                              const ProfileHeader(title: heading),
                               if (tags.isNotEmpty)
                                 ObjectivesPicker(
                                   objectives: items,
                                   onPressedItem: _onPressedObjectiveItem,
+                                )
+                              else
+                                const Center(
+                                  child: CircularProgressIndicator(),
                                 ),
                               const SizedBox(height: AppInsets.xxl),
                             ],
@@ -128,21 +133,24 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     } else if (state is PostProfileTagsRequestLoaded) {
       BlocProvider.of<AuthBloc>(context)
           .add(AuthUserProfileUpdateRecieved(profile: state.user));
+      _overlay?.remove();
       goToNextScreen();
     }
   }
 
   void goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileIntroScreen(editMode: widget.editMode));
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressSubmit() {
     if (selectedTags.isEmpty) {
       return;
     }
+
+    _overlay = buildLoaderOverlay();
+    Overlay.of(context)?.insert(_overlay!);
     _bloc.add(PostProfileTagsRequestStarted(
-        tagIds: selectedTags.map((e) => e.pk).toList()));
+        tagIds: selectedTags.map((e) => e.pk!).toList()));
   }
 
   void _onPressedObjectiveItem(PickerItem item, bool isSelected) {
@@ -156,7 +164,7 @@ class _ProfileTagsScreenState extends State<ProfileTagsScreen> {
     setState(() {
       items = tags
           .map((e) => PickerItem(
-                name: e.name,
+                name: e.name ?? '',
                 selected: selectedTags.contains(e),
               ))
           .toList();

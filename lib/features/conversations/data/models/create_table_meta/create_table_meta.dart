@@ -8,8 +8,8 @@ part 'create_table_meta.freezed.dart';
 @freezed
 abstract class CreateTableMeta with _$CreateTableMeta {
   factory CreateTableMeta({
-    List<MeetingInterest> interests,
-    MeetingConfig config,
-    List<DateTime> timeSlots,
+    List<MeetingInterest>? interests,
+    MeetingConfig? config,
+    List<DateTime>? timeSlots,
   }) = _CreateTableMeta;
 }

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -10,7 +9,7 @@ class UCSendChatToUser implements AsyncUseCase<void, SendChatParams> {
   final ChatRepository repository;
 
   UCSendChatToUser({
-    @required this.repository,
+    required this.repository,
   });
 
   @override
@@ -23,7 +22,7 @@ class SendChatParams extends Equatable {
   final String message;
 
   const SendChatParams({
-    this.message,
+    required this.message,
   });
 
   @override

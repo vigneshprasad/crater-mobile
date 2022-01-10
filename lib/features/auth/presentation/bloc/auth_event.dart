@@ -13,7 +13,7 @@ class AuthLoggedIn extends AuthEvent {
   final User user;
 
   const AuthLoggedIn({
-    @required this.user,
+    required this.user,
   });
 
   @override
@@ -27,8 +27,8 @@ class AuthLoginEmailPressed extends AuthEvent {
   final String password;
 
   const AuthLoginEmailPressed({
-    @required this.email,
-    @required this.password,
+    required this.email,
+    required this.password,
   });
 
   @override
@@ -41,9 +41,9 @@ class AuthRegisterEmailPressed extends AuthEvent {
   final String password;
 
   const AuthRegisterEmailPressed({
-    @required this.name,
-    @required this.email,
-    @required this.password,
+    required this.name,
+    required this.email,
+    required this.password,
   });
 
   @override
@@ -54,7 +54,7 @@ class AuthEmailChanged extends AuthEvent {
   final String email;
 
   const AuthEmailChanged({
-    this.email,
+    required this.email,
   });
 
   @override
@@ -65,7 +65,7 @@ class AuthPaswordChanged extends AuthEvent {
   final String password;
 
   const AuthPaswordChanged({
-    this.password,
+    required this.password,
   });
 
   @override
@@ -76,7 +76,7 @@ class AuthSocialPressed extends AuthEvent {
   final SocialAuthProviders provider;
 
   const AuthSocialPressed({
-    this.provider,
+    required this.provider,
   });
 
   @override
@@ -87,18 +87,42 @@ class AuthUserUpdateRecieved extends AuthEvent {
   final User user;
 
   const AuthUserUpdateRecieved({
-    @required this.user,
+    required this.user,
   });
 
   @override
   List<Object> get props => [user];
 }
 
+class AuthCompleted extends AuthEvent {
+  final User user;
+  final UserProfile profile;
+
+  const AuthCompleted({
+    required this.user,
+    required this.profile,
+  });
+
+  @override
+  List<Object> get props => [user, profile];
+}
+
+class AuthLinkedTokenRecieved extends AuthEvent {
+  final String token;
+
+  const AuthLinkedTokenRecieved({
+    required this.token,
+  });
+
+  @override
+  List<Object> get props => [token];
+}
+
 class AuthUserProfileUpdateRecieved extends AuthEvent {
   final UserProfile profile;
 
   const AuthUserProfileUpdateRecieved({
-    this.profile,
+    required this.profile,
   });
 
   @override

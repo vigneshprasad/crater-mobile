@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kiwi/kiwi.dart';
@@ -23,9 +24,9 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  TextEditingController _controller;
-  List<File> _images;
-  CreatePostBloc _bloc;
+  late TextEditingController _controller;
+  late List<File> _images;
+  late CreatePostBloc _bloc;
   String _message = "";
   final _picker = ImagePicker();
 
@@ -48,22 +49,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     final title =
-        AppLocalizations.of(context).translate("create_post:app_header");
-    final label = AppLocalizations.of(context).translate('create_post:label');
+        AppLocalizations.of(context)?.translate("create_post:app_header");
+    final label = AppLocalizations.of(context)?.translate('create_post:label');
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        final user = authState.user;
+        final user = authState.user!;
         return BlocProvider.value(
           value: _bloc,
           child: BlocListener<CreatePostBloc, CreatePostState>(
             listener: (context, state) {
               if (state is CreatPostRequestSuccessLoaded) {
-                ExtendedNavigator.of(context).pop(state.post);
+                AutoRouter.of(context).pop(state.post);
               }
             },
             child: Scaffold(
               appBar: BaseAppBar(
-                title: Text(title, style: AppTheme.appBarTitle),
+                title: Text(title!, style: AppTheme.appBarTitle),
                 color: Colors.white,
                 actions: [
                   IconButton(
@@ -115,7 +116,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         children: [
           _buildAvatarImage(user),
           const SizedBox(width: AppInsets.med),
-          Text(user.name, style: nameStyle),
+          Text(user.name ?? '', style: nameStyle),
         ],
       ),
     );
@@ -124,7 +125,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget _buildAvatarImage(User user) {
     if (user.photo != null) {
       return CachedNetworkImage(
-        imageUrl: user.photo,
+        imageUrl: user.photo!,
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(
             backgroundImage: imageProvider,
@@ -155,7 +156,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   Future<void> _onImageAddPressed() async {
     try {
-      final file = await _picker.getImage(source: ImageSource.gallery);
+      final file = await _picker.pickImage(source: ImageSource.gallery);
+      if (file == null) {
+        return;
+      }
       setState(() {
         _images.add(File(file.path));
       });

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'api_result.dart';
 
@@ -9,24 +9,24 @@ part of 'api_result.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$ApiResultTearOff {
   const _$ApiResultTearOff();
 
-// ignore: unused_element
   _ApiResultLoading<T> loading<T>() {
     return _ApiResultLoading<T>();
   }
 
-// ignore: unused_element
   _ApiResultData<T> data<T>(T data) {
     return _ApiResultData<T>(
       data,
     );
   }
 
-// ignore: unused_element
-  _ApiResultError<T> error<T>(Failure error, [StackTrace stackTrace]) {
+  _ApiResultError<T> error<T>(Failure? error, [StackTrace? stackTrace]) {
     return _ApiResultError<T>(
       error,
       stackTrace,
@@ -35,37 +35,40 @@ class _$ApiResultTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ApiResult = _$ApiResultTearOff();
 
 /// @nodoc
 mixin _$ApiResult<T> {
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(T data),
-    @required TResult error(Failure error, StackTrace stackTrace),
-  });
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(T data) data,
+    required TResult Function(Failure? error, StackTrace? stackTrace) error,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(T data),
-    TResult error(Failure error, StackTrace stackTrace),
-    @required TResult orElse(),
-  });
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_ApiResultLoading<T> value),
-    @required TResult data(_ApiResultData<T> value),
-    @required TResult error(_ApiResultError<T> value),
-  });
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ApiResultLoading<T> value) loading,
+    required TResult Function(_ApiResultData<T> value) data,
+    required TResult Function(_ApiResultError<T> value) error,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_ApiResultLoading<T> value),
-    TResult data(_ApiResultData<T> value),
-    TResult error(_ApiResultError<T> value),
-    @required TResult orElse(),
-  });
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -104,6 +107,7 @@ class __$ApiResultLoadingCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
   _$_ApiResultLoading();
 
@@ -122,26 +126,22 @@ class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(T data),
-    @required TResult error(Failure error, StackTrace stackTrace),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(T data) data,
+    required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return loading();
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(T data),
-    TResult error(Failure error, StackTrace stackTrace),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading();
     }
@@ -150,26 +150,22 @@ class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_ApiResultLoading<T> value),
-    @required TResult data(_ApiResultData<T> value),
-    @required TResult error(_ApiResultError<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ApiResultLoading<T> value) loading,
+    required TResult Function(_ApiResultData<T> value) data,
+    required TResult Function(_ApiResultError<T> value) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return loading(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_ApiResultLoading<T> value),
-    TResult data(_ApiResultData<T> value),
-    TResult error(_ApiResultError<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading(this);
     }
@@ -202,17 +198,21 @@ class __$ApiResultDataCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object data = freezed,
+    Object? data = freezed,
   }) {
     return _then(_ApiResultData<T>(
-      data == freezed ? _value.data : data as T,
+      data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as T,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_ApiResultData<T> implements _ApiResultData<T> {
-  _$_ApiResultData(this.data) : assert(data != null);
+  _$_ApiResultData(this.data);
 
   @override
   final T data;
@@ -241,26 +241,22 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(T data),
-    @required TResult error(Failure error, StackTrace stackTrace),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(T data) data,
+    required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return data(this.data);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(T data),
-    TResult error(Failure error, StackTrace stackTrace),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (data != null) {
       return data(this.data);
     }
@@ -269,26 +265,22 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_ApiResultLoading<T> value),
-    @required TResult data(_ApiResultData<T> value),
-    @required TResult error(_ApiResultError<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ApiResultLoading<T> value) loading,
+    required TResult Function(_ApiResultData<T> value) data,
+    required TResult Function(_ApiResultError<T> value) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return data(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_ApiResultLoading<T> value),
-    TResult data(_ApiResultData<T> value),
-    TResult error(_ApiResultError<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (data != null) {
       return data(this);
     }
@@ -299,9 +291,10 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
 abstract class _ApiResultData<T> implements ApiResult<T> {
   factory _ApiResultData(T data) = _$_ApiResultData<T>;
 
-  T get data;
+  T get data => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ApiResultDataCopyWith<T, _ApiResultData<T>> get copyWith;
+  _$ApiResultDataCopyWith<T, _ApiResultData<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -309,7 +302,7 @@ abstract class _$ApiResultErrorCopyWith<T, $Res> {
   factory _$ApiResultErrorCopyWith(
           _ApiResultError<T> value, $Res Function(_ApiResultError<T>) then) =
       __$ApiResultErrorCopyWithImpl<T, $Res>;
-  $Res call({Failure error, StackTrace stackTrace});
+  $Res call({Failure? error, StackTrace? stackTrace});
 }
 
 /// @nodoc
@@ -325,24 +318,31 @@ class __$ApiResultErrorCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object error = freezed,
-    Object stackTrace = freezed,
+    Object? error = freezed,
+    Object? stackTrace = freezed,
   }) {
     return _then(_ApiResultError<T>(
-      error == freezed ? _value.error : error as Failure,
-      stackTrace == freezed ? _value.stackTrace : stackTrace as StackTrace,
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as Failure?,
+      stackTrace == freezed
+          ? _value.stackTrace
+          : stackTrace // ignore: cast_nullable_to_non_nullable
+              as StackTrace?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_ApiResultError<T> implements _ApiResultError<T> {
-  _$_ApiResultError(this.error, [this.stackTrace]) : assert(error != null);
+  _$_ApiResultError(this.error, [this.stackTrace]);
 
   @override
-  final Failure error;
+  final Failure? error;
   @override
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   @override
   String toString() {
@@ -373,26 +373,22 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult loading(),
-    @required TResult data(T data),
-    @required TResult error(Failure error, StackTrace stackTrace),
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(T data) data,
+    required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return error(this.error, stackTrace);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult loading(),
-    TResult data(T data),
-    TResult error(Failure error, StackTrace stackTrace),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this.error, stackTrace);
     }
@@ -401,26 +397,22 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult loading(_ApiResultLoading<T> value),
-    @required TResult data(_ApiResultData<T> value),
-    @required TResult error(_ApiResultError<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ApiResultLoading<T> value) loading,
+    required TResult Function(_ApiResultData<T> value) data,
+    required TResult Function(_ApiResultError<T> value) error,
   }) {
-    assert(loading != null);
-    assert(data != null);
-    assert(error != null);
     return error(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult loading(_ApiResultLoading<T> value),
-    TResult data(_ApiResultData<T> value),
-    TResult error(_ApiResultError<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this);
     }
@@ -429,11 +421,12 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
 }
 
 abstract class _ApiResultError<T> implements ApiResult<T> {
-  factory _ApiResultError(Failure error, [StackTrace stackTrace]) =
+  factory _ApiResultError(Failure? error, [StackTrace? stackTrace]) =
       _$_ApiResultError<T>;
 
-  Failure get error;
-  StackTrace get stackTrace;
+  Failure? get error => throw _privateConstructorUsedError;
+  StackTrace? get stackTrace => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ApiResultErrorCopyWith<T, _ApiResultError<T>> get copyWith;
+  _$ApiResultErrorCopyWith<T, _ApiResultError<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }

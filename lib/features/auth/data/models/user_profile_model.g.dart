@@ -17,40 +17,51 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserProfileModel(
-      pk: fields[0] as int,
-      additionalInformation: fields[1] as String,
-      cover: fields[2] as int,
-      coverFile: fields[3] as String,
-      coverThumbnail: fields[4] as String,
-      coverTranscoder: fields[5] as String,
-      focus: fields[6] as String,
-      instagram: fields[7] as String,
-      instagramId: fields[8] as String,
-      instagramUsername: fields[9] as String,
-      introduction: fields[10] as String,
-      isCoverVideo: fields[11] as bool,
-      isInstagramSet: fields[12] as bool,
-      linkedinUrl: fields[13] as String,
-      name: fields[14] as String,
-      photo: fields[15] as String,
-      photoUrl: fields[16] as String,
-      publicIntroduction: fields[17] as String,
-      publicProfile: fields[18] as bool,
-      role: fields[19] as String,
-      tagLine: fields[20] as String,
-      tagList: (fields[21] as List)?.cast<UserTagModel>(),
-      uuid: fields[22] as String,
-      educationLevel: fields[23] as int,
-      yearsOfExperience: fields[24] as int,
-      companyType: fields[25] as int,
-      sector: fields[26] as int,
+      pk: fields[0] as int?,
+      additionalInformation: fields[1] as String?,
+      cover: fields[2] as int?,
+      coverFile: fields[3] as String?,
+      coverThumbnail: fields[4] as String?,
+      coverTranscoder: fields[5] as String?,
+      focus: fields[6] as String?,
+      instagram: fields[7] as String?,
+      instagramId: fields[8] as String?,
+      instagramUsername: fields[9] as String?,
+      introduction: fields[10] as String?,
+      isCoverVideo: fields[11] as bool?,
+      isInstagramSet: fields[12] as bool?,
+      linkedinUrl: fields[13] as String?,
+      name: fields[14] as String?,
+      photo: fields[15] as String?,
+      photoUrl: fields[16] as String?,
+      publicIntroduction: fields[17] as String?,
+      publicProfile: fields[18] as bool?,
+      role: fields[19] as String?,
+      tagLine: fields[20] as String?,
+      tagList: (fields[21] as List?)?.cast<UserTagModel>(),
+      uuid: fields[22] as String?,
+      educationLevel: fields[23] as int?,
+      yearsOfExperience: fields[24] as int?,
+      companyType: fields[25] as int?,
+      sector: fields[26] as int?,
+      tags: (fields[27] as List?)?.cast<int>(),
+      numberOfEmployees: fields[28] as int?,
+      projectType: fields[29] as int?,
+      stageOfCompany: fields[30] as int?,
+      aspiration: fields[31] as int?,
+      profileIntroUpdated: fields[32] as bool?,
+      companyName: fields[33] as String?,
+      allowMeetingRequest: fields[34] as bool?,
+      canConnect: fields[35] as bool?,
+      generatedIntroduction: fields[36] as String?,
+      linkedIn: fields[37] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfileModel obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(38)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -104,7 +115,29 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
       ..writeByte(25)
       ..write(obj.companyType)
       ..writeByte(26)
-      ..write(obj.sector);
+      ..write(obj.sector)
+      ..writeByte(27)
+      ..write(obj.tags)
+      ..writeByte(28)
+      ..write(obj.numberOfEmployees)
+      ..writeByte(29)
+      ..write(obj.projectType)
+      ..writeByte(30)
+      ..write(obj.stageOfCompany)
+      ..writeByte(31)
+      ..write(obj.aspiration)
+      ..writeByte(32)
+      ..write(obj.profileIntroUpdated)
+      ..writeByte(33)
+      ..write(obj.companyName)
+      ..writeByte(34)
+      ..write(obj.allowMeetingRequest)
+      ..writeByte(35)
+      ..write(obj.canConnect)
+      ..writeByte(36)
+      ..write(obj.generatedIntroduction)
+      ..writeByte(37)
+      ..write(obj.linkedIn);
   }
 
   @override
@@ -124,36 +157,82 @@ class UserProfileModelAdapter extends TypeAdapter<UserProfileModel> {
 
 UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
   return UserProfileModel(
-    pk: json['pk'] as int,
-    additionalInformation: json['additional_information'] as String,
-    cover: json['cover'] as int,
-    coverFile: json['cover_file'] as String,
-    coverThumbnail: json['cover_thumbnail'] as String,
-    coverTranscoder: json['cover_transcoder'] as String,
-    focus: json['focus'] as String,
-    instagram: json['instagram'] as String,
-    instagramId: json['instagram_id'] as String,
-    instagramUsername: json['instagram_username'] as String,
-    introduction: json['introduction'] as String,
-    isCoverVideo: json['is_cover_video'] as bool,
-    isInstagramSet: json['is_instagram_set'] as bool,
-    linkedinUrl: json['linkedin_url'] as String,
-    name: json['name'] as String,
-    photo: json['photo'] as String,
-    photoUrl: json['photoUrl'] as String,
-    publicIntroduction: json['public_introduction'] as String,
-    publicProfile: json['public_profile'] as bool,
-    role: json['role'] as String,
-    tagLine: json['tag_line'] as String,
-    tagList: (json['tag_list'] as List)
-        ?.map((e) =>
-            e == null ? null : UserTagModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    uuid: json['uuid'] as String,
-    educationLevel: json['education_level'] as int,
-    yearsOfExperience: json['years_of_experience'] as int,
-    companyType: json['company_type'] as int,
-    sector: json['sector'] as int,
+    pk: json['pk'] as int?,
+    additionalInformation: json['additional_information'] as String?,
+    cover: json['cover'] as int?,
+    coverFile: json['cover_file'] as String?,
+    coverThumbnail: json['cover_thumbnail'] as String?,
+    coverTranscoder: json['cover_transcoder'] as String?,
+    focus: json['focus'] as String?,
+    instagram: json['instagram'] as String?,
+    instagramId: json['instagram_id'] as String?,
+    instagramUsername: json['instagram_username'] as String?,
+    introduction: json['introduction'] as String?,
+    isCoverVideo: json['is_cover_video'] as bool?,
+    isInstagramSet: json['is_instagram_set'] as bool?,
+    linkedinUrl: json['linkedin_url'] as String?,
+    name: json['name'] as String?,
+    photo: json['photo'] as String?,
+    photoUrl: json['photoUrl'] as String?,
+    publicIntroduction: json['public_introduction'] as String?,
+    publicProfile: json['public_profile'] as bool?,
+    role: json['role'] as String?,
+    tagLine: json['tag_line'] as String?,
+    tagList: (json['tag_list'] as List<dynamic>?)
+        ?.map((e) => UserTagModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    uuid: json['uuid'] as String?,
+    educationLevel: json['education_level'] as int?,
+    yearsOfExperience: json['years_of_experience'] as int?,
+    companyType: json['company_type'] as int?,
+    sector: json['sector'] as int?,
+    tags: (json['tags'] as List<dynamic>?)?.map((e) => e as int).toList(),
+    numberOfEmployees: json['number_of_employees'] as int?,
+    projectType: json['project_type'] as int?,
+    stageOfCompany: json['stage_of_company'] as int?,
+    aspiration: json['aspiration'] as int?,
+    profileIntroUpdated: json['profile_intro_updated'] as bool?,
+    companyName: json['company_name'] as String?,
+    allowMeetingRequest: json['allow_meeting_request'] as bool?,
+    canConnect: json['can_connect'] as bool?,
+    generatedIntroduction: json['generated_introduction'] as String?,
+    linkedIn: json['linkedin'] as String?,
+    educationLevelDetail: json['education_level_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['education_level_detail'] as Map<String, dynamic>),
+    companiesInvestedDetail: json['companies_invested_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['companies_invested_detail'] as Map<String, dynamic>),
+    companyTypeAdvisedDetail: json['company_type_advised_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_advised_detail'] as Map<String, dynamic>),
+    companyTypeDetail: json['company_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['company_type_detail'] as Map<String, dynamic>),
+    numberOfEmployeesDetail: json['number_of_employees_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['number_of_employees_detail'] as Map<String, dynamic>),
+    projectTypeDetail: json['project_type_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['project_type_detail'] as Map<String, dynamic>),
+    sectorDetail: json['sector_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['sector_detail'] as Map<String, dynamic>),
+    stageOfCompanyDetail: json['stage_of_company_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['stage_of_company_detail'] as Map<String, dynamic>),
+    yearOfExperienceDetail: json['year_of_experience_detail'] == null
+        ? null
+        : UserProfileFieldDetailModel.fromJson(
+            json['year_of_experience_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -186,4 +265,24 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'years_of_experience': instance.yearsOfExperience,
       'company_type': instance.companyType,
       'sector': instance.sector,
+      'tags': instance.tags,
+      'number_of_employees': instance.numberOfEmployees,
+      'project_type': instance.projectType,
+      'stage_of_company': instance.stageOfCompany,
+      'aspiration': instance.aspiration,
+      'profile_intro_updated': instance.profileIntroUpdated,
+      'company_name': instance.companyName,
+      'allow_meeting_request': instance.allowMeetingRequest,
+      'can_connect': instance.canConnect,
+      'generated_introduction': instance.generatedIntroduction,
+      'linkedin': instance.linkedIn,
+      'education_level_detail': instance.educationLevelDetail,
+      'sector_detail': instance.sectorDetail,
+      'company_type_detail': instance.companyTypeDetail,
+      'year_of_experience_detail': instance.yearOfExperienceDetail,
+      'company_type_advised_detail': instance.companyTypeAdvisedDetail,
+      'number_of_employees_detail': instance.numberOfEmployeesDetail,
+      'project_type_detail': instance.projectTypeDetail,
+      'stage_of_company_detail': instance.stageOfCompanyDetail,
+      'companies_invested_detail': instance.companiesInvestedDetail,
     };

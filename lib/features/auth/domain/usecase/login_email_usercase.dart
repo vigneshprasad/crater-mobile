@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -11,7 +10,7 @@ class UCLoginEmail implements AsyncUseCase<User, EmailLoginParams> {
   final AuthRepository repository;
 
   UCLoginEmail({
-    @required this.repository,
+    required this.repository,
   });
   @override
   Future<Either<Failure, User>> call(EmailLoginParams params) {
@@ -26,9 +25,9 @@ class EmailLoginParams extends Equatable {
   final String osId;
 
   const EmailLoginParams({
-    this.email,
-    this.password,
-    this.osId,
+    required this.email,
+    required this.password,
+    required this.osId,
   });
 
   @override

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/aysnc_usecase.dart';
@@ -23,7 +22,7 @@ class PersistChatUsersParaams extends Equatable {
   final List<ChatUser> users;
 
   const PersistChatUsersParaams({
-    @required this.users,
+    required this.users,
   });
 
   @override

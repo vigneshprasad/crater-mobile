@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/failures/failures.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -22,7 +23,9 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, List<Topic>>> getAllArticleTopics();
 
-  Future<Either<Failure, List<Topic>>> getAllTopics(int parent);
+  Future<Either<Failure, List<Topic>>> getAllAMATopics();
+
+  Future<Either<Failure, List<Topic>>> getAllTopics(int? parent);
 
   Future<Either<Failure, Optin>> postGroupOptin(
     List<MeetingInterest> interests,
@@ -42,4 +45,9 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, Conversation>> postCreateInstantConversation(
       Conversation conversation);
+  Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
+  Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
+  Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
+  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId});
+  Future<Either<Failure, List<Webinar>>> getFeaturedClubs({String? userId});
 }

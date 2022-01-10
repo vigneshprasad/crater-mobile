@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
-import '../../../../routes.gr.dart';
 import '../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../ui/base/base_form_input/base_form_input.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -19,8 +21,8 @@ class ProfileBioScreen extends StatefulWidget {
   final bool editMode;
 
   const ProfileBioScreen({
-    Key key,
-    @PathParam("editMode") this.editMode,
+    Key? key,
+    @PathParam("editMode") required this.editMode,
   }) : super(key: key);
 
   @override
@@ -30,19 +32,21 @@ class ProfileBioScreen extends StatefulWidget {
 class _ProfileBioScreenState extends State<ProfileBioScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _bioController = TextEditingController();
-  ProfileIntroBloc _bloc;
-  Map<String, dynamic> _values;
+  late ProfileIntroBloc _bloc;
+  late Map<String, dynamic> _values;
+  OverlayEntry? _overlay;
+
   @override
   void initState() {
     _values = {};
     final user = BlocProvider.of<AuthBloc>(context).state.user;
 
-    _bloc = KiwiContainer().resolve<ProfileIntroBloc>()
-      ..add(GetProfileIntroRequestStarted(user: user));
+    _bloc = KiwiContainer().resolve<ProfileIntroBloc>();
+    if (user != null) _bloc.add(GetProfileIntroRequestStarted(user: user));
 
     final userProfile = BlocProvider.of<AuthBloc>(context).state.profile;
     if (userProfile != null) {
-      _bioController.text = userProfile.introduction;
+      _bioController.text = userProfile.introduction ?? '';
 
       // Prefill Values in Editing mode
       _values[ProfileIntroElement.introduction] = userProfile.introduction;
@@ -80,7 +84,7 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                 ),
                 ProfileFooter(
                   onSave: _onPressedSubmit,
-                  onSkip: _onPressedSkip,
+                  onSkip: _goToNextScreen,
                 )
               ],
             ),
@@ -113,13 +117,17 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
               autovalidate: false,
               minLines: 10,
               label: bioLabel,
-              validator: (value) =>
-                  value.isEmpty ? "This field is required" : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? "This field is required"
+                  : null,
             ),
             const SizedBox(height: AppInsets.xxl),
             Align(
               alignment: Alignment.centerRight,
-              child: FlatButton(
+              child: SizedBox(
+                width: 180,
+                child: BaseLargeButton(
+                  text: 'Copy from LinkedIn',
                   onPressed: () async {
                     try {
                       final _ =
@@ -129,7 +137,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
                           'https://www.linkedin.com/in/me/detail/contact-info/');
                     }
                   },
-                  child: const Text('Copy From LinkedIn')),
+                  outlined: true,
+                ),
+              ),
             ),
             const SizedBox(height: AppInsets.xxl),
           ],
@@ -139,17 +149,14 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
   }
 
   void _goToNextScreen() {
-    ExtendedNavigator.of(context)
-        .push(Routes.profileSetupScreen(editMode: widget.editMode));
-  }
-
-  void _onPressedSkip() {
-    _goToNextScreen();
+    navigateNextProfileStep(editMode: widget.editMode);
   }
 
   void _onPressedSubmit() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
+      _overlay = buildLoaderOverlay();
+      Overlay.of(context)?.insert(_overlay!);
       _bloc.add(PostProfileIntroRequestStarted(
         values: {ProfileIntroElement.introduction: _bioController.text},
       ));
@@ -161,7 +168,9 @@ class _ProfileBioScreenState extends State<ProfileBioScreen> {
     if (state is PatchProfileIntroRequestLoaded) {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthUserProfileUpdateRecieved(profile: state.profile));
+      _overlay?.remove();
       _goToNextScreen();
     }
   }
+
 }
