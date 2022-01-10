@@ -156,6 +156,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - intercom_flutter (from `.symlinks/plugins/intercom_flutter/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - OneSignal (< 4.0, >= 3.0.0)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
@@ -193,6 +194,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - Intercom
     - libPhoneNumber-iOS
     - nanopb
     - OneSignal
@@ -228,6 +230,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  intercom_flutter:
+    :path: ".symlinks/plugins/intercom_flutter/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   onesignal_flutter:
