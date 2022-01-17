@@ -48,3 +48,34 @@ class WSRequest extends Equatable {
     return temp;
   }
 }
+
+
+enum WSGroupRequestType {
+
+  @JsonValue("send_group_message")
+  sendGroupMessage,
+
+  @JsonValue("unknownValue")
+  unknownValue
+}
+
+
+@JsonSerializable()
+class WSGroupRequest extends Equatable {
+  @JsonKey(unknownEnumValue: WSGroupRequestType.unknownValue)
+  final WSGroupRequestType? type;
+  final Object? payload;
+
+  const WSGroupRequest({
+    this.type,
+    this.payload,
+  });
+
+  @override
+  List<Object> get props {
+    final List<Object> temp = [];
+    if (type != null) temp.add(type!);
+    if (payload != null) temp.add(payload!);
+    return temp;
+  }
+}

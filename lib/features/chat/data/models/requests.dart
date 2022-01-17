@@ -5,6 +5,19 @@ import '../../../../core/features/websocket/data/models/ws_request.dart';
 part 'requests.g.dart';
 
 @JsonSerializable()
+class GroupChatRequestParams {
+  final String message;
+
+  const GroupChatRequestParams({
+    required this.message,
+  });
+
+  factory GroupChatRequestParams.fromJson(Map<String, dynamic> json) =>
+      _$GroupChatRequestParamsFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupChatRequestParamsToJson(this);
+}
+
+@JsonSerializable()
 class SetChatRequestParams {
   final String user;
   final int page;
@@ -47,6 +60,21 @@ class ChatMessageRequest extends WSRequest {
   factory ChatMessageRequest.fromJson(Map<String, dynamic> json) =>
       _$ChatMessageRequestFromJson(json);
   Map<String, dynamic> toJson() => _$ChatMessageRequestToJson(this);
+}
+
+@JsonSerializable()
+class GroupChatMessageRequest extends WSGroupRequest {
+  const GroupChatMessageRequest({
+    WSGroupRequestType type = WSGroupRequestType.sendGroupMessage,
+    required GroupChatRequestParams payload,
+  }) : super(
+          type: type,
+          payload: payload,
+        );
+
+  factory GroupChatMessageRequest.fromJson(Map<String, dynamic> json) =>
+      _$GroupChatMessageRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupChatMessageRequestToJson(this);
 }
 
 @JsonSerializable()

@@ -9,6 +9,8 @@ abstract class WebSocketRemoteDataSource {
   /// @return => [WebSocketChannel]
   /// @error [WebsocketServerException] on Failure
   Future<WebSocketChannel> connectToWebsocketBackend(String token);
+
+  Future<WebSocketChannel> connectToWebinarWebsocketBackend(String groupId, String token);
 }
 
 class WebSocketRemoteDataSourceImpl implements WebSocketRemoteDataSource {
@@ -17,6 +19,17 @@ class WebSocketRemoteDataSourceImpl implements WebSocketRemoteDataSource {
     try {
       final baseUrl = ConfigReader.getWebSocketBaseUrl();
       final channel = IOWebSocketChannel.connect("$baseUrl/$token/");
+      return channel;
+    } catch (error) {
+      throw WebsocketServerException(error);
+    }
+  }
+
+  @override
+  Future<WebSocketChannel> connectToWebinarWebsocketBackend(String groupId, String token) async {
+    try {
+      final baseUrl = ConfigReader.getWebSocketBaseUrl();
+      final channel = IOWebSocketChannel.connect("$baseUrl/group/$groupId/?token=$token");
       return channel;
     } catch (error) {
       throw WebsocketServerException(error);

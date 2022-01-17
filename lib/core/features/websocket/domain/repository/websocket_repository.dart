@@ -10,6 +10,8 @@ abstract class WebSocketRepository {
   /// @error => [Failure]
   Future<Either<Failure, WebSocketConnection>> connectToWebsocketBackend();
 
+  Future<Either<Failure, WebSocketConnection>> connectToWebinarWebsocketBackend(String groupId);
+
   /// Gets state websocket chanel and stream controller on device
   /// and Channel State
   /// @returns => [WebSocketConnection]
@@ -21,6 +23,8 @@ abstract class WebSocketRepository {
   /// @returns => [WebSocketConnection]
   /// /// @error => [Failure]
   Future<Either<Failure, void>> addMessageToSink(Map<String, dynamic> message);
+
+  Future<Either<Failure, void>> addMessageToWebinarSink(Map<String, dynamic> message);
 
   /// Closes WebSocketConnection
   /// and Channel State

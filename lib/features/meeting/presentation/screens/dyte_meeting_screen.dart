@@ -4,8 +4,8 @@ import 'package:dyte_client/dyteMeeting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class DyteMeetingScreen extends HookWidget {
   final int meetingId;
@@ -17,6 +17,8 @@ class DyteMeetingScreen extends HookWidget {
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
+
+    final showChat = useState(false);
 
     final canGoBack = useState(false);
 
@@ -49,18 +51,55 @@ class DyteMeetingScreen extends HookWidget {
           // appBar: BaseAppBar(),
           body: profileState.when(
             data: (state) => SafeArea(
-              child: DyteMeeting(
-                roomName: state.room,
-                authToken: state.token,
-                uiConfig: uiConfig,
-                onInit: (DyteMeetingHandler handler) async {
-                  meetingHandler.value = handler;
+              child: Stack(
+                children: [
+                  DyteMeeting(
+                    roomName: state.room,
+                    authToken: state.token,
+                    uiConfig: uiConfig,
+                    onInit: (DyteMeetingHandler handler) async {
+                      meetingHandler.value = handler;
 
-                  handler.events.on('meetingEnd', context, (ev, c) {
-                    canGoBack.value = true;
-                    AutoRouter.of(context).pop();
-                  });
-                },
+                      handler.events.on('meetingEnd', context, (ev, c) {
+                        canGoBack.value = true;
+                        AutoRouter.of(context).pop();
+                      });
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                          onPressed: () {
+                            showChat.value = !showChat.value;
+                          },
+                          icon: const Icon(Icons.chat)),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: showChat.value ? 400 : 0,
+                      width: double.infinity,
+                      child: Stack(
+                        children: [
+                          ChatScreen(recieverId: '', groupId: meetingId.toString(),),
+                          if (showChat.value)
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                  onPressed: () {
+                                    showChat.value = !showChat.value;
+                                  },
+                                  icon: const Icon(Icons.close)),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             loading: () => Center(

@@ -3,6 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ws_response.g.dart';
 
 enum WSResponseType {
+  @JsonValue("group_messages_received")
+  groupMessagesReceived,
+
+  @JsonValue("new_group_message")
+  newGroupMessage,
+
   @JsonValue("all_users")
   loadAllUsers,
 

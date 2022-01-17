@@ -37,6 +37,17 @@ class ReceivedSetChatUserResponse extends ChatEvent {
   List<Object> get props => [response];
 }
 
+class ReceivedSetChatWebinarResponse extends ChatEvent {
+  final SetChatWebinarResponse response;
+
+  const ReceivedSetChatWebinarResponse({
+    required this.response,
+  });
+
+  @override
+  List<Object> get props => [response];
+}
+
 class SendChatMessageStarted extends ChatEvent {
   final String message;
 
@@ -54,6 +65,14 @@ class ReceivedChatMessageResponse extends ChatEvent {
 
   const ReceivedChatMessageResponse({
     required this.chatKey,
+    required this.message,
+  });
+}
+
+class ReceivedWebinarChatMessageResponse extends ChatEvent {
+  final ChatMessage message;
+
+  const ReceivedWebinarChatMessageResponse({
     required this.message,
   });
 }

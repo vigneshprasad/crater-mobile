@@ -6,6 +6,19 @@ part of 'requests.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+GroupChatRequestParams _$GroupChatRequestParamsFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatRequestParams(
+    message: json['message'] as String,
+  );
+}
+
+Map<String, dynamic> _$GroupChatRequestParamsToJson(
+        GroupChatRequestParams instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+    };
+
 SetChatRequestParams _$SetChatRequestParamsFromJson(Map<String, dynamic> json) {
   return SetChatRequestParams(
     user: json['user'] as String,
@@ -85,6 +98,28 @@ Map<String, dynamic> _$ChatMessageRequestToJson(ChatMessageRequest instance) =>
       'type': _$WSRequestTypeEnumMap[instance.type],
       'message': instance.message,
     };
+
+GroupChatMessageRequest _$GroupChatMessageRequestFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatMessageRequest(
+    type: _$enumDecode(_$WSGroupRequestTypeEnumMap, json['type'],
+        unknownValue: WSGroupRequestType.unknownValue),
+    payload: GroupChatRequestParams.fromJson(
+        json['payload'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$GroupChatMessageRequestToJson(
+        GroupChatMessageRequest instance) =>
+    <String, dynamic>{
+      'type': _$WSGroupRequestTypeEnumMap[instance.type],
+      'payload': instance.payload,
+    };
+
+const _$WSGroupRequestTypeEnumMap = {
+  WSGroupRequestType.sendGroupMessage: 'send_group_message',
+  WSGroupRequestType.unknownValue: 'unknownValue',
+};
 
 UserTypingRequest _$UserTypingRequestFromJson(Map<String, dynamic> json) {
   return UserTypingRequest(

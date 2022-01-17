@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:worknetwork/features/chat_inbox/data/models/chat_user_model.dart';
+import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 
 import '../../../../constants/app_hive_boxes.dart';
 import '../../domain/entity/chat_message_entity.dart';
@@ -55,6 +57,10 @@ class ChatMessageModel extends ChatMessage {
   @JsonKey(name: "is_support")
   final bool? isSupport;
 
+  @HiveField(13)
+  @JsonKey(name: "sender_detail")
+  final ChatUserModel? senderDetail;
+
   ChatMessageModel({
     this.message,
     this.file,
@@ -69,6 +75,7 @@ class ChatMessageModel extends ChatMessage {
     this.senderId,
     this.receiverId,
     this.isSupport,
+    this.senderDetail,
   }) : super(
           message: message,
           file: file,
@@ -83,6 +90,7 @@ class ChatMessageModel extends ChatMessage {
           senderId: senderId,
           receiverId: receiverId,
           isSupport: isSupport,
+          senderDetail: senderDetail,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

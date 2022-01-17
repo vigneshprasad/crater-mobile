@@ -68,6 +68,8 @@ K _$enumDecode<K, V>(
 }
 
 const _$WSResponseTypeEnumMap = {
+  WSResponseType.groupMessagesReceived: 'group_messages_received',
+  WSResponseType.newGroupMessage: 'new_group_message',
   WSResponseType.loadAllUsers: 'all_users',
   WSResponseType.loadChatMessages: 'get_user_messages',
   WSResponseType.getUserNotification: 'user_notification',
@@ -77,6 +79,40 @@ const _$WSResponseTypeEnumMap = {
   WSResponseType.unstarUser: 'unstar_user',
   WSResponseType.unknowType: 'unknown_type',
 };
+
+SetChatWebinarResponse _$SetChatWebinarResponseFromJson(
+    Map<String, dynamic> json) {
+  return SetChatWebinarResponse(
+    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
+        unknownValue: WSResponseType.unknowType),
+    payload: json['payload'] == null
+        ? null
+        : SetChatWebinarResponsePayload.fromJson(
+            json['payload'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$SetChatWebinarResponseToJson(
+        SetChatWebinarResponse instance) =>
+    <String, dynamic>{
+      'type': _$WSResponseTypeEnumMap[instance.type],
+      'payload': instance.payload,
+    };
+
+SetChatWebinarResponsePayload _$SetChatWebinarResponsePayloadFromJson(
+    Map<String, dynamic> json) {
+  return SetChatWebinarResponsePayload(
+    messages: (json['messages'] as List<dynamic>?)
+        ?.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
+}
+
+Map<String, dynamic> _$SetChatWebinarResponsePayloadToJson(
+        SetChatWebinarResponsePayload instance) =>
+    <String, dynamic>{
+      'messages': instance.messages,
+    };
 
 SentMessageResponse _$SentMessageResponseFromJson(Map<String, dynamic> json) {
   return SentMessageResponse(
@@ -95,6 +131,9 @@ SentMessageResponse _$SentMessageResponseFromJson(Map<String, dynamic> json) {
     senderId: json['sender_id'] as String?,
     receiverId: json['receiver_id'] as String?,
     isSupport: json['is_support'] as bool?,
+    senderDetail: json['sender_detail'] == null
+        ? null
+        : ChatUserModel.fromJson(json['sender_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -115,6 +154,25 @@ Map<String, dynamic> _$SentMessageResponseToJson(
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
+      'sender_detail': instance.senderDetail,
+    };
+
+SentWebinarMessageResponse _$SentWebinarMessageResponseFromJson(
+    Map<String, dynamic> json) {
+  return SentWebinarMessageResponse(
+    type: _$enumDecode(_$WSResponseTypeEnumMap, json['type'],
+        unknownValue: WSResponseType.unknowType),
+    payload: json['payload'] == null
+        ? null
+        : ChatMessageModel.fromJson(json['payload'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$SentWebinarMessageResponseToJson(
+        SentWebinarMessageResponse instance) =>
+    <String, dynamic>{
+      'type': _$WSResponseTypeEnumMap[instance.type],
+      'payload': instance.payload,
     };
 
 ChatMessageNotificationResponse _$ChatMessageNotificationResponseFromJson(

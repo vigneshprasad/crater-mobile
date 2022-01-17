@@ -38,13 +38,10 @@ class _ChatLayoutState extends State<ChatLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(
-        color: Colors.white,
-        elevation: 1,
-        title: _buildLabel(context, 1.0),
-      ),
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
       body: Column(
         children: [
+          const SizedBox(height: 40,),
           Expanded(
             child: Stack(
               fit: StackFit.expand,

@@ -28,10 +28,10 @@ class ChatMessageItem extends StatelessWidget {
         topLeft: radius, topRight: radius, bottomLeft: radius);
     const recieverBorderRadius = BorderRadius.only(
         topLeft: radius, topRight: radius, bottomRight: radius);
-    final testStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-          fontSize: 14,
-          color: isSender ? Colors.white : Colors.grey[800],
-        );
+    // final testStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
+    //       fontSize: 14,
+    //       color: isSender ? Colors.white : Colors.grey[800],
+    //     );
     final imageWidth = MediaQuery.of(context).size.width * 0.5;
     final timeStampStyle = Theme.of(context)
         .textTheme
@@ -44,23 +44,27 @@ class ChatMessageItem extends StatelessWidget {
         children: [
           Container(
             alignment: isSender ? Alignment.topRight : Alignment.topLeft,
-            child: Material(
-              elevation: 1,
-              color: isSender ? AppTheme.blueAccent : Colors.grey[200],
-              borderRadius:
-                  isSender ? senderBorderRadius : recieverBorderRadius,
+            // child: 
+            // Material(
+            //   elevation: 1,
+              // color: isSender ? AppTheme.blueAccent : Colors.grey[200],
+              // borderRadius:
+              //     isSender ? senderBorderRadius : recieverBorderRadius,
               child: InkWell(
                 onTap: () {},
                 splashColor: AppTheme.blueAccent.withOpacity(0.4),
-                borderRadius:
-                    isSender ? senderBorderRadius : recieverBorderRadius,
+                // borderRadius:
+                //     isSender ? senderBorderRadius : recieverBorderRadius,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppInsets.l, horizontal: AppInsets.l),
+                  // padding: const EdgeInsets.symmetric(
+                  //     vertical: AppInsets.l, horizontal: AppInsets.l),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(message.senderDetail?.name ?? '', style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Theme.of(context).accentColor)),
+                      const SizedBox(height: 8,),
                       if (message.message!.isNotEmpty)
-                        Text(message.message!, style: testStyle),
+                        Text(message.message!),
                       if (message.file != null)
                         CachedNetworkImage(
                           placeholder: (context, url) => Container(
@@ -92,7 +96,7 @@ class ChatMessageItem extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            // ),
           ),
           if (isSender)
             Padding(

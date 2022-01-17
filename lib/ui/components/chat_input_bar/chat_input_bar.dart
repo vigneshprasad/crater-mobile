@@ -41,7 +41,7 @@ class ChatInputBar extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: AppInsets.xl),
                 hintText: placeholder,
                 filled: true,
-                fillColor: Colors.grey[200],
+                // fillColor: Colors.grey[200],
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(inputRadius),

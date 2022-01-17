@@ -10,10 +10,12 @@ import '../widgets/chat_layout.dart';
 
 class ChatScreen extends StatefulWidget {
   final String recieverId;
+  final String? groupId;
 
   const ChatScreen({
     Key? key,
     required this.recieverId,
+     this.groupId,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
     _chatBloc = KiwiContainer().resolve<ChatBloc>();
     _chatInputController.addListener(_onChatInputChanged);
     super.initState();
+
+    final groupId = widget.groupId ?? '';
+    _chatBloc.startWebinarChat(groupId);
+
   }
 
   @override
@@ -52,30 +58,32 @@ class _ChatScreenState extends State<ChatScreen> {
               if (chatState is ChatWebSocketReady) {
                 _chatBloc
                     .add(SetChatWithUserStarted(recieverId: widget.recieverId));
-                _chatBloc.add(const SendReadChatMessagesRequest());
+                // _chatBloc.add(const SendReadChatMessagesRequest());
               }
             },
             builder: (context, chatState) {
-              if (chatState.receiverUser != null) {
-                return ChatLayout(
-                    userIsTyping: _isTyping,
-                    user: chatState.receiverUser,
-                    itemCount: chatState.messages.length,
-                    listBuilder: (context, index) {
-                      return ChatMessageItem(
-                        user: authState.user!,
-                        message: chatState.messages[index],
-                      );
-                    },
-                    chatBar: ChatInputBar(
-                      onSubmitPress: _onSubmitMessage,
-                      controller: _chatInputController,
-                      user: authState.user,
-                      placeholder: "Send message",
-                    ));
-              } else {
-                return Container();
-              }
+              // if (chatState.receiverUser != null) {
+                return SafeArea(
+                  child: ChatLayout(
+                      userIsTyping: _isTyping,
+                      user: chatState.receiverUser,
+                      itemCount: chatState.messages.length,
+                      listBuilder: (context, index) {
+                        return ChatMessageItem(
+                          user: authState.user!,
+                          message: chatState.messages[index],
+                        );
+                      },
+                      chatBar: ChatInputBar(
+                        onSubmitPress: _onSubmitMessage,
+                        controller: _chatInputController,
+                        user: authState.user,
+                        placeholder: "Send message",
+                      )),
+                );
+              // } else {
+              //   return Container();
+              // }
             },
           );
         },

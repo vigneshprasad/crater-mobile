@@ -66,3 +66,22 @@ const _$WSRequestTypeEnumMap = {
   WSRequestType.unStarChatUser: 'unstar_user',
   WSRequestType.unknownValue: 'unknownValue',
 };
+
+WSGroupRequest _$WSGroupRequestFromJson(Map<String, dynamic> json) {
+  return WSGroupRequest(
+    type: _$enumDecodeNullable(_$WSGroupRequestTypeEnumMap, json['type'],
+        unknownValue: WSGroupRequestType.unknownValue),
+    payload: json['payload'],
+  );
+}
+
+Map<String, dynamic> _$WSGroupRequestToJson(WSGroupRequest instance) =>
+    <String, dynamic>{
+      'type': _$WSGroupRequestTypeEnumMap[instance.type],
+      'payload': instance.payload,
+    };
+
+const _$WSGroupRequestTypeEnumMap = {
+  WSGroupRequestType.sendGroupMessage: 'send_group_message',
+  WSGroupRequestType.unknownValue: 'unknownValue',
+};

@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';

@@ -30,13 +30,14 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       senderId: fields[10] as String?,
       receiverId: fields[11] as String?,
       isSupport: fields[12] as bool?,
+      senderDetail: fields[13] as ChatUserModel?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatMessageModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.message)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       ..writeByte(11)
       ..write(obj.receiverId)
       ..writeByte(12)
-      ..write(obj.isSupport);
+      ..write(obj.isSupport)
+      ..writeByte(13)
+      ..write(obj.senderDetail);
   }
 
   @override
@@ -95,6 +98,9 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
     senderId: json['sender_id'] as String?,
     receiverId: json['receiver_id'] as String?,
     isSupport: json['is_support'] as bool?,
+    senderDetail: json['sender_detail'] == null
+        ? null
+        : ChatUserModel.fromJson(json['sender_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -113,4 +119,5 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
+      'sender_detail': instance.senderDetail,
     };
