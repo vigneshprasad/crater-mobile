@@ -5,16 +5,29 @@ import '../../../../core/features/websocket/data/models/ws_request.dart';
 part 'requests.g.dart';
 
 @JsonSerializable()
-class GroupChatRequestParams {
+class GroupChatMessageRequestParams {
   final String message;
 
-  const GroupChatRequestParams({
+  const GroupChatMessageRequestParams({
     required this.message,
   });
 
-  factory GroupChatRequestParams.fromJson(Map<String, dynamic> json) =>
-      _$GroupChatRequestParamsFromJson(json);
-  Map<String, dynamic> toJson() => _$GroupChatRequestParamsToJson(this);
+  factory GroupChatMessageRequestParams.fromJson(Map<String, dynamic> json) =>
+      _$GroupChatMessageRequestParamsFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupChatMessageRequestParamsToJson(this);
+}
+
+@JsonSerializable()
+class GroupChatReactionRequestParams {
+  final String reaction;
+
+  const GroupChatReactionRequestParams({
+    required this.reaction,
+  });
+
+  factory GroupChatReactionRequestParams.fromJson(Map<String, dynamic> json) =>
+      _$GroupChatReactionRequestParamsFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupChatReactionRequestParamsToJson(this);
 }
 
 @JsonSerializable()
@@ -66,7 +79,7 @@ class ChatMessageRequest extends WSRequest {
 class GroupChatMessageRequest extends WSGroupRequest {
   const GroupChatMessageRequest({
     WSGroupRequestType type = WSGroupRequestType.sendGroupMessage,
-    required GroupChatRequestParams payload,
+    required GroupChatMessageRequestParams payload,
   }) : super(
           type: type,
           payload: payload,
@@ -75,6 +88,21 @@ class GroupChatMessageRequest extends WSGroupRequest {
   factory GroupChatMessageRequest.fromJson(Map<String, dynamic> json) =>
       _$GroupChatMessageRequestFromJson(json);
   Map<String, dynamic> toJson() => _$GroupChatMessageRequestToJson(this);
+}
+
+@JsonSerializable()
+class GroupChatReactionRequest extends WSGroupRequest {
+  const GroupChatReactionRequest({
+    WSGroupRequestType type = WSGroupRequestType.sendGroupReaction,
+    required GroupChatReactionRequestParams payload,
+  }) : super(
+          type: type,
+          payload: payload,
+        );
+
+  factory GroupChatReactionRequest.fromJson(Map<String, dynamic> json) =>
+      _$GroupChatReactionRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupChatReactionRequestToJson(this);
 }
 
 @JsonSerializable()

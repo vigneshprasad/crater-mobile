@@ -102,6 +102,20 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getChatReactions() {
+    final $url = '/groups/conversations/chatreactions/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getChatReactionDetail(String id) {
+    final $url = '/groups/conversations/chatreactions/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> postConversationOptin(Map<String, dynamic> body) {
     final $url = '/groups/optin/';
     final $body = body;

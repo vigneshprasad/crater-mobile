@@ -8,6 +8,7 @@ import '../entity/user_chat_entity.dart';
 abstract class ChatRepository {
   Future<Either<Failure, void>> sendChatMessageToUser(String message);
   Future<Either<Failure, void>> sendChatMessageToWebinar(String message);
+  Future<Either<Failure, void>> sendChatReactionToWebinar(String reactionId);
   Future<Either<Failure, void>> sendUserIsTyping();
   Future<Either<Failure, void>> sendReadUserMessages();
   Future<Either<Failure, UserChat>> setChatWithUser(String receiverId);

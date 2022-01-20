@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_screen.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 
 import '../../../../ui/components/chat_input_bar/chat_input_bar.dart';
 import '../../../../ui/components/list_items/chat_message_item/chat_message_item.dart';
@@ -15,7 +18,7 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen({
     Key? key,
     required this.recieverId,
-     this.groupId,
+    this.groupId,
   }) : super(key: key);
 
   @override
@@ -27,6 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late ChatBloc _chatBloc;
   late String message;
   late bool _isTyping;
+  bool showReactions = false;
 
   @override
   void initState() {
@@ -37,7 +41,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
     final groupId = widget.groupId ?? '';
     _chatBloc.startWebinarChat(groupId);
-
   }
 
   @override
@@ -63,24 +66,63 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             builder: (context, chatState) {
               // if (chatState.receiverUser != null) {
-                return SafeArea(
-                  child: ChatLayout(
-                      userIsTyping: _isTyping,
-                      user: chatState.receiverUser,
-                      itemCount: chatState.messages.length,
-                      listBuilder: (context, index) {
-                        return ChatMessageItem(
-                          user: authState.user!,
-                          message: chatState.messages[index],
-                        );
-                      },
-                      chatBar: ChatInputBar(
-                        onSubmitPress: _onSubmitMessage,
-                        controller: _chatInputController,
-                        user: authState.user,
-                        placeholder: "Send message",
-                      )),
-                );
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    ChatLayout(
+                        userIsTyping: _isTyping,
+                        user: chatState.receiverUser,
+                        itemCount: chatState.messages.length,
+                        listBuilder: (context, index) {
+                          return ChatMessageItem(
+                            user: authState.user!,
+                            message: chatState.messages[index],
+                          );
+                        },
+                        chatBar: ChatInputBar(
+                          onSubmitPress: _onSubmitMessage,
+                          onReactionPress: _openReactionScreen,
+                          controller: _chatInputController,
+                          user: authState.user,
+                          placeholder: "Send message",
+                        )),
+                      SizedBox(
+                        height: showReactions ? double.infinity : 0,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 240,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(
+                                    AppBorderRadius.bottomSheetRadius),
+                                topRight: Radius.circular(
+                                    AppBorderRadius.bottomSheetRadius),
+                              ),
+                              child: Stack(
+                                children: [
+                                  ChatReactionsScreen(
+                                    onReactionSelect: _onSubmitReaction,
+                                  ),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              showReactions = false;
+                                            });
+                                          },
+                                          icon: Icon(Icons.close))),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
               // } else {
               //   return Container();
               // }
@@ -103,5 +145,19 @@ class _ChatScreenState extends State<ChatScreen> {
       _chatBloc.add(SendChatMessageStarted(message: message));
       _chatInputController.clear();
     }
+  }
+
+  void _openReactionScreen() {
+    setState(() {
+      showReactions = true;
+    });
+  }
+
+  void _onSubmitReaction(ChatReaction reaction) {
+    setState(() {
+      showReactions = false;
+    });
+    _chatBloc.add(SendChatReactionStarted(reactionId: reaction.id.toString()));
+    _chatInputController.clear();
   }
 }

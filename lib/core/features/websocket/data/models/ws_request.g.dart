@@ -83,5 +83,6 @@ Map<String, dynamic> _$WSGroupRequestToJson(WSGroupRequest instance) =>
 
 const _$WSGroupRequestTypeEnumMap = {
   WSGroupRequestType.sendGroupMessage: 'send_group_message',
+  WSGroupRequestType.sendGroupReaction: 'send_group_reaction',
   WSGroupRequestType.unknownValue: 'unknownValue',
 };

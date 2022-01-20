@@ -59,6 +59,17 @@ class SendChatMessageStarted extends ChatEvent {
   List<Object> get props => [message];
 }
 
+class SendChatReactionStarted extends ChatEvent {
+  final String reactionId;
+
+  const SendChatReactionStarted({
+    required this.reactionId,
+  });
+
+  @override
+  List<Object> get props => [reactionId];
+}
+
 class ReceivedChatMessageResponse extends ChatEvent {
   final String chatKey;
   final ChatMessage message;

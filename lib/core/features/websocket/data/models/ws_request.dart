@@ -55,6 +55,9 @@ enum WSGroupRequestType {
   @JsonValue("send_group_message")
   sendGroupMessage,
 
+  @JsonValue("send_group_reaction")
+  sendGroupReaction,
+
   @JsonValue("unknownValue")
   unknownValue
 }

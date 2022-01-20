@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/failures/failures.dart';
@@ -50,4 +51,7 @@ abstract class ConversationRepository {
   Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
   Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId});
   Future<Either<Failure, List<Webinar>>> getFeaturedClubs({String? userId});
+
+  Future<Either<Failure, List<ChatReaction>>> getChatReactions();
+  Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id);
 }

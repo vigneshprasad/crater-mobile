@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -97,6 +98,10 @@ abstract class ConversationRemoteDatasource {
   Future<List<Webinar>> getPastClubsfromRemote({String? userId});
 
   Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId});
+
+  Future<List<ChatReaction>> getChatReactions();
+
+  Future<ChatReaction> getChatReactionDetail(String id);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -368,6 +373,38 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       return jsonList
           .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<ChatReaction>> getChatReactions() async {
+    final response =
+        await read(conversationApiServiceProvider).getChatReactions();
+    if (response.statusCode == 200) {
+      if (response.bodyString == "[]") {
+        return List.empty();
+      }
+      final jsonList = jsonDecode(response.bodyString) as List;
+      return jsonList
+          .map((json) => ChatReaction.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<ChatReaction> getChatReactionDetail(String id) async {
+    final response =
+        await read(conversationApiServiceProvider).getChatReactionDetail(id);
+    if (response.statusCode == 200) {
+      if (response.bodyString == "[]") {
+        return const ChatReaction();
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return  ChatReaction.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

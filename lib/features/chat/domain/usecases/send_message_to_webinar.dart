@@ -14,17 +14,23 @@ class UCSendChatToWebinar implements AsyncUseCase<void, SendWebianrChatParams> {
 
   @override
   Future<Either<Failure, void>> call(SendWebianrChatParams params) {
-    return repository.sendChatMessageToWebinar(params.message);
+    if (params.reactionId == null) {
+      return repository.sendChatMessageToWebinar(params.message ?? '');
+    }
+
+    return repository.sendChatReactionToWebinar(params.reactionId ?? '');
   }
 }
 
 class SendWebianrChatParams extends Equatable {
-  final String message;
+  final String? message;
+  final String? reactionId;
 
   const SendWebianrChatParams({
-    required this.message,
+     this.message,
+     this.reactionId,
   });
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message ?? ''];
 }

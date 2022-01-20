@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -304,6 +305,36 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getFeaturedClubsfromRemote(userId: userId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ChatReaction>>> getChatReactions() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getChatReactions();
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getChatReactionDetail(id);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

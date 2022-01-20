@@ -6,6 +6,7 @@ abstract class ChatRemoteDataSource {
   Future<void> sendSetChatWithUserRequest(String receiverId);
   Future<void> sendChatMessageToUser(String message);
   Future<void> sendChatMessageToWebinar(String message);
+  Future<void> sendChatReactionToWebinar(String reactionId);
   Future<void> sendReadUserMessages();
   Future<void> sendUserIsTyping();
 }
@@ -41,7 +42,16 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
 
   @override
   Future<void> sendChatMessageToWebinar(String message) async {
-    final request = GroupChatMessageRequest(payload: GroupChatRequestParams(message: message));
+    final request = GroupChatMessageRequest(payload: GroupChatMessageRequestParams(message: message));
+    final sendOrError = await repository.addMessageToWebinarSink(request.toJson());
+    if (sendOrError.isLeft()) {
+      throw WebsocketServerException();
+    }
+  }
+
+  @override
+  Future<void> sendChatReactionToWebinar(String reactionId) async {
+    final request = GroupChatReactionRequest(payload: GroupChatReactionRequestParams(reaction: reactionId));
     final sendOrError = await repository.addMessageToWebinarSink(request.toJson());
     if (sendOrError.isLeft()) {
       throw WebsocketServerException();

@@ -57,6 +57,12 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'groups/instant_time_slots/')
   Future<Response> getInstantConversationTimeSlots();
 
+  @Get(path: 'conversations/chatreactions/')
+  Future<Response> getChatReactions();
+
+  @Get(path: 'conversations/chatreactions/{id}')
+  Future<Response> getChatReactionDetail(@Path() String id);
+
   @Post(path: 'optin/')
   Future<Response> postConversationOptin(@Body() Map<String, dynamic> body);
 

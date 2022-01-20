@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 
 class ChatMessage extends HiveObject {
   final String? message;
@@ -36,6 +37,9 @@ class ChatMessage extends HiveObject {
   @JsonKey(name: "sender_detail")
   final ChatUser? senderDetail;
 
+  @JsonKey(name: "data")
+  final ChatReaction? reaction;
+
   ChatMessage({
     this.message,
     this.file,
@@ -51,5 +55,6 @@ class ChatMessage extends HiveObject {
     this.receiverId,
     this.isSupport,
     this.senderDetail,
+    this.reaction,
   });
 }

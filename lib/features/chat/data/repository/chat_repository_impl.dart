@@ -44,6 +44,16 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
+  Future<Either<Failure, void>> sendChatReactionToWebinar(String reactionId) async {
+    try {
+      await remoteDataSource.sendChatReactionToWebinar(reactionId);
+      return const Right(null);
+    } on WebsocketServerException {
+      return Left(WebsocketServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> sendReadUserMessages() async {
     try {
       await remoteDataSource.sendReadUserMessages();

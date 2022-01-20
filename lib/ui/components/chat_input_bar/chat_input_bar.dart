@@ -8,6 +8,7 @@ class ChatInputBar extends StatelessWidget {
   final User? user;
   final TextEditingController? controller;
   final VoidCallback? onSubmitPress;
+  final VoidCallback? onReactionPress;
   final String? placeholder;
 
   const ChatInputBar({
@@ -15,6 +16,7 @@ class ChatInputBar extends StatelessWidget {
     this.user,
     this.controller,
     this.onSubmitPress,
+    this.onReactionPress,
     this.placeholder,
   }) : super(key: key);
 
@@ -32,6 +34,27 @@ class ChatInputBar extends StatelessWidget {
           horizontal: AppInsets.med, vertical: AppInsets.l),
       child: Row(
         children: [
+          Material(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            color: Theme.of(context).primaryColor,
+            child: InkWell(
+              focusColor: AppTheme.primarySwatch.shade600,
+              splashColor: AppTheme.primarySwatch.shade700,
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              onTap: onReactionPress,
+              child: const SizedBox(
+                width: 48,
+                height: 44,
+                child: Center(
+                  child: Icon(
+                    Icons.emoji_emotions,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: AppInsets.l),
           Flexible(
             child: TextField(
               controller: controller,

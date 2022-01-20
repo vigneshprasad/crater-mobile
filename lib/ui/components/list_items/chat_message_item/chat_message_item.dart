@@ -32,11 +32,15 @@ class ChatMessageItem extends StatelessWidget {
     //       fontSize: 14,
     //       color: isSender ? Colors.white : Colors.grey[800],
     //     );
+
     final imageWidth = MediaQuery.of(context).size.width * 0.5;
+    const imageHeight = 140.0;
     final timeStampStyle = Theme.of(context)
         .textTheme
         .subtitle2
         ?.copyWith(fontSize: 10, color: Colors.grey);
+
+    final file = message.file;
     return Padding(
       padding: const EdgeInsets.symmetric(
           vertical: AppInsets.med, horizontal: AppInsets.xl),
@@ -63,9 +67,9 @@ class ChatMessageItem extends StatelessWidget {
                     children: [
                       Text(message.senderDetail?.name ?? '', style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Theme.of(context).accentColor)),
                       const SizedBox(height: 8,),
-                      if (message.message!.isNotEmpty)
+                      if (message.message?.isNotEmpty ?? false)
                         Text(message.message!),
-                      if (message.file != null)
+                      if (file != null)
                         CachedNetworkImage(
                           placeholder: (context, url) => Container(
                             decoration: BoxDecoration(
@@ -73,7 +77,7 @@ class ChatMessageItem extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             width: imageWidth,
-                            height: 140,
+                            height: imageHeight,
                             child: Center(
                               child: LottieBuilder.asset(
                                 "assets/lottie/loading_dots.json",
@@ -81,17 +85,45 @@ class ChatMessageItem extends StatelessWidget {
                               ),
                             ),
                           ),
-                          imageUrl: message.file!,
+                          imageUrl: file,
                           imageBuilder: (context, imageProvider) => Container(
                             width: imageWidth,
-                            height: 140,
+                            height: imageHeight,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12.0),
                               image: DecorationImage(
                                   image: imageProvider, fit: BoxFit.cover),
                             ),
                           ),
+                        ),
+                        if (message.reaction?.file != null)
+                        CachedNetworkImage(
+                          placeholder: (context, url) => Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            width: 100,
+                            height: 100,
+                            child: Center(
+                              child: LottieBuilder.asset(
+                                "assets/lottie/loading_dots.json",
+                                height: 64,
+                              ),
+                            ),
+                          ),
+                          imageUrl: message.reaction!.file!,
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.contain),
+                            ),
+                          ),
                         )
+                        
                     ],
                   ),
                 ),

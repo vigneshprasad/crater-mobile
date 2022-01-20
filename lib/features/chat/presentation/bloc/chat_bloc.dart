@@ -92,6 +92,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     //   yield* _mapSendUserIsTypingToState(event);
     } else if (event is SendChatMessageStarted) {
       yield* _mapSendWebinarChatMessageToState(event);
+    } else if (event is SendChatReactionStarted) {
+      yield* _mapSendWebinarChatReactionToState(event);
     }
 
     // Responses from Socket Stream
@@ -217,6 +219,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       SendChatMessageStarted event) async* {
     final sendOrFail =
         await sendWebinarMessage(SendWebianrChatParams(message: event.message));
+    yield sendOrFail.fold(
+      (failure) => state.copyWith(error: failure),
+      (r) =>
+          // ignore: avoid_redundant_argument_values
+          state.copyWith(error: null),
+    );
+  }
+
+  Stream<ChatState> _mapSendWebinarChatReactionToState(
+      SendChatReactionStarted event) async* {
+    final sendOrFail =
+        await sendWebinarMessage(SendWebianrChatParams(reactionId: event.reactionId));
     yield sendOrFail.fold(
       (failure) => state.copyWith(error: failure),
       (r) =>

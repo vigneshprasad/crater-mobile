@@ -150,6 +150,10 @@ class _ConversationLoaded extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // SizedBox(
+                //   height: 700,
+                //   child: ChatScreen(recieverId: authUserPK.toString()),
+                // ),
                 Text(
                   heading ?? '',
                   style: Theme.of(context).textTheme.headline4,
