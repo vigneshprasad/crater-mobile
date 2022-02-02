@@ -184,4 +184,11 @@ class _$ConversationApiService extends ConversationApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> retrieveWebinar(int id) {
+    final $url = '/groups/conversations/webinars/$id/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

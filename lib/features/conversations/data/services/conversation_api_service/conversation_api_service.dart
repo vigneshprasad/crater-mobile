@@ -90,4 +90,7 @@ abstract class ConversationApiService extends ChopperService {
 
   @Get(path: 'public/conversations/webinars/featured')
   Future<Response> getFeaturedClubs();
+
+  @Get(path: 'conversations/webinars/{id}/')
+  Future<Response> retrieveWebinar(@Path() int id);
 }

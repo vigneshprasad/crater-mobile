@@ -18,11 +18,25 @@ class DyteMeetingScreen extends HookWidget {
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
 
-    final showChat = useState(false);
+    final showChat = useState(true);
+    final showReaction = useState(true);
+
+    const videoHeight = 400.0;
+    final fullHeight = MediaQuery.of(context).size.height - 81;
 
     final canGoBack = useState(false);
 
-    const uiConfig = {
+    final config = useState<Map<String, dynamic>>({
+      'header': false,
+      'controlBarElements': {
+        'plugins': false,
+        'participants': false,
+        'chat': false,
+        'polls': false,
+      },
+    });
+
+    var uiConfig = {
       'header': false,
       'controlBarElements': {
         'plugins': false,
@@ -53,52 +67,75 @@ class DyteMeetingScreen extends HookWidget {
             data: (state) => SafeArea(
               child: Stack(
                 children: [
-                  DyteMeeting(
-                    roomName: state.room,
-                    authToken: state.token,
-                    uiConfig: uiConfig,
-                    onInit: (DyteMeetingHandler handler) async {
-                      meetingHandler.value = handler;
-
-                      handler.events.on('meetingEnd', context, (ev, c) {
-                        canGoBack.value = true;
-                        AutoRouter.of(context).pop();
-                      });
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                          onPressed: () {
-                            showChat.value = !showChat.value;
-                          },
-                          icon: const Icon(Icons.chat)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: showChat.value ? 400 : 0,
-                      width: double.infinity,
+                  ConstrainedBox(
+                      constraints: BoxConstraints.expand(
+                        height: showChat.value ? videoHeight : fullHeight,
+                      ),
                       child: Stack(
                         children: [
-                          ChatScreen(recieverId: '', groupId: meetingId.toString(),),
-                          if (showChat.value)
-                            Align(
-                              alignment: Alignment.topRight,
+                          DyteMeeting(
+                            roomName: state.room,
+                            authToken: state.token,
+                            uiConfig: config.value,
+                            onInit: (DyteMeetingHandler handler) async {
+                              meetingHandler.value = handler;
+
+                              handler.events.on('meetingEnd', context, (ev, c) {
+                                canGoBack.value = true;
+                                AutoRouter.of(context).pop();
+                              });
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 6, right: 4),
+                            child: Align(
+                              alignment: Alignment.bottomRight,
                               child: IconButton(
                                   onPressed: () {
+                                    final height = showChat.value == false
+                                        ? videoHeight
+                                        : fullHeight;
+                                    meetingHandler.value?.updateUIConfig({
+                                      'dimensions': {'height': height}
+                                    });
+
                                     showChat.value = !showChat.value;
                                   },
-                                  icon: const Icon(Icons.close)),
+                                  icon: Icon(showChat.value
+                                      ? Icons.fullscreen
+                                      : Icons.chat_bubble)),
                             ),
+                          ),
                         ],
+                      )),
+                  Column(
+                    children: [
+                      const Expanded(child: SizedBox()),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: showChat.value ? fullHeight - videoHeight : 0,
+                        width: double.infinity,
+                        child: Stack(
+                          children: [
+                            ChatScreen(
+                              recieverId: '',
+                              groupId: meetingId.toString(),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                  // Align(
+                  //   alignment: Alignment.bottomLeft,
+                  //   child: AnimatedContainer(
+                  //     duration: const Duration(milliseconds: 300),
+                  //     height: 100,
+                  //     width: 100,
+                  //     child: Image.network(
+                  //         'https://penitence-pre-prod.vercel.app/_next/image?url=https%3A%2F%2F1worknetwork-pre.s3.amazonaws.com%2Fmedia%2Freactions%2Ficons%2Fthe-simpsons-bart-simpson.gif&w=3840&q=75'),
+                  //   ),
+                  // )
                 ],
               ),
             ),

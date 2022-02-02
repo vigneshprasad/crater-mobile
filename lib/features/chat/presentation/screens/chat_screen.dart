@@ -66,62 +66,61 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             builder: (context, chatState) {
               // if (chatState.receiverUser != null) {
-              return SafeArea(
-                child: Stack(
-                  children: [
-                    ChatLayout(
-                        userIsTyping: _isTyping,
-                        user: chatState.receiverUser,
-                        itemCount: chatState.messages.length,
-                        listBuilder: (context, index) {
-                          return ChatMessageItem(
-                            user: authState.user!,
-                            message: chatState.messages[index],
-                          );
-                        },
-                        chatBar: ChatInputBar(
-                          onSubmitPress: _onSubmitMessage,
-                          onReactionPress: _openReactionScreen,
-                          controller: _chatInputController,
-                          user: authState.user,
-                          placeholder: "Send message",
-                        )),
-                      SizedBox(
-                        height: showReactions ? double.infinity : 0,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 240,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(
-                                    AppBorderRadius.bottomSheetRadius),
-                                topRight: Radius.circular(
-                                    AppBorderRadius.bottomSheetRadius),
+              return Stack(
+                children: [
+                  ChatLayout(
+                    userIsTyping: _isTyping,
+                    user: chatState.receiverUser,
+                    itemCount: chatState.messages.length,
+                    listBuilder: (context, index) {
+                      return ChatMessageItem(
+                        user: authState.user!,
+                        message: chatState.messages[index],
+                      );
+                    },
+                    chatBar: ChatInputBar(
+                      onSubmitPress: _onSubmitMessage,
+                      onReactionPress: _openReactionScreen,
+                      controller: _chatInputController,
+                      user: authState.user,
+                      placeholder: "Send message",
+                    ),
+                  ),
+                  SizedBox(
+                    height: showReactions ? double.infinity : 0,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 240,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(
+                                AppBorderRadius.bottomSheetRadius),
+                            topRight: Radius.circular(
+                                AppBorderRadius.bottomSheetRadius),
+                          ),
+                          child: Stack(
+                            children: [
+                              ChatReactionsScreen(
+                                onReactionSelect: _onSubmitReaction,
                               ),
-                              child: Stack(
-                                children: [
-                                  ChatReactionsScreen(
-                                    onReactionSelect: _onSubmitReaction,
-                                  ),
-                                  Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              showReactions = false;
-                                            });
-                                          },
-                                          icon: Icon(Icons.close))),
-                                ],
-                              ),
-                            ),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          showReactions = false;
+                                        });
+                                      },
+                                      icon: Icon(Icons.close))),
+                            ],
                           ),
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               );
               // } else {
               //   return Container();
@@ -158,6 +157,5 @@ class _ChatScreenState extends State<ChatScreen> {
       showReactions = false;
     });
     _chatBloc.add(SendChatReactionStarted(reactionId: reaction.id.toString()));
-    _chatInputController.clear();
   }
 }

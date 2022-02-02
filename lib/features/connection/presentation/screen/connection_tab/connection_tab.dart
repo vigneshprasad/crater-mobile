@@ -15,7 +15,7 @@ class ConnectionTab extends HookWidget {
       child: NestedScrollView(
         headerSliverBuilder: (context, _) => const [
           HomeAppBar(
-            title: 'Network',
+            title: 'Creators',
           )
         ],
         body: RefreshIndicator(
@@ -51,22 +51,22 @@ class ConnectionTab extends HookWidget {
                             const SizedBox(height: 20),
                             FeaturedList(),
                             const SizedBox(height: 40),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text('Member only',
-                                  style: Theme.of(context).textTheme.headline6),
-                            ),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                'Let the AI match you or request a meeting with your preferences',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ),
-                            const SizedBox(height: 40),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.symmetric(horizontal: 20),
+                            //   child: Text('Member only',
+                            //       style: Theme.of(context).textTheme.headline6),
+                            // ),
+                            // const SizedBox(height: 8),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.symmetric(horizontal: 20),
+                            //   child: Text(
+                            //     'Let the AI match you or request a meeting with your preferences',
+                            //     style: Theme.of(context).textTheme.caption,
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 40),
                           ],
                         ),
                       ConnectableList(tag: tags[index]),

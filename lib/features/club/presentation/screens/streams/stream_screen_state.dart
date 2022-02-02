@@ -29,13 +29,17 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   List<UpcomingGridItem> liveClubs = [];
   List<UpcomingGridItem> featuredClubs = [];
   List<UpcomingGridItem> upcomingClubs = [];
-  List<UpcomingGridItem> pastClubs = [];
 
   StreamStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
-    getLiveData();
-    getFeaturedData();
-    getUpcomingData();
-    getPastData();
+    try {
+      getLiveData();
+    } catch (_) {}
+    try {
+      getFeaturedData();
+    } catch (_) {}
+    try {
+      getUpcomingData();
+    } catch (_) {}
   }
 
   Future<void> getUpcomingData() async {
@@ -58,25 +62,6 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     updateData();
   }
 
-  Future<void> getPastData() async {
-    final response = await read(conversationRepositoryProvider).getPastClubs();
-
-    if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
-    }
-
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
-
-    pastClubs = webinars
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.past,
-            ))
-        .toList();
-
-    updateData();
-  }
-
   void updateData() {
     final items = List<UpcomingGridItem>.from(upcomingClubs);
     if (items.isNotEmpty) {
@@ -90,20 +75,11 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
                 Icons.schedule,
                 size: 80,
               )));
-
-      items.add(UpcomingGridItem(
-          title: 'Past Streams',
-          color: '#B02A2A',
-          type: GridItemType.title,
-          icon: const Icon(
-            Icons.movie,
-            size: 80,
-          )));
     }
     state = ApiResult.data(StreamPage(
       liveClubs: liveClubs + featuredClubs,
-      upcomingClubs: items + pastClubs,
-      pastClubs: pastClubs,
+      upcomingClubs: items,
+      pastClubs: [],
     ));
   }
 

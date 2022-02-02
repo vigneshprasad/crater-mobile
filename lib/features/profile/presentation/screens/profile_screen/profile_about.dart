@@ -17,6 +17,7 @@ import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_ent
 import 'package:worknetwork/features/profile/presentation/widget/interest_list.dart';
 import 'package:worknetwork/features/profile/presentation/widget/objective_list.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../routes.gr.dart';
 
@@ -150,7 +151,7 @@ class AboutTab extends HookWidget {
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
     _overlay.remove();
-    AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
+    AutoRouter.of(context).pushAndPopUntil(const SplashScreenRoute(),
         predicate: (route) => false);
   }
 }

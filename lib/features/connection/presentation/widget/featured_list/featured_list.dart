@@ -28,7 +28,8 @@ class FeaturedList extends HookWidget {
     });
     final connectionState = useProvider(featuredConnectionStateProvider(''));
     return SizedBox(
-      height: 220,
+      height: double.infinity,
+      width: double.infinity,
       child: connectionState.when(
         loading: () => Center(
             child: CircularProgressIndicator(
@@ -37,21 +38,35 @@ class FeaturedList extends HookWidget {
         error: (err, st) => Center(
           child: err == null ? Container() : Text(err.toString()),
         ),
-        data: (creators) => ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(width: 20),
-          scrollDirection: Axis.horizontal,
-          itemCount: creators.length,
-          controller: _controller,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          itemBuilder: (BuildContext context, int index) {
-            return CreatorCard(
+        // data: (creators) => ListView.separated(
+        //   separatorBuilder: (context, index) => const SizedBox(width: 20),
+        //   scrollDirection: Axis.horizontal,
+        //   itemCount: creators.length,
+        //   controller: _controller,
+        //   padding: const EdgeInsets.symmetric(horizontal: 20),
+        //   itemBuilder: (BuildContext context, int index) {
+            // return CreatorCard(
+            //   creator: creators[index],
+            //   authUserPk: user?.pk, //TODO: pass auth user pk.
+            //   showConnect: false,
+            // );
+        //   },
+        // ),
+        data: (creators) => GridView.builder(
+            itemCount: creators.length,
+            padding: const EdgeInsets.all(AppInsets.med),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 20.0,
+              childAspectRatio: 1
+            ),
+            itemBuilder: (context, index) => CreatorCard(
               creator: creators[index],
               authUserPk: user?.pk, //TODO: pass auth user pk.
               showConnect: false,
-            );
-          },
-        ),
-      ),
+            )
+      ),)
     );
   }
 }

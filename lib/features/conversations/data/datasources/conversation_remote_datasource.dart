@@ -186,7 +186,7 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   @override
   Future<Conversation> retrieveConversationFromRemote(int id) async {
     final response =
-        await read(conversationApiServiceProvider).retrieveConversation(id);
+        await read(conversationApiServiceProvider).retrieveWebinar(id);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Conversation.fromJson(json);

@@ -2,18 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/webinar_screen.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 class StreamTab extends HookWidget {
+
   @override
   Widget build(BuildContext context) {
     final clubsProvider = useProvider(streamStateProvider);
@@ -34,7 +38,6 @@ class StreamTab extends HookWidget {
               context.read(streamStateProvider.notifier).getLiveData(),
               context.read(streamStateProvider.notifier).getFeaturedData(),
               context.read(streamStateProvider.notifier).getUpcomingData(),
-              context.read(streamStateProvider.notifier).getPastData(),
             ];
 
             return Future.wait(futures);
@@ -421,8 +424,23 @@ class LiveGridTile extends StatelessWidget {
         //     builder: (context) => WebinarScreen(
         //           webUrl: link,
         //         )));
-        AutoRouter.of(context)
-            .push(ConversationScreenRoute(id: conversation.id));
+
+        if (item.type == GridItemType.live) {
+          
+          final user = BlocProvider.of<AuthBloc>(context).state.user;
+          if (user == null) {
+            // Show login
+            AutoRouter.of(context).push(const WelcomeScreenRoute());
+            return;
+          }
+
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  DyteMeetingScreen(meetingId: conversation.id!)));
+        } else {
+          AutoRouter.of(context)
+              .push(ConversationScreenRoute(id: conversation.id));
+        }
       },
       borderRadius: BorderRadius.circular(12),
       child: ClipRRect(

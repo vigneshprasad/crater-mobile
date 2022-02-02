@@ -39,7 +39,8 @@ void navigatePostAuth(
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   final router = AutoRouter.of(_navigator.currentContext!).root;
 
-  String routeName = _findNextRoute(profile, user);
+  String routeName =  _findNextRoute(profile, user, editMode);
+
   final desiredIndex = sequence.indexOf(routeName);
 
   final currentRoute = router.topRoute.name;
@@ -115,7 +116,14 @@ bool shouldShow(String name, UserProfile? profile, User? user) {
   }
 }
 
-String _findNextRoute(UserProfile? profile, User? user) {
+String _findNextRoute(UserProfile? profile, User? user, bool isEdit) {
+  if (!isEdit) {
+    if(profile !=null && (profile.name == null || profile.name!.trim().isEmpty)) {
+      return ProfileBasicScreenRoute.name;
+    }
+    return HomeScreenRoute.name;
+  }
+
   int index = 0;
   while (shouldShow(sequence[index], profile, user) == false) {
     index++;
