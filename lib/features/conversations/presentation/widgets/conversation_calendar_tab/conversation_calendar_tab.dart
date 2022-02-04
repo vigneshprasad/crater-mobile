@@ -57,7 +57,7 @@ class ConversationCalendarTab extends HookWidget {
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: const HomeAppBar(title: 'Streams'),
+                sliver: const HomeAppBar(title: 'Upcoming Streams'),
               ),
             ];
           },

@@ -95,13 +95,15 @@ abstract class ConversationRemoteDatasource {
 
   Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
 
-  Future<List<Webinar>> getPastClubsfromRemote({String? userId});
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId, int? page, int? pageSize});
 
-  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId});
+  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize});
 
   Future<List<ChatReaction>> getChatReactions();
 
   Future<ChatReaction> getChatReactionDetail(String id);
+
+  Future<List<Webinar>> getSeriesFromRemote({int? page, int? pageSize});
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -345,9 +347,9 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getPastClubsfromRemote({String? userId}) async {
+  Future<List<Webinar>> getPastClubsfromRemote({String? userId, int? page, int? pageSize}) async {
     final response =
-        await read(conversationApiServiceProvider).getPastClubs(userId);
+        await read(conversationApiServiceProvider).getPastClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as  Map<String, dynamic>;
       final jsonList = json['results'] as Iterable;
@@ -360,9 +362,9 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId}) async {
+  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize}) async {
     final response =
-        await read(conversationApiServiceProvider).getFeaturedClubs();
+        await read(conversationApiServiceProvider).getFeaturedClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
       if (response.bodyString == "[]") {
         return List.empty();
@@ -405,6 +407,25 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return  ChatReaction.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getSeriesFromRemote({int? page, int? pageSize}) async {
+    final response =
+        await read(conversationApiServiceProvider).getSeries(page, pageSize);
+    if (response.statusCode == 200) {
+      if (response.bodyString == "[]") {
+        return List.empty();
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final jsonList = json['results'] as List;
+      // final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }

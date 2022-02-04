@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
@@ -79,7 +80,7 @@ class _ConversationLoaded extends HookWidget {
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
 
-    final similarStreamProvider = useProvider(streamStateProvider);
+    final similarStreamProvider = useProvider(pastStreamsStateProvider);
 
     return Stack(
       children: [
@@ -140,7 +141,7 @@ class _ConversationLoaded extends HookWidget {
                   loading: () => Container(),
                   error: (e, s) => Container(),
                   data: (conversations) {
-                    if (conversations.pastClubs.isEmpty) return Container();
+                    if (conversations.isEmpty) return Container();
                     return SizedBox(
                       height: 340,
                       child: Column(
@@ -157,7 +158,7 @@ class _ConversationLoaded extends HookWidget {
                               enlargeCenterPage: true,
                               enableInfiniteScroll: false,
                             ),
-                            items: conversations.pastClubs.map((c) {
+                            items: conversations.map((c) {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return UpcomingGridTile(c);

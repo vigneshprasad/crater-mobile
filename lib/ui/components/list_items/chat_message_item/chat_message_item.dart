@@ -43,7 +43,7 @@ class ChatMessageItem extends StatelessWidget {
     final file = message.file;
     return Padding(
       padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.med, horizontal: AppInsets.xl),
+          vertical: AppInsets.sm, horizontal: AppInsets.xl),
       child: Column(
         children: [
           Container(
@@ -66,7 +66,7 @@ class ChatMessageItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(message.senderDetail?.name ?? '', style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Theme.of(context).accentColor)),
-                      const SizedBox(height: 8,),
+                      const SizedBox(height: 4,),
                       if (message.message?.isNotEmpty ?? false)
                         Text(message.message!),
                       if (file != null)

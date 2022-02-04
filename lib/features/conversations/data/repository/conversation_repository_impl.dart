@@ -285,10 +285,10 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId}) async {
+  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getPastClubsfromRemote(userId: userId);
+          .getPastClubsfromRemote(userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
@@ -301,10 +301,10 @@ class ConversationRepositoryImpl implements ConversationRepository {
 
   @override
   Future<Either<Failure, List<Webinar>>> getFeaturedClubs(
-      {String? userId}) async {
+      {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getFeaturedClubsfromRemote(userId: userId);
+          .getFeaturedClubsfromRemote(userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
@@ -335,6 +335,22 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getChatReactionDetail(id);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Webinar>>> getSeries(
+      {int? page, int? pageSize}) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getSeriesFromRemote(page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

@@ -24,8 +24,8 @@ class ChatReactionsScreen extends HookWidget {
             padding: const EdgeInsets.all(AppInsets.med),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 20.0,
-              mainAxisSpacing: 20.0,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
             ),
             itemBuilder: (context, index) => InkWell(
               onTap: () => onReactionSelect(reactions[index]),
@@ -48,7 +48,7 @@ class ChatReactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(8.0),
       child: Image.network(
         item.image ?? '',
         height: 50,

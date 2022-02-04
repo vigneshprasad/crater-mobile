@@ -13,7 +13,7 @@ final connectionRepositoryProvider =
     Provider<ConnectionRepository>((ref) => ConnectionRepositoryImpl(ref.read));
 
 abstract class ConnectionRepository {
-  Future<Either<Failure, CreatorResponse>> getCreators(int page,
+  Future<Either<Failure, CreatorResponse>> getCreators(int page, int pageSize,
       {bool certified});
   Future<Either<Failure, Creator>> getCreator(int id);
   Future<Either<Failure, List<Profile>>> getCommunityMembers(
@@ -26,11 +26,11 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   ConnectionRepositoryImpl(this.read);
 
   @override
-  Future<Either<Failure, CreatorResponse>> getCreators(int page,
+  Future<Either<Failure, CreatorResponse>> getCreators(int page, int pageSize,
       {bool certified = true}) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
-          .getCreatorsFromRemote(page, certified: certified);
+          .getCreatorsFromRemote(page, pageSize, certified: certified);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;

@@ -17,97 +17,141 @@ import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_s
 import 'package:worknetwork/routes.gr.dart';
 
 class StreamTab extends HookWidget {
-
   @override
   Widget build(BuildContext context) {
     final clubsProvider = useProvider(streamStateProvider);
+
+    final _controller = useScrollController();
+    _controller.addListener(() {
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        context.read(streamStateProvider.notifier).getNextPageSeriesData();
+      }
+    });
 
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (context, isexpanded) {
           return const [
             HomeAppBar(
-              title: 'Featured',
+              title: 'Live Streams',
             )
           ];
         },
         body: RefreshIndicator(
-          color: Theme.of(context).accentColor,
-          onRefresh: () {
-            final futures = [
-              context.read(streamStateProvider.notifier).getLiveData(),
-              context.read(streamStateProvider.notifier).getFeaturedData(),
-              context.read(streamStateProvider.notifier).getUpcomingData(),
-            ];
+            color: Theme.of(context).accentColor,
+            onRefresh: () {
+              final futures = [
+                context.read(streamStateProvider.notifier).getLiveData(),
+                context.read(streamStateProvider.notifier).getSeriesData(),
+                context.read(streamStateProvider.notifier).getFeaturedData(),
+                context.read(streamStateProvider.notifier).getUpcomingData(),
+              ];
 
-            return Future.wait(futures);
-          },
-          child: clubsProvider.when(
-              loading: () => Container(),
-              error: (e, s) => Container(),
-              data: (streams) {
-                final liveCount = streams.liveClubs.isNotEmpty ? 1 : 0;
-                return StaggeredGridView.countBuilder(
-                  padding: const EdgeInsets.all(8),
-                  crossAxisCount: 2,
-                  itemCount: streams.upcomingClubs.length + liveCount,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0 && streams.liveClubs.isNotEmpty) {
-                      return SizedBox(
-                          height: 280,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  height: 280.0,
-                                  enlargeCenterPage: true,
-                                  enableInfiniteScroll: false,
+              return Future.wait(futures);
+            },
+            child: clubsProvider.when(
+                loading: () => Container(),
+                error: (e, s) => Container(),
+                data: (streams) {
+                  return CustomScrollView(
+                    slivers: [
+                      if (streams.liveClubs.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                              height: 300,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      height: 280.0,
+                                      enlargeCenterPage: true,
+                                      enableInfiniteScroll: false,
+                                    ),
+                                    items: streams.liveClubs.map((c) {
+                                      return Builder(
+                                        builder: (BuildContext context) {
+                                          return LiveGridTile(c);
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      if (streams.series.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 80,
+                            child: UpcomingGridTitleTile(
+                              UpcomingGridItem(
+                                  title: 'Series by our creators',
+                                  color: '#B02A2A',
+                                  type: GridItemType.title,
+                                  icon: const Icon(
+                                    Icons.schedule,
+                                    size: 80,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      if (streams.series.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 250,
+                            child: ListView.separated(
+                              controller: _controller,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(width: 20),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: streams.series.length,
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 80),
+                              itemBuilder: (BuildContext context, int index) =>
+                                  SizedBox(
+                                width: 150,
+                                child: SeriesGridTile(
+                                  streams.series[index],
                                 ),
-                                items: streams.liveClubs.map((c) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return LiveGridTile(c);
-                                    },
-                                  );
-                                }).toList(),
                               ),
-                            ],
-                          ));
-                    }
-                    final upIndex = index - liveCount;
-                    switch (streams.upcomingClubs[upIndex].type) {
-                      case GridItemType.title:
-                        return UpcomingGridTitleTile(
-                            streams.upcomingClubs[upIndex]);
-                      default:
-                        return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: UpcomingGridTile(
-                                streams.upcomingClubs[upIndex]));
-                    }
-                  },
-                  staggeredTileBuilder: (int index) {
-                    if (index == 0 && streams.liveClubs.isNotEmpty) {
-                      return const StaggeredTile.count(2, 1.6);
-                    }
-
-                    final upIndex = index - liveCount;
-                    switch (streams.upcomingClubs[upIndex].type) {
-                      case GridItemType.upcoming:
-                        return const StaggeredTile.count(2, 1.5);
-                      case GridItemType.title:
-                        return const StaggeredTile.count(2, 0.3);
-                      default:
-                        return const StaggeredTile.count(2, 1.5);
-                    }
-                  },
-                  mainAxisSpacing: 40.0,
-                  crossAxisSpacing: 40.0,
-                );
-              }),
-        ),
+                            ),
+                          ),
+                        ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 80,
+                          child: UpcomingGridTitleTile(
+                            UpcomingGridItem(
+                                title: 'Going Live Soon',
+                                color: '#B02A2A',
+                                type: GridItemType.title,
+                                icon: const Icon(
+                                  Icons.schedule,
+                                  size: 80,
+                                )),
+                          ),
+                        ),
+                      ),
+                      SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return SizedBox(
+                              height: 300,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: UpcomingGridTile(
+                                  streams.upcomingClubs[index],
+                                ),
+                              ));
+                        },
+                        childCount: streams.upcomingClubs.length,
+                      )),
+                    ],
+                  );
+                })),
       ),
     );
   }
@@ -125,11 +169,11 @@ class SimilarStream extends HookWidget {
           return StaggeredGridView.countBuilder(
             padding: const EdgeInsets.all(8),
             crossAxisCount: 2,
-            itemCount: streams.pastClubs.length,
+            itemCount: streams.series.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: UpcomingGridTile(streams.pastClubs[index]));
+                  child: UpcomingGridTile(streams.series[index]));
             },
             staggeredTileBuilder: (int index) {
               return const StaggeredTile.count(2, 1.5);
@@ -150,28 +194,32 @@ class UpcomingGridTitleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0),
-      child: Wrap(
-        spacing: 8,
-        children: item.title == 'Going Live Soon'
-            ? [
-                Text('Going', style: Theme.of(context).textTheme.headline6),
-                Text('live',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(color: Theme.of(context).accentColor)),
-                Text('soon', style: Theme.of(context).textTheme.headline6),
-              ]
-            : [
-                Text('Past', style: Theme.of(context).textTheme.headline6),
-                Text('Streams',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(color: Theme.of(context).accentColor)),
-              ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Wrap(
+          spacing: 8,
+          children: item.title == 'Going Live Soon'
+              ? [
+                  Text('Going', style: Theme.of(context).textTheme.headline6),
+                  Text('live',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(color: Theme.of(context).accentColor)),
+                  Text('soon', style: Theme.of(context).textTheme.headline6),
+                ]
+              : [
+                  Text('Series',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(color: Theme.of(context).accentColor)),
+                  Text('by our creators',
+                      style: Theme.of(context).textTheme.headline6),
+                ],
+        ),
       ),
     );
   }
@@ -183,6 +231,8 @@ enum GridItemType {
   upcoming,
   featured,
   past,
+  loader,
+  series,
 }
 
 class UpcomingGridItem {
@@ -342,6 +392,90 @@ class UpcomingGridTile extends StatelessWidget {
   }
 }
 
+class SeriesGridTile extends StatelessWidget {
+  final UpcomingGridItem item;
+  const SeriesGridTile(
+    this.item, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final conversation = item.conversation!;
+    final user = conversation.hostDetail;
+    final topic = conversation.topicDetail;
+    String description = user?.introduction ?? topic?.name ?? ' ';
+    if (description.isEmpty) {
+      description = item.conversation?.description ?? '';
+    }
+    final title = user?.name ?? '';
+
+    return InkWell(
+      onTap: () {
+          AutoRouter.of(context)
+              .push(ConversationScreenRoute(id: conversation.id));
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: GridTile(
+          child: Column(
+        children: [
+          Expanded(
+              child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              color: Theme.of(context).dialogBackgroundColor,
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  if (topic?.image != null)
+                    Image.network(
+                      topic?.image ?? '',
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  if (item.type == GridItemType.upcoming)
+                    LiveTime(date: item.conversation?.start?.toLocal()),
+                  if (item.type == GridItemType.past)
+                    const Center(
+                      child: Icon(Icons.play_circle, size: 80),
+                    )
+                ],
+              ),
+            ),
+          )),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: Theme.of(context).textTheme.subtitle2,
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      )),
+    );
+  }
+}
+
 class LiveTime extends StatelessWidget {
   const LiveTime({
     Key? key,
@@ -426,7 +560,6 @@ class LiveGridTile extends StatelessWidget {
         //         )));
 
         if (item.type == GridItemType.live) {
-          
           final user = BlocProvider.of<AuthBloc>(context).state.user;
           if (user == null) {
             // Show login

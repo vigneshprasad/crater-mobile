@@ -1,4 +1,4 @@
-
+import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
@@ -7,59 +7,91 @@ import '../../../../../core/error/failures/failures.dart';
 import '../../../../conversations/data/repository/conversation_repository_impl.dart';
 import 'stream_screen.dart';
 
-final pastStreamsStateProvider =
-    StateNotifierProvider<PastStreamStateNotifier, ApiResult<StreamPage>>(
-        (ref) => PastStreamStateNotifier(ref.read));
+final pastStreamsStateProvider = StateNotifierProvider<PastStreamStateNotifier,
+        ApiResult<List<UpcomingGridItem>>>(
+    (ref) => PastStreamStateNotifier(ref.read));
 
-class StreamPage {
-  final List<UpcomingGridItem> liveClubs;
-  final List<UpcomingGridItem> upcomingClubs;
-  final List<UpcomingGridItem> pastClubs;
-
-  StreamPage({
-    required this.liveClubs,
-    required this.upcomingClubs,
-    required this.pastClubs,
-  });
-}
-
-class PastStreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
+class PastStreamStateNotifier
+    extends StateNotifier<ApiResult<List<UpcomingGridItem>>> {
   final Reader read;
 
   List<UpcomingGridItem> pastClubs = [];
+  late bool loadingPage;
+  final pageSize = 10;
+  int page = 1;
+  bool allLoaded = false;
 
-  PastStreamStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
+  PastStreamStateNotifier(this.read)
+      : super(ApiResult<List<UpcomingGridItem>>.loading()) {
     try {
       getPastData();
     } catch (_) {}
   }
 
+  Future<Either<Failure, List<Webinar>>?> getPastData() async {
+    state = ApiResult<List<UpcomingGridItem>>.loading();
+    page = 1;
+    allLoaded = false;
+    loadingPage = true;
 
-  Future<void> getPastData() async {
-    final response = await read(conversationRepositoryProvider).getPastClubs();
+    final response = await read(conversationRepositoryProvider)
+        .getPastClubs(pageSize: pageSize);
 
-    if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+    state = response.fold(
+      (failure) {
+        loadingPage = false;
+        return ApiResult<List<UpcomingGridItem>>.error(failure);
+      },
+      (webinars) {
+        pastClubs = webinars
+            .map((e) => UpcomingGridItem(
+                  conversation: e,
+                  type: GridItemType.past,
+                ))
+            .toList();
+        loadingPage = false;
+        allLoaded = webinars.isEmpty || webinars.length < pageSize;
+
+        return ApiResult<List<UpcomingGridItem>>.data(pastClubs);
+      },
+    );
+
+    return response;
+  }
+
+  Future<Either<Failure, List<Webinar>>?>
+      getNextPageConnectableProfileList() async {
+    if (loadingPage == true || allLoaded == true) {
+      return null;
     }
+    loadingPage = true;
 
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
+    state = ApiResult<List<UpcomingGridItem>>.data(
+        pastClubs + [UpcomingGridItem(type: GridItemType.loader)]);
 
-    pastClubs = webinars
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.past,
-            ))
-        .toList();
+    page = page + 1;
 
-    updateData();
+    final response = await read(conversationRepositoryProvider)
+        .getPastClubs(page: page, pageSize: pageSize);
+
+    state = response.fold(
+      (failure) {
+        loadingPage = false;
+        return ApiResult<List<UpcomingGridItem>>.data(pastClubs);
+      },
+      (webinars) {
+        pastClubs += webinars
+            .map((e) => UpcomingGridItem(
+                  conversation: e,
+                  type: GridItemType.past,
+                ))
+            .toList();
+        loadingPage = false;
+        allLoaded = webinars.isEmpty || webinars.length < pageSize;
+        return ApiResult<List<UpcomingGridItem>>.data(pastClubs);
+      },
+    );
+
+    return response;
   }
-
-  void updateData() {
-    state = ApiResult.data(StreamPage(
-      liveClubs: [],
-      upcomingClubs: [],
-      pastClubs: pastClubs,
-    ));
-  }
-
 }

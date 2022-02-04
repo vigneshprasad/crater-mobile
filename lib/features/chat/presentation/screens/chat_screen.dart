@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         width: double.infinity,
-                        height: 240,
+                        height: double.infinity,
                         child: ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(

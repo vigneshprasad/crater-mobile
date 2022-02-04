@@ -36,16 +36,6 @@ class DyteMeetingScreen extends HookWidget {
       },
     });
 
-    var uiConfig = {
-      'header': false,
-      'controlBarElements': {
-        'plugins': false,
-        'participants': false,
-        'chat': false,
-        'polls': false,
-      },
-    };
-
     useEffect(() {
       return () {
         meetingHandler.value?.events.clear();
@@ -81,6 +71,11 @@ class DyteMeetingScreen extends HookWidget {
                               meetingHandler.value = handler;
 
                               handler.events.on('meetingEnd', context, (ev, c) {
+                                canGoBack.value = true;
+                                AutoRouter.of(context).pop();
+                              });
+
+                              handler.events.on('meetingDisconnected', this, (ev, cont) {
                                 canGoBack.value = true;
                                 AutoRouter.of(context).pop();
                               });

@@ -16,7 +16,7 @@ final featuredConnectionStateProvider = StateNotifierProvider.family<
 class FeaturedConnectionStateNotifier
     extends StateNotifier<ApiResult<List<Creator>>> {
   final Reader read;
-  final pageSize = 10;
+  final pageSize = 12;
   int page = 1;
   late bool loadingPage;
   bool allLoaded = false;
@@ -35,7 +35,7 @@ class FeaturedConnectionStateNotifier
     allLoaded = false;
     loadingPage = true;
     state = ApiResult<List<Creator>>.loading();
-    final response = await read(connectionRepositoryProvider).getCreators(page);
+    final response = await read(connectionRepositoryProvider).getCreators(page, pageSize);
 
     state = response.fold(
       (failure) {
@@ -63,7 +63,7 @@ class FeaturedConnectionStateNotifier
     }
     loadingPage = true;
     page = page + 1;
-    final response = await read(connectionRepositoryProvider).getCreators(page);
+    final response = await read(connectionRepositoryProvider).getCreators(page, pageSize);
 
     state = response.fold(
       (failure) {

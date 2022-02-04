@@ -53,17 +53,18 @@ class FeaturedList extends HookWidget {
         //   },
         // ),
         data: (creators) => GridView.builder(
+            controller: _controller,
             itemCount: creators.length,
-            padding: const EdgeInsets.all(AppInsets.med),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 20.0,
-              mainAxisSpacing: 20.0,
-              childAspectRatio: 1
+              crossAxisCount: 3,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+              childAspectRatio: 0.65
             ),
             itemBuilder: (context, index) => CreatorCard(
               creator: creators[index],
-              authUserPk: user?.pk, //TODO: pass auth user pk.
+              authUserPk: user?.pk,
               showConnect: false,
             )
       ),)
@@ -84,7 +85,7 @@ class CreatorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.subtitle1;
+    final headingStyle = Theme.of(context).textTheme.subtitle2;
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
@@ -93,37 +94,36 @@ class CreatorCard extends StatelessWidget {
             createrId: creator.id,
             allowEdit: authUserPk == creator.profileDetail?.pk),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 140,
-                height: 180,
-                child: BaseNetworkImage(
-                  imageUrl: creator.profileDetail?.photo,
-                  defaultImage: AppImageAssets.defaultAvatar,
-                  imagebuilder: (context, imageProvider) => Image(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          SizedBox(
+            width: 100,
+            height: 120,
+            child: BaseNetworkImage(
+              imageUrl: creator.profileDetail?.photo,
+              defaultImage: AppImageAssets.defaultAvatar,
+              imagebuilder: (context, imageProvider) => Image(
+                image: imageProvider,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: AppInsets.xl),
-              Text(
-                creator.profileDetail?.name ?? '',
-                style: headingStyle,
-                maxLines: 2,
-              ),
-              // const SizedBox(height: AppInsets.sm),
-              // Text(
-              //   '${followerFormat(creator.numberOfSubscribers ?? 0)} Followers',
-              //   overflow: TextOverflow.ellipsis,
-              //   style: bodyStyle,
-              // ),
-            ],
+            ),
           ),
+          const SizedBox(height: AppInsets.xl),
+          Expanded(
+            child: Text(
+              creator.profileDetail?.name ?? '',
+              style: headingStyle,
+              maxLines: 2,
+              textAlign: TextAlign.start,
+            ),
+          ),
+          // const SizedBox(height: AppInsets.sm),
+          // Text(
+          //   '${followerFormat(creator.numberOfSubscribers ?? 0)} Followers',
+          //   overflow: TextOverflow.ellipsis,
+          //   style: bodyStyle,
+          // ),
         ],
       ),
     );

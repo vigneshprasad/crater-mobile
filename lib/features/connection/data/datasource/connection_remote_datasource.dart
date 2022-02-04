@@ -11,7 +11,7 @@ final connectionRemoteDatasourceProvider = Provider<ConnectionRemoteDatasource>(
     (ref) => ConnectionRemoteDatasourceImpl(ref.read));
 
 abstract class ConnectionRemoteDatasource {
-  Future<CreatorResponse> getCreatorsFromRemote(int page, {bool certified});
+  Future<CreatorResponse> getCreatorsFromRemote(int page, int pageSize, {bool certified});
   Future<Creator> getCreatorFromRemote(int id);
   Future<List<Profile>> getCommunityMembersFromRemote(
       String community, int page);
@@ -23,10 +23,10 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
   ConnectionRemoteDatasourceImpl(this.read);
 
   @override
-  Future<CreatorResponse> getCreatorsFromRemote(int page,
+  Future<CreatorResponse> getCreatorsFromRemote(int page, int pageSize,
       {bool certified = true}) async {
     final response = await read(connectionApiServiceProvider)
-        .getCreators({'certified': 'true', 'page': page, 'page_size': 10});
+        .getCreators({'certified': 'true', 'page': page, 'page_size': pageSize});
     if (response.statusCode == 200) {
       if (response.bodyString == '[]') {
         throw ServerException('Empty');

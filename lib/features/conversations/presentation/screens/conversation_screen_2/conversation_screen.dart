@@ -42,8 +42,8 @@ class ConversationScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final conversationState = useProvider(conversationStateProvider(id!));
-    final speakers = useProvider(conversationSpeakersState(id!));
-    final connectionProvider = useProvider(rtcConnectionProvider(id!));
+    // final speakers = useProvider(conversationSpeakersState(id!));
+    // final connectionProvider = useProvider(rtcConnectionProvider(id!));
     final overlayProvider = useProvider(conversationOverlayProvider);
 
     useEffect(() {
@@ -66,8 +66,8 @@ class ConversationScreen extends HookWidget {
         loading: () => _Loader(),
         data: (conversation) => _ConversationLoaded(
           conversation: conversation,
-          speakers: speakers,
-          connection: connectionProvider.connection,
+          // speakers: speakers,
+          // connection: connectionProvider.connection,
         ),
         error: (err, st) => _Loader(),
       ),
@@ -88,15 +88,15 @@ class _Loader extends StatelessWidget {
 
 class _ConversationLoaded extends StatelessWidget {
   final Conversation conversation;
-  final List<RtcUser> speakers;
-  final RtcConnection connection;
+  // final List<RtcUser> speakers;
+  // final RtcConnection connection;
   OverlayEntry? overlayEntry;
 
   _ConversationLoaded({
     Key? key,
     required this.conversation,
-    required this.speakers,
-    required this.connection,
+    // required this.speakers,
+    // required this.connection,
   }) : super(key: key);
 
   @override
@@ -133,11 +133,11 @@ class _ConversationLoaded extends StatelessWidget {
     final link = 'https://crater.club/session/${conversation.id}';
     return WillPopScope(
       onWillPop: () async {
-        if (connection != RtcConnection.disconnected) {
-          context
-              .read(conversationStateProvider(conversation.id!).notifier)
-              .createAudioCallOverlay(context);
-        }
+        // if (connection != RtcConnection.disconnected) {
+        //   context
+        //       .read(conversationStateProvider(conversation.id!).notifier)
+        //       .createAudioCallOverlay(context);
+        // }
         return true;
       },
       child: Stack(
