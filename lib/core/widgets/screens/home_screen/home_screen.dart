@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/widgets/components/home_tab_bar/home_tab_bar.dart';
+import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen.dart';
 import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
@@ -35,13 +36,10 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    int tabCount = 5;
+    const tabCount = 5;
 
     final user = BlocProvider.of<AuthBloc>(context).state.user;
-    if (user == null) {
-      tabCount = 4;
-    }
-
+    
     final _tabController =
         useTabController(initialLength: tabCount, initialIndex: tab ?? 0);
 
@@ -82,7 +80,9 @@ class HomeScreen extends HookWidget {
             StreamTab(),
             PastStreamTab(),
             ConnectionTab(),
-            if (user != null)
+            if (user == null)
+              const PhoneScreen(state: '',)
+            else
               ConversationCalendarTab(
                 type: ConversationTabType.my,
                 name: name,
@@ -91,7 +91,7 @@ class HomeScreen extends HookWidget {
                 },
               ),
             if (user == null)
-              WelcomeScreen()
+              const PhoneScreen(state: '',)
             else
               ProfileScreen(user.pk ?? '', allowEdit: true)
           ],

@@ -37,7 +37,7 @@ class HomeTabBar extends StatelessWidget {
           label: 'Past', icon: Icon(Icons.play_arrow_outlined)),
       const BottomNavigationBarItem(
           label: 'Creators', icon: Icon(Icons.people_outline)),
-      if (user != null) const BottomNavigationBarItem(label: 'My', icon: Icon(Icons.inbox)),
+      const BottomNavigationBarItem(label: 'My', icon: Icon(Icons.inbox)),
       const BottomNavigationBarItem(
           label: 'Profile', icon: UserProfileNavItem()),
     ];

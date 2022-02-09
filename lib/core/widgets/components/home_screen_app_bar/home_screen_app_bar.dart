@@ -44,7 +44,7 @@ class HomeScreenAppBar extends StatelessWidget {
             final user = BlocProvider.of<AuthBloc>(context).state.user;
             if (user != null) {
               AutoRouter.of(context)
-                  .push(ProfileScreenRoute(userId: user.pk!, allowEdit: true));
+                  .push(ProfileScreenRoute(userId: user.pk ?? '', allowEdit: true));
             }
           },
         ),

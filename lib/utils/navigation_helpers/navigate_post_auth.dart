@@ -4,6 +4,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 
 import '../../core/push_notfications/push_notifications.dart';
 import '../../features/auth/domain/entity/user_entity.dart';
@@ -50,11 +52,11 @@ void navigatePostAuth(
     if (editMode) {
       index = nextIndex;
     } else {
-      while (shouldShow(sequence[index], profile, user) == false) {
+      while (sequence.length > index+1 && shouldShow(sequence[index], profile, user) == false) {
         index++;
       }
     }
-    if (index >= 0) {
+    if (index >= 0 && index<sequence.length) {
       routeName = sequence[index];
     }
   }
@@ -129,4 +131,37 @@ String _findNextRoute(UserProfile? profile, User? user, bool isEdit) {
     index++;
   }
   return sequence[index];
+}
+
+Future<bool> manageLoginPopup(BuildContext context) async {
+
+  var user = BlocProvider.of<AuthBloc>(context).state.user;
+  if (user != null) {
+    return true;
+  }
+
+  user = await showModalBottomSheet(
+    elevation: 10,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (context) {
+      return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+        topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+      ),
+      child: Container(
+        height: 600,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).dialogBackgroundColor,
+        ),
+        child: const PhoneScreen(state: 'popup'),
+      )
+  );
+    },
+  );
+
+  return user != null;
 }

@@ -120,6 +120,7 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   }
 
   Future<Either<Failure, List<Webinar>>?> getSeriesData() async {
+    
     page = 1;
     allLoaded = false;
     loadingPage = true;

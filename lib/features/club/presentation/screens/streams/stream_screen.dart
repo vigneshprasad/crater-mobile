@@ -15,6 +15,7 @@ import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class StreamTab extends HookWidget {
   @override
@@ -81,44 +82,44 @@ class StreamTab extends HookWidget {
                                 ],
                               )),
                         ),
-                      if (streams.series.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 80,
-                            child: UpcomingGridTitleTile(
-                              UpcomingGridItem(
-                                  title: 'Series by our creators',
-                                  color: '#B02A2A',
-                                  type: GridItemType.title,
-                                  icon: const Icon(
-                                    Icons.schedule,
-                                    size: 80,
-                                  )),
-                            ),
-                          ),
-                        ),
-                      if (streams.series.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 250,
-                            child: ListView.separated(
-                              controller: _controller,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(width: 20),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: streams.series.length,
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 80),
-                              itemBuilder: (BuildContext context, int index) =>
-                                  SizedBox(
-                                width: 150,
-                                child: SeriesGridTile(
-                                  streams.series[index],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      // if (streams.series.isNotEmpty)
+                      //   SliverToBoxAdapter(
+                      //     child: SizedBox(
+                      //       height: 80,
+                      //       child: UpcomingGridTitleTile(
+                      //         UpcomingGridItem(
+                      //             title: 'Series by our creators',
+                      //             color: '#B02A2A',
+                      //             type: GridItemType.title,
+                      //             icon: const Icon(
+                      //               Icons.schedule,
+                      //               size: 80,
+                      //             )),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // if (streams.series.isNotEmpty)
+                      //   SliverToBoxAdapter(
+                      //     child: SizedBox(
+                      //       height: 250,
+                      //       child: ListView.separated(
+                      //         controller: _controller,
+                      //         separatorBuilder: (context, index) =>
+                      //             const SizedBox(width: 20),
+                      //         scrollDirection: Axis.horizontal,
+                      //         itemCount: streams.series.length,
+                      //         padding:
+                      //             const EdgeInsets.only(left: 20, right: 80),
+                      //         itemBuilder: (BuildContext context, int index) =>
+                      //             SizedBox(
+                      //           width: 150,
+                      //           child: SeriesGridTile(
+                      //             streams.series[index],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: 80,
@@ -543,7 +544,7 @@ class LiveGridTile extends StatelessWidget {
     final title = user?.name ?? '';
 
     return InkWell(
-      onTap: () {
+      onTap: () async {
         // final link =
         //     'https://penitence-pre-prod.vercel.app/session/${conversation.id}';
 
@@ -561,9 +562,8 @@ class LiveGridTile extends StatelessWidget {
 
         if (item.type == GridItemType.live) {
           final user = BlocProvider.of<AuthBloc>(context).state.user;
-          if (user == null) {
-            // Show login
-            AutoRouter.of(context).push(const WelcomeScreenRoute());
+          final loginStatus = await manageLoginPopup(context);
+          if (loginStatus==false) {
             return;
           }
 

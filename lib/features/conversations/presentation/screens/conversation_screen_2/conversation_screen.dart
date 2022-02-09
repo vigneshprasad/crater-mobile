@@ -15,6 +15,7 @@ import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -369,12 +370,10 @@ class _ConversationLoaded extends StatelessWidget {
     );
   }
 
-  void startDyteMeeting(BuildContext context) {
+  void startDyteMeeting(BuildContext context) async {
 
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
-    if (user == null) {
-      // Show login
-      AutoRouter.of(context).push(const WelcomeScreenRoute());
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus==false) {
       return;
     }
 
@@ -384,10 +383,8 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _requestJoinGroup(BuildContext context) async {
 
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
-    if (user == null) {
-      // Show login
-      AutoRouter.of(context).push(const WelcomeScreenRoute());
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus==false) {
       return;
     }
 
@@ -428,15 +425,15 @@ class _ConversationLoaded extends StatelessWidget {
       (group) async {
         overlayEntry?.remove();
 
-        final now = DateTime.now().toLocal();
-        final start = group.start!.toLocal();
-        final end = group.end!.toLocal();
+        // final now = DateTime.now().toLocal();
+        // final start = group.start?.toLocal();
+        // final end = group.end?.toLocal();
 
-        if (now.isAfter(start) && now.isBefore(end)) {
+        // if (now.isAfter(start) && now.isBefore(end)) {
           // context
           //     .read(conversationStateProvider(conversation.id!).notifier)
           //     .connectToAudioCall();
-        } else {
+        // } else {
           context
               .read(popupManagerProvider)
               .showPopup(PopupType.conversationJoin, context);
@@ -448,7 +445,7 @@ class _ConversationLoaded extends StatelessWidget {
                 type: OnboardingType.meetingJoining.toString()),
             predicate: (_) => false,
           );
-        }
+        // }
       },
     );
   }
@@ -490,7 +487,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
-        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
+        ProfileScreenRoute(userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

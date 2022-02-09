@@ -35,7 +35,7 @@ class SpeakerChair extends StatelessWidget {
     final iconSize = avtarSize - (borderWidth + padding) * 2;
     final primaryColor = Theme.of(context).backgroundColor;
     final borderSide = BorderSide(color: primaryColor, width: 3);
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
 
     return Container(
       padding: const EdgeInsets.all(2),
@@ -84,7 +84,7 @@ class SpeakerChair extends StatelessWidget {
                   : InkWell(
                       onTap: () {
                         AutoRouter.of(context).push(ProfileScreenRoute(
-                            userId: (speaker as ConversationUser?)!.pk!,
+                            userId: (speaker as ConversationUser?)?.pk ?? '',
                             allowEdit: speaker.pk == authUserPK));
                       },
                       child: SpeakerAvatar(

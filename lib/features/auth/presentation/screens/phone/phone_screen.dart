@@ -75,7 +75,8 @@ class _PhoneScreenState extends State<PhoneScreen> {
     final sendOtp =
         AppLocalizations.of(context)?.translate("phone_verify:send_otp");
     return Scaffold(
-      appBar: BaseAppBar(),
+      backgroundColor: widget.state == 'popup' ? Theme.of(context).dialogBackgroundColor: null,
+      appBar: widget.state == 'popup' ? null : BaseAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -93,6 +94,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     PhoneNumberInput(
                       onValidChange: _onValidPhoneNumber,
                       initalCountry: "IN",
+                      backgroundColor: widget.state == 'popup' ?  Theme.of(context).scaffoldBackgroundColor : null,
                       onChange: (value) {
                         setState(() {
                           if (value != _phoneNumber) {
@@ -241,7 +243,12 @@ class _PhoneScreenState extends State<PhoneScreen> {
       //     "intent": user.intent,
       //   },
       // );
-      navigatePostAuth(user, profile: profile);
+
+      if (widget.state == 'popup') {
+        Navigator.of(context).pop(user);
+      } else {
+        navigatePostAuth(user, profile: profile);
+      }
     });
   }
 

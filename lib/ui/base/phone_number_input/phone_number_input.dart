@@ -16,6 +16,7 @@ class PhoneNumberInput extends StatefulWidget {
   final OnValidCallback? onValidChange;
   final String? initalCountry;
   final OnChangeCallback? onChange;
+  final Color? backgroundColor;
 
   const PhoneNumberInput({
     Key? key,
@@ -24,6 +25,7 @@ class PhoneNumberInput extends StatefulWidget {
     this.onValidChange,
     this.initalCountry,
     this.onChange,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -102,7 +104,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
             ? Border.all(width: 2, color: Theme.of(context).primaryColor)
             : Border.all(width: 2, color: Colors.transparent);
     return BoxDecoration(
-      color: Theme.of(context).dialogBackgroundColor,
+      color: widget.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
       border: border,
       borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
     );

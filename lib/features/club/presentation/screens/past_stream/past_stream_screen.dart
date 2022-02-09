@@ -72,7 +72,7 @@ class _ConversationLoaded extends HookWidget {
     final startDateFormat = DateFormat("dd MMM yyyy, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.caption;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
 
     final article = conversation.topicDetail?.articleDetail;
 
@@ -130,7 +130,7 @@ class _ConversationLoaded extends HookWidget {
                   children: conversation.speakersDetailList
                           ?.map((speaker) => _SpeakerWithIntro(
                                 user: speaker,
-                                authUserPk: authUserPK!,
+                                authUserPk: authUserPK ?? '',
                               ))
                           .toList() ??
                       [],
@@ -388,7 +388,7 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
-        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
+        ProfileScreenRoute(userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

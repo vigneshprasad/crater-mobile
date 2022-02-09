@@ -198,7 +198,7 @@ class _PostScreenState extends State<PostScreen> {
   void _onSubmitCommentPressed(AuthStateSuccess authState) {
     final user = authState.user!;
     _bloc.add(CreatePostRequestStarted(
-      creator: user.pk!,
+      creator: user.pk ?? '',
       message: _comment,
       postId: widget.postId,
     ));

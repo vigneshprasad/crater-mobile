@@ -19,6 +19,8 @@ class UserLeapProvider {
     if (user.email != null) {
       await UserLeapFlutter.setEmailAddress(user.email!);
     }
-    await UserLeapFlutter.setUserIdentifier(user.pk!);
+    if (user.pk != null) {
+      await UserLeapFlutter.setUserIdentifier(user.pk!);
+    }
   }
 }
