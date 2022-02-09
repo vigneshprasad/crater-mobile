@@ -130,6 +130,8 @@ platform :ios do
   desc "Deploy a new PROD version to the AppCenter"
   lane :prod do
 
+    cocoapods(use_bundle_exec: false, podfile: "./ios/Podfile")
+
     build_app(
       workspace: "ios/Runner.xcworkspace",
       configuration: "Release",
@@ -173,6 +175,8 @@ platform :ios do
 
   desc "Deploy a new PREPROD version to the AppCenter"
   lane :preprod do
+
+    cocoapods(use_bundle_exec: false, podfile: "./ios/Podfile")
 
     build_app(
       workspace: "ios/Runner.xcworkspace",
@@ -218,6 +222,8 @@ platform :ios do
   desc "Deploy a new DEV version to the AppCenter"
   lane :dev do
     
+    cocoapods(use_bundle_exec: false, podfile: "./ios/Podfile")
+
     build_app(
       workspace: "ios/Runner.xcworkspace",
       configuration: "ReleaseDev",
