@@ -53,4 +53,5 @@ const _$ConversationFailuresTypeEnumMap = {
   ConversationFailuresType.groupMaxSpeakersError: 'groupMaxSpeakersError',
   ConversationFailuresType.groupNotFound: 'groupNotFound',
   ConversationFailuresType.groupAlreadyJoined: 'groupAlreadyJoined',
+  ConversationFailuresType.seriesAlreadyRSVPed: 'seriesAlreadyRSVPed',
 };

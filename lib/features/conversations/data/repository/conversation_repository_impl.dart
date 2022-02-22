@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -355,6 +357,43 @@ class ConversationRepositoryImpl implements ConversationRepository {
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Series>> getSeriesDetails(int id) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getSeriesDetailsFromRemote(id);
+      return Right(response);
+    } on ServerException catch (error) {
+      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on GroupNotFoundException {
+      return Left(ConversationFailure(
+        message: "This seems to be an incorrect link. Return to home screen.",
+        errorCode: ConversationFailuresType.groupNotFound,
+      ));
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, SeriesRequest>> postRequestToRSVPSeries(
+      SeriesRequest request) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postSeriesRequestToRemote(request);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ConversationFailure.fromJson(message);
       return Left(failure);
     } on SocketException {
       return Left(NetworkFailure());

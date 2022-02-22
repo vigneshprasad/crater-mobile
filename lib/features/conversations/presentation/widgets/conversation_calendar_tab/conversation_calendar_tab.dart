@@ -292,18 +292,18 @@ class _LoadedConversationTab extends HookWidget {
     //   ));
     // }
 
-    children.add(SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(40.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: BaseLargeButton(
-            onPressed: onSchedulePressed,
-            text: 'Network with peers',
-          ),
-        ),
-      ),
-    ));
+    // children.add(SliverToBoxAdapter(
+    //   child: Padding(
+    //     padding: const EdgeInsets.all(40.0),
+    //     child: SizedBox(
+    //       width: double.infinity,
+    //       child: BaseLargeButton(
+    //         onPressed: onSchedulePressed,
+    //         text: 'Network with peers',
+    //       ),
+    //     ),
+    //   ),
+    // ));
 
     return RefreshIndicator(
       // displacement: 96.00,

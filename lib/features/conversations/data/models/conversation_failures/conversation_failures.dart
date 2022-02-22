@@ -14,6 +14,8 @@ enum ConversationFailuresType {
   groupNotFound,
   @JsonValue("groupAlreadyJoined")
   groupAlreadyJoined,
+  @JsonValue("seriesAlreadyRSVPed")
+  seriesAlreadyRSVPed,
 }
 
 @freezed

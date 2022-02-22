@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/failures/failures.dart';
@@ -56,4 +58,9 @@ abstract class ConversationRepository {
   Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id);
 
   Future<Either<Failure, List<Webinar>>> getSeries({int? page, int? pageSize});
+  
+  Future<Either<Failure, Series>> getSeriesDetails(int id);
+
+  Future<Either<Failure, SeriesRequest>> postRequestToRSVPSeries(
+      SeriesRequest request);
 }

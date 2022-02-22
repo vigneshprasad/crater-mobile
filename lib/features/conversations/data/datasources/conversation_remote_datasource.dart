@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -104,6 +106,13 @@ abstract class ConversationRemoteDatasource {
   Future<ChatReaction> getChatReactionDetail(String id);
 
   Future<List<Webinar>> getSeriesFromRemote({int? page, int? pageSize});
+
+  Future<Series> getSeriesDetailsFromRemote(int id);
+
+  // Post Group request data to Remote Server
+  /// Throws [ServerException]
+  Future<SeriesRequest> postSeriesRequestToRemote(
+      SeriesRequest request);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -426,6 +435,35 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       return jsonList
           .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Series> getSeriesDetailsFromRemote(int id) async {
+    final response =
+        await read(conversationApiServiceProvider).getSeriesDetails(id);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return Series.fromJson(json);
+    } else if (response.statusCode == 404) {
+      throw GroupNotFoundException(response.error);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<SeriesRequest> postSeriesRequestToRemote(
+      SeriesRequest request) async {
+    final body = request.toJson();
+    final response = await read(conversationApiServiceProvider)
+        .postSeriesRequest(body);
+    if (response.statusCode == 201) {
+      // final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      // return SeriesRequest.fromJson(json);
+      return request;
     } else {
       throw ServerException(response.error);
     }

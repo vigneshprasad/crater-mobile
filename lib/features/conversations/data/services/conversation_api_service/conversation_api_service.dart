@@ -97,4 +97,10 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'public/conversations/series/')
   Future<Response> getSeries(@Query() int? page, @Query('page_size') int? pageSize);
 
+  @Get(path: 'public/conversations/series/{id}')
+  Future<Response> getSeriesDetails(@Path() int id);
+
+  @Post(path: 'conversations/series/requests/')
+  Future<Response> postSeriesRequest(@Body() Map<String, dynamic> body);
+
 }

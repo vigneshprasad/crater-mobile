@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
@@ -82,44 +83,44 @@ class StreamTab extends HookWidget {
                                 ],
                               )),
                         ),
-                      // if (streams.series.isNotEmpty)
-                      //   SliverToBoxAdapter(
-                      //     child: SizedBox(
-                      //       height: 80,
-                      //       child: UpcomingGridTitleTile(
-                      //         UpcomingGridItem(
-                      //             title: 'Series by our creators',
-                      //             color: '#B02A2A',
-                      //             type: GridItemType.title,
-                      //             icon: const Icon(
-                      //               Icons.schedule,
-                      //               size: 80,
-                      //             )),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // if (streams.series.isNotEmpty)
-                      //   SliverToBoxAdapter(
-                      //     child: SizedBox(
-                      //       height: 250,
-                      //       child: ListView.separated(
-                      //         controller: _controller,
-                      //         separatorBuilder: (context, index) =>
-                      //             const SizedBox(width: 20),
-                      //         scrollDirection: Axis.horizontal,
-                      //         itemCount: streams.series.length,
-                      //         padding:
-                      //             const EdgeInsets.only(left: 20, right: 80),
-                      //         itemBuilder: (BuildContext context, int index) =>
-                      //             SizedBox(
-                      //           width: 150,
-                      //           child: SeriesGridTile(
-                      //             streams.series[index],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
+                      if (streams.series.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 80,
+                            child: UpcomingGridTitleTile(
+                              UpcomingGridItem(
+                                  title: 'Series by our creators',
+                                  color: '#B02A2A',
+                                  type: GridItemType.title,
+                                  icon: const Icon(
+                                    Icons.schedule,
+                                    size: 80,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      if (streams.series.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 250,
+                            child: ListView.separated(
+                              controller: _controller,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(width: 20),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: streams.series.length,
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 80),
+                              itemBuilder: (BuildContext context, int index) =>
+                                  SizedBox(
+                                width: 150,
+                                child: SeriesGridTile(
+                                  streams.series[index],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: 80,
@@ -236,7 +237,7 @@ enum GridItemType {
   series,
 }
 
-class UpcomingGridItem {
+class UpcomingGridItem extends Equatable {
   final Webinar? conversation;
   final String? title;
   final Icon? icon;
@@ -250,6 +251,9 @@ class UpcomingGridItem {
     this.color,
     required this.type,
   });
+
+  @override
+  List<Object?> get props => [conversation?.id];
 }
 
 class UpcomingGridTile extends StatelessWidget {
@@ -414,7 +418,7 @@ class SeriesGridTile extends StatelessWidget {
     return InkWell(
       onTap: () {
           AutoRouter.of(context)
-              .push(ConversationScreenRoute(id: conversation.id));
+              .push(SeriesScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
       child: GridTile(

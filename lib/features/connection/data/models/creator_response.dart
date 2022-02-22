@@ -33,6 +33,11 @@ abstract class Creator with _$Creator {
     @Default(0) int order,
     @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
     @JsonKey(name: 'profile_detail') Profile? profileDetail,
+    String? slug,
+    bool? isFollower,
+    bool? showClubMembers,
+    String? video,
+    String? videoPoster,
   }) = _Creator;
 
   factory Creator.fromJson(Map<String, dynamic> json) =>

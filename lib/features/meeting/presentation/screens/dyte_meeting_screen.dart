@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class DyteMeetingScreen extends HookWidget {
   final int meetingId;
@@ -24,7 +25,7 @@ class DyteMeetingScreen extends HookWidget {
     const videoHeight = 400.0;
     final fullHeight = MediaQuery.of(context).size.height - 81;
 
-    final canGoBack = useState(false);
+    final isOngoingMeeting = useState(false);
 
     final config = useState<Map<String, dynamic>>({
       'header': false,
@@ -40,19 +41,18 @@ class DyteMeetingScreen extends HookWidget {
       return () {
         meetingHandler.value?.events.clear();
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
-        meetingHandler.value = null;
+        // meetingHandler.value = null;
         meetingHandler.dispose();
       };
     }, []);
 
     return WillPopScope(
       onWillPop: () async {
-        return canGoBack.value;
+        return isOngoingMeeting.value == false;
       },
       child: Scaffold(
           extendBody: true,
           extendBodyBehindAppBar: true,
-          // appBar: BaseAppBar(),
           body: profileState.when(
             data: (state) => SafeArea(
               child: Stack(
@@ -70,13 +70,18 @@ class DyteMeetingScreen extends HookWidget {
                             onInit: (DyteMeetingHandler handler) async {
                               meetingHandler.value = handler;
 
+                              handler.events.on('meetingJoin', context, (ev, c) {
+                                isOngoingMeeting.value = true;
+                                showChat.value = true;
+                              });
+
                               handler.events.on('meetingEnd', context, (ev, c) {
-                                canGoBack.value = true;
+                                isOngoingMeeting.value = false;
                                 AutoRouter.of(context).pop();
                               });
 
                               handler.events.on('meetingDisconnected', this, (ev, cont) {
-                                canGoBack.value = true;
+                                isOngoingMeeting.value = false;
                                 AutoRouter.of(context).pop();
                               });
                             },

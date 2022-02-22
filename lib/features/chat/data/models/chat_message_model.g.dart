@@ -104,6 +104,7 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
     reaction: json['data'] == null
         ? null
         : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
+    displayName: json['display_name'] as String?,
   );
 }
 
@@ -124,4 +125,5 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'is_support': instance.isSupport,
       'sender_detail': instance.senderDetail,
       'data': instance.reaction,
+      'display_name': instance.displayName,
     };

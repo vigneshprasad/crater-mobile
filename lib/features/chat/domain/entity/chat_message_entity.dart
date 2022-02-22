@@ -40,6 +40,9 @@ class ChatMessage extends HiveObject {
   @JsonKey(name: "data")
   final ChatReaction? reaction;
 
+  @JsonKey(name: "display_name")
+  final String? displayName;
+
   ChatMessage({
     this.message,
     this.file,
@@ -56,5 +59,6 @@ class ChatMessage extends HiveObject {
     this.isSupport,
     this.senderDetail,
     this.reaction,
+    this.displayName,
   });
 }

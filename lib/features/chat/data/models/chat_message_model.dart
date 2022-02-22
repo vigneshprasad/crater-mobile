@@ -65,6 +65,9 @@ class ChatMessageModel extends ChatMessage {
   @JsonKey(name: "data")
   final ChatReaction? reaction;
 
+  @JsonKey(name: "display_name")
+  final String? displayName;
+
   ChatMessageModel({
     this.message,
     this.file,
@@ -81,6 +84,7 @@ class ChatMessageModel extends ChatMessage {
     this.isSupport,
     this.senderDetail,
     this.reaction,
+    this.displayName,
   }) : super(
           message: message,
           file: file,
@@ -97,6 +101,7 @@ class ChatMessageModel extends ChatMessage {
           isSupport: isSupport,
           senderDetail: senderDetail,
           reaction: reaction,
+          displayName: displayName,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

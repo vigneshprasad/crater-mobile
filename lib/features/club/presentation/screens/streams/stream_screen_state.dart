@@ -75,8 +75,10 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   void updateData() {
     final items = List<UpcomingGridItem>.from(upcomingClubs);
 
+    final live = liveClubs + featuredClubs;
+
     state = ApiResult.data(StreamPage(
-      liveClubs: liveClubs + featuredClubs,
+      liveClubs: live.toSet().toList(),
       upcomingClubs: items,
       series: series,
     ));

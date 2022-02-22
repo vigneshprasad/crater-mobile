@@ -65,7 +65,10 @@ class ChatMessageItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(message.senderDetail?.name ?? '', style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Theme.of(context).accentColor)),
+                      Text(
+                        message.displayName ?? message.senderDetail?.name ?? '',
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Theme.of(context).accentColor),
+                      ),
                       const SizedBox(height: 4,),
                       if (message.message?.isNotEmpty ?? false)
                         Text(message.message!),

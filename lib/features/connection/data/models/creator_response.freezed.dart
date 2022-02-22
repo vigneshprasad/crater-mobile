@@ -286,7 +286,12 @@ class _$CreatorTearOff {
       @JsonKey(name: 'follower_count') int? followerCount = 0,
       int order = 0,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail}) {
+      @JsonKey(name: 'profile_detail') Profile? profileDetail,
+      String? slug,
+      bool? isFollower,
+      bool? showClubMembers,
+      String? video,
+      String? videoPoster}) {
     return _Creator(
       id: id,
       user: user,
@@ -296,6 +301,11 @@ class _$CreatorTearOff {
       order: order,
       defaultCommunity: defaultCommunity,
       profileDetail: profileDetail,
+      slug: slug,
+      isFollower: isFollower,
+      showClubMembers: showClubMembers,
+      video: video,
+      videoPoster: videoPoster,
     );
   }
 
@@ -322,6 +332,11 @@ mixin _$Creator {
   CreatorCommunity? get defaultCommunity => throw _privateConstructorUsedError;
   @JsonKey(name: 'profile_detail')
   Profile? get profileDetail => throw _privateConstructorUsedError;
+  String? get slug => throw _privateConstructorUsedError;
+  bool? get isFollower => throw _privateConstructorUsedError;
+  bool? get showClubMembers => throw _privateConstructorUsedError;
+  String? get video => throw _privateConstructorUsedError;
+  String? get videoPoster => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -340,7 +355,12 @@ abstract class $CreatorCopyWith<$Res> {
       @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail});
+      @JsonKey(name: 'profile_detail') Profile? profileDetail,
+      String? slug,
+      bool? isFollower,
+      bool? showClubMembers,
+      String? video,
+      String? videoPoster});
 
   $CreatorCommunityCopyWith<$Res>? get defaultCommunity;
   $ProfileCopyWith<$Res>? get profileDetail;
@@ -364,6 +384,11 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
     Object? order = freezed,
     Object? defaultCommunity = freezed,
     Object? profileDetail = freezed,
+    Object? slug = freezed,
+    Object? isFollower = freezed,
+    Object? showClubMembers = freezed,
+    Object? video = freezed,
+    Object? videoPoster = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -398,6 +423,26 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
           ? _value.profileDetail
           : profileDetail // ignore: cast_nullable_to_non_nullable
               as Profile?,
+      slug: slug == freezed
+          ? _value.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isFollower: isFollower == freezed
+          ? _value.isFollower
+          : isFollower // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      showClubMembers: showClubMembers == freezed
+          ? _value.showClubMembers
+          : showClubMembers // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      video: video == freezed
+          ? _value.video
+          : video // ignore: cast_nullable_to_non_nullable
+              as String?,
+      videoPoster: videoPoster == freezed
+          ? _value.videoPoster
+          : videoPoster // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -437,7 +482,12 @@ abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
       @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail});
+      @JsonKey(name: 'profile_detail') Profile? profileDetail,
+      String? slug,
+      bool? isFollower,
+      bool? showClubMembers,
+      String? video,
+      String? videoPoster});
 
   @override
   $CreatorCommunityCopyWith<$Res>? get defaultCommunity;
@@ -464,6 +514,11 @@ class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
     Object? order = freezed,
     Object? defaultCommunity = freezed,
     Object? profileDetail = freezed,
+    Object? slug = freezed,
+    Object? isFollower = freezed,
+    Object? showClubMembers = freezed,
+    Object? video = freezed,
+    Object? videoPoster = freezed,
   }) {
     return _then(_Creator(
       id: id == freezed
@@ -498,6 +553,26 @@ class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
           ? _value.profileDetail
           : profileDetail // ignore: cast_nullable_to_non_nullable
               as Profile?,
+      slug: slug == freezed
+          ? _value.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isFollower: isFollower == freezed
+          ? _value.isFollower
+          : isFollower // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      showClubMembers: showClubMembers == freezed
+          ? _value.showClubMembers
+          : showClubMembers // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      video: video == freezed
+          ? _value.video
+          : video // ignore: cast_nullable_to_non_nullable
+              as String?,
+      videoPoster: videoPoster == freezed
+          ? _value.videoPoster
+          : videoPoster // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -513,7 +588,12 @@ class _$_Creator implements _Creator {
       @JsonKey(name: 'follower_count') this.followerCount = 0,
       this.order = 0,
       @JsonKey(name: 'default_community') this.defaultCommunity,
-      @JsonKey(name: 'profile_detail') this.profileDetail});
+      @JsonKey(name: 'profile_detail') this.profileDetail,
+      this.slug,
+      this.isFollower,
+      this.showClubMembers,
+      this.video,
+      this.videoPoster});
 
   factory _$_Creator.fromJson(Map<String, dynamic> json) =>
       _$_$_CreatorFromJson(json);
@@ -542,10 +622,20 @@ class _$_Creator implements _Creator {
   @override
   @JsonKey(name: 'profile_detail')
   final Profile? profileDetail;
+  @override
+  final String? slug;
+  @override
+  final bool? isFollower;
+  @override
+  final bool? showClubMembers;
+  @override
+  final String? video;
+  @override
+  final String? videoPoster;
 
   @override
   String toString() {
-    return 'Creator(id: $id, user: $user, numberOfSubscribers: $numberOfSubscribers, certified: $certified, followerCount: $followerCount, order: $order, defaultCommunity: $defaultCommunity, profileDetail: $profileDetail)';
+    return 'Creator(id: $id, user: $user, numberOfSubscribers: $numberOfSubscribers, certified: $certified, followerCount: $followerCount, order: $order, defaultCommunity: $defaultCommunity, profileDetail: $profileDetail, slug: $slug, isFollower: $isFollower, showClubMembers: $showClubMembers, video: $video, videoPoster: $videoPoster)';
   }
 
   @override
@@ -572,7 +662,20 @@ class _$_Creator implements _Creator {
                     .equals(other.defaultCommunity, defaultCommunity)) &&
             (identical(other.profileDetail, profileDetail) ||
                 const DeepCollectionEquality()
-                    .equals(other.profileDetail, profileDetail)));
+                    .equals(other.profileDetail, profileDetail)) &&
+            (identical(other.slug, slug) ||
+                const DeepCollectionEquality().equals(other.slug, slug)) &&
+            (identical(other.isFollower, isFollower) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFollower, isFollower)) &&
+            (identical(other.showClubMembers, showClubMembers) ||
+                const DeepCollectionEquality()
+                    .equals(other.showClubMembers, showClubMembers)) &&
+            (identical(other.video, video) ||
+                const DeepCollectionEquality().equals(other.video, video)) &&
+            (identical(other.videoPoster, videoPoster) ||
+                const DeepCollectionEquality()
+                    .equals(other.videoPoster, videoPoster)));
   }
 
   @override
@@ -585,7 +688,12 @@ class _$_Creator implements _Creator {
       const DeepCollectionEquality().hash(followerCount) ^
       const DeepCollectionEquality().hash(order) ^
       const DeepCollectionEquality().hash(defaultCommunity) ^
-      const DeepCollectionEquality().hash(profileDetail);
+      const DeepCollectionEquality().hash(profileDetail) ^
+      const DeepCollectionEquality().hash(slug) ^
+      const DeepCollectionEquality().hash(isFollower) ^
+      const DeepCollectionEquality().hash(showClubMembers) ^
+      const DeepCollectionEquality().hash(video) ^
+      const DeepCollectionEquality().hash(videoPoster);
 
   @JsonKey(ignore: true)
   @override
@@ -607,7 +715,12 @@ abstract class _Creator implements Creator {
       @JsonKey(name: 'follower_count') int? followerCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail}) = _$_Creator;
+      @JsonKey(name: 'profile_detail') Profile? profileDetail,
+      String? slug,
+      bool? isFollower,
+      bool? showClubMembers,
+      String? video,
+      String? videoPoster}) = _$_Creator;
 
   factory _Creator.fromJson(Map<String, dynamic> json) = _$_Creator.fromJson;
 
@@ -631,6 +744,16 @@ abstract class _Creator implements Creator {
   @override
   @JsonKey(name: 'profile_detail')
   Profile? get profileDetail => throw _privateConstructorUsedError;
+  @override
+  String? get slug => throw _privateConstructorUsedError;
+  @override
+  bool? get isFollower => throw _privateConstructorUsedError;
+  @override
+  bool? get showClubMembers => throw _privateConstructorUsedError;
+  @override
+  String? get video => throw _privateConstructorUsedError;
+  @override
+  String? get videoPoster => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CreatorCopyWith<_Creator> get copyWith =>

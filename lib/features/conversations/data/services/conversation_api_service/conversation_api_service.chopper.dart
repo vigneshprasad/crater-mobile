@@ -210,4 +210,19 @@ class _$ConversationApiService extends ConversationApiService {
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> getSeriesDetails(int id) {
+    final $url = '/groups/public/conversations/series/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postSeriesRequest(Map<String, dynamic> body) {
+    final $url = '/groups/conversations/series/requests/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }
