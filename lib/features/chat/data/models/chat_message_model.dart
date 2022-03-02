@@ -1,11 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:worknetwork/constants/app_hive_boxes.dart';
+import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
 import 'package:worknetwork/features/chat_inbox/data/models/chat_user_model.dart';
-import 'package:worknetwork/features/chat_inbox/domain/entity/chat_user_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
-
-import '../../../../constants/app_hive_boxes.dart';
-import '../../domain/entity/chat_message_entity.dart';
 
 part 'chat_message_model.g.dart';
 
@@ -40,7 +38,8 @@ class ChatMessageModel extends ChatMessage {
   final String? photo;
 
   @HiveField(8)
-  final String? created;
+  @JsonKey(name: "created_at")
+  final dynamic created;
 
   @HiveField(9)
   @JsonKey(name: "is_read")
@@ -68,6 +67,8 @@ class ChatMessageModel extends ChatMessage {
   @JsonKey(name: "display_name")
   final String? displayName;
 
+  String? firebaseId;
+
   ChatMessageModel({
     this.message,
     this.file,
@@ -85,6 +86,7 @@ class ChatMessageModel extends ChatMessage {
     this.senderDetail,
     this.reaction,
     this.displayName,
+    this.firebaseId,
   }) : super(
           message: message,
           file: file,
@@ -102,6 +104,7 @@ class ChatMessageModel extends ChatMessage {
           senderDetail: senderDetail,
           reaction: reaction,
           displayName: displayName,
+          firebaseId: firebaseId,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -140,7 +141,7 @@ class ChatMessageItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    dateFormat.format(DateTime.parse(message.created!)),
+                    dateFormat.format((message.created as Timestamp?)?.toDate() ?? DateTime.now()),
                     style: timeStampStyle,
                   ),
                   Icon(

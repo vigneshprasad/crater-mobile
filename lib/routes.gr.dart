@@ -188,9 +188,7 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (data) {
           final args = data.argsAs<ChatScreenRouteArgs>();
           return _i17.ChatScreen(
-              key: args.key,
-              recieverId: args.recieverId,
-              groupId: args.groupId);
+              recieverId: args.recieverId, groupId: args.groupId);
         }),
     ChatSearchScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -621,19 +619,17 @@ class CreatePostScreenRoute extends _i1.PageRouteInfo {
 }
 
 class ChatScreenRoute extends _i1.PageRouteInfo<ChatScreenRouteArgs> {
-  ChatScreenRoute({_i2.Key? key, required String recieverId, String? groupId})
+  ChatScreenRoute({required String recieverId, String? groupId})
       : super(name,
             path: '/chat/user',
-            args: ChatScreenRouteArgs(
-                key: key, recieverId: recieverId, groupId: groupId));
+            args:
+                ChatScreenRouteArgs(recieverId: recieverId, groupId: groupId));
 
   static const String name = 'ChatScreenRoute';
 }
 
 class ChatScreenRouteArgs {
-  const ChatScreenRouteArgs({this.key, required this.recieverId, this.groupId});
-
-  final _i2.Key? key;
+  const ChatScreenRouteArgs({required this.recieverId, this.groupId});
 
   final String recieverId;
 

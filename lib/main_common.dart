@@ -16,6 +16,9 @@ import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
 import 'utils/simple_bloc_observer.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -44,6 +47,12 @@ Future<void> mainCommon(String configPath, String env) async {
   await KiwiContainer().resolve<LocalStorage>().initStorage();
   final Logger logger = KiwiContainer().resolve<Logger>();
   KiwiContainer().resolve<PushNotifications>().initSdk();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+    name: 'Crater',
+  );
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

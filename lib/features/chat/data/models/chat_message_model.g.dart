@@ -25,7 +25,7 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       receiver: fields[5] as String?,
       pk: fields[6] as int?,
       photo: fields[7] as String?,
-      created: fields[8] as String?,
+      created: fields[8] as dynamic,
       isRead: fields[9] as bool?,
       senderId: fields[10] as String?,
       receiverId: fields[11] as String?,
@@ -93,7 +93,7 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
     receiver: json['receiver'] as String?,
     pk: json['pk'] as int?,
     photo: json['photo'] as String?,
-    created: json['created'] as String?,
+    created: json['created_at'],
     isRead: json['is_read'] as bool?,
     senderId: json['sender_id'] as String?,
     receiverId: json['receiver_id'] as String?,
@@ -105,6 +105,7 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
         ? null
         : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
     displayName: json['display_name'] as String?,
+    firebaseId: json['firebaseId'] as String?,
   );
 }
 
@@ -118,7 +119,7 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'receiver': instance.receiver,
       'pk': instance.pk,
       'photo': instance.photo,
-      'created': instance.created,
+      'created_at': instance.created,
       'is_read': instance.isRead,
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
@@ -126,4 +127,5 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'sender_detail': instance.senderDetail,
       'data': instance.reaction,
       'display_name': instance.displayName,
+      'firebaseId': instance.firebaseId,
     };

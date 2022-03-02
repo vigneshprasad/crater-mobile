@@ -20,7 +20,7 @@ class ChatMessage extends HiveObject {
 
   final String? photo;
 
-  final String? created;
+  final dynamic created;
 
   @JsonKey(name: "is_read")
   final bool? isRead;
@@ -43,6 +43,8 @@ class ChatMessage extends HiveObject {
   @JsonKey(name: "display_name")
   final String? displayName;
 
+  String? firebaseId;
+
   ChatMessage({
     this.message,
     this.file,
@@ -60,5 +62,6 @@ class ChatMessage extends HiveObject {
     this.senderDetail,
     this.reaction,
     this.displayName,
+    this.firebaseId,
   });
 }
