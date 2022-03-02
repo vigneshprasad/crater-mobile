@@ -48,11 +48,11 @@ Future<void> mainCommon(String configPath, String env) async {
   final Logger logger = KiwiContainer().resolve<Logger>();
   KiwiContainer().resolve<PushNotifications>().initSdk();
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-    name: 'Crater',
-  );
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  //   name: 'Crater',
+  // );
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

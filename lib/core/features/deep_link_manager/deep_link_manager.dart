@@ -41,15 +41,13 @@ class DeepLinkManagerImpl implements DeepLinkManager {
   }
 
   Future<void> _handleFirebaseDeepLink(BuildContext context) async {
-    FirebaseDynamicLinks.instance.onLink(
-      onSuccess: (linkData) async {
-        final Uri? deeplink = linkData?.link;
-        if (deeplink != null) {
-          _handleDeepLink(deeplink, context);
-        }
-      },
-    );
-
+    FirebaseDynamicLinks.instance.onLink(onSuccess: (event) async {
+      final Uri? deeplink = event?.link;
+      if (deeplink!=null) {
+        _handleDeepLink(deeplink, context);
+      }
+    });
+    
     final data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deeplink = data?.link;
     if (deeplink != null) {
