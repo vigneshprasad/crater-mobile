@@ -34,9 +34,34 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
 
     final Stream<QuerySnapshot> messagesStream = chatRef!.snapshots();
 
+
+    // messagesStream.listen((event) {
+    //   for (final element in event.docs) {
+    //     final json = element.data() as Map<String, dynamic>;
+    //     final newItem = ChatMessageModel.fromJson(json);
+    //     newItem.firebaseId = element.id;
+
+    //     // Remove old item
+    //     final item = messages.firstWhere((e) => e.firebaseId == element.id, orElse: ()=>ChatMessage());
+    //     if (item.firebaseId != null) {
+    //       messages.remove(item);
+    //     }
+
+    //     messages.add(newItem);
+    //   }
+
+    //   messages.sort((a,b) {
+    //     final aCreated = a.created as Timestamp? ?? Timestamp.now();
+    //     final bCreated = b.created as Timestamp? ?? Timestamp.now();
+    //     return bCreated.compareTo(aCreated);
+    //   });
+
+    //   state = ApiResult<List<ChatMessage>>.data(messages);
+    // });
+
     messagesStream.listen((event) {
       for (final element in event.docChanges) {
-        final json = element.doc.data() as Map<String, dynamic>?;
+        final json = element.doc.data();
         final newItem = ChatMessageModel.fromJson(json!);
         newItem.firebaseId = element.doc.id;
 

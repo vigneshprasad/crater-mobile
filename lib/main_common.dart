@@ -49,10 +49,10 @@ Future<void> mainCommon(String configPath, String env) async {
   KiwiContainer().resolve<PushNotifications>().initSdk();
 
   // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  //   name: 'Crater',
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+    name: 'Crater',
+  );
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

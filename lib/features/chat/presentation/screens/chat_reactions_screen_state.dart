@@ -18,7 +18,7 @@ class ReactionScreenState extends StateNotifier<ApiResult<List<ChatReaction>>> {
 
   ReactionScreenState(this.read, this.webinarId)
       : super(ApiResult<List<ChatReaction>>.loading()) {
-    retrieveChatReactions();
+    // retrieveChatReactions();
   }
 
   Future<Either<Failure, List<ChatReaction>>> retrieveChatReactions() async {

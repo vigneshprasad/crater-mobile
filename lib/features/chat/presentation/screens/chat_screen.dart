@@ -21,26 +21,16 @@ class ChatScreen extends HookWidget {
   Widget build(BuildContext context) {
     final _isTyping = useState(false);
     final _chatInputController = useTextEditingController();
-    final listner = context.read(chatStateProvider(groupId ?? ''));
+    final listner = useProvider(chatStateProvider(groupId ?? ''));
     final showReactions = useState(false);
-    final message = useState('');
 
     final user = BlocProvider.of<AuthBloc>(context).state.user!;
 
-    useEffect(() {
-      _chatInputController.addListener(() {
-        message.value = _chatInputController.text;
-      });
-      return () {
-        _chatInputController.dispose();
-      };
-    }, [],);
-
     void _onSubmitMessage() {
-      if (message.value.isNotEmpty) {
+      if (_chatInputController.text.isNotEmpty) {
         context
             .read(chatStateProvider(groupId ?? '').notifier)
-            .sendChatMessages(message.value, user);
+            .sendChatMessages(_chatInputController.text, user);
         _chatInputController.clear();
       }
     }
