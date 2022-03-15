@@ -44,15 +44,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.persistReceivedMessage,
     required this.sendReadUserMessage,
   }) : super(const ChatInitial()) {
-    if (websocketBloc.state is WebSocketConnected) {
-      add(const WebSocketBlocConnected());
-    } else {
-      _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
-        if (websocketBlocState is WebSocketConnected) {
-          add(const WebSocketBlocConnected());
-        }
-      });
-    }
+    // if (websocketBloc.state is WebSocketConnected) {
+    //   add(const WebSocketBlocConnected());
+    // } else {
+    //   _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
+    //     if (websocketBlocState is WebSocketConnected) {
+    //       add(const WebSocketBlocConnected());
+    //     }
+    //   });
+    // }
   }
 
   void startWebinarChat(String groupId) {

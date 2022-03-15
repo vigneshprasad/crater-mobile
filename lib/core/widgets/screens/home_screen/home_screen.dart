@@ -78,7 +78,7 @@ class HomeScreen extends HookWidget {
           controller: _tabController,
           children: [
             StreamTab(),
-            PastStreamTab(),
+            PastStreamScreen(),
             ConnectionTab(),
             if (user == null)
               const PhoneScreen(state: '',)

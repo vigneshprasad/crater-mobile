@@ -15,13 +15,13 @@ import '../../routes.gr.dart';
 
 const sequence = [
   ProfileBasicScreenRoute.name,
-  ProfileTagsScreenRoute.name,
-  ProfileExtraInfoScreenRoute.name,
-  ProfileImageScreenRoute.name,
-  ProfileBioScreenRoute.name,
-  ProfileSetupScreenRoute.name,
+  // ProfileTagsScreenRoute.name,
+  // ProfileExtraInfoScreenRoute.name,
+  // ProfileImageScreenRoute.name,
+  // ProfileBioScreenRoute.name,
+  // ProfileSetupScreenRoute.name,
   // ProfileEmailScreenRoute.name,
-  ProfileRequestScreenRoute.name,
+  // ProfileRequestScreenRoute.name,
   HomeScreenRoute.name,
 ];
 

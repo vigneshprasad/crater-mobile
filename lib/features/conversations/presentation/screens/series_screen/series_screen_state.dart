@@ -11,26 +11,40 @@ import '../../../data/repository/conversation_repository_impl.dart';
 import '../../../domain/entity/conversation_request_entity/conversation_request_entity.dart';
 
 final seriesStateProvider = StateNotifierProvider.autoDispose
-    .family<SeriesState, ApiResult<Series>, int>(
+    .family<SeriesState, ApiResult<SeriesScreenData>, int>(
         (ref, id) => SeriesState(ref.read, id));
 
-class SeriesState extends StateNotifier<ApiResult<Series>> {
+class SeriesScreenData{
+
+  final Series series;
+  final bool isRSVPed;
+
+  SeriesScreenData(this.series, this.isRSVPed);
+}
+
+class SeriesState extends StateNotifier<ApiResult<SeriesScreenData>> {
   final Reader read;
   final int _groupId;
 
   SeriesState(this.read, this._groupId)
-      : super(ApiResult<Series>.loading()) {
+      : super(ApiResult.loading()) {
     retrieveSeries();
   }
 
-  Future<Either<Failure, Series>> retrieveSeries() async {
+  Future<Either<Failure, Series>> retrieveSeries({bool justRSVPed = false}) async {
     final response = await read(conversationRepositoryProvider)
         .getSeriesDetails(_groupId);
 
+    final requestResponse = await read(conversationRepositoryProvider)
+        .getWebinarRSVPRequest(_groupId);
+
     state = response.fold(
-      (failure) => ApiResult<Series>.error(failure),
-      (group) {
-        return ApiResult<Series>.data(group);
+      (failure) => ApiResult.error(failure),
+      (series) {
+
+        final isRSVPed = justRSVPed || requestResponse.isRight();
+        final data = SeriesScreenData(series, isRSVPed);
+        return ApiResult.data(data);
       },
     );
 

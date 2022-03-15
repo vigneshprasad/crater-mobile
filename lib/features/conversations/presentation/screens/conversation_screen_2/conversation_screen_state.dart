@@ -18,8 +18,15 @@ import '../../widgets/conversation_overlay_indicator/conversation_overlay_indica
 
 enum RtcConnection { connected, connecting, disconnected }
 
+class ConversationScreenData {
+  final Conversation conversation;
+  final bool isRSVPed;
+
+  ConversationScreenData(this.conversation, this.isRSVPed);
+}
+
 final conversationStateProvider = StateNotifierProvider.autoDispose
-    .family<ConversationState, ApiResult<Conversation>, int>(
+    .family<ConversationState, ApiResult<ConversationScreenData>, int>(
         (ref, id) => ConversationState(ref.read, id));
 
 final conversationSpeakersState = StateNotifierProvider.autoDispose
@@ -42,25 +49,31 @@ class RtcConnectionState extends ChangeNotifier {
   }
 }
 
-class ConversationState extends StateNotifier<ApiResult<Conversation>> {
+class ConversationState extends StateNotifier<ApiResult<ConversationScreenData>> {
   final Reader read;
   final int _groupId;
 
   ConversationState(this.read, this._groupId)
-      : super(ApiResult<Conversation>.loading()) {
+      : super(ApiResult.loading()) {
     retrieveConversation();
   }
 
-  Future<Either<Failure, Conversation>> retrieveConversation() async {
+  Future<Either<Failure, Conversation>> retrieveConversation({bool justRSVPed = false}) async {
     final response = await read(conversationRepositoryProvider)
         .retreiveConversation(_groupId);
+    
+    final requestResponse = await read(conversationRepositoryProvider)
+        .getWebinarRSVPRequest(_groupId);
 
     state = response.fold(
-      (failure) => ApiResult<Conversation>.error(failure),
+      (failure) => ApiResult.error(failure),
       (group) {
         read(conversationSpeakersState(_groupId).notifier)
             .setInitialSpeakers(group.speakersDetailList!);
-        return ApiResult<Conversation>.data(group);
+
+        final isRSVPed = justRSVPed || requestResponse.isRight();
+        final data = ConversationScreenData(group, isRSVPed);
+        return ApiResult.data(data);
       },
     );
 

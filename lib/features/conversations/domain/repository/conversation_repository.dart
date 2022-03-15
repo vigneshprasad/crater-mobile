@@ -37,6 +37,9 @@ abstract class ConversationRepository {
     Topic topic,
   );
 
+  Future<Either<Failure, ConversationRequest>> getWebinarRSVPRequest(
+      int webinarId);
+
   Future<Either<Failure, ConversationRequest>> postRequestToJoinGroup(
       ConversationRequest request);
 
@@ -51,7 +54,7 @@ abstract class ConversationRepository {
   Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
   Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
-  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize});
+  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize, int? categoryId});
   Future<Either<Failure, List<Webinar>>> getFeaturedClubs({String? userId, int? page, int? pageSize});
 
   Future<Either<Failure, List<ChatReaction>>> getChatReactions();
@@ -63,4 +66,6 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, SeriesRequest>> postRequestToRSVPSeries(
       SeriesRequest request);
+
+  Future<Either<Failure, List<CategoriesDetailList>>> getWebinarCategories();
 }

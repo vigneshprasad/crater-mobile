@@ -29,55 +29,6 @@ class ConnectionTab extends HookWidget {
             return Future.wait(futures);
           },
           child: FeaturedList(),
-          //  tagsState.when(
-          //   loading: () => Container(),
-          //   error: (err, st) => Center(child: Text(err.toString())),
-          //   data: (tags) {
-          //     return ListView.builder(
-          //       itemCount: tags.length,
-          //       padding: const EdgeInsets.symmetric(vertical: 8),
-          //       itemBuilder: (BuildContext context, int index) {
-          //         return Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             if (index == 0)
-          //               Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Padding(
-          //                     padding:
-          //                         const EdgeInsets.symmetric(horizontal: 20),
-          //                     child: Text('Crater Featured',
-          //                         style: Theme.of(context).textTheme.headline6),
-          //                   ),
-          //                   const SizedBox(height: 20),
-          //                   FeaturedList(),
-          //                   const SizedBox(height: 40),
-          //                   // Padding(
-          //                   //   padding:
-          //                   //       const EdgeInsets.symmetric(horizontal: 20),
-          //                   //   child: Text('Member only',
-          //                   //       style: Theme.of(context).textTheme.headline6),
-          //                   // ),
-          //                   // const SizedBox(height: 8),
-          //                   // Padding(
-          //                   //   padding:
-          //                   //       const EdgeInsets.symmetric(horizontal: 20),
-          //                   //   child: Text(
-          //                   //     'Let the AI match you or request a meeting with your preferences',
-          //                   //     style: Theme.of(context).textTheme.caption,
-          //                   //   ),
-          //                   // ),
-          //                   // const SizedBox(height: 40),
-          //                 ],
-          //               ),
-          //             ConnectableList(tag: tags[index]),
-          //           ],
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
         ),
       ),
     );

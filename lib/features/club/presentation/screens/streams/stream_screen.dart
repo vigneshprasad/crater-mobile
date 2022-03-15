@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:equatable/equatable.dart';
@@ -31,6 +33,19 @@ class StreamTab extends HookWidget {
         context.read(streamStateProvider.notifier).getNextPageSeriesData();
       }
     });
+
+    final isMounted = useIsMounted();
+    final timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (isMounted()) {
+        context.read(streamStateProvider.notifier).getLiveData();
+      }
+    });
+
+    useEffect(() {
+      return () {
+        timer.cancel();
+      };
+    }, []);
 
     return SafeArea(
       child: NestedScrollView(
@@ -301,7 +316,7 @@ class UpcomingGridTile extends StatelessWidget {
           //         )));
         } else if (item.type == GridItemType.past) {
           AutoRouter.of(context)
-              .push(PastStreamScreenRoute(id: conversation.id));
+              .push(PastStreamDetailScreenRoute(id: conversation.id));
         }
       },
       borderRadius: BorderRadius.circular(12),
@@ -565,7 +580,6 @@ class LiveGridTile extends StatelessWidget {
         //         )));
 
         if (item.type == GridItemType.live) {
-          final user = BlocProvider.of<AuthBloc>(context).state.user;
           final loginStatus = await manageLoginPopup(context);
           if (loginStatus==false) {
             return;

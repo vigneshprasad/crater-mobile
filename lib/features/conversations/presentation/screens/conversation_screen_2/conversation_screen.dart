@@ -27,9 +27,7 @@ import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 import 'conversation_screen_state.dart';
 
@@ -65,8 +63,8 @@ class ConversationScreen extends HookWidget {
       appBar: BaseAppBar(),
       body: conversationState.when(
         loading: () => _Loader(),
-        data: (conversation) => _ConversationLoaded(
-          conversation: conversation,
+        data: (data) => _ConversationLoaded(
+          data: data,
           // speakers: speakers,
           // connection: connectionProvider.connection,
         ),
@@ -88,14 +86,14 @@ class _Loader extends StatelessWidget {
 }
 
 class _ConversationLoaded extends StatelessWidget {
-  final Conversation conversation;
+  final ConversationScreenData data;
   // final List<RtcUser> speakers;
   // final RtcConnection connection;
   OverlayEntry? overlayEntry;
 
   _ConversationLoaded({
     Key? key,
-    required this.conversation,
+    required this.data,
     // required this.speakers,
     // required this.connection,
   }) : super(key: key);
@@ -107,7 +105,7 @@ class _ConversationLoaded extends StatelessWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
-
+    final conversation = data.conversation;
     final article = conversation.topicDetail?.articleDetail;
 
     final topic = conversation.topicDetail;
@@ -132,6 +130,7 @@ class _ConversationLoaded extends StatelessWidget {
         !isClosed;
 
     final link = 'https://crater.club/session/${conversation.id}';
+
     return WillPopScope(
       onWillPop: () async {
         // if (connection != RtcConnection.disconnected) {
@@ -315,7 +314,7 @@ class _ConversationLoaded extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (conversation.attendees?.contains(authUserPK) ?? false)
+                      if (data.isRSVPed)
                         if (canHost) // HOST
                           Expanded(
                               child: BaseLargeButton(
@@ -378,7 +377,7 @@ class _ConversationLoaded extends StatelessWidget {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
+        builder: (context) => DyteMeetingScreen(meetingId: data.conversation.id!)));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
@@ -392,7 +391,7 @@ class _ConversationLoaded extends StatelessWidget {
     Overlay.of(context)?.insert(overlayEntry!);
 
     final response = await context
-        .read(conversationStateProvider(conversation.id!).notifier)
+        .read(conversationStateProvider(data.conversation.id!).notifier)
         .postRequestToJoinGroup();
 
     response.fold(
@@ -414,8 +413,8 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _updateConversation(BuildContext context) async {
     final response = await context
-        .read(conversationStateProvider(conversation.id!).notifier)
-        .retrieveConversation();
+        .read(conversationStateProvider(data.conversation.id!).notifier)
+        .retrieveConversation(justRSVPed: true);
 
     response.fold(
       (failure) {
@@ -440,11 +439,11 @@ class _ConversationLoaded extends StatelessWidget {
 
           await showEmail(context);
 
-          AutoRouter.of(context).pushAndPopUntil(
-            OnboardingScreenRoute(
-                type: OnboardingType.meetingJoining.toString()),
-            predicate: (_) => false,
-          );
+          // AutoRouter.of(context).pushAndPopUntil(
+          //   OnboardingScreenRoute(
+          //       type: OnboardingType.meetingJoining.toString()),
+          //   predicate: (_) => false,
+          // );
         // }
       },
     );

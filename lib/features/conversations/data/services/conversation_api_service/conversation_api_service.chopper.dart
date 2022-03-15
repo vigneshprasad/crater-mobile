@@ -138,6 +138,13 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getWebinarRSVP(int id) {
+    final $url = '/groups/requests/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> postConversationRequest(Map<String, dynamic> body) {
     final $url = '/groups/requests/';
     final $body = body;
@@ -151,6 +158,13 @@ class _$ConversationApiService extends ConversationApiService {
     final $url = '/groups/topic/suggest/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getWebinarCategories() {
+    final $url = '/groups/conversations/categories';
+    final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -172,12 +186,13 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> getPastClubs(
-      String? host, int? page, int? pageSize) {
+      String? host, int? page, int? pageSize, int? categoryId) {
     final $url = '/groups/public/conversations/webinars/past';
     final $params = <String, dynamic>{
       'host': host,
       'page': page,
-      'page_size': pageSize
+      'page_size': pageSize,
+      'categories': categoryId
     };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);

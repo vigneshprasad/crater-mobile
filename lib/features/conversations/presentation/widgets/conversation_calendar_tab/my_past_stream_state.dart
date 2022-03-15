@@ -1,22 +1,17 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
 import '../../../../conversations/data/repository/conversation_repository_impl.dart';
-import 'stream_screen.dart';
 
-final pastStreamsStateProvider = StateNotifierProvider.autoDispose.family<PastStreamStateNotifier,
+final myPastStreamsStateProvider = StateNotifierProvider.autoDispose.family<MyPastStreamStateNotifier,
         ApiResult<List<UpcomingGridItem>>, int?>(
-    (ref, id) => PastStreamStateNotifier(ref.read, id));
+    (ref, id) => MyPastStreamStateNotifier(ref.read, id));
 
-final webinarCategoryStateProvider = StateNotifierProvider<WebinarCategoryStateNotifier,
-        ApiResult<List<CategoriesDetailList>>>(
-    (ref) => WebinarCategoryStateNotifier(ref.read));
-
-class PastStreamStateNotifier
+class MyPastStreamStateNotifier
     extends StateNotifier<ApiResult<List<UpcomingGridItem>>> {
   final Reader read;
   final int? categoryId;
@@ -27,7 +22,7 @@ class PastStreamStateNotifier
   int page = 1;
   bool allLoaded = false;
 
-  PastStreamStateNotifier(this.read, this.categoryId)
+  MyPastStreamStateNotifier(this.read, this.categoryId)
       : super(ApiResult<List<UpcomingGridItem>>.loading()) {
     try {
       getPastData();
@@ -95,36 +90,6 @@ class PastStreamStateNotifier
         loadingPage = false;
         allLoaded = webinars.isEmpty || webinars.length < pageSize;
         return ApiResult<List<UpcomingGridItem>>.data(pastClubs);
-      },
-    );
-
-    return response;
-  }
-}
-
-
-class WebinarCategoryStateNotifier
-    extends StateNotifier<ApiResult<List<CategoriesDetailList>>> {
-  final Reader read;
-
-  WebinarCategoryStateNotifier(this.read)
-      : super(ApiResult<List<CategoriesDetailList>>.loading()) {
-    try {
-      getWebinarCategories();
-    } catch (_) {}
-  }
-
-  Future<Either<Failure, List<CategoriesDetailList>>?> getWebinarCategories() async {
-    state = ApiResult.loading();
-
-    final response = await read(conversationRepositoryProvider).getWebinarCategories();
-
-    state = response.fold(
-      (failure) {
-        return ApiResult.error(failure);
-      },
-      (catetories) {
-        return ApiResult.data(catetories);
       },
     );
 

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,6 +14,11 @@ import '../../../../../routes.gr.dart';
 import 'featured_list_state.dart';
 
 class FeaturedList extends HookWidget {
+
+  final Axis scrollDirection;
+
+  const FeaturedList({this.scrollDirection = Axis.vertical});
+
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
@@ -55,12 +61,13 @@ class FeaturedList extends HookWidget {
         data: (creators) => GridView.builder(
             controller: _controller,
             itemCount: creators.length,
+            scrollDirection: scrollDirection,
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: scrollDirection == Axis.horizontal ? 1 : 3,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
-              childAspectRatio: 0.65
+              childAspectRatio:  scrollDirection == Axis.horizontal ? 1.2 : 0.65
             ),
             itemBuilder: (context, index) => CreatorCard(
               creator: creators[index],

@@ -66,11 +66,11 @@ class ChatInputBar extends StatelessWidget {
                 filled: true,
                 // fillColor: Colors.grey[200],
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[300]!),
+                  // borderSide: BorderSide(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue[100]!, width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2),
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 hintStyle: labelStyle,

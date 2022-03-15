@@ -65,16 +65,16 @@ class SeriesScreen extends HookWidget {
       appBar: BaseAppBar(),
       body: seriesState.when(
         loading: () => _Loader(),
-        data: (series) {
-          final groupId = series.groups?.first;
+        data: (data) {
+          final groupId = data.series.groups?.first;
           final conversationState =
               useProvider(conversationStateProvider(groupId!));
 
           return conversationState.when(
               loading: () => _Loader(),
-              data: (conversation) => _ConversationLoaded(
-                    conversation: conversation,
-                    series: series,
+              data: (conversationData) => _SeriesLoaded(
+                    data: conversationData,
+                    series: data.series,
                   ),
               error: (err, st) => _Loader());
         },
@@ -95,14 +95,14 @@ class _Loader extends StatelessWidget {
   }
 }
 
-class _ConversationLoaded extends StatelessWidget {
-  final Conversation conversation;
+class _SeriesLoaded extends StatelessWidget {
+  final ConversationScreenData data;
   final Series series;
   OverlayEntry? overlayEntry;
 
-  _ConversationLoaded({
+  _SeriesLoaded({
     Key? key,
-    required this.conversation,
+    required this.data,
     required this.series,
   }) : super(key: key);
 
@@ -113,7 +113,9 @@ class _ConversationLoaded extends StatelessWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
-
+    
+    final conversation = data.conversation;
+    
     final article = conversation.topicDetail?.articleDetail;
 
     final topic = conversation.topicDetail;
@@ -339,7 +341,7 @@ class _ConversationLoaded extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (conversation.attendees?.contains(authUserPK) ?? false)
+                      if (data.isRSVPed)
                         if (canHost) // HOST
                           Expanded(
                               child: BaseLargeButton(
@@ -401,7 +403,7 @@ class _ConversationLoaded extends StatelessWidget {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
+        builder: (context) => DyteMeetingScreen(meetingId: data.conversation.id!)));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
@@ -435,9 +437,14 @@ class _ConversationLoaded extends StatelessWidget {
   }
 
   Future<void> _updateConversation(BuildContext context) async {
+
+    final seriesResponse = await context
+        .read(seriesStateProvider(series.id!).notifier)
+        .retrieveSeries(justRSVPed: true);
+
     final response = await context
-        .read(conversationStateProvider(conversation.id!).notifier)
-        .retrieveConversation();
+        .read(conversationStateProvider(data.conversation.id!).notifier)
+        .retrieveConversation(justRSVPed: true);
 
     response.fold(
       (failure) {
@@ -462,10 +469,10 @@ class _ConversationLoaded extends StatelessWidget {
 
         await showEmail(context);
 
-        AutoRouter.of(context).pushAndPopUntil(
-          OnboardingScreenRoute(type: OnboardingType.meetingJoining.toString()),
-          predicate: (_) => false,
-        );
+        // AutoRouter.of(context).pushAndPopUntil(
+        //   OnboardingScreenRoute(type: OnboardingType.meetingJoining.toString()),
+        //   predicate: (_) => false,
+        // );
         // }
       },
     );
@@ -570,7 +577,7 @@ class GroupGridTile extends StatelessWidget {
       onTap: () async {
         if (item.closed == true || item.recordingDetails?.recording != null) {
           AutoRouter.of(context)
-              .push(PastStreamScreenRoute(id: conversation.id));
+              .push(PastStreamDetailScreenRoute(id: conversation.id));
         } else {
           AutoRouter.of(context)
               .push(ConversationScreenRoute(id: conversation.id));
