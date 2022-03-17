@@ -277,6 +277,7 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
                       ),
                       VideoProgressIndicator(
                         _controller,
+                        colors: VideoProgressColors(playedColor: Theme.of(context).accentColor),
                         allowScrubbing: true,
                         padding: EdgeInsets.only(
                           bottom: widget.isFullScreen.value ? 40 : 0,

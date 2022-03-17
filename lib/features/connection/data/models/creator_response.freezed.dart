@@ -288,10 +288,10 @@ class _$CreatorTearOff {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      bool? isFollower,
-      bool? showClubMembers,
+      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
-      String? videoPoster}) {
+      @JsonKey(name: 'video_poster') String? videoPoster}) {
     return _Creator(
       id: id,
       user: user,
@@ -333,9 +333,12 @@ mixin _$Creator {
   @JsonKey(name: 'profile_detail')
   Profile? get profileDetail => throw _privateConstructorUsedError;
   String? get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'if_follower')
   bool? get isFollower => throw _privateConstructorUsedError;
+  @JsonKey(name: 'show_club_members')
   bool? get showClubMembers => throw _privateConstructorUsedError;
   String? get video => throw _privateConstructorUsedError;
+  @JsonKey(name: 'video_poster')
   String? get videoPoster => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -357,10 +360,10 @@ abstract class $CreatorCopyWith<$Res> {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      bool? isFollower,
-      bool? showClubMembers,
+      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
-      String? videoPoster});
+      @JsonKey(name: 'video_poster') String? videoPoster});
 
   $CreatorCommunityCopyWith<$Res>? get defaultCommunity;
   $ProfileCopyWith<$Res>? get profileDetail;
@@ -484,10 +487,10 @@ abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      bool? isFollower,
-      bool? showClubMembers,
+      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
-      String? videoPoster});
+      @JsonKey(name: 'video_poster') String? videoPoster});
 
   @override
   $CreatorCommunityCopyWith<$Res>? get defaultCommunity;
@@ -590,10 +593,10 @@ class _$_Creator implements _Creator {
       @JsonKey(name: 'default_community') this.defaultCommunity,
       @JsonKey(name: 'profile_detail') this.profileDetail,
       this.slug,
-      this.isFollower,
-      this.showClubMembers,
+      @JsonKey(name: 'if_follower') this.isFollower,
+      @JsonKey(name: 'show_club_members') this.showClubMembers,
       this.video,
-      this.videoPoster});
+      @JsonKey(name: 'video_poster') this.videoPoster});
 
   factory _$_Creator.fromJson(Map<String, dynamic> json) =>
       _$_$_CreatorFromJson(json);
@@ -625,12 +628,15 @@ class _$_Creator implements _Creator {
   @override
   final String? slug;
   @override
+  @JsonKey(name: 'if_follower')
   final bool? isFollower;
   @override
+  @JsonKey(name: 'show_club_members')
   final bool? showClubMembers;
   @override
   final String? video;
   @override
+  @JsonKey(name: 'video_poster')
   final String? videoPoster;
 
   @override
@@ -717,10 +723,10 @@ abstract class _Creator implements Creator {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      bool? isFollower,
-      bool? showClubMembers,
+      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
-      String? videoPoster}) = _$_Creator;
+      @JsonKey(name: 'video_poster') String? videoPoster}) = _$_Creator;
 
   factory _Creator.fromJson(Map<String, dynamic> json) = _$_Creator.fromJson;
 
@@ -747,12 +753,15 @@ abstract class _Creator implements Creator {
   @override
   String? get slug => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'if_follower')
   bool? get isFollower => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'show_club_members')
   bool? get showClubMembers => throw _privateConstructorUsedError;
   @override
   String? get video => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'video_poster')
   String? get videoPoster => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

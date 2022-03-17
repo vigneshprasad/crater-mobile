@@ -161,9 +161,10 @@ class _LoadedConversationTab extends HookWidget {
     children.add(
       const SliverToBoxAdapter(
         child: SizedBox(
-          height: 200,
+          height: 250,
           child: FeaturedList(
             scrollDirection: Axis.horizontal,
+            showFollow: true,
           ),
         ),
       ),

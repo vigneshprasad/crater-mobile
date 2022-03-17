@@ -34,10 +34,11 @@ class ProfileHeader extends HookWidget {
       alignment: Alignment.topLeft,
       children: [
         Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           color: Theme.of(context).scaffoldBackgroundColor,
           child: (profile?.coverFile != null)
               ? Image.network(profile?.coverFile ?? '',
-                  fit: BoxFit.cover, width: double.infinity, height: height)
+                  fit: BoxFit.contain, width: double.infinity, height: height)
               : Image.asset('assets/images/logo.png',
                   fit: BoxFit.cover, width: double.infinity, height: height),
         ),

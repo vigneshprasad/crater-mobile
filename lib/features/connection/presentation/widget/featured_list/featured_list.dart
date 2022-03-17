@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../routes.gr.dart';
 import 'featured_list_state.dart';
@@ -16,8 +20,9 @@ import 'featured_list_state.dart';
 class FeaturedList extends HookWidget {
 
   final Axis scrollDirection;
+  final bool showFollow;
 
-  const FeaturedList({this.scrollDirection = Axis.vertical});
+  const FeaturedList({this.scrollDirection = Axis.vertical, this.showFollow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -67,33 +72,41 @@ class FeaturedList extends HookWidget {
               crossAxisCount: scrollDirection == Axis.horizontal ? 1 : 3,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
-              childAspectRatio:  scrollDirection == Axis.horizontal ? 1.2 : 0.65
+              childAspectRatio:  (scrollDirection == Axis.horizontal ? 1.2 : 0.65) + (showFollow ? 0.3 : 0),
             ),
             itemBuilder: (context, index) => CreatorCard(
               creator: creators[index],
               authUserPk: user?.pk,
-              showConnect: false,
+              showConnect: showFollow,
+              isFollowing: creators[index].isFollower ?? false,
             )
       ),)
     );
   }
 }
 
-class CreatorCard extends StatelessWidget {
+class CreatorCard extends HookWidget {
+
+  late OverlayEntry? overlayEntry;
+
   final Creator creator;
   final int? authUserPk;
   final bool showConnect;
-  const CreatorCard({
+
+  bool isFollowing;
+
+  CreatorCard({
     Key? key,
     required this.creator,
     this.authUserPk,
     required this.showConnect,
+    required this.isFollowing,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.subtitle2;
-    final bodyStyle = Theme.of(context).textTheme.caption;
+
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
         ProfileScreenRoute(
@@ -125,6 +138,17 @@ class CreatorCard extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
           ),
+          const SizedBox(height: AppInsets.xl,),
+          if(showConnect)
+            SizedBox(
+              width: 100,
+              height: 30,
+              child: BaseLargeButton(
+                    enabled: !isFollowing,
+                    text: isFollowing ? 'Following' : 'Follow',
+                    onPressed: () => onFollow(context),
+              ),
+            ),
           // const SizedBox(height: AppInsets.sm),
           // Text(
           //   '${followerFormat(creator.numberOfSubscribers ?? 0)} Followers',
@@ -133,6 +157,36 @@ class CreatorCard extends StatelessWidget {
           // ),
         ],
       ),
+    );
+  }
+
+  Future<void> onFollow(BuildContext context) async {
+
+    if (isFollowing) {
+      return;
+    }
+
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus==false) {
+      return;
+    }
+
+    overlayEntry = buildLoaderOverlay();
+    Overlay.of(context)?.insert(overlayEntry!);
+
+    final response = await context
+        .read(featuredConnectionStateProvider('').notifier)
+        .followCreator(creator.id, context);
+
+    response.fold(
+      (failure) {
+        overlayEntry?.remove();
+        Fluttertoast.showToast(msg: failure.message.toString());
+      },
+      (request) {
+        overlayEntry?.remove();
+        isFollowing = !isFollowing;
+      },
     );
   }
 }

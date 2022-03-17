@@ -370,20 +370,19 @@ class _ConversationLoaded extends StatelessWidget {
   }
 
   void startDyteMeeting(BuildContext context) async {
-
     final loginStatus = await manageLoginPopup(context);
-    if (loginStatus==false) {
+    if (loginStatus == false) {
       return;
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: data.conversation.id!)));
+        builder: (context) =>
+            DyteMeetingScreen(meetingId: data.conversation.id!)));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
-
     final loginStatus = await manageLoginPopup(context);
-    if (loginStatus==false) {
+    if (loginStatus == false) {
       return;
     }
 
@@ -429,21 +428,28 @@ class _ConversationLoaded extends StatelessWidget {
         // final end = group.end?.toLocal();
 
         // if (now.isAfter(start) && now.isBefore(end)) {
-          // context
-          //     .read(conversationStateProvider(conversation.id!).notifier)
-          //     .connectToAudioCall();
+        // context
+        //     .read(conversationStateProvider(conversation.id!).notifier)
+        //     .connectToAudioCall();
         // } else {
-          context
-              .read(popupManagerProvider)
-              .showPopup(PopupType.conversationJoin, context);
 
-          await showEmail(context);
+        final startDateFormat = DateFormat("dd MMM, hh:mm a");
+        final time = startDateFormat.format(group.start!.toLocal());
+        final result = await context.read(popupManagerProvider).showPopup(
+              PopupType.conversationJoin,
+              context,
+              message:
+                  'You will be notified. ${group.hostDetail?.name ?? 'Creator'} will be going live at $time. We will send you a reminder as well',
+              buttonTitle: 'Explore Streams',
+            );
 
-          // AutoRouter.of(context).pushAndPopUntil(
-          //   OnboardingScreenRoute(
-          //       type: OnboardingType.meetingJoining.toString()),
-          //   predicate: (_) => false,
-          // );
+        await showEmail(context);
+
+        // AutoRouter.of(context).pushAndPopUntil(
+        //   OnboardingScreenRoute(
+        //       type: OnboardingType.meetingJoining.toString()),
+        //   predicate: (_) => false,
+        // );
         // }
       },
     );
@@ -486,7 +492,8 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
-        ProfileScreenRoute(userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
+        ProfileScreenRoute(
+            userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

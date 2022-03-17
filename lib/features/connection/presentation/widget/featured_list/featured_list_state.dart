@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 
@@ -78,6 +81,16 @@ class FeaturedConnectionStateNotifier
         return ApiResult<List<Creator>>.data(allProfiles);
       },
     );
+    return response;
+  }
+
+  Future<Either<Failure, Creator>> followCreator(int id, BuildContext context) async {
+
+    final authPK = BlocProvider.of<AuthBloc>(context).state.user?.pk ?? '';
+    
+    final response = await read(connectionRepositoryProvider)
+        .followCreator(id, authPK,);
+
     return response;
   }
 }

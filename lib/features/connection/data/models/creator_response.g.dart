@@ -44,10 +44,10 @@ _$_Creator _$_$_CreatorFromJson(Map<String, dynamic> json) {
         ? null
         : Profile.fromJson(json['profile_detail'] as Map<String, dynamic>),
     slug: json['slug'] as String?,
-    isFollower: json['isFollower'] as bool?,
-    showClubMembers: json['showClubMembers'] as bool?,
+    isFollower: json['if_follower'] as bool?,
+    showClubMembers: json['show_club_members'] as bool?,
     video: json['video'] as String?,
-    videoPoster: json['videoPoster'] as String?,
+    videoPoster: json['video_poster'] as String?,
   );
 }
 
@@ -62,10 +62,10 @@ Map<String, dynamic> _$_$_CreatorToJson(_$_Creator instance) =>
       'default_community': instance.defaultCommunity,
       'profile_detail': instance.profileDetail,
       'slug': instance.slug,
-      'isFollower': instance.isFollower,
-      'showClubMembers': instance.showClubMembers,
+      'if_follower': instance.isFollower,
+      'show_club_members': instance.showClubMembers,
       'video': instance.video,
-      'videoPoster': instance.videoPoster,
+      'video_poster': instance.videoPoster,
     };
 
 _$_CreatorCommunity _$_$_CreatorCommunityFromJson(Map<String, dynamic> json) {
