@@ -28,6 +28,30 @@ Map<String, dynamic> _$_$_CreatorResponseToJson(_$_CreatorResponse instance) =>
       'results': instance.results,
     };
 
+_$_FollowCreatorResponse _$_$_FollowCreatorResponseFromJson(
+    Map<String, dynamic> json) {
+  return _$_FollowCreatorResponse(
+    count: json['count'] as int? ?? 0,
+    currentPage: json['current_page'] as int,
+    next: json['next'] as String?,
+    previous: json['previous'] as String?,
+    results: (json['results'] as List<dynamic>?)
+            ?.map((e) => Webinar.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+  );
+}
+
+Map<String, dynamic> _$_$_FollowCreatorResponseToJson(
+        _$_FollowCreatorResponse instance) =>
+    <String, dynamic>{
+      'count': instance.count,
+      'current_page': instance.currentPage,
+      'next': instance.next,
+      'previous': instance.previous,
+      'results': instance.results,
+    };
+
 _$_Creator _$_$_CreatorFromJson(Map<String, dynamic> json) {
   return _$_Creator(
     id: json['id'] as int? ?? 0,
@@ -44,7 +68,7 @@ _$_Creator _$_$_CreatorFromJson(Map<String, dynamic> json) {
         ? null
         : Profile.fromJson(json['profile_detail'] as Map<String, dynamic>),
     slug: json['slug'] as String?,
-    isFollower: json['if_follower'] as bool?,
+    isFollower: json['is_follower'] as bool?,
     showClubMembers: json['show_club_members'] as bool?,
     video: json['video'] as String?,
     videoPoster: json['video_poster'] as String?,
@@ -62,7 +86,7 @@ Map<String, dynamic> _$_$_CreatorToJson(_$_Creator instance) =>
       'default_community': instance.defaultCommunity,
       'profile_detail': instance.profileDetail,
       'slug': instance.slug,
-      'if_follower': instance.isFollower,
+      'is_follower': instance.isFollower,
       'show_club_members': instance.showClubMembers,
       'video': instance.video,
       'video_poster': instance.videoPoster,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
@@ -118,6 +119,8 @@ abstract class ConversationRemoteDatasource {
       SeriesRequest request);
 
   Future<List<CategoriesDetailList>> getWebinarCategoriesFromRemote();
+
+  Future<FollowCreatorResponse> getCreatorsFromRemote({int? page, int? pageSize});
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -497,6 +500,24 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
       return jsonList
           .map((topic) => CategoriesDetailList.fromJson(topic as Map<String, dynamic>))
           .toList();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<FollowCreatorResponse> getCreatorsFromRemote({int? page, int? pageSize}) async {
+    final response =
+        await read(conversationApiServiceProvider).retrieveCreators(page, pageSize);
+    if (response.statusCode == 200) {
+      if (response.bodyString == '[]') {
+        throw ServerException('Empty');
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final result = FollowCreatorResponse.fromJson(json);
+     
+
+      return result;
     } else {
       throw ServerException(response.error);
     }

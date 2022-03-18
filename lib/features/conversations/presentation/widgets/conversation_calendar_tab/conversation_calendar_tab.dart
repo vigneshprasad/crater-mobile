@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
@@ -159,13 +160,10 @@ class _LoadedConversationTab extends HookWidget {
       ),
     );
     children.add(
-      const SliverToBoxAdapter(
+       SliverToBoxAdapter(
         child: SizedBox(
           height: 250,
-          child: FeaturedList(
-            scrollDirection: Axis.horizontal,
-            showFollow: true,
-          ),
+          child: CreatorList(),
         ),
       ),
     );

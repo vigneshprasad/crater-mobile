@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
@@ -400,6 +401,20 @@ class ConversationRepositoryImpl implements ConversationRepository {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getWebinarCategoriesFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, FollowCreatorResponse>> getCreators({int? page, int? pageSize}) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getCreatorsFromRemote(page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");

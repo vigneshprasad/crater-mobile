@@ -39,7 +39,16 @@ class ConversationCalendarStateNofier
         .getMyConversations(_start, _end);
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      // throw response.swap().getOrElse(() => ServerFailure());
+      state = [
+        CalendarWeekData(
+          future: false,
+          start: _start,
+          end: _end,
+          conversations: [],
+        )
+      ];
+      return;
     }
 
     final conversations =

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
@@ -20,6 +21,20 @@ abstract class CreatorResponse with _$CreatorResponse {
 }
 
 @freezed
+abstract class FollowCreatorResponse with _$FollowCreatorResponse {
+  const factory FollowCreatorResponse({
+    @Default(0) int count,
+    @JsonKey(name: 'current_page') @Default(0) int currentPage,
+    String? next,
+    String? previous,
+    @Default([]) List<Webinar> results,
+  }) = _FollowCreatorResponse;
+
+  factory FollowCreatorResponse.fromJson(Map<String, dynamic> json) =>
+      _$FollowCreatorResponseFromJson(json);
+}
+
+@freezed
 abstract class Creator with _$Creator {
   const factory Creator({
     @Default(0) int id,
@@ -34,7 +49,7 @@ abstract class Creator with _$Creator {
     @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
     @JsonKey(name: 'profile_detail') Profile? profileDetail,
     String? slug,
-    @JsonKey(name: 'if_follower') bool? isFollower,
+    @JsonKey(name: 'is_follower') bool? isFollower,
     @JsonKey(name: 'show_club_members') bool? showClubMembers,
     String? video,
     @JsonKey(name: 'video_poster') String? videoPoster,

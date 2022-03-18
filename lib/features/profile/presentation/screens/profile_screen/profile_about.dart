@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
@@ -8,7 +7,6 @@ import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
-import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
@@ -17,7 +15,6 @@ import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_ent
 import 'package:worknetwork/features/profile/presentation/widget/interest_list.dart';
 import 'package:worknetwork/features/profile/presentation/widget/objective_list.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../routes.gr.dart';
 

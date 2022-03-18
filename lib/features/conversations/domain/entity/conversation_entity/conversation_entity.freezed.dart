@@ -991,13 +991,15 @@ class _$ConversationUserTearOff {
       String? email,
       String? name,
       String? photo,
-      String? introduction}) {
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail}) {
     return _ConversationUser(
       pk: pk,
       email: email,
       name: name,
       photo: photo,
       introduction: introduction,
+      creatorDetail: creatorDetail,
     );
   }
 
@@ -1016,6 +1018,8 @@ mixin _$ConversationUser {
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String? get introduction => throw _privateConstructorUsedError;
+  @JsonKey(name: 'creator_detail')
+  Creator? get creatorDetail => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1033,7 +1037,10 @@ abstract class $ConversationUserCopyWith<$Res> {
       String? email,
       String? name,
       String? photo,
-      String? introduction});
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail});
+
+  $CreatorCopyWith<$Res>? get creatorDetail;
 }
 
 /// @nodoc
@@ -1052,6 +1059,7 @@ class _$ConversationUserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? photo = freezed,
     Object? introduction = freezed,
+    Object? creatorDetail = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed
@@ -1074,7 +1082,22 @@ class _$ConversationUserCopyWithImpl<$Res>
           ? _value.introduction
           : introduction // ignore: cast_nullable_to_non_nullable
               as String?,
+      creatorDetail: creatorDetail == freezed
+          ? _value.creatorDetail
+          : creatorDetail // ignore: cast_nullable_to_non_nullable
+              as Creator?,
     ));
+  }
+
+  @override
+  $CreatorCopyWith<$Res>? get creatorDetail {
+    if (_value.creatorDetail == null) {
+      return null;
+    }
+
+    return $CreatorCopyWith<$Res>(_value.creatorDetail!, (value) {
+      return _then(_value.copyWith(creatorDetail: value));
+    });
   }
 }
 
@@ -1090,7 +1113,11 @@ abstract class _$ConversationUserCopyWith<$Res>
       String? email,
       String? name,
       String? photo,
-      String? introduction});
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail});
+
+  @override
+  $CreatorCopyWith<$Res>? get creatorDetail;
 }
 
 /// @nodoc
@@ -1111,6 +1138,7 @@ class __$ConversationUserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? photo = freezed,
     Object? introduction = freezed,
+    Object? creatorDetail = freezed,
   }) {
     return _then(_ConversationUser(
       pk: pk == freezed
@@ -1133,6 +1161,10 @@ class __$ConversationUserCopyWithImpl<$Res>
           ? _value.introduction
           : introduction // ignore: cast_nullable_to_non_nullable
               as String?,
+      creatorDetail: creatorDetail == freezed
+          ? _value.creatorDetail
+          : creatorDetail // ignore: cast_nullable_to_non_nullable
+              as Creator?,
     ));
   }
 }
@@ -1141,7 +1173,12 @@ class __$ConversationUserCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ConversationUser implements _ConversationUser {
   _$_ConversationUser(
-      {this.pk, this.email, this.name, this.photo, this.introduction});
+      {this.pk,
+      this.email,
+      this.name,
+      this.photo,
+      this.introduction,
+      @JsonKey(name: 'creator_detail') this.creatorDetail});
 
   factory _$_ConversationUser.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationUserFromJson(json);
@@ -1156,10 +1193,13 @@ class _$_ConversationUser implements _ConversationUser {
   final String? photo;
   @override
   final String? introduction;
+  @override
+  @JsonKey(name: 'creator_detail')
+  final Creator? creatorDetail;
 
   @override
   String toString() {
-    return 'ConversationUser(pk: $pk, email: $email, name: $name, photo: $photo, introduction: $introduction)';
+    return 'ConversationUser(pk: $pk, email: $email, name: $name, photo: $photo, introduction: $introduction, creatorDetail: $creatorDetail)';
   }
 
   @override
@@ -1176,7 +1216,10 @@ class _$_ConversationUser implements _ConversationUser {
                 const DeepCollectionEquality().equals(other.photo, photo)) &&
             (identical(other.introduction, introduction) ||
                 const DeepCollectionEquality()
-                    .equals(other.introduction, introduction)));
+                    .equals(other.introduction, introduction)) &&
+            (identical(other.creatorDetail, creatorDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.creatorDetail, creatorDetail)));
   }
 
   @override
@@ -1186,7 +1229,8 @@ class _$_ConversationUser implements _ConversationUser {
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(introduction);
+      const DeepCollectionEquality().hash(introduction) ^
+      const DeepCollectionEquality().hash(creatorDetail);
 
   @JsonKey(ignore: true)
   @override
@@ -1201,11 +1245,13 @@ class _$_ConversationUser implements _ConversationUser {
 
 abstract class _ConversationUser implements ConversationUser {
   factory _ConversationUser(
-      {String? pk,
-      String? email,
-      String? name,
-      String? photo,
-      String? introduction}) = _$_ConversationUser;
+          {String? pk,
+          String? email,
+          String? name,
+          String? photo,
+          String? introduction,
+          @JsonKey(name: 'creator_detail') Creator? creatorDetail}) =
+      _$_ConversationUser;
 
   factory _ConversationUser.fromJson(Map<String, dynamic> json) =
       _$_ConversationUser.fromJson;
@@ -1220,6 +1266,9 @@ abstract class _ConversationUser implements ConversationUser {
   String? get photo => throw _privateConstructorUsedError;
   @override
   String? get introduction => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'creator_detail')
+  Creator? get creatorDetail => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationUserCopyWith<_ConversationUser> get copyWith =>

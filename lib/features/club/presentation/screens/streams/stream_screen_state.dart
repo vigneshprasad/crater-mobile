@@ -57,7 +57,8 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
         await read(conversationRepositoryProvider).getUpcomingClubs();
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      // throw response.swap().getOrElse(() => ServerFailure());
+      return;
     }
 
     final webinars = response.getOrElse(() => List<Webinar>.empty());
@@ -88,7 +89,8 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     final response = await read(conversationRepositoryProvider).getLiveClubs();
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      // throw response.swap().getOrElse(() => ServerFailure());
+      return;
     }
 
     final webinars = response.getOrElse(() => List<Webinar>.empty());
@@ -107,7 +109,8 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     final response = await read(conversationRepositoryProvider).getFeaturedClubs();
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      // throw response.swap().getOrElse(() => ServerFailure());
+      return;
     }
 
     final webinars = response.getOrElse(() => List<Webinar>.empty());

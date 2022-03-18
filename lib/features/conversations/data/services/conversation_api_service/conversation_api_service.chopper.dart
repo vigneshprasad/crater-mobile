@@ -219,6 +219,14 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> retrieveCreators(int? page, int? pageSize) {
+    final $url = '/groups/conversations/webinars/creators/';
+    final $params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getSeries(int? page, int? pageSize) {
     final $url = '/groups/public/conversations/series/';
     final $params = <String, dynamic>{'page': page, 'page_size': pageSize};

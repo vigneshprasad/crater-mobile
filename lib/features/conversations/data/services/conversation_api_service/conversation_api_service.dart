@@ -102,6 +102,10 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'conversations/webinars/{id}/')
   Future<Response> retrieveWebinar(@Path() int id);
 
+  @Get(path: 'conversations/webinars/creators/')
+  Future<Response> retrieveCreators(@Query() int? page,
+      @Query('page_size') int? pageSize,);
+
   @Get(path: 'public/conversations/series/')
   Future<Response> getSeries(
       @Query() int? page, @Query('page_size') int? pageSize);

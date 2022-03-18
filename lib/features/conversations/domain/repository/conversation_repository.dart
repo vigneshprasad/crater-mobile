@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
@@ -68,4 +69,6 @@ abstract class ConversationRepository {
       SeriesRequest request);
 
   Future<Either<Failure, List<CategoriesDetailList>>> getWebinarCategories();
+
+  Future<Either<Failure, FollowCreatorResponse>> getCreators({int? page, int? pageSize});
 }

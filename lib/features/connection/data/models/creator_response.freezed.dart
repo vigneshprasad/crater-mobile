@@ -270,6 +270,266 @@ abstract class _CreatorResponse implements CreatorResponse {
       throw _privateConstructorUsedError;
 }
 
+FollowCreatorResponse _$FollowCreatorResponseFromJson(
+    Map<String, dynamic> json) {
+  return _FollowCreatorResponse.fromJson(json);
+}
+
+/// @nodoc
+class _$FollowCreatorResponseTearOff {
+  const _$FollowCreatorResponseTearOff();
+
+  _FollowCreatorResponse call(
+      {int count = 0,
+      @JsonKey(name: 'current_page') int currentPage = 0,
+      String? next,
+      String? previous,
+      List<Webinar> results = const []}) {
+    return _FollowCreatorResponse(
+      count: count,
+      currentPage: currentPage,
+      next: next,
+      previous: previous,
+      results: results,
+    );
+  }
+
+  FollowCreatorResponse fromJson(Map<String, Object> json) {
+    return FollowCreatorResponse.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $FollowCreatorResponse = _$FollowCreatorResponseTearOff();
+
+/// @nodoc
+mixin _$FollowCreatorResponse {
+  int get count => throw _privateConstructorUsedError;
+  @JsonKey(name: 'current_page')
+  int get currentPage => throw _privateConstructorUsedError;
+  String? get next => throw _privateConstructorUsedError;
+  String? get previous => throw _privateConstructorUsedError;
+  List<Webinar> get results => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $FollowCreatorResponseCopyWith<FollowCreatorResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FollowCreatorResponseCopyWith<$Res> {
+  factory $FollowCreatorResponseCopyWith(FollowCreatorResponse value,
+          $Res Function(FollowCreatorResponse) then) =
+      _$FollowCreatorResponseCopyWithImpl<$Res>;
+  $Res call(
+      {int count,
+      @JsonKey(name: 'current_page') int currentPage,
+      String? next,
+      String? previous,
+      List<Webinar> results});
+}
+
+/// @nodoc
+class _$FollowCreatorResponseCopyWithImpl<$Res>
+    implements $FollowCreatorResponseCopyWith<$Res> {
+  _$FollowCreatorResponseCopyWithImpl(this._value, this._then);
+
+  final FollowCreatorResponse _value;
+  // ignore: unused_field
+  final $Res Function(FollowCreatorResponse) _then;
+
+  @override
+  $Res call({
+    Object? count = freezed,
+    Object? currentPage = freezed,
+    Object? next = freezed,
+    Object? previous = freezed,
+    Object? results = freezed,
+  }) {
+    return _then(_value.copyWith(
+      count: count == freezed
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      next: next == freezed
+          ? _value.next
+          : next // ignore: cast_nullable_to_non_nullable
+              as String?,
+      previous: previous == freezed
+          ? _value.previous
+          : previous // ignore: cast_nullable_to_non_nullable
+              as String?,
+      results: results == freezed
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as List<Webinar>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$FollowCreatorResponseCopyWith<$Res>
+    implements $FollowCreatorResponseCopyWith<$Res> {
+  factory _$FollowCreatorResponseCopyWith(_FollowCreatorResponse value,
+          $Res Function(_FollowCreatorResponse) then) =
+      __$FollowCreatorResponseCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int count,
+      @JsonKey(name: 'current_page') int currentPage,
+      String? next,
+      String? previous,
+      List<Webinar> results});
+}
+
+/// @nodoc
+class __$FollowCreatorResponseCopyWithImpl<$Res>
+    extends _$FollowCreatorResponseCopyWithImpl<$Res>
+    implements _$FollowCreatorResponseCopyWith<$Res> {
+  __$FollowCreatorResponseCopyWithImpl(_FollowCreatorResponse _value,
+      $Res Function(_FollowCreatorResponse) _then)
+      : super(_value, (v) => _then(v as _FollowCreatorResponse));
+
+  @override
+  _FollowCreatorResponse get _value => super._value as _FollowCreatorResponse;
+
+  @override
+  $Res call({
+    Object? count = freezed,
+    Object? currentPage = freezed,
+    Object? next = freezed,
+    Object? previous = freezed,
+    Object? results = freezed,
+  }) {
+    return _then(_FollowCreatorResponse(
+      count: count == freezed
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      next: next == freezed
+          ? _value.next
+          : next // ignore: cast_nullable_to_non_nullable
+              as String?,
+      previous: previous == freezed
+          ? _value.previous
+          : previous // ignore: cast_nullable_to_non_nullable
+              as String?,
+      results: results == freezed
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as List<Webinar>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_FollowCreatorResponse implements _FollowCreatorResponse {
+  const _$_FollowCreatorResponse(
+      {this.count = 0,
+      @JsonKey(name: 'current_page') this.currentPage = 0,
+      this.next,
+      this.previous,
+      this.results = const []});
+
+  factory _$_FollowCreatorResponse.fromJson(Map<String, dynamic> json) =>
+      _$_$_FollowCreatorResponseFromJson(json);
+
+  @JsonKey(defaultValue: 0)
+  @override
+  final int count;
+  @override
+  @JsonKey(name: 'current_page')
+  final int currentPage;
+  @override
+  final String? next;
+  @override
+  final String? previous;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<Webinar> results;
+
+  @override
+  String toString() {
+    return 'FollowCreatorResponse(count: $count, currentPage: $currentPage, next: $next, previous: $previous, results: $results)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _FollowCreatorResponse &&
+            (identical(other.count, count) ||
+                const DeepCollectionEquality().equals(other.count, count)) &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)) &&
+            (identical(other.next, next) ||
+                const DeepCollectionEquality().equals(other.next, next)) &&
+            (identical(other.previous, previous) ||
+                const DeepCollectionEquality()
+                    .equals(other.previous, previous)) &&
+            (identical(other.results, results) ||
+                const DeepCollectionEquality().equals(other.results, results)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(count) ^
+      const DeepCollectionEquality().hash(currentPage) ^
+      const DeepCollectionEquality().hash(next) ^
+      const DeepCollectionEquality().hash(previous) ^
+      const DeepCollectionEquality().hash(results);
+
+  @JsonKey(ignore: true)
+  @override
+  _$FollowCreatorResponseCopyWith<_FollowCreatorResponse> get copyWith =>
+      __$FollowCreatorResponseCopyWithImpl<_FollowCreatorResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_FollowCreatorResponseToJson(this);
+  }
+}
+
+abstract class _FollowCreatorResponse implements FollowCreatorResponse {
+  const factory _FollowCreatorResponse(
+      {int count,
+      @JsonKey(name: 'current_page') int currentPage,
+      String? next,
+      String? previous,
+      List<Webinar> results}) = _$_FollowCreatorResponse;
+
+  factory _FollowCreatorResponse.fromJson(Map<String, dynamic> json) =
+      _$_FollowCreatorResponse.fromJson;
+
+  @override
+  int get count => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'current_page')
+  int get currentPage => throw _privateConstructorUsedError;
+  @override
+  String? get next => throw _privateConstructorUsedError;
+  @override
+  String? get previous => throw _privateConstructorUsedError;
+  @override
+  List<Webinar> get results => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$FollowCreatorResponseCopyWith<_FollowCreatorResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Creator _$CreatorFromJson(Map<String, dynamic> json) {
   return _Creator.fromJson(json);
 }
@@ -288,7 +548,7 @@ class _$CreatorTearOff {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'is_follower') bool? isFollower,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster}) {
@@ -333,7 +593,7 @@ mixin _$Creator {
   @JsonKey(name: 'profile_detail')
   Profile? get profileDetail => throw _privateConstructorUsedError;
   String? get slug => throw _privateConstructorUsedError;
-  @JsonKey(name: 'if_follower')
+  @JsonKey(name: 'is_follower')
   bool? get isFollower => throw _privateConstructorUsedError;
   @JsonKey(name: 'show_club_members')
   bool? get showClubMembers => throw _privateConstructorUsedError;
@@ -360,7 +620,7 @@ abstract class $CreatorCopyWith<$Res> {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'is_follower') bool? isFollower,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster});
@@ -487,7 +747,7 @@ abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'is_follower') bool? isFollower,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster});
@@ -593,7 +853,7 @@ class _$_Creator implements _Creator {
       @JsonKey(name: 'default_community') this.defaultCommunity,
       @JsonKey(name: 'profile_detail') this.profileDetail,
       this.slug,
-      @JsonKey(name: 'if_follower') this.isFollower,
+      @JsonKey(name: 'is_follower') this.isFollower,
       @JsonKey(name: 'show_club_members') this.showClubMembers,
       this.video,
       @JsonKey(name: 'video_poster') this.videoPoster});
@@ -628,7 +888,7 @@ class _$_Creator implements _Creator {
   @override
   final String? slug;
   @override
-  @JsonKey(name: 'if_follower')
+  @JsonKey(name: 'is_follower')
   final bool? isFollower;
   @override
   @JsonKey(name: 'show_club_members')
@@ -723,7 +983,7 @@ abstract class _Creator implements Creator {
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
-      @JsonKey(name: 'if_follower') bool? isFollower,
+      @JsonKey(name: 'is_follower') bool? isFollower,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster}) = _$_Creator;
@@ -753,7 +1013,7 @@ abstract class _Creator implements Creator {
   @override
   String? get slug => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'if_follower')
+  @JsonKey(name: 'is_follower')
   bool? get isFollower => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'show_club_members')
