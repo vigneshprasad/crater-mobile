@@ -146,25 +146,8 @@ class _LoadedConversationTab extends HookWidget {
     }
 
     children.add(
-      SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 20,
-          ),
-          child: Text(
-            'Creators to follow',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-      ),
-    );
-    children.add(
        SliverToBoxAdapter(
-        child: SizedBox(
-          height: 250,
-          child: CreatorList(),
-        ),
+        child: CreatorList(),
       ),
     );
 

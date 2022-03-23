@@ -58,7 +58,7 @@ class ChatMessageModel extends ChatMessage {
   final bool? isSupport;
 
   @HiveField(13)
-  @JsonKey(name: "sender_detail")
+  @JsonKey(name: "sender_details")
   final ChatUserModel? senderDetail;
 
   @JsonKey(name: "data")

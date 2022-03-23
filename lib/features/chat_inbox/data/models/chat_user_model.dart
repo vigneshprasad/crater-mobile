@@ -42,6 +42,10 @@ class ChatUserModel extends ChatUser {
   @JsonKey(name: "display_name")
   final String? displayName;
 
+  @HiveField(8)
+  @JsonKey(name: "first_name")
+  final String? firstName;
+
   ChatUserModel({
     this.pk,
     this.name = '',
@@ -51,6 +55,7 @@ class ChatUserModel extends ChatUser {
     this.lastSeen,
     this.latestMessage,
     this.displayName,
+    this.firstName,
   }) : super(
           pk: pk,
           name: name,
@@ -60,6 +65,7 @@ class ChatUserModel extends ChatUser {
           lastSeen: lastSeen,
           latestMessage: latestMessage,
           displayName: displayName,
+          firstName: firstName,
         );
 
   factory ChatUserModel.fromJson(Map<String, dynamic> json) =>
@@ -75,6 +81,7 @@ class ChatUserModel extends ChatUser {
     DateTime? lastSeen,
     ChatMessageModel? latestMessage,
     String? displayName,
+    String? firstName,
   }) {
     return ChatUserModel(
       pk: pk ?? this.pk,
@@ -85,6 +92,7 @@ class ChatUserModel extends ChatUser {
       lastSeen: lastSeen ?? this.lastSeen,
       latestMessage: latestMessage ?? this.latestMessage,
       displayName: displayName ?? this.displayName,
+      firstName: firstName ?? this.firstName,
     );
   }
 }

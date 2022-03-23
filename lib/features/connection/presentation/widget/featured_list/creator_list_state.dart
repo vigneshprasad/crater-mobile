@@ -14,13 +14,20 @@ import '../../../../../core/api_result/api_result.dart';
 
 final creatorStateProvider = StateNotifierProvider.family<
     CreatorStateNotifier,
-    ApiResult<List<Creator>>,
+    ApiResult<List<CreatorRow>>,
     String>((ref, userId) {
   return CreatorStateNotifier(ref.read, userId);
 });
 
+class CreatorRow {
+  final Creator creator;
+  bool isFollowing;
+
+  CreatorRow(this.creator, this.isFollowing);
+}
+
 class CreatorStateNotifier
-    extends StateNotifier<ApiResult<List<Creator>>> {
+    extends StateNotifier<ApiResult<List<CreatorRow>>> {
   final Reader read;
   final pageSize = 12;
   int page = 1;
@@ -29,10 +36,12 @@ class CreatorStateNotifier
   late List<Creator> allProfiles;
   final String userId;
 
+  List<int> followed = [];
+
   CreatorStateNotifier(
     this.read,
     this.userId,
-  ) : super(ApiResult<List<Creator>>.loading()) {
+  ) : super(ApiResult.loading()) {
     getProfileList('');
   }
 
@@ -40,13 +49,13 @@ class CreatorStateNotifier
     page = 1;
     allLoaded = false;
     loadingPage = true;
-    state = ApiResult<List<Creator>>.loading();
+    state = ApiResult.loading();
     final response = await read(conversationRepositoryProvider).getCreators(page: page, pageSize: pageSize);
 
     state = response.fold(
       (failure) {
         loadingPage = false;
-        return ApiResult<List<Creator>>.error(null);
+        return ApiResult.error(null);
       },
       (profiles) {
         allProfiles = creatorsFrom(profiles.results);
@@ -55,7 +64,7 @@ class CreatorStateNotifier
         if (userId.isNotEmpty) {
           allLoaded = true;
         }
-        return ApiResult<List<Creator>>.data(allProfiles);
+        return mapProfilesToCreatorRow();
       },
     );
 
@@ -87,14 +96,14 @@ class CreatorStateNotifier
     state = response.fold(
       (failure) {
         loadingPage = false;
-        return ApiResult<List<Creator>>.data(allProfiles);
+        return mapProfilesToCreatorRow();
       },
       (profiles) {
         allProfiles += creatorsFrom(profiles.results);
         loadingPage = false;
         allLoaded = profiles.count == allProfiles.length;
 
-        return ApiResult<List<Creator>>.data(allProfiles);
+        return mapProfilesToCreatorRow();
       },
     );
     return response;
@@ -106,7 +115,23 @@ class CreatorStateNotifier
     
     final response = await read(connectionRepositoryProvider)
         .followCreator(id, authPK,);
+    
+    followed.add(id);
+
+    final rows = allProfiles.map((e) {
+      final isFollowing = (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
+      return CreatorRow(e, isFollowing);
+    });
+    state = ApiResult<List<CreatorRow>>.data(rows.toList());
 
     return response;
+  }
+
+  ApiResult<List<CreatorRow>> mapProfilesToCreatorRow() {
+    final rows = allProfiles.map((e) {
+      final isFollowing = (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
+      return CreatorRow(e, isFollowing);
+    });
+    return ApiResult<List<CreatorRow>>.data(rows.toList());
   }
 }

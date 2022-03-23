@@ -25,13 +25,14 @@ class ChatUserModelAdapter extends TypeAdapter<ChatUserModel> {
       lastSeen: fields[5] as DateTime?,
       latestMessage: fields[6] as ChatMessageModel?,
       displayName: fields[7] as String?,
+      firstName: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatUserModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.pk)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ChatUserModelAdapter extends TypeAdapter<ChatUserModel> {
       ..writeByte(6)
       ..write(obj.latestMessage)
       ..writeByte(7)
-      ..write(obj.displayName);
+      ..write(obj.displayName)
+      ..writeByte(8)
+      ..write(obj.firstName);
   }
 
   @override
@@ -80,6 +83,7 @@ ChatUserModel _$ChatUserModelFromJson(Map<String, dynamic> json) {
         : ChatMessageModel.fromJson(
             json['latest_message'] as Map<String, dynamic>),
     displayName: json['display_name'] as String?,
+    firstName: json['first_name'] as String?,
   );
 }
 
@@ -93,4 +97,5 @@ Map<String, dynamic> _$ChatUserModelToJson(ChatUserModel instance) =>
       'last_seen': instance.lastSeen?.toIso8601String(),
       'latest_message': instance.latestMessage,
       'display_name': instance.displayName,
+      'first_name': instance.firstName,
     };

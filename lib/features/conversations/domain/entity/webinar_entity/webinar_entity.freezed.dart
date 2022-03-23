@@ -28,11 +28,11 @@ class _$WebinarTearOff {
       int? privacy,
       int? medium,
       bool? closed,
-      DateTime? closedAt,
+      @JsonKey(name: 'closed_at') DateTime? closedAt,
       @JsonKey(name: 'topic_detail') Topic? topicDetail,
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
-      bool? isLive,
+      @JsonKey(name: 'is_live') bool? isLive,
       int? liveCount,
       bool? rsvp}) {
     return _Webinar(
@@ -70,12 +70,14 @@ mixin _$Webinar {
   int? get privacy => throw _privateConstructorUsedError;
   int? get medium => throw _privateConstructorUsedError;
   bool? get closed => throw _privateConstructorUsedError;
+  @JsonKey(name: 'closed_at')
   DateTime? get closedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'topic_detail')
   Topic? get topicDetail => throw _privateConstructorUsedError;
   @JsonKey(name: 'host_detail')
   ConversationUser? get hostDetail => throw _privateConstructorUsedError;
   int? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_live')
   bool? get isLive => throw _privateConstructorUsedError;
   int? get liveCount => throw _privateConstructorUsedError;
   bool? get rsvp => throw _privateConstructorUsedError;
@@ -97,11 +99,11 @@ abstract class $WebinarCopyWith<$Res> {
       int? privacy,
       int? medium,
       bool? closed,
-      DateTime? closedAt,
+      @JsonKey(name: 'closed_at') DateTime? closedAt,
       @JsonKey(name: 'topic_detail') Topic? topicDetail,
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
-      bool? isLive,
+      @JsonKey(name: 'is_live') bool? isLive,
       int? liveCount,
       bool? rsvp});
 
@@ -230,11 +232,11 @@ abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
       int? privacy,
       int? medium,
       bool? closed,
-      DateTime? closedAt,
+      @JsonKey(name: 'closed_at') DateTime? closedAt,
       @JsonKey(name: 'topic_detail') Topic? topicDetail,
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
-      bool? isLive,
+      @JsonKey(name: 'is_live') bool? isLive,
       int? liveCount,
       bool? rsvp});
 
@@ -342,11 +344,11 @@ class _$_Webinar implements _Webinar {
       this.privacy,
       this.medium,
       this.closed,
-      this.closedAt,
+      @JsonKey(name: 'closed_at') this.closedAt,
       @JsonKey(name: 'topic_detail') this.topicDetail,
       @JsonKey(name: 'host_detail') this.hostDetail,
       this.type,
-      this.isLive,
+      @JsonKey(name: 'is_live') this.isLive,
       this.liveCount,
       this.rsvp});
 
@@ -368,6 +370,7 @@ class _$_Webinar implements _Webinar {
   @override
   final bool? closed;
   @override
+  @JsonKey(name: 'closed_at')
   final DateTime? closedAt;
   @override
   @JsonKey(name: 'topic_detail')
@@ -378,6 +381,7 @@ class _$_Webinar implements _Webinar {
   @override
   final int? type;
   @override
+  @JsonKey(name: 'is_live')
   final bool? isLive;
   @override
   final int? liveCount;
@@ -467,11 +471,11 @@ abstract class _Webinar implements Webinar {
       int? privacy,
       int? medium,
       bool? closed,
-      DateTime? closedAt,
+      @JsonKey(name: 'closed_at') DateTime? closedAt,
       @JsonKey(name: 'topic_detail') Topic? topicDetail,
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
-      bool? isLive,
+      @JsonKey(name: 'is_live') bool? isLive,
       int? liveCount,
       bool? rsvp}) = _$_Webinar;
 
@@ -492,6 +496,7 @@ abstract class _Webinar implements Webinar {
   @override
   bool? get closed => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'closed_at')
   DateTime? get closedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'topic_detail')
@@ -502,6 +507,7 @@ abstract class _Webinar implements Webinar {
   @override
   int? get type => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'is_live')
   bool? get isLive => throw _privateConstructorUsedError;
   @override
   int? get liveCount => throw _privateConstructorUsedError;

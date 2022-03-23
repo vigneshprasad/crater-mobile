@@ -35,9 +35,9 @@ class StreamTab extends HookWidget {
     });
 
     final isMounted = useIsMounted();
-    final timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
       if (isMounted()) {
-        context.read(streamStateProvider.notifier).getLiveData();
+        context.read(streamStateProvider.notifier).getFeaturedData();
       }
     });
 

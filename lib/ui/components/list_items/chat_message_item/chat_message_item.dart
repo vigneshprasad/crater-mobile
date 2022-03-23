@@ -63,7 +63,7 @@ class ChatMessageItem extends StatelessWidget {
 
     final file = message.file;
 
-    final hash = (user.pk ?? '') + (user.name ?? '');
+    final hash = (message.senderDetail?.pk ?? '') + (message.senderDetail?.firstName ?? '');
     final colorIndex = hash.hashCode % chatColors.length;
     final nameColor = chatColors[colorIndex];
 
@@ -95,7 +95,7 @@ class ChatMessageItem extends StatelessWidget {
                       children: [
                         Text(
                           (message.displayName ??
-                              message.senderDetail?.name ??
+                              message.senderDetail?.firstName ?? message.senderDetail?.name ??
                               '') + ': ',
                           style: Theme.of(context)
                               .textTheme
@@ -106,7 +106,7 @@ class ChatMessageItem extends StatelessWidget {
                           height: 4,
                         ),
                         if (message.message?.isNotEmpty ?? false)
-                          Text(message.message!)
+                          Expanded(child: Text(message.message!))
                       ],
                     ),
                     if (file != null)

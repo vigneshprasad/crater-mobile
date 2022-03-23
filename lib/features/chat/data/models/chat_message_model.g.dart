@@ -98,9 +98,10 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
     senderId: json['sender_id'] as String?,
     receiverId: json['receiver_id'] as String?,
     isSupport: json['is_support'] as bool?,
-    senderDetail: json['sender_detail'] == null
+    senderDetail: json['sender_details'] == null
         ? null
-        : ChatUserModel.fromJson(json['sender_detail'] as Map<String, dynamic>),
+        : ChatUserModel.fromJson(
+            json['sender_details'] as Map<String, dynamic>),
     reaction: json['data'] == null
         ? null
         : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
@@ -124,7 +125,7 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
-      'sender_detail': instance.senderDetail,
+      'sender_details': instance.senderDetail,
       'data': instance.reaction,
       'display_name': instance.displayName,
       'firebaseId': instance.firebaseId,

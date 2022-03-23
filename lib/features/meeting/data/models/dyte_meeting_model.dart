@@ -13,7 +13,7 @@ class DyteMeeting {
   final String? authToken;
   @JsonKey(name: 'is_online')
   @Default(false)
-  final bool isOnline;
+  final bool? isOnline;
   @JsonKey(name: 'dyte_meeting_detail')
   final DyteMeetingDetail? dyteMeetingDetail;
 

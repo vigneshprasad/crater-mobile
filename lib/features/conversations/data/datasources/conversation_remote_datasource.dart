@@ -367,7 +367,9 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     final response =
         await read(conversationApiServiceProvider).getUpcomingClubs(userId);
     if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      final json = jsonDecode(response.bodyString) as  Map<String, dynamic>;
+      final jsonList = json['results'] as Iterable;
+      // final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
           .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
           .toList();

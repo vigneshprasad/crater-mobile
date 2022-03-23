@@ -19,7 +19,6 @@ import 'creator_list_state.dart';
 import 'featured_list_state.dart';
 
 class CreatorList extends HookWidget {
-
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthBloc>(context).state.profile;
@@ -35,56 +34,75 @@ class CreatorList extends HookWidget {
     });
     final connectionState = useProvider(creatorStateProvider(''));
     return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: connectionState.when(
-        loading: () => Center(
-            child: CircularProgressIndicator(
-          color: Theme.of(context).accentColor,
-        )),
-        error: (err, st) => Center(
-          child: err == null ? Container() : Text(err.toString()),
-        ),
-        data: (creators) => GridView.builder(
-            controller: _controller,
-            itemCount: creators.length,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio:  1.6,
-            ),
-            itemBuilder: (context, index) => CreatorFollowCard(
-              creator: creators[index],
-              authUserPk: user?.pk,
-              isFollowing: creators[index].isFollower ?? false,
-            )
-      ),)
-    );
+        height: 400,
+        child: connectionState.when(
+          loading: () => SizedBox(
+            child: Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).accentColor,
+            )),
+          ),
+          error: (err, st) => Center(
+            child: err == null ? Container() : Text(err.toString()),
+          ),
+          data: (items) => Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                child: Text(
+                  'Creators to follow',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: GridView.builder(
+                  controller: _controller,
+                  itemCount: items.length,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: 1.6,
+                  ),
+                  itemBuilder: (context, index) => CreatorFollowCard(
+                    item: items[index],
+                    authUserPk: user?.pk,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
 
 class CreatorFollowCard extends HookWidget {
-
   late OverlayEntry? overlayEntry;
 
-  final Creator creator;
+  final CreatorRow item;
   final int? authUserPk;
 
-  bool isFollowing;
+  late ValueNotifier<bool> isFollowing;
 
   CreatorFollowCard({
     Key? key,
-    required this.creator,
+    required this.item,
     this.authUserPk,
-    required this.isFollowing,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final headingStyle = Theme.of(context).textTheme.subtitle2;
+
+    isFollowing = useState(item.isFollowing);
+    final creator = item.creator;
 
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
@@ -119,28 +137,34 @@ class CreatorFollowCard extends HookWidget {
               textAlign: TextAlign.start,
             ),
           ),
-          const SizedBox(height: AppInsets.xl,),
-            SizedBox(
-              width: 100,
-              height: 30,
-              child: isFollowing ? Text('Following', style: Theme.of(context).textTheme.caption,) : BaseLargeButton(
+          const SizedBox(
+            height: AppInsets.xl,
+          ),
+          SizedBox(
+            width: 100,
+            height: 30,
+            child: isFollowing.value
+                ? Text(
+                    'Following',
+                    style: Theme.of(context).textTheme.caption,
+                  )
+                : BaseLargeButton(
                     text: 'Follow',
                     onPressed: () => onFollow(context),
-              ),
-            ),
+                  ),
+          ),
         ],
       ),
     );
   }
 
   Future<void> onFollow(BuildContext context) async {
-
-    if (isFollowing) {
+    if (isFollowing.value == true) {
       return;
     }
 
     final loginStatus = await manageLoginPopup(context);
-    if (loginStatus==false) {
+    if (loginStatus == false) {
       return;
     }
 
@@ -148,8 +172,8 @@ class CreatorFollowCard extends HookWidget {
     Overlay.of(context)?.insert(overlayEntry!);
 
     final response = await context
-        .read(featuredConnectionStateProvider('').notifier)
-        .followCreator(creator.id, context);
+        .read(creatorStateProvider('').notifier)
+        .followCreator(item.creator.id, context);
 
     response.fold(
       (failure) {
@@ -158,7 +182,7 @@ class CreatorFollowCard extends HookWidget {
       },
       (request) {
         overlayEntry?.remove();
-        isFollowing = !isFollowing;
+        isFollowing.value = !isFollowing.value;
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
 import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
@@ -26,7 +27,13 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
   }
 
   Future<void> retrieveChatMessages() async {
+
     groupKey = 'preprod_$webinarId';
+
+    if(ConfigReader.getEnv() == 'prod') {
+      groupKey = webinarId;
+    }
+
     final firestore =
         FirebaseFirestore.instanceFor(app: Firebase.app('Crater'));
     chatRef =

@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -14,10 +15,8 @@ import 'core/logger/logger.dart';
 import 'core/push_notfications/push_notifications.dart';
 import 'core/widgets/root_app.dart';
 import 'di/injector.dart';
-import 'utils/simple_bloc_observer.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'utils/simple_bloc_observer.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -29,6 +28,7 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> mainCommon(String configPath, String env) async {
+      
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load Configurations
@@ -53,6 +53,8 @@ Future<void> mainCommon(String configPath, String env) async {
     options: DefaultFirebaseOptions.currentPlatform,
     name: 'Crater',
   );
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,]);
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(

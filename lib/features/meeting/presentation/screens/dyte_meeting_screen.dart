@@ -19,8 +19,8 @@ class DyteMeetingScreen extends HookWidget {
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
 
-    final showChat = useState(true);
-    final showReaction = useState(true);
+    final showChat = useState(false);
+    final showReaction = useState(false);
 
     const videoHeight = 400.0;
     final fullHeight = MediaQuery.of(context).size.height - 81;
@@ -57,22 +57,27 @@ class DyteMeetingScreen extends HookWidget {
             data: (state) => SafeArea(
               child: Stack(
                 children: [
-                  ConstrainedBox(
-                      constraints: BoxConstraints.expand(
-                        height: showChat.value ? videoHeight : fullHeight,
-                      ),
-                      child: Stack(
-                        children: [
-                          DyteMeeting(
+                  Stack(
+                    children: [
+                      SizedBox(
+                          key: Key(meetingId.toString()),
+                          // constraints: BoxConstraints.expand(
+                          height: showChat.value ? videoHeight : fullHeight,
+                          width: double.infinity,
+                          child: DyteMeeting(
                             roomName: state.room,
                             authToken: state.token,
                             uiConfig: config.value,
                             onInit: (DyteMeetingHandler handler) async {
                               meetingHandler.value = handler;
 
-                              handler.events.on('meetingJoin', context, (ev, c) {
+                              handler.events.on('meetingJoin', context,
+                                  (ev, c) {
                                 isOngoingMeeting.value = true;
-                                showChat.value = true;
+                                Future.delayed(const Duration(seconds: 1))
+                                    .then((value) {
+                                  showChat.value = true;
+                                });
                               });
 
                               handler.events.on('meetingEnd', context, (ev, c) {
@@ -80,34 +85,39 @@ class DyteMeetingScreen extends HookWidget {
                                 AutoRouter.of(context).pop();
                               });
 
-                              handler.events.on('meetingDisconnected', this, (ev, cont) {
+                              handler.events.on('meetingDisconnected', this,
+                                  (ev, cont) {
                                 isOngoingMeeting.value = false;
                                 AutoRouter.of(context).pop();
                               });
                             },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 6, right: 4),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: IconButton(
-                                  onPressed: () {
-                                    final height = showChat.value == false
-                                        ? videoHeight
-                                        : fullHeight;
-                                    meetingHandler.value?.updateUIConfig({
-                                      'dimensions': {'height': height}
-                                    });
+                          )),
+                      SizedBox(
+                        height: showChat.value ? videoHeight : fullHeight,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 6, right: 4),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: IconButton(
+                                onPressed: () {
+                                  final height = showChat.value == false
+                                      ? videoHeight
+                                      : fullHeight;
+                                  meetingHandler.value?.updateUIConfig({
+                                    'dimensions': {'height': height}
+                                  });
 
-                                    showChat.value = !showChat.value;
-                                  },
-                                  icon: Icon(showChat.value
-                                      ? Icons.fullscreen
-                                      : Icons.chat_bubble)),
-                            ),
+                                  showChat.value = !showChat.value;
+                                },
+                                icon: Icon(showChat.value
+                                    ? Icons.fullscreen
+                                    : Icons.chat_bubble)),
                           ),
-                        ],
-                      )),
+                        ),
+                      ),
+                    ],
+                  ),
                   Column(
                     children: [
                       const Expanded(child: SizedBox()),

@@ -19,11 +19,11 @@ abstract class Webinar with _$Webinar {
     int? privacy,
     int? medium,
     bool? closed,
-    DateTime? closedAt,
+    @JsonKey(name: 'closed_at') DateTime? closedAt,
     @JsonKey(name: 'topic_detail') Topic? topicDetail,
     @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
     int? type,
-    bool? isLive,
+    @JsonKey(name: 'is_live') bool? isLive,
     int? liveCount,
     bool? rsvp,
   }) = _Webinar;

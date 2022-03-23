@@ -86,22 +86,22 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   }
 
   Future<void> getLiveData() async {
-    final response = await read(conversationRepositoryProvider).getLiveClubs();
+    // final response = await read(conversationRepositoryProvider).getLiveClubs();
 
-    if (response.isLeft()) {
-      // throw response.swap().getOrElse(() => ServerFailure());
-      return;
-    }
+    // if (response.isLeft()) {
+    //   // throw response.swap().getOrElse(() => ServerFailure());
+    //   return;
+    // }
 
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
+    // final webinars = response.getOrElse(() => List<Webinar>.empty());
 
-    liveClubs = webinars
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.live,
-            ))
-        .toList();
-    updateData();
+    // liveClubs = webinars
+    //     .map((e) => UpcomingGridItem(
+    //           conversation: e,
+    //           type: GridItemType.live,
+    //         ))
+    //     .toList();
+    // updateData();
   }
 
 
@@ -118,7 +118,7 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     featuredClubs = webinars
         .map((e) => UpcomingGridItem(
               conversation: e,
-              type: GridItemType.featured,
+              type: e.isLive ?? false ? GridItemType.live : GridItemType.featured,
             ))
         .toList();
     updateData();
