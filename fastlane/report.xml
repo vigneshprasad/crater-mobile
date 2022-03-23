@@ -5,27 +5,27 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000335">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000337">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: flutter build apk -t lib/main_preprod.dart" time="200.090447">
+      <testcase classname="fastlane.lanes" name="1: flutter build apk -t lib/main_preprod.dart" time="185.62912">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: changelog_from_git_commits" time="0.082567">
+      <testcase classname="fastlane.lanes" name="2: changelog_from_git_commits" time="0.041038">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: appcenter_upload" time="386.377921">
+      <testcase classname="fastlane.lanes" name="3: appcenter_upload" time="115.89646">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: slack" time="1.297322">
+      <testcase classname="fastlane.lanes" name="4: slack" time="0.409139">
         
       </testcase>
     

@@ -34,18 +34,18 @@ class StreamTab extends HookWidget {
       }
     });
 
-    final isMounted = useIsMounted();
-    final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
-      if (isMounted()) {
-        context.read(streamStateProvider.notifier).getFeaturedData();
-      }
-    });
+    // final isMounted = useIsMounted();
+    // final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
+    //   if (isMounted()) {
+    //     context.read(streamStateProvider.notifier).getFeaturedData();
+    //   }
+    // });
 
-    useEffect(() {
-      return () {
-        timer.cancel();
-      };
-    }, []);
+    // useEffect(() {
+    //   return () {
+    //     timer.cancel();
+    //   };
+    // }, []);
 
     return SafeArea(
       child: NestedScrollView(
@@ -432,8 +432,7 @@ class SeriesGridTile extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-          AutoRouter.of(context)
-              .push(SeriesScreenRoute(id: conversation.id));
+        AutoRouter.of(context).push(SeriesScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
       child: GridTile(
@@ -581,7 +580,7 @@ class LiveGridTile extends StatelessWidget {
 
         if (item.type == GridItemType.live) {
           final loginStatus = await manageLoginPopup(context);
-          if (loginStatus==false) {
+          if (loginStatus == false) {
             return;
           }
 

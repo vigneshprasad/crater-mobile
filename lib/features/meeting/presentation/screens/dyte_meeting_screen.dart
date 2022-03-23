@@ -19,11 +19,13 @@ class DyteMeetingScreen extends HookWidget {
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
 
-    final showChat = useState(false);
+    final showChat = useState(true);
     final showReaction = useState(false);
 
     const videoHeight = 400.0;
-    final fullHeight = MediaQuery.of(context).size.height - 81;
+    final fullHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
 
     final isOngoingMeeting = useState(false);
 
@@ -74,7 +76,8 @@ class DyteMeetingScreen extends HookWidget {
                               handler.events.on('meetingJoin', context,
                                   (ev, c) {
                                 isOngoingMeeting.value = true;
-                                Future.delayed(const Duration(seconds: 1))
+                                Future.delayed(
+                                        const Duration(milliseconds: 500))
                                     .then((value) {
                                   showChat.value = true;
                                 });
@@ -90,6 +93,8 @@ class DyteMeetingScreen extends HookWidget {
                                 isOngoingMeeting.value = false;
                                 AutoRouter.of(context).pop();
                               });
+
+                              showChat.value = false;
                             },
                           )),
                       SizedBox(

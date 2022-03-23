@@ -28,7 +28,6 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> mainCommon(String configPath, String env) async {
-      
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load Configurations
@@ -54,7 +53,9 @@ Future<void> mainCommon(String configPath, String env) async {
     name: 'Crater',
   );
 
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,]);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   // Run App wrapped with Sentry Logger
   runZonedGuarded(
