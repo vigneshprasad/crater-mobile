@@ -1,11 +1,12 @@
 PODS:
   - Amplitude-iOS (4.8.2)
   - Analytics (3.7.0)
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
+  - AppAuth (1.5.0):
+    - AppAuth/Core (= 1.5.0)
+    - AppAuth/ExternalUserAgent (= 1.5.0)
+  - AppAuth/Core (1.5.0)
+  - AppAuth/ExternalUserAgent (1.5.0):
+    - AppAuth/Core
   - appsflyer_sdk (6.2.0):
     - AppsFlyerFramework (= 6.3.5)
     - Flutter
@@ -19,9 +20,10 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - dyte_client (0.0.5):
-    - DyteSdk (~> 1.33)
+    - DyteSdk (~> 1.34)
     - Flutter
-  - DyteSdk (1.33.0)
+  - DyteSdk (1.34.1):
+    - LogRocket (= 0.28.0)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
   - FBSDKCoreKit/Core (11.0.1):
@@ -53,7 +55,7 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.12.0):
+  - FirebaseCoreDiagnostics (8.14.0):
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
@@ -100,26 +102,23 @@ PODS:
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleUtilities/Logger (7.7.0):
     - GoogleUtilities/Environment
-  - GTMAppAuth (1.2.2):
+  - GTMAppAuth (1.2.3):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.7.0)
+  - GTMSessionFetcher/Core (1.7.1)
   - image_picker (0.0.1):
     - Flutter
-  - Intercom (10.0.3)
-  - intercom_flutter (4.0.0):
-    - Flutter
-    - Intercom (~> 10.0.2)
   - libphonenumber (0.0.1):
     - Flutter
     - libPhoneNumber-iOS
   - libPhoneNumber-iOS (0.9.15)
+  - LogRocket (0.28.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - OneSignal (3.10.1)
+  - OneSignal (3.10.2)
   - onesignal_flutter (3.2.3):
     - Flutter
     - OneSignalXCFramework (= 3.7.0)
@@ -173,7 +172,6 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
-  - intercom_flutter (from `.symlinks/plugins/intercom_flutter/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - OneSignal (< 4.0, >= 3.0.0)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
@@ -211,8 +209,8 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
-    - Intercom
     - libPhoneNumber-iOS
+    - LogRocket
     - nanopb
     - OneSignal
     - OneSignalXCFramework
@@ -252,8 +250,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
-  intercom_flutter:
-    :path: ".symlinks/plugins/intercom_flutter/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
   onesignal_flutter:
@@ -291,13 +287,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   appsflyer_sdk: b5dc59a4f6ec5703c62a85a26da35ea28c571bbe
   AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
   cloud_firestore: 59044583635e60717fef32a8193990ec6d1c7e66
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  dyte_client: 7913e6a7e28ae368b542a75f595e5e5e817b1f56
-  DyteSdk: 4709b2e75073b41b5436863656c612f246ea5dab
+  dyte_client: cdb8a316bf1dd49e4bc6d9a727eab6f85cae3ed4
+  DyteSdk: 7030abb07e2fe37f5c905bdb01173cc7609a4ccb
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
@@ -305,7 +301,7 @@ SPEC CHECKSUMS:
   firebase_core: 443bccfd6aa6b42f07be365b500773dc69db2d87
   firebase_dynamic_links: ccb1b9c84f4374627b607e5f4859450b6ef33920
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
-  FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
+  FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
   FirebaseDynamicLinks: f506c83eb7eba0f9861f84cd6b65c38b3bd5ff6f
   FirebaseFirestore: 8a0c6a06219bbaad86c72bcb66688c28995dde84
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
@@ -318,15 +314,14 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  GTMAppAuth: 987526d41b07efb1bedda5e936fe0cb718a03113
+  GTMSessionFetcher: 4577a4cc914a5a07c40a8a0ad0acc22080418c2d
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
-  Intercom: 7a58cfdfaa67a2f98f7256cd5d09c87fbc29cb7d
-  intercom_flutter: 38838a418f85a7c38ebee69609e4ff800aabb633
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
+  LogRocket: e9ae047f19ae6598e10234aa4d43906d55af1ae0
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  OneSignal: ce7e3c514b016b98211b3d0458de156b8cc82aec
+  OneSignal: 29b555f5991109dc717f75d4440c565cab92511c
   onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
   OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62

@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
@@ -183,6 +186,10 @@ class CreatorFollowCard extends HookWidget {
       (request) {
         overlayEntry?.remove();
         isFollowing.value = !isFollowing.value;
+
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.followCreator, properties: {});
       },
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -55,13 +54,6 @@ class PushNotificationsImpl implements PushNotifications {
   Future<void> handleNotificationsPressed(
       OSNotificationOpenedResult result) async {
     if (result.notification.additionalData == null) {
-      return;
-    }
-
-    final isIntercomPush =
-        await Intercom.isIntercomPush(result.notification.rawPayload!);
-    if (isIntercomPush) {
-      await Intercom.handlePush(result.notification.rawPayload!);
       return;
     }
 

@@ -12,9 +12,9 @@ import FirebaseDynamicLinks
         
         GeneratedPluginRegistrant.register(with: self)
         
-        if let registrar = self.registrar(forPlugin: "SwiftUserleapFlutterPlugin") {
-            SwiftUserleapFlutterPlugin.register(with: registrar)
-        }
+        // if let registrar = self.registrar(forPlugin: "SwiftUserleapFlutterPlugin") {
+        //     SwiftUserleapFlutterPlugin.register(with: registrar)
+        // }
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
@@ -41,8 +40,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void listenAuthState(BuildContext context, AuthState state) {
-
-
     if (state is AuthStateFailure) {
       isRedirected = true;
 
@@ -53,9 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (state is AuthStateSuccess && !isRedirected) {
       isRedirected = true;
-      if (state.user != null) {
-        context.read(userLeapProvider).setUserData(state.user!);
-      }
       navigatePostAuth(state.user, profile: state.profile);
     }
   }

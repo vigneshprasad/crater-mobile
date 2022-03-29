@@ -370,6 +370,13 @@ class _ConversationLoaded extends StatelessWidget {
   }
 
   void startDyteMeeting(BuildContext context) async {
+    final analytics = KiwiContainer().resolve<Analytics>();
+    analytics.trackEvent(
+        eventName: AnalyticsEvents.joinStreamButtonClick,
+        properties: {
+          "id": data.conversation.id,
+        });
+
     final loginStatus = await manageLoginPopup(context);
     if (loginStatus == false) {
       return;
@@ -381,6 +388,13 @@ class _ConversationLoaded extends StatelessWidget {
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
+    final analytics = KiwiContainer().resolve<Analytics>();
+    analytics.trackEvent(
+        eventName: AnalyticsEvents.rsvpStreamButtonClick,
+        properties: {
+          "id": data.conversation.id,
+        });
+
     final loginStatus = await manageLoginPopup(context);
     if (loginStatus == false) {
       return;
@@ -400,11 +414,10 @@ class _ConversationLoaded extends StatelessWidget {
       },
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
-        analytics.trackEvent(
-            eventName: AnalyticsEvents.conversationGroupJoined,
-            properties: {
-              "id": request.group,
-            });
+        analytics
+            .trackEvent(eventName: AnalyticsEvents.rsvpStream, properties: {
+          "id": request.group,
+        });
         _updateConversation(context);
       },
     );

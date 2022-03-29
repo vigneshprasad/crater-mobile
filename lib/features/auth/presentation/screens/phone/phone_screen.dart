@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
@@ -18,6 +20,7 @@ import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
+import 'package:worknetwork/utils/analytics_helpers.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
@@ -75,7 +78,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
     final sendOtp =
         AppLocalizations.of(context)?.translate("phone_verify:send_otp");
     return Scaffold(
-      backgroundColor: widget.state == 'popup' ? Theme.of(context).dialogBackgroundColor: null,
+      backgroundColor: widget.state == 'popup'
+          ? Theme.of(context).dialogBackgroundColor
+          : null,
       appBar: widget.state == 'popup' ? null : BaseAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,7 +99,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     PhoneNumberInput(
                       onValidChange: _onValidPhoneNumber,
                       initalCountry: "IN",
-                      backgroundColor: widget.state == 'popup' ?  Theme.of(context).scaffoldBackgroundColor : null,
+                      backgroundColor: widget.state == 'popup'
+                          ? Theme.of(context).scaffoldBackgroundColor
+                          : null,
                       onChange: (value) {
                         setState(() {
                           if (value != _phoneNumber) {
@@ -232,17 +239,16 @@ class _PhoneScreenState extends State<PhoneScreen> {
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthCompleted(user: user, profile: profile));
 
-      context.read(userLeapProvider).setUserData(user);
-
-      // analytics.initSdk();
-      // analytics.identify(properties: getUserTraitsFromModel(user));
-      // analytics.trackEvent(
-      //   eventName: AnalyticsEvents.signUpEmail,
-      //   properties: {
-      //     "email": user.email,
-      //     "intent": user.intent,
-      //   },
-      // );
+      final analytics = KiwiContainer().resolve<Analytics>();
+      analytics.initSdk();
+      analytics.identify(properties: getUserTraitsFromModel(user));
+      analytics.trackEvent(
+        eventName: AnalyticsEvents.login,
+        properties: {
+          "email": user.email,
+          "intent": user.intent,
+        },
+      );
 
       if (widget.state == 'popup') {
         Navigator.of(context).pop(user);

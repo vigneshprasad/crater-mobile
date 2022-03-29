@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/analytics/analytics.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_screen.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen_state.dart';
@@ -32,6 +35,13 @@ class ChatScreen extends HookWidget {
             .read(chatStateProvider(groupId ?? '').notifier)
             .sendChatMessages(_chatInputController.text, user);
         _chatInputController.clear();
+
+        final analytics = KiwiContainer().resolve<Analytics>();
+        analytics.trackEvent(
+            eventName: AnalyticsEvents.sentChatMessageStream,
+            properties: {
+              "id": groupId,
+            });
       }
     }
 

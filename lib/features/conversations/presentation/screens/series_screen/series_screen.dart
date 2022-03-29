@@ -113,9 +113,9 @@ class _SeriesLoaded extends StatelessWidget {
     final dateStyle = Theme.of(context).textTheme.bodyText2;
 
     final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
-    
+
     final conversation = data.conversation;
-    
+
     final article = conversation.topicDetail?.articleDetail;
 
     final topic = conversation.topicDetail;
@@ -315,7 +315,10 @@ class _SeriesLoaded extends StatelessWidget {
                             enlargeCenterPage: true,
                             enableInfiniteScroll: false,
                           ),
-                          items: series.groupsDetailList?.where((element) => element.id != conversation.id).map((c) {
+                          items: series.groupsDetailList
+                              ?.where(
+                                  (element) => element.id != conversation.id)
+                              .map((c) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GroupGridTile(c);
@@ -403,7 +406,8 @@ class _SeriesLoaded extends StatelessWidget {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: data.conversation.id!)));
+        builder: (context) =>
+            DyteMeetingScreen(meetingId: data.conversation.id!)));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
@@ -427,17 +431,14 @@ class _SeriesLoaded extends StatelessWidget {
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
         analytics.trackEvent(
-            eventName: AnalyticsEvents.conversationGroupJoined,
-            properties: {
-              "id": request.seriesId
-            });
+            eventName: AnalyticsEvents.rsvpSeries,
+            properties: {"id": request.seriesId});
         _updateConversation(context);
       },
     );
   }
 
   Future<void> _updateConversation(BuildContext context) async {
-
     final seriesResponse = await context
         .read(seriesStateProvider(series.id!).notifier)
         .retrieveSeries(justRSVPed: true);
