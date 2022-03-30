@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dyte_client/dyte.dart';
 import 'package:dyte_client/dyteMeeting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
@@ -13,19 +16,25 @@ import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class DyteMeetingScreen extends HookWidget {
   final int meetingId;
-  const DyteMeetingScreen({Key? key, required this.meetingId})
-      : super(key: key);
+  DyteMeetingScreen({Key? key, required this.meetingId}) : super(key: key);
+
+  bool showChat = true;
+  late Size size;
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
 
-    final showChat = useState(true);
-    final showReaction = useState(false);
+    // final showChat = useState(true);
+    // final showReaction = useState(false);
 
-    const videoHeight = 400.0;
+    final videoHeight = min(size.width, size.height);
+    final videoWidth = MediaQuery.of(context).size.width;
+
     final fullHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
@@ -40,10 +49,39 @@ class DyteMeetingScreen extends HookWidget {
         'chat': false,
         'polls': false,
       },
+      'dimensions': {
+        'height': videoHeight,
+        'width': videoWidth,
+        'mode': 'fillParent',
+      },
     });
+
+    Future<void> toggleChat() async {
+      showChat = !showChat;
+
+      final videoWidth = size.height;
+      meetingHandler.value?.updateUIConfig({
+        'dimensions': {
+          'height': videoHeight,
+          'width': videoWidth,
+          'mode': 'fillParent',
+        }
+      });
+
+      await SystemChrome.setPreferredOrientations([
+        if (showChat == false)
+          DeviceOrientation.landscapeRight
+        else
+          DeviceOrientation.portraitUp,
+      ]);
+
+    }
 
     useEffect(() {
       return () {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
         meetingHandler.value?.events.clear();
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
         // meetingHandler.value = null;
@@ -65,10 +103,10 @@ class DyteMeetingScreen extends HookWidget {
                   Stack(
                     children: [
                       SizedBox(
-                          key: Key(meetingId.toString()),
+                          // key: Key(meetingId.toString()),
                           // constraints: BoxConstraints.expand(
-                          height: showChat.value ? videoHeight : fullHeight,
-                          width: double.infinity,
+                          height: videoHeight,
+                          width: videoWidth,
                           child: DyteMeeting(
                             roomName: state.room,
                             authToken: state.token,
@@ -82,7 +120,7 @@ class DyteMeetingScreen extends HookWidget {
                                 Future.delayed(
                                         const Duration(milliseconds: 500))
                                     .then((value) {
-                                  showChat.value = true;
+                                  // showChat.value = true;
 
                                   final analytics =
                                       KiwiContainer().resolve<Analytics>();
@@ -105,30 +143,21 @@ class DyteMeetingScreen extends HookWidget {
                                 AutoRouter.of(context).pop();
                               });
 
-                              showChat.value = false;
+                              // showChat.value = false;
                             },
                           )),
                       SizedBox(
-                        height: showChat.value ? videoHeight : fullHeight,
-                        width: double.infinity,
+                        height: videoHeight,
+                        width: videoWidth,
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 6, right: 4),
                           child: Align(
                             alignment: Alignment.bottomRight,
                             child: IconButton(
-                                onPressed: () {
-                                  final height = showChat.value == false
-                                      ? videoHeight
-                                      : fullHeight;
-                                  meetingHandler.value?.updateUIConfig({
-                                    'dimensions': {'height': height}
-                                  });
-
-                                  showChat.value = !showChat.value;
-                                },
-                                icon: Icon(showChat.value
+                                onPressed: toggleChat,
+                                icon: Icon(showChat
                                     ? Icons.fullscreen
-                                    : Icons.chat_bubble)),
+                                    : Icons.fullscreen_exit)),
                           ),
                         ),
                       ),
@@ -139,8 +168,8 @@ class DyteMeetingScreen extends HookWidget {
                       const Expanded(child: SizedBox()),
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        height: showChat.value ? fullHeight - videoHeight : 0,
-                        width: double.infinity,
+                        height: showChat ? fullHeight - videoHeight : 0,
+                        width: videoWidth,
                         child: Stack(
                           children: [
                             ChatScreen(
