@@ -70,11 +70,10 @@ class DyteMeetingScreen extends HookWidget {
 
       await SystemChrome.setPreferredOrientations([
         if (showChat == false)
-          DeviceOrientation.landscapeRight
+          DeviceOrientation.landscapeLeft
         else
           DeviceOrientation.portraitUp,
       ]);
-
     }
 
     useEffect(() {
@@ -83,6 +82,8 @@ class DyteMeetingScreen extends HookWidget {
           DeviceOrientation.portraitUp,
         ]);
         meetingHandler.value?.events.clear();
+        meetingHandler.value?.events.removeAllByEvent('meetingJoin');
+        meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
         // meetingHandler.value = null;
         meetingHandler.dispose();
@@ -150,14 +151,17 @@ class DyteMeetingScreen extends HookWidget {
                         height: videoHeight,
                         width: videoWidth,
                         child: Padding(
-                          padding: const EdgeInsets.only(bottom: 6, right: 4),
+                          padding: const EdgeInsets.only(top: 16, right: 32),
                           child: Align(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.topRight,
                             child: IconButton(
                                 onPressed: toggleChat,
-                                icon: Icon(showChat
-                                    ? Icons.fullscreen
-                                    : Icons.fullscreen_exit)),
+                                icon: Icon(
+                                  showChat
+                                      ? Icons.fullscreen
+                                      : Icons.fullscreen_exit,
+                                  size: 18,
+                                )),
                           ),
                         ),
                       ),
