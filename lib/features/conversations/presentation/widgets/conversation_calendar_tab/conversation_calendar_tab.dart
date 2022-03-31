@@ -5,6 +5,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -12,17 +13,9 @@ import '../../../../../constants/theme.dart';
 import '../conversation_card/conversation_card.dart';
 import 'conversation_calendar_tab_state.dart';
 import 'my_past_stream.dart';
+import 'my_past_stream_state.dart';
 
 const kLeftPaddingForDate = 20.00;
-
-final homeScreenScrollController =
-    Provider.autoDispose<ScrollController>((ref) {
-  final controller = ScrollController();
-  ref.onDispose(() {
-    controller.dispose();
-  });
-  return controller;
-});
 
 class ConversationCalendarTab extends HookWidget {
   final ConversationTabType type;
@@ -37,31 +30,43 @@ class ConversationCalendarTab extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final intialState = useProvider(initialStateProvider(type));
-    final _scrollController = useProvider(homeScreenScrollController);
+    final pastController =
+        useProvider(conversationCalendarStateProvider(type).notifier);
+    final creatorControlller = useProvider(creatorStateProvider('').notifier);
+    final pastStreamController =
+        useProvider(myPastStreamsStateProvider(null).notifier);
 
     return SafeArea(
-      child: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              const HomeAppBar(title: 'Upcoming Streams'),
-            ];
-          },
-          body: intialState.when(
-            loading: () => Center(
-                child: CircularProgressIndicator(
-              color: Theme.of(context).accentColor,
-            )),
-            data: (results) => _LoadedConversationTab(
-              type: type,
-              name: name,
-              onSchedulePressed: onSchedulePressed,
-              onReload: () {},
-            ),
-            error: (err, st) => _Loader(message: err.toString()),
-          )),
-    );
+        child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                const HomeAppBar(title: 'Upcoming Streams'),
+              ];
+            },
+            body: RefreshIndicator(
+                // displacement: 96.00,
+                color: Theme.of(context).accentColor,
+                onRefresh: () {
+                  return Future.wait([
+                    pastController.getInitialData(),
+                    creatorControlller.getProfileList(''),
+                    pastStreamController.getPastData(),
+                  ]);
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: _LoadedConversationTab(
+                        type: type,
+                        name: name,
+                        onSchedulePressed: onSchedulePressed,
+                        onReload: () {},
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: CreatorList()),
+                    const MyPastStream(),
+                  ],
+                ))));
   }
 }
 
@@ -91,81 +96,50 @@ class _LoadedConversationTab extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        useProvider(conversationCalendarStateProvider(type).notifier);
-    final weeks = useProvider(conversationCalendarStateProvider(type));
+    final pastProvider = useProvider(conversationCalendarStateProvider(type));
 
-    final List<Widget> children = [];
+    return pastProvider.when(
+        loading: () => Container(),
+        data: (weeks) {
+          final List<Widget> children = [];
 
-    bool emptyStateAdded = false;
+          bool emptyStateAdded = false;
 
-    for (final week in weeks) {
-      /// Add Conversations
-      final List<Conversation> allConversations = [];
-      week.conversations.forEach((element) {
-        allConversations.addAll(element.conversations ?? []);
-      });
-      if (allConversations.isNotEmpty) {
-        children.add(
-          SizedBox(
-              height: 280,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 280.0,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                    ),
-                    items: allConversations.map((c) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return ConversationCard(conversation: c);
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ],
-              )),
-        );
-      }
-    }
+          for (final week in weeks) {
+            /// Add Conversations
+            final List<Conversation> allConversations = [];
+            week.conversations.forEach((element) {
+              allConversations.addAll(element.conversations ?? []);
+            });
+            if (allConversations.isNotEmpty) {
+              return SizedBox(
+                  height: 280,
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: 280.0,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                        ),
+                        items: allConversations.map((c) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return ConversationCard(conversation: c);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ));
+            }
+          }
 
-    children.add(
-      CreatorList(),
-    );
-
-    children.add(
-      Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
-        child: Text(
-          'Streams you wanted to join',
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      ),
-    );
-
-    children.add(const MyPastStream());
-
-    if (children.length == 1 && emptyStateAdded == false) {
-      children.add(_EmptyOptinsState());
-      emptyStateAdded = true;
-    }
-
-    return RefreshIndicator(
-      // displacement: 96.00,
-      color: Theme.of(context).accentColor,
-      onRefresh: () {
-        return controller.getInitialData();
-      },
-      child: ListView(
-        children: children,
-      ),
-    );
+          return Container();
+        },
+        error: (failure, trace) => Container());
   }
 }
 

@@ -52,7 +52,7 @@ class DyteMeetingScreen extends HookWidget {
       'dimensions': {
         'height': videoHeight,
         'width': videoWidth,
-        'mode': 'fillParent',
+        // 'mode': 'fillParent',
       },
     });
 
@@ -64,7 +64,7 @@ class DyteMeetingScreen extends HookWidget {
         'dimensions': {
           'height': videoHeight,
           'width': videoWidth,
-          'mode': 'fillParent',
+          // 'mode': 'fillParent',
         }
       });
 
@@ -92,12 +92,11 @@ class DyteMeetingScreen extends HookWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        return isOngoingMeeting.value == false;
+        return true; // isOngoingMeeting.value == false;
       },
       child: Scaffold(
           extendBody: true,
           extendBodyBehindAppBar: true,
-          appBar: BaseAppBar(),
           body: profileState.when(
             data: (state) => SafeArea(
               child: Stack(
@@ -148,6 +147,25 @@ class DyteMeetingScreen extends HookWidget {
                               // showChat.value = false;
                             },
                           )),
+                      SizedBox(
+                        height: videoHeight,
+                        width: videoWidth,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16, left: 16),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                                onPressed: () {
+                                  isOngoingMeeting.value = false;
+                                  AutoRouter.of(context).pop();
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 18,
+                                )),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: videoHeight,
                         width: videoWidth,

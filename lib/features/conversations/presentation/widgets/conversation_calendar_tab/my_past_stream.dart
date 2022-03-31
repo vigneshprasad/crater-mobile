@@ -28,11 +28,12 @@ class MyPastStream extends HookWidget {
     });
 
     return pastStreamProvider.when(
-        loading: () => Container(),
-        error: (e, s) => Container(),
+        loading: () => SliverToBoxAdapter(child: Container()),
+        error: (e, s) => SliverToBoxAdapter(child: Container()),
         data: (streams) {
-          return ListView.builder(
-            itemBuilder: (context, index) {
+          return SliverList(
+              delegate: SliverChildBuilderDelegate(
+            (context, index) {
               switch (streams[index].type) {
                 case GridItemType.title:
                   return SizedBox(
@@ -50,7 +51,19 @@ class MyPastStream extends HookWidget {
                   );
                 default:
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (index == 0)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          child: Text(
+                            'Streams you wanted to join',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ),
                       AspectRatio(
                         aspectRatio: 4.0 / 3.0,
                         child: Container(
@@ -63,8 +76,8 @@ class MyPastStream extends HookWidget {
                   );
               }
             },
-            itemCount: streams.length,
-          );
+            childCount: streams.length,
+          ));
         });
   }
 }

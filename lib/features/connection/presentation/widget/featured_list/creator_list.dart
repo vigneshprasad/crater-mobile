@@ -13,13 +13,11 @@ import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../routes.gr.dart';
 import 'creator_list_state.dart';
-import 'featured_list_state.dart';
 
 class CreatorList extends HookWidget {
   @override
@@ -37,66 +35,47 @@ class CreatorList extends HookWidget {
     });
     final connectionState = useProvider(creatorStateProvider(''));
     return connectionState.when(
-        loading: () => SizedBox(
-              height: 100,
-              width: double.infinity,
-              child: Center(
-                  child: CircularProgressIndicator(
-                color: Theme.of(context).accentColor,
-              )),
-            ),
-        error: (err, st) => SizedBox(
-            height: 100,
-            child: Center(
-              child: err == null ? Container() : Text(err.toString()),
-            )),
-        data: (items) => items.isEmpty
-            ? SizedBox(
-                height: 100,
-                width: double.infinity,
-                child: Container(),
-              )
-            : SizedBox(
-                height: 400,
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 20,
-                        ),
-                        child: Text(
-                          'Creators to follow',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
+        loading: () => Center(
+            child: CircularProgressIndicator(
+          color: Theme.of(context).accentColor,
+        )),
+        error: (err, st) => Center(
+          child: err == null ? Container() : Text(err.toString()),
+        ),
+        data: (items) {
+          return items.isEmpty
+            ? Container()
+            : Wrap(
+              direction: Axis.vertical,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
+                  ),
+                  child: Text(
+                    'Creators to follow',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+                SizedBox(
+                  height: 250,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(width: 20,),
+                    controller: _controller,
+                    itemCount: items.length,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.fromLTRB(20, 8, 8, 40),
+                    itemBuilder: (context, index) => CreatorFollowCard(
+                      item: items[index],
+                      authUserPk: user?.pk,
                     ),
-                    SizedBox(
-                      height: 250,
-                      // width: double.infinity,
-                      child: GridView.builder(
-                        controller: _controller,
-                        itemCount: items.length,
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          crossAxisSpacing: 8.0,
-                          mainAxisSpacing: 8.0,
-                          childAspectRatio: 1.6,
-                        ),
-                        itemBuilder: (context, index) => CreatorFollowCard(
-                          item: items[index],
-                          authUserPk: user?.pk,
-                        ),
-                      ),
-                    ),
-                  ],
-                )));
+                  ),
+                ),
+              ],
+            );
+        });
   }
 }
 

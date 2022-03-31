@@ -303,7 +303,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
   FirebaseDynamicLinks: f506c83eb7eba0f9861f84cd6b65c38b3bd5ff6f
-  FirebaseFirestore: 8a0c6a06219bbaad86c72bcb66688c28995dde84
+  FirebaseFirestore: deb508c2c4bc7bc7a9d87d6f9157c66d5caa376a
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
