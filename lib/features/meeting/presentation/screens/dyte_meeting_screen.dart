@@ -97,6 +97,7 @@ class DyteMeetingScreen extends HookWidget {
       child: Scaffold(
           extendBody: true,
           extendBodyBehindAppBar: true,
+          appBar: BaseAppBar(),
           body: profileState.when(
             data: (state) => SafeArea(
               child: Stack(

@@ -36,53 +36,67 @@ class CreatorList extends HookWidget {
       }
     });
     final connectionState = useProvider(creatorStateProvider(''));
-    return SizedBox(
-        height: 400,
-        child: connectionState.when(
-          loading: () => SizedBox(
+    return connectionState.when(
+        loading: () => SizedBox(
+              height: 100,
+              width: double.infinity,
+              child: Center(
+                  child: CircularProgressIndicator(
+                color: Theme.of(context).accentColor,
+              )),
+            ),
+        error: (err, st) => SizedBox(
+            height: 100,
             child: Center(
-                child: CircularProgressIndicator(
-              color: Theme.of(context).accentColor,
+              child: err == null ? Container() : Text(err.toString()),
             )),
-          ),
-          error: (err, st) => Center(
-            child: err == null ? Container() : Text(err.toString()),
-          ),
-          data: (items) => Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
-                ),
-                child: Text(
-                  'Creators to follow',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
-              SizedBox(
-                height: 250,
+        data: (items) => items.isEmpty
+            ? SizedBox(
+                height: 100,
                 width: double.infinity,
-                child: GridView.builder(
-                  controller: _controller,
-                  itemCount: items.length,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    childAspectRatio: 1.6,
-                  ),
-                  itemBuilder: (context, index) => CreatorFollowCard(
-                    item: items[index],
-                    authUserPk: user?.pk,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ));
+                child: Container(),
+              )
+            : SizedBox(
+                height: 400,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        child: Text(
+                          'Creators to follow',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 250,
+                      // width: double.infinity,
+                      child: GridView.builder(
+                        controller: _controller,
+                        itemCount: items.length,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 40),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 1.6,
+                        ),
+                        itemBuilder: (context, index) => CreatorFollowCard(
+                          item: items[index],
+                          authUserPk: user?.pk,
+                        ),
+                      ),
+                    ),
+                  ],
+                )));
   }
 }
 

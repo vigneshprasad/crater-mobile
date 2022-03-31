@@ -47,9 +47,8 @@ class ProfileEmailScreen extends HookWidget {
       });
     }
 
-    const heading = 'Where should we send your meeting invites?';
-    const subHeading =
-        "This is used to block your calendar when a meeting is set up.";
+    const heading = 'Block your calendar for the the stream.';
+    const subHeading = "Please provide an email ID where we can notify you";
     const firstnameLabel = 'Email';
     final height = MediaQuery.of(context).size.height * 0.8;
     return ClipRRect(
