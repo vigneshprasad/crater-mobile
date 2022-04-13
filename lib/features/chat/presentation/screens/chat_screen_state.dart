@@ -96,7 +96,7 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
     final object = {
       'message': message,
       'group': groupKey,
-      'sender': 'preprod_${sender.pk}}',
+      'sender': sender.pk,
       'display_name': firstName,
       'sender_details': {
         'email': sender.email,

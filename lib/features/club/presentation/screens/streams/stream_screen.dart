@@ -258,6 +258,7 @@ class UpcomingGridItem extends Equatable {
   final Icon? icon;
   final String? color;
   final GridItemType type;
+  final bool? rsvped;
 
   UpcomingGridItem({
     this.conversation,
@@ -265,6 +266,7 @@ class UpcomingGridItem extends Equatable {
     this.icon,
     this.color,
     required this.type,
+    this.rsvped,
   });
 
   @override

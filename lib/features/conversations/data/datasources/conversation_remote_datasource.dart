@@ -98,6 +98,7 @@ abstract class ConversationRemoteDatasource {
   /// Get All Conversation for user from start to end date
   /// Throws [ServerException] on error
   Future<List<Webinar>> getLiveClubsfromRemote({String? userId});
+  Future<List<Webinar>> getAllClubsfromRemote();
 
   Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
 
@@ -343,6 +344,20 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return Topic.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<List<Webinar>> getAllClubsfromRemote({String? userId}) async {
+    final response =
+        await read(conversationApiServiceProvider).getAllClubs();
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.bodyString) as Iterable;
+      return jsonList
+          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
+          .toList();
     } else {
       throw ServerException(response.error);
     }

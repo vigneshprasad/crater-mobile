@@ -448,14 +448,16 @@ class _ConversationLoaded extends StatelessWidget {
 
         final startDateFormat = DateFormat("dd MMM, hh:mm a");
         final time = startDateFormat.format(group.start!.toLocal());
-        final result = await context.read(popupManagerProvider).showPopup(
-              PopupType.conversationJoin,
-              context,
-              message:
-                  'You will be notified. ${group.hostDetail?.name ?? 'Creator'} will be going live at $time. We will send you a reminder as well',
-              buttonTitle: 'Explore Streams',
-            );
-
+        // final result = await context.read(popupManagerProvider).showPopup(
+        //       PopupType.conversationJoin,
+        //       context,
+        //       message:
+        //           'You will be notified. ${group.hostDetail?.name ?? 'Creator'} will be going live at $time. We will send you a reminder as well',
+        //       buttonTitle: 'Explore Streams',
+        //     );
+        
+        await manageRSVPPopup(context, data.conversation.hostDetail?.name ?? 'the host');
+        
         await showEmail(context);
 
         // AutoRouter.of(context).pushAndPopUntil(

@@ -259,6 +259,20 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
+  Future<Either<Failure, List<Webinar>>> getAllClubs() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllClubsfromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)

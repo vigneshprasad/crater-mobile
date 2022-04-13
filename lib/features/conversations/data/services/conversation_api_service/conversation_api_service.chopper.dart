@@ -169,6 +169,13 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getAllClubs() {
+    final $url = '/groups/public/conversations/webinars/all';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getLiveClubs(String? host) {
     final $url = '/groups/public/conversations/webinars/live';
     final $params = <String, dynamic>{'host': host};

@@ -6,6 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_list.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_grid.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/post_rsvp_modal.dart';
 
 import '../../core/push_notfications/push_notifications.dart';
 import '../../features/auth/domain/entity/user_entity.dart';
@@ -41,7 +46,7 @@ void navigatePostAuth(
   final GlobalKey<NavigatorState> _navigator = KiwiContainer().resolve();
   final router = AutoRouter.of(_navigator.currentContext!).root;
 
-  String routeName =  _findNextRoute(profile, user, editMode);
+  String routeName = _findNextRoute(profile, user, editMode);
 
   final desiredIndex = sequence.indexOf(routeName);
 
@@ -52,11 +57,12 @@ void navigatePostAuth(
     if (editMode) {
       index = nextIndex;
     } else {
-      while (sequence.length > index+1 && shouldShow(sequence[index], profile, user) == false) {
+      while (sequence.length > index + 1 &&
+          shouldShow(sequence[index], profile, user) == false) {
         index++;
       }
     }
-    if (index >= 0 && index<sequence.length) {
+    if (index >= 0 && index < sequence.length) {
       routeName = sequence[index];
     }
   }
@@ -120,7 +126,8 @@ bool shouldShow(String name, UserProfile? profile, User? user) {
 
 String _findNextRoute(UserProfile? profile, User? user, bool isEdit) {
   if (!isEdit) {
-    if(profile !=null && (profile.name == null || profile.name!.trim().isEmpty)) {
+    if (profile != null &&
+        (profile.name == null || profile.name!.trim().isEmpty)) {
       return ProfileBasicScreenRoute.name;
     }
     return HomeScreenRoute.name;
@@ -134,7 +141,6 @@ String _findNextRoute(UserProfile? profile, User? user, bool isEdit) {
 }
 
 Future<bool> manageLoginPopup(BuildContext context) async {
-
   var user = BlocProvider.of<AuthBloc>(context).state.user;
   if (user != null) {
     return true;
@@ -147,21 +153,49 @@ Future<bool> manageLoginPopup(BuildContext context) async {
     context: context,
     builder: (context) {
       return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-        topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-      ),
-      child: Container(
-        height: 600,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Theme.of(context).dialogBackgroundColor,
-        ),
-        child: const PhoneScreen(state: 'popup'),
-      )
-  );
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: Container(
+            height: 600,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).dialogBackgroundColor,
+            ),
+            child: const PhoneScreen(state: 'popup'),
+          ));
     },
   );
 
   return user != null;
+}
+
+Future<void> manageRSVPPopup(
+  BuildContext context,
+  String creatorName,
+) async {
+  await showModalBottomSheet(
+    elevation: 10,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (context) {
+      return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: Container(
+            height: 600,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).dialogBackgroundColor,
+            ),
+            child: PostRSVPModal(
+              creatorName: creatorName,
+            ),
+          ));
+    },
+  );
 }

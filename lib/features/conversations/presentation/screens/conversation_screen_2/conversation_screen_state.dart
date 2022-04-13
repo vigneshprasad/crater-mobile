@@ -65,6 +65,10 @@ class ConversationState extends StateNotifier<ApiResult<ConversationScreenData>>
     final requestResponse = await read(conversationRepositoryProvider)
         .getWebinarRSVPRequest(_groupId);
 
+    if(!mounted) {
+      return response;
+    }
+
     state = response.fold(
       (failure) => ApiResult.error(failure),
       (group) {

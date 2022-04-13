@@ -53,6 +53,7 @@ abstract class ConversationRepository {
   Future<Either<Failure, Conversation>> postCreateInstantConversation(
       Conversation conversation);
   Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
+  Future<Either<Failure, List<Webinar>>> getAllClubs();
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
   Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
   Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize, int? categoryId});

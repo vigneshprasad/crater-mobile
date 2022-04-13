@@ -10,6 +10,7 @@ import 'package:worknetwork/features/auth/presentation/screens/phone/phone_scree
 import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen.dart';
 import 'package:worknetwork/features/connection/presentation/screen/connection_tab/connection_tab.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/screens/onboarding/onboarding_screen.dart';
