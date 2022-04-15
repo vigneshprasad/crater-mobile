@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
@@ -14,6 +15,8 @@ class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
+
+const craterSplashKey = 'crater_splash_shown';
 
 class _SplashScreenState extends State<SplashScreen> {
   bool isRedirected = false;
@@ -39,15 +42,30 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void listenAuthState(BuildContext context, AuthState state) {
+  Future<bool> getStatus(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key) ?? false;
+  }
+
+  Future<void> saveStatus(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, true);
+  }
+
+  Future<void> listenAuthState(BuildContext context, AuthState state) async {
     if (state is AuthStateFailure) {
       isRedirected = true;
-      // TODO: add logic to show only once per install
-      final firstTime = true;
-      if (firstTime) {
+
+      final splashShown = await getStatus(craterSplashKey);
+
+      if (!splashShown) {
+
+        await saveStatus(craterSplashKey);
+
         AutoRouter.of(context).root.pushAndPopUntil(const WelcomeScreenRoute(),
             predicate: (route) => false);
-        return;
+
+          return;
       }
 
       navigatePostAuth(state.user, profile: state.profile);

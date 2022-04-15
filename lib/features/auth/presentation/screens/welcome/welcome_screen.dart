@@ -474,11 +474,10 @@ class _ImageSlide extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        Container(width: 360, height: 320, color: Theme.of(context).dialogBackgroundColor,),
-        // Image(
-        //   image: image,
-        //   width: imageWidth,
-        // ),
+        Image(
+          image: image,
+          width: imageWidth,
+        ),
         const Spacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
