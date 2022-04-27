@@ -91,3 +91,14 @@ abstract class ConversationByDate with _$ConversationByDate {
   factory ConversationByDate.fromJson(Map<String, dynamic> json) =>
       _$ConversationByDateFromJson(json);
 }
+
+@freezed
+abstract class UserPermission with _$UserPermission {
+  factory UserPermission({
+    @JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+    @JsonKey(name: 'allow_chat') bool? allowChat,
+  }) = _UserPermission;
+
+  factory UserPermission.fromJson(Map<String, dynamic> json) =>
+      _$UserPermissionFromJson(json);
+}

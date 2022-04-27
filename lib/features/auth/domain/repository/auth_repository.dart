@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entity/user_entity.dart';
@@ -23,4 +24,5 @@ abstract class AuthRepository {
   Future<Either<Failure, String>> postNewPassword(Map<String, String> body);
   Future<Either<Failure, void>> sendOtp(String phone);
   Future<Either<Failure, User>> verifyOtp(String phone, String otp);
+  Future<Either<Failure, UserPermission>> getUserPermission();
 }

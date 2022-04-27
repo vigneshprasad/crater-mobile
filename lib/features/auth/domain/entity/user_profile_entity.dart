@@ -51,6 +51,7 @@ class UserProfile extends HiveObject {
   final UserProfileFieldDetail? sectorDetail;
   final UserProfileFieldDetail? stageOfCompanyDetail;
   final UserProfileFieldDetail? yearOfExperienceDetail;
+  final bool? isCreator;
 
   UserProfile({
     this.pk,
@@ -100,5 +101,6 @@ class UserProfile extends HiveObject {
     this.sectorDetail,
     this.stageOfCompanyDetail,
     this.yearOfExperienceDetail,
+    this.isCreator,
   });
 }

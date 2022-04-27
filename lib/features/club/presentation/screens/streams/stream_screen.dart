@@ -5,17 +5,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/webinar_screen.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
@@ -765,7 +760,7 @@ class PastLiveGridTile extends StatelessWidget {
                               horizontal: 4, vertical: 2),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: Colors.red,
+                            color: Theme.of(context).accentColor,
                           ),
                           child: const Text('Previously LIVE'),
                         ),

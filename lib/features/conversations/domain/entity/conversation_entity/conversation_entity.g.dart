@@ -181,3 +181,16 @@ Map<String, dynamic> _$_$_ConversationByDateToJson(
       'date': instance.date?.toIso8601String(),
       'conversations': instance.conversations,
     };
+
+_$_UserPermission _$_$_UserPermissionFromJson(Map<String, dynamic> json) {
+  return _$_UserPermission(
+    allowCreateStream: json['allow_create_stream'] as bool?,
+    allowChat: json['allow_chat'] as bool?,
+  );
+}
+
+Map<String, dynamic> _$_$_UserPermissionToJson(_$_UserPermission instance) =>
+    <String, dynamic>{
+      'allow_create_stream': instance.allowCreateStream,
+      'allow_chat': instance.allowChat,
+    };

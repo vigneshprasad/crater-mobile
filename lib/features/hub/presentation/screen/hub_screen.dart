@@ -1,165 +1,189 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/hub/presentation/widgets/stream_cover_picker.dart';
-import 'package:worknetwork/features/signup/presentation/widgets/objectives_picker.dart';
-import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
-import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
+import 'package:worknetwork/features/hub/presentation/screen/hub_screen_state.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
-class HubScreen extends HookWidget {
-  HubScreen({Key? key}) : super(key: key);
+import 'create_stream_screen.dart';
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+class HubScreen extends HookWidget {
+  const HubScreen({Key? key}) : super(key: key);
+
+  static const tabs = ["Streams", "Wallet"];
 
   @override
   Widget build(BuildContext context) {
-    _passwordController.text = 'COMING SOON';
-    final items = useState<List<PickerItem>>([
-      PickerItem(name: 'Item 1'),
-      PickerItem(name: 'Item 1'),
-      PickerItem(name: 'Item 1'),
-    ]);
-    const borderRadius = BorderRadius.all(
-      Radius.circular(AppBorderRadius.textInput),
-    );
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: 1300,
-        child: Form(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text('Title', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  BaseFormInput(
-                    controller: _emailController,
-                    label: 'Title',
-                    validator: (text) {
-                      if (text == null || text.isEmpty) return null;
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: AppPadding.med),
-                  Text('Category', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  BaseDropdown<String>(
-                      placeholder: 'PICK CATEGORIES',
-                      listItems: ['One', 'Two'],
-                      labelGetter: (lbl) => lbl,
-                      validator: (value) {
-                        return value == null ? 'Select a value' : null;
-                      },
-                      onChanged: (value) {}),
-                  const SizedBox(height: AppPadding.med),
-                  Text('Co-host', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  BaseFormInput(
-                    controller: _passwordController,
-                    label: 'COMING SOON',
-                    enabled: false,
-                    maxLines: 1,
-                    validator: (text) {
-                      if (text == null || text.isEmpty) return null;
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: AppPadding.med),
-                  Text('Date', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  DateTimePicker(
-                    decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        border: const OutlineInputBorder(
-                          borderRadius: borderRadius,
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: borderRadius,
-                          borderSide: BorderSide(
-                            width: 2,
-                            color: Theme.of(context).errorColor,
-                          ),
-                        ),
-                        filled: true,
-                        hintText: '',
-                        hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                              fontSize: 15,
-                              color: Colors.grey,
-                            ),
-                        labelStyle: const TextStyle(fontSize: 16),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: AppInsets.med,
-                          horizontal: AppInsets.l,
-                        )),
-                    type: DateTimePickerType.dateTime,
-                    initialValue: '',
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                    dateLabelText: 'Date',
-                    onChanged: (val) => print(val),
-                    validator: (val) {
-                      print(val);
-                      return null;
-                    },
-                    onSaved: (val) => print(val),
-                  ),
-                  const SizedBox(height: AppPadding.med),
-                  Text('Description', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  BaseFormInput(
-                    controller: _bioController,
-                    autovalidate: false,
-                    minLines: 10,
-                    label: '',
-                    validator: (value) => value == null || value.isEmpty
-                        ? "This field is required"
-                        : null,
-                  ),
-                  const SizedBox(height: AppPadding.med),
-                  Text('Cover Photo', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  Text('Generate Image or Upload an image from your photo gallery.', style: Theme.of(context).textTheme.caption, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  StreamCoverPicker(),
-                  const SizedBox(height: AppPadding.med),
-                  Text('RTMP Link', style: Theme.of(context).textTheme.subtitle2, textAlign: TextAlign.start,),
-                  Text('Stream to Youtube, Twitter, LinkedIn or Facebook', style: Theme.of(context).textTheme.caption, textAlign: TextAlign.start,),
-                  const SizedBox(height: AppPadding.sm),
-                  BaseFormInput(
-                    controller: _bioController,
-                    autovalidate: false,
-                    minLines: 3,
-                    label: '',
-                    validator: (value) => value == null || value.isEmpty
-                        ? "This field is required"
-                        : null,
-                  ),
-                  const Spacer(),
-                  Center(
-                    child: BaseLargeButton(
-                      onPressed: _onSubmitPressed,
-                      text: "Submit",
+    final profileState = useProvider(hubScreenProvider(0));
+
+    final index = useState(0);
+
+    return profileState.when(
+      data: (state) => Scaffold(
+        body: DefaultTabController(
+            length: tabs.length,
+            child: SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverAppBar(
+                    expandedHeight: 80,
+                    collapsedHeight: 50,
+                    toolbarHeight: 50,
+                    flexibleSpace: const AccentTitle(
+                      title: 'Hub',
+                      leftPadding: 24,
                     ),
-                  ),
-                  const SizedBox(height: AppInsets.xxl),
+                    bottom: PreferredSize(
+                      preferredSize: const Size(double.infinity, 50),
+                      child: SizedBox(
+                          height: 40,
+                          child: TabBar(
+                            onTap: (i) {
+                              index.value = i;
+                            },
+                            tabs: tabs.map((e) => Tab(child: Text(e))).toList(),
+                          )),
+                    ),
+                  )
                 ],
+                body: TabBarView(
+                  children: [
+                    if (state.permission.allowCreateStream ?? false)
+                      CreateStreamScreen()
+                    else
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(40.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Do you want to stream? Connect with us',
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              BaseLargeButton(
+                                text: 'Become a Creator',
+                                onPressed: onPressBecomeCreator,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    const WalletScreen(),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
+            )),
+      ),
+      loading: () => Container(),
+      error: (error, stackTrace) => Center(
+        child: Text(error.toString()),
       ),
     );
   }
 
-  void _onSubmitPressed() {}
+  void onPressBecomeCreator() {
+    launch(
+        'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator');
+  }
+}
+
+class WalletScreen extends StatelessWidget {
+  const WalletScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(40.0),
+      child: Column(
+        children: [
+          Text(
+            'How it works?',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/wallet_how1.png',
+                width: 50,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  child: Text(
+                'Share the referral link with your friends',
+                style: Theme.of(context).textTheme.subtitle1,
+              )),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/wallet_how2.png',
+                width: 50,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Text(
+                  'Your friend uses  the link to sign up & watch their first stream',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/wallet_how3.png',
+                width: 50,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  child: Text(
+                'You get ₹50 when they watch their first 20min of live content.',
+                style: Theme.of(context).textTheme.subtitle1,
+              )),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/wallet_how4.png',
+                width: 50,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  child: Text(
+                'Withdraw the money or use it at the auctions',
+                style: Theme.of(context).textTheme.subtitle1,
+              )),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }

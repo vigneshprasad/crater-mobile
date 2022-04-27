@@ -198,6 +198,7 @@ class DyteMeetingScreen extends HookWidget {
                             ChatScreen(
                               recieverId: '',
                               groupId: meetingId.toString(),
+                              allowChat: state.allowChat,
                             ),
                           ],
                         ),

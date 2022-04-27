@@ -17,8 +17,13 @@ import 'package:worknetwork/ui/components/list_items/chat_message_item/chat_mess
 class ChatScreen extends HookWidget {
   final String recieverId;
   final String? groupId;
+  final bool? allowChat;
 
-  const ChatScreen({required this.recieverId, this.groupId});
+  const ChatScreen({
+    required this.recieverId,
+    this.groupId,
+    this.allowChat = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +69,15 @@ class ChatScreen extends HookWidget {
                 message: messages[index],
               );
             },
-            chatBar: ChatInputBar(
-              onSubmitPress: _onSubmitMessage,
-              onReactionPress: () => {showReactions.value = true},
-              controller: _chatInputController,
-              user: user,
-              placeholder: "ASK A QUESTION",
-            ),
+            chatBar: allowChat == true
+                ? ChatInputBar(
+                    onSubmitPress: _onSubmitMessage,
+                    onReactionPress: () => {showReactions.value = true},
+                    controller: _chatInputController,
+                    user: user,
+                    placeholder: "ASK A QUESTION",
+                  )
+                : Container(),
           ),
           SizedBox(
             height: showReactions.value ? double.infinity : 0,

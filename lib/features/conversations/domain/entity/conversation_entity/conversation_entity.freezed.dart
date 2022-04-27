@@ -1447,3 +1447,190 @@ abstract class _ConversationByDate implements ConversationByDate {
   _$ConversationByDateCopyWith<_ConversationByDate> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+UserPermission _$UserPermissionFromJson(Map<String, dynamic> json) {
+  return _UserPermission.fromJson(json);
+}
+
+/// @nodoc
+class _$UserPermissionTearOff {
+  const _$UserPermissionTearOff();
+
+  _UserPermission call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat}) {
+    return _UserPermission(
+      allowCreateStream: allowCreateStream,
+      allowChat: allowChat,
+    );
+  }
+
+  UserPermission fromJson(Map<String, Object> json) {
+    return UserPermission.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $UserPermission = _$UserPermissionTearOff();
+
+/// @nodoc
+mixin _$UserPermission {
+  @JsonKey(name: 'allow_create_stream')
+  bool? get allowCreateStream => throw _privateConstructorUsedError;
+  @JsonKey(name: 'allow_chat')
+  bool? get allowChat => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UserPermissionCopyWith<UserPermission> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserPermissionCopyWith<$Res> {
+  factory $UserPermissionCopyWith(
+          UserPermission value, $Res Function(UserPermission) then) =
+      _$UserPermissionCopyWithImpl<$Res>;
+  $Res call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat});
+}
+
+/// @nodoc
+class _$UserPermissionCopyWithImpl<$Res>
+    implements $UserPermissionCopyWith<$Res> {
+  _$UserPermissionCopyWithImpl(this._value, this._then);
+
+  final UserPermission _value;
+  // ignore: unused_field
+  final $Res Function(UserPermission) _then;
+
+  @override
+  $Res call({
+    Object? allowCreateStream = freezed,
+    Object? allowChat = freezed,
+  }) {
+    return _then(_value.copyWith(
+      allowCreateStream: allowCreateStream == freezed
+          ? _value.allowCreateStream
+          : allowCreateStream // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      allowChat: allowChat == freezed
+          ? _value.allowChat
+          : allowChat // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$UserPermissionCopyWith<$Res>
+    implements $UserPermissionCopyWith<$Res> {
+  factory _$UserPermissionCopyWith(
+          _UserPermission value, $Res Function(_UserPermission) then) =
+      __$UserPermissionCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat});
+}
+
+/// @nodoc
+class __$UserPermissionCopyWithImpl<$Res>
+    extends _$UserPermissionCopyWithImpl<$Res>
+    implements _$UserPermissionCopyWith<$Res> {
+  __$UserPermissionCopyWithImpl(
+      _UserPermission _value, $Res Function(_UserPermission) _then)
+      : super(_value, (v) => _then(v as _UserPermission));
+
+  @override
+  _UserPermission get _value => super._value as _UserPermission;
+
+  @override
+  $Res call({
+    Object? allowCreateStream = freezed,
+    Object? allowChat = freezed,
+  }) {
+    return _then(_UserPermission(
+      allowCreateStream: allowCreateStream == freezed
+          ? _value.allowCreateStream
+          : allowCreateStream // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      allowChat: allowChat == freezed
+          ? _value.allowChat
+          : allowChat // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_UserPermission implements _UserPermission {
+  _$_UserPermission(
+      {@JsonKey(name: 'allow_create_stream') this.allowCreateStream,
+      @JsonKey(name: 'allow_chat') this.allowChat});
+
+  factory _$_UserPermission.fromJson(Map<String, dynamic> json) =>
+      _$_$_UserPermissionFromJson(json);
+
+  @override
+  @JsonKey(name: 'allow_create_stream')
+  final bool? allowCreateStream;
+  @override
+  @JsonKey(name: 'allow_chat')
+  final bool? allowChat;
+
+  @override
+  String toString() {
+    return 'UserPermission(allowCreateStream: $allowCreateStream, allowChat: $allowChat)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _UserPermission &&
+            (identical(other.allowCreateStream, allowCreateStream) ||
+                const DeepCollectionEquality()
+                    .equals(other.allowCreateStream, allowCreateStream)) &&
+            (identical(other.allowChat, allowChat) ||
+                const DeepCollectionEquality()
+                    .equals(other.allowChat, allowChat)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(allowCreateStream) ^
+      const DeepCollectionEquality().hash(allowChat);
+
+  @JsonKey(ignore: true)
+  @override
+  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
+      __$UserPermissionCopyWithImpl<_UserPermission>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_UserPermissionToJson(this);
+  }
+}
+
+abstract class _UserPermission implements UserPermission {
+  factory _UserPermission(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat}) = _$_UserPermission;
+
+  factory _UserPermission.fromJson(Map<String, dynamic> json) =
+      _$_UserPermission.fromJson;
+
+  @override
+  @JsonKey(name: 'allow_create_stream')
+  bool? get allowCreateStream => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'allow_chat')
+  bool? get allowChat => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
+      throw _privateConstructorUsedError;
+}

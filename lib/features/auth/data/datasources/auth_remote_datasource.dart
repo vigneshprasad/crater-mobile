@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/api/auth/otp_api_service.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../api/auth/auth_api_service.dart';
 import '../../../../api/user/user_api_service.dart';
@@ -90,6 +91,8 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> verifyOtp(String phone, String otp);
+
+  Future<UserPermission> getUserPermissionFromRemote();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -287,6 +290,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserPermission> getUserPermissionFromRemote() async {
+    final response = await userApiService.getUserPermission();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserPermission.fromJson(json);
     } else {
       throw ServerException(response.error);
     }
