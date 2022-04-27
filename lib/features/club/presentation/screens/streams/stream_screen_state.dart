@@ -116,10 +116,16 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     final webinars = response.getOrElse(() => List<Webinar>.empty());
 
     featuredClubs = webinars
-        .map((e) => UpcomingGridItem(
+        .map((e) {
+          var type = e.isLive ?? false ? GridItemType.live : GridItemType.featured;
+          if (e.isPast ?? false) {
+            type = GridItemType.past;
+          }
+          return UpcomingGridItem(
               conversation: e,
-              type: e.isLive ?? false ? GridItemType.live : GridItemType.featured,
-            ))
+              type: type,
+            );
+        })
         .toList();
     updateData();
   }

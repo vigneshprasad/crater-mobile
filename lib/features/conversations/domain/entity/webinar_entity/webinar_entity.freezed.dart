@@ -33,6 +33,8 @@ class _$WebinarTearOff {
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       @JsonKey(name: 'is_live') bool? isLive,
+      @JsonKey(name: 'is_past') bool? isPast,
+      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
       int? liveCount,
       bool? rsvp}) {
     return _Webinar(
@@ -48,6 +50,8 @@ class _$WebinarTearOff {
       hostDetail: hostDetail,
       type: type,
       isLive: isLive,
+      isPast: isPast,
+      recordingDetails: recordingDetails,
       liveCount: liveCount,
       rsvp: rsvp,
     );
@@ -79,6 +83,10 @@ mixin _$Webinar {
   int? get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_live')
   bool? get isLive => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_past')
+  bool? get isPast => throw _privateConstructorUsedError;
+  @JsonKey(name: 'recording_details')
+  RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
   int? get liveCount => throw _privateConstructorUsedError;
   bool? get rsvp => throw _privateConstructorUsedError;
 
@@ -104,11 +112,14 @@ abstract class $WebinarCopyWith<$Res> {
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       @JsonKey(name: 'is_live') bool? isLive,
+      @JsonKey(name: 'is_past') bool? isPast,
+      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
       int? liveCount,
       bool? rsvp});
 
   $TopicCopyWith<$Res>? get topicDetail;
   $ConversationUserCopyWith<$Res>? get hostDetail;
+  $RecordingDetailsCopyWith<$Res>? get recordingDetails;
 }
 
 /// @nodoc
@@ -133,6 +144,8 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
     Object? hostDetail = freezed,
     Object? type = freezed,
     Object? isLive = freezed,
+    Object? isPast = freezed,
+    Object? recordingDetails = freezed,
     Object? liveCount = freezed,
     Object? rsvp = freezed,
   }) {
@@ -185,6 +198,14 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
           ? _value.isLive
           : isLive // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isPast: isPast == freezed
+          ? _value.isPast
+          : isPast // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      recordingDetails: recordingDetails == freezed
+          ? _value.recordingDetails
+          : recordingDetails // ignore: cast_nullable_to_non_nullable
+              as RecordingDetails?,
       liveCount: liveCount == freezed
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
@@ -217,6 +238,17 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
       return _then(_value.copyWith(hostDetail: value));
     });
   }
+
+  @override
+  $RecordingDetailsCopyWith<$Res>? get recordingDetails {
+    if (_value.recordingDetails == null) {
+      return null;
+    }
+
+    return $RecordingDetailsCopyWith<$Res>(_value.recordingDetails!, (value) {
+      return _then(_value.copyWith(recordingDetails: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -237,6 +269,8 @@ abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       @JsonKey(name: 'is_live') bool? isLive,
+      @JsonKey(name: 'is_past') bool? isPast,
+      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
       int? liveCount,
       bool? rsvp});
 
@@ -244,6 +278,8 @@ abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
   $TopicCopyWith<$Res>? get topicDetail;
   @override
   $ConversationUserCopyWith<$Res>? get hostDetail;
+  @override
+  $RecordingDetailsCopyWith<$Res>? get recordingDetails;
 }
 
 /// @nodoc
@@ -269,6 +305,8 @@ class __$WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
     Object? hostDetail = freezed,
     Object? type = freezed,
     Object? isLive = freezed,
+    Object? isPast = freezed,
+    Object? recordingDetails = freezed,
     Object? liveCount = freezed,
     Object? rsvp = freezed,
   }) {
@@ -321,6 +359,14 @@ class __$WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
           ? _value.isLive
           : isLive // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isPast: isPast == freezed
+          ? _value.isPast
+          : isPast // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      recordingDetails: recordingDetails == freezed
+          ? _value.recordingDetails
+          : recordingDetails // ignore: cast_nullable_to_non_nullable
+              as RecordingDetails?,
       liveCount: liveCount == freezed
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
@@ -349,6 +395,8 @@ class _$_Webinar implements _Webinar {
       @JsonKey(name: 'host_detail') this.hostDetail,
       this.type,
       @JsonKey(name: 'is_live') this.isLive,
+      @JsonKey(name: 'is_past') this.isPast,
+      @JsonKey(name: 'recording_details') this.recordingDetails,
       this.liveCount,
       this.rsvp});
 
@@ -384,13 +432,19 @@ class _$_Webinar implements _Webinar {
   @JsonKey(name: 'is_live')
   final bool? isLive;
   @override
+  @JsonKey(name: 'is_past')
+  final bool? isPast;
+  @override
+  @JsonKey(name: 'recording_details')
+  final RecordingDetails? recordingDetails;
+  @override
   final int? liveCount;
   @override
   final bool? rsvp;
 
   @override
   String toString() {
-    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, liveCount: $liveCount, rsvp: $rsvp)';
+    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, isPast: $isPast, recordingDetails: $recordingDetails, liveCount: $liveCount, rsvp: $rsvp)';
   }
 
   @override
@@ -426,6 +480,11 @@ class _$_Webinar implements _Webinar {
                 const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.isLive, isLive) ||
                 const DeepCollectionEquality().equals(other.isLive, isLive)) &&
+            (identical(other.isPast, isPast) ||
+                const DeepCollectionEquality().equals(other.isPast, isPast)) &&
+            (identical(other.recordingDetails, recordingDetails) ||
+                const DeepCollectionEquality()
+                    .equals(other.recordingDetails, recordingDetails)) &&
             (identical(other.liveCount, liveCount) ||
                 const DeepCollectionEquality()
                     .equals(other.liveCount, liveCount)) &&
@@ -448,6 +507,8 @@ class _$_Webinar implements _Webinar {
       const DeepCollectionEquality().hash(hostDetail) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(isLive) ^
+      const DeepCollectionEquality().hash(isPast) ^
+      const DeepCollectionEquality().hash(recordingDetails) ^
       const DeepCollectionEquality().hash(liveCount) ^
       const DeepCollectionEquality().hash(rsvp);
 
@@ -476,6 +537,8 @@ abstract class _Webinar implements Webinar {
       @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
       int? type,
       @JsonKey(name: 'is_live') bool? isLive,
+      @JsonKey(name: 'is_past') bool? isPast,
+      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
       int? liveCount,
       bool? rsvp}) = _$_Webinar;
 
@@ -509,6 +572,12 @@ abstract class _Webinar implements Webinar {
   @override
   @JsonKey(name: 'is_live')
   bool? get isLive => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'is_past')
+  bool? get isPast => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'recording_details')
+  RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
   @override
   int? get liveCount => throw _privateConstructorUsedError;
   @override

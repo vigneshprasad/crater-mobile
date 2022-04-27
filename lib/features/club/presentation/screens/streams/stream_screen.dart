@@ -11,7 +11,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/webinar_screen.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
@@ -90,6 +92,9 @@ class StreamTab extends HookWidget {
                                     items: streams.liveClubs.map((c) {
                                       return Builder(
                                         builder: (BuildContext context) {
+                                          if (c.conversation?.recordingDetails != null) {
+                                            return PastLiveGridTile(c);
+                                          }
                                           return LiveGridTile(c);
                                         },
                                       );
@@ -697,5 +702,220 @@ class LiveGridTile extends StatelessWidget {
         )),
       ),
     );
+  }
+}
+
+
+class PastLiveGridTile extends StatelessWidget {
+  final UpcomingGridItem item;
+  const PastLiveGridTile(
+    this.item, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final conversation = item.conversation!;
+    final user = conversation.hostDetail;
+    final topic = conversation.topicDetail;
+    final tag = topic?.root;
+    String description = user?.introduction ?? topic?.name ?? ' ';
+    if (description.isEmpty) {
+      description = item.conversation?.description ?? '';
+    }
+    final title = user?.name ?? '';
+
+    return InkWell(
+      onTap: () async {
+          AutoRouter.of(context)
+              .push(PastStreamDetailScreenRoute(id: conversation.id));
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: GridTile(
+            child: Container(
+          color: Theme.of(context).dialogBackgroundColor,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).dialogBackgroundColor,
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Stack(
+                    children: [
+                      if (topic?.image != null)
+                        Image.network(
+                          topic?.image ?? '',
+                          height: double.infinity,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      WebinarVideoPlayer(
+                        key: Key(item.conversation!.id.toString()),
+                        conversation: item.conversation!
+                      ),
+                      if (item.type == GridItemType.featured)
+                        LiveTime(date: item.conversation?.start?.toLocal()),
+                      if (item.type == GridItemType.past)
+                        Container(
+                          margin: const EdgeInsets.only(top: 8, left: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.red,
+                          ),
+                          child: const Text('Previously LIVE'),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(user?.photo ?? ''),
+                                  backgroundColor:
+                                      Theme.of(context).dialogBackgroundColor,
+                                  radius: 16,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              if (tag?.name?.isNotEmpty ?? false)
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                        color: Colors.white, width: 0.5),
+                                  ),
+                                  child: Text(
+                                    tag?.name ?? '',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            description,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        )),
+      ),
+    );
+  }
+}
+
+
+class WebinarVideoPlayer extends StatefulWidget {
+  const WebinarVideoPlayer({
+    Key? key,
+    required this.conversation,
+  }) : super(key: key);
+
+  final Webinar conversation;
+
+  @override
+  _WebinarVideoPlayerState createState() => _WebinarVideoPlayerState();
+}
+
+class _WebinarVideoPlayerState extends State<WebinarVideoPlayer> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    _controller = VideoPlayerController.network(
+        widget.conversation.recordingDetails?.recording ?? '');
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) {
+      _controller.setVolume(0.0);
+      _controller.seekTo(const Duration(minutes: 10));
+      return setState(() {});
+    });
+    _controller.play();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Theme.of(context).dialogBackgroundColor,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    widget.conversation.topicDetail?.image ?? '',
+                    height: double.infinity,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                VideoPlayer(_controller),
+                // _ControlsOverlay(
+                //   isPlaying: _controller.value.isPlaying,
+                //   isFullScreen: widget.isFullScreen,
+                // ),
+                // VideoProgressIndicator(
+                //   _controller,
+                //   colors: VideoProgressColors(playedColor: Theme.of(context).accentColor),
+                //   allowScrubbing: true,
+                //   padding: EdgeInsets.only(
+                //     bottom: 0,
+                //     top: 20,
+                //   ),
+                // ),
+              ],
+            ),
+          ],
+        ));
   }
 }

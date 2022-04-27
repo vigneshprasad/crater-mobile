@@ -28,6 +28,11 @@ _$_Webinar _$_$_WebinarFromJson(Map<String, dynamic> json) {
             json['host_detail'] as Map<String, dynamic>),
     type: json['type'] as int?,
     isLive: json['is_live'] as bool?,
+    isPast: json['is_past'] as bool?,
+    recordingDetails: json['recording_details'] == null
+        ? null
+        : RecordingDetails.fromJson(
+            json['recording_details'] as Map<String, dynamic>),
     liveCount: json['liveCount'] as int?,
     rsvp: json['rsvp'] as bool?,
   );
@@ -47,6 +52,8 @@ Map<String, dynamic> _$_$_WebinarToJson(_$_Webinar instance) =>
       'host_detail': instance.hostDetail,
       'type': instance.type,
       'is_live': instance.isLive,
+      'is_past': instance.isPast,
+      'recording_details': instance.recordingDetails,
       'liveCount': instance.liveCount,
       'rsvp': instance.rsvp,
     };
