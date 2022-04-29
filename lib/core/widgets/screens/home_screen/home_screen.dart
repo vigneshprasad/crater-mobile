@@ -85,14 +85,14 @@ class HomeScreen extends HookWidget {
             if (user == null)
               const PhoneScreen(state: '',)
             else
-            HubScreen(),
-              // ConversationCalendarTab(
-              //   type: ConversationTabType.my,
-              //   name: name,
-              //   onSchedulePressed: () {
-              //     AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
-              //   },
-              // ),
+            // HubScreen(),
+              ConversationCalendarTab(
+                type: ConversationTabType.my,
+                name: name,
+                onSchedulePressed: () {
+                  AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
+                },
+              ),
             if (user == null)
               const PhoneScreen(state: '',)
             else

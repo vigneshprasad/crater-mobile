@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../../core/api_result/api_result.dart';
@@ -27,20 +27,27 @@ class StreamPage {
 class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   final Reader read;
 
-  List<UpcomingGridItem> liveClubs = [];
   List<UpcomingGridItem> featuredClubs = [];
   List<UpcomingGridItem> upcomingClubs = [];
   List<UpcomingGridItem> series = [];
-  
+
   late bool loadingPage;
   final pageSize = 10;
   int page = 1;
   bool allLoaded = false;
 
+
+  final upcomingPageSize = 10;
+  int upcomingPage = 1;
+  late bool loadingUpcomingPage;
+  bool allUpcomingLoaded = false;
+
+  final featuredPageSize = 10;
+  int featuredPage = 1;
+  late bool loadingFeaturedPage;
+  bool allFeaturedLoaded = false;
+
   StreamStateNotifier(this.read) : super(ApiResult<StreamPage>.loading()) {
-    try {
-      getLiveData();
-    } catch (_) {}
     try {
       getSeriesData();
     } catch (_) {}
@@ -53,17 +60,63 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   }
 
   Future<void> getUpcomingData() async {
+    upcomingPage = 1;
+    allUpcomingLoaded = false;
+    loadingUpcomingPage = true;
+    
     final response =
-        await read(conversationRepositoryProvider).getUpcomingClubs();
+        await read(conversationRepositoryProvider).getUpcomingClubs(page: upcomingPage, pageSize: upcomingPageSize,);
 
     if (response.isLeft()) {
       // throw response.swap().getOrElse(() => ServerFailure());
+
+      loadingUpcomingPage = false;
       return;
     }
 
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
+    final pageData = response.getOrElse(() => const FollowCreatorResponse());
 
-    upcomingClubs = webinars
+    loadingUpcomingPage = false;
+    allUpcomingLoaded = pageData.next == null;
+
+    upcomingClubs = pageData.results
+        .map((e) => UpcomingGridItem(
+              conversation: e,
+              type: GridItemType.upcoming,
+            ))
+        .toList();
+
+    updateData();
+  }
+
+  Future<void> getUpcomingNextData() async {
+
+    if (loadingUpcomingPage == true || allUpcomingLoaded == true) {
+      return null;
+    }
+    loadingUpcomingPage = true;
+
+    // upcomingClubs = upcomingClubs + [UpcomingGridItem(type: GridItemType.loader)];
+    // updateData();
+
+    upcomingPage = upcomingPage + 1;
+
+    final response =
+        await read(conversationRepositoryProvider).getUpcomingClubs(page: upcomingPage, pageSize: upcomingPageSize,);
+
+    if (response.isLeft()) {
+      // throw response.swap().getOrElse(() => ServerFailure());
+
+      loadingUpcomingPage = false;
+      return;
+    }
+
+    final pageData = response.getOrElse(() => const FollowCreatorResponse());
+
+    loadingUpcomingPage = false;
+    allUpcomingLoaded = pageData.next == null;
+
+    upcomingClubs = upcomingClubs + pageData.results
         .map((e) => UpcomingGridItem(
               conversation: e,
               type: GridItemType.upcoming,
@@ -76,62 +129,80 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   void updateData() {
     final items = List<UpcomingGridItem>.from(upcomingClubs);
 
-    final live = liveClubs + featuredClubs;
-
     state = ApiResult.data(StreamPage(
-      liveClubs: live.toSet().toList(),
+      liveClubs: featuredClubs.toSet().toList(),
       upcomingClubs: items,
       series: series,
     ));
   }
 
-  Future<void> getLiveData() async {
-    // final response = await read(conversationRepositoryProvider).getLiveClubs();
-
-    // if (response.isLeft()) {
-    //   // throw response.swap().getOrElse(() => ServerFailure());
-    //   return;
-    // }
-
-    // final webinars = response.getOrElse(() => List<Webinar>.empty());
-
-    // liveClubs = webinars
-    //     .map((e) => UpcomingGridItem(
-    //           conversation: e,
-    //           type: GridItemType.live,
-    //         ))
-    //     .toList();
-    // updateData();
-  }
-
-
   Future<void> getFeaturedData() async {
-    final response = await read(conversationRepositoryProvider).getFeaturedClubs();
+    featuredPage = 1;
+    loadingFeaturedPage = true;
+    allFeaturedLoaded = false;
+
+    final response = await read(conversationRepositoryProvider)
+        .getFeaturedClubs(page: featuredPage, pageSize: featuredPageSize);
 
     if (response.isLeft()) {
       // throw response.swap().getOrElse(() => ServerFailure());
       return;
     }
 
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
+    final pageData = response.getOrElse(() => const FollowCreatorResponse());
 
-    featuredClubs = webinars
-        .map((e) {
-          var type = e.isLive ?? false ? GridItemType.live : GridItemType.featured;
-          if (e.isPast ?? false) {
-            type = GridItemType.past;
-          }
-          return UpcomingGridItem(
-              conversation: e,
-              type: type,
-            );
-        })
-        .toList();
+    allFeaturedLoaded = pageData.next == null;
+
+    featuredClubs = pageData.results.map((e) {
+      var type = e.isLive ?? false ? GridItemType.live : GridItemType.featured;
+      if (e.isPast ?? false) {
+        type = GridItemType.past;
+      }
+      return UpcomingGridItem(
+        conversation: e,
+        type: type,
+      );
+    }).toList();
     updateData();
   }
 
+  Future<void> getFeaturedNextData() async {
+    if (loadingFeaturedPage == true || allFeaturedLoaded == true) {
+      return;
+    }
+    loadingFeaturedPage = true;
+
+    featuredPage = featuredPage + 1;
+
+    final response = await read(conversationRepositoryProvider)
+        .getFeaturedClubs(page: featuredPage, pageSize: featuredPageSize);
+
+    if (response.isLeft()) {
+      loadingFeaturedPage = false;
+      // throw response.swap().getOrElse(() => ServerFailure());
+      return;
+    }
+
+    final pageData = response.getOrElse(() => const FollowCreatorResponse());
+
+    allFeaturedLoaded = pageData.next == null;
+
+    featuredClubs = pageData.results.map((e) {
+      var type = e.isLive ?? false ? GridItemType.live : GridItemType.featured;
+      if (e.isPast ?? false) {
+        type = GridItemType.past;
+      }
+      return UpcomingGridItem(
+        conversation: e,
+        type: type,
+      );
+    }).toList();
+    updateData();
+
+    loadingFeaturedPage = false;
+  }
+
   Future<Either<Failure, List<Webinar>>?> getSeriesData() async {
-    
     page = 1;
     allLoaded = false;
     loadingPage = true;
@@ -162,8 +233,7 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     return response;
   }
 
-  Future<Either<Failure, List<Webinar>>?>
-      getNextPageSeriesData() async {
+  Future<Either<Failure, List<Webinar>>?> getNextPageSeriesData() async {
     if (loadingPage == true || allLoaded == true) {
       return null;
     }

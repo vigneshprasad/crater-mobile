@@ -55,9 +55,9 @@ abstract class ConversationRepository {
   Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
   Future<Either<Failure, List<Webinar>>> getAllClubs();
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
-  Future<Either<Failure, List<Webinar>>> getUpcomingClubs({String? userId});
+  Future<Either<Failure, FollowCreatorResponse>> getUpcomingClubs({String? userId, int? page, int? pageSize});
   Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize, int? categoryId});
-  Future<Either<Failure, List<Webinar>>> getFeaturedClubs({String? userId, int? page, int? pageSize});
+  Future<Either<Failure, FollowCreatorResponse>> getFeaturedClubs({String? userId, int? page, int? pageSize});
 
   Future<Either<Failure, List<ChatReaction>>> getChatReactions();
   Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id);

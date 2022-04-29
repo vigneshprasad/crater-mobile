@@ -31,6 +31,16 @@ class StreamTab extends HookWidget {
       }
     });
 
+    final _featuredScrollController = useScrollController();
+    _featuredScrollController.addListener(() {
+      // reached End of scroll
+      if (_featuredScrollController.offset >=
+              _featuredScrollController.position.maxScrollExtent &&
+          !_featuredScrollController.position.outOfRange) {
+        context.read(streamStateProvider.notifier).getUpcomingNextData();
+      }
+    });
+
     // final isMounted = useIsMounted();
     // final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
     //   if (isMounted()) {
@@ -42,7 +52,7 @@ class StreamTab extends HookWidget {
     //   return () {
     //     timer.cancel();
     //   };
-    // }, []);
+    // }, []); 
 
     return SafeArea(
       child: NestedScrollView(
@@ -57,7 +67,6 @@ class StreamTab extends HookWidget {
             color: Theme.of(context).accentColor,
             onRefresh: () {
               final futures = [
-                context.read(streamStateProvider.notifier).getLiveData(),
                 context.read(streamStateProvider.notifier).getSeriesData(),
                 context.read(streamStateProvider.notifier).getFeaturedData(),
                 context.read(streamStateProvider.notifier).getUpcomingData(),
@@ -70,6 +79,7 @@ class StreamTab extends HookWidget {
                 error: (e, s) => Container(),
                 data: (streams) {
                   return CustomScrollView(
+                    controller: _featuredScrollController,
                     slivers: [
                       if (streams.liveClubs.isNotEmpty)
                         SliverToBoxAdapter(
@@ -87,7 +97,9 @@ class StreamTab extends HookWidget {
                                     items: streams.liveClubs.map((c) {
                                       return Builder(
                                         builder: (BuildContext context) {
-                                          if (c.conversation?.recordingDetails != null) {
+                                          if (c.conversation
+                                                  ?.recordingDetails !=
+                                              null) {
                                             return PastLiveGridTile(c);
                                           }
                                           return LiveGridTile(c);
@@ -154,6 +166,17 @@ class StreamTab extends HookWidget {
                       SliverList(
                           delegate: SliverChildBuilderDelegate(
                         (context, index) {
+                          if (streams.upcomingClubs[index].type ==
+                              GridItemType.loader) {
+                            return SizedBox(
+                              height: 100,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            );
+                          }
                           return SizedBox(
                               height: 300,
                               child: Padding(
@@ -700,7 +723,6 @@ class LiveGridTile extends StatelessWidget {
   }
 }
 
-
 class PastLiveGridTile extends StatelessWidget {
   final UpcomingGridItem item;
   const PastLiveGridTile(
@@ -722,8 +744,8 @@ class PastLiveGridTile extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
-          AutoRouter.of(context)
-              .push(PastStreamDetailScreenRoute(id: conversation.id));
+        AutoRouter.of(context)
+            .push(PastStreamDetailScreenRoute(id: conversation.id));
       },
       borderRadius: BorderRadius.circular(12),
       child: ClipRRect(
@@ -748,9 +770,8 @@ class PastLiveGridTile extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       WebinarVideoPlayer(
-                        key: Key(item.conversation!.id.toString()),
-                        conversation: item.conversation!
-                      ),
+                          key: Key(item.conversation!.id.toString()),
+                          conversation: item.conversation!),
                       if (item.type == GridItemType.featured)
                         LiveTime(date: item.conversation?.start?.toLocal()),
                       if (item.type == GridItemType.past)
@@ -834,7 +855,6 @@ class PastLiveGridTile extends StatelessWidget {
     );
   }
 }
-
 
 class WebinarVideoPlayer extends StatefulWidget {
   const WebinarVideoPlayer({

@@ -287,11 +287,11 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getUpcomingClubs(
-      {String? userId}) async {
+  Future<Either<Failure, FollowCreatorResponse>> getUpcomingClubs(
+      {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getUpcomingClubsfromRemote(userId: userId);
+          .getUpcomingClubsfromRemote(userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
@@ -316,7 +316,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getFeaturedClubs(
+  Future<Either<Failure, FollowCreatorResponse>> getFeaturedClubs(
       {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)

@@ -100,11 +100,11 @@ abstract class ConversationRemoteDatasource {
   Future<List<Webinar>> getLiveClubsfromRemote({String? userId});
   Future<List<Webinar>> getAllClubsfromRemote();
 
-  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId});
+  Future<FollowCreatorResponse> getUpcomingClubsfromRemote({String? userId, int? page, int? pageSize});
 
   Future<List<Webinar>> getPastClubsfromRemote({String? userId, int? page, int? pageSize, int? categoryId});
 
-  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize});
+  Future<FollowCreatorResponse> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize});
 
   Future<List<ChatReaction>> getChatReactions();
 
@@ -378,16 +378,12 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getUpcomingClubsfromRemote({String? userId}) async {
+  Future<FollowCreatorResponse> getUpcomingClubsfromRemote({String? userId, int? page, int? pageSize,}) async {
     final response =
-        await read(conversationApiServiceProvider).getUpcomingClubs(userId);
+        await read(conversationApiServiceProvider).getUpcomingClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as  Map<String, dynamic>;
-      final jsonList = json['results'] as Iterable;
-      // final jsonList = jsonDecode(response.bodyString) as Iterable;
-      return jsonList
-          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
-          .toList();
+      return FollowCreatorResponse.fromJson(json);
     } else {
       throw ServerException(response.error);
     }
@@ -409,19 +405,15 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize}) async {
+  Future<FollowCreatorResponse> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize}) async {
     final response =
         await read(conversationApiServiceProvider).getFeaturedClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
       if (response.bodyString == "[]") {
-        return List.empty();
+        return FollowCreatorResponse(count: 0, currentPage: page ?? 0, results: []);
       }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final jsonList = json['results'] as List;
-      // final jsonList = jsonDecode(response.bodyString) as Iterable;
-      return jsonList
-          .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
-          .toList();
+      return FollowCreatorResponse.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

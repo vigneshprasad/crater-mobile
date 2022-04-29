@@ -184,9 +184,14 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
-  Future<Response<dynamic>> getUpcomingClubs(String? host) {
+  Future<Response<dynamic>> getUpcomingClubs(
+      String? host, int? page, int? pageSize) {
     final $url = '/groups/public/conversations/webinars/upcoming';
-    final $params = <String, dynamic>{'host': host};
+    final $params = <String, dynamic>{
+      'host': host,
+      'page': page,
+      'page_size': pageSize
+    };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
