@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:worknetwork/features/hub/data/repository/cover_image_repository.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../core/widgets/base/base_container/base_container.dart';
@@ -11,9 +13,16 @@ import '../../../../core/widgets/base/base_network_image/base_network_image.dart
 class StreamCoverPicker extends StatefulWidget {
   final String? photoUrl;
   final Function(File)? onChoosePhoto;
+  final Function()? onGenerateImage;
+  final Image? image;
 
-  const StreamCoverPicker({Key? key, this.photoUrl, this.onChoosePhoto})
-      : super(key: key);
+  const StreamCoverPicker({
+    Key? key,
+    this.photoUrl,
+    this.image,
+    this.onChoosePhoto,
+    this.onGenerateImage,
+  }) : super(key: key);
 
   @override
   _StreamCoverPickerState createState() => _StreamCoverPickerState();
@@ -27,46 +36,57 @@ class _StreamCoverPickerState extends State<StreamCoverPicker> {
   Widget build(BuildContext context) {
     const double imageRadius = 56.00;
 
-    return Stack(children: [
+    return Column(children: [
       Container(
         width: double.infinity,
-        height: 250,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-            color: Theme.of(context).dialogBackgroundColor, borderRadius: BorderRadius.circular(8)),
-        child: BaseNetworkImage(
-          imageUrl: widget.photoUrl,
-          imagebuilder: (context, imageProvider) {
-            return Image(
-              image: _image != null ? Image.file(_image!).image : imageProvider,
-              width: double.infinity,
-              height: double.infinity,
-            );
-          },
-          errorBuilder: (context, url, error) {
-            return Container();
-          },
-        ),
+            color: Theme.of(context).dialogBackgroundColor,
+            borderRadius: BorderRadius.circular(8)),
+        child: (widget.image != null)
+            ? widget.image
+            : BaseNetworkImage(
+                imageUrl: widget.photoUrl,
+                imagebuilder: (context, imageProvider) {
+                  return Image(
+                    image: _image != null
+                        ? Image.file(_image!).image
+                        : imageProvider,
+                    width: double.infinity,
+                    height: 250,
+                  );
+                },
+                errorBuilder: (context, url, error) {
+                  return Container();
+                },
+              ),
       ),
-      Positioned(
-        bottom: 8,
-        right: 8,
-        child: BaseLargeButton(
-          text: 'Upload',
-          onPressed: _choosePhoto,
-        ),
+      const SizedBox(
+        height: 8,
       ),
-      Positioned(
-        bottom: 8,
-        left: 8,
-        child: BaseLargeButton(
-          text: 'Generate Image',
-          onPressed: _generateImage,
-        ),
+      Row(
+        children: [
+          Positioned(
+            bottom: 8,
+            left: 8,
+            child: BaseLargeButton(
+              text: 'Generate Image',
+              onPressed: widget.onGenerateImage,
+            ),
+          ),
+          const Spacer(),
+          Positioned(
+            bottom: 8,
+            right: 8,
+            child: BaseLargeButton(
+              text: 'Upload',
+              onPressed: _choosePhoto,
+            ),
+          ),
+        ],
       )
     ]);
   }
-
-  Future _generateImage() async {}
 
   Future _choosePhoto() async {
     final pickedFile = await picker.pickImage(

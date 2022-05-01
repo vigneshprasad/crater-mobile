@@ -92,8 +92,11 @@ abstract class ConversationApiService extends ChopperService {
   Future<Response> getLiveClubs(@Query() String? host);
 
   @Get(path: 'public/conversations/webinars/upcoming')
-  Future<Response> getUpcomingClubs(@Query() String? host, @Query() int? page,
-      @Query('page_size') int? pageSize,);
+  Future<Response> getUpcomingClubs(
+    @Query() String? host,
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
 
   @Get(path: 'public/conversations/webinars/past')
   Future<Response> getPastClubs(@Query() String? host, @Query() int? page,
@@ -103,12 +106,17 @@ abstract class ConversationApiService extends ChopperService {
   Future<Response> getFeaturedClubs(@Query() String? host, @Query() int? page,
       @Query('page_size') int? pageSize);
 
+  @Post(path: 'conversations/webinars/')
+  Future<Response> postWebinarRequest(@Body() Map<String, dynamic> body);
+
   @Get(path: 'conversations/webinars/{id}/')
   Future<Response> retrieveWebinar(@Path() int id);
 
   @Get(path: 'conversations/webinars/creators/')
-  Future<Response> retrieveCreators(@Query() int? page,
-      @Query('page_size') int? pageSize,);
+  Future<Response> retrieveCreators(
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
 
   @Get(path: 'public/conversations/series/')
   Future<Response> getSeries(

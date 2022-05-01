@@ -41,7 +41,7 @@ class HomeScreen extends HookWidget {
     const tabCount = 5;
 
     final user = BlocProvider.of<AuthBloc>(context).state.user;
-    
+
     final _tabController =
         useTabController(initialLength: tabCount, initialIndex: tab ?? 0);
 
@@ -83,18 +83,22 @@ class HomeScreen extends HookWidget {
             PastStreamScreen(),
             ConnectionTab(),
             if (user == null)
-              const PhoneScreen(state: '',)
+              const PhoneScreen(
+                state: '',
+              )
             else
-            // HubScreen(),
-              ConversationCalendarTab(
-                type: ConversationTabType.my,
-                name: name,
-                onSchedulePressed: () {
-                  AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
-                },
-              ),
+              HubScreen(),
+            // ConversationCalendarTab(
+            //   type: ConversationTabType.my,
+            //   name: name,
+            //   onSchedulePressed: () {
+            //     AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
+            //   },
+            // ),
             if (user == null)
-              const PhoneScreen(state: '',)
+              const PhoneScreen(
+                state: '',
+              )
             else
               ProfileScreen(user.pk ?? '', allowEdit: true)
           ],

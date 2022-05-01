@@ -4,6 +4,7 @@ import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_e
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_request_entity.dart';
 
 import '../../../../core/error/failures/failures.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -55,15 +56,18 @@ abstract class ConversationRepository {
   Future<Either<Failure, Topic>> postTopicSuggestion(Topic topic);
   Future<Either<Failure, List<Webinar>>> getAllClubs();
   Future<Either<Failure, List<Webinar>>> getLiveClubs({String? userId});
-  Future<Either<Failure, FollowCreatorResponse>> getUpcomingClubs({String? userId, int? page, int? pageSize});
-  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize, int? categoryId});
-  Future<Either<Failure, FollowCreatorResponse>> getFeaturedClubs({String? userId, int? page, int? pageSize});
+  Future<Either<Failure, FollowCreatorResponse>> getUpcomingClubs(
+      {String? userId, int? page, int? pageSize});
+  Future<Either<Failure, List<Webinar>>> getPastClubs(
+      {String? userId, int? page, int? pageSize, int? categoryId});
+  Future<Either<Failure, FollowCreatorResponse>> getFeaturedClubs(
+      {String? userId, int? page, int? pageSize});
 
   Future<Either<Failure, List<ChatReaction>>> getChatReactions();
   Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id);
 
   Future<Either<Failure, List<Webinar>>> getSeries({int? page, int? pageSize});
-  
+
   Future<Either<Failure, Series>> getSeriesDetails(int id);
 
   Future<Either<Failure, SeriesRequest>> postRequestToRSVPSeries(
@@ -71,5 +75,8 @@ abstract class ConversationRepository {
 
   Future<Either<Failure, List<CategoriesDetailList>>> getWebinarCategories();
 
-  Future<Either<Failure, FollowCreatorResponse>> getCreators({int? page, int? pageSize});
+  Future<Either<Failure, FollowCreatorResponse>> getCreators(
+      {int? page, int? pageSize});
+
+  Future<Either<Failure, Webinar>> postWebinar(WebinarRequest request);
 }

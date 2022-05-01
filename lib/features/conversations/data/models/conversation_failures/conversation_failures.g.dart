@@ -54,4 +54,8 @@ const _$ConversationFailuresTypeEnumMap = {
   ConversationFailuresType.groupNotFound: 'groupNotFound',
   ConversationFailuresType.groupAlreadyJoined: 'groupAlreadyJoined',
   ConversationFailuresType.seriesAlreadyRSVPed: 'seriesAlreadyRSVPed',
+  ConversationFailuresType.groupStartDateTimeNotInFuture:
+      'groupStartDateTimeNotInFuture',
+  ConversationFailuresType.groupStartLessThan24Hours:
+      'groupStartLessThan24Hours',
 };

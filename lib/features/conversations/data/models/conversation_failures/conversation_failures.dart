@@ -16,6 +16,10 @@ enum ConversationFailuresType {
   groupAlreadyJoined,
   @JsonValue("seriesAlreadyRSVPed")
   seriesAlreadyRSVPed,
+  @JsonValue('groupStartDateTimeNotInFuture')
+  groupStartDateTimeNotInFuture,
+  @JsonValue('groupStartLessThan24Hours')
+  groupStartLessThan24Hours,
 }
 
 @freezed

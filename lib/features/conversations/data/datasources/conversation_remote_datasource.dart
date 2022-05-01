@@ -6,6 +6,7 @@ import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_e
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_request_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../meeting/domain/entity/meeting_config_entity.dart';
@@ -66,8 +67,7 @@ abstract class ConversationRemoteDatasource {
     Topic topic,
   );
 
-  Future<ConversationRequest> getWebinarRSVPRequestFromRemote(
-      int webinarId);
+  Future<ConversationRequest> getWebinarRSVPRequestFromRemote(int webinarId);
 
   // Post Group request data to Remote Server
   /// Throws [ServerException]
@@ -100,11 +100,14 @@ abstract class ConversationRemoteDatasource {
   Future<List<Webinar>> getLiveClubsfromRemote({String? userId});
   Future<List<Webinar>> getAllClubsfromRemote();
 
-  Future<FollowCreatorResponse> getUpcomingClubsfromRemote({String? userId, int? page, int? pageSize});
+  Future<FollowCreatorResponse> getUpcomingClubsfromRemote(
+      {String? userId, int? page, int? pageSize});
 
-  Future<List<Webinar>> getPastClubsfromRemote({String? userId, int? page, int? pageSize, int? categoryId});
+  Future<List<Webinar>> getPastClubsfromRemote(
+      {String? userId, int? page, int? pageSize, int? categoryId});
 
-  Future<FollowCreatorResponse> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize});
+  Future<FollowCreatorResponse> getFeaturedClubsfromRemote(
+      {String? userId, int? page, int? pageSize});
 
   Future<List<ChatReaction>> getChatReactions();
 
@@ -116,12 +119,14 @@ abstract class ConversationRemoteDatasource {
 
   // Post Group request data to Remote Server
   /// Throws [ServerException]
-  Future<SeriesRequest> postSeriesRequestToRemote(
-      SeriesRequest request);
+  Future<SeriesRequest> postSeriesRequestToRemote(SeriesRequest request);
 
   Future<List<CategoriesDetailList>> getWebinarCategoriesFromRemote();
 
-  Future<FollowCreatorResponse> getCreatorsFromRemote({int? page, int? pageSize});
+  Future<FollowCreatorResponse> getCreatorsFromRemote(
+      {int? page, int? pageSize});
+
+  Future<Webinar> postWebinarToRemote(WebinarRequest request);
 }
 
 class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
@@ -255,8 +260,8 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   @override
   Future<ConversationRequest> getWebinarRSVPRequestFromRemote(
       int webinarId) async {
-    final response = await read(conversationApiServiceProvider)
-        .getWebinarRSVP(webinarId);
+    final response =
+        await read(conversationApiServiceProvider).getWebinarRSVP(webinarId);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return ConversationRequest.fromJson(json);
@@ -351,8 +356,7 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
 
   @override
   Future<List<Webinar>> getAllClubsfromRemote({String? userId}) async {
-    final response =
-        await read(conversationApiServiceProvider).getAllClubs();
+    final response = await read(conversationApiServiceProvider).getAllClubs();
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
@@ -378,11 +382,15 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<FollowCreatorResponse> getUpcomingClubsfromRemote({String? userId, int? page, int? pageSize,}) async {
-    final response =
-        await read(conversationApiServiceProvider).getUpcomingClubs(userId, page, pageSize);
+  Future<FollowCreatorResponse> getUpcomingClubsfromRemote({
+    String? userId,
+    int? page,
+    int? pageSize,
+  }) async {
+    final response = await read(conversationApiServiceProvider)
+        .getUpcomingClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as  Map<String, dynamic>;
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return FollowCreatorResponse.fromJson(json);
     } else {
       throw ServerException(response.error);
@@ -390,11 +398,12 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<List<Webinar>> getPastClubsfromRemote({String? userId, int? page, int? pageSize, int? categoryId}) async {
-    final response =
-        await read(conversationApiServiceProvider).getPastClubs(userId, page, pageSize, categoryId);
+  Future<List<Webinar>> getPastClubsfromRemote(
+      {String? userId, int? page, int? pageSize, int? categoryId}) async {
+    final response = await read(conversationApiServiceProvider)
+        .getPastClubs(userId, page, pageSize, categoryId);
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as  Map<String, dynamic>;
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final jsonList = json['results'] as Iterable;
       return jsonList
           .map((json) => Webinar.fromJson(json as Map<String, dynamic>))
@@ -405,12 +414,14 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<FollowCreatorResponse> getFeaturedClubsfromRemote({String? userId, int? page, int? pageSize}) async {
-    final response =
-        await read(conversationApiServiceProvider).getFeaturedClubs(userId, page, pageSize);
+  Future<FollowCreatorResponse> getFeaturedClubsfromRemote(
+      {String? userId, int? page, int? pageSize}) async {
+    final response = await read(conversationApiServiceProvider)
+        .getFeaturedClubs(userId, page, pageSize);
     if (response.statusCode == 200) {
       if (response.bodyString == "[]") {
-        return FollowCreatorResponse(count: 0, currentPage: page ?? 0, results: []);
+        return FollowCreatorResponse(
+            count: 0, currentPage: page ?? 0, results: []);
       }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return FollowCreatorResponse.fromJson(json);
@@ -445,7 +456,7 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
         return const ChatReaction();
       }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return  ChatReaction.fromJson(json);
+      return ChatReaction.fromJson(json);
     } else {
       throw ServerException(response.error);
     }
@@ -485,11 +496,10 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<SeriesRequest> postSeriesRequestToRemote(
-      SeriesRequest request) async {
+  Future<SeriesRequest> postSeriesRequestToRemote(SeriesRequest request) async {
     final body = request.toJson();
-    final response = await read(conversationApiServiceProvider)
-        .postSeriesRequest(body);
+    final response =
+        await read(conversationApiServiceProvider).postSeriesRequest(body);
     if (response.statusCode == 201) {
       // final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       // return SeriesRequest.fromJson(json);
@@ -499,7 +509,6 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     }
   }
 
-
   @override
   Future<List<CategoriesDetailList>> getWebinarCategoriesFromRemote() async {
     final response =
@@ -507,7 +516,8 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.bodyString) as Iterable;
       return jsonList
-          .map((topic) => CategoriesDetailList.fromJson(topic as Map<String, dynamic>))
+          .map((topic) =>
+              CategoriesDetailList.fromJson(topic as Map<String, dynamic>))
           .toList();
     } else {
       throw ServerException(response.error);
@@ -515,18 +525,35 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<FollowCreatorResponse> getCreatorsFromRemote({int? page, int? pageSize}) async {
-    final response =
-        await read(conversationApiServiceProvider).retrieveCreators(page, pageSize);
+  Future<FollowCreatorResponse> getCreatorsFromRemote(
+      {int? page, int? pageSize}) async {
+    final response = await read(conversationApiServiceProvider)
+        .retrieveCreators(page, pageSize);
     if (response.statusCode == 200) {
       if (response.bodyString == '[]') {
         throw ServerException('Empty');
       }
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final result = FollowCreatorResponse.fromJson(json);
-     
 
       return result;
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Webinar> postWebinarToRemote(WebinarRequest request) async {
+    final body = request.toJson();
+    if (body['rtmp_link'] == '') {
+      body.remove('rtmp_link');
+    }
+    final response =
+        await read(conversationApiServiceProvider).postWebinarRequest(body);
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final webinar = Webinar.fromJson(json);
+      return webinar;
     } else {
       throw ServerException(response.error);
     }

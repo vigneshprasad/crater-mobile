@@ -8,6 +8,7 @@ import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_e
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_request_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -291,7 +292,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
       {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getUpcomingClubsfromRemote(userId: userId, page: page, pageSize: pageSize);
+          .getUpcomingClubsfromRemote(
+              userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
@@ -302,10 +304,15 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId, int? page, int? pageSize, int? categoryId}) async {
+  Future<Either<Failure, List<Webinar>>> getPastClubs(
+      {String? userId, int? page, int? pageSize, int? categoryId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getPastClubsfromRemote(userId: userId, page: page, pageSize: pageSize, categoryId: categoryId);
+          .getPastClubsfromRemote(
+              userId: userId,
+              page: page,
+              pageSize: pageSize,
+              categoryId: categoryId);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
@@ -320,7 +327,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
       {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getFeaturedClubsfromRemote(userId: userId, page: page, pageSize: pageSize);
+          .getFeaturedClubsfromRemote(
+              userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
@@ -333,8 +341,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
   @override
   Future<Either<Failure, List<ChatReaction>>> getChatReactions() async {
     try {
-      final response = await read(conversationRemoteDatasourceProvider)
-          .getChatReactions();
+      final response =
+          await read(conversationRemoteDatasourceProvider).getChatReactions();
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
@@ -411,7 +419,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<CategoriesDetailList>>> getWebinarCategories() async {
+  Future<Either<Failure, List<CategoriesDetailList>>>
+      getWebinarCategories() async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getWebinarCategoriesFromRemote();
@@ -425,13 +434,30 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, FollowCreatorResponse>> getCreators({int? page, int? pageSize}) async {
+  Future<Either<Failure, FollowCreatorResponse>> getCreators(
+      {int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .getCreatorsFromRemote(page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Webinar>> postWebinar(WebinarRequest request) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postWebinarToRemote(request);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ConversationFailure.fromJson(message);
       return Left(failure);
     } on SocketException {
       return Left(NetworkFailure());

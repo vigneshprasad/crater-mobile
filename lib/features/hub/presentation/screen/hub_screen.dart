@@ -11,7 +11,7 @@ import 'create_stream_screen.dart';
 class HubScreen extends HookWidget {
   const HubScreen({Key? key}) : super(key: key);
 
-  static const tabs = ["Streams"];//, "Wallet"];
+  static const tabs = ["Streams"]; //, "Wallet"];
 
   @override
   Widget build(BuildContext context) {
