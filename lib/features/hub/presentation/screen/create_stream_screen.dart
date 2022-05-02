@@ -19,7 +19,6 @@ import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/
 import 'package:worknetwork/features/hub/data/repository/cover_image_repository.dart';
 import 'package:worknetwork/features/hub/presentation/screen/create_stream_screen_state.dart';
 import 'package:worknetwork/features/hub/presentation/widgets/stream_cover_picker.dart';
-import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
 import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
@@ -27,11 +26,6 @@ import '../../../../routes.gr.dart';
 
 class CreateStreamScreen extends HookWidget {
   CreateStreamScreen({Key? key}) : super(key: key);
-
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _coHostController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _rtmpController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -45,6 +39,11 @@ class CreateStreamScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final createStreamState = useProvider(createStreamProvider(0));
+
+    final _titleController = useTextEditingController();
+    final _coHostController = useTextEditingController();
+    final _descriptionController = useTextEditingController();
+    final _rtmpController = useTextEditingController();
 
     _coHostController.text = 'COMING SOON';
 
@@ -106,57 +105,54 @@ class CreateStreamScreen extends HookWidget {
 
     Future<void> _onChoosePhoto(File file) async {
       final bytes = file.readAsBytesSync();
-      base64Image = base64Encode(bytes);
+      base64Image = 'data:image/jpeg;base64,' + base64Encode(bytes);
+      coverImageUrl.value = null;
     }
 
     Future<void> _onSubmitPressed() async {
-      final isValid = _formKey.currentState?.validate();
+      final isValid = _formKey.currentState?.validate() ?? false;
 
-      if (base64Image == null || startDate == null || categories.isEmpty) {
+      if (base64Image == null ||
+          startDate == null ||
+          categories.isEmpty ||
+          !isValid) {
+        Fluttertoast.showToast(msg: 'Fill all required details');
         return;
       }
 
-      if (isValid ?? false) {
-        overlayEntry = buildLoaderOverlay();
-        Overlay.of(context)?.insert(overlayEntry!);
+      overlayEntry = buildLoaderOverlay();
+      Overlay.of(context)?.insert(overlayEntry!);
 
-        final categoryIds = categories.map((e) => e.pk!);
-        final request = WebinarRequest(
-          title: _titleController.text,
-          categories: categoryIds.toList(),
-          coverImage: base64Image!,
-          start: startDate!,
-          rtmpLink: _rtmpController.text,
-          description: _descriptionController.text,
-        );
+      final categoryIds = categories.map((e) => e.pk!);
+      final request = WebinarRequest(
+        title: _titleController.text,
+        categories: categoryIds.toList(),
+        coverImage: base64Image!,
+        start: startDate!,
+        rtmpLink: _rtmpController.text,
+        description: _descriptionController.text,
+      );
 
-        final response = await context
-            .read(conversationRepositoryProvider)
-            .postWebinar(request);
+      final response = await context
+          .read(conversationRepositoryProvider)
+          .postWebinar(request);
 
-        response.fold((failure) {
-          overlayEntry?.remove();
-          Fluttertoast.showToast(msg: failure.message!);
-        }, (webinar) {
-          overlayEntry?.remove();
+      response.fold((failure) {
+        overlayEntry?.remove();
+        Fluttertoast.showToast(msg: failure.message!);
+      }, (webinar) {
+        overlayEntry?.remove();
+        _formKey.currentState?.reset();
 
-          base64Image = null;
-          coverImageUrl.value = null;
-          _titleController.text = '';
-          _descriptionController.text = '';
-          categories = [];
-          startDate = null;
-          _formKey.currentState?.reset();
+        base64Image = null;
+        coverImageUrl.value = null;
+        _titleController.text = '';
+        _descriptionController.text = '';
+        categories = [];
+        startDate = null;
 
-          AutoRouter.of(context).push(ConversationScreenRoute(id: webinar.id));
-        });
-      } else {
-        scrollController.animateTo(
-          0.0,
-          duration: Duration(seconds: 200),
-          curve: Curves.easeInOut,
-        );
-      }
+        AutoRouter.of(context).push(ConversationScreenRoute(id: webinar.id));
+      });
     }
 
     return createStreamState.when(

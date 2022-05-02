@@ -457,8 +457,15 @@ class ConversationRepositoryImpl implements ConversationRepository {
     } on ServerException catch (error) {
       final message =
           jsonDecode(error.message as String) as Map<String, dynamic>;
-      final failure = ConversationFailure.fromJson(message);
-      return Left(failure);
+      if (message.containsKey('error_code')) {
+        final failure = ConversationFailure.fromJson(message);
+        return Left(failure);
+      } else {
+        final failure = ConversationFailure(
+            errorCode: ConversationFailuresType.genericError,
+            message: message.toString());
+        return Left(failure);
+      }
     } on SocketException {
       return Left(NetworkFailure());
     }

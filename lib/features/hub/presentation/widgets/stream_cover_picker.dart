@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:worknetwork/features/hub/data/repository/cover_image_repository.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/app_constants.dart';
-import '../../../../core/widgets/base/base_container/base_container.dart';
 import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
 
 class StreamCoverPicker extends StatefulWidget {
@@ -36,41 +33,16 @@ class _StreamCoverPickerState extends State<StreamCoverPicker> {
   Widget build(BuildContext context) {
     const double imageRadius = 56.00;
 
+    final height = MediaQuery.of(context).size.width * 576 / 1024;
+
     return Column(children: [
-      Container(
-        width: double.infinity,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            color: Theme.of(context).dialogBackgroundColor,
-            borderRadius: BorderRadius.circular(8)),
-        child: (widget.image != null)
-            ? widget.image
-            : BaseNetworkImage(
-                imageUrl: widget.photoUrl,
-                imagebuilder: (context, imageProvider) {
-                  return Image(
-                    image: _image != null
-                        ? Image.file(_image!).image
-                        : imageProvider,
-                    width: double.infinity,
-                    height: 250,
-                  );
-                },
-                errorBuilder: (context, url, error) {
-                  return Container();
-                },
-              ),
-      ),
-      const SizedBox(
-        height: 8,
-      ),
       Row(
         children: [
           Positioned(
             bottom: 8,
             left: 8,
             child: BaseLargeButton(
-              text: 'Generate Image',
+              text: widget.image == null ? 'Generate Image' : 'Randomize Image',
               onPressed: widget.onGenerateImage,
             ),
           ),
@@ -79,20 +51,39 @@ class _StreamCoverPickerState extends State<StreamCoverPicker> {
             bottom: 8,
             right: 8,
             child: BaseLargeButton(
-              text: 'Upload',
+              text: 'Upload Image',
               onPressed: _choosePhoto,
             ),
           ),
         ],
-      )
+      ),
+      const SizedBox(
+        height: 8,
+      ),
+      Container(
+        width: double.infinity,
+        height: height,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            color: Theme.of(context).dialogBackgroundColor,
+            borderRadius: BorderRadius.circular(8)),
+        child: (widget.image != null)
+            ? widget.image
+            : (_image != null)
+                ? Image(
+                    image: Image.file(_image!).image,
+                    width: double.infinity,
+                    height: height,
+                    fit: BoxFit.cover,
+                  )
+                : Container(),
+      ),
     ]);
   }
 
   Future _choosePhoto() async {
     final pickedFile = await picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: AppConstants.profileImageMaxWidth,
-        maxHeight: AppConstants.profileImageMaxWidth);
+        source: ImageSource.gallery, maxWidth: 1024, maxHeight: 576);
     /*
     NOTE: ImagePicker crashes on picking image second time on iOS Simulator.
     https://github.com/flutter/flutter/issues/68283

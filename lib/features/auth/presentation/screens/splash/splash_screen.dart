@@ -35,7 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
       child: const Scaffold(
         body: ScaffoldContainer(
           child: Center(
-            child: Logo(),
+            child: Logo(
+              withText: false,
+            ),
           ),
         ),
       ),
@@ -59,13 +61,12 @@ class _SplashScreenState extends State<SplashScreen> {
       final splashShown = await getStatus(craterSplashKey);
 
       if (!splashShown) {
-
         await saveStatus(craterSplashKey);
 
         AutoRouter.of(context).root.pushAndPopUntil(const WelcomeScreenRoute(),
             predicate: (route) => false);
 
-          return;
+        return;
       }
 
       navigatePostAuth(state.user, profile: state.profile);
