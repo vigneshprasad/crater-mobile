@@ -161,7 +161,7 @@ class CreateStreamScreen extends HookWidget {
       data: (state) => SingleChildScrollView(
         controller: scrollController,
         child: SizedBox(
-          height: 1200,
+          height: 1300,
           child: Form(
             key: _formKey,
             child: SafeArea(

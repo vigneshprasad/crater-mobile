@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
-import '../../../../constants/app_constants.dart';
-import '../../../../core/widgets/base/base_network_image/base_network_image.dart';
-
 class StreamCoverPicker extends StatefulWidget {
   final String? photoUrl;
   final Function(File)? onChoosePhoto;
@@ -36,26 +33,21 @@ class _StreamCoverPickerState extends State<StreamCoverPicker> {
     final height = MediaQuery.of(context).size.width * 576 / 1024;
 
     return Column(children: [
-      Row(
-        children: [
-          Positioned(
-            bottom: 8,
-            left: 8,
-            child: BaseLargeButton(
+      SizedBox(
+        height: 44,
+        child: Row(
+          children: [
+            BaseLargeButton(
               text: widget.image == null ? 'Generate Image' : 'Randomize Image',
               onPressed: widget.onGenerateImage,
             ),
-          ),
-          const Spacer(),
-          Positioned(
-            bottom: 8,
-            right: 8,
-            child: BaseLargeButton(
+            const Spacer(),
+            BaseLargeButton(
               text: 'Upload Image',
               onPressed: _choosePhoto,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       const SizedBox(
         height: 8,

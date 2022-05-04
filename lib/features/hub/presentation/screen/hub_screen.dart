@@ -50,9 +50,10 @@ class HubScreen extends HookWidget {
                 body: TabBarView(
                   children: [
                     if (state.permission.allowCreateStream ?? false)
-                      CreateStreamScreen()
+                     CreateStreamScreen()
                     else
-                      Expanded(
+                      SizedBox(
+                        height: 500,
                         child: Padding(
                           padding: const EdgeInsets.all(40.0),
                           child: Column(
