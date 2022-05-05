@@ -32,7 +32,7 @@ class CoverImageRemoteDatasourceImpl implements CoverImageRemoteDatasource {
   ) async {
     final body = {
       "topic": topic,
-      "avtar_url": avtarUrl,
+      "avatar_url": avtarUrl,
     };
     final response =
         await read(coverImageApiServiceProvider).generateImage(body);
