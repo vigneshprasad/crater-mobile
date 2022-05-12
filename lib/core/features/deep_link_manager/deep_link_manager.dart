@@ -1,3 +1,4 @@
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../routes.gr.dart';
 
 final deepLinkManagerProvider = Provider<DeepLinkManager>((_) {
-  final providers = [DeepLinkProviderType.firebase];
+  final providers = [
+    DeepLinkProviderType.firebase,
+    // DeepLinkProviderType.appsflyer,
+  ];
   return DeepLinkManagerImpl(providers);
 });
 
-enum DeepLinkProviderType { firebase }
+enum DeepLinkProviderType {
+  firebase,
+  appsflyer,
+}
 
 abstract class DeepLinkManager {
   List<DeepLinkProviderType> get providers;
@@ -34,20 +41,40 @@ class DeepLinkManagerImpl implements DeepLinkManager {
           await _handleFirebaseDeepLink(context);
           break;
 
+        case DeepLinkProviderType.appsflyer:
+          await _handleAppsflyerDeepLink(context);
+          break;
+
         default:
           break;
       }
     }
   }
 
+  Future<void> _handleAppsflyerDeepLink(BuildContext context) async {
+    final appsFlyerOptions = {
+      "afDevKey": '',
+      "afAppId": '',
+      "isDebug": true,
+      "disableAdvertisingIdentifier": true
+    };
+
+    final appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
+
+    appsflyerSdk.initSdk(
+        registerConversionDataCallback: true,
+        registerOnAppOpenAttributionCallback: true,
+        registerOnDeepLinkingCallback: true);
+  }
+
   Future<void> _handleFirebaseDeepLink(BuildContext context) async {
     FirebaseDynamicLinks.instance.onLink(onSuccess: (event) async {
       final Uri? deeplink = event?.link;
-      if (deeplink!=null) {
+      if (deeplink != null) {
         _handleDeepLink(deeplink, context);
       }
     });
-    
+
     final data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deeplink = data?.link;
     if (deeplink != null) {

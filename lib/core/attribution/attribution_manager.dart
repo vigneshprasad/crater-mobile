@@ -65,4 +65,32 @@ class AttributionManagerImpl implements AttributionManager {
       throw Exception(e);
     }
   }
+
+  Future<void> _getAttribution() async {
+    _appsflyerSdk?.onInstallConversionData((res) {
+      print("res: " + res.toString());
+    });
+
+    _appsflyerSdk?.onAppOpenAttribution((res) {
+      print("res: " + res.toString());
+    });
+
+    _appsflyerSdk?.onDeepLinking((DeepLinkResult dp) {
+      switch (dp.status) {
+        case Status.FOUND:
+          print(dp.deepLink?.toString());
+          print("deep link value: ${dp.deepLink?.deepLinkValue}");
+          break;
+        case Status.NOT_FOUND:
+          print("deep link not found");
+          break;
+        case Status.ERROR:
+          print("deep link error: ${dp.error}");
+          break;
+        case Status.PARSE_ERROR:
+          print("deep link status parsing error");
+          break;
+      }
+    });
+  }
 }

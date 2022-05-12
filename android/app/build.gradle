@@ -86,11 +86,11 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            manifestPlaceholders = [segmentDebugMode: "true", segmentWriteKey: "OV2KWxTSYAcsdmMb7gvHGkWYVMdKV2Dn"]
+            manifestPlaceholders = [segmentDebugMode: "true", segmentWriteKey: "6yv3l2h00hGkiSrtqCFCSuJWGxV8OWUe"]
         }
         release {
             signingConfig signingConfigs.release
-            manifestPlaceholders = [segmentDebugMode: "false", segmentWriteKey: "iGbaBkLh7gb9l1rkZjGFSqmzkj13z4YN"]
+            manifestPlaceholders = [segmentDebugMode: "false", segmentWriteKey: "WRkj1RpU8zuTmXSwxmshk8jDYLT1DwDT"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
