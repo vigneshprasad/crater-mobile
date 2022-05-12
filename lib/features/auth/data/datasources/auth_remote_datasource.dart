@@ -90,7 +90,8 @@ abstract class AuthRemoteDataSource {
   /// Verify OTP
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<UserModel> verifyOtp(String phone, String otp);
+  Future<UserModel> verifyOtp(
+      String phone, String otp, Map<String, String> attributionData);
 
   Future<UserPermission> getUserPermissionFromRemote();
 }
@@ -283,8 +284,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> verifyOtp(String phone, String otp) async {
+  Future<UserModel> verifyOtp(
+      String phone, String otp, Map<String, String> attributionData) async {
     final body = {"username": phone, "otp": otp};
+    body.addAll(attributionData);
     final response = await otpApiService.verifyOtp(body);
     if (response.statusCode == 201 || response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
