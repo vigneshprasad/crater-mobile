@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,7 +106,7 @@ class AttributionManagerImpl implements AttributionManager {
             saveAttributionData(appsFlyerReferrerIdKey, referrerId);
           }
 
-          Fluttertoast.showToast(msg: dp.deepLink.toString());
+          // Fluttertoast.showToast(msg: dp.deepLink.toString());
           print("deep link value: ${dp.deepLink?.deepLinkValue}");
           break;
         case Status.NOT_FOUND:
