@@ -23,6 +23,7 @@ class AttributionManagerImpl implements AttributionManager {
   Future<void> intializeSdk() async {
     final sdk = await _initializeAppsFlyerSdk();
     _appsflyerSdk = sdk;
+    _setupAttribution();
   }
 
   Future<AppsflyerSdk> _initializeAppsFlyerSdk() async {
@@ -66,7 +67,7 @@ class AttributionManagerImpl implements AttributionManager {
     }
   }
 
-  Future<void> _getAttribution() async {
+  Future<void> _setupAttribution() async {
     _appsflyerSdk?.onInstallConversionData((res) {
       print("res: " + res.toString());
     });
