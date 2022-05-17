@@ -1,6 +1,8 @@
 PODS:
-  - Amplitude-iOS (4.8.2)
-  - Analytics (3.7.0)
+  - Amplitude (8.10.0):
+    - AnalyticsConnector (~> 1.0.0)
+  - Analytics (4.1.6)
+  - AnalyticsConnector (1.0.0)
   - AppAuth (1.5.0):
     - AppAuth/Core (= 1.5.0)
     - AppAuth/ExternalUserAgent (= 1.5.0)
@@ -78,9 +80,9 @@ PODS:
     - FBSDKLoginKit (~> 11.0.0)
     - Flutter
   - flutter_segment (0.0.1):
-    - Analytics (= 3.7.0)
+    - Analytics (= 4.1.6)
     - Flutter
-    - Segment-Amplitude (= 3.0.1)
+    - Segment-Amplitude (= 3.3.2)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -134,10 +136,10 @@ PODS:
     - PhoneNumberKit/PhoneNumberKitCore (= 3.3.3)
   - PhoneNumberKit/PhoneNumberKitCore (3.3.3)
   - PromisesObjC (2.0.0)
-  - Segment-Amplitude (3.0.1):
-    - Amplitude-iOS (~> 4.8.0)
-    - Analytics (~> 3.7.0)
-  - share (0.0.1):
+  - Segment-Amplitude (3.3.2):
+    - Amplitude (~> 8.3)
+    - Analytics
+  - share_plus (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
@@ -179,7 +181,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
-  - share (from `.symlinks/plugins/share/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -191,8 +193,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Amplitude-iOS
+    - Amplitude
     - Analytics
+    - AnalyticsConnector
     - AppAuth
     - AppsFlyerFramework
     - DyteSdk
@@ -262,8 +265,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   phone_number:
     :path: ".symlinks/plugins/phone_number/ios"
-  share:
-    :path: ".symlinks/plugins/share/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sign_in_with_apple:
@@ -285,8 +288,9 @@ CHECKOUT OPTIONS:
     :tag: 8.11.0
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
-  Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
+  Amplitude: 2904f346250510b9e19a4e2262017bcf1d4368f9
+  Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
+  AnalyticsConnector: 4c386d5972ac9da86e22d668564dbbac97558754
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   appsflyer_sdk: 1e59c8c01aeeab556f299cbe66bf769862026cdb
   AppsFlyerFramework: 9f304d91cc80b6579b1206a59220383056b58b47
@@ -307,7 +311,7 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
-  flutter_segment: f20a38d465030de0f1b2aa9325cef9c1442b0721
+  flutter_segment: 9cdace39639298eb31ad1555e5916edf8f9fc6b8
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
@@ -330,8 +334,8 @@ SPEC CHECKSUMS:
   phone_number: 667dd76f1ae3ee67ac0cb95d6b603c3a5aa7077e
   PhoneNumberKit: 4ce83273551c4d2ae10b7361162f4283dd02835f
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
-  Segment-Amplitude: 1b3b02a2e92f4b08a413a72bf7aa44f78566ab3b
-  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  Segment-Amplitude: 6c1e59c8c278a21029ba7a6a788fcb31b9233a2c
+  share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
