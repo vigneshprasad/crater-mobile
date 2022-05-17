@@ -9,6 +9,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/core/attribution/attribution_manager.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
@@ -202,9 +203,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
     final _overlay = buildLoaderOverlay();
 
     Overlay.of(context)?.insert(_overlay);
+
+    final attributionProvider = context.read(attributionManagerProvider);
+    final data = await attributionProvider.getAttributionData();
+
     final response = await context
         .read(authRepositoryProvider)
-        .verifyOtp(_phoneNumber, _smsCode);
+        .verifyOtp(_phoneNumber, _smsCode, data);
 
     response.fold((failure) {
       final message = failure as ServerFailure?;

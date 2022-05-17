@@ -211,9 +211,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> verifyOtp(String phone, String otp) async {
+  Future<Either<Failure, User>> verifyOtp(
+      String phone, String otp, Map<String, String> attributionData) async {
     try {
-      final response = await remoteDataSource.verifyOtp(phone, otp);
+      final response =
+          await remoteDataSource.verifyOtp(phone, otp, attributionData);
       localDataSource.setUserToCache(response);
       return Right(response);
     } on ServerException catch (error) {

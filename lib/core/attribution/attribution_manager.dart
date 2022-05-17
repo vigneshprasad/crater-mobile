@@ -3,17 +3,25 @@ import 'dart:io';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config_reader/config_reader.dart';
 
 final attributionManagerProvider =
     Provider<AttributionManager>((_) => AttributionManagerImpl());
 
+const appsFlyerUtmSourceKey = 'appsflyer_utm_source';
+const appsFlyerUtmCampaignKey = 'appsflyer_utm_campaign';
+const appsFlyerUtmMediumKey = 'appsflyer_utm_medium';
+const appsFlyerReferrerIdKey = 'appsflyer_referrer_id';
+
 abstract class AttributionManager {
   /// Intialize all sdk and  set required event handlers
   Future<void> intializeSdk();
 
   Future<bool> logEvent(String eventName, Map<dynamic, dynamic> eventDetails);
+
+  Future<Map<String, String>> getAttributionData();
 }
 
 class AttributionManagerImpl implements AttributionManager {
@@ -80,6 +88,25 @@ class AttributionManagerImpl implements AttributionManager {
       switch (dp.status) {
         case Status.FOUND:
           print(dp.deepLink?.toString());
+          final utmSource = dp.deepLink?.getStringValue('utm_source');
+          final utmCampaign = dp.deepLink?.getStringValue('utm_campaign');
+          final utmMedium = dp.deepLink?.getStringValue('utm_medium');
+          final referrerId = dp.deepLink?.getStringValue('referrer_id');
+
+          if (utmSource != null) {
+            saveAttributionData(appsFlyerUtmSourceKey, utmSource);
+          }
+          if (utmCampaign != null) {
+            saveAttributionData(appsFlyerUtmCampaignKey, utmCampaign);
+          }
+          if (utmMedium != null) {
+            saveAttributionData(appsFlyerUtmMediumKey, utmMedium);
+          }
+          if (referrerId != null) {
+            saveAttributionData(appsFlyerReferrerIdKey, referrerId);
+          }
+
+          // Fluttertoast.showToast(msg: dp.deepLink.toString());
           print("deep link value: ${dp.deepLink?.deepLinkValue}");
           break;
         case Status.NOT_FOUND:
@@ -93,5 +120,40 @@ class AttributionManagerImpl implements AttributionManager {
           break;
       }
     });
+  }
+
+  @override
+  Future<Map<String, String>> getAttributionData() async {
+    final utmSource = await getAttributionString(appsFlyerUtmSourceKey);
+    final utmCampaign = await getAttributionString(appsFlyerUtmCampaignKey);
+    final utmMedium = await getAttributionString(appsFlyerUtmMediumKey);
+    final referrerId = await getAttributionString(appsFlyerReferrerIdKey);
+
+    final Map<String, String> data = {};
+
+    if (utmSource != null) {
+      data['utm_source'] = utmSource;
+    }
+    if (utmCampaign != null) {
+      data['utm_campaign'] = utmCampaign;
+    }
+    if (utmMedium != null) {
+      data['utm_medium'] = utmMedium;
+    }
+    if (referrerId != null) {
+      data['referrer_id'] = referrerId;
+    }
+
+    return data;
+  }
+
+  Future<String?> getAttributionString(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
+  }
+
+  Future<void> saveAttributionData(String key, String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
   }
 }

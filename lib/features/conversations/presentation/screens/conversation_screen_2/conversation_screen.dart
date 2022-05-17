@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
@@ -225,65 +228,93 @@ class _ConversationLoaded extends StatelessWidget {
                       )),
                 ),
                 const SizedBox(height: AppInsets.xxl),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          final url =
-                              'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
-                          launch(url, forceSafariVC: false);
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppSvgAssets.linkedin,
-                              color: Colors.white,
-                              height: 24,
+                Row(children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        final url =
+                            'https://crater.club/session/${conversation.id}?utm_source=in_app_share&referrer_id=$authUserPK&utm_campaign=mobile_app';
+                        _onShare(context, url, shareText);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Platform.isAndroid ? Icons.share : Icons.ios_share,
+                            size: 24,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Share',
+                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'Share',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: AppInsets.xxl),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          final url =
-                              'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
-                          launch(url, forceSafariVC: false);
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppSvgAssets.twitterBlack,
-                              height: 24,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'Tweet',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ]),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: OutlinedButton(
+                //         onPressed: () {
+                //           final url =
+                //               'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
+                //           launch(url, forceSafariVC: false);
+                //         },
+                //         child: Row(
+                //           children: [
+                //             SvgPicture.asset(
+                //               AppSvgAssets.linkedin,
+                //               color: Colors.white,
+                //               height: 24,
+                //             ),
+                //             const SizedBox(
+                //               width: 8,
+                //             ),
+                //             const Expanded(
+                //               child: Text(
+                //                 'Share',
+                //                 textAlign: TextAlign.center,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: AppInsets.xxl),
+                //     Expanded(
+                //       child: OutlinedButton(
+                //         onPressed: () {
+                //           final url =
+                //               'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
+                //           launch(url, forceSafariVC: false);
+                //         },
+                //         child: Row(
+                //           children: [
+                //             SvgPicture.asset(
+                //               AppSvgAssets.twitterBlack,
+                //               height: 24,
+                //               color: Colors.white,
+                //             ),
+                //             const SizedBox(
+                //               width: 8,
+                //             ),
+                //             const Expanded(
+                //               child: Text(
+                //                 'Tweet',
+                //                 textAlign: TextAlign.center,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const Divider(thickness: 1, height: 80),
                 Text(
                   'Speakers',
@@ -367,6 +398,21 @@ class _ConversationLoaded extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onShare(BuildContext context, String url, String description) async {
+    // A builder is used to retrieve the context immediately
+    // surrounding the ElevatedButton.
+    //
+    // The context's `findRenderObject` returns the first
+    // RenderObject in its descendent tree when it's not
+    // a RenderObjectWidget. The ElevatedButton's RenderObject
+    // has its position and size after it's built.
+    final box = context.findRenderObject() as RenderBox?;
+
+    await Share.share(url,
+        subject: description,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 
   void startDyteMeeting(BuildContext context) async {
@@ -455,9 +501,10 @@ class _ConversationLoaded extends StatelessWidget {
         //           'You will be notified. ${group.hostDetail?.name ?? 'Creator'} will be going live at $time. We will send you a reminder as well',
         //       buttonTitle: 'Explore Streams',
         //     );
-        
-        await manageRSVPPopup(context, data.conversation.hostDetail?.name ?? 'the host');
-        
+
+        await manageRSVPPopup(
+            context, data.conversation.hostDetail?.name ?? 'the host');
+
         await showEmail(context);
 
         // AutoRouter.of(context).pushAndPopUntil(
