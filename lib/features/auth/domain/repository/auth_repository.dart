@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../core/error/failures.dart';
@@ -25,4 +26,6 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> sendOtp(String phone);
   Future<Either<Failure, User>> verifyOtp(String phone, String otp);
   Future<Either<Failure, UserPermission>> getUserPermission();
+  Future<Either<Failure, ReferralsResponse>> getReferrals(
+      int? page, int? pageSize);
 }

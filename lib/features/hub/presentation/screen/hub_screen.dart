@@ -7,11 +7,12 @@ import 'package:worknetwork/features/hub/presentation/screen/hub_screen_state.da
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 import 'create_stream_screen.dart';
+import 'wallet_screen.dart';
 
 class HubScreen extends HookWidget {
   const HubScreen({Key? key}) : super(key: key);
 
-  static const tabs = ["Streams"]; //, "Wallet"];
+  static const tabs = ["Streams", "Wallet"];
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class HubScreen extends HookWidget {
                 body: TabBarView(
                   children: [
                     if (state.permission.allowCreateStream ?? false)
-                     CreateStreamScreen()
+                      CreateStreamScreen()
                     else
                       SizedBox(
                         height: 500,
@@ -74,7 +75,7 @@ class HubScreen extends HookWidget {
                           ),
                         ),
                       ),
-                    // const WalletScreen(),
+                    const WalletScreen(),
                   ],
                 ),
               ),
@@ -90,101 +91,5 @@ class HubScreen extends HookWidget {
   void onPressBecomeCreator() {
     launch(
         'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator');
-  }
-}
-
-class WalletScreen extends StatelessWidget {
-  const WalletScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(40.0),
-      child: Column(
-        children: [
-          Text(
-            'How it works?',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Row(
-            children: [
-              Image.asset(
-                'assets/images/wallet_how1.png',
-                width: 50,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                  child: Text(
-                'Share the referral link with your friends',
-                style: Theme.of(context).textTheme.subtitle1,
-              )),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Image.asset(
-                'assets/images/wallet_how2.png',
-                width: 50,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Text(
-                  'Your friend uses  the link to sign up & watch their first stream',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Image.asset(
-                'assets/images/wallet_how3.png',
-                width: 50,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                  child: Text(
-                'You get ₹50 when they watch their first 20min of live content.',
-                style: Theme.of(context).textTheme.subtitle1,
-              )),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Image.asset(
-                'assets/images/wallet_how4.png',
-                width: 50,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                  child: Text(
-                'Withdraw the money or use it at the auctions',
-                style: Theme.of(context).textTheme.subtitle1,
-              )),
-            ],
-          )
-        ],
-      ),
-    );
   }
 }

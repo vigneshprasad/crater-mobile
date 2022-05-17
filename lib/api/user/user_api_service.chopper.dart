@@ -31,6 +31,14 @@ class _$UserApiService extends UserApiService {
   }
 
   @override
+  Future<Response<dynamic>> getReferrals(int? page, int? pageSize) {
+    final $url = '/user/auth/referrals';
+    final $params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> patchUser(Map<String, dynamic> body) {
     final $url = '/user/auth/user/';
     final $body = body;

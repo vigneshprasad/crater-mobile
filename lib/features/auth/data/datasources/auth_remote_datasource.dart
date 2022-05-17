@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/api/auth/otp_api_service.dart';
+import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../api/auth/auth_api_service.dart';
@@ -93,6 +94,8 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> verifyOtp(String phone, String otp);
 
   Future<UserPermission> getUserPermissionFromRemote();
+
+  Future<ReferralsResponse> getReferralsFromRemote(int? page, int? pageSize);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -301,6 +304,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return UserPermission.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<ReferralsResponse> getReferralsFromRemote(
+      int? page, int? pageSize) async {
+    final response = await userApiService.getReferrals(page, pageSize);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return ReferralsResponse.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

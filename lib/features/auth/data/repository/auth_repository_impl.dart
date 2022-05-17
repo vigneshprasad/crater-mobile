@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -224,6 +225,18 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserPermission>> getUserPermission() async {
     try {
       final response = await remoteDataSource.getUserPermissionFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ReferralsResponse>> getReferrals(
+      int? page, int? pageSize) async {
+    try {
+      final response =
+          await remoteDataSource.getReferralsFromRemote(page, pageSize);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
