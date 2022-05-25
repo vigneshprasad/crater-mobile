@@ -24,7 +24,7 @@ PODS:
   - dyte_client (0.0.5):
     - DyteSdk (~> 1.34.2)
     - Flutter
-  - DyteSdk (1.34.2):
+  - DyteSdk (1.34.3):
     - LogRocket (= 0.28.0)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
@@ -297,7 +297,7 @@ SPEC CHECKSUMS:
   cloud_firestore: 59044583635e60717fef32a8193990ec6d1c7e66
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   dyte_client: 8c9063b490ff63022fbcd9644df0168fd8b64950
-  DyteSdk: 935e7b6176c79cd9ecf5020fec0097fa79a39838
+  DyteSdk: 8e9ef8884f8ebf422bf170c4d9cf70d4e46d9bca
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3
@@ -307,7 +307,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
   FirebaseDynamicLinks: f506c83eb7eba0f9861f84cd6b65c38b3bd5ff6f
-  FirebaseFirestore: deb508c2c4bc7bc7a9d87d6f9157c66d5caa376a
+  FirebaseFirestore: 8a0c6a06219bbaad86c72bcb66688c28995dde84
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_facebook_auth: abc044072738b7baa90d80583dabdb1211614f0d
