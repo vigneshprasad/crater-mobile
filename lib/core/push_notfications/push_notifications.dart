@@ -66,7 +66,8 @@ class PushNotificationsImpl implements PushNotifications {
     if (type == PushType.chatMessage) {
       final message = ChatMessageModel.fromJson(json!);
       _navigatorKey.currentState?.pushNamed(ChatScreenRoute.name,
-          arguments: ChatScreenRouteArgs(recieverId: message.senderId!));
+          arguments:
+              ChatScreenRouteArgs(recieverId: message.senderId!, creatorId: 0));
     } else if (type == PushType.conversation) {
       final ConversationNotificationData data =
           ConversationNotificationData.fromJson(json!);

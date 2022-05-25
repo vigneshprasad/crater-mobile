@@ -18,10 +18,14 @@ import '../widgets/profile_header.dart';
 
 class ProfileBasicScreen extends StatefulWidget {
   final bool editMode;
+  final VoidCallback? onCompletion;
+  final bool? popup;
 
   const ProfileBasicScreen({
     Key? key,
     @PathParam("editMode") required this.editMode,
+    this.onCompletion,
+    this.popup = false,
   }) : super(key: key);
 
   @override
@@ -64,7 +68,12 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const heading = 'Lets get started';
+    String heading;
+    if (widget.editMode) {
+      heading = 'Enter your name';
+    } else {
+      heading = 'Lets get started';
+    }
 
     return BlocProvider.value(
       value: _bloc,
@@ -72,6 +81,9 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
         listener: _profileSetupBlocListener,
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: widget.popup == true
+                ? Theme.of(context).dialogBackgroundColor
+                : null,
             appBar: BaseAppBar(),
             body: Column(
               children: [
@@ -81,7 +93,7 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const ProfileHeader(title: heading),
+                      ProfileHeader(title: heading),
                       _buildProfileForm(context),
                     ],
                   ),
@@ -143,6 +155,10 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   }
 
   void _goToNextScreen() {
+    if (widget.onCompletion != null) {
+      widget.onCompletion!();
+      return;
+    }
     navigateNextProfileStep(editMode: widget.editMode);
   }
 

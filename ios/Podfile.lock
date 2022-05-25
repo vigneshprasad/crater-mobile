@@ -22,9 +22,9 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - dyte_client (0.0.5):
-    - DyteSdk (~> 1.34)
+    - DyteSdk (~> 1.34.2)
     - Flutter
-  - DyteSdk (1.34.1):
+  - DyteSdk (1.34.2):
     - LogRocket (= 0.28.0)
   - FBSDKCoreKit (11.0.1):
     - FBSDKCoreKit/Core (= 11.0.1)
@@ -296,8 +296,8 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: 9f304d91cc80b6579b1206a59220383056b58b47
   cloud_firestore: 59044583635e60717fef32a8193990ec6d1c7e66
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
-  dyte_client: cdb8a316bf1dd49e4bc6d9a727eab6f85cae3ed4
-  DyteSdk: 7030abb07e2fe37f5c905bdb01173cc7609a4ccb
+  dyte_client: 8c9063b490ff63022fbcd9644df0168fd8b64950
+  DyteSdk: 935e7b6176c79cd9ecf5020fec0097fa79a39838
   FBSDKCoreKit: 38c9e29a3f1436362acacff6486d3a28628c288f
   FBSDKCoreKit_Basics: 06780a4a12e16596bde8406add02c6aa1bf38616
   FBSDKLoginKit: 8243e04c590c38b85c69fcf09d1234514d2475c3

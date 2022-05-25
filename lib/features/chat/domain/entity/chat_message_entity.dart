@@ -45,6 +45,14 @@ class ChatMessage extends HiveObject {
 
   String? firebaseId;
 
+  @JsonKey(name: "type")
+  int? type;
+
+  @JsonKey(name: "action")
+  int? action;
+
+  bool? isFollowing;
+
   ChatMessage({
     this.message,
     this.file,
@@ -63,5 +71,8 @@ class ChatMessage extends HiveObject {
     this.reaction,
     this.displayName,
     this.firebaseId,
+    this.type,
+    this.action,
+    this.isFollowing,
   });
 }

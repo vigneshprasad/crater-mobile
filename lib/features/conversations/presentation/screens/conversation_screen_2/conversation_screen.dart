@@ -234,7 +234,7 @@ class _ConversationLoaded extends StatelessWidget {
                       onPressed: () {
                         final url =
                             'https://crater.club/session/${conversation.id}?utm_source=in_app_share&referrer_id=$authUserPK&utm_campaign=mobile_app';
-                        _onShare(context, url, shareText);
+                        shareApp(context, url, shareText);
                       },
                       child: Row(
                         children: [
@@ -400,21 +400,6 @@ class _ConversationLoaded extends StatelessWidget {
     );
   }
 
-  void _onShare(BuildContext context, String url, String description) async {
-    // A builder is used to retrieve the context immediately
-    // surrounding the ElevatedButton.
-    //
-    // The context's `findRenderObject` returns the first
-    // RenderObject in its descendent tree when it's not
-    // a RenderObjectWidget. The ElevatedButton's RenderObject
-    // has its position and size after it's built.
-    final box = context.findRenderObject() as RenderBox?;
-
-    await Share.share(url,
-        subject: description,
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-  }
-
   void startDyteMeeting(BuildContext context) async {
     final analytics = KiwiContainer().resolve<Analytics>();
     analytics.trackEvent(
@@ -429,8 +414,10 @@ class _ConversationLoaded extends StatelessWidget {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            DyteMeetingScreen(meetingId: data.conversation.id!)));
+        builder: (context) => DyteMeetingScreen(
+              meetingId: data.conversation.id!,
+              creatorId: data.conversation.hostDetail?.creatorDetail?.id ?? 0,
+            )));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
@@ -513,26 +500,6 @@ class _ConversationLoaded extends StatelessWidget {
         //   predicate: (_) => false,
         // );
         // }
-      },
-    );
-  }
-
-  Future<void> showEmail(BuildContext context) async {
-    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
-
-    if (email != null && email.isNotEmpty) {
-      return;
-    }
-    await showModalBottomSheet(
-      elevation: 10,
-      backgroundColor: Colors.transparent,
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      useRootNavigator: false,
-      isScrollControlled: true,
-      builder: (context) {
-        return const ProfileEmailScreen(editMode: true);
       },
     );
   }

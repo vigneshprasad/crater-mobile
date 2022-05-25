@@ -12,10 +12,8 @@ import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/
 
 import '../../../../../core/api_result/api_result.dart';
 
-final creatorStateProvider = StateNotifierProvider.family<
-    CreatorStateNotifier,
-    ApiResult<List<CreatorRow>>,
-    String>((ref, userId) {
+final creatorStateProvider = StateNotifierProvider.family<CreatorStateNotifier,
+    ApiResult<List<CreatorRow>>, String>((ref, userId) {
   return CreatorStateNotifier(ref.read, userId);
 });
 
@@ -26,14 +24,13 @@ class CreatorRow {
   CreatorRow(this.creator, this.isFollowing);
 }
 
-class CreatorStateNotifier
-    extends StateNotifier<ApiResult<List<CreatorRow>>> {
+class CreatorStateNotifier extends StateNotifier<ApiResult<List<CreatorRow>>> {
   final Reader read;
   final pageSize = 12;
   int page = 1;
-  late bool loadingPage;
+  bool loadingPage = false;
   bool allLoaded = false;
-  late List<Creator> allProfiles;
+  List<Creator> allProfiles = [];
   final String userId;
 
   List<int> followed = [];
@@ -45,12 +42,14 @@ class CreatorStateNotifier
     getProfileList('');
   }
 
-  Future<Either<Failure, FollowCreatorResponse>> getProfileList(String tags) async {
+  Future<Either<Failure, FollowCreatorResponse>> getProfileList(
+      String tags) async {
     page = 1;
     allLoaded = false;
     loadingPage = true;
     state = ApiResult.loading();
-    final response = await read(conversationRepositoryProvider).getCreators(page: page, pageSize: pageSize);
+    final response = await read(conversationRepositoryProvider)
+        .getCreators(page: page, pageSize: pageSize);
 
     state = response.fold(
       (failure) {
@@ -72,16 +71,16 @@ class CreatorStateNotifier
   }
 
   List<Creator> creatorsFrom(List<Webinar> webinars) {
-     List<Creator> creators = [];
+    List<Creator> creators = [];
 
-      webinars.forEach((element) {
-        final creator = element.hostDetail?.creatorDetail;
-        if (creator != null && creator.isFollower == false) {
-          creators.add(creator);
-        }
-      });
+    webinars.forEach((element) {
+      final creator = element.hostDetail?.creatorDetail;
+      if (creator != null && creator.isFollower == false) {
+        creators.add(creator);
+      }
+    });
 
-      return creators;
+    return creators;
   }
 
   Future<Either<Failure, FollowCreatorResponse>?> getNextPageProfileList(
@@ -91,7 +90,8 @@ class CreatorStateNotifier
     }
     loadingPage = true;
     page = page + 1;
-    final response = await read(conversationRepositoryProvider).getCreators(page: page, pageSize: pageSize);
+    final response = await read(conversationRepositoryProvider)
+        .getCreators(page: page, pageSize: pageSize);
 
     state = response.fold(
       (failure) {
@@ -109,17 +109,20 @@ class CreatorStateNotifier
     return response;
   }
 
-  Future<Either<F.Failure, Creator>> followCreator(int id, BuildContext context) async {
-
+  Future<Either<F.Failure, Creator>> followCreator(
+      int id, BuildContext context) async {
     final authPK = BlocProvider.of<AuthBloc>(context).state.user?.pk ?? '';
-    
-    final response = await read(connectionRepositoryProvider)
-        .followCreator(id, authPK,);
-    
+
+    final response = await read(connectionRepositoryProvider).followCreator(
+      id,
+      authPK,
+    );
+
     followed.add(id);
 
     final rows = allProfiles.map((e) {
-      final isFollowing = (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
+      final isFollowing =
+          (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
       return CreatorRow(e, isFollowing);
     });
     state = ApiResult<List<CreatorRow>>.data(rows.toList());
@@ -129,7 +132,8 @@ class CreatorStateNotifier
 
   ApiResult<List<CreatorRow>> mapProfilesToCreatorRow() {
     final rows = allProfiles.map((e) {
-      final isFollowing = (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
+      final isFollowing =
+          (followed.contains(e.id)) ? (true) : (e.isFollower ?? false);
       return CreatorRow(e, isFollowing);
     });
     return ApiResult<List<CreatorRow>>.data(rows.toList());

@@ -406,8 +406,10 @@ class _SeriesLoaded extends StatelessWidget {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            DyteMeetingScreen(meetingId: data.conversation.id!)));
+        builder: (context) => DyteMeetingScreen(
+              meetingId: data.conversation.id!,
+              creatorId: data.conversation.hostDetail?.creatorDetail?.id ?? 0,
+            )));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {

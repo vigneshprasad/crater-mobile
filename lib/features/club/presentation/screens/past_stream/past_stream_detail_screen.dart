@@ -88,8 +88,10 @@ class _ConversationLoaded extends HookWidget {
 
     return SingleChildScrollView(
         child: Padding(
-      padding: isFullScreen.value ? EdgeInsets.all(0) : const EdgeInsets.symmetric(
-          horizontal: AppInsets.xl, vertical: AppInsets.l),
+      padding: isFullScreen.value
+          ? EdgeInsets.all(0)
+          : const EdgeInsets.symmetric(
+              horizontal: AppInsets.xl, vertical: AppInsets.l),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -108,15 +110,12 @@ class _ConversationLoaded extends HookWidget {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text(
-                        startDateFormat
-                            .format(conversation.start!.toLocal()),
+                    Text(startDateFormat.format(conversation.start!.toLocal()),
                         style: dateStyle),
                   ],
                 ),
                 const SizedBox(height: AppInsets.xxl),
-                if (conversation.topicDetail?.description?.isNotEmpty ??
-                    false)
+                if (conversation.topicDetail?.description?.isNotEmpty ?? false)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -129,24 +128,22 @@ class _ConversationLoaded extends HookWidget {
                     ],
                   ),
                 const Divider(thickness: 1, height: 40),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Speakers',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(height: AppInsets.xxl),
-                      Column(
-                        children: conversation.speakersDetailList
-                                ?.map((speaker) => _SpeakerWithIntro(
-                                      user: speaker,
-                                      authUserPk: authUserPK ?? '',
-                                    ))
-                                .toList() ??
-                            [],
-                      )
-                    ]),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    'Speakers',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  const SizedBox(height: AppInsets.xxl),
+                  Column(
+                    children: conversation.speakersDetailList
+                            ?.map((speaker) => _SpeakerWithIntro(
+                                  user: speaker,
+                                  authUserPk: authUserPK ?? '',
+                                ))
+                            .toList() ??
+                        [],
+                  )
+                ]),
                 const Divider(thickness: 1, height: 40),
                 similarStreamProvider.when(
                     loading: () => Container(),
@@ -191,7 +188,10 @@ class _ConversationLoaded extends HookWidget {
 
   void startDyteMeeting(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
+        builder: (context) => DyteMeetingScreen(
+              meetingId: conversation.id!,
+              creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
+            )));
   }
 }
 
@@ -246,10 +246,14 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
         }
       },
       child: Container(
-          color: widget.isFullScreen.value ? Colors.black : Theme.of(context).dialogBackgroundColor,
+          color: widget.isFullScreen.value
+              ? Colors.black
+              : Theme.of(context).dialogBackgroundColor,
           width: double.infinity,
-          height: widget.isFullScreen.value ? MediaQuery.of(context).size.height : null,
-          alignment:  widget.isFullScreen.value ? Alignment.center : null,
+          height: widget.isFullScreen.value
+              ? MediaQuery.of(context).size.height
+              : null,
+          alignment: widget.isFullScreen.value ? Alignment.center : null,
           child: RotatedBox(
             quarterTurns: widget.isFullScreen.value ? 1 : 0,
             child: Stack(
@@ -277,7 +281,8 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
                       ),
                       VideoProgressIndicator(
                         _controller,
-                        colors: VideoProgressColors(playedColor: Theme.of(context).accentColor),
+                        colors: VideoProgressColors(
+                            playedColor: Theme.of(context).accentColor),
                         allowScrubbing: true,
                         padding: EdgeInsets.only(
                           bottom: widget.isFullScreen.value ? 40 : 0,
@@ -348,9 +353,11 @@ class _ControlsOverlay extends StatelessWidget {
               onPressed: () {
                 isFullScreen.value = !isFullScreen.value;
                 if (isFullScreen.value) {
-                  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+                  SystemChrome.setEnabledSystemUIOverlays(
+                      [SystemUiOverlay.bottom]);
                 } else {
-                  SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+                  SystemChrome.setEnabledSystemUIOverlays(
+                      SystemUiOverlay.values);
                 }
               },
             )),

@@ -5,22 +5,24 @@ import 'package:worknetwork/features/connection/presentation/widget/featured_lis
 
 class PostRSVPModal extends HookWidget {
   final String creatorName;
+  final int slide;
   const PostRSVPModal({
     Key? key,
     required this.creatorName,
+    required this.slide,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final slideNumber = useState(1);
+    final slideNumber = useState(slide);
 
     if (slideNumber.value == 1) {
       return CreatorGrid(
-            creatorName: creatorName,
-            onNext: () {
-              slideNumber.value = 2;
-            },
-          );
+        creatorName: creatorName,
+        onNext: () {
+          slideNumber.value = 2;
+        },
+      );
     } else {
       return UpcomingStreamList();
     }

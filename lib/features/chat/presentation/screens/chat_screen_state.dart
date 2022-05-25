@@ -27,10 +27,9 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
   }
 
   Future<void> retrieveChatMessages() async {
-
     groupKey = 'preprod_$webinarId';
 
-    if(ConfigReader.getEnv() == 'prod') {
+    if (ConfigReader.getEnv() == 'prod') {
       groupKey = webinarId;
     }
 
@@ -40,7 +39,6 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
         firestore.collection('group').doc(groupKey).collection('messages');
 
     final Stream<QuerySnapshot> messagesStream = chatRef!.snapshots();
-
 
     // messagesStream.listen((event) {
     //   for (final element in event.docs) {
@@ -73,7 +71,8 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
         newItem.firebaseId = element.doc.id;
 
         // Remove old item
-        final item = messages.firstWhere((e) => e.firebaseId == element.doc.id, orElse: ()=>ChatMessage());
+        final item = messages.firstWhere((e) => e.firebaseId == element.doc.id,
+            orElse: () => ChatMessage());
         if (item.firebaseId != null) {
           messages.remove(item);
         }
@@ -81,7 +80,7 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
         messages.add(newItem);
       }
 
-      messages.sort((a,b) {
+      messages.sort((a, b) {
         final aCreated = a.created as Timestamp? ?? Timestamp.now();
         final bCreated = b.created as Timestamp? ?? Timestamp.now();
         return bCreated.compareTo(aCreated);
@@ -93,6 +92,9 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
 
   Future<void> sendChatMessages(String message, User sender) async {
     final firstName = sender.name?.split(' ').first ?? '';
+    if (firstName.isEmpty) {
+      return;
+    }
     final object = {
       'message': message,
       'group': groupKey,

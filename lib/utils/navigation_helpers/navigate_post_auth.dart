@@ -171,10 +171,8 @@ Future<bool> manageLoginPopup(BuildContext context) async {
   return user != null;
 }
 
-Future<void> manageRSVPPopup(
-  BuildContext context,
-  String creatorName,
-) async {
+Future<void> manageRSVPPopup(BuildContext context, String creatorName,
+    {int slide = 1}) async {
   await showModalBottomSheet(
     elevation: 10,
     isScrollControlled: true,
@@ -194,6 +192,7 @@ Future<void> manageRSVPPopup(
             ),
             child: PostRSVPModal(
               creatorName: creatorName,
+              slide: slide,
             ),
           ));
     },

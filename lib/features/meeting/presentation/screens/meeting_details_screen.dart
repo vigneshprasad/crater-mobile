@@ -247,8 +247,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
             text: "Join call",
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      DyteMeetingScreen(meetingId: widget.meetingId)));
+                  builder: (context) => DyteMeetingScreen(
+                        meetingId: widget.meetingId,
+                        creatorId: 0,
+                      )));
               return;
               if (meeting?.link != null) {
                 KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);
@@ -286,8 +288,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen> {
           text: "Join call",
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    DyteMeetingScreen(meetingId: widget.meetingId)));
+                builder: (context) => DyteMeetingScreen(
+                      meetingId: widget.meetingId,
+                      creatorId: 0,
+                    )));
             return;
             if (meeting?.link != null) {
               KiwiContainer().resolve<CustomTabs>().openLink(meeting!.link!);

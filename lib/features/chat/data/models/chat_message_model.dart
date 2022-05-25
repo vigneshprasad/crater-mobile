@@ -69,6 +69,12 @@ class ChatMessageModel extends ChatMessage {
 
   String? firebaseId;
 
+  int? type;
+
+  int? action;
+
+  bool? isFollowing;
+
   ChatMessageModel({
     this.message,
     this.file,
@@ -87,6 +93,9 @@ class ChatMessageModel extends ChatMessage {
     this.reaction,
     this.displayName,
     this.firebaseId,
+    this.type,
+    this.action,
+    this.isFollowing,
   }) : super(
           message: message,
           file: file,
@@ -105,6 +114,9 @@ class ChatMessageModel extends ChatMessage {
           reaction: reaction,
           displayName: displayName,
           firebaseId: firebaseId,
+          type: type,
+          action: action,
+          isFollowing: isFollowing,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

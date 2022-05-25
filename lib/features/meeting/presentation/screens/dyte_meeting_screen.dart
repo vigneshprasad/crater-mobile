@@ -11,12 +11,20 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen_2/conversation_screen_state.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class DyteMeetingScreen extends HookWidget {
   final int meetingId;
-  DyteMeetingScreen({Key? key, required this.meetingId}) : super(key: key);
+  final int creatorId;
+
+  DyteMeetingScreen({
+    Key? key,
+    required this.meetingId,
+    required this.creatorId,
+  }) : super(key: key);
 
   bool showChat = true;
   late Size size;
@@ -159,7 +167,7 @@ class DyteMeetingScreen extends HookWidget {
                                   isOngoingMeeting.value = false;
                                   AutoRouter.of(context).pop();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back_ios,
                                   size: 18,
                                 )),
@@ -199,6 +207,7 @@ class DyteMeetingScreen extends HookWidget {
                               recieverId: '',
                               groupId: meetingId.toString(),
                               allowChat: state.allowChat,
+                              creatorId: creatorId,
                             ),
                           ],
                         ),

@@ -6,11 +6,13 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_screen.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen_state.dart';
 import 'package:worknetwork/features/chat/presentation/widgets/chat_layout.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen_2/conversation_screen_state.dart';
 import 'package:worknetwork/ui/components/chat_input_bar/chat_input_bar.dart';
 import 'package:worknetwork/ui/components/list_items/chat_message_item/chat_message_item.dart';
 
@@ -18,11 +20,13 @@ class ChatScreen extends HookWidget {
   final String recieverId;
   final String? groupId;
   final bool? allowChat;
+  final int creatorId;
 
   const ChatScreen({
     required this.recieverId,
     this.groupId,
     this.allowChat = true,
+    required this.creatorId,
   });
 
   @override
@@ -34,7 +38,33 @@ class ChatScreen extends HookWidget {
 
     final user = BlocProvider.of<AuthBloc>(context).state.user!;
 
-    void _onSubmitMessage() {
+    final conversationState = useProvider(
+        conversationStateProvider(int.parse(groupId ?? '0')).notifier);
+
+    final creator = useState(creatorId);
+
+    if (creatorId == 0) {
+      conversationState.addListener((state) {
+        state.when(
+            loading: () {},
+            data: (data) {
+              creator.value =
+                  data.conversation.hostDetail?.creatorDetail?.id ?? 0;
+            },
+            error: (error, stack) {});
+      });
+    }
+
+    void _onSubmitMessage() async {
+      final isNameFilled = await showName(context);
+      if (!isNameFilled) {
+        return;
+      }
+      final isEmailFilled = await showEmail(context);
+      if (!isEmailFilled) {
+        return;
+      }
+
       if (_chatInputController.text.isNotEmpty) {
         context
             .read(chatStateProvider(groupId ?? '').notifier)
@@ -67,6 +97,8 @@ class ChatScreen extends HookWidget {
               return ChatMessageItem(
                 user: user,
                 message: messages[index],
+                conversationId: groupId ?? '',
+                creatorId: creator.value,
               );
             },
             chatBar: allowChat == true

@@ -52,7 +52,7 @@ class StreamTab extends HookWidget {
     //   return () {
     //     timer.cancel();
     //   };
-    // }, []); 
+    // }, []);
 
     return SafeArea(
       child: NestedScrollView(
@@ -610,8 +610,10 @@ class LiveGridTile extends StatelessWidget {
           }
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DyteMeetingScreen(meetingId: conversation.id!)));
+              builder: (context) => DyteMeetingScreen(
+                    meetingId: conversation.id!,
+                    creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
+                  )));
         } else {
           AutoRouter.of(context)
               .push(ConversationScreenRoute(id: conversation.id));

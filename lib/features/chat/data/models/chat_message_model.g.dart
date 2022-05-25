@@ -107,6 +107,9 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
         : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
     displayName: json['display_name'] as String?,
     firebaseId: json['firebaseId'] as String?,
+    type: json['type'] as int?,
+    action: json['action'] as int?,
+    isFollowing: json['isFollowing'] as bool?,
   );
 }
 
@@ -129,4 +132,7 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'data': instance.reaction,
       'display_name': instance.displayName,
       'firebaseId': instance.firebaseId,
+      'type': instance.type,
+      'action': instance.action,
+      'isFollowing': instance.isFollowing,
     };
