@@ -78,10 +78,58 @@ class AttributionManagerImpl implements AttributionManager {
   Future<void> _setupAttribution() async {
     _appsflyerSdk?.onInstallConversionData((res) {
       print("res: " + res.toString());
+      final result = res as Map?;
+      final payload = result?['payload'] as Map?;
+
+      if (payload == null) {
+        return;
+      }
+
+      final utmSource = payload['utm_source'] as String?;
+      final utmCampaign = payload['utm_campaign'] as String?;
+      final utmMedium = payload['utm_medium'] as String?;
+      final referrerId = payload['referrer_id'] as String?;
+
+      if (utmSource != null) {
+        saveAttributionData(appsFlyerUtmSourceKey, utmSource);
+      }
+      if (utmCampaign != null) {
+        saveAttributionData(appsFlyerUtmCampaignKey, utmCampaign);
+      }
+      if (utmMedium != null) {
+        saveAttributionData(appsFlyerUtmMediumKey, utmMedium);
+      }
+      if (referrerId != null) {
+        saveAttributionData(appsFlyerReferrerIdKey, referrerId);
+      }
     });
 
     _appsflyerSdk?.onAppOpenAttribution((res) {
       print("res: " + res.toString());
+      final result = res as Map?;
+      final payload = result?['payload'] as Map?;
+
+      if (payload == null) {
+        return;
+      }
+
+      final utmSource = payload['utm_source'] as String?;
+      final utmCampaign = payload['utm_campaign'] as String?;
+      final utmMedium = payload['utm_medium'] as String?;
+      final referrerId = payload['referrer_id'] as String?;
+
+      if (utmSource != null) {
+        saveAttributionData(appsFlyerUtmSourceKey, utmSource);
+      }
+      if (utmCampaign != null) {
+        saveAttributionData(appsFlyerUtmCampaignKey, utmCampaign);
+      }
+      if (utmMedium != null) {
+        saveAttributionData(appsFlyerUtmMediumKey, utmMedium);
+      }
+      if (referrerId != null) {
+        saveAttributionData(appsFlyerReferrerIdKey, referrerId);
+      }
     });
 
     _appsflyerSdk?.onDeepLinking((DeepLinkResult dp) {
