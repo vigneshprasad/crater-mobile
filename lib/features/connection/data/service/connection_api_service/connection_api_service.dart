@@ -10,12 +10,11 @@ final connectionApiServiceProvider =
 
 @ChopperApi(baseUrl: '/crater/')
 abstract class ConnectionApiService extends ChopperService {
-
   static ConnectionApiService create() {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
       interceptors: [
-        AuthorizedInterceptor(), 
+        AuthorizedInterceptor(),
         HttpLoggingInterceptor(),
       ],
       services: [_$ConnectionApiService()],
@@ -34,6 +33,6 @@ abstract class ConnectionApiService extends ChopperService {
   @Get(path: 'community/members/')
   Future<Response> getCommunityMembers(@QueryMap() Map<String, dynamic> body);
 
-  @Post(path: 'followers/follow/')
+  @Post(path: 'followers/notify/')
   Future<Response> followCreator(@Body() Map<String, dynamic> body);
 }
