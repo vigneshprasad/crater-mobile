@@ -771,9 +771,14 @@ class PastLiveGridTile extends StatelessWidget {
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-                      WebinarVideoPlayer(
-                          key: Key(item.conversation!.id.toString()),
-                          conversation: item.conversation!),
+                      const Center(
+                          child: Icon(
+                        Icons.play_circle,
+                        size: 60,
+                      )),
+                      // WebinarVideoPlayer(
+                      //     key: Key(item.conversation!.id.toString()),
+                      //     conversation: item.conversation!),
                       if (item.type == GridItemType.featured)
                         LiveTime(date: item.conversation?.start?.toLocal()),
                       if (item.type == GridItemType.past)
