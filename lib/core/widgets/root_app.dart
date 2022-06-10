@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
@@ -27,6 +28,10 @@ class RootApp extends HookWidget {
     final deepLinkManager = context.read(deepLinkManagerProvider);
     final attributionProvider = context.read(attributionManagerProvider);
     StatusBarColor.setTheme(ThemeType.light);
+
+    final socketIOManager =
+        context.read(userPermissionNotifierProvider.notifier);
+    await socketIOManager.listenPermissions();
 
     await deepLinkManager.handleDeepLink(context);
     await attributionProvider.intializeSdk();

@@ -12,6 +12,7 @@ import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/attribution/attribution_manager.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
@@ -260,6 +261,10 @@ class _PhoneScreenState extends State<PhoneScreen> {
       } else {
         navigatePostAuth(user, profile: profile);
       }
+
+      final socketIOManager =
+          context.read(userPermissionNotifierProvider.notifier);
+      await socketIOManager.listenPermissions();
     });
   }
 

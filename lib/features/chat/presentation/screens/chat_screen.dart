@@ -6,6 +6,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_screen.dart';
@@ -40,6 +41,8 @@ class ChatScreen extends HookWidget {
 
     final conversationState = useProvider(
         conversationStateProvider(int.parse(groupId ?? '0')).notifier);
+
+    final permissionState = useProvider(userPermissionNotifierProvider);
 
     final creator = useState(creatorId);
 
@@ -90,27 +93,31 @@ class ChatScreen extends HookWidget {
       data: (messages) => Stack(
         children: [
           ChatLayout(
-            userIsTyping: _isTyping.value,
-            user: null,
-            itemCount: messages.length,
-            listBuilder: (context, index) {
-              return ChatMessageItem(
-                user: user,
-                message: messages[index],
-                conversationId: groupId ?? '',
-                creatorId: creator.value,
-              );
-            },
-            chatBar: allowChat == true
-                ? ChatInputBar(
-                    onSubmitPress: _onSubmitMessage,
-                    onReactionPress: () => {showReactions.value = true},
-                    controller: _chatInputController,
-                    user: user,
-                    placeholder: "ASK A QUESTION",
-                  )
-                : Container(),
-          ),
+              userIsTyping: _isTyping.value,
+              user: null,
+              itemCount: messages.length,
+              listBuilder: (context, index) {
+                return ChatMessageItem(
+                  user: user,
+                  message: messages[index],
+                  conversationId: groupId ?? '',
+                  creatorId: creator.value,
+                );
+              },
+              chatBar: permissionState.when(
+                  data: (permission) {
+                    return permission.allowChat ?? false
+                        ? ChatInputBar(
+                            onSubmitPress: _onSubmitMessage,
+                            onReactionPress: () => {showReactions.value = true},
+                            controller: _chatInputController,
+                            user: user,
+                            placeholder: "ASK A QUESTION",
+                          )
+                        : Container();
+                  },
+                  loading: () => Container(),
+                  error: (failure, stack) => Container())),
           SizedBox(
             height: showReactions.value ? double.infinity : 0,
             child: Align(
