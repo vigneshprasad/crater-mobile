@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/config_reader/config_reader.dart';
 import 'core/environments/environments.dart';
@@ -58,20 +59,29 @@ Future<void> mainCommon(String configPath, String env) async {
   ]);
 
   // Run App wrapped with Sentry Logger
-  runZonedGuarded(
-    () => runApp(
+  // runZonedGuarded(
+  //   () => runApp(
+  //     ProviderScope(
+  //       child: RootApp(),
+  //     ),
+  //   ),
+  //   (error, stackTrace) async {
+  //     // To check RELEASE mode issue
+  //     // Fluttertoast.showToast(msg: 'some exception' + stackTrace.toString());
+  //     await logger.captureException(
+  //       exception: error,
+  //       stackTrace: stackTrace,
+  //     );
+  //   },
+  // );
+
+  SentryFlutter.init(
+    (options) => options.dsn = ConfigReader.getSentryDsn(),
+    appRunner: () => runApp(
       ProviderScope(
         child: RootApp(),
       ),
     ),
-    (error, stackTrace) async {
-      // To check RELEASE mode issue
-      // Fluttertoast.showToast(msg: 'some exception' + stackTrace.toString());
-      await logger.captureException(
-        exception: error,
-        stackTrace: stackTrace,
-      );
-    },
   );
 
   FlutterError.onError = (details, {bool forceReport = false}) {

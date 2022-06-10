@@ -127,6 +127,8 @@ PODS:
   - OneSignalXCFramework (3.7.0)
   - package_info (0.0.1):
     - Flutter
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
@@ -139,6 +141,13 @@ PODS:
   - Segment-Amplitude (3.3.2):
     - Amplitude (~> 8.3)
     - Analytics
+  - Sentry (7.11.0):
+    - Sentry/Core (= 7.11.0)
+  - Sentry/Core (7.11.0)
+  - sentry_flutter (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - Sentry (~> 7.11.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -178,9 +187,11 @@ DEPENDENCIES:
   - OneSignal (< 4.0, >= 3.0.0)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
+  - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
@@ -220,6 +231,7 @@ SPEC REPOS:
     - PhoneNumberKit
     - PromisesObjC
     - Segment-Amplitude
+    - Sentry
     - Toast
     - UserLeapKit
 
@@ -259,12 +271,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
   phone_number:
     :path: ".symlinks/plugins/phone_number/ios"
+  sentry_flutter:
+    :path: ".symlinks/plugins/sentry_flutter/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences:
@@ -329,12 +345,15 @@ SPEC CHECKSUMS:
   onesignal_flutter: abfc75e8d08a0d9c977aacfab9454af58f4f4fcc
   OneSignalXCFramework: 974dc438d68910cf04f3c8ab034e0131d41438c1
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   phone_number: 667dd76f1ae3ee67ac0cb95d6b603c3a5aa7077e
   PhoneNumberKit: 4ce83273551c4d2ae10b7361162f4283dd02835f
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Segment-Amplitude: 6c1e59c8c278a21029ba7a6a788fcb31b9233a2c
+  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  sentry_flutter: efb3df2c203cd03aad255892a8d628a458656d14
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440

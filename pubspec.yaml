@@ -69,7 +69,7 @@ dependencies:
   path_provider: ^2.0.2
   permission_handler: ^8.1.6
   phone_number: ^0.12.0+1
-  sentry: ^5.1.0
+  sentry_flutter: ^6.5.1
   share_plus: ^3.0.1
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
