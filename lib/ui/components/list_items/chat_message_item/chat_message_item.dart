@@ -88,7 +88,7 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
     final file = widget.message.file;
 
     final hash = (widget.message.senderDetail?.pk ?? '') +
-        (widget.message.senderDetail?.firstName ?? '');
+        (widget.message.senderDetail?.displayName ?? '');
     final colorIndex = hash.hashCode % chatColors.length;
     final nameColor = chatColors[colorIndex];
 

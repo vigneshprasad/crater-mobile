@@ -11,10 +11,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
-import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen_2/conversation_screen_state.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
 class DyteMeetingScreen extends HookWidget {
   final int meetingId;
@@ -85,15 +82,20 @@ class DyteMeetingScreen extends HookWidget {
     }
 
     useEffect(() {
-      return () {
+      return () async {
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
         ]);
+
         meetingHandler.value?.events.clear();
         meetingHandler.value?.events.removeAllByEvent('meetingJoin');
         meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
         // meetingHandler.value = null;
+
+        final participant = await meetingHandler.value?.self;
+        participant?.leaveRoom();
+
         meetingHandler.dispose();
       };
     }, []);
