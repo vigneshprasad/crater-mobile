@@ -64,7 +64,7 @@ dependencies:
   lint: ^1.5.3
   lottie: ^1.1.0
   metadata_fetch: ^0.4.1
-  onesignal_flutter: ^3.2.3
+  onesignal_flutter: ^3.3.1
   package_info: ^2.0.2
   path_provider: ^2.0.2
   permission_handler: ^8.1.6

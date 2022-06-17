@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
 
@@ -97,6 +98,10 @@ class DyteMeetingScreen extends HookWidget {
         participant?.leaveRoom();
 
         meetingHandler.dispose();
+
+        final socketIOManager =
+            context.read(userPermissionNotifierProvider.notifier);
+        socketIOManager.onLeaveStream();
       };
     }, []);
 
@@ -141,6 +146,10 @@ class DyteMeetingScreen extends HookWidget {
                                         "id": meetingId,
                                       });
                                 });
+
+                                final socketIOManager = context.read(
+                                    userPermissionNotifierProvider.notifier);
+                                socketIOManager.onJoinStream(meetingId);
                               });
 
                               handler.events.on('meetingEnd', context, (ev, c) {
