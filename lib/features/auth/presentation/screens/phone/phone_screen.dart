@@ -240,7 +240,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
           await context.read(authRepositoryProvider).getUserProfile();
       final profile = profileResponse.getOrElse(() => UserProfile());
 
-      _overlay.remove();
+      final socketIOManager =
+          context.read(userPermissionNotifierProvider.notifier);
+      await socketIOManager.listenPermissions();
 
       final _ = BlocProvider.of<AuthBloc>(context)
         ..add(AuthCompleted(user: user, profile: profile));
@@ -256,15 +258,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
         },
       );
 
+      _overlay.remove();
+
       if (widget.state == 'popup') {
         Navigator.of(context).pop(user);
       } else {
         navigatePostAuth(user, profile: profile);
       }
-
-      final socketIOManager =
-          context.read(userPermissionNotifierProvider.notifier);
-      await socketIOManager.listenPermissions();
     });
   }
 

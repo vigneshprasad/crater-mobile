@@ -13,6 +13,7 @@ final userPermissionNotifierProvider =
 class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
   UserPermission? permission;
   IO.Socket? streamSocket;
+  IO.Socket? permissionSocket;
 
   SocketIOManager() : super(const AsyncValue<UserPermission>.loading());
 
@@ -53,7 +54,15 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
       print('socket error ' + error.toString());
     });
 
+    permissionSocket = socket;
     // socket.connect();
+  }
+
+  void onLogout() {
+    permissionSocket?.disconnect();
+    streamSocket?.disconnect();
+    permissionSocket = null;
+    streamSocket = null;
   }
 
   @override
@@ -99,6 +108,7 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
 
   void onLeaveStream() {
     streamSocket?.disconnect();
+    streamSocket = null;
   }
 
   void updatePermissions(dynamic data) {

@@ -7,7 +7,9 @@ import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
@@ -147,6 +149,10 @@ class AboutTab extends HookWidget {
     await KiwiContainer().resolve<Analytics>().reset();
     await KiwiContainer().resolve<LocalStorage>().deleteStorage();
     await KiwiContainer().resolve<LocalStorage>().initStorage();
+
+    final socketIOManager =
+        context.read(userPermissionNotifierProvider.notifier);
+    socketIOManager.onLogout();
     _overlay.remove();
     AutoRouter.of(context).pushAndPopUntil(const SplashScreenRoute(),
         predicate: (route) => false);
