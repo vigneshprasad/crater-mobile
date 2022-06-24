@@ -14,6 +14,7 @@ abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
   Future<String?> getPushToken();
+  Future<void> setUserIdentifier(String phone);
   void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
@@ -112,6 +113,11 @@ class PushNotificationsImpl implements PushNotifications {
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
+  }
+
+  @override
+  Future<void> setUserIdentifier(String phone) async {
+    await OneSignal.shared.setExternalUserId(phone);
   }
 
   @override

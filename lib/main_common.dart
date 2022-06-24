@@ -75,15 +75,6 @@ Future<void> mainCommon(String configPath, String env) async {
   //   },
   // );
 
-  SentryFlutter.init(
-    (options) => options.dsn = ConfigReader.getSentryDsn(),
-    appRunner: () => runApp(
-      ProviderScope(
-        child: RootApp(),
-      ),
-    ),
-  );
-
   FlutterError.onError = (details, {bool forceReport = false}) {
     // To check RELEASE mode issue
     // Fluttertoast.showToast(msg: 'some error' + details.exceptionAsString());
@@ -92,4 +83,13 @@ Future<void> mainCommon(String configPath, String env) async {
       stackTrace: details.stack,
     );
   };
+
+  SentryFlutter.init(
+    (options) => options.dsn = ConfigReader.getSentryDsn(),
+    appRunner: () => runApp(
+      ProviderScope(
+        child: RootApp(),
+      ),
+    ),
+  );
 }

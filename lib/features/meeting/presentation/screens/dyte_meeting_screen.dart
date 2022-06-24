@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:dyte_client/dyte.dart';
 import 'package:dyte_client/dyteMeeting.dart';
+import 'package:dyte_client/dyteSelfParticipant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -34,6 +35,7 @@ class DyteMeetingScreen extends HookWidget {
     final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
+    final participant = useState<DyteSelfParticipant?>(null);
 
     // final showChat = useState(true);
     // final showReaction = useState(false);
@@ -44,6 +46,9 @@ class DyteMeetingScreen extends HookWidget {
     final fullHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
+
+    final socketIOManager =
+        context.read(userPermissionNotifierProvider.notifier);
 
     final isOngoingMeeting = useState(false);
 
@@ -84,24 +89,21 @@ class DyteMeetingScreen extends HookWidget {
 
     useEffect(() {
       return () async {
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-        ]);
-
         meetingHandler.value?.events.clear();
         meetingHandler.value?.events.removeAllByEvent('meetingJoin');
         meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
         meetingHandler.value?.events.removeAllByEvent('meetingEnd');
         // meetingHandler.value = null;
 
-        final participant = await meetingHandler.value?.self;
-        participant?.leaveRoom();
+        participant.value?.leaveRoom();
 
         meetingHandler.dispose();
 
-        final socketIOManager =
-            context.read(userPermissionNotifierProvider.notifier);
         socketIOManager.onLeaveStream();
+
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
       };
     }, []);
 
@@ -147,8 +149,6 @@ class DyteMeetingScreen extends HookWidget {
                                       });
                                 });
 
-                                final socketIOManager = context.read(
-                                    userPermissionNotifierProvider.notifier);
                                 socketIOManager.onJoinStream(meetingId);
                               });
 
@@ -163,6 +163,8 @@ class DyteMeetingScreen extends HookWidget {
                                 AutoRouter.of(context).pop();
                               });
 
+                              participant.value =
+                                  await meetingHandler.value?.self;
                               // showChat.value = false;
                             },
                           )),

@@ -13,6 +13,7 @@ import 'package:worknetwork/core/attribution/attribution_manager.dart';
 import 'package:worknetwork/core/error/failures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
@@ -48,13 +49,6 @@ class _PhoneScreenState extends State<PhoneScreen> {
   late FocusNode myFocusNode;
 
   @override
-  void initState() {
-    super.initState();
-
-    myFocusNode = FocusNode();
-  }
-
-  @override
   void dispose() {
     myFocusNode.dispose();
 
@@ -79,6 +73,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
         );
     final sendOtp =
         AppLocalizations.of(context)?.translate("phone_verify:send_otp");
+
+    myFocusNode = FocusNode();
+
     return Scaffold(
       backgroundColor: widget.state == 'popup'
           ? Theme.of(context).dialogBackgroundColor
@@ -250,13 +247,21 @@ class _PhoneScreenState extends State<PhoneScreen> {
       final analytics = KiwiContainer().resolve<Analytics>();
       analytics.initSdk();
       analytics.identify(properties: getUserTraitsFromModel(user));
-      analytics.trackEvent(
+      await analytics.trackEvent(
         eventName: AnalyticsEvents.login,
         properties: {
           "email": user.email,
           "intent": user.intent,
         },
       );
+
+      final pushNotifications = KiwiContainer().resolve<PushNotifications>();
+      await pushNotifications.setUserIdentifier(_phoneNumber);
+
+      final osId = await KiwiContainer()
+          .resolve<PushNotifications>()
+          .getSubscriptionToken();
+      debugPrint(osId);
 
       _overlay.remove();
 

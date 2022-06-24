@@ -35,6 +35,8 @@ class ChatScreen extends HookWidget {
     final _isTyping = useState(false);
     final _chatInputController = useTextEditingController();
     final listner = useProvider(chatStateProvider(groupId ?? ''));
+
+    final chatState = useProvider(chatStateProvider(groupId ?? '').notifier);
     final showReactions = useState(false);
 
     final user = BlocProvider.of<AuthBloc>(context).state.user!;
@@ -87,6 +89,12 @@ class ChatScreen extends HookWidget {
       showReactions.value = false;
       // _chatBloc.add(SendChatReactionStarted(reactionId: reaction.id.toString()));
     }
+
+    useEffect(() {
+      return () async {
+        await chatState.disconnect();
+      };
+    }, []);
 
     return listner.when(
       loading: () => Container(),

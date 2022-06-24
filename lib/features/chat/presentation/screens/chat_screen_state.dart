@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,6 +22,8 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
   String? groupKey;
 
   List<ChatMessage> messages = [];
+
+  StreamSubscription<QuerySnapshot>? subscription;
 
   ChatScreenState(this.read, this.webinarId)
       : super(ApiResult<List<ChatMessage>>.loading()) {
@@ -64,7 +68,7 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
     //   state = ApiResult<List<ChatMessage>>.data(messages);
     // });
 
-    messagesStream.listen((event) {
+    subscription = messagesStream.listen((event) {
       for (final element in event.docChanges) {
         final json = element.doc.data();
         final newItem = ChatMessageModel.fromJson(json!);
@@ -90,6 +94,10 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
     });
   }
 
+  Future<void> disconnect() async {
+    await subscription?.cancel();
+  }
+
   Future<void> sendChatMessages(String message, User sender) async {
     final firstName = sender.name?.split(' ').first ?? '';
     if (firstName.isEmpty) {
@@ -109,6 +117,6 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
       'type': 1,
       'created_at': DateTime.now(),
     };
-    chatRef!.add(object);
+    chatRef?.add(object);
   }
 }

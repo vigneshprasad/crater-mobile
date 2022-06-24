@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,7 +78,7 @@ class AttributionManagerImpl implements AttributionManager {
 
   Future<void> _setupAttribution() async {
     _appsflyerSdk?.onInstallConversionData((res) {
-      print("res: " + res.toString());
+      debugPrint("res: " + res.toString());
       final result = res as Map?;
       final payload = result?['payload'] as Map?;
 
@@ -105,7 +106,7 @@ class AttributionManagerImpl implements AttributionManager {
     });
 
     _appsflyerSdk?.onAppOpenAttribution((res) {
-      print("res: " + res.toString());
+      debugPrint("res: " + res.toString());
       final result = res as Map?;
       final payload = result?['payload'] as Map?;
 
@@ -135,7 +136,7 @@ class AttributionManagerImpl implements AttributionManager {
     _appsflyerSdk?.onDeepLinking((DeepLinkResult dp) {
       switch (dp.status) {
         case Status.FOUND:
-          print(dp.deepLink?.toString());
+          debugPrint(dp.deepLink?.toString());
           final utmSource = dp.deepLink?.getStringValue('utm_source');
           final utmCampaign = dp.deepLink?.getStringValue('utm_campaign');
           final utmMedium = dp.deepLink?.getStringValue('utm_medium');
@@ -155,16 +156,16 @@ class AttributionManagerImpl implements AttributionManager {
           }
 
           // Fluttertoast.showToast(msg: dp.deepLink.toString());
-          print("deep link value: ${dp.deepLink?.deepLinkValue}");
+          debugPrint("deep link value: ${dp.deepLink?.deepLinkValue}");
           break;
         case Status.NOT_FOUND:
-          print("deep link not found");
+          debugPrint("deep link not found");
           break;
         case Status.ERROR:
-          print("deep link error: ${dp.error}");
+          debugPrint("deep link error: ${dp.error}");
           break;
         case Status.PARSE_ERROR:
-          print("deep link status parsing error");
+          debugPrint("deep link status parsing error");
           break;
       }
     });

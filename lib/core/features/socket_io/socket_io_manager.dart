@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
@@ -17,15 +18,23 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
 
   SocketIOManager() : super(const AsyncValue<UserPermission>.loading());
 
+  String? getToken() {
+    try {
+      final user =
+          KiwiContainer().resolve<AuthLocalDataSource>().getUserFromCache();
+      return user.token;
+    } catch (exception) {
+      debugPrint(exception.toString());
+      return null;
+    }
+  }
+
   @override
   Future<void> listenPermissions() async {
-    final user =
-        KiwiContainer().resolve<AuthLocalDataSource>().getUserFromCache();
-    final token = user.token;
+    final token = getToken();
     if (token == null) {
       return;
     }
-
     final options = IO.OptionBuilder()
         .setTransports(['websocket']) // for Flutter or Dart VM
         // .disableAutoConnect() // disable auto-connection
@@ -43,15 +52,15 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
         {},
         ack: updatePermissions,
       );
-      print('socket connected ' + data.toString());
+      debugPrint('socket connected ' + data.toString());
     });
 
     socket.on('user-permission:updated', updatePermissions);
 
-    socket.onDisconnect((_) => print('socket disconnected'));
+    socket.onDisconnect((_) => debugPrint('socket disconnected'));
 
     socket.onConnectError((error) {
-      print('socket error ' + error.toString());
+      debugPrint('socket error ' + error.toString());
     });
 
     permissionSocket = socket;
@@ -67,9 +76,7 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
 
   @override
   Future<void> onJoinStream(int groupId) async {
-    final user =
-        KiwiContainer().resolve<AuthLocalDataSource>().getUserFromCache();
-    final token = user.token;
+    final token = getToken();
     if (token == null) {
       return;
     }
@@ -91,16 +98,16 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
         },
         ack: updateViewCount,
       );
-      print('socket connected ' + data.toString());
+      debugPrint('socket connected ' + data.toString());
     });
 
     socket.on('chat:room-joined', updateViewCount);
     socket.on('chat:room-left', updateViewCount);
 
-    socket.onDisconnect((_) => print('socket disconnected'));
+    socket.onDisconnect((_) => debugPrint('socket disconnected'));
 
     socket.onConnectError((error) {
-      print('socket error ' + error.toString());
+      debugPrint('socket error ' + error.toString());
     });
 
     streamSocket = socket;
@@ -124,7 +131,7 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
   }
 
   void updateViewCount(dynamic data) {
-    print(data);
+    debugPrint(data.toString());
   }
 
   @override

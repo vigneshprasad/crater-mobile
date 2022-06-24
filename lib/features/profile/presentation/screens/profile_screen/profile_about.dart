@@ -106,7 +106,7 @@ class AboutTab extends HookWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(height: AppInsets.l),
-          _buildLinkedInButton(),
+          if (profile.linkedIn != null) _buildLinkedInButton(profile.linkedIn!),
           const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(
@@ -120,7 +120,7 @@ class AboutTab extends HookWidget {
     );
   }
 
-  Widget _buildLinkedInButton() {
+  Widget _buildLinkedInButton(String linkedUrl) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RawMaterialButton(
@@ -133,7 +133,7 @@ class AboutTab extends HookWidget {
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         onPressed: () =>
-            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
+            KiwiContainer().resolve<CustomTabs>().openLink(linkedUrl),
         child: SvgPicture.asset(
           AppSvgAssets.linkedinFilled,
           height: 30.0,
