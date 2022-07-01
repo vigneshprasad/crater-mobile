@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/api/integrations/devices_api_service.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 
 import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
 import '../../../../../routes.gr.dart';
@@ -55,6 +58,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> listenAuthState(BuildContext context, AuthState state) async {
+    final osId = await KiwiContainer()
+        .resolve<PushNotifications>()
+        .getSubscriptionToken();
+    debugPrint(osId);
+
+    Map<String, String> data = {
+      'os_id': osId,
+    };
+    final user = BlocProvider.of<AuthBloc>(context).state.user?.pk;
+    if (user != null) {
+      data['user'] = user;
+    }
+
+    // 'user': null,
+    final deviceAPI = context.read(devicesApiServiceProvider);
+    deviceAPI.registerDevice(data).then((response) {
+      debugPrint(response.toString());
+    });
+
     if (state is AuthStateFailure) {
       isRedirected = true;
 

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:worknetwork/api/integrations/devices_api_service.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
@@ -262,6 +263,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
           .resolve<PushNotifications>()
           .getSubscriptionToken();
       debugPrint(osId);
+      final deviceAPI = context.read(devicesApiServiceProvider);
+      deviceAPI.registerDevice({
+        'os_id': osId,
+        'user': user.pk,
+      }).then((response) {
+        debugPrint(response.toString());
+      });
 
       _overlay.remove();
 

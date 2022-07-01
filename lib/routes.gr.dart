@@ -305,7 +305,10 @@ class AppRouter extends _i1.RootStackRouter {
               orElse: () => ProfileBasicScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
           return _i32.ProfileBasicScreen(
-              key: args.key, editMode: args.editMode);
+              key: args.key,
+              editMode: args.editMode,
+              onCompletion: args.onCompletion,
+              popup: args.popup);
         }),
     ProfileTagsScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -343,7 +346,7 @@ class AppRouter extends _i1.RootStackRouter {
               orElse: () => ProfileEmailScreenRouteArgs(
                   editMode: pathParams.getBool('editMode')));
           return _i36.ProfileEmailScreen(
-              key: args.key, editMode: args.editMode);
+              key: args.key, editMode: args.editMode, popup: args.popup);
         }),
     ProfileRequestScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -911,21 +914,34 @@ class ProfileIntroScreenRouteArgs {
 
 class ProfileBasicScreenRoute
     extends _i1.PageRouteInfo<ProfileBasicScreenRouteArgs> {
-  ProfileBasicScreenRoute({_i2.Key? key, required bool editMode})
+  ProfileBasicScreenRoute(
+      {_i2.Key? key,
+      required bool editMode,
+      void Function()? onCompletion,
+      bool? popup})
       : super(name,
             path: '/profile-basic/:editMode?',
-            args: ProfileBasicScreenRouteArgs(key: key, editMode: editMode),
+            args: ProfileBasicScreenRouteArgs(
+                key: key,
+                editMode: editMode,
+                onCompletion: onCompletion,
+                popup: popup),
             rawPathParams: {'editMode': editMode});
 
   static const String name = 'ProfileBasicScreenRoute';
 }
 
 class ProfileBasicScreenRouteArgs {
-  const ProfileBasicScreenRouteArgs({this.key, required this.editMode});
+  const ProfileBasicScreenRouteArgs(
+      {this.key, required this.editMode, this.onCompletion, this.popup});
 
   final _i2.Key? key;
 
   final bool editMode;
+
+  final void Function()? onCompletion;
+
+  final bool? popup;
 }
 
 class ProfileTagsScreenRoute
@@ -987,21 +1003,25 @@ class ProfileBioScreenRouteArgs {
 
 class ProfileEmailScreenRoute
     extends _i1.PageRouteInfo<ProfileEmailScreenRouteArgs> {
-  ProfileEmailScreenRoute({_i2.Key? key, required bool editMode})
+  ProfileEmailScreenRoute({_i2.Key? key, required bool editMode, bool? popup})
       : super(name,
             path: '/profile-email/:editMode?',
-            args: ProfileEmailScreenRouteArgs(key: key, editMode: editMode),
+            args: ProfileEmailScreenRouteArgs(
+                key: key, editMode: editMode, popup: popup),
             rawPathParams: {'editMode': editMode});
 
   static const String name = 'ProfileEmailScreenRoute';
 }
 
 class ProfileEmailScreenRouteArgs {
-  const ProfileEmailScreenRouteArgs({this.key, required this.editMode});
+  const ProfileEmailScreenRouteArgs(
+      {this.key, required this.editMode, this.popup});
 
   final _i2.Key? key;
 
   final bool editMode;
+
+  final bool? popup;
 }
 
 class ProfileRequestScreenRoute

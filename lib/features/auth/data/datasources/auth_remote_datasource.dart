@@ -27,6 +27,11 @@ abstract class AuthRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> loginWithEmail(String email, String password, String osId);
 
+  /// Calls the Email Login Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserModel> logout(String osId);
+
   /// Calls the Email Register Endpoint on backend.
   ///
   /// Throws a [ServerException] for all error codes.
@@ -168,6 +173,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       "os_id": osId,
     };
     final response = await apiService.loginWithEmail(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final model = AuthResponseModel.fromJson(json);
+      return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserModel> logout(String osId) async {
+    final body = {"os_id": osId};
+    final response = await apiService.logout(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);

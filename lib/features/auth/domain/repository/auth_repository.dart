@@ -9,6 +9,7 @@ import '../entity/user_profile_entity.dart';
 abstract class AuthRepository {
   Future<Either<Failure, User>> loginwithEmail(
       String email, String password, String osId);
+  Future<Either<Failure, User>> logout(String osId);
   Future<Either<Failure, User>> registerwithEmail(
       String name, String email, String password, String osId);
   Future<Either<Failure, User>> authWithGoogle(String token, String osId);

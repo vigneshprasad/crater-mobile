@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
 
 import '../../core/config_reader/config_reader.dart';
 
@@ -19,6 +20,7 @@ abstract class AuthApiService extends ChopperService {
       converter: const JsonConverter(),
       interceptors: [
         HttpLoggingInterceptor(),
+        AuthorizedInterceptor(),
       ],
     );
     return _$AuthApiService(client);
@@ -26,6 +28,9 @@ abstract class AuthApiService extends ChopperService {
 
   @Post(path: 'login/')
   Future<Response> loginWithEmail(@Body() Map<String, dynamic> body);
+
+  @Post(path: 'logout/')
+  Future<Response> logout(@Body() Map<String, dynamic> body);
 
   @Post(path: 'registration/')
   Future<Response> registerWithEmail(@Body() Map<String, dynamic> body);

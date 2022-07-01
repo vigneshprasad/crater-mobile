@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:worknetwork/api/integrations/devices_api_service.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
@@ -37,11 +38,6 @@ class RootApp extends HookWidget {
     } catch (exception) {
       debugPrint(exception.toString());
     }
-
-    final osId = await KiwiContainer()
-        .resolve<PushNotifications>()
-        .getSubscriptionToken();
-    debugPrint(osId);
 
     final socketIOManager =
         context.read(userPermissionNotifierProvider.notifier);

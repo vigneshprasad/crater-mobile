@@ -90,6 +90,17 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, User>> logout(String osId) async {
+    try {
+      final response = await remoteDataSource.logout(osId);
+      localDataSource.setUserToCache(response);
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(ServerFailure(error.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, User>> registerwithEmail(
       String name, String email, String password, String osId) async {
     try {

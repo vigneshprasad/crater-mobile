@@ -10,7 +10,9 @@ import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -146,15 +148,26 @@ class AboutTab extends HookWidget {
     final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     // BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
-    await KiwiContainer().resolve<Analytics>().reset();
-    await KiwiContainer().resolve<LocalStorage>().deleteStorage();
-    await KiwiContainer().resolve<LocalStorage>().initStorage();
 
-    final socketIOManager =
-        context.read(userPermissionNotifierProvider.notifier);
-    socketIOManager.onLogout();
-    _overlay.remove();
-    AutoRouter.of(context).pushAndPopUntil(const SplashScreenRoute(),
-        predicate: (route) => false);
+    final osId = await KiwiContainer()
+        .resolve<PushNotifications>()
+        .getSubscriptionToken();
+    final response = await context.read(authRepositoryProvider).logout(osId);
+
+    response.fold((l) {
+      _overlay.remove();
+    }, (r) async {
+      await KiwiContainer().resolve<Analytics>().reset();
+      await KiwiContainer().resolve<LocalStorage>().deleteStorage();
+      await KiwiContainer().resolve<LocalStorage>().initStorage();
+
+      final socketIOManager =
+          context.read(userPermissionNotifierProvider.notifier);
+      socketIOManager.onLogout();
+      _overlay.remove();
+
+      AutoRouter.of(context).pushAndPopUntil(const SplashScreenRoute(),
+          predicate: (route) => false);
+    });
   }
 }
