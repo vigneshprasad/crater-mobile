@@ -30,7 +30,7 @@ class PastStreamDetailScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final conversationState = useProvider(pastStreamStateProvider(id!));
+    final conversationState = useProvider(pastStreamStateProvider(id ?? 0));
     final isFullScreen = useState(false);
 
     return Scaffold(
@@ -86,10 +86,12 @@ class _ConversationLoaded extends HookWidget {
 
     final similarStreamProvider = useProvider(pastStreamsStateProvider(null));
 
+    final start = conversation.start?.toLocal();
+
     return SingleChildScrollView(
         child: Padding(
       padding: isFullScreen.value
-          ? EdgeInsets.all(0)
+          ? const EdgeInsets.all(0)
           : const EdgeInsets.symmetric(
               horizontal: AppInsets.xl, vertical: AppInsets.l),
       child: Column(
@@ -110,8 +112,8 @@ class _ConversationLoaded extends HookWidget {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text(startDateFormat.format(conversation.start!.toLocal()),
-                        style: dateStyle),
+                    if (start != null)
+                      Text(startDateFormat.format(start), style: dateStyle),
                   ],
                 ),
                 const SizedBox(height: AppInsets.xxl),
@@ -189,7 +191,7 @@ class _ConversationLoaded extends HookWidget {
   void startDyteMeeting(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
-              meetingId: conversation.id!,
+              meetingId: conversation.id ?? 0,
               creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
             )));
   }
@@ -219,7 +221,9 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
         widget.conversation.recordingDetails?.recording ?? '');
 
     _controller.addListener(() {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
     _controller.setLooping(false);
     _controller.initialize().then((_) {
