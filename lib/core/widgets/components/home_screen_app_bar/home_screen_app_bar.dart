@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -43,8 +43,8 @@ class HomeScreenAppBar extends StatelessWidget {
           onPressed: () {
             final user = BlocProvider.of<AuthBloc>(context).state.user;
             if (user != null) {
-              AutoRouter.of(context)
-                  .push(ProfileScreenRoute(userId: user.pk!, allowEdit: true));
+              AutoRouter.of(context).push(
+                  ProfileScreenRoute(userId: user.pk ?? '', allowEdit: true));
             }
           },
         ),

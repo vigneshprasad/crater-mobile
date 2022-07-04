@@ -30,7 +30,8 @@ class UserListItem extends StatelessWidget {
       child: InkWell(
         onTap: () => _navigatorKey.currentState?.pushNamed(
           ChatScreenRoute.name,
-          arguments: ChatScreenRouteArgs(recieverId: user.pk ?? ''),
+          arguments:
+              ChatScreenRouteArgs(recieverId: user.pk ?? '', creatorId: 0),
         ),
         child: ListTile(
           dense: true,

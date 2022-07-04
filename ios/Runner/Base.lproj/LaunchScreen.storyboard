@@ -23,10 +23,9 @@
                                 <rect key="frame" x="207" y="448" width="0.5" height="0.5"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="RBn-sX-70G">
-                                <rect key="frame" x="143" y="384" width="128" height="128"/>
+                                <rect key="frame" x="57" y="192" width="300" height="512"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="128" id="4wb-jr-wAi"/>
-                                    <constraint firstAttribute="height" constant="128" id="Gbp-cf-uby"/>
+                                    <constraint firstAttribute="width" constant="300" id="4wb-jr-wAi"/>
                                 </constraints>
                             </imageView>
                         </subviews>

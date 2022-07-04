@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worknetwork/routes.gr.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../utils/app_localizations.dart';
@@ -19,7 +20,7 @@ enum PopupType {
 }
 
 abstract class PopupManager {
-  Future<void> showPopup(PopupType type, BuildContext context);
+  Future<void> showPopup(PopupType type, BuildContext context, {String? title, String? message, String? buttonTitle});
 }
 
 const signupCompleteKey = 'signup_complete_popup_shown';
@@ -87,10 +88,10 @@ class PopupManagerImpl implements PopupManager {
   }
 
   @override
-  Future<void> showPopup(PopupType type, BuildContext context) async {
+  Future<void> showPopup(PopupType type, BuildContext context, {String? title, String? message, String? buttonTitle}) async {
     final canShowPopup = await shouldShowPopup(type);
     if (!canShowPopup) {
-      return;
+      // return;
     }
 
     switch (type) {
@@ -101,7 +102,7 @@ class PopupManagerImpl implements PopupManager {
         await onConversationOptin(context);
         break;
       case PopupType.conversationJoin:
-        await onConversionJoined(context);
+        await onConversionJoined(context, title: title, message: message, buttonTitle: buttonTitle);
         break;
       case PopupType.conversationLeave:
         await onLeaveConversation(context);
@@ -132,12 +133,12 @@ class PopupManagerImpl implements PopupManager {
         }));
   }
 
-  Future<void> onConversionJoined(BuildContext context) async {
-    final title = AppLocalizations.of(context)
+  Future<void> onConversionJoined(BuildContext context, { String? title, String? message, String? buttonTitle }) async {
+    title = title ?? AppLocalizations.of(context)
         ?.translate('popup:conversation_join_title');
-    final message = AppLocalizations.of(context)
+    message = message ?? AppLocalizations.of(context)
         ?.translate('popup:conversation_join_message');
-    final buttonTitle = AppLocalizations.of(context)
+    buttonTitle = buttonTitle ?? AppLocalizations.of(context)
         ?.translate('popup:conversation_join_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
@@ -147,6 +148,7 @@ class PopupManagerImpl implements PopupManager {
         buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationJoin,
         onButtonClicked: () {
+          Navigator.of(context).pop(true);
           Navigator.of(context).pop(true);
         }));
   }

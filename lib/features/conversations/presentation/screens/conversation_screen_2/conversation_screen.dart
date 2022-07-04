@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,11 +12,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/theme.dart';
@@ -26,9 +30,7 @@ import '../../../../../routes.gr.dart';
 import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
 import '../../../../../utils/app_localizations.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../../auth/presentation/screens/onboarding/onboarding_screen.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
-import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 import 'conversation_screen_state.dart';
 
@@ -42,8 +44,8 @@ class ConversationScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final conversationState = useProvider(conversationStateProvider(id!));
-    final speakers = useProvider(conversationSpeakersState(id!));
-    final connectionProvider = useProvider(rtcConnectionProvider(id!));
+    // final speakers = useProvider(conversationSpeakersState(id!));
+    // final connectionProvider = useProvider(rtcConnectionProvider(id!));
     final overlayProvider = useProvider(conversationOverlayProvider);
 
     useEffect(() {
@@ -64,10 +66,10 @@ class ConversationScreen extends HookWidget {
       appBar: BaseAppBar(),
       body: conversationState.when(
         loading: () => _Loader(),
-        data: (conversation) => _ConversationLoaded(
-          conversation: conversation,
-          speakers: speakers,
-          connection: connectionProvider.connection,
+        data: (data) => _ConversationLoaded(
+          data: data,
+          // speakers: speakers,
+          // connection: connectionProvider.connection,
         ),
         error: (err, st) => _Loader(),
       ),
@@ -87,16 +89,16 @@ class _Loader extends StatelessWidget {
 }
 
 class _ConversationLoaded extends StatelessWidget {
-  final Conversation conversation;
-  final List<RtcUser> speakers;
-  final RtcConnection connection;
+  final ConversationScreenData data;
+  // final List<RtcUser> speakers;
+  // final RtcConnection connection;
   OverlayEntry? overlayEntry;
 
   _ConversationLoaded({
     Key? key,
-    required this.conversation,
-    required this.speakers,
-    required this.connection,
+    required this.data,
+    // required this.speakers,
+    // required this.connection,
   }) : super(key: key);
 
   @override
@@ -105,8 +107,8 @@ class _ConversationLoaded extends StatelessWidget {
     final startDateFormat = DateFormat("dd MMM, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.bodyText2;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user!.pk;
-
+    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
+    final conversation = data.conversation;
     final article = conversation.topicDetail?.articleDetail;
 
     final topic = conversation.topicDetail;
@@ -131,13 +133,14 @@ class _ConversationLoaded extends StatelessWidget {
         !isClosed;
 
     final link = 'https://crater.club/session/${conversation.id}';
+
     return WillPopScope(
       onWillPop: () async {
-        if (connection != RtcConnection.disconnected) {
-          context
-              .read(conversationStateProvider(conversation.id!).notifier)
-              .createAudioCallOverlay(context);
-        }
+        // if (connection != RtcConnection.disconnected) {
+        //   context
+        //       .read(conversationStateProvider(conversation.id!).notifier)
+        //       .createAudioCallOverlay(context);
+        // }
         return true;
       },
       child: Stack(
@@ -149,6 +152,10 @@ class _ConversationLoaded extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // SizedBox(
+                //   height: 700,
+                //   child: ChatScreen(recieverId: authUserPK.toString()),
+                // ),
                 Text(
                   heading ?? '',
                   style: Theme.of(context).textTheme.headline4,
@@ -221,65 +228,93 @@ class _ConversationLoaded extends StatelessWidget {
                       )),
                 ),
                 const SizedBox(height: AppInsets.xxl),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          final url =
-                              'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
-                          launch(url, forceSafariVC: false);
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppSvgAssets.linkedin,
-                              color: Colors.white,
-                              height: 24,
+                Row(children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        final url =
+                            'https://crater.club/session/${conversation.id}?utm_source=in_app_share&referrer_id=$authUserPK&utm_campaign=mobile_app';
+                        shareApp(context, url, shareText);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Platform.isAndroid ? Icons.share : Icons.ios_share,
+                            size: 24,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Share',
+                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'Share',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: AppInsets.xxl),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          final url =
-                              'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
-                          launch(url, forceSafariVC: false);
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppSvgAssets.twitterBlack,
-                              height: 24,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'Tweet',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ]),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: OutlinedButton(
+                //         onPressed: () {
+                //           final url =
+                //               'http://www.linkedin.com/shareArticle?mini=true&url=https://crater.club/session/${conversation.id}&title=${shareText}';
+                //           launch(url, forceSafariVC: false);
+                //         },
+                //         child: Row(
+                //           children: [
+                //             SvgPicture.asset(
+                //               AppSvgAssets.linkedin,
+                //               color: Colors.white,
+                //               height: 24,
+                //             ),
+                //             const SizedBox(
+                //               width: 8,
+                //             ),
+                //             const Expanded(
+                //               child: Text(
+                //                 'Share',
+                //                 textAlign: TextAlign.center,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: AppInsets.xxl),
+                //     Expanded(
+                //       child: OutlinedButton(
+                //         onPressed: () {
+                //           final url =
+                //               'http://twitter.com/share?text=${shareText}&url=https://crater.club/session/${conversation.id}';
+                //           launch(url, forceSafariVC: false);
+                //         },
+                //         child: Row(
+                //           children: [
+                //             SvgPicture.asset(
+                //               AppSvgAssets.twitterBlack,
+                //               height: 24,
+                //               color: Colors.white,
+                //             ),
+                //             const SizedBox(
+                //               width: 8,
+                //             ),
+                //             const Expanded(
+                //               child: Text(
+                //                 'Tweet',
+                //                 textAlign: TextAlign.center,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const Divider(thickness: 1, height: 80),
                 Text(
                   'Speakers',
@@ -289,7 +324,7 @@ class _ConversationLoaded extends StatelessWidget {
                   children: conversation.speakersDetailList
                           ?.map((speaker) => _SpeakerWithIntro(
                                 user: speaker,
-                                authUserPk: authUserPK!,
+                                authUserPk: authUserPK,
                               ))
                           .toList() ??
                       [],
@@ -310,7 +345,7 @@ class _ConversationLoaded extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (conversation.attendees?.contains(authUserPK) ?? false)
+                      if (data.isRSVPed)
                         if (canHost) // HOST
                           Expanded(
                               child: BaseLargeButton(
@@ -365,17 +400,44 @@ class _ConversationLoaded extends StatelessWidget {
     );
   }
 
-  void startDyteMeeting(BuildContext context) {
+  void startDyteMeeting(BuildContext context) async {
+    final analytics = KiwiContainer().resolve<Analytics>();
+    analytics.trackEvent(
+        eventName: AnalyticsEvents.joinStreamButtonClick,
+        properties: {
+          "id": data.conversation.id,
+        });
+
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus == false) {
+      return;
+    }
+
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DyteMeetingScreen(meetingId: conversation.id!)));
+        builder: (context) => DyteMeetingScreen(
+              meetingId: data.conversation.id!,
+              creatorId: data.conversation.hostDetail?.creatorDetail?.id ?? 0,
+            )));
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
+    final analytics = KiwiContainer().resolve<Analytics>();
+    analytics.trackEvent(
+        eventName: AnalyticsEvents.rsvpStreamButtonClick,
+        properties: {
+          "id": data.conversation.id,
+        });
+
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus == false) {
+      return;
+    }
+
     overlayEntry = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlayEntry!);
 
     final response = await context
-        .read(conversationStateProvider(conversation.id!).notifier)
+        .read(conversationStateProvider(data.conversation.id!).notifier)
         .postRequestToJoinGroup();
 
     response.fold(
@@ -385,11 +447,10 @@ class _ConversationLoaded extends StatelessWidget {
       },
       (request) {
         final analytics = KiwiContainer().resolve<Analytics>();
-        analytics.trackEvent(
-            eventName: AnalyticsEvents.conversationGroupJoined,
-            properties: {
-              "id": request.group,
-            });
+        analytics
+            .trackEvent(eventName: AnalyticsEvents.rsvpStream, properties: {
+          "id": request.group,
+        });
         _updateConversation(context);
       },
     );
@@ -397,8 +458,8 @@ class _ConversationLoaded extends StatelessWidget {
 
   Future<void> _updateConversation(BuildContext context) async {
     final response = await context
-        .read(conversationStateProvider(conversation.id!).notifier)
-        .retrieveConversation();
+        .read(conversationStateProvider(data.conversation.id!).notifier)
+        .retrieveConversation(justRSVPed: true);
 
     response.fold(
       (failure) {
@@ -408,47 +469,37 @@ class _ConversationLoaded extends StatelessWidget {
       (group) async {
         overlayEntry?.remove();
 
-        final now = DateTime.now().toLocal();
-        final start = group.start!.toLocal();
-        final end = group.end!.toLocal();
+        // final now = DateTime.now().toLocal();
+        // final start = group.start?.toLocal();
+        // final end = group.end?.toLocal();
 
-        if (now.isAfter(start) && now.isBefore(end)) {
-          // context
-          //     .read(conversationStateProvider(conversation.id!).notifier)
-          //     .connectToAudioCall();
-        } else {
-          context
-              .read(popupManagerProvider)
-              .showPopup(PopupType.conversationJoin, context);
+        // if (now.isAfter(start) && now.isBefore(end)) {
+        // context
+        //     .read(conversationStateProvider(conversation.id!).notifier)
+        //     .connectToAudioCall();
+        // } else {
 
-          await showEmail(context);
+        final startDateFormat = DateFormat("dd MMM, hh:mm a");
+        final time = startDateFormat.format(group.start!.toLocal());
+        // final result = await context.read(popupManagerProvider).showPopup(
+        //       PopupType.conversationJoin,
+        //       context,
+        //       message:
+        //           'You will be notified. ${group.hostDetail?.name ?? 'Creator'} will be going live at $time. We will send you a reminder as well',
+        //       buttonTitle: 'Explore Streams',
+        //     );
 
-          AutoRouter.of(context).pushAndPopUntil(
-            OnboardingScreenRoute(
-                type: OnboardingType.meetingJoining.toString()),
-            predicate: (_) => false,
-          );
-        }
-      },
-    );
-  }
+        await manageRSVPPopup(
+            context, data.conversation.hostDetail?.name ?? 'the host');
 
-  Future<void> showEmail(BuildContext context) async {
-    final email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+        await showEmail(context);
 
-    if (email != null && email.isNotEmpty) {
-      return;
-    }
-    await showModalBottomSheet(
-      elevation: 10,
-      backgroundColor: Colors.transparent,
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      useRootNavigator: false,
-      isScrollControlled: true,
-      builder: (context) {
-        return const ProfileEmailScreen(editMode: true);
+        // AutoRouter.of(context).pushAndPopUntil(
+        //   OnboardingScreenRoute(
+        //       type: OnboardingType.meetingJoining.toString()),
+        //   predicate: (_) => false,
+        // );
+        // }
       },
     );
   }
@@ -456,11 +507,11 @@ class _ConversationLoaded extends StatelessWidget {
 
 class _SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
-  final String authUserPk;
+  final String? authUserPk;
   const _SpeakerWithIntro({
     Key? key,
     required this.user,
-    required this.authUserPk,
+    this.authUserPk,
   }) : super(key: key);
 
   @override
@@ -470,7 +521,8 @@ class _SpeakerWithIntro extends StatelessWidget {
     final bodyStyle = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
-        ProfileScreenRoute(userId: user.pk!, allowEdit: authUserPk == user.pk),
+        ProfileScreenRoute(
+            userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

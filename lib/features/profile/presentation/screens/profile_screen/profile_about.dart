@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
@@ -8,9 +7,12 @@ import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
-import 'package:worknetwork/core/features/websocket/presentation/bloc/websocket_bloc.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_interest_entity.dart';
 import 'package:worknetwork/features/meeting/domain/entity/meeting_objective_entity.dart';
@@ -106,7 +108,7 @@ class AboutTab extends HookWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           const SizedBox(height: AppInsets.l),
-          _buildLinkedInButton(),
+          if (profile.linkedIn != null) _buildLinkedInButton(profile.linkedIn!),
           const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(
@@ -120,7 +122,7 @@ class AboutTab extends HookWidget {
     );
   }
 
-  Widget _buildLinkedInButton() {
+  Widget _buildLinkedInButton(String linkedUrl) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RawMaterialButton(
@@ -133,7 +135,7 @@ class AboutTab extends HookWidget {
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         onPressed: () =>
-            KiwiContainer().resolve<CustomTabs>().openLink(profile.linkedIn!),
+            KiwiContainer().resolve<CustomTabs>().openLink(linkedUrl),
         child: SvgPicture.asset(
           AppSvgAssets.linkedinFilled,
           height: 30.0,
@@ -146,11 +148,26 @@ class AboutTab extends HookWidget {
     final _overlay = buildLoaderOverlay();
     Overlay.of(context)?.insert(_overlay);
     // BlocProvider.of<WebsocketBloc>(context).add(const WebSocketCloseStarted());
-    await KiwiContainer().resolve<Analytics>().reset();
-    await KiwiContainer().resolve<LocalStorage>().deleteStorage();
-    await KiwiContainer().resolve<LocalStorage>().initStorage();
-    _overlay.remove();
-    AutoRouter.of(context).pushAndPopUntil(const WelcomeScreenRoute(),
-        predicate: (route) => false);
+
+    final osId = await KiwiContainer()
+        .resolve<PushNotifications>()
+        .getSubscriptionToken();
+    final response = await context.read(authRepositoryProvider).logout(osId);
+
+    response.fold((l) {
+      _overlay.remove();
+    }, (r) async {
+      await KiwiContainer().resolve<Analytics>().reset();
+      await KiwiContainer().resolve<LocalStorage>().deleteStorage();
+      await KiwiContainer().resolve<LocalStorage>().initStorage();
+
+      final socketIOManager =
+          context.read(userPermissionNotifierProvider.notifier);
+      socketIOManager.onLogout();
+      _overlay.remove();
+
+      AutoRouter.of(context).pushAndPopUntil(const SplashScreenRoute(),
+          predicate: (route) => false);
+    });
   }
 }

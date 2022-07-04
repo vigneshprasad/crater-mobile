@@ -26,7 +26,10 @@ class ProfileAppBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 320.0;
+    
+    const imageRatio = 350.0 / 1400.0;
+    final imageHeight = MediaQuery.of(context).size.width * imageRatio;
+    final height = imageHeight + 120 + MediaQuery.of(context).padding.top;
     // if (profile?.coverFile == null) {
     //   height = 200;
     // }
@@ -36,7 +39,7 @@ class ProfileAppBar extends HookWidget {
       expandedHeight: height,
       flexibleSpace: FlexibleSpaceBar(
           background: ProfileHeader(
-        height: height - 120,
+        height: imageHeight,
         profile: profile,
         creator: creator,
         showConnect: profile?.canConnect ?? false,

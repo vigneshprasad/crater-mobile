@@ -56,6 +56,8 @@ K _$enumDecode<K, V>(
 }
 
 const _$WSResponseTypeEnumMap = {
+  WSResponseType.groupMessagesReceived: 'group_messages_received',
+  WSResponseType.newGroupMessage: 'new_group_message',
   WSResponseType.loadAllUsers: 'all_users',
   WSResponseType.loadChatMessages: 'get_user_messages',
   WSResponseType.getUserNotification: 'user_notification',

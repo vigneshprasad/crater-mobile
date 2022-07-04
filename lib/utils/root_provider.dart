@@ -30,7 +30,7 @@ class _RootProviderState extends State<RootProvider> {
   late MeetingBloc _meetingBloc;
   late RewardsBloc _rewardsBloc;
   late PointsBloc _pointsBloc;
-  late ChatInboxBloc _chatInboxBloc;
+  // late ChatInboxBloc _chatInboxBloc;
   late ArticleBloc _articleBloc;
 
   @override
@@ -41,7 +41,7 @@ class _RootProviderState extends State<RootProvider> {
     _meetingBloc = KiwiContainer().resolve<MeetingBloc>();
     _rewardsBloc = KiwiContainer().resolve<RewardsBloc>();
     _pointsBloc = KiwiContainer().resolve<PointsBloc>();
-    _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
+    // _chatInboxBloc = KiwiContainer().resolve<ChatInboxBloc>();
     _articleBloc = KiwiContainer().resolve<ArticleBloc>();
     super.initState();
   }
@@ -79,9 +79,9 @@ class _RootProviderState extends State<RootProvider> {
         BlocProvider.value(
           value: _pointsBloc,
         ),
-        BlocProvider.value(
-          value: _chatInboxBloc,
-        ),
+        // BlocProvider.value(
+        //   value: _chatInboxBloc,
+        // ),
         BlocProvider.value(
           value: _articleBloc,
         )

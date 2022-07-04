@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 
 import '../../../../meeting/data/models/meeting_interest_model.dart';
 import '../topic_entity/topic_entity.dart';
@@ -73,6 +74,7 @@ abstract class ConversationUser with _$ConversationUser {
     String? name,
     String? photo,
     String? introduction,
+    @JsonKey(name: 'creator_detail') Creator? creatorDetail,
   }) = _ConversationUser;
 
   factory ConversationUser.fromJson(Map<String, dynamic> json) =>
@@ -88,4 +90,15 @@ abstract class ConversationByDate with _$ConversationByDate {
 
   factory ConversationByDate.fromJson(Map<String, dynamic> json) =>
       _$ConversationByDateFromJson(json);
+}
+
+@freezed
+abstract class UserPermission with _$UserPermission {
+  factory UserPermission({
+    @JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+    @JsonKey(name: 'allow_chat') bool? allowChat,
+  }) = _UserPermission;
+
+  factory UserPermission.fromJson(Map<String, dynamic> json) =>
+      _$UserPermissionFromJson(json);
 }

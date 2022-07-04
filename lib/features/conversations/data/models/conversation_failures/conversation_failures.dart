@@ -12,6 +12,14 @@ enum ConversationFailuresType {
   groupMaxSpeakersError,
   @JsonValue("groupNotFound")
   groupNotFound,
+  @JsonValue("groupAlreadyJoined")
+  groupAlreadyJoined,
+  @JsonValue("seriesAlreadyRSVPed")
+  seriesAlreadyRSVPed,
+  @JsonValue('groupStartDateTimeNotInFuture')
+  groupStartDateTimeNotInFuture,
+  @JsonValue('groupStartLessThan24Hours')
+  groupStartLessThan24Hours,
 }
 
 @freezed

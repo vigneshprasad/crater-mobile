@@ -991,13 +991,15 @@ class _$ConversationUserTearOff {
       String? email,
       String? name,
       String? photo,
-      String? introduction}) {
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail}) {
     return _ConversationUser(
       pk: pk,
       email: email,
       name: name,
       photo: photo,
       introduction: introduction,
+      creatorDetail: creatorDetail,
     );
   }
 
@@ -1016,6 +1018,8 @@ mixin _$ConversationUser {
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String? get introduction => throw _privateConstructorUsedError;
+  @JsonKey(name: 'creator_detail')
+  Creator? get creatorDetail => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1033,7 +1037,10 @@ abstract class $ConversationUserCopyWith<$Res> {
       String? email,
       String? name,
       String? photo,
-      String? introduction});
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail});
+
+  $CreatorCopyWith<$Res>? get creatorDetail;
 }
 
 /// @nodoc
@@ -1052,6 +1059,7 @@ class _$ConversationUserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? photo = freezed,
     Object? introduction = freezed,
+    Object? creatorDetail = freezed,
   }) {
     return _then(_value.copyWith(
       pk: pk == freezed
@@ -1074,7 +1082,22 @@ class _$ConversationUserCopyWithImpl<$Res>
           ? _value.introduction
           : introduction // ignore: cast_nullable_to_non_nullable
               as String?,
+      creatorDetail: creatorDetail == freezed
+          ? _value.creatorDetail
+          : creatorDetail // ignore: cast_nullable_to_non_nullable
+              as Creator?,
     ));
+  }
+
+  @override
+  $CreatorCopyWith<$Res>? get creatorDetail {
+    if (_value.creatorDetail == null) {
+      return null;
+    }
+
+    return $CreatorCopyWith<$Res>(_value.creatorDetail!, (value) {
+      return _then(_value.copyWith(creatorDetail: value));
+    });
   }
 }
 
@@ -1090,7 +1113,11 @@ abstract class _$ConversationUserCopyWith<$Res>
       String? email,
       String? name,
       String? photo,
-      String? introduction});
+      String? introduction,
+      @JsonKey(name: 'creator_detail') Creator? creatorDetail});
+
+  @override
+  $CreatorCopyWith<$Res>? get creatorDetail;
 }
 
 /// @nodoc
@@ -1111,6 +1138,7 @@ class __$ConversationUserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? photo = freezed,
     Object? introduction = freezed,
+    Object? creatorDetail = freezed,
   }) {
     return _then(_ConversationUser(
       pk: pk == freezed
@@ -1133,6 +1161,10 @@ class __$ConversationUserCopyWithImpl<$Res>
           ? _value.introduction
           : introduction // ignore: cast_nullable_to_non_nullable
               as String?,
+      creatorDetail: creatorDetail == freezed
+          ? _value.creatorDetail
+          : creatorDetail // ignore: cast_nullable_to_non_nullable
+              as Creator?,
     ));
   }
 }
@@ -1141,7 +1173,12 @@ class __$ConversationUserCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ConversationUser implements _ConversationUser {
   _$_ConversationUser(
-      {this.pk, this.email, this.name, this.photo, this.introduction});
+      {this.pk,
+      this.email,
+      this.name,
+      this.photo,
+      this.introduction,
+      @JsonKey(name: 'creator_detail') this.creatorDetail});
 
   factory _$_ConversationUser.fromJson(Map<String, dynamic> json) =>
       _$_$_ConversationUserFromJson(json);
@@ -1156,10 +1193,13 @@ class _$_ConversationUser implements _ConversationUser {
   final String? photo;
   @override
   final String? introduction;
+  @override
+  @JsonKey(name: 'creator_detail')
+  final Creator? creatorDetail;
 
   @override
   String toString() {
-    return 'ConversationUser(pk: $pk, email: $email, name: $name, photo: $photo, introduction: $introduction)';
+    return 'ConversationUser(pk: $pk, email: $email, name: $name, photo: $photo, introduction: $introduction, creatorDetail: $creatorDetail)';
   }
 
   @override
@@ -1176,7 +1216,10 @@ class _$_ConversationUser implements _ConversationUser {
                 const DeepCollectionEquality().equals(other.photo, photo)) &&
             (identical(other.introduction, introduction) ||
                 const DeepCollectionEquality()
-                    .equals(other.introduction, introduction)));
+                    .equals(other.introduction, introduction)) &&
+            (identical(other.creatorDetail, creatorDetail) ||
+                const DeepCollectionEquality()
+                    .equals(other.creatorDetail, creatorDetail)));
   }
 
   @override
@@ -1186,7 +1229,8 @@ class _$_ConversationUser implements _ConversationUser {
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(introduction);
+      const DeepCollectionEquality().hash(introduction) ^
+      const DeepCollectionEquality().hash(creatorDetail);
 
   @JsonKey(ignore: true)
   @override
@@ -1201,11 +1245,13 @@ class _$_ConversationUser implements _ConversationUser {
 
 abstract class _ConversationUser implements ConversationUser {
   factory _ConversationUser(
-      {String? pk,
-      String? email,
-      String? name,
-      String? photo,
-      String? introduction}) = _$_ConversationUser;
+          {String? pk,
+          String? email,
+          String? name,
+          String? photo,
+          String? introduction,
+          @JsonKey(name: 'creator_detail') Creator? creatorDetail}) =
+      _$_ConversationUser;
 
   factory _ConversationUser.fromJson(Map<String, dynamic> json) =
       _$_ConversationUser.fromJson;
@@ -1220,6 +1266,9 @@ abstract class _ConversationUser implements ConversationUser {
   String? get photo => throw _privateConstructorUsedError;
   @override
   String? get introduction => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'creator_detail')
+  Creator? get creatorDetail => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ConversationUserCopyWith<_ConversationUser> get copyWith =>
@@ -1396,5 +1445,192 @@ abstract class _ConversationByDate implements ConversationByDate {
   @override
   @JsonKey(ignore: true)
   _$ConversationByDateCopyWith<_ConversationByDate> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+UserPermission _$UserPermissionFromJson(Map<String, dynamic> json) {
+  return _UserPermission.fromJson(json);
+}
+
+/// @nodoc
+class _$UserPermissionTearOff {
+  const _$UserPermissionTearOff();
+
+  _UserPermission call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat}) {
+    return _UserPermission(
+      allowCreateStream: allowCreateStream,
+      allowChat: allowChat,
+    );
+  }
+
+  UserPermission fromJson(Map<String, Object> json) {
+    return UserPermission.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $UserPermission = _$UserPermissionTearOff();
+
+/// @nodoc
+mixin _$UserPermission {
+  @JsonKey(name: 'allow_create_stream')
+  bool? get allowCreateStream => throw _privateConstructorUsedError;
+  @JsonKey(name: 'allow_chat')
+  bool? get allowChat => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UserPermissionCopyWith<UserPermission> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserPermissionCopyWith<$Res> {
+  factory $UserPermissionCopyWith(
+          UserPermission value, $Res Function(UserPermission) then) =
+      _$UserPermissionCopyWithImpl<$Res>;
+  $Res call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat});
+}
+
+/// @nodoc
+class _$UserPermissionCopyWithImpl<$Res>
+    implements $UserPermissionCopyWith<$Res> {
+  _$UserPermissionCopyWithImpl(this._value, this._then);
+
+  final UserPermission _value;
+  // ignore: unused_field
+  final $Res Function(UserPermission) _then;
+
+  @override
+  $Res call({
+    Object? allowCreateStream = freezed,
+    Object? allowChat = freezed,
+  }) {
+    return _then(_value.copyWith(
+      allowCreateStream: allowCreateStream == freezed
+          ? _value.allowCreateStream
+          : allowCreateStream // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      allowChat: allowChat == freezed
+          ? _value.allowChat
+          : allowChat // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$UserPermissionCopyWith<$Res>
+    implements $UserPermissionCopyWith<$Res> {
+  factory _$UserPermissionCopyWith(
+          _UserPermission value, $Res Function(_UserPermission) then) =
+      __$UserPermissionCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat});
+}
+
+/// @nodoc
+class __$UserPermissionCopyWithImpl<$Res>
+    extends _$UserPermissionCopyWithImpl<$Res>
+    implements _$UserPermissionCopyWith<$Res> {
+  __$UserPermissionCopyWithImpl(
+      _UserPermission _value, $Res Function(_UserPermission) _then)
+      : super(_value, (v) => _then(v as _UserPermission));
+
+  @override
+  _UserPermission get _value => super._value as _UserPermission;
+
+  @override
+  $Res call({
+    Object? allowCreateStream = freezed,
+    Object? allowChat = freezed,
+  }) {
+    return _then(_UserPermission(
+      allowCreateStream: allowCreateStream == freezed
+          ? _value.allowCreateStream
+          : allowCreateStream // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      allowChat: allowChat == freezed
+          ? _value.allowChat
+          : allowChat // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_UserPermission implements _UserPermission {
+  _$_UserPermission(
+      {@JsonKey(name: 'allow_create_stream') this.allowCreateStream,
+      @JsonKey(name: 'allow_chat') this.allowChat});
+
+  factory _$_UserPermission.fromJson(Map<String, dynamic> json) =>
+      _$_$_UserPermissionFromJson(json);
+
+  @override
+  @JsonKey(name: 'allow_create_stream')
+  final bool? allowCreateStream;
+  @override
+  @JsonKey(name: 'allow_chat')
+  final bool? allowChat;
+
+  @override
+  String toString() {
+    return 'UserPermission(allowCreateStream: $allowCreateStream, allowChat: $allowChat)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _UserPermission &&
+            (identical(other.allowCreateStream, allowCreateStream) ||
+                const DeepCollectionEquality()
+                    .equals(other.allowCreateStream, allowCreateStream)) &&
+            (identical(other.allowChat, allowChat) ||
+                const DeepCollectionEquality()
+                    .equals(other.allowChat, allowChat)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(allowCreateStream) ^
+      const DeepCollectionEquality().hash(allowChat);
+
+  @JsonKey(ignore: true)
+  @override
+  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
+      __$UserPermissionCopyWithImpl<_UserPermission>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_UserPermissionToJson(this);
+  }
+}
+
+abstract class _UserPermission implements UserPermission {
+  factory _UserPermission(
+      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') bool? allowChat}) = _$_UserPermission;
+
+  factory _UserPermission.fromJson(Map<String, dynamic> json) =
+      _$_UserPermission.fromJson;
+
+  @override
+  @JsonKey(name: 'allow_create_stream')
+  bool? get allowCreateStream => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'allow_chat')
+  bool? get allowChat => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
       throw _privateConstructorUsedError;
 }

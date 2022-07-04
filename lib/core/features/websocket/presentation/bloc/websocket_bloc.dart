@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:worknetwork/core/features/websocket/domain/usecase/webinar_websocket_connect.dart';
 
 import '../../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../usecase/aysnc_usecase.dart';
@@ -18,6 +19,7 @@ part 'websocket_state.dart';
 class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   final UCWebSocketGetConnection connectionState;
   final UCWebsocketConnect connect;
+  final UCWebinarWebsocketConnect webinarConnect;
   final UCWebSocketAddToSink addToSink;
   final UCWebSocketClose socketClose;
   final AuthBloc authBloc;
@@ -26,17 +28,26 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   WebsocketBloc({
     required this.connectionState,
     required this.connect,
+    required this.webinarConnect,
     required this.addToSink,
     required this.authBloc,
     required this.socketClose,
   }) : super(WebsocketInitial()) {
-    _authBlocSub ??= authBloc.stream.listen((authState) {
-      if (authState is AuthStateSuccess) {
-        if (state is! WebSocketConnected) {
-          add(const WebSocketInitConnect());
-        }
-      }
-    });
+    // _authBlocSub ??= authBloc.stream.listen((authState) {
+    //   if (authState is AuthStateSuccess) {
+    //     if (state is! WebSocketConnected) {
+    //       add(const WebSocketInitConnect());
+    //     }
+    //   }
+    // });
+  }
+
+  void startWebinarChat(String groupId){
+    add(WebSocketInitConnect(groupId: groupId));
+  }
+
+  void endWebinarChat() {
+    add(const WebSocketCloseStarted());
   }
 
   @override
@@ -59,7 +70,7 @@ class WebsocketBloc extends Bloc<WebsocketEvent, WebsocketState> {
   Stream<WebsocketState> _mapWebSocketeConnectToState(
       WebSocketInitConnect event) async* {
     yield const WebSocketConnectLoading();
-    final connectOrError = await connect(NoParams());
+    final connectOrError = await webinarConnect(WebsocketConnectParams(groupId: event.groupId));
     yield connectOrError.fold(
       (failure) => const WebSocketDisconnected(),
       (connection) => WebSocketConnected(

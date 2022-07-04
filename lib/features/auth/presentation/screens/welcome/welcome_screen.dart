@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:video_player/video_player.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
@@ -35,43 +34,43 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late AuthBloc _authBloc;
   late TabController _tabController;
   late int _activeIndex;
-  late VideoPlayerController _controller;
 
   final List<Widget> _tabs = const [
     _ImageSlide(
       image: AppImageAssets.splashDiscover,
-      heading: "A new kind of professional social network",
-      subheading:
-          "We enable you to discover & converse with relevant professionals, to discuss your professional objectives & trending topics. Powered by AI",
+      heading: "Welcome to Crater",
+      subheading: "A live streaming & auctions platform for creators",
     ),
     _ImageSlide(
       image: AppImageAssets.splashTopic,
-      heading: "Step 1: Pick a topic",
-      subheading: "Pick an objective or a trending topic you wish to discuss",
+      heading: "Join Live Stream",
+      subheading:
+          "On Crater you can tune into live streams realted to stock trading, design & much more",
     ),
     _ImageSlide(
       image: AppImageAssets.splashPeople,
-      heading: "Step 2: Choose whom to meet & when",
+      heading: "Chat & Interact",
       subheading:
-          "Simply choose the profession of the person you want to converse with & when",
+          "In the live streams interact with your favourite creators & ask all your questions",
     ),
     _ImageSlide(
       image: AppImageAssets.splashAI,
-      heading: "Our AI goes to work",
-      subheading: "Our AI will search for the post possible match for you",
-    ),
-    _ImageSlide(
-      image: AppImageAssets.splashConversation,
-      heading: "Your 1:1 or group conversation is set up",
+      heading: "View Past Stream",
       subheading:
-          "You will be matched with 1 or more people, for a conversation.",
+          "Missed a stream? Not a problem. You can explore past streams as well.",
     ),
-    _ImageSlide(
-      image: AppImageAssets.splashVirtual,
-      heading: "Step 3: Join the call",
-      subheading:
-          "All you have to do is join the call & start conversing & networking.",
-    ),
+    // _ImageSlide(
+    //   image: AppImageAssets.splashConversation,
+    //   heading: "Your 1:1 or group conversation is set up",
+    //   subheading:
+    //       "You will be matched with 1 or more people, for a conversation.",
+    // ),
+    // _ImageSlide(
+    //   image: AppImageAssets.splashVirtual,
+    //   heading: "Step 3: Join the call",
+    //   subheading:
+    //       "All you have to do is join the call & start conversing & networking.",
+    // ),
   ];
 
   @override
@@ -80,16 +79,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
     _authBloc = BlocProvider.of<AuthBloc>(context);
-
-    _controller = VideoPlayerController.asset('assets/video/intro.mp4');
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
-
     super.initState();
   }
 
@@ -97,7 +86,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void dispose() {
     _tabController.removeListener(_tabChangeListener);
     _tabController.dispose();
-    _controller.dispose();
     super.dispose();
   }
 
@@ -121,71 +109,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         body: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             return ScaffoldContainer(
-              child: Stack(
-                // fit: StackFit.passthrough,
-                children: [
-                  SizedBox.expand(
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: SizedBox(
-                        width: _controller.value.size.width,
-                        height: _controller.value.size.height,
-                        child: VideoPlayer(_controller),
-                      ),
+              child: SafeArea(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    TabBarView(
+                      controller: _tabController,
+                      children: _tabs,
                     ),
-                  ),
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 40),
-                          Row(
-                            children: [
-                              const Spacer(),
-                              Text(
-                                'Welcome to',
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Crater',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Join interactive live streams with professional creators & mentors, network with like minds & take part in live auctions.',
-                            style: Theme.of(context).textTheme.subtitle2,
-                            textAlign: TextAlign.center,
-                          ),
-                          const Spacer(),
-                          SizedBox(
-                            width: 160,
-                            child: BaseLargeButton(
-                              text: 'Login',
-                              onPressed: () => openBottomSheet(context),
-                            ),
-                          ),
-                        ],
-                      ),
+                    Positioned(
+                      bottom: 20,
+                      child: _buildViewContent(context),
                     ),
-                  ),
-                  // TabBarView(
-                  //   controller: _tabController,
-                  //   children: _tabs,
-                  // ),
-
-                  if (state.isSubmitting != null && state.isSubmitting!)
-                    _buildOverlay(context)
-                ],
+                    if (state.isSubmitting != null && state.isSubmitting!)
+                      _buildOverlay(context)
+                  ],
+                ),
               ),
             );
           },
@@ -254,8 +193,58 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     }
   }
 
+  Widget _buildViewContent(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 100,
+      child: Column(
+        children: [
+          _SlideIndicator(
+            length: _tabs.length,
+            activeIndex: _activeIndex,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Flexible(
+                //   flex: 5,
+                //   child: BaseLargeButton(
+                //     text: 'Login',
+                //     onPressed: () => openBottomSheet(context, isSignUp: false),
+                //   ),
+                // ),
+                // Flexible(
+                //   child: Container(),
+                // ),
+                Flexible(
+                  flex: 5,
+                  child: SizedBox(
+                    width: 160,
+                    child: BaseLargeButton(
+                      text: _activeIndex == 3 ? 'Explore' : 'Next',
+                      onPressed: () => openBottomSheet(context),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void openBottomSheet(BuildContext context, {bool isSignUp = true}) {
-    _openPhoneAuthScreen(isSignUp, context);
+    if (_activeIndex < _tabs.length - 1) {
+      _activeIndex += 1;
+      _tabController.animateTo(_activeIndex);
+      return;
+    }
+
+    navigatePostAuth(null);
 
     return;
 
@@ -476,6 +465,14 @@ class _ImageSlide extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(bottom: 200),
       child: Column(children: [
+        const SizedBox(height: 80),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            heading,
+            style: headingStyle,
+          ),
+        ),
         const Spacer(),
         Image(
           image: image,
@@ -484,21 +481,10 @@ class _ImageSlide extends StatelessWidget {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                heading,
-                textAlign: TextAlign.start,
-                style: headingStyle,
-              ),
-              const SizedBox(height: AppInsets.med),
-              Text(
-                subheading,
-                textAlign: TextAlign.start,
-                style: subheadingStyle,
-              ),
-            ],
+          child: Text(
+            subheading,
+            textAlign: TextAlign.center,
+            style: subheadingStyle,
           ),
         )
       ]),

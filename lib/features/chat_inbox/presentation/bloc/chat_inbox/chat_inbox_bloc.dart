@@ -32,12 +32,12 @@ class ChatInboxBloc extends Bloc<ChatInboxEvent, ChatInboxState> {
     required this.starChatUser,
     required this.starUserChanged,
   }) : super(const ChatInboxInitial()) {
-    if (websocketBloc.state is WebSocketConnected) add(const WebSocketOnline());
-    _websocketBlocSub ??= websocketBloc.stream.listen((websocketState) {
-      if (websocketState is WebSocketConnected) {
-        add(const WebSocketOnline());
-      }
-    });
+    // if (websocketBloc.state is WebSocketConnected) add(const WebSocketOnline());
+    // _websocketBlocSub ??= websocketBloc.stream.listen((websocketState) {
+    //   if (websocketState is WebSocketConnected) {
+    //     add(const WebSocketOnline());
+    //   }
+    // });
   }
 
   @override

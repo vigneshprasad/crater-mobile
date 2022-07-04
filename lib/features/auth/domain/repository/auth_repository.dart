@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entity/user_entity.dart';
@@ -7,6 +9,7 @@ import '../entity/user_profile_entity.dart';
 abstract class AuthRepository {
   Future<Either<Failure, User>> loginwithEmail(
       String email, String password, String osId);
+  Future<Either<Failure, User>> logout(String osId);
   Future<Either<Failure, User>> registerwithEmail(
       String name, String email, String password, String osId);
   Future<Either<Failure, User>> authWithGoogle(String token, String osId);
@@ -22,5 +25,12 @@ abstract class AuthRepository {
   Future<Either<Failure, String>> postPasswordReset(String email);
   Future<Either<Failure, String>> postNewPassword(Map<String, String> body);
   Future<Either<Failure, void>> sendOtp(String phone);
-  Future<Either<Failure, User>> verifyOtp(String phone, String otp);
+  Future<Either<Failure, User>> verifyOtp(
+    String phone,
+    String otp,
+    Map<String, String> attributionData,
+  );
+  Future<Either<Failure, UserPermission>> getUserPermission();
+  Future<Either<Failure, ReferralsResponse>> getReferrals(
+      int? page, int? pageSize);
 }

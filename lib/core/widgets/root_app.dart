@@ -1,11 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide RootProvider;
 import 'package:kiwi/kiwi.dart';
-import 'package:worknetwork/core/integrations/user_leap/user_leap_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:worknetwork/api/integrations/devices_api_service.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 import '../../constants/theme.dart';
 import '../../routes.gr.dart';
@@ -21,13 +29,19 @@ class RootApp extends HookWidget {
   Future<void> initApp(BuildContext context) async {
     final deepLinkManager = context.read(deepLinkManagerProvider);
     final attributionProvider = context.read(attributionManagerProvider);
-    final userleapProvider = context.read(userLeapProvider);
     StatusBarColor.setTheme(ThemeType.light);
 
-    await userleapProvider.initSdk();
     await deepLinkManager.handleDeepLink(context);
     await attributionProvider.intializeSdk();
-    await KiwiContainer().resolve<Analytics>().initSdk();
+    try {
+      await KiwiContainer().resolve<Analytics>().initSdk();
+    } catch (exception) {
+      debugPrint(exception.toString());
+    }
+
+    final socketIOManager =
+        context.read(userPermissionNotifierProvider.notifier);
+    await socketIOManager.listenPermissions();
   }
 
   late AppRouter _appRouter;
@@ -230,4 +244,100 @@ OverlayEntry buildLoaderOverlay() {
       );
     },
   );
+}
+
+Future<bool> showEmail(BuildContext context) async {
+  var email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+  if (email != null && email.isNotEmpty) {
+    return true;
+  }
+  await showModalBottomSheet(
+    elevation: 10,
+    backgroundColor: Colors.transparent,
+    context: context,
+    isDismissible: false,
+    enableDrag: false,
+    useRootNavigator: false,
+    isScrollControlled: true,
+    builder: (context) {
+      return const ProfileEmailScreen(
+        editMode: true,
+        popup: true,
+      );
+    },
+  );
+
+  await Future.delayed(const Duration(milliseconds: 500));
+
+  email = BlocProvider.of<AuthBloc>(context).state.user?.email;
+
+  if (email != null && email.isNotEmpty) {
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> showName(BuildContext context) async {
+  var name = BlocProvider.of<AuthBloc>(context).state.user?.name;
+
+  if (name != null && name.isNotEmpty) {
+    return true;
+  }
+  await showModalBottomSheet(
+    elevation: 10,
+    backgroundColor: Colors.transparent,
+    context: context,
+    isDismissible: false,
+    enableDrag: false,
+    useRootNavigator: false,
+    isScrollControlled: true,
+    builder: (context) {
+      final height = MediaQuery.of(context).size.height * 0.8;
+      return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+          ),
+          child: Container(
+              height: height,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).dialogBackgroundColor,
+              ),
+              child: ProfileBasicScreen(
+                editMode: true,
+                popup: true,
+                onCompletion: () {
+                  AutoRouter.of(context).pop();
+                },
+              )));
+    },
+  );
+
+  await Future.delayed(const Duration(milliseconds: 500));
+
+  name = BlocProvider.of<AuthBloc>(context).state.user?.name;
+
+  if (name != null && name.isNotEmpty) {
+    return true;
+  }
+
+  return false;
+}
+
+void shareApp(BuildContext context, String url, String description) async {
+  // A builder is used to retrieve the context immediately
+  // surrounding the ElevatedButton.
+  //
+  // The context's `findRenderObject` returns the first
+  // RenderObject in its descendent tree when it's not
+  // a RenderObjectWidget. The ElevatedButton's RenderObject
+  // has its position and size after it's built.
+  final box = context.findRenderObject() as RenderBox?;
+
+  await Share.share(url,
+      subject: description,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
 }

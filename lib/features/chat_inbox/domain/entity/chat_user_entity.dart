@@ -17,6 +17,10 @@ class ChatUser extends HiveObject {
 
   final ChatMessage? latestMessage;
 
+  final String? displayName;
+
+  final String? firstName;
+
   ChatUser({
     this.pk,
     this.name = '',
@@ -25,5 +29,7 @@ class ChatUser extends HiveObject {
     this.isStarred = false,
     this.lastSeen,
     this.latestMessage,
+    this.displayName = '',
+    this.firstName = '',
   });
 }

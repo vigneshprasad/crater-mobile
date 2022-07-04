@@ -52,4 +52,10 @@ const _$ConversationFailuresTypeEnumMap = {
   ConversationFailuresType.genericError: 'genericError',
   ConversationFailuresType.groupMaxSpeakersError: 'groupMaxSpeakersError',
   ConversationFailuresType.groupNotFound: 'groupNotFound',
+  ConversationFailuresType.groupAlreadyJoined: 'groupAlreadyJoined',
+  ConversationFailuresType.seriesAlreadyRSVPed: 'seriesAlreadyRSVPed',
+  ConversationFailuresType.groupStartDateTimeNotInFuture:
+      'groupStartDateTimeNotInFuture',
+  ConversationFailuresType.groupStartLessThan24Hours:
+      'groupStartLessThan24Hours',
 };

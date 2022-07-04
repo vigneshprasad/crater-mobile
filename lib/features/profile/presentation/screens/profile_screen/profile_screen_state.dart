@@ -46,7 +46,7 @@ class GetProfileNotifier
     }
 
     final Map<String, String> meta = {};
-    if (_profile.tagList?.first.name != null) {
+    if (_profile.tagList != null && _profile.tagList!.isNotEmpty && _profile.tagList?.first.name != null) {
       meta['Profession'] = _profile.tagList?.first.name ?? '';
     }
     if (_profile.sectorDetail != null) {

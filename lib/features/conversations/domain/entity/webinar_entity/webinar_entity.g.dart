@@ -16,9 +16,9 @@ _$_Webinar _$_$_WebinarFromJson(Map<String, dynamic> json) {
     privacy: json['privacy'] as int?,
     medium: json['medium'] as int?,
     closed: json['closed'] as bool?,
-    closedAt: json['closedAt'] == null
+    closedAt: json['closed_at'] == null
         ? null
-        : DateTime.parse(json['closedAt'] as String),
+        : DateTime.parse(json['closed_at'] as String),
     topicDetail: json['topic_detail'] == null
         ? null
         : Topic.fromJson(json['topic_detail'] as Map<String, dynamic>),
@@ -27,7 +27,12 @@ _$_Webinar _$_$_WebinarFromJson(Map<String, dynamic> json) {
         : ConversationUser.fromJson(
             json['host_detail'] as Map<String, dynamic>),
     type: json['type'] as int?,
-    isLive: json['isLive'] as bool?,
+    isLive: json['is_live'] as bool?,
+    isPast: json['is_past'] as bool?,
+    recordingDetails: json['recording_details'] == null
+        ? null
+        : RecordingDetails.fromJson(
+            json['recording_details'] as Map<String, dynamic>),
     liveCount: json['liveCount'] as int?,
     rsvp: json['rsvp'] as bool?,
   );
@@ -42,11 +47,13 @@ Map<String, dynamic> _$_$_WebinarToJson(_$_Webinar instance) =>
       'privacy': instance.privacy,
       'medium': instance.medium,
       'closed': instance.closed,
-      'closedAt': instance.closedAt?.toIso8601String(),
+      'closed_at': instance.closedAt?.toIso8601String(),
       'topic_detail': instance.topicDetail,
       'host_detail': instance.hostDetail,
       'type': instance.type,
-      'isLive': instance.isLive,
+      'is_live': instance.isLive,
+      'is_past': instance.isPast,
+      'recording_details': instance.recordingDetails,
       'liveCount': instance.liveCount,
       'rsvp': instance.rsvp,
     };

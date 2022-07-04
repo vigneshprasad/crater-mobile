@@ -3,7 +3,12 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_request_entity.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures/failures.dart';
@@ -36,7 +41,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationsByDatefromRemote(start, end);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -52,7 +56,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getMyConversationsByDatefromRemote(start, end);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -68,7 +71,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postGroupOptinToRemote(interests, timeslots, config, topic);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -83,7 +85,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllTopicsFromRemote(parent);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -98,7 +99,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllAMATopicsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -113,7 +113,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllArticleTopicsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -128,7 +127,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .retrieveConversationFromRemote(id);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on GroupNotFoundException {
@@ -136,6 +134,21 @@ class ConversationRepositoryImpl implements ConversationRepository {
         message: "This seems to be an incorrect link. Return to home screen.",
         errorCode: ConversationFailuresType.groupNotFound,
       ));
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ConversationRequest>> getWebinarRSVPRequest(
+      int webinarId) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getWebinarRSVPRequestFromRemote(webinarId);
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
     } on SocketException {
       return Left(NetworkFailure());
     }
@@ -166,7 +179,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getConversationRtcInfoFromRemote(tableId);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -181,7 +193,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationOptinsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -197,7 +208,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getAllConversationOptinsByDateFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -213,7 +223,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getInstantConversationTimeSlotsFromRemote();
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -229,7 +238,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postCreateInstantConversationToRemote(conversation);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -244,7 +252,20 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .postTopicSuggestionToRemote(topic);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Webinar>>> getAllClubs() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getAllClubsfromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -259,7 +280,6 @@ class ConversationRepositoryImpl implements ConversationRepository {
           .getLiveClubsfromRemote(userId: userId);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -268,14 +288,14 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getUpcomingClubs(
-      {String? userId}) async {
+  Future<Either<Failure, FollowCreatorResponse>> getUpcomingClubs(
+      {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getUpcomingClubsfromRemote(userId: userId);
+          .getUpcomingClubsfromRemote(
+              userId: userId, page: page, pageSize: pageSize);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -284,13 +304,17 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getPastClubs({String? userId}) async {
+  Future<Either<Failure, List<Webinar>>> getPastClubs(
+      {String? userId, int? page, int? pageSize, int? categoryId}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getPastClubsfromRemote(userId: userId);
+          .getPastClubsfromRemote(
+              userId: userId,
+              page: page,
+              pageSize: pageSize,
+              categoryId: categoryId);
       return Right(response);
     } on ServerException catch (error) {
-      final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
     } on SocketException {
@@ -299,16 +323,149 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, List<Webinar>>> getFeaturedClubs(
-      {String? userId}) async {
+  Future<Either<Failure, FollowCreatorResponse>> getFeaturedClubs(
+      {String? userId, int? page, int? pageSize}) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
-          .getFeaturedClubsfromRemote(userId: userId);
+          .getFeaturedClubsfromRemote(
+              userId: userId, page: page, pageSize: pageSize);
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ChatReaction>>> getChatReactions() async {
+    try {
+      final response =
+          await read(conversationRemoteDatasourceProvider).getChatReactions();
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ChatReaction>> getChatReactionDetail(String id) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getChatReactionDetail(id);
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Webinar>>> getSeries(
+      {int? page, int? pageSize}) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getSeriesFromRemote(page: page, pageSize: pageSize);
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Series>> getSeriesDetails(int id) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getSeriesDetailsFromRemote(id);
       return Right(response);
     } on ServerException catch (error) {
       final _ = jsonDecode(error.message as String) as Map<String, dynamic>;
       final failure = ServerFailure(message: "Something went wrong");
       return Left(failure);
+    } on GroupNotFoundException {
+      return Left(ConversationFailure(
+        message: "This seems to be an incorrect link. Return to home screen.",
+        errorCode: ConversationFailuresType.groupNotFound,
+      ));
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, SeriesRequest>> postRequestToRSVPSeries(
+      SeriesRequest request) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postSeriesRequestToRemote(request);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      final failure = ConversationFailure.fromJson(message);
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CategoriesDetailList>>>
+      getWebinarCategories() async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getWebinarCategoriesFromRemote();
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, FollowCreatorResponse>> getCreators(
+      {int? page, int? pageSize}) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .getCreatorsFromRemote(page: page, pageSize: pageSize);
+      return Right(response);
+    } on ServerException catch (error) {
+      final failure = ServerFailure(message: "Something went wrong");
+      return Left(failure);
+    } on SocketException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Webinar>> postWebinar(WebinarRequest request) async {
+    try {
+      final response = await read(conversationRemoteDatasourceProvider)
+          .postWebinarToRemote(request);
+      return Right(response);
+    } on ServerException catch (error) {
+      final message =
+          jsonDecode(error.message as String) as Map<String, dynamic>;
+      if (message.containsKey('error_code')) {
+        final failure = ConversationFailure.fromJson(message);
+        return Left(failure);
+      } else {
+        final failure = ConversationFailure(
+            errorCode: ConversationFailuresType.genericError,
+            message: message.toString());
+        return Left(failure);
+      }
     } on SocketException {
       return Left(NetworkFailure());
     }

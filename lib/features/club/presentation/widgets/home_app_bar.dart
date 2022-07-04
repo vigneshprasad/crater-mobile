@@ -4,8 +4,10 @@ import 'package:worknetwork/features/profile/presentation/widget/share_button.da
 
 class HomeAppBar extends StatelessWidget {
   final String title;
+  final double? leftPadding;
   const HomeAppBar({
     required this.title,
+    this.leftPadding,
     Key? key,
   }) : super(key: key);
 
@@ -13,11 +15,11 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 80,
-      actions: [
-        // HelpButton(),
-        ShareButton(),
-      ],
-      flexibleSpace: AccentTitle(title: title),
+      // actions: [
+      //   // HelpButton(),
+      //   ShareButton(),
+      // ],
+      flexibleSpace: AccentTitle(title: title, leftPadding: leftPadding,),
     );
   }
 }
@@ -26,14 +28,16 @@ class AccentTitle extends StatelessWidget {
   const AccentTitle({
     Key? key,
     required this.title,
+    this.leftPadding,
   }) : super(key: key);
 
   final String title;
+  final double? leftPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, top: 16),
+      padding: EdgeInsets.only(left: leftPadding ??  20.0, top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

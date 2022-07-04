@@ -23,15 +23,15 @@ class ChatSearchBloc extends Bloc<ChatSearchEvent, ChatSearchState> {
     required this.websocketBloc,
     required this.getAllChatUsers,
   }) : super(const ChatSearchInitial()) {
-    if (websocketBloc.state is WebSocketConnected) {
-      add(const WebSocketBlocConnected());
-    } else {
-      _websocketBlocSub ??= websocketBloc.stream.listen((websocketblocState) {
-        if (websocketblocState is WebSocketConnected) {
-          add(const WebSocketBlocConnected());
-        }
-      });
-    }
+    // if (websocketBloc.state is WebSocketConnected) {
+    //   add(const WebSocketBlocConnected());
+    // } else {
+    //   _websocketBlocSub ??= websocketBloc.stream.listen((websocketblocState) {
+    //     if (websocketblocState is WebSocketConnected) {
+    //       add(const WebSocketBlocConnected());
+    //     }
+    //   });
+    // }
   }
 
   @override

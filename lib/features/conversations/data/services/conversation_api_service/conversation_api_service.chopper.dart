@@ -102,6 +102,20 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getChatReactions() {
+    final $url = '/groups/conversations/chatreactions/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getChatReactionDetail(String id) {
+    final $url = '/groups/conversations/chatreactions/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> postConversationOptin(Map<String, dynamic> body) {
     final $url = '/groups/optin/';
     final $body = body;
@@ -124,6 +138,13 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getWebinarRSVP(int id) {
+    final $url = '/groups/requests/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> postConversationRequest(Map<String, dynamic> body) {
     final $url = '/groups/requests/';
     final $body = body;
@@ -141,6 +162,20 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
+  Future<Response<dynamic>> getWebinarCategories() {
+    final $url = '/groups/conversations/categories';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getAllClubs() {
+    final $url = '/groups/public/conversations/webinars/all';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getLiveClubs(String? host) {
     final $url = '/groups/public/conversations/webinars/live';
     final $params = <String, dynamic>{'host': host};
@@ -149,25 +184,88 @@ class _$ConversationApiService extends ConversationApiService {
   }
 
   @override
-  Future<Response<dynamic>> getUpcomingClubs(String? host) {
+  Future<Response<dynamic>> getUpcomingClubs(
+      String? host, int? page, int? pageSize) {
     final $url = '/groups/public/conversations/webinars/upcoming';
-    final $params = <String, dynamic>{'host': host};
+    final $params = <String, dynamic>{
+      'host': host,
+      'page': page,
+      'page_size': pageSize
+    };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
-  Future<Response<dynamic>> getPastClubs(String? host) {
+  Future<Response<dynamic>> getPastClubs(
+      String? host, int? page, int? pageSize, int? categoryId) {
     final $url = '/groups/public/conversations/webinars/past';
-    final $params = <String, dynamic>{'host': host};
+    final $params = <String, dynamic>{
+      'host': host,
+      'page': page,
+      'page_size': pageSize,
+      'categories': categoryId
+    };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
-  Future<Response<dynamic>> getFeaturedClubs() {
+  Future<Response<dynamic>> getFeaturedClubs(
+      String? host, int? page, int? pageSize) {
     final $url = '/groups/public/conversations/webinars/featured';
+    final $params = <String, dynamic>{
+      'host': host,
+      'page': page,
+      'page_size': pageSize
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postWebinarRequest(Map<String, dynamic> body) {
+    final $url = '/groups/conversations/webinars/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> retrieveWebinar(int id) {
+    final $url = '/groups/conversations/webinars/$id/';
     final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> retrieveCreators(int? page, int? pageSize) {
+    final $url = '/groups/conversations/webinars/creators/';
+    final $params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getSeries(int? page, int? pageSize) {
+    final $url = '/groups/public/conversations/series/';
+    final $params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> getSeriesDetails(int id) {
+    final $url = '/groups/public/conversations/series/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postSeriesRequest(Map<String, dynamic> body) {
+    final $url = '/groups/conversations/series/requests/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

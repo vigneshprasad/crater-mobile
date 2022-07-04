@@ -10,7 +10,7 @@ DyteMeeting _$DyteMeetingFromJson(Map<String, dynamic> json) {
   return DyteMeeting(
     dyteMeeting: json['dyte_meeting'] as int?,
     authToken: json['auth_token'] as String?,
-    isOnline: json['is_online'] as bool,
+    isOnline: json['is_online'] as bool?,
     dyteMeetingDetail: json['dyte_meeting_detail'] == null
         ? null
         : DyteMeetingDetail.fromJson(

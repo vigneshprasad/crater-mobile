@@ -6,6 +6,32 @@ part of 'requests.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+GroupChatMessageRequestParams _$GroupChatMessageRequestParamsFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatMessageRequestParams(
+    message: json['message'] as String,
+  );
+}
+
+Map<String, dynamic> _$GroupChatMessageRequestParamsToJson(
+        GroupChatMessageRequestParams instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+    };
+
+GroupChatReactionRequestParams _$GroupChatReactionRequestParamsFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatReactionRequestParams(
+    reaction: json['reaction'] as String,
+  );
+}
+
+Map<String, dynamic> _$GroupChatReactionRequestParamsToJson(
+        GroupChatReactionRequestParams instance) =>
+    <String, dynamic>{
+      'reaction': instance.reaction,
+    };
+
 SetChatRequestParams _$SetChatRequestParamsFromJson(Map<String, dynamic> json) {
   return SetChatRequestParams(
     user: json['user'] as String,
@@ -84,6 +110,46 @@ Map<String, dynamic> _$ChatMessageRequestToJson(ChatMessageRequest instance) =>
     <String, dynamic>{
       'type': _$WSRequestTypeEnumMap[instance.type],
       'message': instance.message,
+    };
+
+GroupChatMessageRequest _$GroupChatMessageRequestFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatMessageRequest(
+    type: _$enumDecode(_$WSGroupRequestTypeEnumMap, json['type'],
+        unknownValue: WSGroupRequestType.unknownValue),
+    payload: GroupChatMessageRequestParams.fromJson(
+        json['payload'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$GroupChatMessageRequestToJson(
+        GroupChatMessageRequest instance) =>
+    <String, dynamic>{
+      'type': _$WSGroupRequestTypeEnumMap[instance.type],
+      'payload': instance.payload,
+    };
+
+const _$WSGroupRequestTypeEnumMap = {
+  WSGroupRequestType.sendGroupMessage: 'send_group_message',
+  WSGroupRequestType.sendGroupReaction: 'send_group_reaction',
+  WSGroupRequestType.unknownValue: 'unknownValue',
+};
+
+GroupChatReactionRequest _$GroupChatReactionRequestFromJson(
+    Map<String, dynamic> json) {
+  return GroupChatReactionRequest(
+    type: _$enumDecode(_$WSGroupRequestTypeEnumMap, json['type'],
+        unknownValue: WSGroupRequestType.unknownValue),
+    payload: GroupChatReactionRequestParams.fromJson(
+        json['payload'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$GroupChatReactionRequestToJson(
+        GroupChatReactionRequest instance) =>
+    <String, dynamic>{
+      'type': _$WSGroupRequestTypeEnumMap[instance.type],
+      'payload': instance.payload,
     };
 
 UserTypingRequest _$UserTypingRequestFromJson(Map<String, dynamic> json) {

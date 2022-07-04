@@ -190,6 +190,10 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: 'companies_invested_detail')
   final UserProfileFieldDetailModel? companiesInvestedDetail;
 
+  // @HiveField(47)
+  @JsonKey(name: 'is_creator')
+  final bool? isCreator;
+
   UserProfileModel(
       {this.pk,
       this.additionalInformation,
@@ -237,7 +241,9 @@ class UserProfileModel extends UserProfile {
       this.projectTypeDetail,
       this.sectorDetail,
       this.stageOfCompanyDetail,
-      this.yearOfExperienceDetail})
+      this.yearOfExperienceDetail,
+      this.isCreator,
+      })
       : super(
           pk: pk,
           additionalInformation: additionalInformation,
@@ -286,6 +292,7 @@ class UserProfileModel extends UserProfile {
           sectorDetail: sectorDetail,
           stageOfCompanyDetail: stageOfCompanyDetail,
           yearOfExperienceDetail: yearOfExperienceDetail,
+          isCreator: isCreator,
         );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>

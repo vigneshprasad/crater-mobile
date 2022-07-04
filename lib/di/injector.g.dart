@@ -30,6 +30,7 @@ class _$WebSocketInjector extends WebSocketInjector {
       ..registerSingleton((c) => WebsocketBloc(
           connectionState: c<UCWebSocketGetConnection>(),
           connect: c<UCWebsocketConnect>(),
+          webinarConnect: c<UCWebinarWebsocketConnect>(),
           addToSink: c<UCWebSocketAddToSink>(),
           authBloc: c<AuthBloc>(),
           socketClose: c<UCWebSocketClose>()))
@@ -44,6 +45,8 @@ class _$WebSocketInjector extends WebSocketInjector {
           (c) => WebsocketLocalDataSourceImpl())
       ..registerSingleton(
           (c) => UCWebsocketConnect(repository: c<WebSocketRepository>()))
+      ..registerSingleton((c) =>
+          UCWebinarWebsocketConnect(repository: c<WebSocketRepository>()))
       ..registerSingleton(
           (c) => UCWebSocketGetConnection(repository: c<WebSocketRepository>()))
       ..registerSingleton(
@@ -259,6 +262,7 @@ class _$ChatInjector extends ChatInjector {
           websocketBloc: c<WebsocketBloc>(),
           setChatWithUser: c<UCSetChatWithUser>(),
           sendMessage: c<UCSendChatToUser>(),
+          sendWebinarMessage: c<UCSendChatToWebinar>(),
           receivedSetChatWithUser: c<UCReceivedSetChatWithUser>(),
           sendUserIsTyping: c<UCSendUserIsTyping>(),
           persistReceivedMessage: c<UCPersistReceivedMessage>(),
@@ -274,6 +278,8 @@ class _$ChatInjector extends ChatInjector {
           (c) => UCSetChatWithUser(repository: c<ChatRepository>()))
       ..registerSingleton(
           (c) => UCSendChatToUser(repository: c<ChatRepository>()))
+      ..registerSingleton(
+          (c) => UCSendChatToWebinar(repository: c<ChatRepository>()))
       ..registerSingleton(
           (c) => UCReceivedSetChatWithUser(repository: c<ChatRepository>()))
       ..registerSingleton(

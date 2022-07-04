@@ -44,7 +44,7 @@ class MeetingRequestDetailScreen extends HookWidget {
         ),
         data: (meetingRequest) {
           final user = BlocProvider.of<AuthBloc>(context).state.user;
-          final isRequester = meetingRequest.requestedBy == user!.pk;
+          final isRequester = meetingRequest.requestedBy == user?.pk;
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -130,7 +130,7 @@ class MeetingRequestDetailScreen extends HookWidget {
         );
 
     if (meetingRequest.status == MeetingRequestStatus.pendingApproval) {
-      if (meetingRequest.requestedTo == user!.pk) {
+      if (meetingRequest.requestedTo == user?.pk) {
         buttons = [
           BaseLargeIconButton(
             icon: Icons.check,

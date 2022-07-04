@@ -20,7 +20,7 @@ class ProfileScreen extends HookWidget {
     @PathParam('allowEdit') required this.allowEdit,
   });
 
-  static const tabs = ["About", "Streams", "Club"];
+  static const tabs = ["About", "Streams"];
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +55,10 @@ class ProfileScreen extends HookWidget {
                     showLogout: allowEdit,
                   ),
                   ProfileStreamsTab(userId),
-                  CommunityList(
-                    userId: userId,
-                    community: state.creator?.defaultCommunity?.id.toString(),
-                  ),
+                  // CommunityList(
+                  //   userId: userId,
+                  //   community: state.creator?.defaultCommunity?.id.toString(),
+                  // ),
                 ],
               ),
             )),

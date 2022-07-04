@@ -57,6 +57,12 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'groups/instant_time_slots/')
   Future<Response> getInstantConversationTimeSlots();
 
+  @Get(path: 'conversations/chatreactions/')
+  Future<Response> getChatReactions();
+
+  @Get(path: 'conversations/chatreactions/{id}')
+  Future<Response> getChatReactionDetail(@Path() String id);
+
   @Post(path: 'optin/')
   Future<Response> postConversationOptin(@Body() Map<String, dynamic> body);
 
@@ -66,6 +72,9 @@ abstract class ConversationApiService extends ChopperService {
   @Get(path: 'optin/by_date/')
   Future<Response> getOptinsByDate();
 
+  @Get(path: 'requests/{id}')
+  Future<Response> getWebinarRSVP(@Path() int id);
+
   @Post(path: 'requests/')
   Future<Response> postConversationRequest(@Body() Map<String, dynamic> body);
 
@@ -73,15 +82,49 @@ abstract class ConversationApiService extends ChopperService {
   Future<Response> postTopicSuggestionRequest(
       @Body() Map<String, dynamic> body);
 
+  @Get(path: 'conversations/categories')
+  Future<Response> getWebinarCategories();
+
+  @Get(path: 'public/conversations/webinars/all')
+  Future<Response> getAllClubs();
+
   @Get(path: 'public/conversations/webinars/live')
   Future<Response> getLiveClubs(@Query() String? host);
 
   @Get(path: 'public/conversations/webinars/upcoming')
-  Future<Response> getUpcomingClubs(@Query() String? host);
+  Future<Response> getUpcomingClubs(
+    @Query() String? host,
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
 
   @Get(path: 'public/conversations/webinars/past')
-  Future<Response> getPastClubs(@Query() String? host);
+  Future<Response> getPastClubs(@Query() String? host, @Query() int? page,
+      @Query('page_size') int? pageSize, @Query('categories') int? categoryId);
 
   @Get(path: 'public/conversations/webinars/featured')
-  Future<Response> getFeaturedClubs();
+  Future<Response> getFeaturedClubs(@Query() String? host, @Query() int? page,
+      @Query('page_size') int? pageSize);
+
+  @Post(path: 'conversations/webinars/')
+  Future<Response> postWebinarRequest(@Body() Map<String, dynamic> body);
+
+  @Get(path: 'conversations/webinars/{id}/')
+  Future<Response> retrieveWebinar(@Path() int id);
+
+  @Get(path: 'conversations/webinars/creators/')
+  Future<Response> retrieveCreators(
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
+
+  @Get(path: 'public/conversations/series/')
+  Future<Response> getSeries(
+      @Query() int? page, @Query('page_size') int? pageSize);
+
+  @Get(path: 'public/conversations/series/{id}')
+  Future<Response> getSeriesDetails(@Path() int id);
+
+  @Post(path: 'conversations/series/requests/')
+  Future<Response> postSeriesRequest(@Body() Map<String, dynamic> body);
 }

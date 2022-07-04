@@ -5,8 +5,7 @@
 
     <!-- You can insert your own image assets here -->
     <item
-        android:width="128dp"
-        android:height="128dp">
+        >
         <bitmap
             android:gravity="center"
             android:src="@mipmap/launch_image" />

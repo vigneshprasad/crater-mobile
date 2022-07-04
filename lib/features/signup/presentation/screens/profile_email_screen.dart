@@ -22,10 +22,12 @@ import '../widgets/profile_header.dart';
 
 class ProfileEmailScreen extends HookWidget {
   final bool editMode;
+  final bool? popup;
 
   const ProfileEmailScreen({
     Key? key,
     @PathParam("editMode") required this.editMode,
+    this.popup = false,
   }) : super(key: key);
 
   @override
@@ -47,9 +49,12 @@ class ProfileEmailScreen extends HookWidget {
       });
     }
 
-    const heading = 'Where should we send your meeting invites?';
-    const subHeading =
-        "This is used to block your calendar when a meeting is set up.";
+    final heading = popup == true
+        ? 'Enter your email'
+        : 'Block your calendar for the the stream.';
+    final subHeading = popup == true
+        ? ''
+        : "Please provide an email ID where we can notify you";
     const firstnameLabel = 'Email';
     final height = MediaQuery.of(context).size.height * 0.8;
     return ClipRRect(
@@ -61,7 +66,9 @@ class ProfileEmailScreen extends HookWidget {
           height: height,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
+            color: popup == true
+                ? Theme.of(context).dialogBackgroundColor
+                : Theme.of(context).backgroundColor,
           ),
           child: SafeArea(
               child: Column(
@@ -72,7 +79,7 @@ class ProfileEmailScreen extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const ProfileHeader(
+                    ProfileHeader(
                       title: heading,
                       subtitle: subHeading,
                     ),

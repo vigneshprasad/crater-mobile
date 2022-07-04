@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 import '../../../../constants/theme.dart';
 import '../../../../core/widgets/base/base_bottom_sheet/base_bottom_sheet.dart';
@@ -92,14 +93,15 @@ class _RescheduleRequestSheetState extends State<RescheduleRequestSheet> {
     );
   }
 
-  void _onSubmitPressed(BuildContext context) {
+  Future<void> _onSubmitPressed(BuildContext context) async {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
-    if (user == null) {
+    final loginStatus = await manageLoginPopup(context);
+    if (loginStatus==false) {
       return;
     }
     _bloc.add(PostMeetingRescheduleRsvpStarted(
       oldMeeting: widget.meeting.pk!,
-      requestedBy: user.pk!,
+      requestedBy: user?.pk ?? '',
       timeSlots: _selectedSlots,
     ));
   }

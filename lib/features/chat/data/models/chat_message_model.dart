@@ -1,8 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../../../constants/app_hive_boxes.dart';
-import '../../domain/entity/chat_message_entity.dart';
+import 'package:worknetwork/constants/app_hive_boxes.dart';
+import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
+import 'package:worknetwork/features/chat_inbox/data/models/chat_user_model.dart';
+import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 
 part 'chat_message_model.g.dart';
 
@@ -37,7 +38,8 @@ class ChatMessageModel extends ChatMessage {
   final String? photo;
 
   @HiveField(8)
-  final String? created;
+  @JsonKey(name: "created_at")
+  final dynamic created;
 
   @HiveField(9)
   @JsonKey(name: "is_read")
@@ -55,6 +57,24 @@ class ChatMessageModel extends ChatMessage {
   @JsonKey(name: "is_support")
   final bool? isSupport;
 
+  @HiveField(13)
+  @JsonKey(name: "sender_details")
+  final ChatUserModel? senderDetail;
+
+  @JsonKey(name: "data")
+  final ChatReaction? reaction;
+
+  @JsonKey(name: "display_name")
+  final String? displayName;
+
+  String? firebaseId;
+
+  int? type;
+
+  int? action;
+
+  bool? isFollowing;
+
   ChatMessageModel({
     this.message,
     this.file,
@@ -69,6 +89,13 @@ class ChatMessageModel extends ChatMessage {
     this.senderId,
     this.receiverId,
     this.isSupport,
+    this.senderDetail,
+    this.reaction,
+    this.displayName,
+    this.firebaseId,
+    this.type,
+    this.action,
+    this.isFollowing,
   }) : super(
           message: message,
           file: file,
@@ -83,6 +110,13 @@ class ChatMessageModel extends ChatMessage {
           senderId: senderId,
           receiverId: receiverId,
           isSupport: isSupport,
+          senderDetail: senderDetail,
+          reaction: reaction,
+          displayName: displayName,
+          firebaseId: firebaseId,
+          type: type,
+          action: action,
+          isFollowing: isFollowing,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>

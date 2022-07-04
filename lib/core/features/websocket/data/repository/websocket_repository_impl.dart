@@ -45,6 +45,24 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
   }
 
   @override
+  Future<Either<Failure, WebSocketConnection>> connectToWebinarWebsocketBackend(String groupId) async {
+    final user = authLocalDataSource.getUserFromCache();
+    try {
+      localDataSource.channel ??=
+          await remoteDataSource.connectToWebinarWebsocketBackend(groupId, user.token!);
+      localDataSource.streamcontroller ??= StreamController.broadcast();
+      localDataSource.streamcontroller
+          ?.addStream(localDataSource.channel!.stream);
+      return Right(WebSocketConnection(
+        channel: localDataSource.channel!,
+        streamController: localDataSource.streamcontroller!,
+      ));
+    } on WebsocketServerException {
+      return Left(WebsocketServerFailure());
+    }
+  }
+
+  @override
   Either<Failure, WebSocketConnection> getWebSocketConnectionState() {
     if (localDataSource.channel == null) {
       return Left(WebsocketLocalFailure());
@@ -71,6 +89,24 @@ class WebsocketRepositoryImpl implements WebSocketRepository {
     var channel = localDataSource.channel;
     if (channel == null) {
       final stateOrError = await connectToWebsocketBackend();
+      stateOrError.fold(
+        (failure) => Left(failure),
+        (connection) {
+          channel = connection.channel;
+        },
+      );
+    }
+    channel?.sink.add(data);
+    return const Right(null);
+  }
+
+  @override
+  Future<Either<Failure, void>> addMessageToWebinarSink(
+      Map<String, dynamic> message) async {
+    final data = jsonEncode(message);
+    var channel = localDataSource.channel;
+    if (channel == null) {
+      final stateOrError = await connectToWebinarWebsocketBackend('');
       stateOrError.fold(
         (failure) => Left(failure),
         (connection) {

@@ -25,18 +25,19 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       receiver: fields[5] as String?,
       pk: fields[6] as int?,
       photo: fields[7] as String?,
-      created: fields[8] as String?,
+      created: fields[8] as dynamic,
       isRead: fields[9] as bool?,
       senderId: fields[10] as String?,
       receiverId: fields[11] as String?,
       isSupport: fields[12] as bool?,
+      senderDetail: fields[13] as ChatUserModel?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatMessageModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.message)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class ChatMessageModelAdapter extends TypeAdapter<ChatMessageModel> {
       ..writeByte(11)
       ..write(obj.receiverId)
       ..writeByte(12)
-      ..write(obj.isSupport);
+      ..write(obj.isSupport)
+      ..writeByte(13)
+      ..write(obj.senderDetail);
   }
 
   @override
@@ -90,11 +93,23 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
     receiver: json['receiver'] as String?,
     pk: json['pk'] as int?,
     photo: json['photo'] as String?,
-    created: json['created'] as String?,
+    created: json['created_at'],
     isRead: json['is_read'] as bool?,
     senderId: json['sender_id'] as String?,
     receiverId: json['receiver_id'] as String?,
     isSupport: json['is_support'] as bool?,
+    senderDetail: json['sender_details'] == null
+        ? null
+        : ChatUserModel.fromJson(
+            json['sender_details'] as Map<String, dynamic>),
+    reaction: json['data'] == null
+        ? null
+        : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
+    displayName: json['display_name'] as String?,
+    firebaseId: json['firebaseId'] as String?,
+    type: json['type'] as int?,
+    action: json['action'] as int?,
+    isFollowing: json['isFollowing'] as bool?,
   );
 }
 
@@ -108,9 +123,16 @@ Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
       'receiver': instance.receiver,
       'pk': instance.pk,
       'photo': instance.photo,
-      'created': instance.created,
+      'created_at': instance.created,
       'is_read': instance.isRead,
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
+      'sender_details': instance.senderDetail,
+      'data': instance.reaction,
+      'display_name': instance.displayName,
+      'firebaseId': instance.firebaseId,
+      'type': instance.type,
+      'action': instance.action,
+      'isFollowing': instance.isFollowing,
     };
