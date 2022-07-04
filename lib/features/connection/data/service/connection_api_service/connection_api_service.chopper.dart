@@ -38,4 +38,12 @@ class _$ConnectionApiService extends ConnectionApiService {
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> followCreator(Map<String, dynamic> body) {
+    final $url = '/crater/followers/notify/';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

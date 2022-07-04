@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:worknetwork/features/chat/domain/usecases/send_message_to_webinar.dart';
 
 import '../../../../core/features/websocket/data/models/ws_response.dart';
 import '../../../../core/features/websocket/presentation/bloc/websocket_bloc.dart';
@@ -24,6 +25,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final WebsocketBloc websocketBloc;
   final UCSetChatWithUser setChatWithUser;
   final UCSendChatToUser sendMessage;
+  final UCSendChatToWebinar sendWebinarMessage;
   final UCReceivedSetChatWithUser receivedSetChatWithUser;
   final UCSendUserIsTyping sendUserIsTyping;
   final UCPersistReceivedMessage persistReceivedMessage;
@@ -36,26 +38,43 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.websocketBloc,
     required this.setChatWithUser,
     required this.sendMessage,
+    required this.sendWebinarMessage,
     required this.receivedSetChatWithUser,
     required this.sendUserIsTyping,
     required this.persistReceivedMessage,
     required this.sendReadUserMessage,
   }) : super(const ChatInitial()) {
-    if (websocketBloc.state is WebSocketConnected) {
-      add(const WebSocketBlocConnected());
-    } else {
-      _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
-        if (websocketBlocState is WebSocketDisconnected) {
-          add(const WebSocketBlocConnected());
-        }
-      });
-    }
+    // if (websocketBloc.state is WebSocketConnected) {
+    //   add(const WebSocketBlocConnected());
+    // } else {
+    //   _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
+    //     if (websocketBlocState is WebSocketConnected) {
+    //       add(const WebSocketBlocConnected());
+    //     }
+    //   });
+    // }
+  }
+
+  void startWebinarChat(String groupId) {
+
+    // if (websocketBloc.state is WebSocketConnected) {
+    //   add(const WebSocketBlocConnected());
+    // } else {
+    //   _webSocketBlocSub ??= websocketBloc.stream.listen((websocketBlocState) {
+    //     if (websocketBloc.state is WebSocketConnected) {
+    //       add(const WebSocketBlocConnected());
+    //     }
+    //   });
+    // }
+
+    websocketBloc.startWebinarChat(groupId);
   }
 
   @override
   Future<void> close() {
     _streamSubscription?.cancel();
     _webSocketBlocSub?.cancel();
+    websocketBloc.endWebinarChat();
     return super.close();
   }
 
@@ -66,19 +85,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event is WebSocketBlocConnected) {
       _mapStreamToEvents();
       yield const ChatWebSocketReady();
-    } else if (event is SetChatWithUserStarted) {
-      yield* _mapSetChatStartedToState(event);
-    } else if (event is SendUserIsTypingRequest) {
-      yield* _mapSendUserIsTypingToState(event);
+    // }
+    // } else if (event is SetChatWithUserStarted) {
+    //   yield* _mapSetChatStartedToState(event);
+    // } else if (event is SendUserIsTypingRequest) {
+    //   yield* _mapSendUserIsTypingToState(event);
     } else if (event is SendChatMessageStarted) {
-      yield* _mapSendChatMessageToState(event);
+      yield* _mapSendWebinarChatMessageToState(event);
+    } else if (event is SendChatReactionStarted) {
+      yield* _mapSendWebinarChatReactionToState(event);
     }
 
     // Responses from Socket Stream
-    if (event is ReceivedSetChatUserResponse) {
-      yield* _mapRecievedSetChatToState(event);
-    } else if (event is ReceivedChatMessageResponse) {
-      yield* _mapReceivedMessageToState(event);
+    // if (event is ReceivedSetChatUserResponse) {
+    //   yield* _mapRecievedSetChatToState(event);
+    // } else 
+    if (event is ReceivedSetChatWebinarResponse) {
+      yield* _mapRecievedSetWebinarChatToState(event);
+    } else 
+    // if (event is ReceivedChatMessageResponse) {
+    //   yield* _mapReceivedMessageToState(event);
+    // } else 
+    if (event is ReceivedWebinarChatMessageResponse) {
+      yield* _mapReceivedWebinarMessageToState(event);
     }
   }
 
@@ -87,13 +116,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _streamSubscription ??= socketState.controller.stream.listen((snapShot) {
       final json = jsonDecode(snapShot.toString()) as Map<String, dynamic>;
       final type = WSResponse.getEnumFromJson(json["type"]);
-
-      if (type == WSResponseType.loadChatMessages) {
+      
+      if (type == WSResponseType.groupMessagesReceived) {
+        final response = SetChatWebinarResponse.fromJson(json);
+        add(ReceivedSetChatWebinarResponse(response: response));
+      } else if (type == WSResponseType.newGroupMessage){
+        final response = SentWebinarMessageResponse.fromJson(json);
+        add(ReceivedWebinarChatMessageResponse(
+          message: response.payload!,
+        ));
+      }
+      else if (type == WSResponseType.loadChatMessages) {
         final response = SetChatUserResponse.fromJson(json);
         sendReadUserMessage(NoParams());
         add(ReceivedSetChatUserResponse(response: response));
       }
-      if (type == WSResponseType.getUserMessage) {
+      else if (type == WSResponseType.getUserMessage) {
         final response = SentMessageResponse.fromJson(json);
         add(ReceivedChatMessageResponse(
           message: response.toChatMessage(),
@@ -149,6 +187,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
   }
 
+  Stream<ChatState> _mapRecievedSetWebinarChatToState(
+      ReceivedSetChatWebinarResponse event) async* {
+        final messages = event.response.payload?.messages?.toList();
+        yield state.copyWith(messages:  messages);
+  }
+
   Stream<ChatState> _mapSendUserIsTypingToState(
       SendUserIsTypingRequest event) async* {
     final sendOrFail = await sendUserIsTyping(NoParams());
@@ -163,6 +207,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       SendChatMessageStarted event) async* {
     final sendOrFail =
         await sendMessage(SendChatParams(message: event.message));
+    yield sendOrFail.fold(
+      (failure) => state.copyWith(error: failure),
+      (r) =>
+          // ignore: avoid_redundant_argument_values
+          state.copyWith(error: null),
+    );
+  }
+
+  Stream<ChatState> _mapSendWebinarChatMessageToState(
+      SendChatMessageStarted event) async* {
+    final sendOrFail =
+        await sendWebinarMessage(SendWebianrChatParams(message: event.message));
+    yield sendOrFail.fold(
+      (failure) => state.copyWith(error: failure),
+      (r) =>
+          // ignore: avoid_redundant_argument_values
+          state.copyWith(error: null),
+    );
+  }
+
+  Stream<ChatState> _mapSendWebinarChatReactionToState(
+      SendChatReactionStarted event) async* {
+    final sendOrFail =
+        await sendWebinarMessage(SendWebianrChatParams(reactionId: event.reactionId));
     yield sendOrFail.fold(
       (failure) => state.copyWith(error: failure),
       (r) =>
@@ -193,5 +261,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       },
     );
+  }
+
+  Stream<ChatState> _mapReceivedWebinarMessageToState(
+      ReceivedWebinarChatMessageResponse event) async* {
+    final messages = [event.message, ...state.messages];
+    yield state.copyWith(messages: messages);
   }
 }

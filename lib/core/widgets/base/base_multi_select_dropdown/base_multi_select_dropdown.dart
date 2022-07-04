@@ -219,7 +219,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
-                color: Colors.grey[200],
+                color: Theme.of(context).dialogBackgroundColor,
                 border: border,
               ),
               padding: const EdgeInsets.only(

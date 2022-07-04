@@ -50,4 +50,5 @@ abstract class ConfigReader {
       _config["INTERCOM_IOS_ENV_ID"] as String;
   static String getIntercomAndroidEnvKey() =>
       _config["INTERCOM_ANDROID_ENV_ID"] as String;
+  static String getSegmentWriteKey() => _config["SEGMENT_WRITE_KEY"] as String;
 }

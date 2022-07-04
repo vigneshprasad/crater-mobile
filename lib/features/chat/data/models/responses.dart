@@ -43,6 +43,33 @@ class SetChatUserResponse extends WSResponse {
 }
 
 @JsonSerializable()
+class SetChatWebinarResponse extends WSResponse {
+  final SetChatWebinarResponsePayload? payload;
+
+  SetChatWebinarResponse({
+    WSResponseType type = WSResponseType.groupMessagesReceived,
+    this.payload
+  }) : super(type: type);
+
+  factory SetChatWebinarResponse.fromJson(Map<String, dynamic> json) =>
+      _$SetChatWebinarResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SetChatWebinarResponseToJson(this);
+}
+
+@JsonSerializable()
+class SetChatWebinarResponsePayload {
+  final List<ChatMessageModel>? messages;
+
+  SetChatWebinarResponsePayload({
+    this.messages
+  }) : super();
+
+  factory SetChatWebinarResponsePayload.fromJson(Map<String, dynamic> json) =>
+      _$SetChatWebinarResponsePayloadFromJson(json);
+  Map<String, dynamic> toJson() => _$SetChatWebinarResponsePayloadToJson(this);
+}
+
+@JsonSerializable()
 class SentMessageResponse extends WSResponse {
   final String? message;
   final String? file;
@@ -66,6 +93,9 @@ class SentMessageResponse extends WSResponse {
   @JsonKey(name: "is_support")
   final bool? isSupport;
 
+  @JsonKey(name: "sender_detail")
+  final ChatUserModel? senderDetail;
+
   SentMessageResponse({
     WSResponseType type = WSResponseType.getUserMessage,
     this.message,
@@ -81,6 +111,7 @@ class SentMessageResponse extends WSResponse {
     this.senderId,
     this.receiverId,
     this.isSupport,
+    this.senderDetail,
   }) : super(type: type);
 
   ChatMessageModel toChatMessage() {
@@ -98,12 +129,28 @@ class SentMessageResponse extends WSResponse {
       senderId: senderId,
       receiverId: receiverId,
       isSupport: isSupport,
+      senderDetail: senderDetail,
     );
   }
 
   factory SentMessageResponse.fromJson(Map<String, dynamic> json) =>
       _$SentMessageResponseFromJson(json);
   Map<String, dynamic> toJson() => _$SentMessageResponseToJson(this);
+}
+
+
+@JsonSerializable()
+class SentWebinarMessageResponse extends WSResponse {
+  final ChatMessageModel? payload;
+
+  SentWebinarMessageResponse({
+    WSResponseType type = WSResponseType.newGroupMessage,
+    this.payload,
+  }) : super(type: type);
+
+  factory SentWebinarMessageResponse.fromJson(Map<String, dynamic> json) =>
+      _$SentWebinarMessageResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SentWebinarMessageResponseToJson(this);
 }
 
 @JsonSerializable()

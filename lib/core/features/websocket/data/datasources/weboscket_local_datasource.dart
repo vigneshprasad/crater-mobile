@@ -26,8 +26,10 @@ class WebsocketLocalDataSourceImpl implements WebSocketLocalDataSource {
   @override
   Future<void> closeConnection() async {
     try {
-      await streamcontroller?.close();
       await channel?.sink.close();
+      // await streamcontroller?.close();
+      channel = null;
+      // streamcontroller = null;
     } catch (error) {
       throw WebSocketCloseException();
     }

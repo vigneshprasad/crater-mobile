@@ -27,7 +27,7 @@ class MeetingRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthBloc>(context).state.user;
-    final isRequester = meeting.requestedBy == user!.pk;
+    final isRequester = meeting.requestedBy == user?.pk;
 
     final dateFormat = DateFormat.jm();
 

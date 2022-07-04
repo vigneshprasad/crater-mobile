@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:sentry/sentry.dart';
+import 'package:worknetwork/core/features/websocket/domain/usecase/webinar_websocket_connect.dart';
+import 'package:worknetwork/features/chat/domain/usecases/send_message_to_webinar.dart';
 import 'package:worknetwork/features/meeting/data/datasources/dyte_remote_datasource.dart';
 import 'package:worknetwork/features/meeting/data/repository/dyte_repository_impl.dart';
 import 'package:worknetwork/features/meeting/data/services/dyte_api_service.dart';
@@ -197,6 +199,7 @@ abstract class WebSocketInjector {
   @Register.singleton(WebSocketLocalDataSource,
       from: WebsocketLocalDataSourceImpl)
   @Register.singleton(UCWebsocketConnect)
+  @Register.singleton(UCWebinarWebsocketConnect)
   @Register.singleton(UCWebSocketGetConnection)
   @Register.singleton(UCWebSocketAddToSink)
   @Register.singleton(UCWebSocketClose)
@@ -302,6 +305,7 @@ abstract class ChatInjector {
   @Register.singleton(ChatRemoteDataSource, from: ChatRemoteDataSourceImpl)
   @Register.singleton(UCSetChatWithUser)
   @Register.singleton(UCSendChatToUser)
+  @Register.singleton(UCSendChatToWebinar)
   @Register.singleton(UCReceivedSetChatWithUser)
   @Register.singleton(UCSendUserIsTyping)
   @Register.singleton(UCPersistReceivedMessage)

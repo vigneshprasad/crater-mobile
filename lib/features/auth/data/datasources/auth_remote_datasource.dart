@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/api/auth/otp_api_service.dart';
+import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 import '../../../../api/auth/auth_api_service.dart';
 import '../../../../api/user/user_api_service.dart';
@@ -24,6 +26,11 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> loginWithEmail(String email, String password, String osId);
+
+  /// Calls the Email Login Endpoint on backend.
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<UserModel> logout(String osId);
 
   /// Calls the Email Register Endpoint on backend.
   ///
@@ -89,7 +96,12 @@ abstract class AuthRemoteDataSource {
   /// Verify OTP
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<UserModel> verifyOtp(String phone, String otp);
+  Future<UserModel> verifyOtp(
+      String phone, String otp, Map<String, String> attributionData);
+
+  Future<UserPermission> getUserPermissionFromRemote();
+
+  Future<ReferralsResponse> getReferralsFromRemote(int? page, int? pageSize);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -161,6 +173,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       "os_id": osId,
     };
     final response = await apiService.loginWithEmail(body);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      final model = AuthResponseModel.fromJson(json);
+      return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserModel> logout(String osId) async {
+    final body = {"os_id": osId};
+    final response = await apiService.logout(body);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);
@@ -280,13 +305,38 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> verifyOtp(String phone, String otp) async {
+  Future<UserModel> verifyOtp(
+      String phone, String otp, Map<String, String> attributionData) async {
     final body = {"username": phone, "otp": otp};
+    body.addAll(attributionData);
     final response = await otpApiService.verifyOtp(body);
     if (response.statusCode == 201 || response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<UserPermission> getUserPermissionFromRemote() async {
+    final response = await userApiService.getUserPermission();
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return UserPermission.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<ReferralsResponse> getReferralsFromRemote(
+      int? page, int? pageSize) async {
+    final response = await userApiService.getReferrals(page, pageSize);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return ReferralsResponse.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

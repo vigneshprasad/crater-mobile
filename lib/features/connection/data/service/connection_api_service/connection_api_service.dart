@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'connection_api_service.chopper.dart';
@@ -12,14 +13,14 @@ abstract class ConnectionApiService extends ChopperService {
   static ConnectionApiService create() {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
-      services: [
-        _$ConnectionApiService(),
-      ],
-      converter: const JsonConverter(),
       interceptors: [
+        AuthorizedInterceptor(),
         HttpLoggingInterceptor(),
       ],
+      services: [_$ConnectionApiService()],
+      converter: const JsonConverter(),
     );
+
     return _$ConnectionApiService(client);
   }
 
@@ -31,4 +32,7 @@ abstract class ConnectionApiService extends ChopperService {
 
   @Get(path: 'community/members/')
   Future<Response> getCommunityMembers(@QueryMap() Map<String, dynamic> body);
+
+  @Post(path: 'followers/notify/')
+  Future<Response> followCreator(@Body() Map<String, dynamic> body);
 }

@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:worknetwork/api/integrations/devices_api_service.dart';
 
 import '../../features/chat/data/models/chat_message_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../routes.gr.dart';
 import '../config_reader/config_reader.dart';
 import '../widgets/screens/home_screen/home_screen.dart';
@@ -15,6 +16,7 @@ abstract class PushNotifications {
   Future<void> initSdk();
   Future<String> getSubscriptionToken();
   Future<String?> getPushToken();
+  Future<void> setUserIdentifier(String phone);
   void setEventHandlers();
   void handleNotificationsPressed(OSNotificationOpenedResult result);
   void subscriptionsChangeHandler(OSSubscriptionStateChanges changes);
@@ -58,13 +60,6 @@ class PushNotificationsImpl implements PushNotifications {
       return;
     }
 
-    final isIntercomPush =
-        await Intercom.isIntercomPush(result.notification.rawPayload!);
-    if (isIntercomPush) {
-      await Intercom.handlePush(result.notification.rawPayload!);
-      return;
-    }
-
     final objTyp = result.notification.additionalData?["obj_type"];
     final json = result.notification.additionalData;
 
@@ -74,7 +69,8 @@ class PushNotificationsImpl implements PushNotifications {
     if (type == PushType.chatMessage) {
       final message = ChatMessageModel.fromJson(json!);
       _navigatorKey.currentState?.pushNamed(ChatScreenRoute.name,
-          arguments: ChatScreenRouteArgs(recieverId: message.senderId!));
+          arguments:
+              ChatScreenRouteArgs(recieverId: message.senderId!, creatorId: 0));
     } else if (type == PushType.conversation) {
       final ConversationNotificationData data =
           ConversationNotificationData.fromJson(json!);
@@ -119,6 +115,11 @@ class PushNotificationsImpl implements PushNotifications {
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
+  }
+
+  @override
+  Future<void> setUserIdentifier(String phone) async {
+    await OneSignal.shared.setExternalUserId(phone);
   }
 
   @override

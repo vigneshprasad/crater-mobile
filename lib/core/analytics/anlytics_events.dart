@@ -21,4 +21,16 @@ class AnalyticsEvents {
   static const packageRedeemPressed = "package_redeem_pressed";
   static const packagePurchaseViewed = "package_purchase_viewed";
   static const packagePurchased = "package_purchased";
+
+  /// New Events for Crator
+  static const rsvpStream = "mobile_rsvp_stream";
+  static const joinStream = "mobile_join_stream";
+  static const sentChatMessageStream = "mobile_chat_msgsent_stream";
+  static const followCreator = "mobile_follow_creator";
+  static const rsvpSeries = "mobile_rsvo_series";
+  static const openApp = "mobile_open_app";
+  static const login = "mobile_login";
+  static const signup = "mobile_signup";
+  static const rsvpStreamButtonClick = "mobile_rsvp_button_click";
+  static const joinStreamButtonClick = "mobile_join_stream_button_click";
 }

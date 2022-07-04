@@ -175,7 +175,7 @@ class _PackagePurchaseScreenState extends State<PackagePurchaseScreen> {
                                 quantity: _quantity,
                                 pointsApplied: _discount,
                                 package: widget.package.pk!,
-                                requestedBy: user!.pk!,
+                                requestedBy: user?.pk ?? '',
                               ),
                             );
                           },

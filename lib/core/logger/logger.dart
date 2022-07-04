@@ -26,17 +26,13 @@ class LoggerImpl implements Logger {
   }) async {
     if (exception is SentryException && stackTrace is SentryStackTrace) {
       if (ConfigReader.getEnv() == "prod") {
-        final event =
-            await getSentryEvent(exception: exception, stackTrace: stackTrace);
-        await sentryClient.captureEvent(event);
+        final event = await getSentryEvent(exception: exception);
+        await sentryClient.captureEvent(event, stackTrace: stackTrace);
       }
     }
   }
 
-  Future<SentryEvent> getSentryEvent({
-    SentryException? exception,
-    SentryStackTrace? stackTrace,
-  }) async {
+  Future<SentryEvent> getSentryEvent({SentryException? exception}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     if (Platform.isAndroid) {
@@ -61,8 +57,7 @@ class LoggerImpl implements Logger {
           'supportedAbis': androidDeviceInfo.supportedAbis,
           'isPhysicalDevice': androidDeviceInfo.isPhysicalDevice,
         },
-        exception: exception,
-        stackTrace: stackTrace,
+        exceptions: exception != null ? [exception] : null,
       );
     }
 
@@ -81,16 +76,14 @@ class LoggerImpl implements Logger {
           'identifierForVendor': iosDeviceInfo.identifierForVendor,
           'isPhysicalDevice': iosDeviceInfo.isPhysicalDevice,
         },
-        exception: exception,
-        stackTrace: stackTrace,
+        exceptions: exception != null ? [exception] : null,
       );
     }
 
     return SentryEvent(
       release: packageInfo.version,
       environment: ConfigReader.getEnv(),
-      exception: exception,
-      stackTrace: stackTrace,
+      exceptions: exception != null ? [exception] : null,
     );
   }
 }

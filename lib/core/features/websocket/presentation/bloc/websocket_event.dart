@@ -8,7 +8,11 @@ abstract class WebsocketEvent extends Equatable {
 }
 
 class WebSocketInitConnect extends WebsocketEvent {
-  const WebSocketInitConnect();
+  final String groupId;
+
+  const WebSocketInitConnect({
+    required this.groupId,
+  });
 }
 
 class WebSocketInitIfAuth extends WebsocketEvent {

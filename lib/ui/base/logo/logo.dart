@@ -22,8 +22,8 @@ class Logo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 128,
-            width: 128,
+            height: 300,
+            width: 300,
             child: Image.asset(
               logoAsset,
             ),

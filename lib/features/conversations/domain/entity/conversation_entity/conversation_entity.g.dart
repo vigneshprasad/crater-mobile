@@ -148,6 +148,9 @@ _$_ConversationUser _$_$_ConversationUserFromJson(Map<String, dynamic> json) {
     name: json['name'] as String?,
     photo: json['photo'] as String?,
     introduction: json['introduction'] as String?,
+    creatorDetail: json['creator_detail'] == null
+        ? null
+        : Creator.fromJson(json['creator_detail'] as Map<String, dynamic>),
   );
 }
 
@@ -159,6 +162,7 @@ Map<String, dynamic> _$_$_ConversationUserToJson(
       'name': instance.name,
       'photo': instance.photo,
       'introduction': instance.introduction,
+      'creator_detail': instance.creatorDetail,
     };
 
 _$_ConversationByDate _$_$_ConversationByDateFromJson(
@@ -176,4 +180,17 @@ Map<String, dynamic> _$_$_ConversationByDateToJson(
     <String, dynamic>{
       'date': instance.date?.toIso8601String(),
       'conversations': instance.conversations,
+    };
+
+_$_UserPermission _$_$_UserPermissionFromJson(Map<String, dynamic> json) {
+  return _$_UserPermission(
+    allowCreateStream: json['allow_create_stream'] as bool?,
+    allowChat: json['allow_chat'] as bool?,
+  );
+}
+
+Map<String, dynamic> _$_$_UserPermissionToJson(_$_UserPermission instance) =>
+    <String, dynamic>{
+      'allow_create_stream': instance.allowCreateStream,
+      'allow_chat': instance.allowChat,
     };

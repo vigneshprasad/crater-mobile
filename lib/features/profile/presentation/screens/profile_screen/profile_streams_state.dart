@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 import '../../../../../core/api_result/api_result.dart';
@@ -67,9 +68,9 @@ class ProfileUpcomingStateNotifier
       throw response.swap().getOrElse(() => ServerFailure());
     }
 
-    final webinars = response.getOrElse(() => List<Webinar>.empty());
+    final pageData = response.getOrElse(() => const FollowCreatorResponse());
 
-    final upcomingClubs = webinars
+    final upcomingClubs = pageData.results
         .map((e) => UpcomingGridItem(
               conversation: e,
               type: GridItemType.upcoming,

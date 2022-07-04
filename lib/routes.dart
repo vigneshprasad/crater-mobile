@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
-import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_screen.dart';
+import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/series_screen/series_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_list/topics_list.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/topics_tab/topics_tab.dart';
 import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
@@ -15,6 +16,7 @@ import 'features/auth/presentation/screens/splash/splash_screen.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'features/chat/presentation/screens/chat_screen.dart';
 import 'features/chat_inbox/presentation/screens/chat_search_screen.dart';
+import 'features/club/presentation/screens/streams/past_stream_screen.dart';
 import 'features/community/presentation/screens/create_post.dart';
 import 'features/community/presentation/screens/post_screen.dart';
 import 'features/conversations/presentation/screens/conversation_screen_2/conversation_screen.dart';
@@ -70,6 +72,7 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
     AutoRoute(page: PackagePurchaseScreen, path: "/package-purchase"),
     AutoRoute(page: PointsFaqScreen, path: "/points-faq"),
     AutoRoute(page: ConversationScreen, path: "/roundtable/:id"),
+    AutoRoute(page: SeriesScreen, path: "/series/:id"),
     AutoRoute(page: CreateConversationScreen, path: "/create-conversation"),
     AutoRoute(page: ProfileIntroScreen, path: "/profile-intro/:editMode?"),
     AutoRoute(page: ProfileBasicScreen, path: "/profile-basic/:editMode?"),
@@ -82,7 +85,8 @@ import 'features/videos/presentation/screens/video_player_screen.dart';
         path: "/profile-request-settings/:editMode?"),
     AutoRoute(page: NewPasswordScreen, path: "/new-password/:params?"),
     AutoRoute(page: ProfileScreen, path: "/profile-detail/:userId/:allowEdit"),
-    AutoRoute(page: PastStreamScreen, path: "/past-stream/:id"),
+    AutoRoute(page: PastStreamDetailScreen, path: "/past-stream/:id"),
+    AutoRoute(page: PastStreamScreen, path: "/past-streams/:categoryId?"),
   ],
 )
 class $AppRouter {}

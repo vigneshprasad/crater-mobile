@@ -172,7 +172,7 @@ class AppDrawer extends StatelessWidget {
         break;
       case DrawerItemKeys.account:
         AutoRouter.of(context).push(
-            ProfileScreenRoute(userId: authState.user!.pk!, allowEdit: true));
+            ProfileScreenRoute(userId: authState.user?.pk ?? '', allowEdit: true));
         break;
       case DrawerItemKeys.whatsnew:
         _openWhatsnewPage(context);

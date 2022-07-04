@@ -11,10 +11,11 @@ final connectionRemoteDatasourceProvider = Provider<ConnectionRemoteDatasource>(
     (ref) => ConnectionRemoteDatasourceImpl(ref.read));
 
 abstract class ConnectionRemoteDatasource {
-  Future<CreatorResponse> getCreatorsFromRemote(int page, {bool certified});
+  Future<CreatorResponse> getCreatorsFromRemote(int page, int pageSize, {bool certified});
   Future<Creator> getCreatorFromRemote(int id);
   Future<List<Profile>> getCommunityMembersFromRemote(
       String community, int page);
+  Future<Creator> followCreatorToRemote(int id, String authPK,);
 }
 
 class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
@@ -23,10 +24,10 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
   ConnectionRemoteDatasourceImpl(this.read);
 
   @override
-  Future<CreatorResponse> getCreatorsFromRemote(int page,
+  Future<CreatorResponse> getCreatorsFromRemote(int page, int pageSize,
       {bool certified = true}) async {
     final response = await read(connectionApiServiceProvider)
-        .getCreators({'certified': 'true', 'page': page, 'page_size': 10});
+        .getCreators({'certified': 'true', 'page': page, 'page_size': pageSize});
     if (response.statusCode == 200) {
       if (response.bodyString == '[]') {
         throw ServerException('Empty');
@@ -75,6 +76,20 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
         return Profile.fromJson(profile as Map<String, dynamic>);
       }).toList();
       return list;
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<Creator> followCreatorToRemote(int id, String authPK,) async {
+    final response = await read(connectionApiServiceProvider).followCreator({'creator': id});
+    if (response.statusCode == 200) {
+      if (response.bodyString == '[]') {
+        throw ServerException('Empty');
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return Creator.fromJson(json);
     } else {
       throw ServerException(response.error);
     }

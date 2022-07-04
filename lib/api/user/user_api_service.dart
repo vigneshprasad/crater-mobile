@@ -27,6 +27,15 @@ abstract class UserApiService extends ChopperService {
   @Get(path: "user/")
   Future<Response> getUser();
 
+  @Get(path: "users/permission")
+  Future<Response> getUserPermission();
+
+  @Get(path: "referrals")
+  Future<Response> getReferrals(
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
+
   @Patch(path: "user/")
   Future<Response> patchUser(@Body() Map<String, dynamic> body);
 

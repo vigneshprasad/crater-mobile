@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
@@ -9,21 +8,25 @@ import 'package:worknetwork/core/analytics/anlytics_events.dart';
 
 import '../../../../../core/api_result/api_result.dart';
 import '../../../../../core/error/failures/failures.dart';
-import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../data/repository/conversation_repository_impl.dart';
-import '../../../data/services/conversation_rtc_client/conversation_rtc_client.dart';
 import '../../../domain/entity/conversation_entity/conversation_entity.dart';
 import '../../../domain/entity/conversation_request_entity/conversation_request_entity.dart';
-import '../../../domain/entity/conversation_rtc_info_entity/conversation_rtc_info_entity.dart';
 import '../../../domain/entity/rtc_user_entity/rtc_user_entity.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_controller.dart';
 import '../../widgets/conversation_overlay_indicator/conversation_overlay_indicator.dart';
 
 enum RtcConnection { connected, connecting, disconnected }
 
+class ConversationScreenData {
+  final Conversation conversation;
+  final bool isRSVPed;
+
+  ConversationScreenData(this.conversation, this.isRSVPed);
+}
+
 final conversationStateProvider = StateNotifierProvider.autoDispose
-    .family<ConversationState, ApiResult<Conversation>, int>(
+    .family<ConversationState, ApiResult<ConversationScreenData>, int>(
         (ref, id) => ConversationState(ref.read, id));
 
 final conversationSpeakersState = StateNotifierProvider.autoDispose
@@ -46,25 +49,35 @@ class RtcConnectionState extends ChangeNotifier {
   }
 }
 
-class ConversationState extends StateNotifier<ApiResult<Conversation>> {
+class ConversationState extends StateNotifier<ApiResult<ConversationScreenData>> {
   final Reader read;
   final int _groupId;
 
   ConversationState(this.read, this._groupId)
-      : super(ApiResult<Conversation>.loading()) {
+      : super(ApiResult.loading()) {
     retrieveConversation();
   }
 
-  Future<Either<Failure, Conversation>> retrieveConversation() async {
+  Future<Either<Failure, Conversation>> retrieveConversation({bool justRSVPed = false}) async {
     final response = await read(conversationRepositoryProvider)
         .retreiveConversation(_groupId);
+    
+    final requestResponse = await read(conversationRepositoryProvider)
+        .getWebinarRSVPRequest(_groupId);
+
+    if(!mounted) {
+      return response;
+    }
 
     state = response.fold(
-      (failure) => ApiResult<Conversation>.error(failure),
+      (failure) => ApiResult.error(failure),
       (group) {
         read(conversationSpeakersState(_groupId).notifier)
             .setInitialSpeakers(group.speakersDetailList!);
-        return ApiResult<Conversation>.data(group);
+
+        final isRSVPed = justRSVPed || requestResponse.isRight();
+        final data = ConversationScreenData(group, isRSVPed);
+        return ApiResult.data(data);
       },
     );
 

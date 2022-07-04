@@ -7,11 +7,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../routes.gr.dart';
 
 final deepLinkManagerProvider = Provider<DeepLinkManager>((_) {
-  final providers = [DeepLinkProviderType.firebase];
+  final providers = [
+    DeepLinkProviderType.firebase,
+  ];
   return DeepLinkManagerImpl(providers);
 });
 
-enum DeepLinkProviderType { firebase }
+enum DeepLinkProviderType {
+  firebase,
+}
 
 abstract class DeepLinkManager {
   List<DeepLinkProviderType> get providers;
@@ -41,14 +45,12 @@ class DeepLinkManagerImpl implements DeepLinkManager {
   }
 
   Future<void> _handleFirebaseDeepLink(BuildContext context) async {
-    FirebaseDynamicLinks.instance.onLink(
-      onSuccess: (linkData) async {
-        final Uri? deeplink = linkData?.link;
-        if (deeplink != null) {
-          _handleDeepLink(deeplink, context);
-        }
-      },
-    );
+    FirebaseDynamicLinks.instance.onLink(onSuccess: (event) async {
+      final Uri? deeplink = event?.link;
+      if (deeplink != null) {
+        _handleDeepLink(deeplink, context);
+      }
+    });
 
     final data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deeplink = data?.link;

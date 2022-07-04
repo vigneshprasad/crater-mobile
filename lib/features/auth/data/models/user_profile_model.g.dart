@@ -233,6 +233,7 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
         ? null
         : UserProfileFieldDetailModel.fromJson(
             json['year_of_experience_detail'] as Map<String, dynamic>),
+    isCreator: json['is_creator'] as bool?,
   );
 }
 
@@ -285,4 +286,5 @@ Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
       'project_type_detail': instance.projectTypeDetail,
       'stage_of_company_detail': instance.stageOfCompanyDetail,
       'companies_invested_detail': instance.companiesInvestedDetail,
+      'is_creator': instance.isCreator,
     };

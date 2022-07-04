@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_about.dart';
@@ -21,7 +20,7 @@ class ProfileScreen extends HookWidget {
     @PathParam('allowEdit') required this.allowEdit,
   });
 
-  static const tabs = ["About", "Streams", "Club"];
+  static const tabs = ["About", "Streams"];
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +55,10 @@ class ProfileScreen extends HookWidget {
                     showLogout: allowEdit,
                   ),
                   ProfileStreamsTab(userId),
-                  CommunityList(
-                    userId: userId,
-                    community: state.creator?.defaultCommunity?.id.toString(),
-                  ),
+                  // CommunityList(
+                  //   userId: userId,
+                  //   community: state.creator?.defaultCommunity?.id.toString(),
+                  // ),
                 ],
               ),
             )),

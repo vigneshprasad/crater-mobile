@@ -33,13 +33,16 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
+  # (optional) Improve iOS & macOS build times
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.11.0'
+
   pod 'UserLeapKit', '~>4.2.0'
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
 target 'OneSignalNotificationServiceExtension' do
   use_frameworks!
-  pod 'OneSignal', '>= 3.0.0', '< 4.0'
+  pod 'OneSignalXCFramework', '>= 3.4.3', '< 4.0'
 end
 
 post_install do |installer|

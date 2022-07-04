@@ -1,14 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
 
+import '../../../../routes.gr.dart';
 import 'gradient_button.dart';
 
 class ProfileHeader extends HookWidget {
@@ -30,10 +34,11 @@ class ProfileHeader extends HookWidget {
       alignment: Alignment.topLeft,
       children: [
         Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           color: Theme.of(context).scaffoldBackgroundColor,
           child: (profile?.coverFile != null)
               ? Image.network(profile?.coverFile ?? '',
-                  fit: BoxFit.cover, width: double.infinity, height: height)
+                  fit: BoxFit.contain, width: double.infinity, height: height)
               : Image.asset('assets/images/logo.png',
                   fit: BoxFit.cover, width: double.infinity, height: height),
         ),
@@ -87,12 +92,12 @@ class ProfileHeader extends HookWidget {
                                   ),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            if (creator != null)
-                              Text(
-                                '${followerFormat(creator?.numberOfSubscribers ?? 0)} Followers',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
+                            // const SizedBox(height: 8),
+                            // if (creator != null)
+                            //   Text(
+                            //     '${followerFormat(creator?.numberOfSubscribers ?? 0)} Followers',
+                            //     style: Theme.of(context).textTheme.caption,
+                            //   ),
                             const SizedBox(height: 8),
                             if (showConnect)
                               Positioned(
@@ -116,6 +121,14 @@ class ProfileHeader extends HookWidget {
   }
 
   Future<void> _showTimeSlots(BuildContext context) async {
+
+    final token = BlocProvider.of<AuthBloc>(context).state.user?.token;
+    if (token == null) {
+      // Show login
+      AutoRouter.of(context).push(const WelcomeScreenRoute());
+      return;
+    }
+    
     showModalBottomSheet(
       elevation: 10,
       backgroundColor: Colors.transparent,
