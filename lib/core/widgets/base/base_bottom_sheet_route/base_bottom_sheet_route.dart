@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseBottomSheetRoute extends PopupRoute<void> {
   final Widget child;
@@ -23,8 +23,11 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   String? get barrierLabel => null;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (notification) {
         if (notification.extent < 0.2) {
@@ -62,8 +65,12 @@ class BaseBottomSheetRoute extends PopupRoute<void> {
   Duration get transitionDuration => const Duration(milliseconds: 200);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     const begin = Offset(0.0, 1.0);
     const end = Offset.zero;
     const curve = Curves.ease;

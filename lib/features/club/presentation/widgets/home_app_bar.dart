@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/features/profile/presentation/widget/help_button.dart';
-import 'package:worknetwork/features/profile/presentation/widget/share_button.dart';
 
 class HomeAppBar extends StatelessWidget {
   final String title;
@@ -15,11 +13,10 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 80,
-      // actions: [
-      //   // HelpButton(),
-      //   ShareButton(),
-      // ],
-      flexibleSpace: AccentTitle(title: title, leftPadding: leftPadding,),
+      flexibleSpace: AccentTitle(
+        title: title,
+        leftPadding: leftPadding,
+      ),
     );
   }
 }
@@ -37,7 +34,7 @@ class AccentTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: leftPadding ??  20.0, top: 16),
+      padding: EdgeInsets.only(left: leftPadding ?? 20.0, top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,7 +46,7 @@ class AccentTitle extends StatelessWidget {
           Container(
             height: 2,
             width: 16,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),

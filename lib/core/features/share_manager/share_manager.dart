@@ -3,9 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
-import '../../../constants/app_constants.dart';
 
 final shareManagerProvider = Provider<ShareManager>((_) => ShareManagerImpl());
 
@@ -47,147 +47,133 @@ class ShareBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     const iconSize = 44.0;
     return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-        ),
-        child: Container(
-          color: Theme.of(context).dialogBackgroundColor,
-          height: 480,
-          width: double.infinity,
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Invite your friends & increase your score',
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'By adding people to the network, your network strength increases & thereby, improves the quality of matches you get.',
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Image.asset(
-                          'assets/images/meeting_scheduled.png',
-                          width: 100,
-                          height: 100,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          launch(
-                            whatsAppUrl,
-                            forceSafariVC: false,
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+        topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+      ),
+      child: Container(
+        color: Theme.of(context).dialogBackgroundColor,
+        height: 480,
+        width: double.infinity,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/images/whatsapp.png',
-                              width: 24,
+                            Text(
+                              'Invite your friends & increase your score',
+                              style: Theme.of(context).textTheme.headline6,
                             ),
-                            const SizedBox(width: 8),
-                            const Text('Invite via Whatsapp'),
+                            const SizedBox(height: 8),
+                            Text(
+                              'By adding people to the network, your network strength increases & thereby, improves the quality of matches you get.',
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
                           ],
                         ),
                       ),
+                      const SizedBox(width: 8),
+                      Image.asset(
+                        'assets/images/meeting_scheduled.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        launchUrl(
+                          Uri.parse(whatsAppUrl),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/whatsapp.png',
+                            width: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text('Invite via Whatsapp'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
+                topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+              ),
+              child: Container(
+                width: double.infinity,
+                color: Theme.of(context).backgroundColor,
+                padding: const EdgeInsets.all(40),
+                child: Wrap(
+                  spacing: 8,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    IconButton(
+                      iconSize: iconSize,
+                      icon: SvgPicture.asset(
+                        AppSvgAssets.linkedinFilled,
+                        height: iconSize,
+                        width: iconSize,
+                      ),
+                      onPressed: () {
+                        launchUrlString(linkedUrl);
+                      },
+                    ),
+                    IconButton(
+                      iconSize: iconSize,
+                      icon: SvgPicture.asset(
+                        AppSvgAssets.twitter,
+                        height: iconSize,
+                        width: iconSize,
+                      ),
+                      onPressed: () {
+                        launchUrlString(twitterUrl);
+                      },
+                    ),
+                    IconButton(
+                      iconSize: iconSize,
+                      icon: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.blue,
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.ios_share,
+                          size: iconSize - 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        Share.share(
+                          AppConstants.defaultShareText,
+                        );
+                      },
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-                  topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-                ),
-                child: Container(
-                  width: double.infinity,
-                  color: Theme.of(context).backgroundColor,
-                  padding: const EdgeInsets.all(40),
-                  child: Wrap(
-                    spacing: 8,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      IconButton(
-                          iconSize: iconSize,
-                          icon: SvgPicture.asset(
-                            AppSvgAssets.linkedinFilled,
-                            height: iconSize,
-                            width: iconSize,
-                          ),
-                          onPressed: () {
-                            launch(
-                              linkedUrl,
-                              forceSafariVC: false,
-                            );
-                          }),
-                      IconButton(
-                          iconSize: iconSize,
-                          icon: SvgPicture.asset(
-                            AppSvgAssets.twitter,
-                            height: iconSize,
-                            width: iconSize,
-                          ),
-                          onPressed: () {
-                            launch(
-                              twitterUrl,
-                              forceSafariVC: false,
-                            );
-                          }),
-                      // IconButton(
-                      //     iconSize: iconSize,
-                      //     icon: Image.asset('assets/images/facebook.png'),
-                      //     onPressed: () {
-                      //       launch(
-                      //         fbUrl,
-                      //         forceSafariVC: false,
-                      //         forceWebView: false,
-                      //       );
-                      //     }),
-                      IconButton(
-                          iconSize: iconSize,
-                          icon: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.blue,
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            child: const Icon(
-                              Icons.ios_share,
-                              size: iconSize - 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () {
-                            Share.share(
-                              AppConstants.defaultShareText,
-                            );
-                          }),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

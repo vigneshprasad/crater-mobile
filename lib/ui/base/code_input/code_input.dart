@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 typedef OnChangeCallback = void Function(String value);
 typedef OnValidCallback = void Function(bool isValid);
@@ -12,13 +12,13 @@ class CodeInput extends StatefulWidget {
   final OnValidCallback? onValidChange;
   final FocusNode focusNode;
 
-  const CodeInput(
-      {Key? key,
-      required this.length,
-      this.onChange,
-      this.onValidChange,
-      required this.focusNode})
-      : super(key: key);
+  const CodeInput({
+    Key? key,
+    required this.length,
+    this.onChange,
+    this.onValidChange,
+    required this.focusNode,
+  }) : super(key: key);
 
   @override
   _CodeInputState createState() => _CodeInputState();
@@ -41,7 +41,6 @@ class _CodeInputState extends State<CodeInput> {
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -69,7 +68,7 @@ class _CodeInputState extends State<CodeInput> {
                 ),
                 showCursor: false,
                 decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -86,8 +85,10 @@ class _CodeInputState extends State<CodeInput> {
                 _onFocus();
               },
               child: Row(
-                children: List.generate(widget.length,
-                    (index) => _buildFieldContainer(context, index)),
+                children: List.generate(
+                  widget.length,
+                  (index) => _buildFieldContainer(context, index),
+                ),
               ),
             ),
           ),
@@ -98,13 +99,8 @@ class _CodeInputState extends State<CodeInput> {
 
   void _textChangeListener() {
     final currentText = _controller.text;
-    if (widget.onChange != null) {
-      widget.onChange!(currentText);
-    }
-
-    if (widget.onValidChange != null) {
-      widget.onValidChange!(currentText.length == widget.length);
-    }
+    widget.onChange?.call(currentText);
+    widget.onValidChange?.call(currentText.length == widget.length);
     _setTextToDisplay(currentText);
   }
 

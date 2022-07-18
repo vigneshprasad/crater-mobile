@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_about.dart';
+import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen_state.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_tab.dart';
-import 'package:worknetwork/features/profile/presentation/screens/profile_screen/community_list.dart';
 import 'package:worknetwork/features/profile/presentation/widget/profile_app_bar.dart';
 
-import 'profile_screen_state.dart';
-
-class ProfileScreen extends HookWidget {
+class ProfileScreen extends HookConsumerWidget {
   final String userId;
   final int? createrId;
   final bool allowEdit;
@@ -23,10 +21,11 @@ class ProfileScreen extends HookWidget {
   static const tabs = ["About", "Streams"];
 
   @override
-  Widget build(BuildContext context) {
-    final profileState = useProvider(getProfileNotifierProvider(userId));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(getProfileNotifierProvider(userId));
 
-    useProvider(getProfileNotifierProvider(userId).notifier)
+    ref
+        .watch(getProfileNotifierProvider(userId).notifier)
         .retrieveProfile(creatorId: createrId);
 
     final index = useState(createrId != null ? 1 : 0);
@@ -34,56 +33,55 @@ class ProfileScreen extends HookWidget {
     return profileState.when(
       data: (state) => Scaffold(
         body: DefaultTabController(
-            length: tabs.length,
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                ProfileAppBar(
-                    allowEdit: allowEdit,
-                    tabs: tabs,
-                    context: context,
-                    profile: state.profile,
-                    creator: state.creator,
-                    index: index),
-              ],
-              body: TabBarView(
-                children: [
-                  AboutTab(
-                    profile: state.profile,
-                    objectives: const [],
-                    interests: const [],
-                    meta: state.meta,
-                    showLogout: allowEdit,
-                  ),
-                  ProfileStreamsTab(userId),
-                  // CommunityList(
-                  //   userId: userId,
-                  //   community: state.creator?.defaultCommunity?.id.toString(),
-                  // ),
-                ],
+          length: tabs.length,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              ProfileAppBar(
+                allowEdit: allowEdit,
+                tabs: tabs,
+                context: context,
+                profile: state.profile,
+                creator: state.creator,
+                index: index,
               ),
-            )),
+            ],
+            body: TabBarView(
+              children: [
+                AboutTab(
+                  profile: state.profile,
+                  meta: state.meta,
+                  showLogout: allowEdit,
+                ),
+                ProfileStreamsTab(userId),
+              ],
+            ),
+          ),
+        ),
       ),
       loading: () => Scaffold(
         body: DefaultTabController(
-            initialIndex: index.value,
-            length: tabs.length,
-            child: SafeArea(
-              bottom: false,
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  ProfileAppBar(
-                      allowEdit: allowEdit,
-                      tabs: tabs,
-                      context: context,
-                      profile: null,
-                      index: index),
-                ],
-                body: Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).accentColor,
-                )),
+          initialIndex: index.value,
+          length: tabs.length,
+          child: SafeArea(
+            bottom: false,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                ProfileAppBar(
+                  allowEdit: allowEdit,
+                  tabs: tabs,
+                  context: context,
+                  profile: null,
+                  index: index,
+                ),
+              ],
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
-            )),
+            ),
+          ),
+        ),
       ),
       error: (error, stackTrace) => Center(
         child: Text(error.toString()),

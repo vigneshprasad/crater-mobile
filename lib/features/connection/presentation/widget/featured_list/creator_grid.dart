@@ -1,128 +1,129 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_grid_state.dart';
+import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
-import '../../../../../routes.gr.dart';
-import 'creator_follow_card.dart';
-import 'creator_grid_state.dart';
-
-class CreatorGrid extends HookWidget {
+class CreatorGrid extends HookConsumerWidget {
   final String creatorName;
   final VoidCallback? onNext;
+  late WidgetRef ref;
 
-  const CreatorGrid({required this.creatorName, this.onNext});
+  CreatorGrid({required this.creatorName, this.onNext});
 
   @override
-  Widget build(BuildContext context) {
-    final user = BlocProvider.of<AuthBloc>(context).state.profile;
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
+    final user = ref.read(authStateProvider.notifier).getUser();
     final _controller = useScrollController();
     _controller.addListener(() {
       // reached End of scroll
       if (_controller.offset >= _controller.position.maxScrollExtent &&
           !_controller.position.outOfRange) {
-        context
+        ref
             .read(creatorGridStateProvider('').notifier)
             .getNextPageProfileList('');
       }
     });
-    final connectionState = useProvider(creatorGridStateProvider(''));
+    final connectionState = ref.watch(creatorGridStateProvider(''));
     return connectionState.when(
-        loading: () => Center(
-                child: CircularProgressIndicator(
-              color: Theme.of(context).accentColor,
-            )),
-        error: (err, st) => Center(
-              child: err == null ? Container() : Text(err.toString()),
-            ),
-        data: (creators) {
-          return Stack(
-            children: [
-              Container(
-                color: Theme.of(context).canvasColor,
-                child: ListView.builder(
-                  controller: _controller,
-                  itemCount: creators.length,
-                  padding: const EdgeInsets.fromLTRB(20, 180, 20, 100),
-                  itemBuilder: (context, index) => CreatorGridCard(
-                    item: creators[index],
-                    authUserPk: user?.pk,
-                  ),
+      loading: () => Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      error: (err, st) => Center(
+        child: err == null ? Container() : Text(err.toString()),
+      ),
+      data: (creators) {
+        return Stack(
+          children: [
+            Container(
+              color: Theme.of(context).canvasColor,
+              child: ListView.builder(
+                controller: _controller,
+                itemCount: creators.length,
+                padding: const EdgeInsets.fromLTRB(20, 180, 20, 100),
+                itemBuilder: (context, index) => CreatorGridCard(
+                  item: creators[index],
+                  authUserPk: user?.pk,
                 ),
               ),
-              Container(
-                width: double.infinity,
+            ),
+            Container(
+              width: double.infinity,
+              color: Theme.of(context).canvasColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                child: Wrap(
+                  runSpacing: 12,
+                  children: [
+                    Text(
+                      "Don't miss out",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    Text(
+                      'We will notify you prior to the stream with $creatorName. You can also follow other creators to get notified when they are live on Crater.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      'Discover creators',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
                 color: Theme.of(context).canvasColor,
+                width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,
                   ),
-                  child: Wrap(
-                    runSpacing: 12,
-                    children: [
-                      Text(
-                        'Don\'t miss out',
-                        style: Theme.of(context).textTheme.headline5,
+                  child: SafeArea(
+                    child: Center(
+                      child: BaseLargeButton(
+                        onPressed: onNext,
+                        text: 'Next',
                       ),
-                      Text(
-                        'We will notify you prior to the stream with $creatorName. You can also follow other creators to get notified when they are live on Crater.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        'Discover creators',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                    color: Theme.of(context).canvasColor,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      child: SafeArea(
-                        child: Center(
-                          child: BaseLargeButton(
-                            onPressed: onNext,
-                            text: 'Next',
-                          ),
-                        ),
-                      ),
-                    )),
-              ),
-            ],
-          );
-        });
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
-class CreatorGridCard extends HookWidget {
+class CreatorGridCard extends HookConsumerWidget {
   late OverlayEntry? overlayEntry;
 
   final CreatorGridRow item;
-  final int? authUserPk;
+  final String? authUserPk;
+  late WidgetRef ref;
 
   late ValueNotifier<bool> isFollowing;
 
@@ -133,7 +134,8 @@ class CreatorGridCard extends HookWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
     final headingStyle = Theme.of(context).textTheme.subtitle2;
 
     isFollowing = useState(item.isFollowing);
@@ -142,14 +144,14 @@ class CreatorGridCard extends HookWidget {
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
         ProfileScreenRoute(
-            userId: creator?.user ?? '',
-            createrId: creator?.id,
-            allowEdit: authUserPk == creator?.profileDetail?.pk),
+          userId: creator?.user ?? '',
+          createrId: creator?.id,
+          allowEdit: authUserPk == creator?.profileDetail?.pk,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipOval(
               child: SizedBox(
@@ -217,7 +219,7 @@ class CreatorGridCard extends HookWidget {
       return;
     }
 
-    final loginStatus = await manageLoginPopup(context);
+    final loginStatus = await manageLoginPopup(context, ref);
     if (loginStatus == false) {
       return;
     }
@@ -231,7 +233,7 @@ class CreatorGridCard extends HookWidget {
       return;
     }
 
-    final response = await context
+    final response = await ref
         .read(creatorGridStateProvider('').notifier)
         .followCreator(creatorId, context);
 
@@ -244,9 +246,11 @@ class CreatorGridCard extends HookWidget {
         overlayEntry?.remove();
         isFollowing.value = !isFollowing.value;
 
-        final analytics = KiwiContainer().resolve<Analytics>();
+        final analytics = ref.read(analyticsProvider);
         analytics.trackEvent(
-            eventName: AnalyticsEvents.followCreator, properties: {});
+          eventName: AnalyticsEvents.followCreator,
+          properties: {},
+        );
       },
     );
   }

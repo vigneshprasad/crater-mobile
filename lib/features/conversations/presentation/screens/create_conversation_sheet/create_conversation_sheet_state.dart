@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
-import '../../../data/repository/conversation_repository_impl.dart';
-import '../../../domain/entity/topic_entity/topic_entity.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
 
 final getRootTopicsProvider = StateNotifierProvider.autoDispose<
     GetRootTopicNotifier, ApiResult<List<Topic>>>((ref) {
@@ -32,7 +32,8 @@ class GetRootTopicNotifier extends StateNotifier<ApiResult<List<Topic>>> {
   }
 
   Future<Either<Failure, List<Topic>>> getTopicsForParentTopic(
-      int parent) async {
+    int parent,
+  ) async {
     state = ApiResult<List<Topic>>.loading();
     final response =
         await read(conversationRepositoryProvider).getAllTopics(parent);

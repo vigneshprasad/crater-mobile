@@ -6,7 +6,7 @@ part of 'conversation_api_service.dart';
 // ChopperGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
+// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations, unnecessary_brace_in_string_interps
 class _$ConversationApiService extends ConversationApiService {
   _$ConversationApiService([ChopperClient? client]) {
     if (client == null) return;
@@ -81,7 +81,7 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> retrieveConversation(int id) {
-    final $url = '/groups/groups/$id/';
+    final $url = '/groups/groups/${id}/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -110,7 +110,7 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> getChatReactionDetail(String id) {
-    final $url = '/groups/conversations/chatreactions/$id';
+    final $url = '/groups/conversations/chatreactions/${id}';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -139,7 +139,7 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> getWebinarRSVP(int id) {
-    final $url = '/groups/requests/$id';
+    final $url = '/groups/requests/${id}';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -233,7 +233,7 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> retrieveWebinar(int id) {
-    final $url = '/groups/conversations/webinars/$id/';
+    final $url = '/groups/conversations/webinars/${id}/';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -256,7 +256,7 @@ class _$ConversationApiService extends ConversationApiService {
 
   @override
   Future<Response<dynamic>> getSeriesDetails(int id) {
-    final $url = '/groups/public/conversations/series/$id';
+    final $url = '/groups/public/conversations/series/${id}';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }

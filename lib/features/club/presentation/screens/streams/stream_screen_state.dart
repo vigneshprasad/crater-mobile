@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
-
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
-import '../../../../conversations/data/repository/conversation_repository_impl.dart';
-import 'stream_screen.dart';
 
 final streamStateProvider =
     StateNotifierProvider<StreamStateNotifier, ApiResult<StreamPage>>(
-        (ref) => StreamStateNotifier(ref.read));
+  (ref) => StreamStateNotifier(ref.read),
+);
 
 class StreamPage {
   final List<UpcomingGridItem> liveClubs;
@@ -35,7 +35,6 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   final pageSize = 10;
   int page = 1;
   bool allLoaded = false;
-
 
   final upcomingPageSize = 10;
   int upcomingPage = 1;
@@ -63,9 +62,12 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     upcomingPage = 1;
     allUpcomingLoaded = false;
     loadingUpcomingPage = true;
-    
+
     final response =
-        await read(conversationRepositoryProvider).getUpcomingClubs(page: upcomingPage, pageSize: upcomingPageSize,);
+        await read(conversationRepositoryProvider).getUpcomingClubs(
+      page: upcomingPage,
+      pageSize: upcomingPageSize,
+    );
 
     if (response.isLeft()) {
       // throw response.swap().getOrElse(() => ServerFailure());
@@ -80,19 +82,20 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     allUpcomingLoaded = pageData.next == null;
 
     upcomingClubs = pageData.results
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.upcoming,
-            ))
+        .map(
+          (e) => UpcomingGridItem(
+            conversation: e,
+            type: GridItemType.upcoming,
+          ),
+        )
         .toList();
 
     updateData();
   }
 
   Future<void> getUpcomingNextData() async {
-
     if (loadingUpcomingPage == true || allUpcomingLoaded == true) {
-      return null;
+      return;
     }
     loadingUpcomingPage = true;
 
@@ -102,7 +105,10 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     upcomingPage = upcomingPage + 1;
 
     final response =
-        await read(conversationRepositoryProvider).getUpcomingClubs(page: upcomingPage, pageSize: upcomingPageSize,);
+        await read(conversationRepositoryProvider).getUpcomingClubs(
+      page: upcomingPage,
+      pageSize: upcomingPageSize,
+    );
 
     if (response.isLeft()) {
       // throw response.swap().getOrElse(() => ServerFailure());
@@ -116,12 +122,15 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     loadingUpcomingPage = false;
     allUpcomingLoaded = pageData.next == null;
 
-    upcomingClubs = upcomingClubs + pageData.results
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.upcoming,
-            ))
-        .toList();
+    upcomingClubs = upcomingClubs +
+        pageData.results
+            .map(
+              (e) => UpcomingGridItem(
+                conversation: e,
+                type: GridItemType.upcoming,
+              ),
+            )
+            .toList();
 
     updateData();
   }
@@ -129,11 +138,13 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
   void updateData() {
     final items = List<UpcomingGridItem>.from(upcomingClubs);
 
-    state = ApiResult.data(StreamPage(
-      liveClubs: featuredClubs.toSet().toList(),
-      upcomingClubs: items,
-      series: series,
-    ));
+    state = ApiResult.data(
+      StreamPage(
+        liveClubs: featuredClubs.toSet().toList(),
+        upcomingClubs: items,
+        series: series,
+      ),
+    );
   }
 
   Future<void> getFeaturedData() async {
@@ -217,10 +228,12 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
       },
       (webinars) {
         series = webinars
-            .map((e) => UpcomingGridItem(
-                  conversation: e,
-                  type: GridItemType.series,
-                ))
+            .map(
+              (e) => UpcomingGridItem(
+                conversation: e,
+                type: GridItemType.series,
+              ),
+            )
             .toList();
         loadingPage = false;
         allLoaded = webinars.isEmpty || webinars.length < pageSize;
@@ -239,7 +252,7 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
     }
     loadingPage = true;
 
-    series = series + [UpcomingGridItem(type: GridItemType.loader)];
+    series = series + [const UpcomingGridItem(type: GridItemType.loader)];
     updateData();
 
     page = page + 1;
@@ -254,10 +267,12 @@ class StreamStateNotifier extends StateNotifier<ApiResult<StreamPage>> {
       },
       (webinars) {
         series += webinars
-            .map((e) => UpcomingGridItem(
-                  conversation: e,
-                  type: GridItemType.series,
-                ))
+            .map(
+              (e) => UpcomingGridItem(
+                conversation: e,
+                type: GridItemType.series,
+              ),
+            )
             .toList();
         loadingPage = false;
         allLoaded = webinars.isEmpty || webinars.length < pageSize;

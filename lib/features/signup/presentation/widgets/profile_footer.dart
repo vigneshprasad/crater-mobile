@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
-import '../../../../ui/base/base_large_button/base_large_button.dart';
-import '../../../../utils/app_localizations.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 class ProfileFooter extends StatelessWidget {
   final VoidCallback? onSkip;

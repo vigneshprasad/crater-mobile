@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseFormInput extends StatelessWidget {
   final String label;
@@ -56,34 +56,35 @@ class BaseFormInput extends StatelessWidget {
       autofocus: autoFocus,
       onChanged: onChanged,
       decoration: InputDecoration(
-          prefixIcon: icon,
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: borderRadius,
-            borderSide: BorderSide(
-              color: Colors.transparent,
+        prefixIcon: icon,
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
+        border: const OutlineInputBorder(
+          borderRadius: borderRadius,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            width: 2,
+            color: Theme.of(context).errorColor,
+          ),
+        ),
+        filled: true,
+        hintText: label,
+        hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+              fontSize: 15,
+              color: Colors.grey,
             ),
-          ),
-          border: const OutlineInputBorder(
-            borderRadius: borderRadius,
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: borderRadius,
-            borderSide: BorderSide(
-              width: 2,
-              color: Theme.of(context).errorColor,
-            ),
-          ),
-          filled: true,
-          hintText: label,
-          hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-          labelStyle: const TextStyle(fontSize: 16),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: AppInsets.med,
-            horizontal: AppInsets.l,
-          )),
+        labelStyle: const TextStyle(fontSize: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: AppInsets.med,
+          horizontal: AppInsets.l,
+        ),
+      ),
     );
   }
 }

@@ -1,13 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/error/failures.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
-
-import '../../../../../core/api_result/api_result.dart';
 
 final featuredConnectionStateProvider = StateNotifierProvider.family<
     FeaturedConnectionStateNotifier,
@@ -38,7 +36,8 @@ class FeaturedConnectionStateNotifier
     allLoaded = false;
     loadingPage = true;
     state = ApiResult<List<Creator>>.loading();
-    final response = await read(connectionRepositoryProvider).getCreators(page, pageSize);
+    final response =
+        await read(connectionRepositoryProvider).getCreators(page, pageSize);
 
     state = response.fold(
       (failure) {
@@ -60,13 +59,15 @@ class FeaturedConnectionStateNotifier
   }
 
   Future<Either<Failure, CreatorResponse>?> getNextPageProfileList(
-      String tags) async {
+    String tags,
+  ) async {
     if (loadingPage == true || allLoaded == true) {
       return null;
     }
     loadingPage = true;
     page = page + 1;
-    final response = await read(connectionRepositoryProvider).getCreators(page, pageSize);
+    final response =
+        await read(connectionRepositoryProvider).getCreators(page, pageSize);
 
     state = response.fold(
       (failure) {
@@ -84,12 +85,16 @@ class FeaturedConnectionStateNotifier
     return response;
   }
 
-  Future<Either<Failure, Creator>> followCreator(int id, BuildContext context) async {
+  Future<Either<Failure, Creator>> followCreator(
+    int id,
+    BuildContext context,
+  ) async {
+    final authPK = read(authStateProvider.notifier).getUser()?.pk ?? '';
 
-    final authPK = BlocProvider.of<AuthBloc>(context).state.user?.pk ?? '';
-    
-    final response = await read(connectionRepositoryProvider)
-        .followCreator(id, authPK,);
+    final response = await read(connectionRepositoryProvider).followCreator(
+      id,
+      authPK,
+    );
 
     return response;
   }

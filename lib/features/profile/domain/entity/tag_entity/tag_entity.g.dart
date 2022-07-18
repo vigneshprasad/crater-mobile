@@ -6,14 +6,12 @@ part of 'tag_entity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Tag _$_$_TagFromJson(Map<String, dynamic> json) {
-  return _$_Tag(
-    pk: json['pk'] as int?,
-    name: json['name'] as String?,
-  );
-}
+_$_Tag _$$_TagFromJson(Map<String, dynamic> json) => _$_Tag(
+      pk: json['pk'] as int?,
+      name: json['name'] as String?,
+    );
 
-Map<String, dynamic> _$_$_TagToJson(_$_Tag instance) => <String, dynamic>{
+Map<String, dynamic> _$$_TagToJson(_$_Tag instance) => <String, dynamic>{
       'pk': instance.pk,
       'name': instance.name,
     };

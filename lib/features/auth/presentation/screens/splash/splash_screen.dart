@@ -1,41 +1,22 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/api/integrations/devices_api_service.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
-
-import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
-import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/logo/logo.dart';
-import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
-import '../../bloc/auth_bloc.dart';
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
+import 'package:worknetwork/ui/base/logo/logo.dart';
 
 const craterSplashKey = 'crater_splash_shown';
 
-class _SplashScreenState extends State<SplashScreen> {
-  bool isRedirected = false;
-
+class SplashScreen extends HookConsumerWidget {
   @override
-  void initState() {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
-    authBloc.add(AuthStarted());
-    super.initState();
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+    ref.read(authStateProvider.notifier).registerDevice();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: listenAuthState,
-      child: const Scaffold(
+    return authState.when(
+      loading: () => const Scaffold(
         body: ScaffoldContainer(
           child: Center(
             child: Logo(
@@ -44,6 +25,23 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ),
+      data: (data) {
+        return const HomeScreen();
+      },
+      error: (error, stack) {
+        final statusFuture = getStatus(craterSplashKey);
+        return FutureBuilder<bool>(
+          future: statusFuture,
+          builder: (context, snapshot) {
+            if (snapshot.data == true) {
+              return const HomeScreen();
+            }
+            saveStatus(craterSplashKey);
+
+            return WelcomeScreen();
+          },
+        );
+      },
     );
   }
 
@@ -55,48 +53,5 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> saveStatus(String key) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(key, true);
-  }
-
-  Future<void> listenAuthState(BuildContext context, AuthState state) async {
-    final osId = await KiwiContainer()
-        .resolve<PushNotifications>()
-        .getSubscriptionToken();
-    debugPrint(osId);
-
-    Map<String, String> data = {
-      'os_id': osId,
-    };
-    final user = BlocProvider.of<AuthBloc>(context).state.user?.pk;
-    if (user != null) {
-      data['user'] = user;
-    }
-
-    // 'user': null,
-    final deviceAPI = context.read(devicesApiServiceProvider);
-    deviceAPI.registerDevice(data).then((response) {
-      debugPrint(response.toString());
-    });
-
-    if (state is AuthStateFailure) {
-      isRedirected = true;
-
-      final splashShown = await getStatus(craterSplashKey);
-
-      if (!splashShown) {
-        await saveStatus(craterSplashKey);
-
-        AutoRouter.of(context).root.pushAndPopUntil(const WelcomeScreenRoute(),
-            predicate: (route) => false);
-
-        return;
-      }
-
-      navigatePostAuth(state.user, profile: state.profile);
-    }
-
-    if (state is AuthStateSuccess && !isRedirected) {
-      isRedirected = true;
-      navigatePostAuth(state.user, profile: state.profile);
-    }
   }
 }

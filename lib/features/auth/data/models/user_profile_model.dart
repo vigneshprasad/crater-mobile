@@ -1,10 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:worknetwork/constants/app_hive_boxes.dart';
 import 'package:worknetwork/features/auth/data/models/user_profile_field_detail.dart';
-
-import '../../../../constants/app_hive_boxes.dart';
-import '../../domain/entity/user_profile_entity.dart';
-import 'user_tag_model.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 
 part 'user_profile_model.g.dart';
 
@@ -89,9 +87,9 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: "tag_line")
   final String? tagLine;
 
-  @HiveField(21)
-  @JsonKey(name: "tag_list")
-  final List<UserTagModel>? tagList;
+  // @HiveField(21)
+  // @JsonKey(name: "tag_list")
+  // final List<UserTagModel>? tagList;
 
   @HiveField(22)
   final String? uuid;
@@ -194,57 +192,56 @@ class UserProfileModel extends UserProfile {
   @JsonKey(name: 'is_creator')
   final bool? isCreator;
 
-  UserProfileModel(
-      {this.pk,
-      this.additionalInformation,
-      this.cover,
-      this.coverFile,
-      this.coverThumbnail,
-      this.coverTranscoder,
-      this.focus,
-      this.instagram,
-      this.instagramId,
-      this.instagramUsername,
-      this.introduction,
-      this.isCoverVideo,
-      this.isInstagramSet,
-      this.linkedinUrl,
-      this.name,
-      this.photo,
-      this.photoUrl,
-      this.publicIntroduction,
-      this.publicProfile,
-      this.role,
-      this.tagLine,
-      this.tagList,
-      this.uuid,
-      this.educationLevel,
-      this.yearsOfExperience,
-      this.companyType,
-      this.sector,
-      this.tags,
-      this.numberOfEmployees,
-      this.projectType,
-      this.stageOfCompany,
-      this.aspiration,
-      this.profileIntroUpdated,
-      this.companyName,
-      this.allowMeetingRequest,
-      this.canConnect,
-      this.generatedIntroduction,
-      this.linkedIn,
-      this.educationLevelDetail,
-      this.companiesInvestedDetail,
-      this.companyTypeAdvisedDetail,
-      this.companyTypeDetail,
-      this.numberOfEmployeesDetail,
-      this.projectTypeDetail,
-      this.sectorDetail,
-      this.stageOfCompanyDetail,
-      this.yearOfExperienceDetail,
-      this.isCreator,
-      })
-      : super(
+  UserProfileModel({
+    this.pk,
+    this.additionalInformation,
+    this.cover,
+    this.coverFile,
+    this.coverThumbnail,
+    this.coverTranscoder,
+    this.focus,
+    this.instagram,
+    this.instagramId,
+    this.instagramUsername,
+    this.introduction,
+    this.isCoverVideo,
+    this.isInstagramSet,
+    this.linkedinUrl,
+    this.name,
+    this.photo,
+    this.photoUrl,
+    this.publicIntroduction,
+    this.publicProfile,
+    this.role,
+    this.tagLine,
+    // this.tagList,
+    this.uuid,
+    this.educationLevel,
+    this.yearsOfExperience,
+    this.companyType,
+    this.sector,
+    this.tags,
+    this.numberOfEmployees,
+    this.projectType,
+    this.stageOfCompany,
+    this.aspiration,
+    this.profileIntroUpdated,
+    this.companyName,
+    this.allowMeetingRequest,
+    this.canConnect,
+    this.generatedIntroduction,
+    this.linkedIn,
+    this.educationLevelDetail,
+    this.companiesInvestedDetail,
+    this.companyTypeAdvisedDetail,
+    this.companyTypeDetail,
+    this.numberOfEmployeesDetail,
+    this.projectTypeDetail,
+    this.sectorDetail,
+    this.stageOfCompanyDetail,
+    this.yearOfExperienceDetail,
+    this.isCreator,
+  }) : super(
           pk: pk,
           additionalInformation: additionalInformation,
           cover: cover,
@@ -266,7 +263,7 @@ class UserProfileModel extends UserProfile {
           publicProfile: publicProfile,
           role: role,
           tagLine: tagLine,
-          tagList: tagList,
+          // tagList: tagList,
           uuid: uuid,
           educationLevel: educationLevel,
           yearsOfExperience: yearsOfExperience,

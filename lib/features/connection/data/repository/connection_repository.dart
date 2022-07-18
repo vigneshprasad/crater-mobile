@@ -1,22 +1,29 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/connection/data/datasource/connection_remote_datasource.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
 
 final connectionRepositoryProvider =
     Provider<ConnectionRepository>((ref) => ConnectionRepositoryImpl(ref.read));
 
 abstract class ConnectionRepository {
-  Future<Either<Failure, CreatorResponse>> getCreators(int page, int pageSize,
-      {bool certified});
+  Future<Either<Failure, CreatorResponse>> getCreators(
+    int page,
+    int pageSize, {
+    bool certified,
+  });
   Future<Either<Failure, Creator>> getCreator(int id);
   Future<Either<Failure, List<Profile>>> getCommunityMembers(
-      String community, int page);
-  Future<Either<Failure, Creator>> followCreator(int id, String authPK,);
+    String community,
+    int page,
+  );
+  Future<Either<Failure, Creator>> followCreator(
+    int id,
+    String authPK,
+  );
 }
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
@@ -25,13 +32,16 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   ConnectionRepositoryImpl(this.read);
 
   @override
-  Future<Either<Failure, CreatorResponse>> getCreators(int page, int pageSize,
-      {bool certified = true}) async {
+  Future<Either<Failure, CreatorResponse>> getCreators(
+    int page,
+    int pageSize, {
+    bool certified = true,
+  }) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorsFromRemote(page, pageSize, certified: certified);
       return Right(response);
-    } on ServerException catch (error) {
+    } on ServerException {
       final failure = ServerFailure('Something went wrong');
       return Left(failure);
     }
@@ -43,7 +53,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorFromRemote(id);
       return Right(response);
-    } on ServerException catch (error) {
+    } on ServerException {
       final failure = ServerFailure('Something went wrong');
       return Left(failure);
     }
@@ -51,24 +61,29 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
   @override
   Future<Either<Failure, List<Profile>>> getCommunityMembers(
-      String community, int page) async {
+    String community,
+    int page,
+  ) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCommunityMembersFromRemote(community, page);
       return Right(response);
-    } on ServerException catch (error) {
+    } on ServerException {
       final failure = ServerFailure('Something went wrong');
       return Left(failure);
     }
   }
 
   @override
-  Future<Either<Failure, Creator>> followCreator(int id, String authPK,) async {
+  Future<Either<Failure, Creator>> followCreator(
+    int id,
+    String authPK,
+  ) async {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .followCreatorToRemote(id, authPK);
       return Right(response);
-    } on ServerException catch (error) {
+    } on ServerException {
       final failure = ServerFailure('Something went wrong');
       return Left(failure);
     }

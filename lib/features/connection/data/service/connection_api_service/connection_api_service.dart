@@ -6,15 +6,15 @@ import 'package:worknetwork/core/config_reader/config_reader.dart';
 part 'connection_api_service.chopper.dart';
 
 final connectionApiServiceProvider =
-    Provider((_) => ConnectionApiService.create());
+    Provider((ref) => ConnectionApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/crater/')
 abstract class ConnectionApiService extends ChopperService {
-  static ConnectionApiService create() {
+  static ConnectionApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
       interceptors: [
-        AuthorizedInterceptor(),
+        read(authInterceptorProvider),
         HttpLoggingInterceptor(),
       ],
       services: [_$ConnectionApiService()],

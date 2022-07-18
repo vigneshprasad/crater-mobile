@@ -8,7 +8,7 @@ part of 'user_model.dart';
 
 class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 101;
 
   @override
   UserModel read(BinaryReader reader) {
@@ -110,35 +110,33 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) {
-  return UserModel(
-    token: json['token'] as String?,
-    pk: json['pk'] as String?,
-    photo: json['photo'] as String?,
-    email: json['email'] as String?,
-    emailVerified: json['email_verified'] as bool?,
-    name: json['name'] as String?,
-    city: json['city'] as int?,
-    reason: json['reason'] as String?,
-    phoneNumber: json['phone_number'] as String?,
-    phoneNumberVerified: json['phone_number_verified'] as bool?,
-    role: json['role'] as String?,
-    hasProfile: json['has_profile'] as bool?,
-    hasBankDetails: json['has_bank_details'] as bool?,
-    hasServices: json['has_services'] as bool?,
-    hasActiveSubscription: json['has_active_subscription'] as bool?,
-    activeSubscriptionMembership:
-        json['active_subscription_membership'] as String?,
-    panCard: json['pan_card'],
-    panCardSize: json['pan_card_size'],
-    unreadNotifications: json['unread_notifications'] as int?,
-    isApproved: json['is_approved'] as bool?,
-    objectives:
-        (json['objectives'] as List<dynamic>?)?.map((e) => e as int).toList(),
-    linkedinUrl: json['linkedin_url'] as String?,
-    intent: json['intent'] as String?,
-  );
-}
+UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      token: json['token'] as String?,
+      pk: json['pk'] as String?,
+      photo: json['photo'] as String?,
+      email: json['email'] as String?,
+      emailVerified: json['email_verified'] as bool?,
+      name: json['name'] as String?,
+      city: json['city'] as int?,
+      reason: json['reason'] as String?,
+      phoneNumber: json['phone_number'] as String?,
+      phoneNumberVerified: json['phone_number_verified'] as bool?,
+      role: json['role'] as String?,
+      hasProfile: json['has_profile'] as bool?,
+      hasBankDetails: json['has_bank_details'] as bool?,
+      hasServices: json['has_services'] as bool?,
+      hasActiveSubscription: json['has_active_subscription'] as bool?,
+      activeSubscriptionMembership:
+          json['active_subscription_membership'] as String?,
+      panCard: json['pan_card'],
+      panCardSize: json['pan_card_size'],
+      unreadNotifications: json['unread_notifications'] as int?,
+      isApproved: json['is_approved'] as bool?,
+      objectives:
+          (json['objectives'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      linkedinUrl: json['linkedin_url'] as String?,
+      intent: json['intent'] as String?,
+    );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'token': instance.token,

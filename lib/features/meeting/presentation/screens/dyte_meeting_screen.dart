@@ -8,14 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
 
-class DyteMeetingScreen extends HookWidget {
+class DyteMeetingScreen extends HookConsumerWidget {
   final int meetingId;
   final int creatorId;
 
@@ -29,10 +28,10 @@ class DyteMeetingScreen extends HookWidget {
   late Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     size = MediaQuery.of(context).size;
 
-    final profileState = useProvider(getDyteCredsNotifierProvider(meetingId));
+    final profileState = ref.watch(getDyteCredsNotifierProvider(meetingId));
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
     final participant = useState<DyteSelfParticipant?>(null);
@@ -47,8 +46,7 @@ class DyteMeetingScreen extends HookWidget {
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
 
-    final socketIOManager =
-        context.read(userPermissionNotifierProvider.notifier);
+    final socketIOManager = ref.read(userPermissionNotifierProvider.notifier);
 
     final isOngoingMeeting = useState(false);
 
@@ -87,168 +85,173 @@ class DyteMeetingScreen extends HookWidget {
       ]);
     }
 
-    useEffect(() {
-      return () async {
-        meetingHandler.value?.events.clear();
-        meetingHandler.value?.events.removeAllByEvent('meetingJoin');
-        meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
-        meetingHandler.value?.events.removeAllByEvent('meetingEnd');
-        // meetingHandler.value = null;
+    useEffect(
+      () {
+        return () async {
+          meetingHandler.value?.events.clear();
+          meetingHandler.value?.events.removeAllByEvent('meetingJoin');
+          meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
+          meetingHandler.value?.events.removeAllByEvent('meetingEnd');
+          // meetingHandler.value = null;
 
-        participant.value?.leaveRoom();
+          participant.value?.leaveRoom();
 
-        meetingHandler.dispose();
+          meetingHandler.dispose();
 
-        socketIOManager.onLeaveStream();
+          socketIOManager.onLeaveStream();
 
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-        ]);
-      };
-    }, []);
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+          ]);
+        };
+      },
+      [],
+    );
 
     return WillPopScope(
       onWillPop: () async {
         return true; // isOngoingMeeting.value == false;
       },
       child: Scaffold(
-          extendBody: true,
-          extendBodyBehindAppBar: true,
-          body: profileState.when(
-            data: (state) => SafeArea(
-              child: Stack(
-                children: [
-                  Stack(
-                    children: [
-                      SizedBox(
-                          // key: Key(meetingId.toString()),
-                          // constraints: BoxConstraints.expand(
-                          height: videoHeight,
-                          width: videoWidth,
-                          child: DyteMeeting(
-                            roomName: state.room,
-                            authToken: state.token,
-                            uiConfig: config.value,
-                            onInit: (DyteMeetingHandler handler) async {
-                              meetingHandler.value = handler;
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        body: profileState.when(
+          data: (state) => SafeArea(
+            child: Stack(
+              children: [
+                Stack(
+                  children: [
+                    SizedBox(
+                      // key: Key(meetingId.toString()),
+                      // constraints: BoxConstraints.expand(
+                      height: videoHeight,
+                      width: videoWidth,
+                      child: DyteMeeting(
+                        roomName: state.room,
+                        authToken: state.token,
+                        uiConfig: config.value,
+                        onInit: (DyteMeetingHandler handler) async {
+                          meetingHandler.value = handler;
 
-                              handler.events.on('meetingJoin', context,
-                                  (ev, c) {
-                                isOngoingMeeting.value = true;
-                                Future.delayed(
-                                        const Duration(milliseconds: 500))
-                                    .then((value) {
-                                  // showChat.value = true;
+                          handler.events.on('meetingJoin', context, (ev, c) {
+                            isOngoingMeeting.value = true;
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                            ).then((value) {
+                              // showChat.value = true;
 
-                                  final analytics =
-                                      KiwiContainer().resolve<Analytics>();
-                                  analytics.trackEvent(
-                                      eventName: AnalyticsEvents.joinStream,
-                                      properties: {
-                                        "id": meetingId,
-                                      });
-                                });
-
-                                socketIOManager.onJoinStream(meetingId);
-                              });
-
-                              handler.events.on('meetingEnd', context, (ev, c) {
-                                isOngoingMeeting.value = false;
-                                AutoRouter.of(context).pop();
-                              });
-
-                              handler.events.on('meetingDisconnected', this,
-                                  (ev, cont) {
-                                isOngoingMeeting.value = false;
-                                AutoRouter.of(context).pop();
-                              });
-
-                              participant.value =
-                                  await meetingHandler.value?.self;
-                              // showChat.value = false;
-                            },
-                          )),
-                      SizedBox(
-                        height: videoHeight,
-                        width: videoWidth,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 16, left: 16),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                                onPressed: () {
-                                  isOngoingMeeting.value = false;
-                                  AutoRouter.of(context).pop();
+                              final analytics = ref.read(analyticsProvider);
+                              analytics.trackEvent(
+                                eventName: AnalyticsEvents.joinStream,
+                                properties: {
+                                  "id": meetingId,
                                 },
-                                icon: const Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 18,
-                                )),
-                          ),
-                        ),
+                              );
+                            });
+
+                            socketIOManager.onJoinStream(meetingId);
+                          });
+
+                          handler.events.on('meetingEnd', context, (ev, c) {
+                            isOngoingMeeting.value = false;
+                            AutoRouter.of(context).pop();
+                          });
+
+                          handler.events.on('meetingDisconnected', this,
+                              (ev, cont) {
+                            isOngoingMeeting.value = false;
+                            AutoRouter.of(context).pop();
+                          });
+
+                          participant.value = await meetingHandler.value?.self;
+                          // showChat.value = false;
+                        },
                       ),
-                      SizedBox(
-                        height: videoHeight,
-                        width: videoWidth,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 16, right: 32),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                                onPressed: toggleChat,
-                                icon: Icon(
-                                  showChat
-                                      ? Icons.fullscreen
-                                      : Icons.fullscreen_exit,
-                                  size: 18,
-                                )),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Expanded(child: SizedBox()),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        height: showChat ? fullHeight - videoHeight : 0,
-                        width: videoWidth,
-                        child: Stack(
-                          children: [
-                            ChatScreen(
-                              recieverId: '',
-                              groupId: meetingId.toString(),
-                              allowChat: state.allowChat,
-                              creatorId: creatorId,
+                    ),
+                    SizedBox(
+                      height: videoHeight,
+                      width: videoWidth,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16, left: 16),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () {
+                              isOngoingMeeting.value = false;
+                              AutoRouter.of(context).pop();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              size: 18,
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  // Align(
-                  //   alignment: Alignment.bottomLeft,
-                  //   child: AnimatedContainer(
-                  //     duration: const Duration(milliseconds: 300),
-                  //     height: 100,
-                  //     width: 100,
-                  //     child: Image.network(
-                  //         'https://penitence-pre-prod.vercel.app/_next/image?url=https%3A%2F%2F1worknetwork-pre.s3.amazonaws.com%2Fmedia%2Freactions%2Ficons%2Fthe-simpsons-bart-simpson.gif&w=3840&q=75'),
-                  //   ),
-                  // )
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      height: videoHeight,
+                      width: videoWidth,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16, right: 32),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            onPressed: toggleChat,
+                            icon: Icon(
+                              showChat
+                                  ? Icons.fullscreen
+                                  : Icons.fullscreen_exit,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Expanded(child: SizedBox()),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: showChat ? fullHeight - videoHeight : 0,
+                      width: videoWidth,
+                      child: Stack(
+                        children: [
+                          ChatScreen(
+                            recieverId: '',
+                            groupId: meetingId.toString(),
+                            allowChat: state.allowChat,
+                            creatorId: creatorId,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Align(
+                //   alignment: Alignment.bottomLeft,
+                //   child: AnimatedContainer(
+                //     duration: const Duration(milliseconds: 300),
+                //     height: 100,
+                //     width: 100,
+                //     child: Image.network(
+                //         'https://penitence-pre-prod.vercel.app/_next/image?url=https%3A%2F%2F1worknetwork-pre.s3.amazonaws.com%2Fmedia%2Freactions%2Ficons%2Fthe-simpsons-bart-simpson.gif&w=3840&q=75'),
+                //   ),
+                // )
+              ],
             ),
-            loading: () => Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).accentColor,
-              ),
+          ),
+          loading: () => Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
             ),
-            error: (error, stackTrace) => Center(
-              child: Text(error.toString()),
-            ),
-          )),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text(error.toString()),
+          ),
+        ),
+      ),
     );
   }
 }

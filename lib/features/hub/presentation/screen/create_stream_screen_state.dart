@@ -1,15 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
-import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
 
 final createStreamProvider = StateNotifierProvider.autoDispose
     .family<CreateStreamNotifier, AsyncValue<_CreateStreamScreenState>, int>(
         (ref, meetingId) {
-  
   return CreateStreamNotifier(ref.read);
 });
 
@@ -30,7 +27,7 @@ class CreateStreamNotifier
         await read(conversationRepositoryProvider).getWebinarCategories();
 
     if (response.isLeft()) {
-      state = AsyncValue.error(ServerFailure(message: 'something went wrong'));
+      state = AsyncValue.error(ServerFailure('something went wrong'));
       return;
     }
 

@@ -6,7 +6,7 @@ part of 'auth_api_service.dart';
 // ChopperGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations
+// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations, unnecessary_brace_in_string_interps
 class _$AuthApiService extends AuthApiService {
   _$AuthApiService([ChopperClient? client]) {
     if (client == null) return;
@@ -17,72 +17,8 @@ class _$AuthApiService extends AuthApiService {
   final definitionType = AuthApiService;
 
   @override
-  Future<Response<dynamic>> loginWithEmail(Map<String, dynamic> body) {
-    final $url = '/user/auth/login/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
   Future<Response<dynamic>> logout(Map<String, dynamic> body) {
     final $url = '/user/auth/logout/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> registerWithEmail(Map<String, dynamic> body) {
-    final $url = '/user/auth/registration/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> authWithGoogle(Map<String, dynamic> body) {
-    final $url = '/user/auth/social/google/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> authWithApple(Map<String, dynamic> body) {
-    final $url = '/user/auth/social/apple/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> authWithFacebook(Map<String, dynamic> body) {
-    final $url = '/user/auth/social/facebook/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> authWithLinkedin(Map<String, dynamic> body) {
-    final $url = '/user/auth/social/linkedin/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> postPasswordReset(Map<String, dynamic> body) {
-    final $url = '/user/auth/password/reset/';
-    final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
-  }
-
-  @override
-  Future<Response<dynamic>> postNewPassword(Map<String, dynamic> body) {
-    final $url = '/user/auth/password/reset/confirm/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);

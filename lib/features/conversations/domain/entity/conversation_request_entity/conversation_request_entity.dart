@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 part 'conversation_request_entity.freezed.dart';
 part 'conversation_request_entity.g.dart';

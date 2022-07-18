@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../constants/theme.dart';
-import 'objectives_picker.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/objectives_picker.dart';
 
 typedef ObjectiveCellCallback = void Function(
   PickerItem item,

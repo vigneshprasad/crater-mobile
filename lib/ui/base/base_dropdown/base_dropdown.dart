@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 typedef LabelGetterFunc<T> = String Function(T item);
 
@@ -37,10 +37,12 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
 
   List<DropdownMenuItem<T>> _buildItems(List<T> items) {
     return items
-        .map((item) => DropdownMenuItem(
-              value: item,
-              child: Text(widget.labelGetter(item)),
-            ))
+        .map(
+          (item) => DropdownMenuItem(
+            value: item,
+            child: Text(widget.labelGetter(item)),
+          ),
+        )
         .toList();
   }
 
@@ -62,7 +64,9 @@ class _BaseDropdownState<T> extends State<BaseDropdown<T>> {
         decoration: InputDecoration(
           isCollapsed: true,
           contentPadding: const EdgeInsets.symmetric(
-              vertical: AppInsets.l, horizontal: AppInsets.sm),
+            vertical: AppInsets.l,
+            horizontal: AppInsets.sm,
+          ),
           isDense: true,
           filled: true,
           enabledBorder: OutlineInputBorder(

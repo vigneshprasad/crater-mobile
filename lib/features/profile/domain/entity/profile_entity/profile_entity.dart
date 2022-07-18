@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../tag_entity/tag_entity.dart';
+import 'package:worknetwork/features/profile/domain/entity/tag_entity/tag_entity.dart';
 
 part 'profile_entity.freezed.dart';
 part 'profile_entity.g.dart';

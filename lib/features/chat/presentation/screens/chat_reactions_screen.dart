@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_screen_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 
-class ChatReactionsScreen extends HookWidget {
+class ChatReactionsScreen extends HookConsumerWidget {
   const ChatReactionsScreen({required this.onReactionSelect});
   final Function(ChatReaction) onReactionSelect;
 
   @override
-  Widget build(BuildContext context) {
-    final reactionScreenState = context.read(reactionStateProvider(''));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reactionScreenState = ref.read(reactionStateProvider(''));
     return Scaffold(
       // appBar: BaseAppBar(),
       body: reactionScreenState.when(

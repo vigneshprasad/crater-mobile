@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:worknetwork/core/color/color.dart';
 
 class ComingSoonScreen extends StatelessWidget {
   const ComingSoonScreen({Key? key}) : super(key: key);

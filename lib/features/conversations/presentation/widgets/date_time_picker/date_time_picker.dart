@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../constants/theme.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/base/base_container/base_container.dart';
 
 class DateTimePicker extends HookWidget {
   final List<DateTime> slots;
@@ -26,17 +26,17 @@ class DateTimePicker extends HookWidget {
           spacing: AppInsets.xl,
           children: [
             ...slots
-                .map((slot) => _Slot(
-                      slot: slot,
-                      selected: selected.value == slot,
-                      isNow: false,
-                      onPressed: (value) {
-                        selected.value = value;
-                        if (onChanged != null) {
-                          onChanged!(value);
-                        }
-                      },
-                    ))
+                .map(
+                  (slot) => _Slot(
+                    slot: slot,
+                    selected: selected.value == slot,
+                    isNow: false,
+                    onPressed: (value) {
+                      selected.value = value;
+                      onChanged?.call(value);
+                    },
+                  ),
+                )
                 .toList(),
           ],
         ),
@@ -97,10 +97,11 @@ class _Slot extends StatelessWidget {
                 border: border,
               ),
               child: Center(
-                  child: Text(
-                label,
-                style: labelStyle,
-              )),
+                child: Text(
+                  label,
+                  style: labelStyle,
+                ),
+              ),
             ),
           ),
         ),

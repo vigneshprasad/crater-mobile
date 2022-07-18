@@ -28,54 +28,59 @@ class _StreamCoverPickerState extends State<StreamCoverPicker> {
 
   @override
   Widget build(BuildContext context) {
-    const double imageRadius = 56.00;
-
     final height = MediaQuery.of(context).size.width * 576 / 1024;
 
-    return Column(children: [
-      SizedBox(
-        height: 44,
-        child: Row(
-          children: [
-            BaseLargeButton(
-              text: widget.image == null ? 'Generate Image' : 'Randomize Image',
-              onPressed: widget.onGenerateImage,
-            ),
-            const Spacer(),
-            BaseLargeButton(
-              text: 'Upload Image',
-              onPressed: _choosePhoto,
-            ),
-          ],
+    return Column(
+      children: [
+        SizedBox(
+          height: 44,
+          child: Row(
+            children: [
+              BaseLargeButton(
+                text:
+                    widget.image == null ? 'Generate Image' : 'Randomize Image',
+                onPressed: widget.onGenerateImage,
+              ),
+              const Spacer(),
+              BaseLargeButton(
+                text: 'Upload Image',
+                onPressed: _choosePhoto,
+              ),
+            ],
+          ),
         ),
-      ),
-      const SizedBox(
-        height: 8,
-      ),
-      Container(
-        width: double.infinity,
-        height: height,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
+        const SizedBox(
+          height: 8,
+        ),
+        Container(
+          width: double.infinity,
+          height: height,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
             color: Theme.of(context).dialogBackgroundColor,
-            borderRadius: BorderRadius.circular(8)),
-        child: (widget.image != null)
-            ? widget.image
-            : (_image != null)
-                ? Image(
-                    image: Image.file(_image!).image,
-                    width: double.infinity,
-                    height: height,
-                    fit: BoxFit.cover,
-                  )
-                : Container(),
-      ),
-    ]);
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: (widget.image != null)
+              ? widget.image
+              : (_image != null)
+                  ? Image(
+                      image: Image.file(_image!).image,
+                      width: double.infinity,
+                      height: height,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(),
+        ),
+      ],
+    );
   }
 
   Future _choosePhoto() async {
     final pickedFile = await picker.pickImage(
-        source: ImageSource.gallery, maxWidth: 1024, maxHeight: 576);
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 576,
+    );
     /*
     NOTE: ImagePicker crashes on picking image second time on iOS Simulator.
     https://github.com/flutter/flutter/issues/68283

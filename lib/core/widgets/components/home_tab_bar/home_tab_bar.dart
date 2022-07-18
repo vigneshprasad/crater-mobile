@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
 
 class HomeTabBar extends StatelessWidget {
@@ -16,9 +14,6 @@ class HomeTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final user = BlocProvider.of<AuthBloc>(context).state.user;
-    
     final tabs = [
       BottomNavigationBarItem(
         label: 'Live',
@@ -29,17 +24,23 @@ class HomeTabBar extends StatelessWidget {
         ),
         activeIcon: SvgPicture.asset(
           AppSvgAssets.streams,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
           width: 20,
         ),
       ),
       const BottomNavigationBarItem(
-          label: 'Past', icon: Icon(Icons.play_arrow_outlined)),
+        label: 'Past',
+        icon: Icon(Icons.play_arrow_outlined),
+      ),
       const BottomNavigationBarItem(
-          label: 'Creators', icon: Icon(Icons.people_outline)),
+        label: 'Creators',
+        icon: Icon(Icons.people_outline),
+      ),
       const BottomNavigationBarItem(label: 'Hub', icon: Icon(Icons.grid_view)),
       const BottomNavigationBarItem(
-          label: 'Profile', icon: UserProfileNavItem()),
+        label: 'Profile',
+        icon: UserProfileNavItem(),
+      ),
     ];
     return BottomNavigationBar(
       currentIndex: _tabController.index,

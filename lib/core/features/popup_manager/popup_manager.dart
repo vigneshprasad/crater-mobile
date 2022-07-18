@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/routes.gr.dart';
-
-import '../../../constants/app_constants.dart';
-import '../../../utils/app_localizations.dart';
-import '../../widgets/success_popup/success_popup.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/widgets/success_popup/success_popup.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 final popupManagerProvider = Provider<PopupManager>((_) => PopupManagerImpl());
 
@@ -20,7 +17,13 @@ enum PopupType {
 }
 
 abstract class PopupManager {
-  Future<void> showPopup(PopupType type, BuildContext context, {String? title, String? message, String? buttonTitle});
+  Future<void> showPopup(
+    PopupType type,
+    BuildContext context, {
+    String? title,
+    String? message,
+    String? buttonTitle,
+  });
 }
 
 const signupCompleteKey = 'signup_complete_popup_shown';
@@ -88,7 +91,13 @@ class PopupManagerImpl implements PopupManager {
   }
 
   @override
-  Future<void> showPopup(PopupType type, BuildContext context, {String? title, String? message, String? buttonTitle}) async {
+  Future<void> showPopup(
+    PopupType type,
+    BuildContext context, {
+    String? title,
+    String? message,
+    String? buttonTitle,
+  }) async {
     final canShowPopup = await shouldShowPopup(type);
     if (!canShowPopup) {
       // return;
@@ -102,7 +111,12 @@ class PopupManagerImpl implements PopupManager {
         await onConversationOptin(context);
         break;
       case PopupType.conversationJoin:
-        await onConversionJoined(context, title: title, message: message, buttonTitle: buttonTitle);
+        await onConversionJoined(
+          context,
+          title: title,
+          message: message,
+          buttonTitle: buttonTitle,
+        );
         break;
       case PopupType.conversationLeave:
         await onLeaveConversation(context);
@@ -123,34 +137,51 @@ class PopupManagerImpl implements PopupManager {
         ?.translate('popup:signup_complete_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
-    await Navigator.of(context).push(SuccessPopup(
+    await Navigator.of(context).push(
+      SuccessPopup(
         title: title!,
         message: message!,
         buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.signupComplete,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
-        }));
+        },
+      ),
+    );
   }
 
-  Future<void> onConversionJoined(BuildContext context, { String? title, String? message, String? buttonTitle }) async {
-    title = title ?? AppLocalizations.of(context)
-        ?.translate('popup:conversation_join_title');
-    message = message ?? AppLocalizations.of(context)
-        ?.translate('popup:conversation_join_message');
-    buttonTitle = buttonTitle ?? AppLocalizations.of(context)
-        ?.translate('popup:conversation_join_button_title');
+  Future<void> onConversionJoined(
+    BuildContext context, {
+    String? title,
+    String? message,
+    String? buttonTitle,
+  }) async {
+    final titleText = title ??
+        AppLocalizations.of(context)
+            ?.translate('popup:conversation_join_title') ??
+        '';
+    final messageText = message ??
+        AppLocalizations.of(context)
+            ?.translate('popup:conversation_join_message') ??
+        '';
+    final buttonTitleText = buttonTitle ??
+        AppLocalizations.of(context)
+            ?.translate('popup:conversation_join_button_title') ??
+        '';
 
     await Future.delayed(const Duration(seconds: 1));
-    await Navigator.of(context).push(SuccessPopup(
-        title: title!,
-        message: message!,
-        buttonTitle: buttonTitle!,
+    await Navigator.of(context).push(
+      SuccessPopup(
+        title: titleText,
+        message: messageText,
+        buttonTitle: buttonTitleText,
         iconAsset: AppImageAssets.conversationJoin,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
           Navigator.of(context).pop(true);
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> onConversationOptin(BuildContext context) async {
@@ -162,14 +193,17 @@ class PopupManagerImpl implements PopupManager {
         ?.translate('popup:conversation_optin_button_title');
 
     await Future.delayed(const Duration(seconds: 1));
-    await Navigator.of(context).push(SuccessPopup(
+    await Navigator.of(context).push(
+      SuccessPopup(
         title: title!,
         message: message!,
         buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationOptin,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> onLeaveConversation(BuildContext context) async {
@@ -182,14 +216,17 @@ class PopupManagerImpl implements PopupManager {
 
     await Future.delayed(const Duration(seconds: 1));
 
-    await Navigator.of(context).push(SuccessPopup(
+    await Navigator.of(context).push(
+      SuccessPopup(
         title: title!,
         message: message!,
         buttonTitle: buttonTitle!,
         iconAsset: AppImageAssets.conversationLeave,
         onButtonClicked: () {
           Navigator.of(context).pop(true);
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> onPaymentCompleted(BuildContext context) async {
@@ -201,13 +238,14 @@ class PopupManagerImpl implements PopupManager {
     await Navigator.of(context)
         .push(
           SuccessPopup(
-              title: successText!,
-              message: successDesc!,
-              buttonTitle: buttonText!,
-              iconAsset: AppImageAssets.packageSuccess,
-              onButtonClicked: () {
-                Navigator.of(context).pop(true);
-              }),
+            title: successText!,
+            message: successDesc!,
+            buttonTitle: buttonText!,
+            iconAsset: AppImageAssets.packageSuccess,
+            onButtonClicked: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
         )
         .then((value) => AutoRouter.of(context).popUntilRoot());
   }

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:libphonenumber/libphonenumber.dart' as libphone;
 import 'package:phone_number/phone_number.dart';
-
-import '../../../constants/theme.dart';
-import '../../../utils/generate_flag_unicode.dart';
-import 'models.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/phone_number_input/models.dart';
+import 'package:worknetwork/utils/generate_flag_unicode.dart';
 
 typedef OnValidCallback = void Function(bool isValid);
 typedef OnChangeCallback = void Function(String value);
@@ -125,7 +124,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
             child: DropdownButton<Country>(
               onChanged: (value) {
                 setState(() {
-                  _selectedCountry = value!;
+                  _selectedCountry = value;
                 });
               },
               value: _selectedCountry,
@@ -174,9 +173,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
       final isoCode = _selectedCountry!.isoCode;
       final value = "+${_selectedCountry!.countryCode}$parsedPhoneNumberString";
 
-      if (widget.onChange != null) {
-        widget.onChange!(value);
-      }
+      widget.onChange?.call(value);
 
       _validatePhoneNumber(parsedPhoneNumberString, isoCode).then((isValid) {
         if (widget.onValidChange != null) {
@@ -192,7 +189,9 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
   Future<bool> _validatePhoneNumber(String phoneNumber, String isoCode) async {
     try {
       final isValid = await libphone.PhoneNumberUtil.isValidPhoneNumber(
-          phoneNumber: phoneNumber, isoCode: isoCode);
+        phoneNumber: phoneNumber,
+        isoCode: isoCode,
+      );
       return isValid ?? false;
     } on Exception {
       return false;

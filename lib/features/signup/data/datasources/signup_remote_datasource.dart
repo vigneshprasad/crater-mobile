@@ -1,60 +1,24 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../../../api/tags/tags_api_service.dart';
-import '../../../../api/user/user_api_service.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../../auth/data/models/user_tag_model.dart';
-import '../../../auth/domain/entity/user_tag_entity.dart';
-import '../../domain/entity/user_objective_entity.dart';
-import '../models/api_models.dart';
-import '../models/user_objective_model.dart';
+import 'package:worknetwork/api/user/user_api_service.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/features/signup/data/models/api_models.dart';
 
 final signupRemoteDatasourceProvider = Provider<SignupRemoteDatasource>((ref) {
-  final tagsApiService = ref.read(tagsApiServiceProvider);
   final userApiService = ref.read(userApiServiceProvider);
-  return SignupRemoteDatasourceImpl(tagsApiService, userApiService);
+  return SignupRemoteDatasourceImpl(userApiService);
 });
 
 abstract class SignupRemoteDatasource {
-  Future<List<UserObjective>> getUserObjectivesFromRemote();
-  Future<List<UserTag>> getUserTagsFromRemote();
   Future<PostPhoneNumberResponse> postNewPhoneNumber(String phoneNumber);
   Future<PostPhoneNumberResponse> postSmsCode(String smsCode);
 }
 
 class SignupRemoteDatasourceImpl implements SignupRemoteDatasource {
-  final TagsApiService tagsApiService;
   final UserApiService userApiService;
 
-  SignupRemoteDatasourceImpl(this.tagsApiService, this.userApiService);
-
-  @override
-  Future<List<UserObjective>> getUserObjectivesFromRemote() async {
-    final response = await tagsApiService.getUserObjectives();
-    if (response.statusCode == 200) {
-      final Iterable json = jsonDecode(response.bodyString) as Iterable;
-      return json
-          .map((e) => UserObjectiveModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<List<UserTag>> getUserTagsFromRemote() async {
-    final response = await tagsApiService.getUserTags();
-    if (response.statusCode == 200) {
-      final Iterable list = jsonDecode(response.bodyString) as Iterable;
-      return list
-          .map((e) => UserTagModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
+  SignupRemoteDatasourceImpl(this.userApiService);
 
   @override
   Future<PostPhoneNumberResponse> postNewPhoneNumber(String phoneNumber) async {

@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'webinar_entity.dart';
 
@@ -10,60 +12,11 @@ part of 'webinar_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Webinar _$WebinarFromJson(Map<String, dynamic> json) {
   return _Webinar.fromJson(json);
 }
-
-/// @nodoc
-class _$WebinarTearOff {
-  const _$WebinarTearOff();
-
-  _Webinar call(
-      {int? id,
-      String? host,
-      String? description,
-      DateTime? start,
-      int? privacy,
-      int? medium,
-      bool? closed,
-      @JsonKey(name: 'closed_at') DateTime? closedAt,
-      @JsonKey(name: 'topic_detail') Topic? topicDetail,
-      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
-      int? type,
-      @JsonKey(name: 'is_live') bool? isLive,
-      @JsonKey(name: 'is_past') bool? isPast,
-      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
-      int? liveCount,
-      bool? rsvp}) {
-    return _Webinar(
-      id: id,
-      host: host,
-      description: description,
-      start: start,
-      privacy: privacy,
-      medium: medium,
-      closed: closed,
-      closedAt: closedAt,
-      topicDetail: topicDetail,
-      hostDetail: hostDetail,
-      type: type,
-      isLive: isLive,
-      isPast: isPast,
-      recordingDetails: recordingDetails,
-      liveCount: liveCount,
-      rsvp: rsvp,
-    );
-  }
-
-  Webinar fromJson(Map<String, Object> json) {
-    return Webinar.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Webinar = _$WebinarTearOff();
 
 /// @nodoc
 mixin _$Webinar {
@@ -252,9 +205,10 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
-  factory _$WebinarCopyWith(_Webinar value, $Res Function(_Webinar) then) =
-      __$WebinarCopyWithImpl<$Res>;
+abstract class _$$_WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
+  factory _$$_WebinarCopyWith(
+          _$_Webinar value, $Res Function(_$_Webinar) then) =
+      __$$_WebinarCopyWithImpl<$Res>;
   @override
   $Res call(
       {int? id,
@@ -283,13 +237,13 @@ abstract class _$WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
-    implements _$WebinarCopyWith<$Res> {
-  __$WebinarCopyWithImpl(_Webinar _value, $Res Function(_Webinar) _then)
-      : super(_value, (v) => _then(v as _Webinar));
+class __$$_WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
+    implements _$$_WebinarCopyWith<$Res> {
+  __$$_WebinarCopyWithImpl(_$_Webinar _value, $Res Function(_$_Webinar) _then)
+      : super(_value, (v) => _then(v as _$_Webinar));
 
   @override
-  _Webinar get _value => super._value as _Webinar;
+  _$_Webinar get _value => super._value as _$_Webinar;
 
   @override
   $Res call({
@@ -310,7 +264,7 @@ class __$WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
     Object? liveCount = freezed,
     Object? rsvp = freezed,
   }) {
-    return _then(_Webinar(
+    return _then(_$_Webinar(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -401,7 +355,7 @@ class _$_Webinar implements _Webinar {
       this.rsvp});
 
   factory _$_Webinar.fromJson(Map<String, dynamic> json) =>
-      _$_$_WebinarFromJson(json);
+      _$$_WebinarFromJson(json);
 
   @override
   final int? id;
@@ -450,140 +404,129 @@ class _$_Webinar implements _Webinar {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Webinar &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.host, host) ||
-                const DeepCollectionEquality().equals(other.host, host)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
-            (identical(other.medium, medium) ||
-                const DeepCollectionEquality().equals(other.medium, medium)) &&
-            (identical(other.closed, closed) ||
-                const DeepCollectionEquality().equals(other.closed, closed)) &&
-            (identical(other.closedAt, closedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.closedAt, closedAt)) &&
-            (identical(other.topicDetail, topicDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.topicDetail, topicDetail)) &&
-            (identical(other.hostDetail, hostDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.hostDetail, hostDetail)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.isLive, isLive) ||
-                const DeepCollectionEquality().equals(other.isLive, isLive)) &&
-            (identical(other.isPast, isPast) ||
-                const DeepCollectionEquality().equals(other.isPast, isPast)) &&
-            (identical(other.recordingDetails, recordingDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.recordingDetails, recordingDetails)) &&
-            (identical(other.liveCount, liveCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.liveCount, liveCount)) &&
-            (identical(other.rsvp, rsvp) ||
-                const DeepCollectionEquality().equals(other.rsvp, rsvp)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Webinar &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.host, host) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.start, start) &&
+            const DeepCollectionEquality().equals(other.privacy, privacy) &&
+            const DeepCollectionEquality().equals(other.medium, medium) &&
+            const DeepCollectionEquality().equals(other.closed, closed) &&
+            const DeepCollectionEquality().equals(other.closedAt, closedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.topicDetail, topicDetail) &&
+            const DeepCollectionEquality()
+                .equals(other.hostDetail, hostDetail) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.isLive, isLive) &&
+            const DeepCollectionEquality().equals(other.isPast, isPast) &&
+            const DeepCollectionEquality()
+                .equals(other.recordingDetails, recordingDetails) &&
+            const DeepCollectionEquality().equals(other.liveCount, liveCount) &&
+            const DeepCollectionEquality().equals(other.rsvp, rsvp));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(host) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(medium) ^
-      const DeepCollectionEquality().hash(closed) ^
-      const DeepCollectionEquality().hash(closedAt) ^
-      const DeepCollectionEquality().hash(topicDetail) ^
-      const DeepCollectionEquality().hash(hostDetail) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(isLive) ^
-      const DeepCollectionEquality().hash(isPast) ^
-      const DeepCollectionEquality().hash(recordingDetails) ^
-      const DeepCollectionEquality().hash(liveCount) ^
-      const DeepCollectionEquality().hash(rsvp);
 
   @JsonKey(ignore: true)
   @override
-  _$WebinarCopyWith<_Webinar> get copyWith =>
-      __$WebinarCopyWithImpl<_Webinar>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(host),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(start),
+      const DeepCollectionEquality().hash(privacy),
+      const DeepCollectionEquality().hash(medium),
+      const DeepCollectionEquality().hash(closed),
+      const DeepCollectionEquality().hash(closedAt),
+      const DeepCollectionEquality().hash(topicDetail),
+      const DeepCollectionEquality().hash(hostDetail),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(isLive),
+      const DeepCollectionEquality().hash(isPast),
+      const DeepCollectionEquality().hash(recordingDetails),
+      const DeepCollectionEquality().hash(liveCount),
+      const DeepCollectionEquality().hash(rsvp));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_WebinarCopyWith<_$_Webinar> get copyWith =>
+      __$$_WebinarCopyWithImpl<_$_Webinar>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_WebinarToJson(this);
+    return _$$_WebinarToJson(this);
   }
 }
 
 abstract class _Webinar implements Webinar {
   const factory _Webinar(
-      {int? id,
-      String? host,
-      String? description,
-      DateTime? start,
-      int? privacy,
-      int? medium,
-      bool? closed,
-      @JsonKey(name: 'closed_at') DateTime? closedAt,
-      @JsonKey(name: 'topic_detail') Topic? topicDetail,
-      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
-      int? type,
-      @JsonKey(name: 'is_live') bool? isLive,
-      @JsonKey(name: 'is_past') bool? isPast,
-      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
-      int? liveCount,
-      bool? rsvp}) = _$_Webinar;
+      {final int? id,
+      final String? host,
+      final String? description,
+      final DateTime? start,
+      final int? privacy,
+      final int? medium,
+      final bool? closed,
+      @JsonKey(name: 'closed_at')
+          final DateTime? closedAt,
+      @JsonKey(name: 'topic_detail')
+          final Topic? topicDetail,
+      @JsonKey(name: 'host_detail')
+          final ConversationUser? hostDetail,
+      final int? type,
+      @JsonKey(name: 'is_live')
+          final bool? isLive,
+      @JsonKey(name: 'is_past')
+          final bool? isPast,
+      @JsonKey(name: 'recording_details')
+          final RecordingDetails? recordingDetails,
+      final int? liveCount,
+      final bool? rsvp}) = _$_Webinar;
 
   factory _Webinar.fromJson(Map<String, dynamic> json) = _$_Webinar.fromJson;
 
   @override
-  int? get id => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  String? get host => throw _privateConstructorUsedError;
+  String? get host;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
-  DateTime? get start => throw _privateConstructorUsedError;
+  DateTime? get start;
   @override
-  int? get privacy => throw _privateConstructorUsedError;
+  int? get privacy;
   @override
-  int? get medium => throw _privateConstructorUsedError;
+  int? get medium;
   @override
-  bool? get closed => throw _privateConstructorUsedError;
+  bool? get closed;
   @override
   @JsonKey(name: 'closed_at')
-  DateTime? get closedAt => throw _privateConstructorUsedError;
+  DateTime? get closedAt;
   @override
   @JsonKey(name: 'topic_detail')
-  Topic? get topicDetail => throw _privateConstructorUsedError;
+  Topic? get topicDetail;
   @override
   @JsonKey(name: 'host_detail')
-  ConversationUser? get hostDetail => throw _privateConstructorUsedError;
+  ConversationUser? get hostDetail;
   @override
-  int? get type => throw _privateConstructorUsedError;
+  int? get type;
   @override
   @JsonKey(name: 'is_live')
-  bool? get isLive => throw _privateConstructorUsedError;
+  bool? get isLive;
   @override
   @JsonKey(name: 'is_past')
-  bool? get isPast => throw _privateConstructorUsedError;
+  bool? get isPast;
   @override
   @JsonKey(name: 'recording_details')
-  RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
+  RecordingDetails? get recordingDetails;
   @override
-  int? get liveCount => throw _privateConstructorUsedError;
+  int? get liveCount;
   @override
-  bool? get rsvp => throw _privateConstructorUsedError;
+  bool? get rsvp;
   @override
   @JsonKey(ignore: true)
-  _$WebinarCopyWith<_Webinar> get copyWith =>
+  _$$_WebinarCopyWith<_$_Webinar> get copyWith =>
       throw _privateConstructorUsedError;
 }

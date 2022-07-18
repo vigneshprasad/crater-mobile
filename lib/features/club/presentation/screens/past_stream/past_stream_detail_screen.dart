@@ -2,26 +2,23 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
+import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
-import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/theme.dart';
-import '../../../../../core/widgets/base/base_network_image/base_network_image.dart';
-import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../../auth/presentation/bloc/auth_bloc.dart';
-
-class PastStreamDetailScreen extends HookWidget {
+class PastStreamDetailScreen extends HookConsumerWidget {
   final int? id;
 
   const PastStreamDetailScreen({
@@ -29,8 +26,8 @@ class PastStreamDetailScreen extends HookWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final conversationState = useProvider(pastStreamStateProvider(id ?? 0));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final conversationState = ref.read(pastStreamStateProvider(id ?? 0));
     final isFullScreen = useState(false);
 
     return Scaffold(
@@ -52,13 +49,13 @@ class _Loader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
 }
 
-class _ConversationLoaded extends HookWidget {
+class _ConversationLoaded extends HookConsumerWidget {
   final Conversation conversation;
   final ValueNotifier<bool> isFullScreen;
 
@@ -71,83 +68,90 @@ class _ConversationLoaded extends HookWidget {
   OverlayEntry? overlayEntry;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Styles
     final startDateFormat = DateFormat("dd MMM yyyy, hh:mm a");
     final dateStyle = Theme.of(context).textTheme.caption;
 
-    final authUserPK = BlocProvider.of<AuthBloc>(context).state.user?.pk;
+    final authUserPK = ref.read(authStateProvider.notifier).getUser()?.pk;
 
     final article = conversation.topicDetail?.articleDetail;
 
-    final topic = conversation.topicDetail;
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
 
-    final similarStreamProvider = useProvider(pastStreamsStateProvider(null));
+    final similarStreamProvider = ref.read(pastStreamsStateProvider(null));
 
     final start = conversation.start?.toLocal();
 
     return SingleChildScrollView(
-        child: Padding(
-      padding: isFullScreen.value
-          ? const EdgeInsets.all(0)
-          : const EdgeInsets.symmetric(
-              horizontal: AppInsets.xl, vertical: AppInsets.l),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          StreamVideoPlayer(
-            conversation: conversation,
-            isFullScreen: isFullScreen,
-          ),
-          if (!isFullScreen.value)
-            Column(
-              children: [
-                const SizedBox(height: AppInsets.xxl),
-                Text(
-                  heading ?? '',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    if (start != null)
-                      Text(startDateFormat.format(start), style: dateStyle),
-                  ],
-                ),
-                const SizedBox(height: AppInsets.xxl),
-                if (conversation.topicDetail?.description?.isNotEmpty ?? false)
+      child: Padding(
+        padding: isFullScreen.value
+            ? EdgeInsets.zero
+            : const EdgeInsets.symmetric(
+                horizontal: AppInsets.xl,
+                vertical: AppInsets.l,
+              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StreamVideoPlayer(
+              conversation: conversation,
+              isFullScreen: isFullScreen,
+            ),
+            if (!isFullScreen.value)
+              Column(
+                children: [
+                  const SizedBox(height: AppInsets.xxl),
+                  Text(
+                    heading ?? '',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      if (start != null)
+                        Text(startDateFormat.format(start), style: dateStyle),
+                    ],
+                  ),
+                  const SizedBox(height: AppInsets.xxl),
+                  if (conversation.topicDetail?.description?.isNotEmpty ??
+                      false)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Talking About',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(height: AppInsets.xxl),
+                        Text(conversation.topicDetail?.description ?? ''),
+                      ],
+                    ),
+                  const Divider(thickness: 1, height: 40),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Talking About',
+                        'Speakers',
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       const SizedBox(height: AppInsets.xxl),
-                      Text(conversation.topicDetail?.description ?? ''),
+                      Column(
+                        children: conversation.speakersDetailList
+                                ?.map(
+                                  (speaker) => _SpeakerWithIntro(
+                                    user: speaker,
+                                    authUserPk: authUserPK ?? '',
+                                  ),
+                                )
+                                .toList() ??
+                            [],
+                      )
                     ],
                   ),
-                const Divider(thickness: 1, height: 40),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    'Speakers',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: AppInsets.xxl),
-                  Column(
-                    children: conversation.speakersDetailList
-                            ?.map((speaker) => _SpeakerWithIntro(
-                                  user: speaker,
-                                  authUserPk: authUserPK ?? '',
-                                ))
-                            .toList() ??
-                        [],
-                  )
-                ]),
-                const Divider(thickness: 1, height: 40),
-                similarStreamProvider.when(
+                  const Divider(thickness: 1, height: 40),
+                  similarStreamProvider.when(
                     loading: () => Container(),
                     error: (e, s) => Container(),
                     data: (conversations) {
@@ -179,21 +183,26 @@ class _ConversationLoaded extends HookWidget {
                           ],
                         ),
                       );
-                    }),
-                const SizedBox(height: 200),
-              ],
-            )
-        ],
+                    },
+                  ),
+                  const SizedBox(height: 200),
+                ],
+              )
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   void startDyteMeeting(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
-              meetingId: conversation.id ?? 0,
-              creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
-            )));
+          meetingId: conversation.id ?? 0,
+          creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
+        ),
+      ),
+    );
   }
 }
 
@@ -218,7 +227,8 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
   @override
   void initState() {
     _controller = VideoPlayerController.network(
-        widget.conversation.recordingDetails?.recording ?? '');
+      widget.conversation.recordingDetails?.recording ?? '',
+    );
 
     _controller.addListener(() {
       if (mounted) {
@@ -250,55 +260,57 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
         }
       },
       child: Container(
-          color: widget.isFullScreen.value
-              ? Colors.black
-              : Theme.of(context).dialogBackgroundColor,
-          width: double.infinity,
-          height: widget.isFullScreen.value
-              ? MediaQuery.of(context).size.height
-              : null,
-          alignment: widget.isFullScreen.value ? Alignment.center : null,
-          child: RotatedBox(
-            quarterTurns: widget.isFullScreen.value ? 1 : 0,
-            child: Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: _controller.value.isInitialized
-                      ? _controller.value.aspectRatio
-                      : 16.0 / 9.0,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          widget.conversation.topicDetail?.image ?? '',
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+        color: widget.isFullScreen.value
+            ? Colors.black
+            : Theme.of(context).dialogBackgroundColor,
+        width: double.infinity,
+        height: widget.isFullScreen.value
+            ? MediaQuery.of(context).size.height
+            : null,
+        alignment: widget.isFullScreen.value ? Alignment.center : null,
+        child: RotatedBox(
+          quarterTurns: widget.isFullScreen.value ? 1 : 0,
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: _controller.value.isInitialized
+                    ? _controller.value.aspectRatio
+                    : 16.0 / 9.0,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.conversation.topicDetail?.image ?? '',
+                        height: double.infinity,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                      VideoPlayer(_controller),
-                      _ControlsOverlay(
-                        isPlaying: _controller.value.isPlaying,
-                        isFullScreen: widget.isFullScreen,
+                    ),
+                    VideoPlayer(_controller),
+                    _ControlsOverlay(
+                      isPlaying: _controller.value.isPlaying,
+                      isFullScreen: widget.isFullScreen,
+                    ),
+                    VideoProgressIndicator(
+                      _controller,
+                      colors: VideoProgressColors(
+                        playedColor: Theme.of(context).colorScheme.secondary,
                       ),
-                      VideoProgressIndicator(
-                        _controller,
-                        colors: VideoProgressColors(
-                            playedColor: Theme.of(context).accentColor),
-                        allowScrubbing: true,
-                        padding: EdgeInsets.only(
-                          bottom: widget.isFullScreen.value ? 40 : 0,
-                          top: 20,
-                        ),
+                      allowScrubbing: true,
+                      padding: EdgeInsets.only(
+                        bottom: widget.isFullScreen.value ? 40 : 0,
+                        top: 20,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -310,17 +322,6 @@ class _ControlsOverlay extends StatelessWidget {
     required this.isFullScreen,
   }) : super(key: key);
 
-  // static const _examplePlaybackRates = [
-  //   0.25,
-  //   0.5,
-  //   1.0,
-  //   1.5,
-  //   2.0,
-  //   3.0,
-  //   5.0,
-  //   10.0,
-  // ];
-
   final bool isPlaying;
   final ValueNotifier<bool> isFullScreen;
 
@@ -329,13 +330,13 @@ class _ControlsOverlay extends StatelessWidget {
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          reverseDuration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 50),
+          reverseDuration: const Duration(milliseconds: 200),
           child: isPlaying
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Container(
                   color: Colors.black26,
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.play_circle,
                       color: Colors.white,
@@ -345,55 +346,26 @@ class _ControlsOverlay extends StatelessWidget {
                   ),
                 ),
         ),
-        // GestureDetector(
-        //   onTap: () {
-        //     controller.value.isPlaying ? controller.pause() : controller.play();
-        //   },
-        // ),
         Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              icon: Icon(Icons.zoom_out_map),
-              onPressed: () {
-                isFullScreen.value = !isFullScreen.value;
-                if (isFullScreen.value) {
-                  SystemChrome.setEnabledSystemUIOverlays(
-                      [SystemUiOverlay.bottom]);
-                } else {
-                  SystemChrome.setEnabledSystemUIOverlays(
-                      SystemUiOverlay.values);
-                }
-              },
-            )),
-        // Align(
-        //   alignment: Alignment.topRight,
-        //   child: PopupMenuButton<double>(
-        //     initialValue: controller.value.playbackSpeed,
-        //     tooltip: 'Playback speed',
-        //     onSelected: (speed) {
-        //       controller.setPlaybackSpeed(speed);
-        //     },
-        //     itemBuilder: (context) {
-        //       return [
-        //         for (final speed in _examplePlaybackRates)
-        //           PopupMenuItem(
-        //             value: speed,
-        //             child: Text('${speed}x'),
-        //           )
-        //       ];
-        //     },
-        //     child: Padding(
-        //       padding: const EdgeInsets.symmetric(
-        //         // Using less vertical padding as the text is also longer
-        //         // horizontally, so it feels like it would need more spacing
-        //         // horizontally (matching the aspect ratio of the video).
-        //         vertical: 12,
-        //         horizontal: 16,
-        //       ),
-        //       child: Text('${controller.value.playbackSpeed}x'),
-        //     ),
-        //   ),
-        // ),
+          alignment: Alignment.topRight,
+          child: IconButton(
+            icon: const Icon(Icons.zoom_out_map),
+            onPressed: () {
+              isFullScreen.value = !isFullScreen.value;
+              if (isFullScreen.value) {
+                SystemChrome.setEnabledSystemUIMode(
+                  SystemUiMode.manual,
+                  overlays: [SystemUiOverlay.bottom],
+                );
+              } else {
+                SystemChrome.setEnabledSystemUIMode(
+                  SystemUiMode.manual,
+                  overlays: SystemUiOverlay.values,
+                );
+              }
+            },
+          ),
+        ),
       ],
     );
   }
@@ -416,7 +388,9 @@ class _SpeakerWithIntro extends StatelessWidget {
     return InkWell(
       onTap: () => AutoRouter.of(context).push(
         ProfileScreenRoute(
-            userId: user.pk ?? '', allowEdit: authUserPk == user.pk),
+          userId: user.pk ?? '',
+          allowEdit: authUserPk == user.pk,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

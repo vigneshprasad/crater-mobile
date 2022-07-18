@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'creator_response.dart';
 
@@ -10,38 +12,11 @@ part of 'creator_response.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 CreatorResponse _$CreatorResponseFromJson(Map<String, dynamic> json) {
   return _CreatorResponse.fromJson(json);
 }
-
-/// @nodoc
-class _$CreatorResponseTearOff {
-  const _$CreatorResponseTearOff();
-
-  _CreatorResponse call(
-      {int count = 0,
-      @JsonKey(name: 'current_page') int currentPage = 0,
-      String? next,
-      String? previous,
-      List<Creator> results = const []}) {
-    return _CreatorResponse(
-      count: count,
-      currentPage: currentPage,
-      next: next,
-      previous: previous,
-      results: results,
-    );
-  }
-
-  CreatorResponse fromJson(Map<String, Object> json) {
-    return CreatorResponse.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CreatorResponse = _$CreatorResponseTearOff();
 
 /// @nodoc
 mixin _$CreatorResponse {
@@ -114,11 +89,11 @@ class _$CreatorResponseCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$CreatorResponseCopyWith<$Res>
+abstract class _$$_CreatorResponseCopyWith<$Res>
     implements $CreatorResponseCopyWith<$Res> {
-  factory _$CreatorResponseCopyWith(
-          _CreatorResponse value, $Res Function(_CreatorResponse) then) =
-      __$CreatorResponseCopyWithImpl<$Res>;
+  factory _$$_CreatorResponseCopyWith(
+          _$_CreatorResponse value, $Res Function(_$_CreatorResponse) then) =
+      __$$_CreatorResponseCopyWithImpl<$Res>;
   @override
   $Res call(
       {int count,
@@ -129,15 +104,15 @@ abstract class _$CreatorResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CreatorResponseCopyWithImpl<$Res>
+class __$$_CreatorResponseCopyWithImpl<$Res>
     extends _$CreatorResponseCopyWithImpl<$Res>
-    implements _$CreatorResponseCopyWith<$Res> {
-  __$CreatorResponseCopyWithImpl(
-      _CreatorResponse _value, $Res Function(_CreatorResponse) _then)
-      : super(_value, (v) => _then(v as _CreatorResponse));
+    implements _$$_CreatorResponseCopyWith<$Res> {
+  __$$_CreatorResponseCopyWithImpl(
+      _$_CreatorResponse _value, $Res Function(_$_CreatorResponse) _then)
+      : super(_value, (v) => _then(v as _$_CreatorResponse));
 
   @override
-  _CreatorResponse get _value => super._value as _CreatorResponse;
+  _$_CreatorResponse get _value => super._value as _$_CreatorResponse;
 
   @override
   $Res call({
@@ -147,7 +122,7 @@ class __$CreatorResponseCopyWithImpl<$Res>
     Object? previous = freezed,
     Object? results = freezed,
   }) {
-    return _then(_CreatorResponse(
+    return _then(_$_CreatorResponse(
       count: count == freezed
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -165,7 +140,7 @@ class __$CreatorResponseCopyWithImpl<$Res>
           : previous // ignore: cast_nullable_to_non_nullable
               as String?,
       results: results == freezed
-          ? _value.results
+          ? _value._results
           : results // ignore: cast_nullable_to_non_nullable
               as List<Creator>,
     ));
@@ -180,13 +155,14 @@ class _$_CreatorResponse implements _CreatorResponse {
       @JsonKey(name: 'current_page') this.currentPage = 0,
       this.next,
       this.previous,
-      this.results = const []});
+      final List<Creator> results = const []})
+      : _results = results;
 
   factory _$_CreatorResponse.fromJson(Map<String, dynamic> json) =>
-      _$_$_CreatorResponseFromJson(json);
+      _$$_CreatorResponseFromJson(json);
 
-  @JsonKey(defaultValue: 0)
   @override
+  @JsonKey()
   final int count;
   @override
   @JsonKey(name: 'current_page')
@@ -195,9 +171,13 @@ class _$_CreatorResponse implements _CreatorResponse {
   final String? next;
   @override
   final String? previous;
-  @JsonKey(defaultValue: const [])
+  final List<Creator> _results;
   @override
-  final List<Creator> results;
+  @JsonKey()
+  List<Creator> get results {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_results);
+  }
 
   @override
   String toString() {
@@ -207,66 +187,62 @@ class _$_CreatorResponse implements _CreatorResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CreatorResponse &&
-            (identical(other.count, count) ||
-                const DeepCollectionEquality().equals(other.count, count)) &&
-            (identical(other.currentPage, currentPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentPage, currentPage)) &&
-            (identical(other.next, next) ||
-                const DeepCollectionEquality().equals(other.next, next)) &&
-            (identical(other.previous, previous) ||
-                const DeepCollectionEquality()
-                    .equals(other.previous, previous)) &&
-            (identical(other.results, results) ||
-                const DeepCollectionEquality().equals(other.results, results)));
+        (other.runtimeType == runtimeType &&
+            other is _$_CreatorResponse &&
+            const DeepCollectionEquality().equals(other.count, count) &&
+            const DeepCollectionEquality()
+                .equals(other.currentPage, currentPage) &&
+            const DeepCollectionEquality().equals(other.next, next) &&
+            const DeepCollectionEquality().equals(other.previous, previous) &&
+            const DeepCollectionEquality().equals(other._results, _results));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(count) ^
-      const DeepCollectionEquality().hash(currentPage) ^
-      const DeepCollectionEquality().hash(next) ^
-      const DeepCollectionEquality().hash(previous) ^
-      const DeepCollectionEquality().hash(results);
 
   @JsonKey(ignore: true)
   @override
-  _$CreatorResponseCopyWith<_CreatorResponse> get copyWith =>
-      __$CreatorResponseCopyWithImpl<_CreatorResponse>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(count),
+      const DeepCollectionEquality().hash(currentPage),
+      const DeepCollectionEquality().hash(next),
+      const DeepCollectionEquality().hash(previous),
+      const DeepCollectionEquality().hash(_results));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_CreatorResponseCopyWith<_$_CreatorResponse> get copyWith =>
+      __$$_CreatorResponseCopyWithImpl<_$_CreatorResponse>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_CreatorResponseToJson(this);
+    return _$$_CreatorResponseToJson(this);
   }
 }
 
 abstract class _CreatorResponse implements CreatorResponse {
   const factory _CreatorResponse(
-      {int count,
-      @JsonKey(name: 'current_page') int currentPage,
-      String? next,
-      String? previous,
-      List<Creator> results}) = _$_CreatorResponse;
+      {final int count,
+      @JsonKey(name: 'current_page') final int currentPage,
+      final String? next,
+      final String? previous,
+      final List<Creator> results}) = _$_CreatorResponse;
 
   factory _CreatorResponse.fromJson(Map<String, dynamic> json) =
       _$_CreatorResponse.fromJson;
 
   @override
-  int get count => throw _privateConstructorUsedError;
+  int get count;
   @override
   @JsonKey(name: 'current_page')
-  int get currentPage => throw _privateConstructorUsedError;
+  int get currentPage;
   @override
-  String? get next => throw _privateConstructorUsedError;
+  String? get next;
   @override
-  String? get previous => throw _privateConstructorUsedError;
+  String? get previous;
   @override
-  List<Creator> get results => throw _privateConstructorUsedError;
+  List<Creator> get results;
   @override
   @JsonKey(ignore: true)
-  _$CreatorResponseCopyWith<_CreatorResponse> get copyWith =>
+  _$$_CreatorResponseCopyWith<_$_CreatorResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -274,33 +250,6 @@ FollowCreatorResponse _$FollowCreatorResponseFromJson(
     Map<String, dynamic> json) {
   return _FollowCreatorResponse.fromJson(json);
 }
-
-/// @nodoc
-class _$FollowCreatorResponseTearOff {
-  const _$FollowCreatorResponseTearOff();
-
-  _FollowCreatorResponse call(
-      {int count = 0,
-      @JsonKey(name: 'current_page') int currentPage = 0,
-      String? next,
-      String? previous,
-      List<Webinar> results = const []}) {
-    return _FollowCreatorResponse(
-      count: count,
-      currentPage: currentPage,
-      next: next,
-      previous: previous,
-      results: results,
-    );
-  }
-
-  FollowCreatorResponse fromJson(Map<String, Object> json) {
-    return FollowCreatorResponse.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $FollowCreatorResponse = _$FollowCreatorResponseTearOff();
 
 /// @nodoc
 mixin _$FollowCreatorResponse {
@@ -373,11 +322,11 @@ class _$FollowCreatorResponseCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$FollowCreatorResponseCopyWith<$Res>
+abstract class _$$_FollowCreatorResponseCopyWith<$Res>
     implements $FollowCreatorResponseCopyWith<$Res> {
-  factory _$FollowCreatorResponseCopyWith(_FollowCreatorResponse value,
-          $Res Function(_FollowCreatorResponse) then) =
-      __$FollowCreatorResponseCopyWithImpl<$Res>;
+  factory _$$_FollowCreatorResponseCopyWith(_$_FollowCreatorResponse value,
+          $Res Function(_$_FollowCreatorResponse) then) =
+      __$$_FollowCreatorResponseCopyWithImpl<$Res>;
   @override
   $Res call(
       {int count,
@@ -388,15 +337,16 @@ abstract class _$FollowCreatorResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$FollowCreatorResponseCopyWithImpl<$Res>
+class __$$_FollowCreatorResponseCopyWithImpl<$Res>
     extends _$FollowCreatorResponseCopyWithImpl<$Res>
-    implements _$FollowCreatorResponseCopyWith<$Res> {
-  __$FollowCreatorResponseCopyWithImpl(_FollowCreatorResponse _value,
-      $Res Function(_FollowCreatorResponse) _then)
-      : super(_value, (v) => _then(v as _FollowCreatorResponse));
+    implements _$$_FollowCreatorResponseCopyWith<$Res> {
+  __$$_FollowCreatorResponseCopyWithImpl(_$_FollowCreatorResponse _value,
+      $Res Function(_$_FollowCreatorResponse) _then)
+      : super(_value, (v) => _then(v as _$_FollowCreatorResponse));
 
   @override
-  _FollowCreatorResponse get _value => super._value as _FollowCreatorResponse;
+  _$_FollowCreatorResponse get _value =>
+      super._value as _$_FollowCreatorResponse;
 
   @override
   $Res call({
@@ -406,7 +356,7 @@ class __$FollowCreatorResponseCopyWithImpl<$Res>
     Object? previous = freezed,
     Object? results = freezed,
   }) {
-    return _then(_FollowCreatorResponse(
+    return _then(_$_FollowCreatorResponse(
       count: count == freezed
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -424,7 +374,7 @@ class __$FollowCreatorResponseCopyWithImpl<$Res>
           : previous // ignore: cast_nullable_to_non_nullable
               as String?,
       results: results == freezed
-          ? _value.results
+          ? _value._results
           : results // ignore: cast_nullable_to_non_nullable
               as List<Webinar>,
     ));
@@ -439,13 +389,14 @@ class _$_FollowCreatorResponse implements _FollowCreatorResponse {
       @JsonKey(name: 'current_page') this.currentPage = 0,
       this.next,
       this.previous,
-      this.results = const []});
+      final List<Webinar> results = const []})
+      : _results = results;
 
   factory _$_FollowCreatorResponse.fromJson(Map<String, dynamic> json) =>
-      _$_$_FollowCreatorResponseFromJson(json);
+      _$$_FollowCreatorResponseFromJson(json);
 
-  @JsonKey(defaultValue: 0)
   @override
+  @JsonKey()
   final int count;
   @override
   @JsonKey(name: 'current_page')
@@ -454,9 +405,13 @@ class _$_FollowCreatorResponse implements _FollowCreatorResponse {
   final String? next;
   @override
   final String? previous;
-  @JsonKey(defaultValue: const [])
+  final List<Webinar> _results;
   @override
-  final List<Webinar> results;
+  @JsonKey()
+  List<Webinar> get results {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_results);
+  }
 
   @override
   String toString() {
@@ -466,116 +421,69 @@ class _$_FollowCreatorResponse implements _FollowCreatorResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FollowCreatorResponse &&
-            (identical(other.count, count) ||
-                const DeepCollectionEquality().equals(other.count, count)) &&
-            (identical(other.currentPage, currentPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentPage, currentPage)) &&
-            (identical(other.next, next) ||
-                const DeepCollectionEquality().equals(other.next, next)) &&
-            (identical(other.previous, previous) ||
-                const DeepCollectionEquality()
-                    .equals(other.previous, previous)) &&
-            (identical(other.results, results) ||
-                const DeepCollectionEquality().equals(other.results, results)));
+        (other.runtimeType == runtimeType &&
+            other is _$_FollowCreatorResponse &&
+            const DeepCollectionEquality().equals(other.count, count) &&
+            const DeepCollectionEquality()
+                .equals(other.currentPage, currentPage) &&
+            const DeepCollectionEquality().equals(other.next, next) &&
+            const DeepCollectionEquality().equals(other.previous, previous) &&
+            const DeepCollectionEquality().equals(other._results, _results));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(count) ^
-      const DeepCollectionEquality().hash(currentPage) ^
-      const DeepCollectionEquality().hash(next) ^
-      const DeepCollectionEquality().hash(previous) ^
-      const DeepCollectionEquality().hash(results);
 
   @JsonKey(ignore: true)
   @override
-  _$FollowCreatorResponseCopyWith<_FollowCreatorResponse> get copyWith =>
-      __$FollowCreatorResponseCopyWithImpl<_FollowCreatorResponse>(
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(count),
+      const DeepCollectionEquality().hash(currentPage),
+      const DeepCollectionEquality().hash(next),
+      const DeepCollectionEquality().hash(previous),
+      const DeepCollectionEquality().hash(_results));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_FollowCreatorResponseCopyWith<_$_FollowCreatorResponse> get copyWith =>
+      __$$_FollowCreatorResponseCopyWithImpl<_$_FollowCreatorResponse>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_FollowCreatorResponseToJson(this);
+    return _$$_FollowCreatorResponseToJson(this);
   }
 }
 
 abstract class _FollowCreatorResponse implements FollowCreatorResponse {
   const factory _FollowCreatorResponse(
-      {int count,
-      @JsonKey(name: 'current_page') int currentPage,
-      String? next,
-      String? previous,
-      List<Webinar> results}) = _$_FollowCreatorResponse;
+      {final int count,
+      @JsonKey(name: 'current_page') final int currentPage,
+      final String? next,
+      final String? previous,
+      final List<Webinar> results}) = _$_FollowCreatorResponse;
 
   factory _FollowCreatorResponse.fromJson(Map<String, dynamic> json) =
       _$_FollowCreatorResponse.fromJson;
 
   @override
-  int get count => throw _privateConstructorUsedError;
+  int get count;
   @override
   @JsonKey(name: 'current_page')
-  int get currentPage => throw _privateConstructorUsedError;
+  int get currentPage;
   @override
-  String? get next => throw _privateConstructorUsedError;
+  String? get next;
   @override
-  String? get previous => throw _privateConstructorUsedError;
+  String? get previous;
   @override
-  List<Webinar> get results => throw _privateConstructorUsedError;
+  List<Webinar> get results;
   @override
   @JsonKey(ignore: true)
-  _$FollowCreatorResponseCopyWith<_FollowCreatorResponse> get copyWith =>
+  _$$_FollowCreatorResponseCopyWith<_$_FollowCreatorResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 Creator _$CreatorFromJson(Map<String, dynamic> json) {
   return _Creator.fromJson(json);
 }
-
-/// @nodoc
-class _$CreatorTearOff {
-  const _$CreatorTearOff();
-
-  _Creator call(
-      {int id = 0,
-      String user = '',
-      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers = 0,
-      bool certified = false,
-      @JsonKey(name: 'follower_count') int? followerCount = 0,
-      int order = 0,
-      @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail,
-      String? slug,
-      @JsonKey(name: 'is_follower') bool? isFollower,
-      @JsonKey(name: 'show_club_members') bool? showClubMembers,
-      String? video,
-      @JsonKey(name: 'video_poster') String? videoPoster}) {
-    return _Creator(
-      id: id,
-      user: user,
-      numberOfSubscribers: numberOfSubscribers,
-      certified: certified,
-      followerCount: followerCount,
-      order: order,
-      defaultCommunity: defaultCommunity,
-      profileDetail: profileDetail,
-      slug: slug,
-      isFollower: isFollower,
-      showClubMembers: showClubMembers,
-      video: video,
-      videoPoster: videoPoster,
-    );
-  }
-
-  Creator fromJson(Map<String, Object> json) {
-    return Creator.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Creator = _$CreatorTearOff();
 
 /// @nodoc
 mixin _$Creator {
@@ -733,9 +641,10 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
-  factory _$CreatorCopyWith(_Creator value, $Res Function(_Creator) then) =
-      __$CreatorCopyWithImpl<$Res>;
+abstract class _$$_CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
+  factory _$$_CreatorCopyWith(
+          _$_Creator value, $Res Function(_$_Creator) then) =
+      __$$_CreatorCopyWithImpl<$Res>;
   @override
   $Res call(
       {int id,
@@ -759,13 +668,13 @@ abstract class _$CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
-    implements _$CreatorCopyWith<$Res> {
-  __$CreatorCopyWithImpl(_Creator _value, $Res Function(_Creator) _then)
-      : super(_value, (v) => _then(v as _Creator));
+class __$$_CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
+    implements _$$_CreatorCopyWith<$Res> {
+  __$$_CreatorCopyWithImpl(_$_Creator _value, $Res Function(_$_Creator) _then)
+      : super(_value, (v) => _then(v as _$_Creator));
 
   @override
-  _Creator get _value => super._value as _Creator;
+  _$_Creator get _value => super._value as _$_Creator;
 
   @override
   $Res call({
@@ -783,7 +692,7 @@ class __$CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
     Object? video = freezed,
     Object? videoPoster = freezed,
   }) {
-    return _then(_Creator(
+    return _then(_$_Creator(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -859,25 +768,26 @@ class _$_Creator implements _Creator {
       @JsonKey(name: 'video_poster') this.videoPoster});
 
   factory _$_Creator.fromJson(Map<String, dynamic> json) =>
-      _$_$_CreatorFromJson(json);
+      _$$_CreatorFromJson(json);
 
-  @JsonKey(defaultValue: 0)
   @override
+  @JsonKey()
   final int id;
-  @JsonKey(defaultValue: '')
   @override
+  @JsonKey()
   final String user;
   @override
   @JsonKey(name: 'number_of_subscribers')
   final int? numberOfSubscribers;
-  @JsonKey(defaultValue: false)
   @override
+  @JsonKey()
   final bool certified;
   @override
   @JsonKey(name: 'follower_count')
   final int? followerCount;
-  @JsonKey(defaultValue: 0)
-  @override // @Default(0)dynamic type,
+// @Default(0)dynamic type,
+  @override
+  @JsonKey()
   final int order;
   @override
   @JsonKey(name: 'default_community')
@@ -907,158 +817,126 @@ class _$_Creator implements _Creator {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Creator &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
-            (identical(other.numberOfSubscribers, numberOfSubscribers) ||
-                const DeepCollectionEquality()
-                    .equals(other.numberOfSubscribers, numberOfSubscribers)) &&
-            (identical(other.certified, certified) ||
-                const DeepCollectionEquality()
-                    .equals(other.certified, certified)) &&
-            (identical(other.followerCount, followerCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followerCount, followerCount)) &&
-            (identical(other.order, order) ||
-                const DeepCollectionEquality().equals(other.order, order)) &&
-            (identical(other.defaultCommunity, defaultCommunity) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultCommunity, defaultCommunity)) &&
-            (identical(other.profileDetail, profileDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.profileDetail, profileDetail)) &&
-            (identical(other.slug, slug) ||
-                const DeepCollectionEquality().equals(other.slug, slug)) &&
-            (identical(other.isFollower, isFollower) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFollower, isFollower)) &&
-            (identical(other.showClubMembers, showClubMembers) ||
-                const DeepCollectionEquality()
-                    .equals(other.showClubMembers, showClubMembers)) &&
-            (identical(other.video, video) ||
-                const DeepCollectionEquality().equals(other.video, video)) &&
-            (identical(other.videoPoster, videoPoster) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoPoster, videoPoster)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Creator &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.user, user) &&
+            const DeepCollectionEquality()
+                .equals(other.numberOfSubscribers, numberOfSubscribers) &&
+            const DeepCollectionEquality().equals(other.certified, certified) &&
+            const DeepCollectionEquality()
+                .equals(other.followerCount, followerCount) &&
+            const DeepCollectionEquality().equals(other.order, order) &&
+            const DeepCollectionEquality()
+                .equals(other.defaultCommunity, defaultCommunity) &&
+            const DeepCollectionEquality()
+                .equals(other.profileDetail, profileDetail) &&
+            const DeepCollectionEquality().equals(other.slug, slug) &&
+            const DeepCollectionEquality()
+                .equals(other.isFollower, isFollower) &&
+            const DeepCollectionEquality()
+                .equals(other.showClubMembers, showClubMembers) &&
+            const DeepCollectionEquality().equals(other.video, video) &&
+            const DeepCollectionEquality()
+                .equals(other.videoPoster, videoPoster));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(numberOfSubscribers) ^
-      const DeepCollectionEquality().hash(certified) ^
-      const DeepCollectionEquality().hash(followerCount) ^
-      const DeepCollectionEquality().hash(order) ^
-      const DeepCollectionEquality().hash(defaultCommunity) ^
-      const DeepCollectionEquality().hash(profileDetail) ^
-      const DeepCollectionEquality().hash(slug) ^
-      const DeepCollectionEquality().hash(isFollower) ^
-      const DeepCollectionEquality().hash(showClubMembers) ^
-      const DeepCollectionEquality().hash(video) ^
-      const DeepCollectionEquality().hash(videoPoster);
 
   @JsonKey(ignore: true)
   @override
-  _$CreatorCopyWith<_Creator> get copyWith =>
-      __$CreatorCopyWithImpl<_Creator>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(user),
+      const DeepCollectionEquality().hash(numberOfSubscribers),
+      const DeepCollectionEquality().hash(certified),
+      const DeepCollectionEquality().hash(followerCount),
+      const DeepCollectionEquality().hash(order),
+      const DeepCollectionEquality().hash(defaultCommunity),
+      const DeepCollectionEquality().hash(profileDetail),
+      const DeepCollectionEquality().hash(slug),
+      const DeepCollectionEquality().hash(isFollower),
+      const DeepCollectionEquality().hash(showClubMembers),
+      const DeepCollectionEquality().hash(video),
+      const DeepCollectionEquality().hash(videoPoster));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_CreatorCopyWith<_$_Creator> get copyWith =>
+      __$$_CreatorCopyWithImpl<_$_Creator>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_CreatorToJson(this);
+    return _$$_CreatorToJson(this);
   }
 }
 
 abstract class _Creator implements Creator {
   const factory _Creator(
-      {int id,
-      String user,
-      @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
-      bool certified,
-      @JsonKey(name: 'follower_count') int? followerCount,
-      int order,
-      @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
-      @JsonKey(name: 'profile_detail') Profile? profileDetail,
-      String? slug,
-      @JsonKey(name: 'is_follower') bool? isFollower,
-      @JsonKey(name: 'show_club_members') bool? showClubMembers,
-      String? video,
-      @JsonKey(name: 'video_poster') String? videoPoster}) = _$_Creator;
+      {final int id,
+      final String user,
+      @JsonKey(name: 'number_of_subscribers')
+          final int? numberOfSubscribers,
+      final bool certified,
+      @JsonKey(name: 'follower_count')
+          final int? followerCount,
+      final int order,
+      @JsonKey(name: 'default_community')
+          final CreatorCommunity? defaultCommunity,
+      @JsonKey(name: 'profile_detail')
+          final Profile? profileDetail,
+      final String? slug,
+      @JsonKey(name: 'is_follower')
+          final bool? isFollower,
+      @JsonKey(name: 'show_club_members')
+          final bool? showClubMembers,
+      final String? video,
+      @JsonKey(name: 'video_poster')
+          final String? videoPoster}) = _$_Creator;
 
   factory _Creator.fromJson(Map<String, dynamic> json) = _$_Creator.fromJson;
 
   @override
-  int get id => throw _privateConstructorUsedError;
+  int get id;
   @override
-  String get user => throw _privateConstructorUsedError;
+  String get user;
   @override
   @JsonKey(name: 'number_of_subscribers')
-  int? get numberOfSubscribers => throw _privateConstructorUsedError;
+  int? get numberOfSubscribers;
   @override
-  bool get certified => throw _privateConstructorUsedError;
+  bool get certified;
   @override
   @JsonKey(name: 'follower_count')
-  int? get followerCount => throw _privateConstructorUsedError;
+  int? get followerCount;
   @override // @Default(0)dynamic type,
-  int get order => throw _privateConstructorUsedError;
+  int get order;
   @override
   @JsonKey(name: 'default_community')
-  CreatorCommunity? get defaultCommunity => throw _privateConstructorUsedError;
+  CreatorCommunity? get defaultCommunity;
   @override
   @JsonKey(name: 'profile_detail')
-  Profile? get profileDetail => throw _privateConstructorUsedError;
+  Profile? get profileDetail;
   @override
-  String? get slug => throw _privateConstructorUsedError;
+  String? get slug;
   @override
   @JsonKey(name: 'is_follower')
-  bool? get isFollower => throw _privateConstructorUsedError;
+  bool? get isFollower;
   @override
   @JsonKey(name: 'show_club_members')
-  bool? get showClubMembers => throw _privateConstructorUsedError;
+  bool? get showClubMembers;
   @override
-  String? get video => throw _privateConstructorUsedError;
+  String? get video;
   @override
   @JsonKey(name: 'video_poster')
-  String? get videoPoster => throw _privateConstructorUsedError;
+  String? get videoPoster;
   @override
   @JsonKey(ignore: true)
-  _$CreatorCopyWith<_Creator> get copyWith =>
+  _$$_CreatorCopyWith<_$_Creator> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 CreatorCommunity _$CreatorCommunityFromJson(Map<String, dynamic> json) {
   return _CreatorCommunity.fromJson(json);
 }
-
-/// @nodoc
-class _$CreatorCommunityTearOff {
-  const _$CreatorCommunityTearOff();
-
-  _CreatorCommunity call(
-      {int id = 0,
-      String name = '',
-      int creator = 0,
-      @JsonKey(name: 'is_default') bool isDefault = false,
-      @JsonKey(name: 'is_active') bool isActive = false}) {
-    return _CreatorCommunity(
-      id: id,
-      name: name,
-      creator: creator,
-      isDefault: isDefault,
-      isActive: isActive,
-    );
-  }
-
-  CreatorCommunity fromJson(Map<String, Object> json) {
-    return CreatorCommunity.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CreatorCommunity = _$CreatorCommunityTearOff();
 
 /// @nodoc
 mixin _$CreatorCommunity {
@@ -1132,11 +1010,11 @@ class _$CreatorCommunityCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$CreatorCommunityCopyWith<$Res>
+abstract class _$$_CreatorCommunityCopyWith<$Res>
     implements $CreatorCommunityCopyWith<$Res> {
-  factory _$CreatorCommunityCopyWith(
-          _CreatorCommunity value, $Res Function(_CreatorCommunity) then) =
-      __$CreatorCommunityCopyWithImpl<$Res>;
+  factory _$$_CreatorCommunityCopyWith(
+          _$_CreatorCommunity value, $Res Function(_$_CreatorCommunity) then) =
+      __$$_CreatorCommunityCopyWithImpl<$Res>;
   @override
   $Res call(
       {int id,
@@ -1147,15 +1025,15 @@ abstract class _$CreatorCommunityCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CreatorCommunityCopyWithImpl<$Res>
+class __$$_CreatorCommunityCopyWithImpl<$Res>
     extends _$CreatorCommunityCopyWithImpl<$Res>
-    implements _$CreatorCommunityCopyWith<$Res> {
-  __$CreatorCommunityCopyWithImpl(
-      _CreatorCommunity _value, $Res Function(_CreatorCommunity) _then)
-      : super(_value, (v) => _then(v as _CreatorCommunity));
+    implements _$$_CreatorCommunityCopyWith<$Res> {
+  __$$_CreatorCommunityCopyWithImpl(
+      _$_CreatorCommunity _value, $Res Function(_$_CreatorCommunity) _then)
+      : super(_value, (v) => _then(v as _$_CreatorCommunity));
 
   @override
-  _CreatorCommunity get _value => super._value as _CreatorCommunity;
+  _$_CreatorCommunity get _value => super._value as _$_CreatorCommunity;
 
   @override
   $Res call({
@@ -1165,7 +1043,7 @@ class __$CreatorCommunityCopyWithImpl<$Res>
     Object? isDefault = freezed,
     Object? isActive = freezed,
   }) {
-    return _then(_CreatorCommunity(
+    return _then(_$_CreatorCommunity(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1201,16 +1079,16 @@ class _$_CreatorCommunity implements _CreatorCommunity {
       @JsonKey(name: 'is_active') this.isActive = false});
 
   factory _$_CreatorCommunity.fromJson(Map<String, dynamic> json) =>
-      _$_$_CreatorCommunityFromJson(json);
+      _$$_CreatorCommunityFromJson(json);
 
-  @JsonKey(defaultValue: 0)
   @override
+  @JsonKey()
   final int id;
-  @JsonKey(defaultValue: '')
   @override
+  @JsonKey()
   final String name;
-  @JsonKey(defaultValue: 0)
   @override
+  @JsonKey()
   final int creator;
   @override
   @JsonKey(name: 'is_default')
@@ -1227,67 +1105,61 @@ class _$_CreatorCommunity implements _CreatorCommunity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CreatorCommunity &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.creator, creator) ||
-                const DeepCollectionEquality()
-                    .equals(other.creator, creator)) &&
-            (identical(other.isDefault, isDefault) ||
-                const DeepCollectionEquality()
-                    .equals(other.isDefault, isDefault)) &&
-            (identical(other.isActive, isActive) ||
-                const DeepCollectionEquality()
-                    .equals(other.isActive, isActive)));
+        (other.runtimeType == runtimeType &&
+            other is _$_CreatorCommunity &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.creator, creator) &&
+            const DeepCollectionEquality().equals(other.isDefault, isDefault) &&
+            const DeepCollectionEquality().equals(other.isActive, isActive));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(creator) ^
-      const DeepCollectionEquality().hash(isDefault) ^
-      const DeepCollectionEquality().hash(isActive);
 
   @JsonKey(ignore: true)
   @override
-  _$CreatorCommunityCopyWith<_CreatorCommunity> get copyWith =>
-      __$CreatorCommunityCopyWithImpl<_CreatorCommunity>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(creator),
+      const DeepCollectionEquality().hash(isDefault),
+      const DeepCollectionEquality().hash(isActive));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_CreatorCommunityCopyWith<_$_CreatorCommunity> get copyWith =>
+      __$$_CreatorCommunityCopyWithImpl<_$_CreatorCommunity>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_CreatorCommunityToJson(this);
+    return _$$_CreatorCommunityToJson(this);
   }
 }
 
 abstract class _CreatorCommunity implements CreatorCommunity {
   const factory _CreatorCommunity(
-      {int id,
-      String name,
-      int creator,
-      @JsonKey(name: 'is_default') bool isDefault,
-      @JsonKey(name: 'is_active') bool isActive}) = _$_CreatorCommunity;
+      {final int id,
+      final String name,
+      final int creator,
+      @JsonKey(name: 'is_default') final bool isDefault,
+      @JsonKey(name: 'is_active') final bool isActive}) = _$_CreatorCommunity;
 
   factory _CreatorCommunity.fromJson(Map<String, dynamic> json) =
       _$_CreatorCommunity.fromJson;
 
   @override
-  int get id => throw _privateConstructorUsedError;
+  int get id;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  int get creator => throw _privateConstructorUsedError;
+  int get creator;
   @override
   @JsonKey(name: 'is_default')
-  bool get isDefault => throw _privateConstructorUsedError;
+  bool get isDefault;
   @override
   @JsonKey(name: 'is_active')
-  bool get isActive => throw _privateConstructorUsedError;
+  bool get isActive;
   @override
   @JsonKey(ignore: true)
-  _$CreatorCommunityCopyWith<_CreatorCommunity> get copyWith =>
+  _$$_CreatorCommunityCopyWith<_$_CreatorCommunity> get copyWith =>
       throw _privateConstructorUsedError;
 }

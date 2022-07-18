@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
-import '../../../constants/work_net_icons_icons.dart';
-import '../../../features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 class ChatInputBar extends StatelessWidget {
   final User? user;
@@ -31,30 +31,11 @@ class ChatInputBar extends StatelessWidget {
       duration: const Duration(microseconds: 200),
       width: width,
       padding: const EdgeInsets.symmetric(
-          horizontal: AppInsets.med, vertical: AppInsets.l),
+        horizontal: AppInsets.med,
+        vertical: AppInsets.l,
+      ),
       child: Row(
         children: [
-          // Material(
-          //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-          //   color: Theme.of(context).primaryColor,
-          //   child: InkWell(
-          //     focusColor: AppTheme.primarySwatch.shade600,
-          //     splashColor: AppTheme.primarySwatch.shade700,
-          //     borderRadius: const BorderRadius.all(Radius.circular(12)),
-          //     onTap: onReactionPress,
-          //     child: const SizedBox(
-          //       width: 48,
-          //       height: 44,
-          //       child: Center(
-          //         child: Icon(
-          //           Icons.emoji_emotions,
-          //           color: Colors.white,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(width: AppInsets.l),
           Flexible(
             child: TextField(
               controller: controller,
@@ -70,7 +51,10 @@ class ChatInputBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: 2,
+                  ),
                   borderRadius: BorderRadius.circular(inputRadius),
                 ),
                 hintStyle: labelStyle,

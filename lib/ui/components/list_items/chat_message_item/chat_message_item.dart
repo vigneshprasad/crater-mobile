@@ -2,25 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:intl/intl.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:lottie/lottie.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/constants/work_net_icons_icons.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
-import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen_2/conversation_screen_state.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
-
-import '../../../../constants/theme.dart';
-import '../../../../constants/work_net_icons_icons.dart';
-import '../../../../features/auth/domain/entity/user_entity.dart';
-import '../../../../features/chat/domain/entity/chat_message_entity.dart';
 
 final chatColors = [
   "#A17BFF",
@@ -41,42 +36,28 @@ final chatColors = [
   "#BDFC97",
 ];
 
-class ChatMessageItem extends StatefulWidget {
-  final User user;
+class ChatMessageItem extends HookConsumerWidget {
+  final User? user;
   final ChatMessage message;
   final String conversationId;
   final int creatorId;
 
   ChatMessageItem({
     Key? key,
-    required this.user,
+    this.user,
     required this.message,
     required this.conversationId,
     required this.creatorId,
   }) : super(key: key);
 
-  @override
-  _ChatMessageItemState createState() => _ChatMessageItemState();
-}
-
-class _ChatMessageItemState extends State<ChatMessageItem> {
-  late bool isFollowing;
+  late ValueNotifier<bool> isFollowing;
 
   @override
-  Widget build(BuildContext context) {
-    isFollowing = widget.message.isFollowing ?? false;
+  Widget build(BuildContext context, WidgetRef ref) {
+    isFollowing = useState(message.isFollowing ?? false);
 
     final dateFormat = DateFormat.jm();
-    final bool isSender = widget.user.pk == widget.message.senderId;
-    const radius = Radius.circular(12.0);
-    const senderBorderRadius = BorderRadius.only(
-        topLeft: radius, topRight: radius, bottomLeft: radius);
-    const recieverBorderRadius = BorderRadius.only(
-        topLeft: radius, topRight: radius, bottomRight: radius);
-    // final testStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-    //       fontSize: 14,
-    //       color: isSender ? Colors.white : Colors.grey[800],
-    //     );
+    final bool isSender = user?.pk == message.senderId;
 
     final imageWidth = MediaQuery.of(context).size.width * 0.5;
     const imageHeight = 140.0;
@@ -85,37 +66,35 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
         .subtitle2
         ?.copyWith(fontSize: 10, color: Colors.grey);
 
-    final file = widget.message.file;
+    final file = message.file;
 
-    final hash = (widget.message.senderDetail?.pk ?? '') +
-        (widget.message.senderDetail?.displayName ?? '');
+    final hash = (message.senderDetail?.pk ?? '') +
+        (message.senderDetail?.displayName ?? '');
     final colorIndex = hash.hashCode % chatColors.length;
     final nameColor = chatColors[colorIndex];
 
     Future<void> followHost(BuildContext context) async {
-      final userPK = widget.creatorId;
+      final userPK = creatorId;
 
-      final response = await context
+      final response = await ref
           .read(creatorStateProvider('').notifier)
           .followCreator(userPK, context);
 
       response.fold(
         (failure) {
-          setState(() {
-            isFollowing = !isFollowing;
-            widget.message.isFollowing = isFollowing;
-          });
+          isFollowing.value = !isFollowing.value;
+          message.isFollowing = isFollowing.value;
           // Fluttertoast.showToast(msg: failure.message.toString());
         },
         (request) {
-          setState(() {
-            isFollowing = !isFollowing;
-            widget.message.isFollowing = isFollowing;
-          });
+          isFollowing.value = !isFollowing.value;
+          message.isFollowing = isFollowing.value;
 
-          final analytics = KiwiContainer().resolve<Analytics>();
+          final analytics = ref.read(analyticsProvider);
           analytics.trackEvent(
-              eventName: AnalyticsEvents.followCreator, properties: {});
+            eventName: AnalyticsEvents.followCreator,
+            properties: {},
+          );
 
           // Fluttertoast.showToast(msg: '');
         },
@@ -124,7 +103,7 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
 
     Future<void> inviteFriends(BuildContext context) async {
       final url =
-          'https://crater.club/session/${widget.conversationId}?utm_source=in_app_share&referrer_id=${widget.user.pk}&utm_campaign=mobile_app';
+          'https://crater.club/session/$conversationId?utm_source=in_app_share&referrer_id=${user?.pk}&utm_campaign=mobile_app';
       shareApp(context, url, '');
     }
 
@@ -133,7 +112,7 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
     }
 
     Future<void> performAction(BuildContext context) async {
-      switch (widget.message.action) {
+      switch (message.action) {
         case 1:
           await followHost(context);
           break;
@@ -148,9 +127,9 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
 
     Widget? buildActionButton(BuildContext context) {
       var actionTitle = 'Okay';
-      switch (widget.message.action) {
+      switch (message.action) {
         case 1:
-          actionTitle = isFollowing ? 'Following' : 'Follow';
+          actionTitle = isFollowing.value ? 'Following' : 'Follow';
           break;
         case 2:
           actionTitle = 'Invite';
@@ -160,27 +139,30 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
           break;
       }
 
-      return ((widget.message.action == 1 ||
-                  widget.message.action == 2 ||
-                  widget.message.action == 3) &&
-              (widget.message.message?.isNotEmpty ?? false))
+      return ((message.action == 1 ||
+                  message.action == 2 ||
+                  message.action == 3) &&
+              (message.message?.isNotEmpty ?? false))
           ? Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Theme.of(context).backgroundColor),
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).backgroundColor,
+              ),
               padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
-                  Expanded(child: Text(widget.message.message!)),
-                  isFollowing
-                      ? SizedBox(
-                          width: 100,
-                          height: 50,
-                          child: Center(child: Text(actionTitle)),
-                        )
-                      : BaseLargeButton(
-                          text: actionTitle,
-                          onPressed: () => performAction(context))
+                  Expanded(child: Text(message.message!)),
+                  if (isFollowing.value)
+                    SizedBox(
+                      width: 100,
+                      height: 50,
+                      child: Center(child: Text(actionTitle)),
+                    )
+                  else
+                    BaseLargeButton(
+                      text: actionTitle,
+                      onPressed: () => performAction(context),
+                    )
                 ],
               ),
             )
@@ -189,7 +171,9 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.sm, horizontal: AppInsets.xl),
+        vertical: AppInsets.sm,
+        horizontal: AppInsets.xl,
+      ),
       child: Column(
         children: [
           Container(
@@ -208,7 +192,7 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
               child: Container(
                 // padding: const EdgeInsets.symmetric(
                 //     vertical: AppInsets.l, horizontal: AppInsets.l),
-                child: (widget.message.type == 3)
+                child: (message.type == 3)
                     ? buildActionButton(context)
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,23 +200,19 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
                           Row(
                             children: [
                               Text(
-                                (widget.message.displayName ??
-                                        widget
-                                            .message.senderDetail?.firstName ??
-                                        widget.message.senderDetail?.name ??
-                                        '') +
-                                    ': ',
+                                '${message.displayName ?? message.senderDetail?.firstName ?? message.senderDetail?.name ?? ''}: ',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1
                                     ?.copyWith(
-                                        color: HexColor.fromHex(nameColor)),
+                                      color: HexColor.fromHex(nameColor),
+                                    ),
                               ),
                               const SizedBox(
                                 height: 4,
                               ),
-                              if (widget.message.message?.isNotEmpty ?? false)
-                                Expanded(child: Text(widget.message.message!))
+                              if (message.message?.isNotEmpty ?? false)
+                                Expanded(child: Text(message.message!))
                             ],
                           ),
                           if (file != null)
@@ -259,11 +239,13 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.0),
                                   image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
-                          if (widget.message.reaction?.file != null)
+                          if (message.reaction?.file != null)
                             CachedNetworkImage(
                               placeholder: (context, url) => Container(
                                 decoration: BoxDecoration(
@@ -279,7 +261,7 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
                                   ),
                                 ),
                               ),
-                              imageUrl: widget.message.reaction!.file!,
+                              imageUrl: message.reaction!.file!,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 width: 100,
@@ -287,8 +269,9 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.0),
                                   image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.contain),
+                                    image: imageProvider,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             )
@@ -306,14 +289,15 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
                 children: [
                   Text(
                     dateFormat.format(
-                        (widget.message.created as Timestamp?)?.toDate() ??
-                            DateTime.now()),
+                      (message.created as Timestamp?)?.toDate() ??
+                          DateTime.now(),
+                    ),
                     style: timeStampStyle,
                   ),
                   Icon(
                     WorkNetIcons.doublecheck,
                     size: 20,
-                    color: widget.message.isRead!
+                    color: message.isRead!
                         ? AppTheme.blueAccent
                         : Colors.grey[400],
                   ),

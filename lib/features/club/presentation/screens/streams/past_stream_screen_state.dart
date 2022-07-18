@@ -1,21 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
-import '../../../../conversations/data/repository/conversation_repository_impl.dart';
-import 'stream_screen.dart';
+final pastStreamsStateProvider = StateNotifierProvider.autoDispose
+    .family<PastStreamStateNotifier, ApiResult<List<UpcomingGridItem>>, int?>(
+  (ref, id) => PastStreamStateNotifier(ref.read, id),
+);
 
-final pastStreamsStateProvider = StateNotifierProvider.autoDispose.family<PastStreamStateNotifier,
-        ApiResult<List<UpcomingGridItem>>, int?>(
-    (ref, id) => PastStreamStateNotifier(ref.read, id));
-
-final webinarCategoryStateProvider = StateNotifierProvider<WebinarCategoryStateNotifier,
-        ApiResult<List<CategoriesDetailList>>>(
-    (ref) => WebinarCategoryStateNotifier(ref.read));
+final webinarCategoryStateProvider = StateNotifierProvider<
+    WebinarCategoryStateNotifier, ApiResult<List<CategoriesDetailList>>>(
+  (ref) => WebinarCategoryStateNotifier(ref.read),
+);
 
 class PastStreamStateNotifier
     extends StateNotifier<ApiResult<List<UpcomingGridItem>>> {
@@ -51,10 +51,12 @@ class PastStreamStateNotifier
       },
       (webinars) {
         pastClubs = webinars
-            .map((e) => UpcomingGridItem(
-                  conversation: e,
-                  type: GridItemType.past,
-                ))
+            .map(
+              (e) => UpcomingGridItem(
+                conversation: e,
+                type: GridItemType.past,
+              ),
+            )
             .toList();
         loadingPage = false;
         allLoaded = webinars.isEmpty || webinars.length < pageSize;
@@ -74,7 +76,8 @@ class PastStreamStateNotifier
     loadingPage = true;
 
     state = ApiResult<List<UpcomingGridItem>>.data(
-        pastClubs + [UpcomingGridItem(type: GridItemType.loader)]);
+      pastClubs + [const UpcomingGridItem(type: GridItemType.loader)],
+    );
 
     page = page + 1;
 
@@ -88,10 +91,12 @@ class PastStreamStateNotifier
       },
       (webinars) {
         pastClubs += webinars
-            .map((e) => UpcomingGridItem(
-                  conversation: e,
-                  type: GridItemType.past,
-                ))
+            .map(
+              (e) => UpcomingGridItem(
+                conversation: e,
+                type: GridItemType.past,
+              ),
+            )
             .toList();
         loadingPage = false;
         allLoaded = webinars.isEmpty || webinars.length < pageSize;
@@ -102,7 +107,6 @@ class PastStreamStateNotifier
     return response;
   }
 }
-
 
 class WebinarCategoryStateNotifier
     extends StateNotifier<ApiResult<List<CategoriesDetailList>>> {
@@ -115,10 +119,12 @@ class WebinarCategoryStateNotifier
     } catch (_) {}
   }
 
-  Future<Either<Failure, List<CategoriesDetailList>>?> getWebinarCategories() async {
+  Future<Either<Failure, List<CategoriesDetailList>>?>
+      getWebinarCategories() async {
     state = ApiResult.loading();
 
-    final response = await read(conversationRepositoryProvider).getWebinarCategories();
+    final response =
+        await read(conversationRepositoryProvider).getWebinarCategories();
 
     state = response.fold(
       (failure) {

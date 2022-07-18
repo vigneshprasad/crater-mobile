@@ -1,16 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/routes.gr.dart';
 
-import '../../../routes.gr.dart';
-
-final deepLinkManagerProvider = Provider<DeepLinkManager>((_) {
+final deepLinkManagerProvider = Provider<DeepLinkManager>((ref) {
   final providers = [
     DeepLinkProviderType.firebase,
   ];
-  return DeepLinkManagerImpl(providers);
+  return DeepLinkManagerImpl(providers, ref.read);
 });
 
 enum DeepLinkProviderType {
@@ -19,23 +16,23 @@ enum DeepLinkProviderType {
 
 abstract class DeepLinkManager {
   List<DeepLinkProviderType> get providers;
-  Future<void> handleDeepLink(BuildContext context);
+  Future<void> handleDeepLink();
 }
 
 class DeepLinkManagerImpl implements DeepLinkManager {
   final List<DeepLinkProviderType> _providers;
-
-  const DeepLinkManagerImpl(this._providers);
+  final Reader read;
+  const DeepLinkManagerImpl(this._providers, this.read);
 
   @override
   List<DeepLinkProviderType> get providers => _providers;
 
   @override
-  Future<void> handleDeepLink(BuildContext context) async {
+  Future<void> handleDeepLink() async {
     for (final provider in _providers) {
       switch (provider) {
         case DeepLinkProviderType.firebase:
-          await _handleFirebaseDeepLink(context);
+          await _handleFirebaseDeepLink();
           break;
 
         default:
@@ -44,28 +41,26 @@ class DeepLinkManagerImpl implements DeepLinkManager {
     }
   }
 
-  Future<void> _handleFirebaseDeepLink(BuildContext context) async {
-    FirebaseDynamicLinks.instance.onLink(onSuccess: (event) async {
-      final Uri? deeplink = event?.link;
-      if (deeplink != null) {
-        _handleDeepLink(deeplink, context);
-      }
+  Future<void> _handleFirebaseDeepLink() async {
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      final deeplink = event.link;
+      _handleDeepLink(deeplink);
     });
 
     final data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deeplink = data?.link;
     if (deeplink != null) {
-      _handleDeepLink(deeplink, context);
+      _handleDeepLink(deeplink);
     }
   }
 
-  void _handleDeepLink(Uri deeplink, BuildContext context) {
-    final _navigator = AutoRouter.of(context).root;
+  void _handleDeepLink(Uri deeplink) {
+    final _navigator = read(appRouterProvider);
 
     final pathSegments = deeplink.pathSegments;
 
     if (pathSegments.contains("community-chat")) {
-      _navigator.push(HomeScreenRoute(tab: 0));
+      _navigator.push(HomeScreenRoute());
     } else if (pathSegments.contains("meetings")) {
       _navigator.push(HomeScreenRoute(tab: 1));
     } else if (pathSegments.contains("inbox")) {
@@ -74,8 +69,6 @@ class DeepLinkManagerImpl implements DeepLinkManager {
       _navigator.push(HomeScreenRoute(tab: 3));
     } else if (pathSegments.contains("master-classes")) {
       _navigator.push(HomeScreenRoute(tab: 4));
-    } else if (pathSegments.contains("new-password")) {
-      _navigator.push(NewPasswordScreenRoute(params: deeplink.query));
     } else if (pathSegments.contains("group")) {
       final queryParam = deeplink.queryParameters['id'];
       if (queryParam != null) {

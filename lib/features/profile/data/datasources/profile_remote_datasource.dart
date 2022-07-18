@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
 import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../../domain/entity/profile_entity/profile_entity.dart';
-import '../services/profile_api_services/profile_api_service.dart';
+import 'package:worknetwork/features/profile/data/services/profile_api_services/profile_api_service.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
 final profileRemoteDatasourceProvider =
     Provider<ProfileRemoteDatasource>((ref) {
@@ -50,7 +49,7 @@ class ProfileRemoteImpl implements ProfileRemoteDatasource {
     String userId,
   ) async {
     if (userId.isNotEmpty) {
-      return await retrieveConnectionsFromRemote(userId);
+      return retrieveConnectionsFromRemote(userId);
     }
     const searchKeyword = '';
     final response = userId.isEmpty

@@ -1,122 +1,92 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/profile_footer.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 
-import '../../../../constants/theme.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../bloc/profile_basic/profile_basic_bloc.dart';
-import '../widgets/profile_footer.dart';
-import '../widgets/profile_header.dart';
-
-class ProfileBasicScreen extends StatefulWidget {
+class ProfileBasicScreen extends HookConsumerWidget {
   final bool editMode;
   final VoidCallback? onCompletion;
   final bool? popup;
 
-  const ProfileBasicScreen({
+  late WidgetRef ref;
+
+  ProfileBasicScreen({
     Key? key,
     @PathParam("editMode") required this.editMode,
     this.onCompletion,
     this.popup = false,
   }) : super(key: key);
 
-  @override
-  _ProfileBasicScreenState createState() => _ProfileBasicScreenState();
-}
-
-class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
-  late ProfileBasicBloc _bloc;
+
   bool allowSkip = false;
   OverlayEntry? _overlay;
 
   @override
-  void initState() {
-    final name = BlocProvider.of<AuthBloc>(context).state.user?.name;
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
+    useEffect(
+      () {
+        final name = ref.read(authStateProvider.notifier).getUser()?.name;
 
-    _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
-
-    if (name != null && name.trim().isNotEmpty) {
-      final parts = name.split(' ');
-      _firstNameController.text = parts.first;
-      if (parts.length > 1) {
-        _lastNameController.text = parts.last;
-      }
-    } else if (widget.editMode == false) {
-      SharedPreferences.getInstance().then((prefs) {
-        final provider = prefs.getString('AuthProvider');
-        if (provider == SocialAuthProviders.apple.toString()) {
-          setState(() {
-            allowSkip = true;
-          });
+        if (name != null && name.trim().isNotEmpty) {
+          final parts = name.split(' ');
+          _firstNameController.text = parts.first;
+          if (parts.length > 1) {
+            _lastNameController.text = parts.last;
+          }
         }
-      });
-    }
+        return () {
+          _lastNameController.dispose();
+          _firstNameController.dispose();
+        };
+      },
+      [],
+    );
 
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     String heading;
-    if (widget.editMode) {
+    if (editMode) {
       heading = 'Enter your name';
     } else {
       heading = 'Lets get started';
     }
 
-    return BlocProvider.value(
-      value: _bloc,
-      child: BlocConsumer<ProfileBasicBloc, ProfileBasicState>(
-        listener: _profileSetupBlocListener,
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: widget.popup == true
-                ? Theme.of(context).dialogBackgroundColor
-                : null,
-            appBar: BaseAppBar(),
-            body: Column(
+    return Scaffold(
+      backgroundColor:
+          popup == true ? Theme.of(context).dialogBackgroundColor : null,
+      appBar: BaseAppBar(),
+      body: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProfileHeader(title: heading),
-                      _buildProfileForm(context),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                ProfileFooter(
-                  onSave: _onPressedSubmit,
-                  onSkip: allowSkip ? _goToNextScreen : null,
-                )
+                ProfileHeader(title: heading),
+                _buildProfileForm(context),
               ],
             ),
-          );
-        },
+          ),
+          const Spacer(),
+          ProfileFooter(
+            onSave: () => _onPressedSubmit(context),
+            onSkip: () => allowSkip ? _goToNextScreen(context) : null,
+          )
+        ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _lastNameController.dispose();
-    _firstNameController.dispose();
-    _bloc.close();
-    super.dispose();
   }
 
   Widget _buildProfileForm(BuildContext context) {
@@ -124,7 +94,9 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
     const lastnameLabel = 'Your last name';
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppInsets.xxl, vertical: AppInsets.l),
+        horizontal: AppInsets.xxl,
+        vertical: AppInsets.l,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -154,34 +126,30 @@ class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
     );
   }
 
-  void _goToNextScreen() {
-    if (widget.onCompletion != null) {
-      widget.onCompletion!();
+  void _goToNextScreen(BuildContext context) {
+    if (onCompletion != null) {
+      onCompletion!();
       return;
     }
-    navigateNextProfileStep(editMode: widget.editMode);
+    AutoRouter.of(context).pop();
   }
 
-  void _onPressedSubmit() {
+  Future<void> _onPressedSubmit(BuildContext context) async {
     final isValid = _formKey.currentState?.validate();
     if (isValid ?? false) {
       _overlay = buildLoaderOverlay();
       Overlay.of(context)?.insert(_overlay!);
 
       final name = '${_firstNameController.text} ${_lastNameController.text}';
-      _bloc.add(PostProfileBasicRequestStarted(name: name));
-    }
-  }
 
-  void _profileSetupBlocListener(
-      BuildContext context, ProfileBasicState state) {
-    if (state is PatchProfileBasicRequestLoaded) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserUpdateRecieved(user: state.user));
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
-      _overlay?.remove();
-      _goToNextScreen();
+      final response = await ref
+          .read(authRepositoryProvider)
+          .patchUser(UserModel(name: name));
+
+      response.fold((l) => null, (r) {
+        _overlay?.remove();
+        _goToNextScreen(context);
+      });
     }
   }
 }

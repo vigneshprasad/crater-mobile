@@ -1,19 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/features/share_manager/share_manager.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/models/onboarding_slide_content.dart';
+import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-
-import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/theme.dart';
-import '../../../../../core/features/share_manager/share_manager.dart';
-import '../../bloc/auth_bloc.dart';
-import 'models/onboarding_slide_content.dart';
-import 'onboarding_screen_state.dart';
 
 const kHeaderFraction = 0.65;
 const kbottomBarHeight = 72.00;
@@ -26,7 +23,7 @@ enum OnboardingType {
   meetingLeaving,
 }
 
-class OnboardingScreen extends HookWidget {
+class OnboardingScreen extends HookConsumerWidget {
   final String type;
 
   const OnboardingScreen(@PathParam('type') this.type);
@@ -48,17 +45,21 @@ class OnboardingScreen extends HookWidget {
   }
 
   List<OnboardingSlideContent> slidesForType(
-      OnboardingType onboardingType, BuildContext context) {
+    OnboardingType onboardingType,
+    WidgetRef ref,
+  ) {
     switch (onboardingType) {
       case OnboardingType.signupComplete:
-        final user = BlocProvider.of<AuthBloc>(context).state.user;
+        final user = ref.read(authStateProvider.notifier).getUser();
         return signupSlides
-            .map((e) => OnboardingSlideContent(
-                  heading: e.heading.replaceFirst('NAME', user?.name ?? ''),
-                  subHeading: e.subHeading,
-                  image: e.image,
-                  buttons: e.buttons,
-                ))
+            .map(
+              (e) => OnboardingSlideContent(
+                heading: e.heading.replaceFirst('NAME', user?.name ?? ''),
+                subHeading: e.subHeading,
+                image: e.image,
+                buttons: e.buttons,
+              ),
+            )
             .toList();
       case OnboardingType.oneOnOneMeetingCreation:
         return oneOnOneCreationSlides;
@@ -74,23 +75,26 @@ class OnboardingScreen extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final onboardingType = typeFromString(type);
-    final slideContent = slidesForType(onboardingType, context);
+    final slideContent = slidesForType(onboardingType, ref);
     final pageController = usePageController();
     final currentPage = useState(0);
 
-    useEffect(() {
-      void listener() {
-        currentPage.value = pageController.page!.floor();
-      }
+    useEffect(
+      () {
+        void listener() {
+          currentPage.value = pageController.page!.floor();
+        }
 
-      pageController.addListener(listener);
+        pageController.addListener(listener);
 
-      return () {
-        pageController.removeListener(listener);
-      };
-    }, []);
+        return () {
+          pageController.removeListener(listener);
+        };
+      },
+      [],
+    );
 
     return Scaffold(
       body: Stack(
@@ -120,6 +124,7 @@ class OnboardingScreen extends HookWidget {
                       pageController,
                       currentPage.value,
                       slideContent[currentPage.value].buttons,
+                      ref,
                     ),
                   ),
                 ),
@@ -136,6 +141,7 @@ class OnboardingScreen extends HookWidget {
     PageController controller,
     int currentPage,
     List<OnboardingSlideButton> buttons,
+    WidgetRef ref,
   ) {
     const duration = Duration(milliseconds: 200);
     return buttons.map((e) {
@@ -144,29 +150,36 @@ class OnboardingScreen extends HookWidget {
           return _ActionButton(
             label: e.title,
             onTap: () {
-              controller.animateToPage(currentPage + 1,
-                  duration: duration, curve: Curves.easeInOut);
+              controller.animateToPage(
+                currentPage + 1,
+                duration: duration,
+                curve: Curves.easeInOut,
+              );
             },
           );
         case OnboardingSlideButtonType.invite:
-          final shareManager = useProvider(shareManagerProvider);
+          final shareManager = ref.read(shareManagerProvider);
           return _ActionButton(
             label: e.title,
             onTap: () async {
               await shareManager.share(context);
 
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
-                  predicate: (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(
+                HomeScreenRoute(),
+                predicate: (route) => false,
+              );
             },
           );
         case OnboardingSlideButtonType.feedback:
           return _ActionButton(
             label: e.title,
             onTap: () async {
-              final user = BlocProvider.of<AuthBloc>(context).state.user;
+              final user = ref.read(authStateProvider.notifier).getUser();
 
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
-                  predicate: (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(
+                HomeScreenRoute(),
+                predicate: (route) => false,
+              );
 
               launch(
                 'https://worknetwork.typeform.com/to/dpmbWtYv#email=${user?.email}',
@@ -179,32 +192,27 @@ class OnboardingScreen extends HookWidget {
               );
             },
           );
-        case OnboardingSlideButtonType.start1on1Conversation:
-          return _ActionButton(
-            label: e.title,
-            onTap: () {
-              context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
-                  predicate: (route) => false);
-              AutoRouter.of(context).push(TopicsListRoute(showTitle: true));
-            },
-          );
+
         case OnboardingSlideButtonType.startGroupConversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
-              context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(),
-                  predicate: (route) => false);
+              ref.read(onboardingProvider).setOnboardingShown();
+              AutoRouter.of(context).pushAndPopUntil(
+                HomeScreenRoute(),
+                predicate: (route) => false,
+              );
             },
           );
         case OnboardingSlideButtonType.joinConversation:
           return _ActionButton(
             label: e.title,
             onTap: () {
-              context.read(onboardingProvider).setOnboardingShown();
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 1),
-                  predicate: (route) => false);
+              ref.read(onboardingProvider).setOnboardingShown();
+              AutoRouter.of(context).pushAndPopUntil(
+                HomeScreenRoute(tab: 1),
+                predicate: (route) => false,
+              );
             },
           );
         default:
@@ -212,8 +220,10 @@ class OnboardingScreen extends HookWidget {
             label: e.title,
             isDismiss: true,
             onTap: () {
-              AutoRouter.of(context).pushAndPopUntil(HomeScreenRoute(tab: 0),
-                  predicate: (route) => false);
+              AutoRouter.of(context).pushAndPopUntil(
+                HomeScreenRoute(),
+                predicate: (route) => false,
+              );
             },
           );
       }
@@ -319,7 +329,9 @@ const signupSlides = [
     image: AppImageAssets.onboardingHello,
     buttons: [
       OnboardingSlideButton(
-          title: 'Get started', type: OnboardingSlideButtonType.next)
+        title: 'Get started',
+        type: OnboardingSlideButtonType.next,
+      )
     ],
   ),
   OnboardingSlideContent(
@@ -359,8 +371,9 @@ const signupSlides = [
     image: AppImageAssets.splashAI,
     buttons: [
       OnboardingSlideButton(
-          title: 'Pick a Topic',
-          type: OnboardingSlideButtonType.start1on1Conversation),
+        title: 'Pick a Topic',
+        type: OnboardingSlideButtonType.start1on1Conversation,
+      ),
     ],
   ),
 ];
@@ -383,9 +396,13 @@ const oneOnOneCreationSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
+        title: 'Not now',
+        type: OnboardingSlideButtonType.dismiss,
+      ),
       OnboardingSlideButton(
-          title: 'Invite', type: OnboardingSlideButtonType.invite),
+        title: 'Invite',
+        type: OnboardingSlideButtonType.invite,
+      ),
     ],
   ),
 ];
@@ -409,9 +426,13 @@ const groupCreationSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
+        title: 'Not now',
+        type: OnboardingSlideButtonType.dismiss,
+      ),
       OnboardingSlideButton(
-          title: 'Invite', type: OnboardingSlideButtonType.invite),
+        title: 'Invite',
+        type: OnboardingSlideButtonType.invite,
+      ),
     ],
   ),
 ];
@@ -429,9 +450,13 @@ const meetingJoiningSlides = [
     image: AppImageAssets.splashPeople,
     buttons: [
       OnboardingSlideButton(
-          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
+        title: 'Not now',
+        type: OnboardingSlideButtonType.dismiss,
+      ),
       OnboardingSlideButton(
-          title: 'Invite', type: OnboardingSlideButtonType.invite),
+        title: 'Invite',
+        type: OnboardingSlideButtonType.invite,
+      ),
     ],
   ),
 ];
@@ -444,9 +469,13 @@ const meetingLeavingSlides = [
     image: AppImageAssets.feedback,
     buttons: [
       OnboardingSlideButton(
-          title: 'Not now', type: OnboardingSlideButtonType.dismiss),
+        title: 'Not now',
+        type: OnboardingSlideButtonType.dismiss,
+      ),
       OnboardingSlideButton(
-          title: 'Share Feedback', type: OnboardingSlideButtonType.feedback),
+        title: 'Share Feedback',
+        type: OnboardingSlideButtonType.feedback,
+      ),
     ],
   ),
 ];

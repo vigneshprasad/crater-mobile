@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
-import '../../../../ui/base/base_error_text/base_error_text.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
 
 typedef LabelGetterFunc<T> = String Function(T item);
 typedef OnChangeItems<T> = void Function(List<T> items);
@@ -43,10 +43,12 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
 
   List<DropdownMenuItem<T>> _buildItems(List<T> items) {
     return items
-        .map((item) => DropdownMenuItem(
-              value: item,
-              child: Text(widget.labelGetter(item)),
-            ))
+        .map(
+          (item) => DropdownMenuItem(
+            value: item,
+            child: Text(widget.labelGetter(item)),
+          ),
+        )
         .toList();
   }
 
@@ -78,7 +80,9 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
             DropdownButtonHideUnderline(
               child: ButtonTheme(
                 padding: const EdgeInsets.only(
-                    left: AppInsets.l, right: AppInsets.l),
+                  left: AppInsets.l,
+                  right: AppInsets.l,
+                ),
                 alignedDropdown: true,
                 child: DropdownButton<T>(
                   isExpanded: true,
@@ -193,32 +197,33 @@ class MultiSelectDropdownFormField<T> extends FormField<List<T>> {
     required this.maxLength,
     required this.label,
   }) : super(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-            autovalidateMode: autovalidate
-                ? AutovalidateMode.always
-                : AutovalidateMode.disabled,
-            builder: (state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  MultiSelectDropdown<T>(
-                    initialValue: initialValue,
-                    error: state.hasError,
-                    items: items,
-                    labelGetter: labelGetter,
-                    label: label,
-                    maxLength: maxLength,
-                    onChangeItems: (items) {
-                      state.didChange(items);
-                      onChangeItems(items);
-                    },
-                  ),
-                  if (state.hasError) const SizedBox(height: AppInsets.med),
-                  if (state.hasError) BaseErrorText(text: state.errorText!)
-                ],
-              );
-            });
+          initialValue: initialValue,
+          onSaved: onSaved,
+          validator: validator,
+          autovalidateMode: autovalidate
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
+          builder: (state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MultiSelectDropdown<T>(
+                  initialValue: initialValue,
+                  error: state.hasError,
+                  items: items,
+                  labelGetter: labelGetter,
+                  label: label,
+                  maxLength: maxLength,
+                  onChangeItems: (items) {
+                    state.didChange(items);
+                    onChangeItems(items);
+                  },
+                ),
+                if (state.hasError) const SizedBox(height: AppInsets.med),
+                if (state.hasError) BaseErrorText(text: state.errorText!)
+              ],
+            );
+          },
+        );
 }

@@ -1,18 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
-import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/meeting/data/models/dyte_meeting_model.dart';
+import 'package:worknetwork/features/meeting/data/repository/dyte_repository_impl.dart';
 import 'package:worknetwork/features/meeting/domain/repository/dyte_repository.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 final getDyteCredsNotifierProvider = StateNotifierProvider.autoDispose
     .family<GetDyteCredsNotifier, AsyncValue<_DyteMeetingScreenState>, int>(
         (ref, meetingId) {
-  final meetingRepository = KiwiContainer().resolve<DyteRepository>();
+  final meetingRepository = ref.read(dyteRepositoryProvider);
 
   return GetDyteCredsNotifier(ref.read, meetingRepository, meetingId);
 });
@@ -41,7 +39,8 @@ class GetDyteCredsNotifier
 
     if (response.isLeft()) {
       state = AsyncValue<_DyteMeetingScreenState>.error(
-          ServerFailure(message: 'something went wrong'));
+        ServerFailure('something went wrong'),
+      );
       return;
     }
 

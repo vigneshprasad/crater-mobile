@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseTabBar extends StatefulWidget implements PreferredSizeWidget {
   final TabController controller;
@@ -33,7 +33,7 @@ class _BaseTabBarState extends State<BaseTabBar> {
     indicatorWidth = 0;
     indicatorPosition = 0;
     WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => setIndicatorWidth(context));
+        .addPostFrameCallback((_) => setIndicatorWidth(context));
     widget.controller.addListener(_onIndexChange);
     super.initState();
   }
@@ -135,7 +135,7 @@ class _BaseTabBarState extends State<BaseTabBar> {
     final GlobalKey _tabKey = _tabKeys[_currentIndex];
     final renderBox = _tabKey.currentContext?.findRenderObject() as RenderBox?;
 
-    final offset = renderBox?.localToGlobal(const Offset(0, 0));
+    final offset = renderBox?.localToGlobal(Offset.zero);
     if (offset != null && offset.dx > 0) {
       setState(() {
         indicatorPosition = offset.dx - AppInsets.xl;

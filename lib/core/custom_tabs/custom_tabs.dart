@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/theme.dart';
 
-import '../../constants/theme.dart';
+final customTabsProvider = Provider(
+  (ref) {
+    return CustomTabImpl();
+  },
+);
 
 abstract class CustomTabs {
   Future<void> openLink(String link);

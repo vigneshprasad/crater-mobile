@@ -1,8 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 
-import '../../../../meeting/data/models/meeting_interest_model.dart';
-import '../topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
 
 part 'conversation_entity.freezed.dart';
 part 'conversation_entity.g.dart';
@@ -41,8 +40,6 @@ abstract class Conversation with _$Conversation {
     @JsonKey(name: 'closed_at') DateTime? closedAt,
     @JsonKey(name: 'topic_detail') Topic? topicDetail,
     @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
-    @JsonKey(name: 'interests_detail_list')
-        List<MeetingInterestModel>? interestsDetailList,
     @JsonKey(name: 'speakers_detail_list')
         List<ConversationUser>? speakersDetailList,
     @JsonKey(name: 'attendees_detail_list')

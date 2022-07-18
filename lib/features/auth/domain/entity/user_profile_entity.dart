@@ -1,8 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_field_detail_entity.dart';
 
-import 'user_tag_entity.dart';
-
 class UserProfile extends HiveObject {
   final int? pk;
   final String? additionalInformation;
@@ -26,7 +24,7 @@ class UserProfile extends HiveObject {
   final String? role;
   final String? tagLine;
   final List<int>? tags;
-  final List<UserTag>? tagList;
+  // final List<UserTag>? tagList;
   final String? uuid;
   final int? educationLevel;
   final int? yearsOfExperience;
@@ -76,7 +74,7 @@ class UserProfile extends HiveObject {
     this.role,
     this.tags,
     this.tagLine,
-    this.tagList,
+    // this.tagList,
     this.uuid,
     this.educationLevel,
     this.yearsOfExperience,

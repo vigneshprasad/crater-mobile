@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'profile_extra_meta.dart';
 
@@ -10,30 +12,11 @@ part of 'profile_extra_meta.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Option _$OptionFromJson(Map<String, dynamic> json) {
   return _Option.fromJson(json);
 }
-
-/// @nodoc
-class _$OptionTearOff {
-  const _$OptionTearOff();
-
-  _Option call({required String name, required int value}) {
-    return _Option(
-      name: name,
-      value: value,
-    );
-  }
-
-  Option fromJson(Map<String, Object> json) {
-    return Option.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Option = _$OptionTearOff();
 
 /// @nodoc
 mixin _$Option {
@@ -79,28 +62,28 @@ class _$OptionCopyWithImpl<$Res> implements $OptionCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$OptionCopyWith<$Res> implements $OptionCopyWith<$Res> {
-  factory _$OptionCopyWith(_Option value, $Res Function(_Option) then) =
-      __$OptionCopyWithImpl<$Res>;
+abstract class _$$_OptionCopyWith<$Res> implements $OptionCopyWith<$Res> {
+  factory _$$_OptionCopyWith(_$_Option value, $Res Function(_$_Option) then) =
+      __$$_OptionCopyWithImpl<$Res>;
   @override
   $Res call({String name, int value});
 }
 
 /// @nodoc
-class __$OptionCopyWithImpl<$Res> extends _$OptionCopyWithImpl<$Res>
-    implements _$OptionCopyWith<$Res> {
-  __$OptionCopyWithImpl(_Option _value, $Res Function(_Option) _then)
-      : super(_value, (v) => _then(v as _Option));
+class __$$_OptionCopyWithImpl<$Res> extends _$OptionCopyWithImpl<$Res>
+    implements _$$_OptionCopyWith<$Res> {
+  __$$_OptionCopyWithImpl(_$_Option _value, $Res Function(_$_Option) _then)
+      : super(_value, (v) => _then(v as _$_Option));
 
   @override
-  _Option get _value => super._value as _Option;
+  _$_Option get _value => super._value as _$_Option;
 
   @override
   $Res call({
     Object? name = freezed,
     Object? value = freezed,
   }) {
-    return _then(_Option(
+    return _then(_$_Option(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -119,7 +102,7 @@ class _$_Option implements _Option {
   _$_Option({required this.name, required this.value});
 
   factory _$_Option.fromJson(Map<String, dynamic> json) =>
-      _$_$_OptionFromJson(json);
+      _$$_OptionFromJson(json);
 
   @override
   final String name;
@@ -134,72 +117,49 @@ class _$_Option implements _Option {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Option &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Option &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.value, value));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value);
 
   @JsonKey(ignore: true)
   @override
-  _$OptionCopyWith<_Option> get copyWith =>
-      __$OptionCopyWithImpl<_Option>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(value));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_OptionCopyWith<_$_Option> get copyWith =>
+      __$$_OptionCopyWithImpl<_$_Option>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_OptionToJson(this);
+    return _$$_OptionToJson(this);
   }
 }
 
 abstract class _Option implements Option {
-  factory _Option({required String name, required int value}) = _$_Option;
+  factory _Option({required final String name, required final int value}) =
+      _$_Option;
 
   factory _Option.fromJson(Map<String, dynamic> json) = _$_Option.fromJson;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  int get value => throw _privateConstructorUsedError;
+  int get value;
   @override
   @JsonKey(ignore: true)
-  _$OptionCopyWith<_Option> get copyWith => throw _privateConstructorUsedError;
+  _$$_OptionCopyWith<_$_Option> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 FormFieldData _$FormFieldDataFromJson(Map<String, dynamic> json) {
   return _FormFieldData.fromJson(json);
 }
-
-/// @nodoc
-class _$FormFieldDataTearOff {
-  const _$FormFieldDataTearOff();
-
-  _FormFieldData call(
-      {required FieldType type,
-      List<Option>? options,
-      required String label,
-      required bool blank}) {
-    return _FormFieldData(
-      type: type,
-      options: options,
-      label: label,
-      blank: blank,
-    );
-  }
-
-  FormFieldData fromJson(Map<String, Object> json) {
-    return FormFieldData.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $FormFieldData = _$FormFieldDataTearOff();
 
 /// @nodoc
 mixin _$FormFieldData {
@@ -260,25 +220,25 @@ class _$FormFieldDataCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$FormFieldDataCopyWith<$Res>
+abstract class _$$_FormFieldDataCopyWith<$Res>
     implements $FormFieldDataCopyWith<$Res> {
-  factory _$FormFieldDataCopyWith(
-          _FormFieldData value, $Res Function(_FormFieldData) then) =
-      __$FormFieldDataCopyWithImpl<$Res>;
+  factory _$$_FormFieldDataCopyWith(
+          _$_FormFieldData value, $Res Function(_$_FormFieldData) then) =
+      __$$_FormFieldDataCopyWithImpl<$Res>;
   @override
   $Res call({FieldType type, List<Option>? options, String label, bool blank});
 }
 
 /// @nodoc
-class __$FormFieldDataCopyWithImpl<$Res>
+class __$$_FormFieldDataCopyWithImpl<$Res>
     extends _$FormFieldDataCopyWithImpl<$Res>
-    implements _$FormFieldDataCopyWith<$Res> {
-  __$FormFieldDataCopyWithImpl(
-      _FormFieldData _value, $Res Function(_FormFieldData) _then)
-      : super(_value, (v) => _then(v as _FormFieldData));
+    implements _$$_FormFieldDataCopyWith<$Res> {
+  __$$_FormFieldDataCopyWithImpl(
+      _$_FormFieldData _value, $Res Function(_$_FormFieldData) _then)
+      : super(_value, (v) => _then(v as _$_FormFieldData));
 
   @override
-  _FormFieldData get _value => super._value as _FormFieldData;
+  _$_FormFieldData get _value => super._value as _$_FormFieldData;
 
   @override
   $Res call({
@@ -287,13 +247,13 @@ class __$FormFieldDataCopyWithImpl<$Res>
     Object? label = freezed,
     Object? blank = freezed,
   }) {
-    return _then(_FormFieldData(
+    return _then(_$_FormFieldData(
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as FieldType,
       options: options == freezed
-          ? _value.options
+          ? _value._options
           : options // ignore: cast_nullable_to_non_nullable
               as List<Option>?,
       label: label == freezed
@@ -313,17 +273,25 @@ class __$FormFieldDataCopyWithImpl<$Res>
 class _$_FormFieldData implements _FormFieldData {
   _$_FormFieldData(
       {required this.type,
-      this.options,
+      final List<Option>? options,
       required this.label,
-      required this.blank});
+      required this.blank})
+      : _options = options;
 
   factory _$_FormFieldData.fromJson(Map<String, dynamic> json) =>
-      _$_$_FormFieldDataFromJson(json);
+      _$$_FormFieldDataFromJson(json);
 
   @override
   final FieldType type;
+  final List<Option>? _options;
   @override
-  final List<Option>? options;
+  List<Option>? get options {
+    final value = _options;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String label;
   @override
@@ -337,84 +305,61 @@ class _$_FormFieldData implements _FormFieldData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FormFieldData &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.blank, blank) ||
-                const DeepCollectionEquality().equals(other.blank, blank)));
+        (other.runtimeType == runtimeType &&
+            other is _$_FormFieldData &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other._options, _options) &&
+            const DeepCollectionEquality().equals(other.label, label) &&
+            const DeepCollectionEquality().equals(other.blank, blank));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(options) ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(blank);
 
   @JsonKey(ignore: true)
   @override
-  _$FormFieldDataCopyWith<_FormFieldData> get copyWith =>
-      __$FormFieldDataCopyWithImpl<_FormFieldData>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(_options),
+      const DeepCollectionEquality().hash(label),
+      const DeepCollectionEquality().hash(blank));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_FormFieldDataCopyWith<_$_FormFieldData> get copyWith =>
+      __$$_FormFieldDataCopyWithImpl<_$_FormFieldData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_FormFieldDataToJson(this);
+    return _$$_FormFieldDataToJson(this);
   }
 }
 
 abstract class _FormFieldData implements FormFieldData {
   factory _FormFieldData(
-      {required FieldType type,
-      List<Option>? options,
-      required String label,
-      required bool blank}) = _$_FormFieldData;
+      {required final FieldType type,
+      final List<Option>? options,
+      required final String label,
+      required final bool blank}) = _$_FormFieldData;
 
   factory _FormFieldData.fromJson(Map<String, dynamic> json) =
       _$_FormFieldData.fromJson;
 
   @override
-  FieldType get type => throw _privateConstructorUsedError;
+  FieldType get type;
   @override
-  List<Option>? get options => throw _privateConstructorUsedError;
+  List<Option>? get options;
   @override
-  String get label => throw _privateConstructorUsedError;
+  String get label;
   @override
-  bool get blank => throw _privateConstructorUsedError;
+  bool get blank;
   @override
   @JsonKey(ignore: true)
-  _$FormFieldDataCopyWith<_FormFieldData> get copyWith =>
+  _$$_FormFieldDataCopyWith<_$_FormFieldData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 ProfileExtraMeta _$ProfileExtraMetaFromJson(Map<String, dynamic> json) {
   return _ProfileExtraMeta.fromJson(json);
 }
-
-/// @nodoc
-class _$ProfileExtraMetaTearOff {
-  const _$ProfileExtraMetaTearOff();
-
-  _ProfileExtraMeta call(
-      {required String question, required Map<String, FormFieldData> meta}) {
-    return _ProfileExtraMeta(
-      question: question,
-      meta: meta,
-    );
-  }
-
-  ProfileExtraMeta fromJson(Map<String, Object> json) {
-    return ProfileExtraMeta.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ProfileExtraMeta = _$ProfileExtraMetaTearOff();
 
 /// @nodoc
 mixin _$ProfileExtraMeta {
@@ -463,38 +408,38 @@ class _$ProfileExtraMetaCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ProfileExtraMetaCopyWith<$Res>
+abstract class _$$_ProfileExtraMetaCopyWith<$Res>
     implements $ProfileExtraMetaCopyWith<$Res> {
-  factory _$ProfileExtraMetaCopyWith(
-          _ProfileExtraMeta value, $Res Function(_ProfileExtraMeta) then) =
-      __$ProfileExtraMetaCopyWithImpl<$Res>;
+  factory _$$_ProfileExtraMetaCopyWith(
+          _$_ProfileExtraMeta value, $Res Function(_$_ProfileExtraMeta) then) =
+      __$$_ProfileExtraMetaCopyWithImpl<$Res>;
   @override
   $Res call({String question, Map<String, FormFieldData> meta});
 }
 
 /// @nodoc
-class __$ProfileExtraMetaCopyWithImpl<$Res>
+class __$$_ProfileExtraMetaCopyWithImpl<$Res>
     extends _$ProfileExtraMetaCopyWithImpl<$Res>
-    implements _$ProfileExtraMetaCopyWith<$Res> {
-  __$ProfileExtraMetaCopyWithImpl(
-      _ProfileExtraMeta _value, $Res Function(_ProfileExtraMeta) _then)
-      : super(_value, (v) => _then(v as _ProfileExtraMeta));
+    implements _$$_ProfileExtraMetaCopyWith<$Res> {
+  __$$_ProfileExtraMetaCopyWithImpl(
+      _$_ProfileExtraMeta _value, $Res Function(_$_ProfileExtraMeta) _then)
+      : super(_value, (v) => _then(v as _$_ProfileExtraMeta));
 
   @override
-  _ProfileExtraMeta get _value => super._value as _ProfileExtraMeta;
+  _$_ProfileExtraMeta get _value => super._value as _$_ProfileExtraMeta;
 
   @override
   $Res call({
     Object? question = freezed,
     Object? meta = freezed,
   }) {
-    return _then(_ProfileExtraMeta(
+    return _then(_$_ProfileExtraMeta(
       question: question == freezed
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
       meta: meta == freezed
-          ? _value.meta
+          ? _value._meta
           : meta // ignore: cast_nullable_to_non_nullable
               as Map<String, FormFieldData>,
     ));
@@ -504,15 +449,21 @@ class __$ProfileExtraMetaCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ProfileExtraMeta implements _ProfileExtraMeta {
-  _$_ProfileExtraMeta({required this.question, required this.meta});
+  _$_ProfileExtraMeta(
+      {required this.question, required final Map<String, FormFieldData> meta})
+      : _meta = meta;
 
   factory _$_ProfileExtraMeta.fromJson(Map<String, dynamic> json) =>
-      _$_$_ProfileExtraMetaFromJson(json);
+      _$$_ProfileExtraMetaFromJson(json);
 
   @override
   final String question;
+  final Map<String, FormFieldData> _meta;
   @override
-  final Map<String, FormFieldData> meta;
+  Map<String, FormFieldData> get meta {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_meta);
+  }
 
   @override
   String toString() {
@@ -522,45 +473,44 @@ class _$_ProfileExtraMeta implements _ProfileExtraMeta {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProfileExtraMeta &&
-            (identical(other.question, question) ||
-                const DeepCollectionEquality()
-                    .equals(other.question, question)) &&
-            (identical(other.meta, meta) ||
-                const DeepCollectionEquality().equals(other.meta, meta)));
+        (other.runtimeType == runtimeType &&
+            other is _$_ProfileExtraMeta &&
+            const DeepCollectionEquality().equals(other.question, question) &&
+            const DeepCollectionEquality().equals(other._meta, _meta));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(question) ^
-      const DeepCollectionEquality().hash(meta);
 
   @JsonKey(ignore: true)
   @override
-  _$ProfileExtraMetaCopyWith<_ProfileExtraMeta> get copyWith =>
-      __$ProfileExtraMetaCopyWithImpl<_ProfileExtraMeta>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(question),
+      const DeepCollectionEquality().hash(_meta));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_ProfileExtraMetaCopyWith<_$_ProfileExtraMeta> get copyWith =>
+      __$$_ProfileExtraMetaCopyWithImpl<_$_ProfileExtraMeta>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ProfileExtraMetaToJson(this);
+    return _$$_ProfileExtraMetaToJson(this);
   }
 }
 
 abstract class _ProfileExtraMeta implements ProfileExtraMeta {
   factory _ProfileExtraMeta(
-      {required String question,
-      required Map<String, FormFieldData> meta}) = _$_ProfileExtraMeta;
+      {required final String question,
+      required final Map<String, FormFieldData> meta}) = _$_ProfileExtraMeta;
 
   factory _ProfileExtraMeta.fromJson(Map<String, dynamic> json) =
       _$_ProfileExtraMeta.fromJson;
 
   @override
-  String get question => throw _privateConstructorUsedError;
+  String get question;
   @override
-  Map<String, FormFieldData> get meta => throw _privateConstructorUsedError;
+  Map<String, FormFieldData> get meta;
   @override
   @JsonKey(ignore: true)
-  _$ProfileExtraMetaCopyWith<_ProfileExtraMeta> get copyWith =>
+  _$$_ProfileExtraMetaCopyWith<_$_ProfileExtraMeta> get copyWith =>
       throw _privateConstructorUsedError;
 }

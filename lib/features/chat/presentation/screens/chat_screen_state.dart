@@ -7,7 +7,6 @@ import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
-import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
 
 final chatStateProvider = StateNotifierProvider.autoDispose
     .family<ChatScreenState, ApiResult<List<ChatMessage>>, String>(
@@ -70,13 +69,18 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
 
     subscription = messagesStream.listen((event) {
       for (final element in event.docChanges) {
-        final json = element.doc.data();
-        final newItem = ChatMessageModel.fromJson(json!);
+        final json = element.doc.data() as Map<String, dynamic>?;
+        if (json == null) {
+          continue;
+        }
+        final newItem = ChatMessage.fromJson(json);
         newItem.firebaseId = element.doc.id;
 
         // Remove old item
-        final item = messages.firstWhere((e) => e.firebaseId == element.doc.id,
-            orElse: () => ChatMessage());
+        final item = messages.firstWhere(
+          (e) => e.firebaseId == element.doc.id,
+          orElse: () => ChatMessage(),
+        );
         if (item.firebaseId != null) {
           messages.remove(item);
         }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseLargeIconButton extends MaterialButton {
   final IconData icon;

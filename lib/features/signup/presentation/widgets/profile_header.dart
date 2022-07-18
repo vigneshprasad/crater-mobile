@@ -24,20 +24,21 @@ class ProfileHeader extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: headingStyle,
+          ),
+          const SizedBox(height: 20),
+          if (subtitle != null)
             Text(
-              title,
-              style: headingStyle,
+              subtitle!,
+              style: subHeadingStyle,
             ),
-            const SizedBox(height: 20),
-            if (subtitle != null)
-              Text(
-                subtitle!,
-                style: subHeadingStyle,
-              ),
-          ]),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
-import '../../../../ui/base/base_error_text/base_error_text.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/base_error_text/base_error_text.dart';
 
 const _kItemHeight = 44.00;
 typedef LabelGetterFunc<T> = String Function(T item);
@@ -138,7 +138,7 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
     setState(() {
       isOpen = !isOpen;
       if (isOpen) {
-        WidgetsBinding.instance?.addPostFrameCallback((_) => _insertOverlay());
+        WidgetsBinding.instance.addPostFrameCallback((_) => _insertOverlay());
       } else {
         _removeOverlay();
       }
@@ -176,21 +176,23 @@ class _BaseMultiSelectDropdownState<T> extends State<BaseMultiSelectDropdown<T>>
       width: width,
       child: Wrap(
         children: _selected
-            .map((selected) => Padding(
-                  padding: const EdgeInsets.only(right: AppInsets.med),
-                  child: Chip(
-                    label: Text(
-                      widget.labelGetter(selected),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    deleteIconColor: Theme.of(context).primaryColor,
-                    onDeleted: () {
-                      setState(() {
-                        _selected = _selected..remove(selected);
-                      });
-                    },
+            .map(
+              (selected) => Padding(
+                padding: const EdgeInsets.only(right: AppInsets.med),
+                child: Chip(
+                  label: Text(
+                    widget.labelGetter(selected),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ))
+                  deleteIconColor: Theme.of(context).primaryColor,
+                  onDeleted: () {
+                    setState(() {
+                      _selected = _selected..remove(selected);
+                    });
+                  },
+                ),
+              ),
+            )
             .toList(),
       ),
     );

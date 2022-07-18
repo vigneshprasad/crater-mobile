@@ -5,7 +5,7 @@ import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/profile/presentation/widget/profile_header.dart';
 
-import '../../../../../../routes.gr.dart';
+import 'package:worknetwork/routes.gr.dart';
 
 class ProfileAppBar extends HookWidget {
   const ProfileAppBar({
@@ -26,7 +26,6 @@ class ProfileAppBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     const imageRatio = 350.0 / 1400.0;
     final imageHeight = MediaQuery.of(context).size.width * imageRatio;
     final height = imageHeight + 120 + MediaQuery.of(context).padding.top;
@@ -38,12 +37,13 @@ class ProfileAppBar extends HookWidget {
       backgroundColor: Theme.of(context).dialogBackgroundColor,
       expandedHeight: height,
       flexibleSpace: FlexibleSpaceBar(
-          background: ProfileHeader(
-        height: imageHeight,
-        profile: profile,
-        creator: creator,
-        showConnect: profile?.canConnect ?? false,
-      )),
+        background: ProfileHeader(
+          height: imageHeight,
+          profile: profile,
+          creator: creator,
+          showConnect: profile?.canConnect ?? false,
+        ),
+      ),
       pinned: true,
       floating: true,
       shadowColor: Colors.grey,
@@ -51,15 +51,16 @@ class ProfileAppBar extends HookWidget {
         if (allowEdit)
           IconButton(
             icon: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                padding: const EdgeInsets.all(4),
-                child: Icon(
-                  Icons.edit,
-                  color: Theme.of(context).buttonColor,
-                )),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              padding: const EdgeInsets.all(4),
+              child: Icon(
+                Icons.edit,
+                color: Theme.of(context).buttonColor,
+              ),
+            ),
             onPressed: () => AutoRouter.of(context).push(
               ProfileBasicScreenRoute(editMode: true),
             ),
@@ -81,13 +82,16 @@ class ProfileAppBar extends HookWidget {
                     index.value = i;
                   },
                   tabs: tabs
-                      .map((e) => Tab(
-                              child: Column(
+                      .map(
+                        (e) => Tab(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(e),
                             ],
-                          )))
+                          ),
+                        ),
+                      )
                       .toList(),
                 ),
               ),

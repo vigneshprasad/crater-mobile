@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseLargeButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -17,7 +17,6 @@ class BaseLargeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = MediaQuery.of(context).size.width * 0.6;
     const buttonHeight = 40.00;
     final textStyle = Theme.of(context)
         .textTheme
@@ -26,8 +25,8 @@ class BaseLargeButton extends StatelessWidget {
     final color = outlined
         ? null
         : enabled
-            ? Theme.of(context).accentColor
-            : Theme.of(context).accentColor.withAlpha(70);
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.secondary.withAlpha(70);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),

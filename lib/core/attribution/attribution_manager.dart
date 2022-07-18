@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../config_reader/config_reader.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 final attributionManagerProvider =
     Provider<AttributionManager>((_) => AttributionManagerImpl());
@@ -78,7 +78,7 @@ class AttributionManagerImpl implements AttributionManager {
 
   Future<void> _setupAttribution() async {
     _appsflyerSdk?.onInstallConversionData((res) {
-      debugPrint("res: " + res.toString());
+      debugPrint("res: $res");
       final result = res as Map?;
       final payload = result?['payload'] as Map?;
 
@@ -106,7 +106,7 @@ class AttributionManagerImpl implements AttributionManager {
     });
 
     _appsflyerSdk?.onAppOpenAttribution((res) {
-      debugPrint("res: " + res.toString());
+      debugPrint("res: $res");
       final result = res as Map?;
       final payload = result?['payload'] as Map?;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseInput extends StatelessWidget {
   final String? label;

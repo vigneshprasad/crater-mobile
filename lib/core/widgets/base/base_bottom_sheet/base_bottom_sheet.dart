@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseBottomSheet extends StatelessWidget {
   final bool showIndicator;
@@ -18,7 +18,9 @@ class BaseBottomSheet extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.xxl, horizontal: AppInsets.xl),
+        vertical: AppInsets.xxl,
+        horizontal: AppInsets.xl,
+      ),
       child: Column(
         children: [
           if (showIndicator)

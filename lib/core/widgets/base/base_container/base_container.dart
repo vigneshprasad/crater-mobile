@@ -43,52 +43,59 @@ class _BaseContainerState extends State<BaseContainer> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               decoration: BoxDecoration(
-                  color: color,
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(widget.radius)),
-                  boxShadow: _isPressed
-                      ? null
-                      : [
-                          const BoxShadow(
-                              color: Colors.black38,
-                              offset: Offset(5.0, 5.0),
-                              blurRadius: 5.0,
-                              spreadRadius: 1.0),
-                          BoxShadow(
-                              color: Colors.white10.withAlpha(15),
-                              offset: const Offset(-5.0, -5.0),
-                              blurRadius: 5.0,
-                              spreadRadius: 1.0),
-                        ]),
+                color: color,
+                borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+                boxShadow: _isPressed
+                    ? null
+                    : [
+                        const BoxShadow(
+                          color: Colors.black38,
+                          offset: Offset(5.0, 5.0),
+                          blurRadius: 5.0,
+                          spreadRadius: 1.0,
+                        ),
+                        BoxShadow(
+                          color: Colors.white10.withAlpha(15),
+                          offset: const Offset(-5.0, -5.0),
+                          blurRadius: 5.0,
+                          spreadRadius: 1.0,
+                        ),
+                      ],
+              ),
               child: Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(widget.radius))),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.radius)),
+                ),
                 child: widget.child,
               ),
-            ))
+            ),
+          )
         : Container(
             decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
-                boxShadow: [
-                  const BoxShadow(
-                      color: Colors.black38,
-                      offset: Offset(5.0, 5.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0),
-                  BoxShadow(
-                      color: Colors.white10.withAlpha(15),
-                      offset: const Offset(-5.0, -5.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0),
-                ]),
+              color: color,
+              borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+              boxShadow: [
+                const BoxShadow(
+                  color: Colors.black38,
+                  offset: Offset(5.0, 5.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                ),
+                BoxShadow(
+                  color: Colors.white10.withAlpha(15),
+                  offset: const Offset(-5.0, -5.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                ),
+              ],
+            ),
             child: Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(widget.radius))),
+                borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+              ),
               child: widget.child,
             ),
           );

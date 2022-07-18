@@ -1,18 +1,17 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
 
 enum RtcConnection { connected, connecting, disconnected }
 
 final pastStreamStateProvider = StateNotifierProvider.autoDispose
     .family<PastStreamState, ApiResult<Conversation>, int>(
-        (ref, id) => PastStreamState(ref.read, id));
+  (ref, id) => PastStreamState(ref.read, id),
+);
 
 class RtcConnectionState extends ChangeNotifier {
   RtcConnection _connection;

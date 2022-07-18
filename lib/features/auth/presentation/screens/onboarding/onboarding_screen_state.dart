@@ -13,7 +13,5 @@ class OnboardingState {
 
   Future<bool> getOnboardingKey() async {
     return true; // Disabled
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(onboardingKey) ?? false;
   }
 }

@@ -4,8 +4,8 @@ import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 
-import '../../../data/repository/profile_repository_impl.dart';
-import '../../../domain/repository/profile_repository.dart';
+import 'package:worknetwork/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:worknetwork/features/profile/domain/repository/profile_repository.dart';
 
 final getProfileNotifierProvider = StateNotifierProvider.autoDispose
     .family<GetProfileNotifier, AsyncValue<_ProfileScreenState>, String>(
@@ -46,9 +46,6 @@ class GetProfileNotifier
     }
 
     final Map<String, String> meta = {};
-    if (_profile.tagList != null && _profile.tagList!.isNotEmpty && _profile.tagList?.first.name != null) {
-      meta['Profession'] = _profile.tagList?.first.name ?? '';
-    }
     if (_profile.sectorDetail != null) {
       meta['Sector'] = _profile.sectorDetail?.name ?? '';
     }

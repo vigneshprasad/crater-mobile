@@ -1,28 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:linkedin_login/linkedin_login.dart';
-import 'package:worknetwork/core/config_reader/config_reader.dart';
-import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
-
-import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/theme.dart';
-import '../../../../../core/error/failures.dart';
-import '../../../../../core/widgets/base/base_container/base_container.dart';
-import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
-import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/base_large_button/base_large_button.dart';
-import '../../../../../ui/base/social_auth_button/social_auth_button.dart';
-import '../../../../../utils/app_localizations.dart';
-import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
-import '../../../../social_auth/domain/usecase/get_social_auth_token.dart';
-import '../../bloc/auth_bloc.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -31,7 +13,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  late AuthBloc _authBloc;
   late TabController _tabController;
   late int _activeIndex;
 
@@ -59,18 +40,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       subheading:
           "Missed a stream? Not a problem. You can explore past streams as well.",
     ),
-    // _ImageSlide(
-    //   image: AppImageAssets.splashConversation,
-    //   heading: "Your 1:1 or group conversation is set up",
-    //   subheading:
-    //       "You will be matched with 1 or more people, for a conversation.",
-    // ),
-    // _ImageSlide(
-    //   image: AppImageAssets.splashVirtual,
-    //   heading: "Step 3: Join the call",
-    //   subheading:
-    //       "All you have to do is join the call & start conversing & networking.",
-    // ),
   ];
 
   @override
@@ -78,7 +47,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _tabController = TabController(length: _tabs.length, vsync: this);
     _activeIndex = _tabController.index;
     _tabController.addListener(_tabChangeListener);
-    _authBloc = BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
 
@@ -97,100 +65,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthStateSuccess) {
-          // navigatePostAuth(state.user, profile: state.profile);
-        } else if (state is AuthRequestFailure) {
-          _handleRequestError(state);
-        }
-      },
-      child: Scaffold(
-        body: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            return ScaffoldContainer(
-              child: SafeArea(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    TabBarView(
-                      controller: _tabController,
-                      children: _tabs,
-                    ),
-                    Positioned(
-                      bottom: 20,
-                      child: _buildViewContent(context),
-                    ),
-                    if (state.isSubmitting != null && state.isSubmitting!)
-                      _buildOverlay(context)
-                  ],
-                ),
+    return Scaffold(
+      body: ScaffoldContainer(
+        child: SafeArea(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              TabBarView(
+                controller: _tabController,
+                children: _tabs,
               ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOverlay(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black.withOpacity(0.7),
-      child: Center(
-        child: Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            color: Theme.of(context).dialogBackgroundColor,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SizedBox(
-                height: 32,
-                width: 32,
-                child: CircularProgressIndicator(),
+              Positioned(
+                bottom: 20,
+                child: _buildViewContent(context),
               ),
-              SizedBox(height: AppInsets.xl),
-              Text("Loading..."),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _handleRequestError(AuthRequestFailure state) {
-    final failure = state.error as ServerFailure;
-    if (failure.message != null) {
-      final json = jsonDecode(failure.message.toString());
-      showDialog(
-        context: context,
-        builder: (context) {
-          final title =
-              AppLocalizations.of(context)?.translate("auth:login_fail_title");
-          final dismiss =
-              AppLocalizations.of(context)?.translate("dismiss")?.toUpperCase();
-          return AlertDialog(
-            title: Text(title!),
-            content: Text(json["non_field_errors"][0] as String),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  AutoRouter.of(context).pop();
-                },
-                child: Text(dismiss!),
-              )
-            ],
-          );
-        },
-      );
-    } else {
-      Fluttertoast.showToast(msg: 'Some error occurred');
-    }
   }
 
   Widget _buildViewContent(BuildContext context) {
@@ -244,197 +137,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       return;
     }
 
-    navigatePostAuth(null);
-
-    return;
-
-    showModalBottomSheet(
-      elevation: 10,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) {
-        return _popup(context, isSignUp: isSignUp);
-      },
-    );
-  }
-
-  Widget _popup(BuildContext context, {bool isSignUp = true}) {
-    final headerText = isSignUp ? 'Create a new account' : 'Sign in';
-    final subHeaderText = !isSignUp
-        ? 'To continue conversing & growing your network.'
-        : 'Have conversations & grow your network.';
-
-    final buttonWidth = MediaQuery.of(context).size.width / 2 - 55;
-    const buttonHeight = 112.0;
-
-    return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-          ),
-          padding: const EdgeInsets.all(40),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        headerText,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(fontSize: 17),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(subHeaderText),
-                    ],
-                  ),
-                ),
-                Wrap(
-                  spacing: 30,
-                  runSpacing: 30,
-                  children: [
-                    if (!isSignUp)
-                      BaseContainer(
-                        child: SizedBox(
-                          width: buttonWidth,
-                          height: buttonHeight,
-                          child: SocialAuthButton(
-                            provider: SocialAuthProviders.google,
-                            isLarge: true,
-                            isSignUp: isSignUp,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _authBloc.add(const AuthSocialPressed(
-                                  provider: SocialAuthProviders.google));
-                            },
-                          ),
-                        ),
-                      ),
-                    if (Platform.isIOS)
-                      BaseContainer(
-                        child: SizedBox(
-                          width: buttonWidth,
-                          height: buttonHeight,
-                          child: SocialAuthButton(
-                            provider: SocialAuthProviders.apple,
-                            isLarge: true,
-                            isSignUp: isSignUp,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _authBloc.add(const AuthSocialPressed(
-                                  provider: SocialAuthProviders.apple));
-                            },
-                          ),
-                        ),
-                      ),
-                    BaseContainer(
-                      child: SizedBox(
-                        width: buttonWidth,
-                        height: buttonHeight,
-                        child: SocialAuthButton(
-                          provider: SocialAuthProviders.linkedin,
-                          isLarge: true,
-                          isSignUp: isSignUp,
-                          onPressed: _onPressedLinkedIn,
-                        ),
-                      ),
-                    ),
-                    if (!isSignUp)
-                      BaseContainer(
-                        child: SizedBox(
-                          width: buttonWidth,
-                          height: buttonHeight,
-                          child: SocialAuthButton(
-                            provider: SocialAuthProviders.facebook,
-                            isLarge: true,
-                            isSignUp: isSignUp,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _authBloc.add(const AuthSocialPressed(
-                                  provider: SocialAuthProviders.facebook));
-                            },
-                          ),
-                        ),
-                      ),
-                    if (!isSignUp || !kReleaseMode)
-                      BaseContainer(
-                        child: SizedBox(
-                          width: buttonWidth,
-                          height: buttonHeight,
-                          child: SocialAuthButton(
-                            provider: SocialAuthProviders.email,
-                            isLarge: true,
-                            isSignUp: isSignUp,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _openSignupAuthScreen(isSignUp, context);
-                            },
-                          ),
-                        ),
-                      ),
-                    if (!isSignUp)
-                      BaseContainer(
-                        child: SizedBox(
-                          width: buttonWidth,
-                          height: buttonHeight,
-                          child: SocialAuthButton(
-                            provider: SocialAuthProviders.phone,
-                            isLarge: true,
-                            isSignUp: isSignUp,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _openPhoneAuthScreen(isSignUp, context);
-                            },
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  void _onPressedLinkedIn() {
-    Navigator.of(context).pop();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return LinkedInUserWidget(
-        appBar: BaseAppBar(),
-        redirectUrl: ConfigReader.getLinkedInRedirect(),
-        clientId: ConfigReader.getLinkedInClientId(),
-        clientSecret: ConfigReader.getLinkedInSecret(),
-        onGetUserProfile: (UserSucceededAction linkedInUser) async {
-          Navigator.of(context).pop();
-          _authBloc.add(AuthLinkedTokenRecieved(
-              token: linkedInUser.user.token.accessToken!));
-        },
-        onError: (UserFailedAction e) {
-          Navigator.of(context).pop();
-          Fluttertoast.showToast(msg: e.toString());
-        },
-      );
-    }));
-  }
-
-  void _openSignupAuthScreen(bool showSignup, BuildContext context) {
-    final state = showSignup ? "signup" : "signin";
-    AutoRouter.of(context).push(AuthScreenRoute(state: state));
-  }
-
-  void _openPhoneAuthScreen(bool isSignUp, BuildContext context) {
-    final state = isSignUp ? "signup" : "signin";
-    AutoRouter.of(context).push(PhoneScreenRoute(state: state));
+    AutoRouter.of(context).navigate(HomeScreenRoute());
   }
 }
 
@@ -442,14 +145,12 @@ class _ImageSlide extends StatelessWidget {
   final ImageProvider image;
   final String heading;
   final String subheading;
-  final double imageWidth;
 
   const _ImageSlide({
     Key? key,
     required this.image,
     required this.heading,
     required this.subheading,
-    this.imageWidth = double.infinity,
   }) : super(key: key);
 
   @override
@@ -464,30 +165,32 @@ class _ImageSlide extends StatelessWidget {
         );
     return Container(
       padding: const EdgeInsets.only(bottom: 200),
-      child: Column(children: [
-        const SizedBox(height: 80),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            heading,
-            style: headingStyle,
+      child: Column(
+        children: [
+          const SizedBox(height: 80),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              heading,
+              style: headingStyle,
+            ),
           ),
-        ),
-        const Spacer(),
-        Image(
-          image: image,
-          width: imageWidth,
-        ),
-        const Spacer(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            subheading,
-            textAlign: TextAlign.center,
-            style: subheadingStyle,
+          const Spacer(),
+          Image(
+            image: image,
+            width: double.infinity,
           ),
-        )
-      ]),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              subheading,
+              textAlign: TextAlign.center,
+              style: subheadingStyle,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,19 +11,18 @@ import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/base/base_multi_select_dropdown/base_multi_select_dropdown.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_request_entity.dart';
 import 'package:worknetwork/features/hub/data/repository/cover_image_repository.dart';
 import 'package:worknetwork/features/hub/presentation/screen/create_stream_screen_state.dart';
 import 'package:worknetwork/features/hub/presentation/widgets/stream_cover_picker.dart';
+import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
-import '../../../../routes.gr.dart';
-
-class CreateStreamScreen extends HookWidget {
+class CreateStreamScreen extends HookConsumerWidget {
   CreateStreamScreen({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -37,8 +35,8 @@ class CreateStreamScreen extends HookWidget {
   OverlayEntry? overlayEntry;
 
   @override
-  Widget build(BuildContext context) {
-    final createStreamState = useProvider(createStreamProvider(0));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final createStreamState = ref.watch(createStreamProvider(0));
 
     final _titleController = useTextEditingController();
     final _coHostController = useTextEditingController();
@@ -55,13 +53,11 @@ class CreateStreamScreen extends HookWidget {
     final scrollController = useScrollController();
 
     Future _generateImage() async {
-      final isValid = _formKey.currentState?.validate();
-
       final topic = _titleController.text;
       String? avtarUrl;
       String _name;
 
-      final user = BlocProvider.of<AuthBloc>(context).state.user;
+      final user = ref.read(authStateProvider.notifier).getUser();
       if (user != null) {
         avtarUrl = user.photo;
         _name = user.name ?? '';
@@ -83,13 +79,13 @@ class CreateStreamScreen extends HookWidget {
         overlayEntry = buildLoaderOverlay();
         Overlay.of(context)?.insert(overlayEntry!);
 
-        final response = await context
+        final response = await ref
             .read(coverImageRepositoryProvider)
             .postGenerateImage(topic, avtarUrl);
 
         response.fold((failure) {
           overlayEntry?.remove();
-          Fluttertoast.showToast(msg: failure.message!);
+          Fluttertoast.showToast(msg: failure.message.toString());
         }, (imageUrl) {
           overlayEntry?.remove();
           base64Image = imageUrl;
@@ -105,7 +101,7 @@ class CreateStreamScreen extends HookWidget {
 
     Future<void> _onChoosePhoto(File file) async {
       final bytes = file.readAsBytesSync();
-      base64Image = 'data:image/jpeg;base64,' + base64Encode(bytes);
+      base64Image = 'data:image/jpeg;base64,${base64Encode(bytes)}';
       coverImageUrl.value = null;
     }
 
@@ -133,13 +129,12 @@ class CreateStreamScreen extends HookWidget {
         description: _descriptionController.text,
       );
 
-      final response = await context
-          .read(conversationRepositoryProvider)
-          .postWebinar(request);
+      final response =
+          await ref.read(conversationRepositoryProvider).postWebinar(request);
 
       response.fold((failure) {
         overlayEntry?.remove();
-        Fluttertoast.showToast(msg: failure.message!);
+        Fluttertoast.showToast(msg: failure.message.toString());
       }, (webinar) {
         overlayEntry?.remove();
         _formKey.currentState?.reset();
@@ -194,18 +189,19 @@ class CreateStreamScreen extends HookWidget {
                     ),
                     const SizedBox(height: AppPadding.sm),
                     BaseMultiSelectDropdownFormField<CategoriesDetailList>(
-                        label: 'PICK CATEGORIES',
-                        maxLength: 3,
-                        items: state.categories,
-                        labelGetter: (lbl) => lbl.name ?? '',
-                        validator: (value) {
-                          return (value == null || value.isEmpty)
-                              ? 'Select a value'
-                              : null;
-                        },
-                        onChanged: (value) {
-                          categories = value;
-                        }),
+                      label: 'PICK CATEGORIES',
+                      maxLength: 3,
+                      items: state.categories,
+                      labelGetter: (lbl) => lbl.name ?? '',
+                      validator: (value) {
+                        return (value == null || value.isEmpty)
+                            ? 'Select a value'
+                            : null;
+                      },
+                      onChanged: (value) {
+                        categories = value;
+                      },
+                    ),
                     const SizedBox(height: AppPadding.med),
                     // Text(
                     //   'Co-host',
@@ -232,34 +228,35 @@ class CreateStreamScreen extends HookWidget {
                     const SizedBox(height: AppPadding.sm),
                     DateTimePicker(
                       decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: borderRadius,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                            ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
                           ),
-                          border: const OutlineInputBorder(
-                            borderRadius: borderRadius,
+                        ),
+                        border: const OutlineInputBorder(
+                          borderRadius: borderRadius,
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: borderRadius,
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Theme.of(context).errorColor,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: borderRadius,
-                            borderSide: BorderSide(
-                              width: 2,
-                              color: Theme.of(context).errorColor,
-                            ),
-                          ),
-                          filled: true,
-                          hintText: '',
-                          hintStyle:
-                              Theme.of(context).textTheme.bodyText2?.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  ),
-                          labelStyle: const TextStyle(fontSize: 16),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: AppInsets.med,
-                            horizontal: AppInsets.l,
-                          )),
+                        ),
+                        filled: true,
+                        hintText: '',
+                        hintStyle:
+                            Theme.of(context).textTheme.bodyText2?.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.grey,
+                                ),
+                        labelStyle: const TextStyle(fontSize: 16),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: AppInsets.med,
+                          horizontal: AppInsets.l,
+                        ),
+                      ),
                       type: DateTimePickerType.dateTime,
                       initialValue: '',
                       initialDate: DateTime.now().add(const Duration(days: 2)),

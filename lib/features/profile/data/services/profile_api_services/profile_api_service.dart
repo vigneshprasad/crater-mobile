@@ -1,19 +1,20 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../api/interceptors/authorized_interceptor.dart';
-import '../../../../../core/config_reader/config_reader.dart';
+import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'profile_api_service.chopper.dart';
 
-final profileApiServiceProvider = Provider((_) => ProfileApiService.create());
+final profileApiServiceProvider =
+    Provider((ref) => ProfileApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class ProfileApiService extends ChopperService {
-  static ProfileApiService create() {
+  static ProfileApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
-      interceptors: [AuthorizedInterceptor()],
+      interceptors: [read(authInterceptorProvider)],
       services: [_$ProfileApiService()],
       converter: const JsonConverter(),
     );

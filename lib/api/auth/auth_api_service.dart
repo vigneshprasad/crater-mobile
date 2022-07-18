@@ -2,16 +2,16 @@ import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
 
-import '../../core/config_reader/config_reader.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'auth_api_service.chopper.dart';
 
 final authApiServiceProvider =
-    Provider<AuthApiService>((_) => AuthApiService.create());
+    Provider<AuthApiService>((ref) => AuthApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class AuthApiService extends ChopperService {
-  static AuthApiService create() {
+  static AuthApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
@@ -20,36 +20,12 @@ abstract class AuthApiService extends ChopperService {
       converter: const JsonConverter(),
       interceptors: [
         HttpLoggingInterceptor(),
-        AuthorizedInterceptor(),
+        read(authInterceptorProvider),
       ],
     );
     return _$AuthApiService(client);
   }
 
-  @Post(path: 'login/')
-  Future<Response> loginWithEmail(@Body() Map<String, dynamic> body);
-
   @Post(path: 'logout/')
   Future<Response> logout(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'registration/')
-  Future<Response> registerWithEmail(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'social/google/')
-  Future<Response> authWithGoogle(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'social/apple/')
-  Future<Response> authWithApple(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'social/facebook/')
-  Future<Response> authWithFacebook(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'social/linkedin/')
-  Future<Response> authWithLinkedin(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'password/reset/')
-  Future<Response> postPasswordReset(@Body() Map<String, dynamic> body);
-
-  @Post(path: 'password/reset/confirm/')
-  Future<Response> postNewPassword(@Body() Map<String, dynamic> body);
 }

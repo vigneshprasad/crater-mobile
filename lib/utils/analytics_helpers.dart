@@ -1,5 +1,5 @@
-import '../features/auth/domain/entity/user_entity.dart';
-import '../features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 
 Map<String, dynamic> getUserTraitsFromModel(User user) {
   return {
@@ -16,7 +16,7 @@ Map<String, dynamic> getUserTraitsFromModel(User user) {
 
 Map<String, dynamic> getProfileTraitsFromModel(UserProfile profile) {
   return {
-    "user_tags": profile.tagList?.map((e) => e.name).toList(),
+    // "user_tags": profile.tagList?.map((e) => e.name).toList(),
     "role": profile.role,
     "has_introduction": profile.introduction?.isNotEmpty ?? false,
   };

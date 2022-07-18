@@ -3,8 +3,8 @@
 //     final webinar = webinarFromJson(jsonString);
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../conversation_entity/conversation_entity.dart';
-import '../topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
 
 part 'webinar_entity.freezed.dart';
 part 'webinar_entity.g.dart';

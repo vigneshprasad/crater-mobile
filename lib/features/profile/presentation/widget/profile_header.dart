@@ -1,19 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
-import 'package:worknetwork/features/connection/presentation/screen/time_slots/timeslots_screen.dart';
-import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
-
-import '../../../../routes.gr.dart';
-import 'gradient_button.dart';
+import 'package:worknetwork/features/profile/presentation/widget/gradient_button.dart';
 
 class ProfileHeader extends HookWidget {
   final UserProfile? profile;
@@ -37,10 +28,18 @@ class ProfileHeader extends HookWidget {
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           color: Theme.of(context).scaffoldBackgroundColor,
           child: (profile?.coverFile != null)
-              ? Image.network(profile?.coverFile ?? '',
-                  fit: BoxFit.contain, width: double.infinity, height: height)
-              : Image.asset('assets/images/logo.png',
-                  fit: BoxFit.cover, width: double.infinity, height: height),
+              ? Image.network(
+                  profile?.coverFile ?? '',
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                  height: height,
+                )
+              : Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: height,
+                ),
         ),
         Positioned(
           bottom: 0,
@@ -50,7 +49,11 @@ class ProfileHeader extends HookWidget {
             color: Theme.of(context).canvasColor,
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 16, bottom: 50),
+                left: 20,
+                right: 20,
+                top: 16,
+                bottom: 50,
+              ),
               child: Column(
                 children: [
                   Row(
@@ -58,7 +61,9 @@ class ProfileHeader extends HookWidget {
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context).accentColor, width: 2.5),
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2.5,
+                          ),
                           borderRadius: BorderRadius.circular(56),
                         ),
                         child: Padding(
@@ -88,7 +93,8 @@ class ProfileHeader extends HookWidget {
                                     creator!.certified == true)
                                   Icon(
                                     Icons.check_circle_outlined,
-                                    color: Theme.of(context).accentColor,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                   ),
                               ],
                             ),
@@ -101,12 +107,13 @@ class ProfileHeader extends HookWidget {
                             const SizedBox(height: 8),
                             if (showConnect)
                               Positioned(
-                                  bottom: 50,
-                                  right: 20,
-                                  child: GradientButton(
-                                    onPressed: () => _showTimeSlots(context),
-                                    title: 'JOIN CLUB',
-                                  ))
+                                bottom: 50,
+                                right: 20,
+                                child: GradientButton(
+                                  onPressed: () => {},
+                                  title: 'FOLLOW',
+                                ),
+                              )
                           ],
                         ),
                     ],
@@ -117,31 +124,6 @@ class ProfileHeader extends HookWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Future<void> _showTimeSlots(BuildContext context) async {
-
-    final token = BlocProvider.of<AuthBloc>(context).state.user?.token;
-    if (token == null) {
-      // Show login
-      AutoRouter.of(context).push(const WelcomeScreenRoute());
-      return;
-    }
-    
-    showModalBottomSheet(
-      elevation: 10,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-            topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
-          ),
-          child: TimeSlotsScreen(profileId: profile!.uuid!),
-        );
-      },
     );
   }
 
@@ -168,7 +150,9 @@ class ProfileHeader extends HookWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
           image: const DecorationImage(
-              image: AppImageAssets.defaultAvatar, fit: BoxFit.cover),
+            image: AppImageAssets.defaultAvatar,
+            fit: BoxFit.cover,
+          ),
         ),
       );
     }

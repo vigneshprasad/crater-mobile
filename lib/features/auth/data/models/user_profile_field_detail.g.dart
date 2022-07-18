@@ -7,11 +7,10 @@ part of 'user_profile_field_detail.dart';
 // **************************************************************************
 
 UserProfileFieldDetailModel _$UserProfileFieldDetailModelFromJson(
-    Map<String, dynamic> json) {
-  return UserProfileFieldDetailModel(
-    name: json['name'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    UserProfileFieldDetailModel(
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$UserProfileFieldDetailModelToJson(
         UserProfileFieldDetailModel instance) =>

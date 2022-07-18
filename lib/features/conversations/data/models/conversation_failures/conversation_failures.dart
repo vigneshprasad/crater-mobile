@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../core/error/failures/failures.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 
 part 'conversation_failures.freezed.dart';
 part 'conversation_failures.g.dart';
@@ -24,7 +24,6 @@ enum ConversationFailuresType {
 
 @freezed
 abstract class ConversationFailure extends Failure with _$ConversationFailure {
-  @Implements(Failure)
   factory ConversationFailure({
     @JsonKey(name: "error_message") String? message,
     @Default(ConversationFailuresType.genericError)

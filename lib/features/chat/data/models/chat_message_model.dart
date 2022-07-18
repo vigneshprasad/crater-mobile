@@ -1,65 +1,43 @@
-import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:worknetwork/constants/app_hive_boxes.dart';
-import 'package:worknetwork/features/chat/domain/entity/chat_message_entity.dart';
-import 'package:worknetwork/features/chat_inbox/data/models/chat_user_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:worknetwork/features/chat/data/models/chat_user_model.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 
 part 'chat_message_model.g.dart';
 
-// ignore_for_file: annotate_overrides
-// ignore_for_file: overridden_fields
-
-@HiveType(typeId: AppHiveTypeIds.chatMessage)
 @JsonSerializable()
-class ChatMessageModel extends ChatMessage {
-  @HiveField(0)
+class ChatMessage {
   final String? message;
 
-  @HiveField(1)
   final String? file;
 
-  @HiveField(2)
   final String? filename;
 
-  @HiveField(3)
   final String? fileFormat;
 
-  @HiveField(4)
   final String? sender;
 
-  @HiveField(5)
   final String? receiver;
 
-  @HiveField(6)
   final int? pk;
 
-  @HiveField(7)
   final String? photo;
 
-  @HiveField(8)
-  @JsonKey(name: "created_at")
   final dynamic created;
 
-  @HiveField(9)
   @JsonKey(name: "is_read")
   final bool? isRead;
 
-  @HiveField(10)
   @JsonKey(name: "sender_id")
   final String? senderId;
 
-  @HiveField(11)
   @JsonKey(name: "receiver_id")
   final String? receiverId;
 
-  @HiveField(12)
   @JsonKey(name: "is_support")
   final bool? isSupport;
 
-  @HiveField(13)
-  @JsonKey(name: "sender_details")
-  final ChatUserModel? senderDetail;
+  @JsonKey(name: "sender_detail")
+  final ChatUser? senderDetail;
 
   @JsonKey(name: "data")
   final ChatReaction? reaction;
@@ -69,13 +47,15 @@ class ChatMessageModel extends ChatMessage {
 
   String? firebaseId;
 
+  @JsonKey(name: "type")
   int? type;
 
+  @JsonKey(name: "action")
   int? action;
 
   bool? isFollowing;
 
-  ChatMessageModel({
+  ChatMessage({
     this.message,
     this.file,
     this.filename,
@@ -96,30 +76,10 @@ class ChatMessageModel extends ChatMessage {
     this.type,
     this.action,
     this.isFollowing,
-  }) : super(
-          message: message,
-          file: file,
-          filename: filename,
-          fileFormat: fileFormat,
-          sender: sender,
-          receiver: receiver,
-          pk: pk,
-          photo: photo,
-          created: created,
-          isRead: isRead,
-          senderId: senderId,
-          receiverId: receiverId,
-          isSupport: isSupport,
-          senderDetail: senderDetail,
-          reaction: reaction,
-          displayName: displayName,
-          firebaseId: firebaseId,
-          type: type,
-          action: action,
-          isFollowing: isFollowing,
-        );
+  });
 
-  factory ChatMessageModel.fromJson(Map<String, dynamic> json) =>
-      _$ChatMessageModelFromJson(json);
-  Map<String, dynamic> toJson() => _$ChatMessageModelToJson(this);
+  factory ChatMessage.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMessageToJson(this);
 }

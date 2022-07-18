@@ -1,10 +1,17 @@
 import 'dart:convert';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
 import 'package:worknetwork/features/meeting/data/models/dyte_meeting_model.dart';
 import 'package:worknetwork/features/meeting/data/models/dyte_request_model.dart';
 import 'package:worknetwork/features/meeting/data/services/dyte_api_service.dart';
 
-import '../../../../core/error/exceptions.dart';
+final dyteRemoteDataSouceProvider = Provider(
+  (ref) {
+    final apiService = ref.watch(dyteApiServiceProvider);
+    return DyteRemoteDatasourceImpl(apiService);
+  },
+);
 
 abstract class DyteRemoteDatasource {
   Future<DyteRequestModel> getDyteCredsRequestFromRemote(int meetingId);

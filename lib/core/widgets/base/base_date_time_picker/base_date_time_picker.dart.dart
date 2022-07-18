@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 typedef GetDateTimeCallback<T> = DateTime Function(T obj);
 
@@ -103,9 +103,7 @@ class _BaseDateTimePickerState<T> extends State<BaseDateTimePicker<T>>
                         }
                         setState(() {
                           _value = updated;
-                          if (widget.onValueChanged != null) {
-                            widget.onValueChanged!(_value);
-                          }
+                          widget.onValueChanged?.call(_value);
                         });
                       },
                     );
@@ -225,7 +223,6 @@ class _TimeSlot<T> extends StatelessWidget {
 }
 
 class _DatesTabBar extends StatelessWidget {
-  final double height;
   final List<DateTime> dates;
   final int selected;
   final ValueChanged<DateTime> onTabPressed;
@@ -234,14 +231,13 @@ class _DatesTabBar extends StatelessWidget {
     Key? key,
     required this.dates,
     required this.selected,
-    this.height = 48,
     required this.onTabPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
+      height: 48,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: dates.length,

@@ -1,16 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
+import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 
-import '../../../../constants/app_constants.dart';
-import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../features/auth/presentation/widgets/user_profile_nav_item/user_profile_nav_item.dart';
-import '../../../../routes.gr.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
-
-class HomeScreenAppBar extends StatelessWidget {
+class HomeScreenAppBar extends HookConsumerWidget {
   final Widget title;
 
   const HomeScreenAppBar({
@@ -19,7 +17,7 @@ class HomeScreenAppBar extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return BaseAppBar(
       title: title,
       actions: [
@@ -31,20 +29,13 @@ class HomeScreenAppBar extends StatelessWidget {
             Share.share(AppConstants.defaultShareText);
           },
         ),
-        // IconButton(
-        //   splashRadius: 18.00,
-        //   color: Colors.black87,
-        //   icon: const Icon(WorkNetIcons.notification),
-        //   onPressed: () {
-        //     AutoRouter.of(context).push(Routes.notificationsScreen);
-        //   },
-        // ),
         UserProfileNavItem(
           onPressed: () {
-            final user = BlocProvider.of<AuthBloc>(context).state.user;
+            final user = ref.read(authStateProvider.notifier).getUser();
             if (user != null) {
               AutoRouter.of(context).push(
-                  ProfileScreenRoute(userId: user.pk ?? '', allowEdit: true));
+                ProfileScreenRoute(userId: user.pk ?? '', allowEdit: true),
+              );
             }
           },
         ),

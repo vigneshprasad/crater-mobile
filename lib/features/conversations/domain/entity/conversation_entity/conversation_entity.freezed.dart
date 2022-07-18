@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'conversation_entity.dart';
 
@@ -10,84 +12,11 @@ part of 'conversation_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Conversation _$ConversationFromJson(Map<String, dynamic> json) {
   return _Conversation.fromJson(json);
 }
-
-/// @nodoc
-class _$ConversationTearOff {
-  const _$ConversationTearOff();
-
-  _Conversation call(
-      {int? id,
-      String? host,
-      List<String>? speakers,
-      List<String>? attendees,
-      int? topic,
-      String? description,
-      List<int>? interests,
-      DateTime? start,
-      DateTime? end,
-      @JsonKey(name: 'max_speakers')
-          int? maxSpeakers,
-      ConversationPrivacy? privacy,
-      ConversationMedium? medium,
-      bool? closed,
-      int? relevancy,
-      @JsonKey(name: 'closed_at')
-          DateTime? closedAt,
-      @JsonKey(name: 'topic_detail')
-          Topic? topicDetail,
-      @JsonKey(name: 'host_detail')
-          ConversationUser? hostDetail,
-      @JsonKey(name: 'interests_detail_list')
-          List<MeetingInterestModel>? interestsDetailList,
-      @JsonKey(name: 'speakers_detail_list')
-          List<ConversationUser>? speakersDetailList,
-      @JsonKey(name: 'attendees_detail_list')
-          List<ConversationUser>? attendeesDetailList,
-      @JsonKey(name: 'is_speaker')
-          bool? isSpeaker,
-      @JsonKey(name: 'is_past')
-          bool? isPast,
-      @JsonKey(name: 'recording_details')
-          RecordingDetails? recordingDetails}) {
-    return _Conversation(
-      id: id,
-      host: host,
-      speakers: speakers,
-      attendees: attendees,
-      topic: topic,
-      description: description,
-      interests: interests,
-      start: start,
-      end: end,
-      maxSpeakers: maxSpeakers,
-      privacy: privacy,
-      medium: medium,
-      closed: closed,
-      relevancy: relevancy,
-      closedAt: closedAt,
-      topicDetail: topicDetail,
-      hostDetail: hostDetail,
-      interestsDetailList: interestsDetailList,
-      speakersDetailList: speakersDetailList,
-      attendeesDetailList: attendeesDetailList,
-      isSpeaker: isSpeaker,
-      isPast: isPast,
-      recordingDetails: recordingDetails,
-    );
-  }
-
-  Conversation fromJson(Map<String, Object> json) {
-    return Conversation.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Conversation = _$ConversationTearOff();
 
 /// @nodoc
 mixin _$Conversation {
@@ -112,9 +41,6 @@ mixin _$Conversation {
   Topic? get topicDetail => throw _privateConstructorUsedError;
   @JsonKey(name: 'host_detail')
   ConversationUser? get hostDetail => throw _privateConstructorUsedError;
-  @JsonKey(name: 'interests_detail_list')
-  List<MeetingInterestModel>? get interestsDetailList =>
-      throw _privateConstructorUsedError;
   @JsonKey(name: 'speakers_detail_list')
   List<ConversationUser>? get speakersDetailList =>
       throw _privateConstructorUsedError;
@@ -161,8 +87,6 @@ abstract class $ConversationCopyWith<$Res> {
           Topic? topicDetail,
       @JsonKey(name: 'host_detail')
           ConversationUser? hostDetail,
-      @JsonKey(name: 'interests_detail_list')
-          List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
       @JsonKey(name: 'attendees_detail_list')
@@ -206,7 +130,6 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
     Object? closedAt = freezed,
     Object? topicDetail = freezed,
     Object? hostDetail = freezed,
-    Object? interestsDetailList = freezed,
     Object? speakersDetailList = freezed,
     Object? attendeesDetailList = freezed,
     Object? isSpeaker = freezed,
@@ -282,10 +205,6 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
           ? _value.hostDetail
           : hostDetail // ignore: cast_nullable_to_non_nullable
               as ConversationUser?,
-      interestsDetailList: interestsDetailList == freezed
-          ? _value.interestsDetailList
-          : interestsDetailList // ignore: cast_nullable_to_non_nullable
-              as List<MeetingInterestModel>?,
       speakersDetailList: speakersDetailList == freezed
           ? _value.speakersDetailList
           : speakersDetailList // ignore: cast_nullable_to_non_nullable
@@ -344,11 +263,11 @@ class _$ConversationCopyWithImpl<$Res> implements $ConversationCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ConversationCopyWith<$Res>
+abstract class _$$_ConversationCopyWith<$Res>
     implements $ConversationCopyWith<$Res> {
-  factory _$ConversationCopyWith(
-          _Conversation value, $Res Function(_Conversation) then) =
-      __$ConversationCopyWithImpl<$Res>;
+  factory _$$_ConversationCopyWith(
+          _$_Conversation value, $Res Function(_$_Conversation) then) =
+      __$$_ConversationCopyWithImpl<$Res>;
   @override
   $Res call(
       {int? id,
@@ -372,8 +291,6 @@ abstract class _$ConversationCopyWith<$Res>
           Topic? topicDetail,
       @JsonKey(name: 'host_detail')
           ConversationUser? hostDetail,
-      @JsonKey(name: 'interests_detail_list')
-          List<MeetingInterestModel>? interestsDetailList,
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
       @JsonKey(name: 'attendees_detail_list')
@@ -394,14 +311,15 @@ abstract class _$ConversationCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
-    implements _$ConversationCopyWith<$Res> {
-  __$ConversationCopyWithImpl(
-      _Conversation _value, $Res Function(_Conversation) _then)
-      : super(_value, (v) => _then(v as _Conversation));
+class __$$_ConversationCopyWithImpl<$Res>
+    extends _$ConversationCopyWithImpl<$Res>
+    implements _$$_ConversationCopyWith<$Res> {
+  __$$_ConversationCopyWithImpl(
+      _$_Conversation _value, $Res Function(_$_Conversation) _then)
+      : super(_value, (v) => _then(v as _$_Conversation));
 
   @override
-  _Conversation get _value => super._value as _Conversation;
+  _$_Conversation get _value => super._value as _$_Conversation;
 
   @override
   $Res call({
@@ -422,14 +340,13 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
     Object? closedAt = freezed,
     Object? topicDetail = freezed,
     Object? hostDetail = freezed,
-    Object? interestsDetailList = freezed,
     Object? speakersDetailList = freezed,
     Object? attendeesDetailList = freezed,
     Object? isSpeaker = freezed,
     Object? isPast = freezed,
     Object? recordingDetails = freezed,
   }) {
-    return _then(_Conversation(
+    return _then(_$_Conversation(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -439,11 +356,11 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
           : host // ignore: cast_nullable_to_non_nullable
               as String?,
       speakers: speakers == freezed
-          ? _value.speakers
+          ? _value._speakers
           : speakers // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       attendees: attendees == freezed
-          ? _value.attendees
+          ? _value._attendees
           : attendees // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       topic: topic == freezed
@@ -455,7 +372,7 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       interests: interests == freezed
-          ? _value.interests
+          ? _value._interests
           : interests // ignore: cast_nullable_to_non_nullable
               as List<int>?,
       start: start == freezed
@@ -498,16 +415,12 @@ class __$ConversationCopyWithImpl<$Res> extends _$ConversationCopyWithImpl<$Res>
           ? _value.hostDetail
           : hostDetail // ignore: cast_nullable_to_non_nullable
               as ConversationUser?,
-      interestsDetailList: interestsDetailList == freezed
-          ? _value.interestsDetailList
-          : interestsDetailList // ignore: cast_nullable_to_non_nullable
-              as List<MeetingInterestModel>?,
       speakersDetailList: speakersDetailList == freezed
-          ? _value.speakersDetailList
+          ? _value._speakersDetailList
           : speakersDetailList // ignore: cast_nullable_to_non_nullable
               as List<ConversationUser>?,
       attendeesDetailList: attendeesDetailList == freezed
-          ? _value.attendeesDetailList
+          ? _value._attendeesDetailList
           : attendeesDetailList // ignore: cast_nullable_to_non_nullable
               as List<ConversationUser>?,
       isSpeaker: isSpeaker == freezed
@@ -532,45 +445,79 @@ class _$_Conversation implements _Conversation {
   _$_Conversation(
       {this.id,
       this.host,
-      this.speakers,
-      this.attendees,
+      final List<String>? speakers,
+      final List<String>? attendees,
       this.topic,
       this.description,
-      this.interests,
+      final List<int>? interests,
       this.start,
       this.end,
-      @JsonKey(name: 'max_speakers') this.maxSpeakers,
+      @JsonKey(name: 'max_speakers')
+          this.maxSpeakers,
       this.privacy,
       this.medium,
       this.closed,
       this.relevancy,
-      @JsonKey(name: 'closed_at') this.closedAt,
-      @JsonKey(name: 'topic_detail') this.topicDetail,
-      @JsonKey(name: 'host_detail') this.hostDetail,
-      @JsonKey(name: 'interests_detail_list') this.interestsDetailList,
-      @JsonKey(name: 'speakers_detail_list') this.speakersDetailList,
-      @JsonKey(name: 'attendees_detail_list') this.attendeesDetailList,
-      @JsonKey(name: 'is_speaker') this.isSpeaker,
-      @JsonKey(name: 'is_past') this.isPast,
-      @JsonKey(name: 'recording_details') this.recordingDetails});
+      @JsonKey(name: 'closed_at')
+          this.closedAt,
+      @JsonKey(name: 'topic_detail')
+          this.topicDetail,
+      @JsonKey(name: 'host_detail')
+          this.hostDetail,
+      @JsonKey(name: 'speakers_detail_list')
+          final List<ConversationUser>? speakersDetailList,
+      @JsonKey(name: 'attendees_detail_list')
+          final List<ConversationUser>? attendeesDetailList,
+      @JsonKey(name: 'is_speaker')
+          this.isSpeaker,
+      @JsonKey(name: 'is_past')
+          this.isPast,
+      @JsonKey(name: 'recording_details')
+          this.recordingDetails})
+      : _speakers = speakers,
+        _attendees = attendees,
+        _interests = interests,
+        _speakersDetailList = speakersDetailList,
+        _attendeesDetailList = attendeesDetailList;
 
   factory _$_Conversation.fromJson(Map<String, dynamic> json) =>
-      _$_$_ConversationFromJson(json);
+      _$$_ConversationFromJson(json);
 
   @override
   final int? id;
   @override
   final String? host;
+  final List<String>? _speakers;
   @override
-  final List<String>? speakers;
+  List<String>? get speakers {
+    final value = _speakers;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _attendees;
   @override
-  final List<String>? attendees;
+  List<String>? get attendees {
+    final value = _attendees;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final int? topic;
   @override
   final String? description;
+  final List<int>? _interests;
   @override
-  final List<int>? interests;
+  List<int>? get interests {
+    final value = _interests;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final DateTime? start;
   @override
@@ -595,15 +542,26 @@ class _$_Conversation implements _Conversation {
   @override
   @JsonKey(name: 'host_detail')
   final ConversationUser? hostDetail;
-  @override
-  @JsonKey(name: 'interests_detail_list')
-  final List<MeetingInterestModel>? interestsDetailList;
+  final List<ConversationUser>? _speakersDetailList;
   @override
   @JsonKey(name: 'speakers_detail_list')
-  final List<ConversationUser>? speakersDetailList;
+  List<ConversationUser>? get speakersDetailList {
+    final value = _speakersDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ConversationUser>? _attendeesDetailList;
   @override
   @JsonKey(name: 'attendees_detail_list')
-  final List<ConversationUser>? attendeesDetailList;
+  List<ConversationUser>? get attendeesDetailList {
+    final value = _attendeesDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey(name: 'is_speaker')
   final bool? isSpeaker;
@@ -616,239 +574,185 @@ class _$_Conversation implements _Conversation {
 
   @override
   String toString() {
-    return 'Conversation(id: $id, host: $host, speakers: $speakers, attendees: $attendees, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, relevancy: $relevancy, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, interestsDetailList: $interestsDetailList, speakersDetailList: $speakersDetailList, attendeesDetailList: $attendeesDetailList, isSpeaker: $isSpeaker, isPast: $isPast, recordingDetails: $recordingDetails)';
+    return 'Conversation(id: $id, host: $host, speakers: $speakers, attendees: $attendees, topic: $topic, description: $description, interests: $interests, start: $start, end: $end, maxSpeakers: $maxSpeakers, privacy: $privacy, medium: $medium, closed: $closed, relevancy: $relevancy, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, speakersDetailList: $speakersDetailList, attendeesDetailList: $attendeesDetailList, isSpeaker: $isSpeaker, isPast: $isPast, recordingDetails: $recordingDetails)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Conversation &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.host, host) ||
-                const DeepCollectionEquality().equals(other.host, host)) &&
-            (identical(other.speakers, speakers) ||
-                const DeepCollectionEquality()
-                    .equals(other.speakers, speakers)) &&
-            (identical(other.attendees, attendees) ||
-                const DeepCollectionEquality()
-                    .equals(other.attendees, attendees)) &&
-            (identical(other.topic, topic) ||
-                const DeepCollectionEquality().equals(other.topic, topic)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.interests, interests) ||
-                const DeepCollectionEquality()
-                    .equals(other.interests, interests)) &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.end, end) ||
-                const DeepCollectionEquality().equals(other.end, end)) &&
-            (identical(other.maxSpeakers, maxSpeakers) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxSpeakers, maxSpeakers)) &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
-            (identical(other.medium, medium) ||
-                const DeepCollectionEquality().equals(other.medium, medium)) &&
-            (identical(other.closed, closed) ||
-                const DeepCollectionEquality().equals(other.closed, closed)) &&
-            (identical(other.relevancy, relevancy) ||
-                const DeepCollectionEquality()
-                    .equals(other.relevancy, relevancy)) &&
-            (identical(other.closedAt, closedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.closedAt, closedAt)) &&
-            (identical(other.topicDetail, topicDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.topicDetail, topicDetail)) &&
-            (identical(other.hostDetail, hostDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.hostDetail, hostDetail)) &&
-            (identical(other.interestsDetailList, interestsDetailList) ||
-                const DeepCollectionEquality()
-                    .equals(other.interestsDetailList, interestsDetailList)) &&
-            (identical(other.speakersDetailList, speakersDetailList) ||
-                const DeepCollectionEquality()
-                    .equals(other.speakersDetailList, speakersDetailList)) &&
-            (identical(other.attendeesDetailList, attendeesDetailList) ||
-                const DeepCollectionEquality()
-                    .equals(other.attendeesDetailList, attendeesDetailList)) &&
-            (identical(other.isSpeaker, isSpeaker) ||
-                const DeepCollectionEquality()
-                    .equals(other.isSpeaker, isSpeaker)) &&
-            (identical(other.isPast, isPast) ||
-                const DeepCollectionEquality().equals(other.isPast, isPast)) &&
-            (identical(other.recordingDetails, recordingDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.recordingDetails, recordingDetails)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Conversation &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.host, host) &&
+            const DeepCollectionEquality().equals(other._speakers, _speakers) &&
+            const DeepCollectionEquality()
+                .equals(other._attendees, _attendees) &&
+            const DeepCollectionEquality().equals(other.topic, topic) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality()
+                .equals(other._interests, _interests) &&
+            const DeepCollectionEquality().equals(other.start, start) &&
+            const DeepCollectionEquality().equals(other.end, end) &&
+            const DeepCollectionEquality()
+                .equals(other.maxSpeakers, maxSpeakers) &&
+            const DeepCollectionEquality().equals(other.privacy, privacy) &&
+            const DeepCollectionEquality().equals(other.medium, medium) &&
+            const DeepCollectionEquality().equals(other.closed, closed) &&
+            const DeepCollectionEquality().equals(other.relevancy, relevancy) &&
+            const DeepCollectionEquality().equals(other.closedAt, closedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.topicDetail, topicDetail) &&
+            const DeepCollectionEquality()
+                .equals(other.hostDetail, hostDetail) &&
+            const DeepCollectionEquality()
+                .equals(other._speakersDetailList, _speakersDetailList) &&
+            const DeepCollectionEquality()
+                .equals(other._attendeesDetailList, _attendeesDetailList) &&
+            const DeepCollectionEquality().equals(other.isSpeaker, isSpeaker) &&
+            const DeepCollectionEquality().equals(other.isPast, isPast) &&
+            const DeepCollectionEquality()
+                .equals(other.recordingDetails, recordingDetails));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(host) ^
-      const DeepCollectionEquality().hash(speakers) ^
-      const DeepCollectionEquality().hash(attendees) ^
-      const DeepCollectionEquality().hash(topic) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(interests) ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(end) ^
-      const DeepCollectionEquality().hash(maxSpeakers) ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(medium) ^
-      const DeepCollectionEquality().hash(closed) ^
-      const DeepCollectionEquality().hash(relevancy) ^
-      const DeepCollectionEquality().hash(closedAt) ^
-      const DeepCollectionEquality().hash(topicDetail) ^
-      const DeepCollectionEquality().hash(hostDetail) ^
-      const DeepCollectionEquality().hash(interestsDetailList) ^
-      const DeepCollectionEquality().hash(speakersDetailList) ^
-      const DeepCollectionEquality().hash(attendeesDetailList) ^
-      const DeepCollectionEquality().hash(isSpeaker) ^
-      const DeepCollectionEquality().hash(isPast) ^
-      const DeepCollectionEquality().hash(recordingDetails);
 
   @JsonKey(ignore: true)
   @override
-  _$ConversationCopyWith<_Conversation> get copyWith =>
-      __$ConversationCopyWithImpl<_Conversation>(this, _$identity);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(host),
+        const DeepCollectionEquality().hash(_speakers),
+        const DeepCollectionEquality().hash(_attendees),
+        const DeepCollectionEquality().hash(topic),
+        const DeepCollectionEquality().hash(description),
+        const DeepCollectionEquality().hash(_interests),
+        const DeepCollectionEquality().hash(start),
+        const DeepCollectionEquality().hash(end),
+        const DeepCollectionEquality().hash(maxSpeakers),
+        const DeepCollectionEquality().hash(privacy),
+        const DeepCollectionEquality().hash(medium),
+        const DeepCollectionEquality().hash(closed),
+        const DeepCollectionEquality().hash(relevancy),
+        const DeepCollectionEquality().hash(closedAt),
+        const DeepCollectionEquality().hash(topicDetail),
+        const DeepCollectionEquality().hash(hostDetail),
+        const DeepCollectionEquality().hash(_speakersDetailList),
+        const DeepCollectionEquality().hash(_attendeesDetailList),
+        const DeepCollectionEquality().hash(isSpeaker),
+        const DeepCollectionEquality().hash(isPast),
+        const DeepCollectionEquality().hash(recordingDetails)
+      ]);
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_ConversationCopyWith<_$_Conversation> get copyWith =>
+      __$$_ConversationCopyWithImpl<_$_Conversation>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ConversationToJson(this);
+    return _$$_ConversationToJson(this);
   }
 }
 
 abstract class _Conversation implements Conversation {
   factory _Conversation(
-      {int? id,
-      String? host,
-      List<String>? speakers,
-      List<String>? attendees,
-      int? topic,
-      String? description,
-      List<int>? interests,
-      DateTime? start,
-      DateTime? end,
+      {final int? id,
+      final String? host,
+      final List<String>? speakers,
+      final List<String>? attendees,
+      final int? topic,
+      final String? description,
+      final List<int>? interests,
+      final DateTime? start,
+      final DateTime? end,
       @JsonKey(name: 'max_speakers')
-          int? maxSpeakers,
-      ConversationPrivacy? privacy,
-      ConversationMedium? medium,
-      bool? closed,
-      int? relevancy,
+          final int? maxSpeakers,
+      final ConversationPrivacy? privacy,
+      final ConversationMedium? medium,
+      final bool? closed,
+      final int? relevancy,
       @JsonKey(name: 'closed_at')
-          DateTime? closedAt,
+          final DateTime? closedAt,
       @JsonKey(name: 'topic_detail')
-          Topic? topicDetail,
+          final Topic? topicDetail,
       @JsonKey(name: 'host_detail')
-          ConversationUser? hostDetail,
-      @JsonKey(name: 'interests_detail_list')
-          List<MeetingInterestModel>? interestsDetailList,
+          final ConversationUser? hostDetail,
       @JsonKey(name: 'speakers_detail_list')
-          List<ConversationUser>? speakersDetailList,
+          final List<ConversationUser>? speakersDetailList,
       @JsonKey(name: 'attendees_detail_list')
-          List<ConversationUser>? attendeesDetailList,
+          final List<ConversationUser>? attendeesDetailList,
       @JsonKey(name: 'is_speaker')
-          bool? isSpeaker,
+          final bool? isSpeaker,
       @JsonKey(name: 'is_past')
-          bool? isPast,
+          final bool? isPast,
       @JsonKey(name: 'recording_details')
-          RecordingDetails? recordingDetails}) = _$_Conversation;
+          final RecordingDetails? recordingDetails}) = _$_Conversation;
 
   factory _Conversation.fromJson(Map<String, dynamic> json) =
       _$_Conversation.fromJson;
 
   @override
-  int? get id => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  String? get host => throw _privateConstructorUsedError;
+  String? get host;
   @override
-  List<String>? get speakers => throw _privateConstructorUsedError;
+  List<String>? get speakers;
   @override
-  List<String>? get attendees => throw _privateConstructorUsedError;
+  List<String>? get attendees;
   @override
-  int? get topic => throw _privateConstructorUsedError;
+  int? get topic;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
-  List<int>? get interests => throw _privateConstructorUsedError;
+  List<int>? get interests;
   @override
-  DateTime? get start => throw _privateConstructorUsedError;
+  DateTime? get start;
   @override
-  DateTime? get end => throw _privateConstructorUsedError;
+  DateTime? get end;
   @override
   @JsonKey(name: 'max_speakers')
-  int? get maxSpeakers => throw _privateConstructorUsedError;
+  int? get maxSpeakers;
   @override
-  ConversationPrivacy? get privacy => throw _privateConstructorUsedError;
+  ConversationPrivacy? get privacy;
   @override
-  ConversationMedium? get medium => throw _privateConstructorUsedError;
+  ConversationMedium? get medium;
   @override
-  bool? get closed => throw _privateConstructorUsedError;
+  bool? get closed;
   @override
-  int? get relevancy => throw _privateConstructorUsedError;
+  int? get relevancy;
   @override
   @JsonKey(name: 'closed_at')
-  DateTime? get closedAt => throw _privateConstructorUsedError;
+  DateTime? get closedAt;
   @override
   @JsonKey(name: 'topic_detail')
-  Topic? get topicDetail => throw _privateConstructorUsedError;
+  Topic? get topicDetail;
   @override
   @JsonKey(name: 'host_detail')
-  ConversationUser? get hostDetail => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(name: 'interests_detail_list')
-  List<MeetingInterestModel>? get interestsDetailList =>
-      throw _privateConstructorUsedError;
+  ConversationUser? get hostDetail;
   @override
   @JsonKey(name: 'speakers_detail_list')
-  List<ConversationUser>? get speakersDetailList =>
-      throw _privateConstructorUsedError;
+  List<ConversationUser>? get speakersDetailList;
   @override
   @JsonKey(name: 'attendees_detail_list')
-  List<ConversationUser>? get attendeesDetailList =>
-      throw _privateConstructorUsedError;
+  List<ConversationUser>? get attendeesDetailList;
   @override
   @JsonKey(name: 'is_speaker')
-  bool? get isSpeaker => throw _privateConstructorUsedError;
+  bool? get isSpeaker;
   @override
   @JsonKey(name: 'is_past')
-  bool? get isPast => throw _privateConstructorUsedError;
+  bool? get isPast;
   @override
   @JsonKey(name: 'recording_details')
-  RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
+  RecordingDetails? get recordingDetails;
   @override
   @JsonKey(ignore: true)
-  _$ConversationCopyWith<_Conversation> get copyWith =>
+  _$$_ConversationCopyWith<_$_Conversation> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 RecordingDetails _$RecordingDetailsFromJson(Map<String, dynamic> json) {
   return _RecordingDetails.fromJson(json);
 }
-
-/// @nodoc
-class _$RecordingDetailsTearOff {
-  const _$RecordingDetailsTearOff();
-
-  _RecordingDetails call({String? recording}) {
-    return _RecordingDetails(
-      recording: recording,
-    );
-  }
-
-  RecordingDetails fromJson(Map<String, Object> json) {
-    return RecordingDetails.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $RecordingDetails = _$RecordingDetailsTearOff();
 
 /// @nodoc
 mixin _$RecordingDetails {
@@ -891,31 +795,31 @@ class _$RecordingDetailsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RecordingDetailsCopyWith<$Res>
+abstract class _$$_RecordingDetailsCopyWith<$Res>
     implements $RecordingDetailsCopyWith<$Res> {
-  factory _$RecordingDetailsCopyWith(
-          _RecordingDetails value, $Res Function(_RecordingDetails) then) =
-      __$RecordingDetailsCopyWithImpl<$Res>;
+  factory _$$_RecordingDetailsCopyWith(
+          _$_RecordingDetails value, $Res Function(_$_RecordingDetails) then) =
+      __$$_RecordingDetailsCopyWithImpl<$Res>;
   @override
   $Res call({String? recording});
 }
 
 /// @nodoc
-class __$RecordingDetailsCopyWithImpl<$Res>
+class __$$_RecordingDetailsCopyWithImpl<$Res>
     extends _$RecordingDetailsCopyWithImpl<$Res>
-    implements _$RecordingDetailsCopyWith<$Res> {
-  __$RecordingDetailsCopyWithImpl(
-      _RecordingDetails _value, $Res Function(_RecordingDetails) _then)
-      : super(_value, (v) => _then(v as _RecordingDetails));
+    implements _$$_RecordingDetailsCopyWith<$Res> {
+  __$$_RecordingDetailsCopyWithImpl(
+      _$_RecordingDetails _value, $Res Function(_$_RecordingDetails) _then)
+      : super(_value, (v) => _then(v as _$_RecordingDetails));
 
   @override
-  _RecordingDetails get _value => super._value as _RecordingDetails;
+  _$_RecordingDetails get _value => super._value as _$_RecordingDetails;
 
   @override
   $Res call({
     Object? recording = freezed,
   }) {
-    return _then(_RecordingDetails(
+    return _then(_$_RecordingDetails(
       recording: recording == freezed
           ? _value.recording
           : recording // ignore: cast_nullable_to_non_nullable
@@ -930,7 +834,7 @@ class _$_RecordingDetails implements _RecordingDetails {
   _$_RecordingDetails({this.recording});
 
   factory _$_RecordingDetails.fromJson(Map<String, dynamic> json) =>
-      _$_$_RecordingDetailsFromJson(json);
+      _$$_RecordingDetailsFromJson(json);
 
   @override
   final String? recording;
@@ -943,73 +847,44 @@ class _$_RecordingDetails implements _RecordingDetails {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RecordingDetails &&
-            (identical(other.recording, recording) ||
-                const DeepCollectionEquality()
-                    .equals(other.recording, recording)));
+        (other.runtimeType == runtimeType &&
+            other is _$_RecordingDetails &&
+            const DeepCollectionEquality().equals(other.recording, recording));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(recording);
 
   @JsonKey(ignore: true)
   @override
-  _$RecordingDetailsCopyWith<_RecordingDetails> get copyWith =>
-      __$RecordingDetailsCopyWithImpl<_RecordingDetails>(this, _$identity);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(recording));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_RecordingDetailsCopyWith<_$_RecordingDetails> get copyWith =>
+      __$$_RecordingDetailsCopyWithImpl<_$_RecordingDetails>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_RecordingDetailsToJson(this);
+    return _$$_RecordingDetailsToJson(this);
   }
 }
 
 abstract class _RecordingDetails implements RecordingDetails {
-  factory _RecordingDetails({String? recording}) = _$_RecordingDetails;
+  factory _RecordingDetails({final String? recording}) = _$_RecordingDetails;
 
   factory _RecordingDetails.fromJson(Map<String, dynamic> json) =
       _$_RecordingDetails.fromJson;
 
   @override
-  String? get recording => throw _privateConstructorUsedError;
+  String? get recording;
   @override
   @JsonKey(ignore: true)
-  _$RecordingDetailsCopyWith<_RecordingDetails> get copyWith =>
+  _$$_RecordingDetailsCopyWith<_$_RecordingDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 ConversationUser _$ConversationUserFromJson(Map<String, dynamic> json) {
   return _ConversationUser.fromJson(json);
 }
-
-/// @nodoc
-class _$ConversationUserTearOff {
-  const _$ConversationUserTearOff();
-
-  _ConversationUser call(
-      {String? pk,
-      String? email,
-      String? name,
-      String? photo,
-      String? introduction,
-      @JsonKey(name: 'creator_detail') Creator? creatorDetail}) {
-    return _ConversationUser(
-      pk: pk,
-      email: email,
-      name: name,
-      photo: photo,
-      introduction: introduction,
-      creatorDetail: creatorDetail,
-    );
-  }
-
-  ConversationUser fromJson(Map<String, Object> json) {
-    return ConversationUser.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ConversationUser = _$ConversationUserTearOff();
 
 /// @nodoc
 mixin _$ConversationUser {
@@ -1102,11 +977,11 @@ class _$ConversationUserCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ConversationUserCopyWith<$Res>
+abstract class _$$_ConversationUserCopyWith<$Res>
     implements $ConversationUserCopyWith<$Res> {
-  factory _$ConversationUserCopyWith(
-          _ConversationUser value, $Res Function(_ConversationUser) then) =
-      __$ConversationUserCopyWithImpl<$Res>;
+  factory _$$_ConversationUserCopyWith(
+          _$_ConversationUser value, $Res Function(_$_ConversationUser) then) =
+      __$$_ConversationUserCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? pk,
@@ -1121,15 +996,15 @@ abstract class _$ConversationUserCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ConversationUserCopyWithImpl<$Res>
+class __$$_ConversationUserCopyWithImpl<$Res>
     extends _$ConversationUserCopyWithImpl<$Res>
-    implements _$ConversationUserCopyWith<$Res> {
-  __$ConversationUserCopyWithImpl(
-      _ConversationUser _value, $Res Function(_ConversationUser) _then)
-      : super(_value, (v) => _then(v as _ConversationUser));
+    implements _$$_ConversationUserCopyWith<$Res> {
+  __$$_ConversationUserCopyWithImpl(
+      _$_ConversationUser _value, $Res Function(_$_ConversationUser) _then)
+      : super(_value, (v) => _then(v as _$_ConversationUser));
 
   @override
-  _ConversationUser get _value => super._value as _ConversationUser;
+  _$_ConversationUser get _value => super._value as _$_ConversationUser;
 
   @override
   $Res call({
@@ -1140,7 +1015,7 @@ class __$ConversationUserCopyWithImpl<$Res>
     Object? introduction = freezed,
     Object? creatorDetail = freezed,
   }) {
-    return _then(_ConversationUser(
+    return _then(_$_ConversationUser(
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
@@ -1181,7 +1056,7 @@ class _$_ConversationUser implements _ConversationUser {
       @JsonKey(name: 'creator_detail') this.creatorDetail});
 
   factory _$_ConversationUser.fromJson(Map<String, dynamic> json) =>
-      _$_$_ConversationUserFromJson(json);
+      _$$_ConversationUserFromJson(json);
 
   @override
   final String? pk;
@@ -1205,99 +1080,75 @@ class _$_ConversationUser implements _ConversationUser {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConversationUser &&
-            (identical(other.pk, pk) ||
-                const DeepCollectionEquality().equals(other.pk, pk)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)) &&
-            (identical(other.introduction, introduction) ||
-                const DeepCollectionEquality()
-                    .equals(other.introduction, introduction)) &&
-            (identical(other.creatorDetail, creatorDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.creatorDetail, creatorDetail)));
+        (other.runtimeType == runtimeType &&
+            other is _$_ConversationUser &&
+            const DeepCollectionEquality().equals(other.pk, pk) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.photo, photo) &&
+            const DeepCollectionEquality()
+                .equals(other.introduction, introduction) &&
+            const DeepCollectionEquality()
+                .equals(other.creatorDetail, creatorDetail));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pk) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(introduction) ^
-      const DeepCollectionEquality().hash(creatorDetail);
 
   @JsonKey(ignore: true)
   @override
-  _$ConversationUserCopyWith<_ConversationUser> get copyWith =>
-      __$ConversationUserCopyWithImpl<_ConversationUser>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(pk),
+      const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(photo),
+      const DeepCollectionEquality().hash(introduction),
+      const DeepCollectionEquality().hash(creatorDetail));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_ConversationUserCopyWith<_$_ConversationUser> get copyWith =>
+      __$$_ConversationUserCopyWithImpl<_$_ConversationUser>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ConversationUserToJson(this);
+    return _$$_ConversationUserToJson(this);
   }
 }
 
 abstract class _ConversationUser implements ConversationUser {
   factory _ConversationUser(
-          {String? pk,
-          String? email,
-          String? name,
-          String? photo,
-          String? introduction,
-          @JsonKey(name: 'creator_detail') Creator? creatorDetail}) =
+          {final String? pk,
+          final String? email,
+          final String? name,
+          final String? photo,
+          final String? introduction,
+          @JsonKey(name: 'creator_detail') final Creator? creatorDetail}) =
       _$_ConversationUser;
 
   factory _ConversationUser.fromJson(Map<String, dynamic> json) =
       _$_ConversationUser.fromJson;
 
   @override
-  String? get pk => throw _privateConstructorUsedError;
+  String? get pk;
   @override
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get photo => throw _privateConstructorUsedError;
+  String? get photo;
   @override
-  String? get introduction => throw _privateConstructorUsedError;
+  String? get introduction;
   @override
   @JsonKey(name: 'creator_detail')
-  Creator? get creatorDetail => throw _privateConstructorUsedError;
+  Creator? get creatorDetail;
   @override
   @JsonKey(ignore: true)
-  _$ConversationUserCopyWith<_ConversationUser> get copyWith =>
+  _$$_ConversationUserCopyWith<_$_ConversationUser> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 ConversationByDate _$ConversationByDateFromJson(Map<String, dynamic> json) {
   return _ConversationByDate.fromJson(json);
 }
-
-/// @nodoc
-class _$ConversationByDateTearOff {
-  const _$ConversationByDateTearOff();
-
-  _ConversationByDate call(
-      {DateTime? date, List<Conversation>? conversations}) {
-    return _ConversationByDate(
-      date: date,
-      conversations: conversations,
-    );
-  }
-
-  ConversationByDate fromJson(Map<String, Object> json) {
-    return ConversationByDate.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ConversationByDate = _$ConversationByDateTearOff();
 
 /// @nodoc
 mixin _$ConversationByDate {
@@ -1346,38 +1197,38 @@ class _$ConversationByDateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ConversationByDateCopyWith<$Res>
+abstract class _$$_ConversationByDateCopyWith<$Res>
     implements $ConversationByDateCopyWith<$Res> {
-  factory _$ConversationByDateCopyWith(
-          _ConversationByDate value, $Res Function(_ConversationByDate) then) =
-      __$ConversationByDateCopyWithImpl<$Res>;
+  factory _$$_ConversationByDateCopyWith(_$_ConversationByDate value,
+          $Res Function(_$_ConversationByDate) then) =
+      __$$_ConversationByDateCopyWithImpl<$Res>;
   @override
   $Res call({DateTime? date, List<Conversation>? conversations});
 }
 
 /// @nodoc
-class __$ConversationByDateCopyWithImpl<$Res>
+class __$$_ConversationByDateCopyWithImpl<$Res>
     extends _$ConversationByDateCopyWithImpl<$Res>
-    implements _$ConversationByDateCopyWith<$Res> {
-  __$ConversationByDateCopyWithImpl(
-      _ConversationByDate _value, $Res Function(_ConversationByDate) _then)
-      : super(_value, (v) => _then(v as _ConversationByDate));
+    implements _$$_ConversationByDateCopyWith<$Res> {
+  __$$_ConversationByDateCopyWithImpl(
+      _$_ConversationByDate _value, $Res Function(_$_ConversationByDate) _then)
+      : super(_value, (v) => _then(v as _$_ConversationByDate));
 
   @override
-  _ConversationByDate get _value => super._value as _ConversationByDate;
+  _$_ConversationByDate get _value => super._value as _$_ConversationByDate;
 
   @override
   $Res call({
     Object? date = freezed,
     Object? conversations = freezed,
   }) {
-    return _then(_ConversationByDate(
+    return _then(_$_ConversationByDate(
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       conversations: conversations == freezed
-          ? _value.conversations
+          ? _value._conversations
           : conversations // ignore: cast_nullable_to_non_nullable
               as List<Conversation>?,
     ));
@@ -1387,15 +1238,22 @@ class __$ConversationByDateCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ConversationByDate implements _ConversationByDate {
-  _$_ConversationByDate({this.date, this.conversations});
+  _$_ConversationByDate({this.date, final List<Conversation>? conversations})
+      : _conversations = conversations;
 
   factory _$_ConversationByDate.fromJson(Map<String, dynamic> json) =>
-      _$_$_ConversationByDateFromJson(json);
+      _$$_ConversationByDateFromJson(json);
 
   @override
   final DateTime? date;
+  final List<Conversation>? _conversations;
   @override
-  final List<Conversation>? conversations;
+  List<Conversation>? get conversations {
+    final value = _conversations;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
@@ -1405,73 +1263,53 @@ class _$_ConversationByDate implements _ConversationByDate {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConversationByDate &&
-            (identical(other.date, date) ||
-                const DeepCollectionEquality().equals(other.date, date)) &&
-            (identical(other.conversations, conversations) ||
-                const DeepCollectionEquality()
-                    .equals(other.conversations, conversations)));
+        (other.runtimeType == runtimeType &&
+            other is _$_ConversationByDate &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality()
+                .equals(other._conversations, _conversations));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(date) ^
-      const DeepCollectionEquality().hash(conversations);
 
   @JsonKey(ignore: true)
   @override
-  _$ConversationByDateCopyWith<_ConversationByDate> get copyWith =>
-      __$ConversationByDateCopyWithImpl<_ConversationByDate>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(_conversations));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_ConversationByDateCopyWith<_$_ConversationByDate> get copyWith =>
+      __$$_ConversationByDateCopyWithImpl<_$_ConversationByDate>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ConversationByDateToJson(this);
+    return _$$_ConversationByDateToJson(this);
   }
 }
 
 abstract class _ConversationByDate implements ConversationByDate {
   factory _ConversationByDate(
-      {DateTime? date,
-      List<Conversation>? conversations}) = _$_ConversationByDate;
+      {final DateTime? date,
+      final List<Conversation>? conversations}) = _$_ConversationByDate;
 
   factory _ConversationByDate.fromJson(Map<String, dynamic> json) =
       _$_ConversationByDate.fromJson;
 
   @override
-  DateTime? get date => throw _privateConstructorUsedError;
+  DateTime? get date;
   @override
-  List<Conversation>? get conversations => throw _privateConstructorUsedError;
+  List<Conversation>? get conversations;
   @override
   @JsonKey(ignore: true)
-  _$ConversationByDateCopyWith<_ConversationByDate> get copyWith =>
+  _$$_ConversationByDateCopyWith<_$_ConversationByDate> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 UserPermission _$UserPermissionFromJson(Map<String, dynamic> json) {
   return _UserPermission.fromJson(json);
 }
-
-/// @nodoc
-class _$UserPermissionTearOff {
-  const _$UserPermissionTearOff();
-
-  _UserPermission call(
-      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
-      @JsonKey(name: 'allow_chat') bool? allowChat}) {
-    return _UserPermission(
-      allowCreateStream: allowCreateStream,
-      allowChat: allowChat,
-    );
-  }
-
-  UserPermission fromJson(Map<String, Object> json) {
-    return UserPermission.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $UserPermission = _$UserPermissionTearOff();
 
 /// @nodoc
 mixin _$UserPermission {
@@ -1524,11 +1362,11 @@ class _$UserPermissionCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$UserPermissionCopyWith<$Res>
+abstract class _$$_UserPermissionCopyWith<$Res>
     implements $UserPermissionCopyWith<$Res> {
-  factory _$UserPermissionCopyWith(
-          _UserPermission value, $Res Function(_UserPermission) then) =
-      __$UserPermissionCopyWithImpl<$Res>;
+  factory _$$_UserPermissionCopyWith(
+          _$_UserPermission value, $Res Function(_$_UserPermission) then) =
+      __$$_UserPermissionCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
@@ -1536,22 +1374,22 @@ abstract class _$UserPermissionCopyWith<$Res>
 }
 
 /// @nodoc
-class __$UserPermissionCopyWithImpl<$Res>
+class __$$_UserPermissionCopyWithImpl<$Res>
     extends _$UserPermissionCopyWithImpl<$Res>
-    implements _$UserPermissionCopyWith<$Res> {
-  __$UserPermissionCopyWithImpl(
-      _UserPermission _value, $Res Function(_UserPermission) _then)
-      : super(_value, (v) => _then(v as _UserPermission));
+    implements _$$_UserPermissionCopyWith<$Res> {
+  __$$_UserPermissionCopyWithImpl(
+      _$_UserPermission _value, $Res Function(_$_UserPermission) _then)
+      : super(_value, (v) => _then(v as _$_UserPermission));
 
   @override
-  _UserPermission get _value => super._value as _UserPermission;
+  _$_UserPermission get _value => super._value as _$_UserPermission;
 
   @override
   $Res call({
     Object? allowCreateStream = freezed,
     Object? allowChat = freezed,
   }) {
-    return _then(_UserPermission(
+    return _then(_$_UserPermission(
       allowCreateStream: allowCreateStream == freezed
           ? _value.allowCreateStream
           : allowCreateStream // ignore: cast_nullable_to_non_nullable
@@ -1572,7 +1410,7 @@ class _$_UserPermission implements _UserPermission {
       @JsonKey(name: 'allow_chat') this.allowChat});
 
   factory _$_UserPermission.fromJson(Map<String, dynamic> json) =>
-      _$_$_UserPermissionFromJson(json);
+      _$$_UserPermissionFromJson(json);
 
   @override
   @JsonKey(name: 'allow_create_stream')
@@ -1589,48 +1427,47 @@ class _$_UserPermission implements _UserPermission {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserPermission &&
-            (identical(other.allowCreateStream, allowCreateStream) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowCreateStream, allowCreateStream)) &&
-            (identical(other.allowChat, allowChat) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowChat, allowChat)));
+        (other.runtimeType == runtimeType &&
+            other is _$_UserPermission &&
+            const DeepCollectionEquality()
+                .equals(other.allowCreateStream, allowCreateStream) &&
+            const DeepCollectionEquality().equals(other.allowChat, allowChat));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(allowCreateStream) ^
-      const DeepCollectionEquality().hash(allowChat);
 
   @JsonKey(ignore: true)
   @override
-  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
-      __$UserPermissionCopyWithImpl<_UserPermission>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(allowCreateStream),
+      const DeepCollectionEquality().hash(allowChat));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_UserPermissionCopyWith<_$_UserPermission> get copyWith =>
+      __$$_UserPermissionCopyWithImpl<_$_UserPermission>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_UserPermissionToJson(this);
+    return _$$_UserPermissionToJson(this);
   }
 }
 
 abstract class _UserPermission implements UserPermission {
   factory _UserPermission(
-      {@JsonKey(name: 'allow_create_stream') bool? allowCreateStream,
-      @JsonKey(name: 'allow_chat') bool? allowChat}) = _$_UserPermission;
+      {@JsonKey(name: 'allow_create_stream') final bool? allowCreateStream,
+      @JsonKey(name: 'allow_chat') final bool? allowChat}) = _$_UserPermission;
 
   factory _UserPermission.fromJson(Map<String, dynamic> json) =
       _$_UserPermission.fromJson;
 
   @override
   @JsonKey(name: 'allow_create_stream')
-  bool? get allowCreateStream => throw _privateConstructorUsedError;
+  bool? get allowCreateStream;
   @override
   @JsonKey(name: 'allow_chat')
-  bool? get allowChat => throw _privateConstructorUsedError;
+  bool? get allowChat;
   @override
   @JsonKey(ignore: true)
-  _$UserPermissionCopyWith<_UserPermission> get copyWith =>
+  _$$_UserPermissionCopyWith<_$_UserPermission> get copyWith =>
       throw _privateConstructorUsedError;
 }
