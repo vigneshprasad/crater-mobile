@@ -56,7 +56,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await remoteDataSource.patchUserModelRemote(user as UserModel);
-      (await localDataSource).updateUserToCache(response as UserModel);
+      await (await localDataSource).updateUserToCache(response as UserModel);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -139,7 +139,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await remoteDataSource.verifyOtp(phone, otp, attributionData);
-      (await localDataSource).setUserToCache(response);
+      await (await localDataSource).setUserToCache(response);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));

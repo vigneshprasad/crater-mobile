@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen_state.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
@@ -68,10 +68,13 @@ class PhoneScreen extends HookConsumerWidget {
 
         _showSmsCodeInput = true;
         if (state == 'popup') {
-          final user = ref.read(otpAPIProvider).mapOrNull();
+          final user = ref.read(authStateProvider.notifier).getUser();
           AutoRouter.of(context).pop(user);
         } else {
-          AutoRouter.of(context).push(HomeScreenRoute());
+          AutoRouter.of(context).pushAndPopUntil(
+            HomeScreenRoute(),
+            predicate: (route) => false,
+          );
         }
         break;
       default:

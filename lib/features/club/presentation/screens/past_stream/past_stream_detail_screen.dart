@@ -27,7 +27,7 @@ class PastStreamDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final conversationState = ref.read(pastStreamStateProvider(id ?? 0));
+    final conversationState = ref.watch(pastStreamStateProvider(id ?? 0));
     final isFullScreen = useState(false);
 
     return Scaffold(
@@ -80,7 +80,7 @@ class _ConversationLoaded extends HookConsumerWidget {
     final heading =
         article != null ? article.description : conversation.topicDetail?.name;
 
-    final similarStreamProvider = ref.read(pastStreamsStateProvider(null));
+    final similarStreamProvider = ref.watch(pastStreamsStateProvider(null));
 
     final start = conversation.start?.toLocal();
 

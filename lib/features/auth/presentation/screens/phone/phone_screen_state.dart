@@ -15,6 +15,7 @@ import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/utils/analytics_helpers.dart';
 
 final phoneStateProvider = StateProvider((ref) => '');
@@ -179,6 +180,8 @@ class OtpAPINotifier extends StateNotifier<ApiResult<User?>> {
       }).then((response) {
         debugPrint(response.toString());
       });
+
+      read(authStateProvider.notifier).setUser(user);
 
       state = ApiResult.data(user);
     });

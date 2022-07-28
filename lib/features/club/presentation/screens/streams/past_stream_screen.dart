@@ -15,7 +15,7 @@ class PastStreamScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pastStreamProvider = ref.read(pastStreamsStateProvider(categoryId));
+    final pastStreamProvider = ref.watch(pastStreamsStateProvider(categoryId));
 
     final _controller = useScrollController();
     _controller.addListener(() {
@@ -120,7 +120,7 @@ class PastStreamScreen extends HookConsumerWidget {
 class CategoryGridView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final webinarCategoryProvider = ref.read(webinarCategoryStateProvider);
+    final webinarCategoryProvider = ref.watch(webinarCategoryStateProvider);
     return Container(
       padding: const EdgeInsets.only(bottom: 40),
       width: double.infinity,

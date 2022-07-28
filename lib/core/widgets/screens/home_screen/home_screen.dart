@@ -24,7 +24,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const tabCount = 5;
 
-    final user = ref.watch(authStateProvider.notifier).getUser();
+    final user = ref.read(authStateProvider.notifier).getUser();
 
     final _tabController =
         useTabController(initialLength: tabCount, initialIndex: tab ?? 0);

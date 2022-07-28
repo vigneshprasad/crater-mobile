@@ -19,8 +19,7 @@ class AuthorizedInterceptor extends RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) async {
     try {
-      final user = read(authStateProvider.notifier).getUser();
-      final token = user?.token;
+      final token = read(authTokenProvider);
       if (token != null) {
         final authHeader = {HttpHeaders.authorizationHeader: 'JWT $token'};
         final requestWithAuth =

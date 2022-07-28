@@ -12,7 +12,7 @@ const craterSplashKey = 'crater_splash_shown';
 class SplashScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
+    final authState = ref.watch(splashStateProvider);
     ref.read(authStateProvider.notifier).registerDevice();
 
     return authState.when(

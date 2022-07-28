@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
@@ -12,19 +11,6 @@ final pastStreamStateProvider = StateNotifierProvider.autoDispose
     .family<PastStreamState, ApiResult<Conversation>, int>(
   (ref, id) => PastStreamState(ref.read, id),
 );
-
-class RtcConnectionState extends ChangeNotifier {
-  RtcConnection _connection;
-
-  RtcConnectionState() : _connection = RtcConnection.disconnected;
-
-  RtcConnection get connection => _connection;
-
-  set connection(RtcConnection connection) {
-    _connection = connection;
-    notifyListeners();
-  }
-}
 
 class PastStreamState extends StateNotifier<ApiResult<Conversation>> {
   final Reader read;
