@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:worknetwork/features/auth/presentation/screens/phone/otp_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
@@ -20,6 +21,7 @@ import 'package:worknetwork/features/signup/presentation/screens/profile_email_s
     AutoRoute(page: HomeScreen, path: "/home/:tab?"),
     AutoRoute(page: WelcomeScreen, path: "/welcome"),
     AutoRoute(page: PhoneScreen, path: "/phone/:state?"),
+    AutoRoute(page: OTPScreen, path: "/otp/:state?"),
     AutoRoute(page: OnboardingScreen, path: "/onboarding/:type"),
     AutoRoute(page: ChatScreen, path: "/chat/user"),
     AutoRoute(page: ConversationScreen, path: "/roundtable/:id"),

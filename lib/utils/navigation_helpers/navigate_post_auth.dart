@@ -17,19 +17,13 @@ Future<bool> manageLoginPopup(BuildContext context, WidgetRef ref) async {
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) {
-      return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppBorderRadius.bottomSheetRadius),
-          topRight: Radius.circular(AppBorderRadius.bottomSheetRadius),
+      return Container(
+        height: 600,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).dialogBackgroundColor,
         ),
-        child: Container(
-          height: 600,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).dialogBackgroundColor,
-          ),
-          child: const PhoneScreen(state: 'popup'),
-        ),
+        child: const PhoneScreen(state: 'popup'),
       );
     },
   );

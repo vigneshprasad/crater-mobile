@@ -105,45 +105,58 @@ class RootApp extends HookConsumerWidget {
             //   ],
             // builder:
             (context, child) {
-          final canvasColor = HexColor.fromHex('#1F2127');
-          final borderColor = HexColor.fromHex('#272728');
-          const backgroundColor = Colors.black;
+          final canvasColor = HexColor.fromHex('#121212');
+          final borderColor = HexColor.fromHex('#373737');
+          final backgroundColor = HexColor.fromHex('#010101');
           final splashColor = HexColor.fromHex('782BE8');
-          final grey = HexColor.fromHex('#808190');
+          final grey = HexColor.fromHex('#C4C4C4');
           //HexColor.fromHex("#10141C");
-          final buttonColor = HexColor.fromHex('#9146FF');
+          final buttonColor = HexColor.fromHex('#882EE8');
           return Theme(
             data: AppTheme.darkTheme.copyWith(
               textTheme: TextTheme(
                 headline5: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
                 ),
                 headline6: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
                 ),
                 headline4: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
                 ),
                 headline3: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
+                ),
+                headline2: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
+                ),
+                headline1: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
                 ),
                 caption: TextStyle(
-                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
                   color: grey,
-                  fontFamily: "Roobert",
+                  fontFamily: "Outfit",
                 ),
-                // subtitle1: const TextStyle(fontWeight: FontWeight.bold),
                 subtitle2: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
                 ),
                 button: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roobert",
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Outfit",
+                  fontSize: 16,
+                ),
+                bodyText2: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Outfit",
+                  color: grey,
                 ),
               ),
 
@@ -175,17 +188,27 @@ class RootApp extends HookConsumerWidget {
                 selectedItemColor: buttonColor,
               ),
               appBarTheme: AppBarTheme(
-                iconTheme: IconThemeData(color: buttonColor),
                 color: backgroundColor,
                 elevation: 0,
-                actionsIconTheme: IconThemeData(color: buttonColor),
               ),
               buttonTheme: ButtonThemeData(
                 buttonColor: buttonColor,
                 colorScheme: const ColorScheme.dark(),
               ),
               elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(primary: buttonColor),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  onPrimary: Colors.black,
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    fontFamily: "Outfit",
+                    color: grey,
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 42, vertical: 14),
+                  shape: const RoundedRectangleBorder(),
+                ),
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(primary: buttonColor),
@@ -195,6 +218,7 @@ class RootApp extends HookConsumerWidget {
                 indicatorSize: TabBarIndicatorSize.label,
               ),
               buttonColor: buttonColor,
+              dividerColor: borderColor,
               dialogBackgroundColor: canvasColor,
               floatingActionButtonTheme: FloatingActionButtonThemeData(
                 backgroundColor: buttonColor,

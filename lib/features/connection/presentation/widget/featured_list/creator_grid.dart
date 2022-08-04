@@ -194,8 +194,8 @@ class CreatorGridCard extends HookConsumerWidget {
               width: AppInsets.xl,
             ),
             SizedBox(
-              width: 100,
-              height: 30,
+              // width: 100,
+              // height: 40,
               child: isFollowing.value
                   ? Center(
                       child: Text(
@@ -203,8 +203,8 @@ class CreatorGridCard extends HookConsumerWidget {
                         style: Theme.of(context).textTheme.caption,
                       ),
                     )
-                  : BaseLargeButton(
-                      text: 'Follow',
+                  : ElevatedButton(
+                      child: Text('Follow'),
                       onPressed: () => onFollow(context),
                     ),
             ),

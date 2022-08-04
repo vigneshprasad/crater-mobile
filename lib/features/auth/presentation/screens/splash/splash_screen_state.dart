@@ -19,7 +19,7 @@ final authStateProvider =
 final authTokenProvider = StateProvider(
   (ref) {
     final user =
-        ref.watch(authLocalDatasourceProvider).value?.getUserFromCache();
+        ref.read(authLocalDatasourceProvider).value?.getUserFromCache();
     return user?.token;
   },
 );

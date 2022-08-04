@@ -10,48 +10,49 @@
 //
 // ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i14;
-import 'package:flutter/material.dart' as _i15;
+import 'package:auto_route/auto_route.dart' as _i15;
+import 'package:flutter/material.dart' as _i16;
 
 import 'core/widgets/screens/home_screen/home_screen.dart' as _i2;
 import 'features/auth/presentation/screens/onboarding/onboarding_screen.dart'
-    as _i5;
+    as _i6;
+import 'features/auth/presentation/screens/phone/otp_screen.dart' as _i5;
 import 'features/auth/presentation/screens/phone/phone_screen.dart' as _i4;
 import 'features/auth/presentation/screens/splash/splash_screen.dart' as _i1;
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart' as _i3;
-import 'features/chat/presentation/screens/chat_screen.dart' as _i6;
+import 'features/chat/presentation/screens/chat_screen.dart' as _i7;
 import 'features/club/presentation/screens/past_stream/past_stream_detail_screen.dart'
-    as _i12;
-import 'features/club/presentation/screens/streams/past_stream_screen.dart'
     as _i13;
+import 'features/club/presentation/screens/streams/past_stream_screen.dart'
+    as _i14;
 import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart'
-    as _i7;
-import 'features/conversations/presentation/screens/series_screen/series_screen.dart'
     as _i8;
+import 'features/conversations/presentation/screens/series_screen/series_screen.dart'
+    as _i9;
 import 'features/profile/presentation/screens/profile_screen/profile_screen.dart'
-    as _i11;
-import 'features/signup/presentation/screens/profile_basic_screen.dart' as _i9;
-import 'features/signup/presentation/screens/profile_email_screen.dart' as _i10;
+    as _i12;
+import 'features/signup/presentation/screens/profile_basic_screen.dart' as _i10;
+import 'features/signup/presentation/screens/profile_email_screen.dart' as _i11;
 
-class AppRouter extends _i14.RootStackRouter {
-  AppRouter([_i15.GlobalKey<_i15.NavigatorState>? navigatorKey])
+class AppRouter extends _i15.RootStackRouter {
+  AppRouter([_i16.GlobalKey<_i16.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i14.PageFactory> pagesMap = {
+  final Map<String, _i15.PageFactory> pagesMap = {
     SplashScreenRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData, child: _i1.SplashScreen());
     },
     HomeScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HomeScreenRouteArgs>(
           orElse: () => HomeScreenRouteArgs(tab: pathParams.optInt('tab', 0)));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData, child: _i2.HomeScreen(tab: args.tab));
     },
     WelcomeScreenRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData, child: _i3.WelcomeScreen());
     },
     PhoneScreenRoute.name: (routeData) {
@@ -59,23 +60,32 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<PhoneScreenRouteArgs>(
           orElse: () =>
               PhoneScreenRouteArgs(state: pathParams.getString('state')));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i4.PhoneScreen(key: args.key, state: args.state));
+    },
+    OTPScreenRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OTPScreenRouteArgs>(
+          orElse: () =>
+              OTPScreenRouteArgs(state: pathParams.getString('state')));
+      return _i15.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i5.OTPScreen(key: args.key, state: args.state));
     },
     OnboardingScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<OnboardingScreenRouteArgs>(
           orElse: () =>
               OnboardingScreenRouteArgs(type: pathParams.getString('type')));
-      return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i5.OnboardingScreen(args.type));
+      return _i15.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i6.OnboardingScreen(args.type));
     },
     ChatScreenRoute.name: (routeData) {
       final args = routeData.argsAs<ChatScreenRouteArgs>();
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i6.ChatScreen(
+          child: _i7.ChatScreen(
               recieverId: args.recieverId,
               groupId: args.groupId,
               allowChat: args.allowChat,
@@ -86,24 +96,24 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<ConversationScreenRouteArgs>(
           orElse: () =>
               ConversationScreenRouteArgs(id: pathParams.optInt('id')));
-      return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.ConversationScreen(id: args.id));
+      return _i15.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i8.ConversationScreen(id: args.id));
     },
     SeriesScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<SeriesScreenRouteArgs>(
           orElse: () => SeriesScreenRouteArgs(id: pathParams.optInt('id')));
-      return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i8.SeriesScreen(id: args.id));
+      return _i15.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i9.SeriesScreen(id: args.id));
     },
     ProfileBasicScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProfileBasicScreenRouteArgs>(
           orElse: () => ProfileBasicScreenRouteArgs(
               editMode: pathParams.getBool('editMode')));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i9.ProfileBasicScreen(
+          child: _i10.ProfileBasicScreen(
               key: args.key,
               editMode: args.editMode,
               onCompletion: args.onCompletion,
@@ -114,9 +124,9 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<ProfileEmailScreenRouteArgs>(
           orElse: () => ProfileEmailScreenRouteArgs(
               editMode: pathParams.getBool('editMode')));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i10.ProfileEmailScreen(
+          child: _i11.ProfileEmailScreen(
               key: args.key, editMode: args.editMode, popup: args.popup));
     },
     ProfileScreenRoute.name: (routeData) {
@@ -126,9 +136,9 @@ class AppRouter extends _i14.RootStackRouter {
               userId: pathParams.getString('userId'),
               createrId: pathParams.optInt('createrId'),
               allowEdit: pathParams.getBool('allowEdit')));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i11.ProfileScreen(args.userId,
+          child: _i12.ProfileScreen(args.userId,
               createrId: args.createrId, allowEdit: args.allowEdit));
     },
     PastStreamDetailScreenRoute.name: (routeData) {
@@ -136,46 +146,47 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<PastStreamDetailScreenRouteArgs>(
           orElse: () =>
               PastStreamDetailScreenRouteArgs(id: pathParams.optInt('id')));
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i12.PastStreamDetailScreen(id: args.id));
+          child: _i13.PastStreamDetailScreen(id: args.id));
     },
     PastStreamScreenRoute.name: (routeData) {
       final args = routeData.argsAs<PastStreamScreenRouteArgs>(
           orElse: () => const PastStreamScreenRouteArgs());
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i13.PastStreamScreen(
+          child: _i14.PastStreamScreen(
               categoryId: args.categoryId, categoryName: args.categoryName));
     }
   };
 
   @override
-  List<_i14.RouteConfig> get routes => [
-        _i14.RouteConfig(SplashScreenRoute.name, path: '/'),
-        _i14.RouteConfig(HomeScreenRoute.name, path: '/home/:tab?'),
-        _i14.RouteConfig(WelcomeScreenRoute.name, path: '/welcome'),
-        _i14.RouteConfig(PhoneScreenRoute.name, path: '/phone/:state?'),
-        _i14.RouteConfig(OnboardingScreenRoute.name, path: '/onboarding/:type'),
-        _i14.RouteConfig(ChatScreenRoute.name, path: '/chat/user'),
-        _i14.RouteConfig(ConversationScreenRoute.name, path: '/roundtable/:id'),
-        _i14.RouteConfig(SeriesScreenRoute.name, path: '/series/:id'),
-        _i14.RouteConfig(ProfileBasicScreenRoute.name,
+  List<_i15.RouteConfig> get routes => [
+        _i15.RouteConfig(SplashScreenRoute.name, path: '/'),
+        _i15.RouteConfig(HomeScreenRoute.name, path: '/home/:tab?'),
+        _i15.RouteConfig(WelcomeScreenRoute.name, path: '/welcome'),
+        _i15.RouteConfig(PhoneScreenRoute.name, path: '/phone/:state?'),
+        _i15.RouteConfig(OTPScreenRoute.name, path: '/otp/:state?'),
+        _i15.RouteConfig(OnboardingScreenRoute.name, path: '/onboarding/:type'),
+        _i15.RouteConfig(ChatScreenRoute.name, path: '/chat/user'),
+        _i15.RouteConfig(ConversationScreenRoute.name, path: '/roundtable/:id'),
+        _i15.RouteConfig(SeriesScreenRoute.name, path: '/series/:id'),
+        _i15.RouteConfig(ProfileBasicScreenRoute.name,
             path: '/profile-basic/:editMode?'),
-        _i14.RouteConfig(ProfileEmailScreenRoute.name,
+        _i15.RouteConfig(ProfileEmailScreenRoute.name,
             path: '/profile-email/:editMode?'),
-        _i14.RouteConfig(ProfileScreenRoute.name,
+        _i15.RouteConfig(ProfileScreenRoute.name,
             path: '/profile-detail/:userId/:createrId?/:allowEdit'),
-        _i14.RouteConfig(PastStreamDetailScreenRoute.name,
+        _i15.RouteConfig(PastStreamDetailScreenRoute.name,
             path: '/past-stream/:id'),
-        _i14.RouteConfig(PastStreamScreenRoute.name,
+        _i15.RouteConfig(PastStreamScreenRoute.name,
             path: '/past-streams/:categoryId?')
       ];
 }
 
 /// generated route for
 /// [_i1.SplashScreen]
-class SplashScreenRoute extends _i14.PageRouteInfo<void> {
+class SplashScreenRoute extends _i15.PageRouteInfo<void> {
   const SplashScreenRoute() : super(SplashScreenRoute.name, path: '/');
 
   static const String name = 'SplashScreenRoute';
@@ -183,7 +194,7 @@ class SplashScreenRoute extends _i14.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.HomeScreen]
-class HomeScreenRoute extends _i14.PageRouteInfo<HomeScreenRouteArgs> {
+class HomeScreenRoute extends _i15.PageRouteInfo<HomeScreenRouteArgs> {
   HomeScreenRoute({int? tab = 0})
       : super(HomeScreenRoute.name,
             path: '/home/:tab?',
@@ -206,7 +217,7 @@ class HomeScreenRouteArgs {
 
 /// generated route for
 /// [_i3.WelcomeScreen]
-class WelcomeScreenRoute extends _i14.PageRouteInfo<void> {
+class WelcomeScreenRoute extends _i15.PageRouteInfo<void> {
   const WelcomeScreenRoute() : super(WelcomeScreenRoute.name, path: '/welcome');
 
   static const String name = 'WelcomeScreenRoute';
@@ -214,8 +225,8 @@ class WelcomeScreenRoute extends _i14.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.PhoneScreen]
-class PhoneScreenRoute extends _i14.PageRouteInfo<PhoneScreenRouteArgs> {
-  PhoneScreenRoute({_i15.Key? key, required String state})
+class PhoneScreenRoute extends _i15.PageRouteInfo<PhoneScreenRouteArgs> {
+  PhoneScreenRoute({_i16.Key? key, required String state})
       : super(PhoneScreenRoute.name,
             path: '/phone/:state?',
             args: PhoneScreenRouteArgs(key: key, state: state),
@@ -227,7 +238,7 @@ class PhoneScreenRoute extends _i14.PageRouteInfo<PhoneScreenRouteArgs> {
 class PhoneScreenRouteArgs {
   const PhoneScreenRouteArgs({this.key, required this.state});
 
-  final _i15.Key? key;
+  final _i16.Key? key;
 
   final String state;
 
@@ -238,9 +249,34 @@ class PhoneScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i5.OnboardingScreen]
+/// [_i5.OTPScreen]
+class OTPScreenRoute extends _i15.PageRouteInfo<OTPScreenRouteArgs> {
+  OTPScreenRoute({_i16.Key? key, required String state})
+      : super(OTPScreenRoute.name,
+            path: '/otp/:state?',
+            args: OTPScreenRouteArgs(key: key, state: state),
+            rawPathParams: {'state': state});
+
+  static const String name = 'OTPScreenRoute';
+}
+
+class OTPScreenRouteArgs {
+  const OTPScreenRouteArgs({this.key, required this.state});
+
+  final _i16.Key? key;
+
+  final String state;
+
+  @override
+  String toString() {
+    return 'OTPScreenRouteArgs{key: $key, state: $state}';
+  }
+}
+
+/// generated route for
+/// [_i6.OnboardingScreen]
 class OnboardingScreenRoute
-    extends _i14.PageRouteInfo<OnboardingScreenRouteArgs> {
+    extends _i15.PageRouteInfo<OnboardingScreenRouteArgs> {
   OnboardingScreenRoute({required String type})
       : super(OnboardingScreenRoute.name,
             path: '/onboarding/:type',
@@ -262,8 +298,8 @@ class OnboardingScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i6.ChatScreen]
-class ChatScreenRoute extends _i14.PageRouteInfo<ChatScreenRouteArgs> {
+/// [_i7.ChatScreen]
+class ChatScreenRoute extends _i15.PageRouteInfo<ChatScreenRouteArgs> {
   ChatScreenRoute(
       {required String recieverId,
       String? groupId,
@@ -302,9 +338,9 @@ class ChatScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i7.ConversationScreen]
+/// [_i8.ConversationScreen]
 class ConversationScreenRoute
-    extends _i14.PageRouteInfo<ConversationScreenRouteArgs> {
+    extends _i15.PageRouteInfo<ConversationScreenRouteArgs> {
   ConversationScreenRoute({int? id})
       : super(ConversationScreenRoute.name,
             path: '/roundtable/:id',
@@ -326,8 +362,8 @@ class ConversationScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i8.SeriesScreen]
-class SeriesScreenRoute extends _i14.PageRouteInfo<SeriesScreenRouteArgs> {
+/// [_i9.SeriesScreen]
+class SeriesScreenRoute extends _i15.PageRouteInfo<SeriesScreenRouteArgs> {
   SeriesScreenRoute({int? id})
       : super(SeriesScreenRoute.name,
             path: '/series/:id',
@@ -349,11 +385,11 @@ class SeriesScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i9.ProfileBasicScreen]
+/// [_i10.ProfileBasicScreen]
 class ProfileBasicScreenRoute
-    extends _i14.PageRouteInfo<ProfileBasicScreenRouteArgs> {
+    extends _i15.PageRouteInfo<ProfileBasicScreenRouteArgs> {
   ProfileBasicScreenRoute(
-      {_i15.Key? key,
+      {_i16.Key? key,
       required bool editMode,
       void Function()? onCompletion,
       bool? popup = false})
@@ -376,7 +412,7 @@ class ProfileBasicScreenRouteArgs {
       this.onCompletion,
       this.popup = false});
 
-  final _i15.Key? key;
+  final _i16.Key? key;
 
   final bool editMode;
 
@@ -391,11 +427,11 @@ class ProfileBasicScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i10.ProfileEmailScreen]
+/// [_i11.ProfileEmailScreen]
 class ProfileEmailScreenRoute
-    extends _i14.PageRouteInfo<ProfileEmailScreenRouteArgs> {
+    extends _i15.PageRouteInfo<ProfileEmailScreenRouteArgs> {
   ProfileEmailScreenRoute(
-      {_i15.Key? key, required bool editMode, bool? popup = false})
+      {_i16.Key? key, required bool editMode, bool? popup = false})
       : super(ProfileEmailScreenRoute.name,
             path: '/profile-email/:editMode?',
             args: ProfileEmailScreenRouteArgs(
@@ -409,7 +445,7 @@ class ProfileEmailScreenRouteArgs {
   const ProfileEmailScreenRouteArgs(
       {this.key, required this.editMode, this.popup = false});
 
-  final _i15.Key? key;
+  final _i16.Key? key;
 
   final bool editMode;
 
@@ -422,8 +458,8 @@ class ProfileEmailScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i11.ProfileScreen]
-class ProfileScreenRoute extends _i14.PageRouteInfo<ProfileScreenRouteArgs> {
+/// [_i12.ProfileScreen]
+class ProfileScreenRoute extends _i15.PageRouteInfo<ProfileScreenRouteArgs> {
   ProfileScreenRoute(
       {required String userId, int? createrId, required bool allowEdit})
       : super(ProfileScreenRoute.name,
@@ -456,9 +492,9 @@ class ProfileScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i12.PastStreamDetailScreen]
+/// [_i13.PastStreamDetailScreen]
 class PastStreamDetailScreenRoute
-    extends _i14.PageRouteInfo<PastStreamDetailScreenRouteArgs> {
+    extends _i15.PageRouteInfo<PastStreamDetailScreenRouteArgs> {
   PastStreamDetailScreenRoute({int? id})
       : super(PastStreamDetailScreenRoute.name,
             path: '/past-stream/:id',
@@ -480,9 +516,9 @@ class PastStreamDetailScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i13.PastStreamScreen]
+/// [_i14.PastStreamScreen]
 class PastStreamScreenRoute
-    extends _i14.PageRouteInfo<PastStreamScreenRouteArgs> {
+    extends _i15.PageRouteInfo<PastStreamScreenRouteArgs> {
   PastStreamScreenRoute({int? categoryId, String? categoryName})
       : super(PastStreamScreenRoute.name,
             path: '/past-streams/:categoryId?',

@@ -18,27 +18,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   final List<Widget> _tabs = const [
     _ImageSlide(
-      image: AppImageAssets.splashDiscover,
-      heading: "Welcome to Crater",
-      subheading: "A live streaming & auctions platform for creators",
+      image: AppImageAssets.splashLearn,
+      heading: "A New Way to Learn",
+      subheading:
+          "Learn about design, crypto, stocks, marketing and a lot more on livestreams by experts!",
     ),
     _ImageSlide(
-      image: AppImageAssets.splashTopic,
-      heading: "Join Live Stream",
+      image: AppImageAssets.splashChat,
+      heading: "Chat and Interact",
       subheading:
-          "On Crater you can tune into live streams realted to stock trading, design & much more",
+          "Ask questions, chat with the creator and others on the stream - be part of the learning community",
     ),
     _ImageSlide(
-      image: AppImageAssets.splashPeople,
-      heading: "Chat & Interact",
+      image: AppImageAssets.splashAuction,
+      heading: "Take part in Auctions",
       subheading:
-          "In the live streams interact with your favourite creators & ask all your questions",
-    ),
-    _ImageSlide(
-      image: AppImageAssets.splashAI,
-      heading: "View Past Stream",
-      subheading:
-          "Missed a stream? Not a problem. You can explore past streams as well.",
+          "Place bids and get access to exclusive content by our livestreaming creators",
     ),
   ];
 
@@ -89,43 +84,29 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget _buildViewContent(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 100,
-      child: Column(
-        children: [
-          _SlideIndicator(
-            length: _tabs.length,
-            activeIndex: _activeIndex,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Flexible(
-                //   flex: 5,
-                //   child: BaseLargeButton(
-                //     text: 'Login',
-                //     onPressed: () => openBottomSheet(context, isSignUp: false),
-                //   ),
-                // ),
-                // Flexible(
-                //   child: Container(),
-                // ),
-                Flexible(
-                  flex: 5,
-                  child: SizedBox(
-                    width: 160,
-                    child: BaseLargeButton(
-                      text: _activeIndex == 3 ? 'Explore' : 'Next',
-                      onPressed: () => openBottomSheet(context),
-                    ),
-                  ),
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: BaseLargeButton(
+                text: _activeIndex == _tabs.length - 1
+                    ? 'Login and start exploring'
+                    : 'Next',
+                icon: Icons.arrow_forward,
+                onPressed: () => openBottomSheet(context),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            _SlideIndicator(
+              length: _tabs.length,
+              activeIndex: _activeIndex,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -137,7 +118,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       return;
     }
 
-    AutoRouter.of(context).navigate(HomeScreenRoute());
+    AutoRouter.of(context).pushAndPopUntil(
+      HomeScreenRoute(),
+      predicate: (route) => false,
+    );
   }
 }
 
@@ -155,27 +139,14 @@ class _ImageSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headingStyle = Theme.of(context).textTheme.headline4?.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 22,
-        );
-    final subheadingStyle = Theme.of(context).textTheme.headline4?.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-        );
+    final headingStyle = Theme.of(context).textTheme.headline5;
+    final subheadingStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
-      padding: const EdgeInsets.only(bottom: 200),
+      padding: const EdgeInsets.only(bottom: 140),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 80),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              heading,
-              style: headingStyle,
-            ),
-          ),
-          const Spacer(),
           Image(
             image: image,
             width: double.infinity,
@@ -184,8 +155,15 @@ class _ImageSlide extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
+              heading,
+              style: headingStyle,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
               subheading,
-              textAlign: TextAlign.center,
               style: subheadingStyle,
             ),
           )
@@ -208,7 +186,6 @@ class _SlideIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: _buildIndicatorItems(context),
     );
   }
@@ -217,9 +194,11 @@ class _SlideIndicator extends StatelessWidget {
     final List<Widget> items = [];
 
     for (int index = 0; index < length; index++) {
-      final primaryColor = Theme.of(context).primaryColor;
-      final color = index == activeIndex ? primaryColor : Colors.white24;
+      final isActive = index == activeIndex;
+      final color = isActive ? null : Colors.white24;
+      final width = isActive ? 12.0 : 6.0;
       final isLast = index == length - 1;
+      final border = isActive ? Border.all(color: Colors.white24) : null;
 
       items.add(
         Padding(
@@ -227,11 +206,11 @@ class _SlideIndicator extends StatelessWidget {
               ? EdgeInsets.zero
               : const EdgeInsets.only(right: AppInsets.l),
           child: Container(
-            width: 8,
-            height: 8,
+            width: width,
+            height: 6,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
               color: color,
+              border: border,
             ),
           ),
         ),

@@ -109,56 +109,73 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
     );
   }
 
+  Widget _getUnderline() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 1,
+        color: _isValid
+            ? Colors.green[300]!
+            : _isFocused
+                ? Theme.of(context).primaryColor
+                : Colors.grey,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppInsets.xl),
-      decoration: _getBoxDecoration(),
       constraints: const BoxConstraints(
         maxHeight: kMinInteractiveDimension,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+      child: Stack(
         children: [
-          DropdownButtonHideUnderline(
-            child: DropdownButton<Country>(
-              onChanged: (value) {
-                setState(() {
-                  _selectedCountry = value;
-                });
-              },
-              value: _selectedCountry,
-              items: _countries
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(
-                        "${e.flagCode} +${e.countryCode}",
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              DropdownButtonHideUnderline(
+                child: DropdownButton<Country>(
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCountry = value;
+                    });
+                  },
+                  value: _selectedCountry,
+                  items: _countries
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            "${e.flagCode} +${e.countryCode}",
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              const SizedBox(width: AppInsets.sm),
+              const VerticalDivider(
+                width: 2,
+                endIndent: 8,
+                indent: 8,
+              ),
+              const SizedBox(width: AppInsets.l),
+              Flexible(
+                child: TextField(
+                  controller: _controller,
+                  focusNode: _inputFocus,
+                  decoration: _getInputDecoration(),
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(15),
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppInsets.sm),
-          const VerticalDivider(
-            width: 2,
-            endIndent: 8,
-            indent: 8,
-          ),
-          const SizedBox(width: AppInsets.l),
-          Flexible(
-            child: TextField(
-              controller: _controller,
-              focusNode: _inputFocus,
-              decoration: _getInputDecoration(),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(15),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ),
+          _getUnderline()
         ],
       ),
     );

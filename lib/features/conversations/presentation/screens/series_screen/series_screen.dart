@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:neopop/widgets/buttons/neopop_tilted_button/neopop_tilted_button.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
@@ -378,13 +379,24 @@ class _SeriesLoaded extends ConsumerWidget {
                           )
                       else
                         Expanded(
-                          child: BaseLargeButton(
-                            onPressed: () {
+                          child: NeoPopTiltedButton(
+                            color: Theme.of(context).primaryColor,
+                            onTapUp: () {
                               _requestJoinGroup(context);
                             },
-                            text: 'RSVP for the series',
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15,
+                                ),
+                                child: Text(
+                                  'Remind Me',
+                                  style: Theme.of(context).textTheme.button,
+                                ),
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                     ],
                   ),
                 ),

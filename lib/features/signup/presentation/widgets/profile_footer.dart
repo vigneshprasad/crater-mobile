@@ -26,8 +26,8 @@ class ProfileFooter extends StatelessWidget {
               children: [
                 if (onSkip != null)
                   SizedBox(
-                    width: 130,
                     child: BaseLargeButton(
+                      style: BaseLargeButtonStyle.secondary,
                       text: 'Skip for now',
                       onPressed: onSkip,
                       outlined: true,
@@ -35,7 +35,6 @@ class ProfileFooter extends StatelessWidget {
                   ),
                 const Spacer(),
                 SizedBox(
-                  width: 130,
                   child: BaseLargeButton(
                     text: next,
                     onPressed: onSave,

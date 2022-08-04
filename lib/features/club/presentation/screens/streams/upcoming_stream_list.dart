@@ -189,8 +189,8 @@ class WebinarCard extends HookConsumerWidget {
             ),
             Center(
               child: SizedBox(
-                width: 100,
-                height: 30,
+                // width: 100,
+                // height: 30,
                 child: isRSVPed.value
                     ? Center(
                         child: Text(
@@ -199,7 +199,7 @@ class WebinarCard extends HookConsumerWidget {
                         ),
                       )
                     : BaseLargeButton(
-                        text: 'RSVP',
+                        text: 'Remind me',
                         onPressed: () => _requestJoinGroup(context),
                       ),
               ),
