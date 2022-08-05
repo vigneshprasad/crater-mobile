@@ -39,7 +39,6 @@ dependencies:
   equatable: ^2.0.3
   firebase_core: ^1.10.0
   firebase_dynamic_links: ^4.3.1
-  flutter_custom_tabs: ^1.0.4
   flutter_hooks: ^0.18.5+1
   flutter_html: ^3.0.0-alpha.5
   flutter_segment: ^3.9.0
@@ -61,7 +60,7 @@ dependencies:
   onesignal_flutter: ^3.3.2
   package_info: ^2.0.2
   path_provider: ^2.0.11
-  permission_handler: ^10.0.0
+  permission_handler: ^9.2.0
   phone_number: ^0.12.0+2
   sentry_flutter: ^6.6.2
   share_plus: ^4.0.10

@@ -5,32 +5,32 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00049">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000337">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: cocoapods" time="8.305098">
+      <testcase classname="fastlane.lanes" name="1: cocoapods" time="12.256431">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: build_app" time="240.741746">
+      <testcase classname="fastlane.lanes" name="2: build_app" time="157.894139">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: changelog_from_git_commits" time="0.046724">
+      <testcase classname="fastlane.lanes" name="3: changelog_from_git_commits" time="0.056278">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="52.332805">
+      <testcase classname="fastlane.lanes" name="4: appcenter_upload" time="62.873579">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: slack" time="0.377328">
+      <testcase classname="fastlane.lanes" name="5: slack" time="0.410255">
         
       </testcase>
     

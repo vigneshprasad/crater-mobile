@@ -426,27 +426,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
-  flutter_custom_tabs:
-    dependency: "direct main"
-    description:
-      name: flutter_custom_tabs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
-  flutter_custom_tabs_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_custom_tabs_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  flutter_custom_tabs_web:
-    dependency: transitive
-    description:
-      name: flutter_custom_tabs_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -657,7 +636,7 @@ packages:
       name: image_picker_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   internet_connection_checker:
     dependency: "direct main"
     description:
@@ -944,14 +923,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.0.0"
+    version: "9.2.0"
   permission_handler_android:
     dependency: transitive
     description:
       name: permission_handler_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.0.0"
+    version: "9.0.2+1"
   permission_handler_apple:
     dependency: transitive
     description:

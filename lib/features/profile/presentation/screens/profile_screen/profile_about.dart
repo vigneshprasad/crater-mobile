@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/custom_tabs/custom_tabs.dart';
 import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/local_storage/local_storage.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
@@ -126,7 +126,9 @@ class AboutTab extends HookConsumerWidget {
           vertical: AppInsets.sm,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        onPressed: () => ref.read(customTabsProvider).openLink(linkedUrl),
+        onPressed: () {
+          launchUrlString(linkedUrl);
+        },
         child: SvgPicture.asset(
           AppSvgAssets.linkedinFilled,
           height: 30.0,

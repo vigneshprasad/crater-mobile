@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/hub/presentation/screen/create_stream_screen.dart';
 import 'package:worknetwork/features/hub/presentation/screen/hub_screen_state.dart';
@@ -90,8 +90,9 @@ class HubScreen extends HookConsumerWidget {
   }
 
   void onPressBecomeCreator() {
-    launch(
+    launchUrlString(
       'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator',
+      mode: LaunchMode.inAppWebView,
     );
   }
 }
