@@ -11,13 +11,6 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/phone_number_input/phone_number_input.dart';
 
 class PhoneScreen extends HookConsumerWidget {
-  final String state;
-
-  const PhoneScreen({
-    Key? key,
-    @PathParam("state") required this.state,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _validPhoneNumber = useState(false);
@@ -27,8 +20,6 @@ class PhoneScreen extends HookConsumerWidget {
     const sendOtp = 'Get OTP';
 
     return Scaffold(
-      backgroundColor:
-          state == 'popup' ? Theme.of(context).dialogBackgroundColor : null,
       body: SafeArea(
         child: Stack(
           children: [
@@ -40,25 +31,26 @@ class PhoneScreen extends HookConsumerWidget {
                     color: Theme.of(context).canvasColor,
                     child: Column(
                       children: [
-                        if (state != 'popup')
-                          Stack(
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.only(top: 95),
-                                child: Image(
-                                  image: AppImageAssets.phone,
-                                ),
+                        Stack(
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.only(top: 95),
+                              child: Image(
+                                image: AppImageAssets.phone,
+                                width: 180,
+                                height: 172,
                               ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Image(
-                                  image: AppImageAssets.circles,
-                                ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Image(
+                                image: AppImageAssets.circles,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(
-                          height: 48,
+                          height: 28,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -75,9 +67,6 @@ class PhoneScreen extends HookConsumerWidget {
                                   _validPhoneNumber.value = isValid;
                                 },
                                 initalCountry: "IN",
-                                backgroundColor: state == 'popup'
-                                    ? Theme.of(context).scaffoldBackgroundColor
-                                    : null,
                                 onChange: (value) {
                                   ref.read(phoneStateProvider.notifier).state =
                                       value;
@@ -104,8 +93,7 @@ class PhoneScreen extends HookConsumerWidget {
                             .then((value) {
                           ref.read(overlayProvider).hide();
                           if (value) {
-                            AutoRouter.of(context)
-                                .push(OTPScreenRoute(state: state));
+                            AutoRouter.of(context).push(const OTPScreenRoute());
                           }
                         });
                       },

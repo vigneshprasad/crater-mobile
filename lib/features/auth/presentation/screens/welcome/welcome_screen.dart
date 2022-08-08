@@ -119,7 +119,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     }
 
     AutoRouter.of(context).pushAndPopUntil(
-      HomeScreenRoute(),
+      const PhoneScreenRoute(),
       predicate: (route) => false,
     );
   }

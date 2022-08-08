@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/components/home_tab_bar/home_tab_bar.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/onboarding/onboarding_screen_state.dart';
-import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
@@ -42,6 +42,8 @@ class HomeScreen extends HookConsumerWidget {
 
       _navigateToHome(context);
 
+      ref.read(pushNotificationsProvider).promptForPermission();
+
       return () {
         _tabController.removeListener(_tabChangeListener);
       };
@@ -61,18 +63,8 @@ class HomeScreen extends HookConsumerWidget {
             StreamTab(),
             const PastStreamScreen(),
             ConnectionTab(),
-            if (user == null)
-              const PhoneScreen(
-                state: '',
-              )
-            else
-              const HubScreen(),
-            if (user == null)
-              const PhoneScreen(
-                state: '',
-              )
-            else
-              ProfileScreen(user.pk ?? '', allowEdit: true)
+            const HubScreen(),
+            ProfileScreen(user?.pk ?? '', allowEdit: true)
           ],
         ),
       ),

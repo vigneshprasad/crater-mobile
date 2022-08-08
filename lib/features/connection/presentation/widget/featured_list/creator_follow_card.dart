@@ -99,11 +99,6 @@ class CreatorFollowCard extends HookConsumerWidget {
       return;
     }
 
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
-
     overlayEntry = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlayEntry!);
 

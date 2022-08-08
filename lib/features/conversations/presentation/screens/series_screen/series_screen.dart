@@ -409,11 +409,6 @@ class _SeriesLoaded extends ConsumerWidget {
   }
 
   void startDyteMeeting(BuildContext context) async {
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
-
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
@@ -425,11 +420,6 @@ class _SeriesLoaded extends ConsumerWidget {
   }
 
   Future<void> _requestJoinGroup(BuildContext context) async {
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
-
     overlayEntry = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlayEntry!);
 

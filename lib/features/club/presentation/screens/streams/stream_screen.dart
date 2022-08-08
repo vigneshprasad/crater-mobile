@@ -13,7 +13,6 @@ import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class StreamTab extends HookConsumerWidget {
   @override
@@ -38,19 +37,6 @@ class StreamTab extends HookConsumerWidget {
         ref.read(streamStateProvider.notifier).getUpcomingNextData();
       }
     });
-
-    // final isMounted = useIsMounted();
-    // final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
-    //   if (isMounted()) {
-    //     context.read(streamStateProvider.notifier).getFeaturedData();
-    //   }
-    // });
-
-    // useEffect(() {
-    //   return () {
-    //     timer.cancel();
-    //   };
-    // }, []);
 
     return SafeArea(
       child: NestedScrollView(
@@ -616,11 +602,6 @@ class LiveGridTile extends HookConsumerWidget {
         //         )));
 
         if (item.type == GridItemType.live) {
-          final loginStatus = await manageLoginPopup(context, ref);
-          if (loginStatus == false) {
-            return;
-          }
-
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => DyteMeetingScreen(

@@ -17,6 +17,7 @@ final pushNotificationsProvider = Provider(
 
 abstract class PushNotifications {
   Future<void> initSdk();
+  void promptForPermission();
   Future<String> getSubscriptionToken();
   Future<String?> getPushToken();
   Future<void> setUserIdentifier(String phone);
@@ -125,7 +126,10 @@ class PushNotificationsImpl implements PushNotifications {
 
     // OneSignal.shared
     //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
+  }
 
+  @override
+  Future<void> promptForPermission() async {
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);

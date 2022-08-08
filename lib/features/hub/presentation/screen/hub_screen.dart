@@ -31,7 +31,7 @@ class HubScreen extends HookConsumerWidget {
                   collapsedHeight: 50,
                   toolbarHeight: 50,
                   flexibleSpace: const AccentTitle(
-                    title: 'Hub',
+                    title: 'Creator Hub',
                     leftPadding: 24,
                   ),
                   bottom: PreferredSize(

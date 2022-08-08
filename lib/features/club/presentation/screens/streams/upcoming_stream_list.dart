@@ -9,7 +9,6 @@ import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_list_state.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class UpcomingStreamList extends HookConsumerWidget {
   @override
@@ -218,11 +217,6 @@ class WebinarCard extends HookConsumerWidget {
         "id": item.conversation?.id,
       },
     );
-
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
 
     final response = await ref
         .read(upcomingStreamListStateProvider.notifier)

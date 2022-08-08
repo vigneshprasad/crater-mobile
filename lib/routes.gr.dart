@@ -56,22 +56,12 @@ class AppRouter extends _i15.RootStackRouter {
           routeData: routeData, child: _i3.WelcomeScreen());
     },
     PhoneScreenRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PhoneScreenRouteArgs>(
-          orElse: () =>
-              PhoneScreenRouteArgs(state: pathParams.getString('state')));
       return _i15.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i4.PhoneScreen(key: args.key, state: args.state));
+          routeData: routeData, child: _i4.PhoneScreen());
     },
     OTPScreenRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<OTPScreenRouteArgs>(
-          orElse: () =>
-              OTPScreenRouteArgs(state: pathParams.getString('state')));
       return _i15.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i5.OTPScreen(key: args.key, state: args.state));
+          routeData: routeData, child: _i5.OTPScreen());
     },
     OnboardingScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -225,52 +215,19 @@ class WelcomeScreenRoute extends _i15.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.PhoneScreen]
-class PhoneScreenRoute extends _i15.PageRouteInfo<PhoneScreenRouteArgs> {
-  PhoneScreenRoute({_i16.Key? key, required String state})
-      : super(PhoneScreenRoute.name,
-            path: '/phone/:state?',
-            args: PhoneScreenRouteArgs(key: key, state: state),
-            rawPathParams: {'state': state});
+class PhoneScreenRoute extends _i15.PageRouteInfo<void> {
+  const PhoneScreenRoute()
+      : super(PhoneScreenRoute.name, path: '/phone/:state?');
 
   static const String name = 'PhoneScreenRoute';
 }
 
-class PhoneScreenRouteArgs {
-  const PhoneScreenRouteArgs({this.key, required this.state});
-
-  final _i16.Key? key;
-
-  final String state;
-
-  @override
-  String toString() {
-    return 'PhoneScreenRouteArgs{key: $key, state: $state}';
-  }
-}
-
 /// generated route for
 /// [_i5.OTPScreen]
-class OTPScreenRoute extends _i15.PageRouteInfo<OTPScreenRouteArgs> {
-  OTPScreenRoute({_i16.Key? key, required String state})
-      : super(OTPScreenRoute.name,
-            path: '/otp/:state?',
-            args: OTPScreenRouteArgs(key: key, state: state),
-            rawPathParams: {'state': state});
+class OTPScreenRoute extends _i15.PageRouteInfo<void> {
+  const OTPScreenRoute() : super(OTPScreenRoute.name, path: '/otp/:state?');
 
   static const String name = 'OTPScreenRoute';
-}
-
-class OTPScreenRouteArgs {
-  const OTPScreenRouteArgs({this.key, required this.state});
-
-  final _i16.Key? key;
-
-  final String state;
-
-  @override
-  String toString() {
-    return 'OTPScreenRouteArgs{key: $key, state: $state}';
-  }
 }
 
 /// generated route for

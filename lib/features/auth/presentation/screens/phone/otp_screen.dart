@@ -12,13 +12,6 @@ import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/ui/base/code_input/code_input.dart';
 
 class OTPScreen extends HookConsumerWidget {
-  final String state;
-
-  const OTPScreen({
-    Key? key,
-    @PathParam("state") required this.state,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final otpFocusNode = useFocusNode();
@@ -30,8 +23,6 @@ class OTPScreen extends HookConsumerWidget {
         'Enter the 4 digit OTP sent on your mobile number to continue';
 
     return Scaffold(
-      backgroundColor:
-          state == 'popup' ? Theme.of(context).dialogBackgroundColor : null,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -47,6 +38,8 @@ class OTPScreen extends HookConsumerWidget {
                           padding: EdgeInsets.only(top: 95),
                           child: Image(
                             image: AppImageAssets.phone,
+                            width: 180,
+                            height: 172,
                           ),
                         ),
                         Align(
@@ -58,7 +51,7 @@ class OTPScreen extends HookConsumerWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 48,
+                      height: 28,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -100,14 +93,10 @@ class OTPScreen extends HookConsumerWidget {
                       if (user == null) {
                         return;
                       }
-                      if (state == 'popup') {
-                        AutoRouter.of(context).pop(user);
-                      } else {
-                        AutoRouter.of(context).pushAndPopUntil(
-                          HomeScreenRoute(),
-                          predicate: (route) => false,
-                        );
-                      }
+                      AutoRouter.of(context).pushAndPopUntil(
+                        HomeScreenRoute(),
+                        predicate: (route) => false,
+                      );
                     });
                   },
                 ),

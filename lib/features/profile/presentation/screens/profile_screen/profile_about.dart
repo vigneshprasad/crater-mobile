@@ -157,7 +157,7 @@ class AboutTab extends HookConsumerWidget {
       _overlay.remove();
 
       AutoRouter.of(context).pushAndPopUntil(
-        const SplashScreenRoute(),
+        const PhoneScreenRoute(),
         predicate: (route) => false,
       );
     });

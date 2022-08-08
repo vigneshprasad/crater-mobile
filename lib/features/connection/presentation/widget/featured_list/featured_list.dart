@@ -12,7 +12,6 @@ import 'package:worknetwork/features/connection/data/models/creator_response.dar
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list_state.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class FeaturedList extends HookConsumerWidget {
   final Axis scrollDirection;
@@ -168,11 +167,6 @@ class CreatorCard extends HookConsumerWidget {
 
   Future<void> onFollow(BuildContext context) async {
     if (isFollowing) {
-      return;
-    }
-
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
       return;
     }
 

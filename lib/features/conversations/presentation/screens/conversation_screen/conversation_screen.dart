@@ -19,7 +19,6 @@ import 'package:worknetwork/features/conversations/presentation/screens/conversa
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/user_stream_screen.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
@@ -408,11 +407,6 @@ class _ConversationLoaded extends HookConsumerWidget {
       },
     );
 
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
-
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
@@ -431,11 +425,6 @@ class _ConversationLoaded extends HookConsumerWidget {
         "id": data.conversation.id,
       },
     );
-
-    final loginStatus = await manageLoginPopup(context, ref);
-    if (loginStatus == false) {
-      return;
-    }
 
     overlayEntry = buildLoaderOverlay();
     Overlay.of(context)?.insert(overlayEntry!);

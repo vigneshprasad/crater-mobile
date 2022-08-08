@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worknetwork/api/integrations/devices_api_service.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
@@ -6,10 +7,49 @@ import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
-final splashStateProvider =
-    StateNotifierProvider<SplashStateNotifier, ApiResult<User>>(
-  (ref) => SplashStateNotifier(ref.read),
+const craterSplashKey = 'crater_splash_shown';
+
+enum SplashState {
+  home,
+  login,
+  intro,
+}
+
+final splashStateProvider = FutureProvider<SplashState>(
+  (ref) async {
+    // Delay for splash video play
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
+
+    final authState =
+        await ref.read(authRepositoryProvider).getAuthenticationState();
+    final isLoggedIn = authState.fold((error) => false, (data) => true);
+
+    if (isLoggedIn) {
+      return SplashState.home;
+    }
+
+    final splashStatus = await getStatus(craterSplashKey);
+    saveStatus(craterSplashKey);
+
+    if (splashStatus) {
+      return SplashState.login;
+    } else {
+      return SplashState.intro;
+    }
+  },
 );
+
+Future<bool> getStatus(String key) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(key) ?? false;
+}
+
+Future<void> saveStatus(String key) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(key, true);
+}
 
 final authStateProvider =
     StateNotifierProvider<AuthStateNotifier, ApiResult<User>>(
@@ -23,23 +63,6 @@ final authTokenProvider = StateProvider(
     return user?.token;
   },
 );
-
-class SplashStateNotifier extends StateNotifier<ApiResult<User>> {
-  final Reader read;
-
-  SplashStateNotifier(this.read) : super(ApiResult.loading()) {
-    fetchUser();
-  }
-
-  Future<void> fetchUser() async {
-    await read(authStateProvider.notifier).fetchUser();
-    state = read(authStateProvider.notifier).state;
-  }
-
-  Future<bool> isLoggedIn() async {
-    return read(authStateProvider.notifier).isLoggedIn();
-  }
-}
 
 class AuthStateNotifier extends StateNotifier<ApiResult<User>> {
   final Reader read;

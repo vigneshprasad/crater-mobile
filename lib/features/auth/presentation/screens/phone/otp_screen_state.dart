@@ -70,17 +70,6 @@ class OtpAPINotifier extends StateNotifier<ApiResult<User?>> {
       final socketIOManager = read(userPermissionNotifierProvider.notifier);
       await socketIOManager.listenPermissions();
 
-      final analytics = read(analyticsProvider);
-      analytics.initSdk();
-      analytics.identify(properties: getUserTraitsFromModel(user));
-      await analytics.trackEvent(
-        eventName: AnalyticsEvents.login,
-        properties: {
-          "email": user.email,
-          "intent": user.intent,
-        },
-      );
-
       final pushNotifications = read(pushNotificationsProvider);
       await pushNotifications.setUserIdentifier(phone);
 
@@ -95,9 +84,23 @@ class OtpAPINotifier extends StateNotifier<ApiResult<User?>> {
       });
 
       read(authStateProvider.notifier).setUser(user);
+      read(authStateProvider.notifier).registerDevice();
+
       read(authTokenProvider.notifier).state = user.token;
 
       state = ApiResult.data(user);
+
+      final analytics = read(analyticsProvider);
+      analytics.initSdk();
+      analytics.identify(properties: getUserTraitsFromModel(user));
+      await analytics.trackEvent(
+        eventName: AnalyticsEvents.login,
+        properties: {
+          "email": user.email,
+          "intent": user.intent,
+        },
+      );
+
       return user;
     });
   }
