@@ -93,10 +93,19 @@ class OTPScreen extends HookConsumerWidget {
                       if (user == null) {
                         return;
                       }
-                      AutoRouter.of(context).pushAndPopUntil(
-                        HomeScreenRoute(),
-                        predicate: (route) => false,
-                      );
+
+                      final showUsernameScreen = user.name?.isEmpty ?? true;
+                      if (showUsernameScreen) {
+                        AutoRouter.of(context).pushAndPopUntil(
+                          ProfileBasicScreenRoute(editMode: false),
+                          predicate: (route) => false,
+                        );
+                      } else {
+                        AutoRouter.of(context).pushAndPopUntil(
+                          HomeScreenRoute(),
+                          predicate: (route) => false,
+                        );
+                      }
                     });
                   },
                 ),

@@ -25,6 +25,7 @@ import 'features/club/presentation/screens/past_stream/past_stream_detail_screen
     as _i13;
 import 'features/club/presentation/screens/streams/past_stream_screen.dart'
     as _i14;
+import 'features/connection/data/models/creator_response.dart' as _i17;
 import 'features/conversations/presentation/screens/conversation_screen/conversation_screen.dart'
     as _i8;
 import 'features/conversations/presentation/screens/series_screen/series_screen.dart'
@@ -79,7 +80,7 @@ class AppRouter extends _i15.RootStackRouter {
               recieverId: args.recieverId,
               groupId: args.groupId,
               allowChat: args.allowChat,
-              creatorId: args.creatorId));
+              streamCreator: args.streamCreator));
     },
     ConversationScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -261,14 +262,14 @@ class ChatScreenRoute extends _i15.PageRouteInfo<ChatScreenRouteArgs> {
       {required String recieverId,
       String? groupId,
       bool? allowChat = true,
-      required int creatorId})
+      required _i17.Creator streamCreator})
       : super(ChatScreenRoute.name,
             path: '/chat/user',
             args: ChatScreenRouteArgs(
                 recieverId: recieverId,
                 groupId: groupId,
                 allowChat: allowChat,
-                creatorId: creatorId));
+                streamCreator: streamCreator));
 
   static const String name = 'ChatScreenRoute';
 }
@@ -278,7 +279,7 @@ class ChatScreenRouteArgs {
       {required this.recieverId,
       this.groupId,
       this.allowChat = true,
-      required this.creatorId});
+      required this.streamCreator});
 
   final String recieverId;
 
@@ -286,11 +287,11 @@ class ChatScreenRouteArgs {
 
   final bool? allowChat;
 
-  final int creatorId;
+  final _i17.Creator streamCreator;
 
   @override
   String toString() {
-    return 'ChatScreenRouteArgs{recieverId: $recieverId, groupId: $groupId, allowChat: $allowChat, creatorId: $creatorId}';
+    return 'ChatScreenRouteArgs{recieverId: $recieverId, groupId: $groupId, allowChat: $allowChat, streamCreator: $streamCreator}';
   }
 }
 

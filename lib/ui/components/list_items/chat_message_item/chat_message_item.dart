@@ -7,15 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/constants/work_net_icons_icons.dart';
-import 'package:worknetwork/core/analytics/analytics.dart';
-import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/color/color.dart';
-import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
-import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
-import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 
 final chatColors = [
   "#A17BFF",
@@ -40,14 +35,14 @@ class ChatMessageItem extends HookConsumerWidget {
   final User? user;
   final ChatMessage message;
   final String conversationId;
-  final int creatorId;
+  final Creator creator;
 
   ChatMessageItem({
     Key? key,
     this.user,
     required this.message,
     required this.conversationId,
-    required this.creatorId,
+    required this.creator,
   }) : super(key: key);
 
   late ValueNotifier<bool> isFollowing;
@@ -68,244 +63,192 @@ class ChatMessageItem extends HookConsumerWidget {
 
     final file = message.file;
 
-    final hash = (message.senderDetail?.pk ?? '') +
-        (message.senderDetail?.displayName ?? '');
+    final hash = (message.senderDetails?.pk ?? '') +
+        (message.senderDetails?.displayName ?? '');
     final colorIndex = hash.hashCode % chatColors.length;
     final nameColor = chatColors[colorIndex];
 
-    Future<void> followHost(BuildContext context) async {
-      final userPK = creatorId;
+    const radius = Radius.circular(8);
 
-      final response = await ref
-          .read(creatorStateProvider('').notifier)
-          .followCreator(userPK, context);
+    var name = message.displayName ?? '';
 
-      response.fold(
-        (failure) {
-          isFollowing.value = !isFollowing.value;
-          message.isFollowing = isFollowing.value;
-          // Fluttertoast.showToast(msg: failure.message.toString());
-        },
-        (request) {
-          isFollowing.value = !isFollowing.value;
-          message.isFollowing = isFollowing.value;
-
-          final analytics = ref.read(analyticsProvider);
-          analytics.trackEvent(
-            eventName: AnalyticsEvents.followCreator,
-            properties: {},
-          );
-
-          // Fluttertoast.showToast(msg: '');
-        },
-      );
+    if (name.isEmpty) {
+      name = message.senderDetails?.displayName ?? '';
     }
 
-    Future<void> inviteFriends(BuildContext context) async {
-      final url =
-          'https://crater.club/session/$conversationId?utm_source=in_app_share&referrer_id=${user?.pk}&utm_campaign=mobile_app';
-      shareApp(context, url, '');
+    if (name.isEmpty) {
+      name = message.senderDetails?.firstName ?? '';
     }
 
-    Future<void> exploreStreams(BuildContext context) async {
-      await manageRSVPPopup(context, '', slide: 2);
+    if (name.isEmpty) {
+      name = message.senderDetails?.name ?? '';
     }
 
-    Future<void> performAction(BuildContext context) async {
-      switch (message.action) {
-        case 1:
-          await followHost(context);
-          break;
-        case 2:
-          await inviteFriends(context);
-          break;
-        case 3:
-          await exploreStreams(context);
-          break;
-      }
-    }
-
-    Widget? buildActionButton(BuildContext context) {
-      var actionTitle = 'Okay';
-      switch (message.action) {
-        case 1:
-          actionTitle = isFollowing.value ? 'Following' : 'Follow';
-          break;
-        case 2:
-          actionTitle = 'Invite';
-          break;
-        case 3:
-          actionTitle = 'Explore';
-          break;
-      }
-
-      return ((message.action == 1 ||
-                  message.action == 2 ||
-                  message.action == 3) &&
-              (message.message?.isNotEmpty ?? false))
-          ? Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).backgroundColor,
-              ),
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Expanded(child: Text(message.message!)),
-                  if (isFollowing.value)
-                    SizedBox(
-                      width: 100,
-                      height: 50,
-                      child: Center(child: Text(actionTitle)),
-                    )
-                  else
-                    BaseLargeButton(
-                      text: actionTitle,
-                      onPressed: () => performAction(context),
-                    )
-                ],
-              ),
-            )
-          : null;
-    }
+    final chatBubbleMaxWidth = MediaQuery.of(context).size.width * 0.6;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: AppInsets.sm,
-        horizontal: AppInsets.xl,
+        vertical: 4,
+        horizontal: 16,
       ),
-      child: Column(
-        children: [
-          Container(
-            alignment: isSender ? Alignment.topRight : Alignment.topLeft,
-            // child:
-            // Material(
-            //   elevation: 1,
-            // color: isSender ? AppTheme.blueAccent : Colors.grey[200],
-            // borderRadius:
-            //     isSender ? senderBorderRadius : recieverBorderRadius,
-            child: InkWell(
-              onTap: () {},
-              splashColor: AppTheme.blueAccent.withOpacity(0.4),
-              // borderRadius:
-              //     isSender ? senderBorderRadius : recieverBorderRadius,
-              child: Container(
-                // padding: const EdgeInsets.symmetric(
-                //     vertical: AppInsets.l, horizontal: AppInsets.l),
-                child: (message.type == 3)
-                    ? buildActionButton(context)
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+      child: (message.type == 3)
+          ? Container()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: isSender ? Alignment.topRight : Alignment.topLeft,
+                  // child:
+                  // Material(
+                  //   elevation: 1,
+
+                  // borderRadius:
+                  //     isSender ? senderBorderRadius : recieverBorderRadius,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        splashColor: AppTheme.blueAccent.withOpacity(0.4),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: radius,
+                          topRight: radius,
+                          bottomRight: radius,
+                        ),
+                        child: Container(
+                          // padding: const EdgeInsets.symmetric(
+                          //     vertical: AppInsets.l, horizontal: AppInsets.l),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).dialogBackgroundColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: radius,
+                              topRight: radius,
+                              bottomRight: radius,
+                            ),
+                          ),
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${message.displayName ?? message.senderDetail?.firstName ?? message.senderDetail?.name ?? ''}: ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(
-                                      color: HexColor.fromHex(nameColor),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '$name: ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(
+                                          color: HexColor.fromHex(nameColor),
+                                        ),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        maxWidth: chatBubbleMaxWidth),
+                                    child: Text(message.message ?? ''),
+                                  ),
+                                ],
+                              ),
+                              if (file != null)
+                                CachedNetworkImage(
+                                  placeholder: (context, url) => Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12.0),
                                     ),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              if (message.message?.isNotEmpty ?? false)
-                                Expanded(child: Text(message.message!))
+                                    width: imageWidth,
+                                    height: imageHeight,
+                                    child: Center(
+                                      child: LottieBuilder.asset(
+                                        "assets/lottie/loading_dots.json",
+                                        height: 64,
+                                      ),
+                                    ),
+                                  ),
+                                  imageUrl: file,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: imageWidth,
+                                    height: imageHeight,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (message.reaction?.file != null)
+                                CachedNetworkImage(
+                                  placeholder: (context, url) => Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    width: 100,
+                                    height: 100,
+                                    child: Center(
+                                      child: LottieBuilder.asset(
+                                        "assets/lottie/loading_dots.json",
+                                        height: 64,
+                                      ),
+                                    ),
+                                  ),
+                                  imageUrl: message.reaction!.file!,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                )
                             ],
                           ),
-                          if (file != null)
-                            CachedNetworkImage(
-                              placeholder: (context, url) => Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                width: imageWidth,
-                                height: imageHeight,
-                                child: Center(
-                                  child: LottieBuilder.asset(
-                                    "assets/lottie/loading_dots.json",
-                                    height: 64,
-                                  ),
-                                ),
-                              ),
-                              imageUrl: file,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: imageWidth,
-                                height: imageHeight,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          if (message.reaction?.file != null)
-                            CachedNetworkImage(
-                              placeholder: (context, url) => Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                width: 100,
-                                height: 100,
-                                child: Center(
-                                  child: LottieBuilder.asset(
-                                    "assets/lottie/loading_dots.json",
-                                    height: 64,
-                                  ),
-                                ),
-                              ),
-                              imageUrl: message.reaction!.file!,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            )
-                        ],
+                        ),
                       ),
-              ),
-            ),
-            // ),
-          ),
-          if (isSender)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppInsets.sm),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    dateFormat.format(
-                      (message.created as Timestamp?)?.toDate() ??
-                          DateTime.now(),
+                    ],
+                  ),
+                  // ),
+                ),
+                if (isSender)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: AppInsets.sm),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          dateFormat.format(
+                            (message.created as Timestamp?)?.toDate() ??
+                                DateTime.now(),
+                          ),
+                          style: timeStampStyle,
+                        ),
+                        Icon(
+                          WorkNetIcons.doublecheck,
+                          size: 20,
+                          color: message.isRead!
+                              ? AppTheme.blueAccent
+                              : Colors.grey[400],
+                        ),
+                      ],
                     ),
-                    style: timeStampStyle,
-                  ),
-                  Icon(
-                    WorkNetIcons.doublecheck,
-                    size: 20,
-                    color: message.isRead!
-                        ? AppTheme.blueAccent
-                        : Colors.grey[400],
-                  ),
-                ],
-              ),
-            )
-        ],
-      ),
+                  )
+              ],
+            ),
     );
   }
 }

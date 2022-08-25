@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:worknetwork/features/chat/data/models/chat_user_model.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 part 'chat_message_model.g.dart';
 
@@ -36,11 +37,14 @@ class ChatMessage {
   @JsonKey(name: "is_support")
   final bool? isSupport;
 
-  @JsonKey(name: "sender_detail")
-  final ChatUser? senderDetail;
+  @JsonKey(name: "sender_details")
+  final ChatUser? senderDetails;
 
-  @JsonKey(name: "data")
+  @JsonKey(name: "data.reaction")
   final ChatReaction? reaction;
+
+  @JsonKey(name: "data.stream")
+  final Webinar? stream;
 
   @JsonKey(name: "display_name")
   final String? displayName;
@@ -69,8 +73,9 @@ class ChatMessage {
     this.senderId,
     this.receiverId,
     this.isSupport,
-    this.senderDetail,
+    this.senderDetails,
     this.reaction,
+    this.stream,
     this.displayName,
     this.firebaseId,
     this.type,

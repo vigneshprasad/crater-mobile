@@ -19,7 +19,7 @@ abstract class ConversationRepository {
     DateTime start,
     DateTime end,
   );
-  Future<Either<Failure, Conversation>> retreiveConversation(int id);
+  Future<Either<Failure, Webinar>> retreiveConversation(int id);
 
   Future<Either<Failure, List<Topic>>> getAllArticleTopics();
 

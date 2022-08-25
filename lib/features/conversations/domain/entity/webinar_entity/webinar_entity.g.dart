@@ -33,6 +33,9 @@ _$_Webinar _$$_WebinarFromJson(Map<String, dynamic> json) => _$_Webinar(
           ? null
           : RecordingDetails.fromJson(
               json['recording_details'] as Map<String, dynamic>),
+      speakersDetailList: (json['speakers_detail_list'] as List<dynamic>?)
+          ?.map((e) => ConversationUser.fromJson(e as Map<String, dynamic>))
+          .toList(),
       liveCount: json['liveCount'] as int?,
       rsvp: json['rsvp'] as bool?,
     );
@@ -53,6 +56,7 @@ Map<String, dynamic> _$$_WebinarToJson(_$_Webinar instance) =>
       'is_live': instance.isLive,
       'is_past': instance.isPast,
       'recording_details': instance.recordingDetails,
+      'speakers_detail_list': instance.speakersDetailList,
       'liveCount': instance.liveCount,
       'rsvp': instance.rsvp,
     };

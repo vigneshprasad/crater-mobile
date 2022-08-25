@@ -57,16 +57,24 @@ class BaseFormInput extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: icon,
-        enabledBorder: const OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderRadius: borderRadius,
-          borderSide: BorderSide(
-            color: Colors.transparent,
+          borderSide: const BorderSide(
+            color: Colors.grey,
           ),
         ),
-        border: const OutlineInputBorder(
+        focusedBorder: UnderlineInputBorder(
           borderRadius: borderRadius,
+          borderSide: BorderSide(
+            color: Colors.green[300]!,
+          ),
         ),
-        errorBorder: OutlineInputBorder(
+        border: const UnderlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: BorderSide(
+              color: Colors.grey,
+            )),
+        errorBorder: UnderlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(
             width: 2,

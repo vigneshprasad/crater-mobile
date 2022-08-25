@@ -141,6 +141,7 @@ class AppImageAssets {
   static const feedback = AssetImage("assets/images/feedback.png");
 
   static const phone = AssetImage("assets/images/phone.png");
+  static const username = AssetImage("assets/images/username.png");
   static const circles = AssetImage("assets/images/circles.png");
 }
 
@@ -166,6 +167,11 @@ class AppSvgAssets {
   static const profileFilled = "assets/svg/profile-filled.svg";
   static const phone = "assets/svg/phone.svg";
   static const cableTV = "assets/svg/cable-tv.svg";
+  static const collapse = "assets/svg/collapse.svg";
+  static const expand = "assets/svg/expand.svg";
+  static const auction = "assets/svg/auction.svg";
+  static const chat = "assets/svg/chat.svg";
+  static const send = "assets/svg/send.svg";
 }
 
 class AppLottieAssets {

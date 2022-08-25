@@ -108,7 +108,7 @@ class RootApp extends HookConsumerWidget {
           final canvasColor = HexColor.fromHex('#121212');
           final borderColor = HexColor.fromHex('#373737');
           final backgroundColor = HexColor.fromHex('#010101');
-          final splashColor = HexColor.fromHex('782BE8');
+          final splashColor = HexColor.fromHex('#121212');
           final grey = HexColor.fromHex('#C4C4C4');
           //HexColor.fromHex("#10141C");
           final buttonColor = HexColor.fromHex('#882EE8');
@@ -211,7 +211,7 @@ class RootApp extends HookConsumerWidget {
                 ),
               ),
               textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(primary: buttonColor),
+                style: TextButton.styleFrom(primary: grey),
               ),
               indicatorColor: buttonColor,
               tabBarTheme: const TabBarTheme(

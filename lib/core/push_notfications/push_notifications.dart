@@ -7,6 +7,7 @@ import 'package:worknetwork/core/push_notfications/models/push_notification_data
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 final pushNotificationsProvider = Provider(
@@ -80,7 +81,7 @@ class PushNotificationsImpl implements PushNotifications {
       _navigatorKey.currentState?.pushNamed(
         ChatScreenRoute.name,
         arguments:
-            ChatScreenRouteArgs(recieverId: message.senderId!, creatorId: 0),
+            ChatScreenRouteArgs(recieverId: message.senderId!, streamCreator: const Creator()),
       );
     } else if (type == PushType.conversation) {
       final ConversationNotificationData data =

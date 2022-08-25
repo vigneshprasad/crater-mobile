@@ -30,12 +30,8 @@ class _ChatLayoutState extends State<ChatLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).dialogBackgroundColor,
       body: Column(
         children: [
-          const SizedBox(
-            height: 40,
-          ),
           Expanded(
             child: Stack(
               fit: StackFit.expand,

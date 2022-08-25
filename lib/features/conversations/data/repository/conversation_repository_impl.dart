@@ -105,7 +105,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
   }
 
   @override
-  Future<Either<Failure, Conversation>> retreiveConversation(int id) async {
+  Future<Either<Failure, Webinar>> retreiveConversation(int id) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
           .retrieveConversationFromRemote(id);

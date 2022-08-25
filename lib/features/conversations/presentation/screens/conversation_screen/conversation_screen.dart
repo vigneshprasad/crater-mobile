@@ -182,39 +182,34 @@ class _ConversationLoaded extends HookConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 40),
-                        TabBar(
-                          isScrollable: true,
-                          indicatorColor: HexColor.fromHex("#121212"),
-                          onTap: (value) {
-                            selectedTab.value = value;
-                          },
-                          tabs: [
-                            Container(
-                              color: selectedTab.value == 0
-                                  ? HexColor.fromHex("#121212")
-                                  : null,
-                              child: const Tab(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text('ABOUT THE STREAM'),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 16),
+                          child: TabBar(
+                            indicatorColor: Colors.transparent,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicator: BoxDecoration(
+                              color: HexColor.fromHex('#121212'),
+                            ),
+                            padding: EdgeInsets.zero,
+                            labelPadding: EdgeInsets.zero,
+                            onTap: (value) {
+                              selectedTab.value = value;
+                            },
+                            tabs: [
+                              const Tab(
+                                child: Text(
+                                  'ABOUT THE STREAM',
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                            Container(
-                              color: selectedTab.value == 1
-                                  ? HexColor.fromHex("#121212")
-                                  : null,
-                              child: Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: Text(
-                                    'MORE FROM ${conversation.hostDetail?.name?.split(' ').first.toUpperCase() ?? 'HOST'}',
-                                  ),
+                              Tab(
+                                child: Text(
+                                  'MORE FROM ${conversation.hostDetail?.name?.split(' ').first.toUpperCase() ?? 'HOST'}',
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -280,11 +275,26 @@ class _ConversationLoaded extends HookConsumerWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                child: Container(
-                  color: Theme.of(context).backgroundColor,
+            child: Container(
+              padding: const EdgeInsets.only(top: 20),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.black,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0,
+                    0.2,
+                  ],
+                ),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -292,7 +302,7 @@ class _ConversationLoaded extends HookConsumerWidget {
                         if (canHost) // HOST
                           Expanded(
                             child: NeoPopTiltedButton(
-                              key: Key("golive"),
+                              key: const Key("golive"),
                               color: Theme.of(context).primaryColor,
                               onTapUp: () {
                                 startDyteMeeting(context);
@@ -313,7 +323,7 @@ class _ConversationLoaded extends HookConsumerWidget {
                         else if (canJoin) // AUDIENCE
                           Expanded(
                             child: NeoPopTiltedButton(
-                              key: Key("goliveaudience"),
+                              key: const Key("goliveaudience"),
                               color: Theme.of(context).primaryColor,
                               onTapUp: () {
                                 startDyteMeeting(context);
@@ -337,7 +347,7 @@ class _ConversationLoaded extends HookConsumerWidget {
                         else
                           Expanded(
                             child: NeoPopTiltedButton(
-                              key: Key("wellremind"),
+                              key: const Key("wellremind"),
                               color: HexColor.fromHex("#53A476"),
                               onTapUp: () {},
                               child: Center(
@@ -353,10 +363,10 @@ class _ConversationLoaded extends HookConsumerWidget {
                                         style:
                                             Theme.of(context).textTheme.button,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 4,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.check,
                                         size: 14,
                                       ),
@@ -369,7 +379,7 @@ class _ConversationLoaded extends HookConsumerWidget {
                       else
                         Expanded(
                           child: NeoPopTiltedButton(
-                            key: Key("remind"),
+                            key: const Key("remind"),
                             color: Theme.of(context).primaryColor,
                             onTapUp: () {
                               _requestJoinGroup(context);
@@ -410,8 +420,7 @@ class _ConversationLoaded extends HookConsumerWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
-          meetingId: data.conversation.id!,
-          creatorId: data.conversation.hostDetail?.creatorDetail?.id ?? 0,
+          conversation: data.conversation,
         ),
       ),
     );

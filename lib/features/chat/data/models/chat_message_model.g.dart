@@ -20,12 +20,16 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       senderId: json['sender_id'] as String?,
       receiverId: json['receiver_id'] as String?,
       isSupport: json['is_support'] as bool?,
-      senderDetail: json['sender_detail'] == null
+      senderDetails: json['sender_details'] == null
           ? null
-          : ChatUser.fromJson(json['sender_detail'] as Map<String, dynamic>),
-      reaction: json['data'] == null
+          : ChatUser.fromJson(json['sender_details'] as Map<String, dynamic>),
+      reaction: json['data.reaction'] == null
           ? null
-          : ChatReaction.fromJson(json['data'] as Map<String, dynamic>),
+          : ChatReaction.fromJson(
+              json['data.reaction'] as Map<String, dynamic>),
+      stream: json['data.stream'] == null
+          ? null
+          : Webinar.fromJson(json['data.stream'] as Map<String, dynamic>),
       displayName: json['display_name'] as String?,
       firebaseId: json['firebaseId'] as String?,
       type: json['type'] as int?,
@@ -48,8 +52,9 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
-      'sender_detail': instance.senderDetail,
-      'data': instance.reaction,
+      'sender_details': instance.senderDetails,
+      'data.reaction': instance.reaction,
+      'data.stream': instance.stream,
       'display_name': instance.displayName,
       'firebaseId': instance.firebaseId,
       'type': instance.type,

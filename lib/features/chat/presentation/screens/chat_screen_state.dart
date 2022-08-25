@@ -9,11 +9,21 @@ import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
 
 final chatStateProvider = StateNotifierProvider.autoDispose
-    .family<ChatScreenState, ApiResult<List<ChatMessage>>, String>(
+    .family<ChatScreenState, ApiResult<ChatScreenModel>, String>(
   (ref, id) => ChatScreenState(ref.read, id),
 );
 
-class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
+class ChatScreenModel {
+  List<ChatMessage> messages;
+  List<ChatMessage> actionQueue;
+
+  ChatScreenModel({
+    required this.messages,
+    required this.actionQueue,
+  });
+}
+
+class ChatScreenState extends StateNotifier<ApiResult<ChatScreenModel>> {
   final Reader read;
   final String webinarId;
 
@@ -21,11 +31,12 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
   String? groupKey;
 
   List<ChatMessage> messages = [];
+  List<ChatMessage> actionQueue = [];
 
   StreamSubscription<QuerySnapshot>? subscription;
 
   ChatScreenState(this.read, this.webinarId)
-      : super(ApiResult<List<ChatMessage>>.loading()) {
+      : super(ApiResult<ChatScreenModel>.loading()) {
     retrieveChatMessages();
   }
 
@@ -85,7 +96,11 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
           messages.remove(item);
         }
 
-        messages.add(newItem);
+        if (newItem.action == null) {
+          messages.add(newItem);
+        } else {
+          actionQueue.add(newItem);
+        }
       }
 
       messages.sort((a, b) {
@@ -94,7 +109,18 @@ class ChatScreenState extends StateNotifier<ApiResult<List<ChatMessage>>> {
         return bCreated.compareTo(aCreated);
       });
 
-      state = ApiResult<List<ChatMessage>>.data(messages);
+      actionQueue.sort((a, b) {
+        final aCreated = a.created as Timestamp? ?? Timestamp.now();
+        final bCreated = b.created as Timestamp? ?? Timestamp.now();
+        return bCreated.compareTo(aCreated);
+      });
+
+      final model = ChatScreenModel(
+        messages: messages,
+        actionQueue: actionQueue,
+      );
+
+      state = ApiResult.data(model);
     });
   }
 

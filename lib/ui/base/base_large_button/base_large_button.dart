@@ -60,6 +60,7 @@ class BaseLargeButton extends StatelessWidget {
                 child: Icon(
                   icon,
                   size: 20,
+                  color: textColor,
                 ),
               )
           ],

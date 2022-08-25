@@ -412,8 +412,7 @@ class _SeriesLoaded extends ConsumerWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
-          meetingId: data.conversation.id!,
-          creatorId: data.conversation.hostDetail?.creatorDetail?.id ?? 0,
+          conversation: data.conversation,
         ),
       ),
     );

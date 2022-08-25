@@ -40,6 +40,9 @@ mixin _$Webinar {
   bool? get isPast => throw _privateConstructorUsedError;
   @JsonKey(name: 'recording_details')
   RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: 'speakers_detail_list')
+  List<ConversationUser>? get speakersDetailList =>
+      throw _privateConstructorUsedError;
   int? get liveCount => throw _privateConstructorUsedError;
   bool? get rsvp => throw _privateConstructorUsedError;
 
@@ -60,13 +63,21 @@ abstract class $WebinarCopyWith<$Res> {
       int? privacy,
       int? medium,
       bool? closed,
-      @JsonKey(name: 'closed_at') DateTime? closedAt,
-      @JsonKey(name: 'topic_detail') Topic? topicDetail,
-      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
+      @JsonKey(name: 'closed_at')
+          DateTime? closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic? topicDetail,
+      @JsonKey(name: 'host_detail')
+          ConversationUser? hostDetail,
       int? type,
-      @JsonKey(name: 'is_live') bool? isLive,
-      @JsonKey(name: 'is_past') bool? isPast,
-      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
+      @JsonKey(name: 'is_live')
+          bool? isLive,
+      @JsonKey(name: 'is_past')
+          bool? isPast,
+      @JsonKey(name: 'recording_details')
+          RecordingDetails? recordingDetails,
+      @JsonKey(name: 'speakers_detail_list')
+          List<ConversationUser>? speakersDetailList,
       int? liveCount,
       bool? rsvp});
 
@@ -99,6 +110,7 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
     Object? isLive = freezed,
     Object? isPast = freezed,
     Object? recordingDetails = freezed,
+    Object? speakersDetailList = freezed,
     Object? liveCount = freezed,
     Object? rsvp = freezed,
   }) {
@@ -159,6 +171,10 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
           ? _value.recordingDetails
           : recordingDetails // ignore: cast_nullable_to_non_nullable
               as RecordingDetails?,
+      speakersDetailList: speakersDetailList == freezed
+          ? _value.speakersDetailList
+          : speakersDetailList // ignore: cast_nullable_to_non_nullable
+              as List<ConversationUser>?,
       liveCount: liveCount == freezed
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
@@ -218,13 +234,21 @@ abstract class _$$_WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
       int? privacy,
       int? medium,
       bool? closed,
-      @JsonKey(name: 'closed_at') DateTime? closedAt,
-      @JsonKey(name: 'topic_detail') Topic? topicDetail,
-      @JsonKey(name: 'host_detail') ConversationUser? hostDetail,
+      @JsonKey(name: 'closed_at')
+          DateTime? closedAt,
+      @JsonKey(name: 'topic_detail')
+          Topic? topicDetail,
+      @JsonKey(name: 'host_detail')
+          ConversationUser? hostDetail,
       int? type,
-      @JsonKey(name: 'is_live') bool? isLive,
-      @JsonKey(name: 'is_past') bool? isPast,
-      @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
+      @JsonKey(name: 'is_live')
+          bool? isLive,
+      @JsonKey(name: 'is_past')
+          bool? isPast,
+      @JsonKey(name: 'recording_details')
+          RecordingDetails? recordingDetails,
+      @JsonKey(name: 'speakers_detail_list')
+          List<ConversationUser>? speakersDetailList,
       int? liveCount,
       bool? rsvp});
 
@@ -261,6 +285,7 @@ class __$$_WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
     Object? isLive = freezed,
     Object? isPast = freezed,
     Object? recordingDetails = freezed,
+    Object? speakersDetailList = freezed,
     Object? liveCount = freezed,
     Object? rsvp = freezed,
   }) {
@@ -321,6 +346,10 @@ class __$$_WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
           ? _value.recordingDetails
           : recordingDetails // ignore: cast_nullable_to_non_nullable
               as RecordingDetails?,
+      speakersDetailList: speakersDetailList == freezed
+          ? _value._speakersDetailList
+          : speakersDetailList // ignore: cast_nullable_to_non_nullable
+              as List<ConversationUser>?,
       liveCount: liveCount == freezed
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
@@ -344,15 +373,24 @@ class _$_Webinar implements _Webinar {
       this.privacy,
       this.medium,
       this.closed,
-      @JsonKey(name: 'closed_at') this.closedAt,
-      @JsonKey(name: 'topic_detail') this.topicDetail,
-      @JsonKey(name: 'host_detail') this.hostDetail,
+      @JsonKey(name: 'closed_at')
+          this.closedAt,
+      @JsonKey(name: 'topic_detail')
+          this.topicDetail,
+      @JsonKey(name: 'host_detail')
+          this.hostDetail,
       this.type,
-      @JsonKey(name: 'is_live') this.isLive,
-      @JsonKey(name: 'is_past') this.isPast,
-      @JsonKey(name: 'recording_details') this.recordingDetails,
+      @JsonKey(name: 'is_live')
+          this.isLive,
+      @JsonKey(name: 'is_past')
+          this.isPast,
+      @JsonKey(name: 'recording_details')
+          this.recordingDetails,
+      @JsonKey(name: 'speakers_detail_list')
+          final List<ConversationUser>? speakersDetailList,
       this.liveCount,
-      this.rsvp});
+      this.rsvp})
+      : _speakersDetailList = speakersDetailList;
 
   factory _$_Webinar.fromJson(Map<String, dynamic> json) =>
       _$$_WebinarFromJson(json);
@@ -391,6 +429,16 @@ class _$_Webinar implements _Webinar {
   @override
   @JsonKey(name: 'recording_details')
   final RecordingDetails? recordingDetails;
+  final List<ConversationUser>? _speakersDetailList;
+  @override
+  @JsonKey(name: 'speakers_detail_list')
+  List<ConversationUser>? get speakersDetailList {
+    final value = _speakersDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final int? liveCount;
   @override
@@ -398,7 +446,7 @@ class _$_Webinar implements _Webinar {
 
   @override
   String toString() {
-    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, isPast: $isPast, recordingDetails: $recordingDetails, liveCount: $liveCount, rsvp: $rsvp)';
+    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, isPast: $isPast, recordingDetails: $recordingDetails, speakersDetailList: $speakersDetailList, liveCount: $liveCount, rsvp: $rsvp)';
   }
 
   @override
@@ -424,6 +472,8 @@ class _$_Webinar implements _Webinar {
             const DeepCollectionEquality().equals(other.isPast, isPast) &&
             const DeepCollectionEquality()
                 .equals(other.recordingDetails, recordingDetails) &&
+            const DeepCollectionEquality()
+                .equals(other._speakersDetailList, _speakersDetailList) &&
             const DeepCollectionEquality().equals(other.liveCount, liveCount) &&
             const DeepCollectionEquality().equals(other.rsvp, rsvp));
   }
@@ -446,6 +496,7 @@ class _$_Webinar implements _Webinar {
       const DeepCollectionEquality().hash(isLive),
       const DeepCollectionEquality().hash(isPast),
       const DeepCollectionEquality().hash(recordingDetails),
+      const DeepCollectionEquality().hash(_speakersDetailList),
       const DeepCollectionEquality().hash(liveCount),
       const DeepCollectionEquality().hash(rsvp));
 
@@ -482,6 +533,8 @@ abstract class _Webinar implements Webinar {
           final bool? isPast,
       @JsonKey(name: 'recording_details')
           final RecordingDetails? recordingDetails,
+      @JsonKey(name: 'speakers_detail_list')
+          final List<ConversationUser>? speakersDetailList,
       final int? liveCount,
       final bool? rsvp}) = _$_Webinar;
 
@@ -521,6 +574,9 @@ abstract class _Webinar implements Webinar {
   @override
   @JsonKey(name: 'recording_details')
   RecordingDetails? get recordingDetails;
+  @override
+  @JsonKey(name: 'speakers_detail_list')
+  List<ConversationUser>? get speakersDetailList;
   @override
   int? get liveCount;
   @override

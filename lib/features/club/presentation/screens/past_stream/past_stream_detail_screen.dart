@@ -14,6 +14,7 @@ import 'package:worknetwork/features/club/presentation/screens/past_stream/past_
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
@@ -30,13 +31,18 @@ class PastStreamDetailScreen extends HookConsumerWidget {
     final conversationState = ref.watch(pastStreamStateProvider(id ?? 0));
     final isFullScreen = useState(false);
 
+    final statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: isFullScreen.value ? null : BaseAppBar(),
+      extendBodyBehindAppBar: true,
       body: conversationState.when(
         loading: () => _Loader(),
-        data: (conversation) => _ConversationLoaded(
-          conversation: conversation,
-          isFullScreen: isFullScreen,
+        data: (conversation) => Padding(
+          padding: EdgeInsets.only(top: statusBarHeight),
+          child: _ConversationLoaded(
+            conversation: conversation,
+            isFullScreen: isFullScreen,
+          ),
         ),
         error: (err, st) => _Loader(),
       ),
@@ -56,7 +62,7 @@ class _Loader extends StatelessWidget {
 }
 
 class _ConversationLoaded extends HookConsumerWidget {
-  final Conversation conversation;
+  final Webinar conversation;
   final ValueNotifier<bool> isFullScreen;
 
   _ConversationLoaded({
@@ -85,36 +91,37 @@ class _ConversationLoaded extends HookConsumerWidget {
     final start = conversation.start?.toLocal();
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: isFullScreen.value
-            ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(
-                horizontal: AppInsets.xl,
-                vertical: AppInsets.l,
-              ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            StreamVideoPlayer(
-              conversation: conversation,
-              isFullScreen: isFullScreen,
-            ),
-            if (!isFullScreen.value)
-              Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          StreamVideoPlayer(
+            conversation: conversation,
+            isFullScreen: isFullScreen,
+          ),
+          if (!isFullScreen.value)
+            Padding(
+              padding: isFullScreen.value
+                  ? EdgeInsets.zero
+                  : const EdgeInsets.symmetric(
+                      horizontal: AppInsets.xl,
+                      vertical: AppInsets.l,
+                    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: AppInsets.xxl),
                   Text(
                     heading ?? '',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       if (start != null)
                         Text(startDateFormat.format(start), style: dateStyle),
                     ],
                   ),
-                  const SizedBox(height: AppInsets.xxl),
+                  const SizedBox(height: 16),
                   if (conversation.topicDetail?.description?.isNotEmpty ??
                       false)
                     Column(
@@ -128,15 +135,9 @@ class _ConversationLoaded extends HookConsumerWidget {
                         Text(conversation.topicDetail?.description ?? ''),
                       ],
                     ),
-                  const Divider(thickness: 1, height: 40),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Speakers',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(height: AppInsets.xxl),
                       Column(
                         children: conversation.speakersDetailList
                                 ?.map(
@@ -150,7 +151,10 @@ class _ConversationLoaded extends HookConsumerWidget {
                       )
                     ],
                   ),
-                  const Divider(thickness: 1, height: 40),
+                  const Divider(thickness: 1, height: 16),
+                  const SizedBox(
+                    height: 4,
+                  ),
                   similarStreamProvider.when(
                     loading: () => Container(),
                     error: (e, s) => Container(),
@@ -187,9 +191,9 @@ class _ConversationLoaded extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 200),
                 ],
-              )
-          ],
-        ),
+              ),
+            )
+        ],
       ),
     );
   }
@@ -198,8 +202,7 @@ class _ConversationLoaded extends HookConsumerWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DyteMeetingScreen(
-          meetingId: conversation.id ?? 0,
-          creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
+          conversation: conversation,
         ),
       ),
     );
@@ -215,7 +218,7 @@ class StreamVideoPlayer extends StatefulWidget {
 
   final ValueNotifier<bool> isFullScreen;
 
-  final Conversation conversation;
+  final Webinar conversation;
 
   @override
   _StreamVideoPlayerState createState() => _StreamVideoPlayerState();
@@ -349,7 +352,7 @@ class _ControlsOverlay extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: IconButton(
-            icon: const Icon(Icons.zoom_out_map),
+            icon: const Icon(Icons.fullscreen),
             onPressed: () {
               isFullScreen.value = !isFullScreen.value;
               if (isFullScreen.value) {
@@ -396,25 +399,24 @@ class _SpeakerWithIntro extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BaseNetworkImage(
               imageUrl: user.photo,
               defaultImage: AppImageAssets.defaultAvatar,
               imagebuilder: (context, imageProvider) => CircleAvatar(
                 backgroundImage: imageProvider,
-                radius: 36,
+                radius: 16,
               ),
             ),
-            const SizedBox(width: AppInsets.xl),
+            const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(user.name ?? '', style: headingStyle),
-                  const SizedBox(height: AppInsets.sm),
                   Text(
                     description ?? '',
-                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
                   )

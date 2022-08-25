@@ -605,8 +605,7 @@ class LiveGridTile extends HookConsumerWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => DyteMeetingScreen(
-                meetingId: conversation.id!,
-                creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
+                conversation: conversation,
               ),
             ),
           );
@@ -748,6 +747,14 @@ class PastLiveGridTile extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
+        //  Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => DyteMeetingScreen(
+        //       conversation: conversation,
+        //     ),
+        //   ),
+        // );
+// return;
         AutoRouter.of(context)
             .push(PastStreamDetailScreenRoute(id: conversation.id));
       },

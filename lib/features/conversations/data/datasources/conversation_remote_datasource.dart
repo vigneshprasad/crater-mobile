@@ -50,7 +50,7 @@ abstract class ConversationRemoteDatasource {
 
   /// Get All Conversation by id
   /// Throws [ServerException] on error
-  Future<Conversation> retrieveConversationFromRemote(int id);
+  Future<Webinar> retrieveConversationFromRemote(int id);
 
   Future<ConversationRequest> getWebinarRSVPRequestFromRemote(int webinarId);
 
@@ -206,12 +206,12 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
   }
 
   @override
-  Future<Conversation> retrieveConversationFromRemote(int id) async {
+  Future<Webinar> retrieveConversationFromRemote(int id) async {
     final response =
         await read(conversationApiServiceProvider).retrieveWebinar(id);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return Conversation.fromJson(json);
+      return Webinar.fromJson(json);
     } else if (response.statusCode == 404) {
       throw GroupNotFoundException(response.error);
     } else {

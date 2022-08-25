@@ -7,9 +7,10 @@ import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_request_entity/conversation_request_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 class ConversationScreenData {
-  final Conversation conversation;
+  final Webinar conversation;
   final bool isRSVPed;
 
   ConversationScreenData(this.conversation, this.isRSVPed);
@@ -29,7 +30,7 @@ class ConversationState
     retrieveConversation();
   }
 
-  Future<Either<Failure, Conversation>> retrieveConversation({
+  Future<Either<Failure, Webinar>> retrieveConversation({
     bool justRSVPed = false,
   }) async {
     final response = await read(conversationRepositoryProvider)

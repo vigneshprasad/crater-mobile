@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 
 import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/constants/work_net_icons_icons.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 
 class ChatInputBar extends StatelessWidget {
@@ -22,66 +24,76 @@ class ChatInputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const inputRadius = 12.00;
+    const inputRadius = 0.0;
     final width = MediaQuery.of(context).size.width;
-    final textStyle = Theme.of(context).textTheme.subtitle1;
-    final labelStyle =
-        Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.grey);
+    final textStyle = Theme.of(context).textTheme.titleSmall;
+    final labelStyle = Theme.of(context)
+        .textTheme
+        .titleSmall
+        ?.copyWith(color: HexColor.fromHex('#9D9D9D'));
     return AnimatedContainer(
       duration: const Duration(microseconds: 200),
       width: width,
       padding: const EdgeInsets.symmetric(
-        horizontal: AppInsets.med,
+        horizontal: 16,
         vertical: AppInsets.l,
       ),
       child: Row(
         children: [
           Flexible(
-            child: TextField(
-              controller: controller,
-              style: textStyle,
-              decoration: InputDecoration(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: AppInsets.xl),
-                hintText: placeholder,
-                filled: true,
-                // fillColor: Colors.grey[200],
-                enabledBorder: OutlineInputBorder(
-                  // borderSide: BorderSide(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(inputRadius),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: 2,
+            child: Stack(
+              children: [
+                TextField(
+                  controller: controller,
+                  style: textStyle,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    hintText: placeholder,
+                    filled: true,
+                    fillColor: HexColor.fromHex('#010101'),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                      ),
+                      borderRadius: BorderRadius.circular(inputRadius),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      borderRadius: BorderRadius.circular(inputRadius),
+                    ),
+                    hintStyle: labelStyle,
                   ),
-                  borderRadius: BorderRadius.circular(inputRadius),
                 ),
-                hintStyle: labelStyle,
-              ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      focusColor: AppTheme.primarySwatch.shade600,
+                      splashColor: AppTheme.primarySwatch.shade700,
+                      onTap: onSubmitPress,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          width: 28,
+                          height: 28,
+                          child: Center(
+                            child: SvgPicture.asset(AppSvgAssets.send),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          const SizedBox(width: AppInsets.l),
-          Material(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            color: Theme.of(context).primaryColor,
-            child: InkWell(
-              focusColor: AppTheme.primarySwatch.shade600,
-              splashColor: AppTheme.primarySwatch.shade700,
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-              onTap: onSubmitPress,
-              child: const SizedBox(
-                width: 48,
-                height: 44,
-                child: Center(
-                  child: Icon(
-                    WorkNetIcons.send,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

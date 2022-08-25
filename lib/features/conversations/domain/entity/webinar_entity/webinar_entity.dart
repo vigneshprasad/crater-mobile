@@ -26,6 +26,8 @@ abstract class Webinar with _$Webinar {
     @JsonKey(name: 'is_live') bool? isLive,
     @JsonKey(name: 'is_past') bool? isPast,
     @JsonKey(name: 'recording_details') RecordingDetails? recordingDetails,
+    @JsonKey(name: 'speakers_detail_list')
+        List<ConversationUser>? speakersDetailList,
     int? liveCount,
     bool? rsvp,
   }) = _Webinar;
