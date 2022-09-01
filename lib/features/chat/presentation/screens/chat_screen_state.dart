@@ -115,6 +115,10 @@ class ChatScreenState extends StateNotifier<ApiResult<ChatScreenModel>> {
         return bCreated.compareTo(aCreated);
       });
 
+      if (actionQueue.isNotEmpty) {
+        actionQueue = [actionQueue.first];
+      }
+
       final model = ChatScreenModel(
         messages: messages,
         actionQueue: actionQueue,

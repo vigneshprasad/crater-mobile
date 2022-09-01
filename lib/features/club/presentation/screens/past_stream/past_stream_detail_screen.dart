@@ -12,7 +12,7 @@ import 'package:worknetwork/core/widgets/base/base_network_image/base_network_im
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/club/presentation/widgets/upcoming_grid_tile.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';

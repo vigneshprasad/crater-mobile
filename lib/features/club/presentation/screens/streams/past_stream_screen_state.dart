@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';

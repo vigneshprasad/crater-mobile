@@ -16,7 +16,8 @@ import 'package:worknetwork/core/features/popup_manager/popup_manager.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
+import 'package:worknetwork/features/club/presentation/widgets/live_time.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen_state.dart';
@@ -27,7 +28,6 @@ import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
 class SeriesScreen extends HookConsumerWidget {
   final int? id;

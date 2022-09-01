@@ -2,7 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/theme.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/club/presentation/widgets/live_grid_tile.dart';
+import 'package:worknetwork/features/club/presentation/widgets/upcoming_grid_tile.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_state.dart';
 
 class ProfileStreamsTab extends HookConsumerWidget {

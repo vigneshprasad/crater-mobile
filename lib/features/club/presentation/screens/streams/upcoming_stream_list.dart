@@ -6,8 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_list_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/live_time.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 class UpcomingStreamList extends HookConsumerWidget {

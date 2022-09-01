@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
+import 'package:worknetwork/features/club/presentation/widgets/upcoming_grid_tile.dart';
+import 'package:worknetwork/features/club/presentation/widgets/upcoming_grid_title_tile.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 class PastStreamScreen extends HookConsumerWidget {
