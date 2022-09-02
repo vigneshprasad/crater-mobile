@@ -15,6 +15,11 @@ abstract class ConnectionRepository {
     int pageSize, {
     bool certified,
   });
+
+  Future<Either<Failure, CreatorResponse>> getTopCreators(
+    int page,
+    int pageSize,
+  );
   Future<Either<Failure, Creator>> getCreator(int id);
   Future<Either<Failure, List<Profile>>> getCommunityMembers(
     String community,
@@ -40,6 +45,21 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     try {
       final response = await read(connectionRemoteDatasourceProvider)
           .getCreatorsFromRemote(page, pageSize, certified: certified);
+      return Right(response);
+    } on ServerException {
+      final failure = ServerFailure('Something went wrong');
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CreatorResponse>> getTopCreators(
+    int page,
+    int pageSize,
+  ) async {
+    try {
+      final response = await read(connectionRemoteDatasourceProvider)
+          .getTopCreatorsFromRemote(page, pageSize);
       return Right(response);
     } on ServerException {
       final failure = ServerFailure('Something went wrong');

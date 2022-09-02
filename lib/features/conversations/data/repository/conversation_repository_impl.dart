@@ -237,6 +237,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
     String? userId,
     int? page,
     int? pageSize,
+    int? categoryId,
   }) async {
     try {
       final response = await read(conversationRemoteDatasourceProvider)
@@ -244,6 +245,7 @@ class ConversationRepositoryImpl implements ConversationRepository {
         userId: userId,
         page: page,
         pageSize: pageSize,
+        categoryId: categoryId,
       );
       return Right(response);
     } on ServerException {

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/color/color.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_state.dart';
 import 'package:worknetwork/routes.gr.dart';
 
@@ -124,9 +125,9 @@ class UserStreamScreen extends HookConsumerWidget {
                   top: 16,
                   bottom: 28,
                 ),
-                child: MaterialButton(
-                  color: HexColor.fromHex('#1C1C1E'),
-                  shape: const RoundedRectangleBorder(),
+                child: PlainButton(
+                  title: 'View All',
+                  icon: Icons.arrow_forward_ios,
                   onPressed: () {
                     AutoRouter.of(context).push(
                       ProfileScreenRoute(
@@ -136,22 +137,6 @@ class UserStreamScreen extends HookConsumerWidget {
                       ),
                     );
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'View All',
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            ?.copyWith(fontSize: 12),
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                      ),
-                    ],
-                  ),
                 ),
               )
             ],

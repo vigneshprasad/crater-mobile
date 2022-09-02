@@ -47,6 +47,7 @@ abstract class ConversationRepository {
     String? userId,
     int? page,
     int? pageSize,
+    int? categoryId,
   });
   Future<Either<Failure, List<Webinar>>> getPastClubs({
     String? userId,

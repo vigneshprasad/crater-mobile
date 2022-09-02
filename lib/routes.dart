@@ -8,6 +8,7 @@ import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_s
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/series_screen/series_screen.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_screen.dart';
@@ -34,6 +35,7 @@ import 'package:worknetwork/features/signup/presentation/screens/profile_email_s
     ),
     AutoRoute(page: PastStreamDetailScreen, path: "/past-stream/:id"),
     AutoRoute(page: PastStreamScreen, path: "/past-streams/:categoryId?"),
+    AutoRoute(page: UpcomingStreamScreen, path: "/upcoming-streams"),
   ],
 )
 class $AppRouter {}

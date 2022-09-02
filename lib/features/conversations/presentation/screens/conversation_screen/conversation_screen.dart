@@ -17,6 +17,7 @@ import 'package:worknetwork/features/auth/presentation/screens/splash/splash_scr
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen_state.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/user_stream_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/utils/app_localizations.dart';
@@ -80,9 +81,6 @@ class _ConversationLoaded extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     this.ref = ref;
     // Styles
-    final startDateFormat = DateFormat("dd MMMM yyyy");
-    final startTimeFormat = DateFormat('hh:mm a');
-
     final authUserPK = ref.read(authStateProvider.notifier).getUser()?.pk;
     final conversation = data.conversation;
     final article = conversation.topicDetail?.articleDetail;
@@ -113,32 +111,7 @@ class _ConversationLoaded extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              AppSvgAssets.cableTV,
-              width: 18,
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              startDateFormat.format(conversation.start!.toLocal()),
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              startTimeFormat.format(conversation.start!.toLocal()),
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  ?.copyWith(color: HexColor.fromHex('#D5BBFF')),
-            ),
-          ],
-        ),
+        title: Center(child: StreamTime(start: conversation.start)),
         actions: [
           IconButton(
             onPressed: () {

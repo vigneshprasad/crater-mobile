@@ -32,6 +32,14 @@ class _$ConnectionApiService extends ConnectionApiService {
   }
 
   @override
+  Future<Response<dynamic>> getTopCreators(Map<String, dynamic> body) {
+    final $url = '/crater/creator/ranking';
+    final $params = body;
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> getCommunityMembers(Map<String, dynamic> body) {
     final $url = '/crater/community/members/';
     final $params = body;

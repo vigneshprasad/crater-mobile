@@ -19,6 +19,7 @@ import 'package:worknetwork/core/widgets/base/base_network_image/base_network_im
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
@@ -420,7 +421,13 @@ class DyteMeetingScreen extends HookConsumerWidget {
   }
 }
 
-class _CategoryGridView extends HookConsumerWidget {
+class CategoryGridView extends HookConsumerWidget {
+  final GridItemType type;
+
+  const CategoryGridView({
+    required this.type,
+  });
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final webinarCategoryProvider = ref.watch(webinarCategoryStateProvider);
@@ -434,15 +441,25 @@ class _CategoryGridView extends HookConsumerWidget {
             itemCount: categoryList.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  AutoRouter.of(context).navigate(
-                    PastStreamScreenRoute(
-                      categoryId: categoryList[index].pk ?? 0,
-                      categoryName: categoryList[index].name,
-                    ),
-                  );
+                  if (type == GridItemType.past) {
+                    AutoRouter.of(context).navigate(
+                      PastStreamScreenRoute(
+                        categoryId: categoryList[index].pk ?? 0,
+                        categoryName: categoryList[index].name,
+                      ),
+                    );
+                  } else if (type == GridItemType.upcoming) {
+                    AutoRouter.of(context).navigate(
+                      UpcomingStreamScreenRoute(
+                        categoryId: categoryList[index].pk ?? 0,
+                        categoryName: categoryList[index].name,
+                      ),
+                    );
+                  }
                 },
                 child: GridTile(
                   child: Container(
@@ -471,10 +488,10 @@ class _CategoryGridView extends HookConsumerWidget {
   }
 }
 
-class _SpeakerWithIntro extends StatelessWidget {
+class SpeakerWithIntro extends StatelessWidget {
   final ConversationUser user;
   final String authUserPk;
-  const _SpeakerWithIntro({
+  const SpeakerWithIntro({
     Key? key,
     required this.user,
     required this.authUserPk,
@@ -569,7 +586,7 @@ class _SimilarStreamList extends HookConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16),
-              _SpeakerWithIntro(
+              SpeakerWithIntro(
                 user: conversation.hostDetail!,
                 authUserPk: authUserPK ?? '',
               ),
@@ -584,7 +601,7 @@ class _SimilarStreamList extends HookConsumerWidget {
               const SizedBox(
                 height: 12,
               ),
-              _CategoryGridView(),
+              const CategoryGridView(type: GridItemType.upcoming),
               const SizedBox(
                 height: 20,
               ),

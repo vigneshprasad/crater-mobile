@@ -18,14 +18,10 @@ class UpcomingGridTitleTile extends StatelessWidget {
           spacing: 8,
           children: item.title == 'Going Live Soon'
               ? [
-                  Text('Going', style: Theme.of(context).textTheme.headline6),
                   Text(
-                    'live',
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                    'Going Live Soon',
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text('soon', style: Theme.of(context).textTheme.headline6),
                 ]
               : [
                   Text(

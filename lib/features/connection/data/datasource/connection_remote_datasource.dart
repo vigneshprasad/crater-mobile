@@ -17,6 +17,10 @@ abstract class ConnectionRemoteDatasource {
     int pageSize, {
     bool certified,
   });
+  Future<CreatorResponse> getTopCreatorsFromRemote(
+    int page,
+    int pageSize,
+  );
   Future<Creator> getCreatorFromRemote(int id);
   Future<List<Profile>> getCommunityMembersFromRemote(
     String community,
@@ -41,6 +45,25 @@ class ConnectionRemoteDatasourceImpl implements ConnectionRemoteDatasource {
   }) async {
     final response = await read(connectionApiServiceProvider).getCreators(
       {'certified': 'true', 'page': page, 'page_size': pageSize},
+    );
+    if (response.statusCode == 200) {
+      if (response.bodyString == '[]') {
+        throw ServerException('Empty');
+      }
+      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
+      return CreatorResponse.fromJson(json);
+    } else {
+      throw ServerException(response.error);
+    }
+  }
+
+  @override
+  Future<CreatorResponse> getTopCreatorsFromRemote(
+    int page,
+    int pageSize,
+  ) async {
+    final response = await read(connectionApiServiceProvider).getTopCreators(
+      {'page': page, 'page_size': pageSize},
     );
     if (response.statusCode == 200) {
       if (response.bodyString == '[]') {

@@ -7,6 +7,7 @@ import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
+import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
@@ -46,12 +47,11 @@ class CreatorFollowCard extends HookConsumerWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipOval(
             child: SizedBox(
-              width: 100,
-              height: 100,
+              width: 64,
+              height: 64,
               child: BaseNetworkImage(
                 imageUrl: creator.profileDetail?.photo,
                 defaultImage: AppImageAssets.defaultAvatar,
@@ -62,33 +62,39 @@ class CreatorFollowCard extends HookConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppInsets.xl),
-          Expanded(
-            child: Text(
-              creator.profileDetail?.name ?? '',
-              style: headingStyle,
-              maxLines: 2,
-              textAlign: TextAlign.start,
-            ),
+          const SizedBox(height: 8),
+          Text(
+            creator.profileDetail?.name ?? '',
+            style: headingStyle,
+            maxLines: 2,
+            textAlign: TextAlign.start,
           ),
-          const SizedBox(
-            height: AppInsets.xl,
-          ),
-          SizedBox(
-            width: 100,
-            height: 30,
-            child: isFollowing.value
-                ? Center(
-                    child: Text(
-                      'Following',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  )
-                : BaseLargeButton(
-                    text: 'Follow',
-                    onPressed: () => onFollow(context),
-                  ),
-          ),
+          // const SizedBox(
+          //   height: 4,
+          // ),
+          // ActionChip(
+          //   label: Text(
+          //     'DESIGN',
+          //     style: Theme.of(context).textTheme.caption,
+          //   ),
+          //   backgroundColor: HexColor.fromHex('#373737'),
+          //   onPressed: () {},
+          // ),
+          // SizedBox(
+          //   width: 100,
+          //   height: 30,
+          //   child: isFollowing.value
+          //       ? Center(
+          //           child: Text(
+          //             'Following',
+          //             style: Theme.of(context).textTheme.caption,
+          //           ),
+          //         )
+          //       : BaseLargeButton(
+          //           text: 'Follow',
+          //           onPressed: () => onFollow(context),
+          //         ),
+          // ),
         ],
       ),
     );

@@ -101,6 +101,7 @@ abstract class ConversationApiService extends ChopperService {
     @Query() String? host,
     @Query() int? page,
     @Query('page_size') int? pageSize,
+    @Query('categories') int? categoryId,
   );
 
   @Get(path: 'public/conversations/webinars/past')

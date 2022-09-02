@@ -83,6 +83,7 @@ abstract class ConversationRemoteDatasource {
     String? userId,
     int? page,
     int? pageSize,
+    int? categoryId,
   });
 
   Future<List<Webinar>> getPastClubsfromRemote({
@@ -323,9 +324,10 @@ class ConversationRemoteDatasourceImpl implements ConversationRemoteDatasource {
     String? userId,
     int? page,
     int? pageSize,
+    int? categoryId,
   }) async {
     final response = await read(conversationApiServiceProvider)
-        .getUpcomingClubs(userId, page, pageSize);
+        .getUpcomingClubs(userId, page, pageSize, categoryId);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       return FollowCreatorResponse.fromJson(json);

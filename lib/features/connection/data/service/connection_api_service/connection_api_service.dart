@@ -30,6 +30,9 @@ abstract class ConnectionApiService extends ChopperService {
   @Get(path: 'creator/')
   Future<Response> getCreators(@QueryMap() Map<String, dynamic> body);
 
+  @Get(path: 'creator/ranking')
+  Future<Response> getTopCreators(@QueryMap() Map<String, dynamic> body);
+
   @Get(path: 'community/members/')
   Future<Response> getCommunityMembers(@QueryMap() Map<String, dynamic> body);
 

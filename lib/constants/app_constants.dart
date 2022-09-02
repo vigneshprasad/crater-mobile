@@ -143,6 +143,20 @@ class AppImageAssets {
   static const phone = AssetImage("assets/images/phone.png");
   static const username = AssetImage("assets/images/username.png");
   static const circles = AssetImage("assets/images/circles.png");
+
+  static const categoryFooter = AssetImage("assets/images/category-footer.png");
+
+  static const branding = AssetImage("assets/category-icons/branding.png");
+  static const career = AssetImage("assets/category-icons/career.svg");
+  static const contentCreation =
+      AssetImage("assets/category-icons/contentCreation.svg");
+  static const design = AssetImage("assets/category-icons/design.png");
+  static const finance = AssetImage("assets/category-icons/finance.png");
+  static const marketing = AssetImage("assets/category-icons/marketing.svg");
+  static const startups = AssetImage("assets/category-icons/startups.svg");
+  static const stock = AssetImage("assets/category-icons/stock.svg");
+  static const web3 = AssetImage("assets/category-icons/web3.svg");
+  static const web3v2 = AssetImage("assets/category-icons/web3v2.svg");
 }
 
 class AppSvgAssets {
@@ -172,6 +186,10 @@ class AppSvgAssets {
   static const auction = "assets/svg/auction.svg";
   static const chat = "assets/svg/chat.svg";
   static const send = "assets/svg/send.svg";
+  static const categoryWindow = "assets/svg/category-window.svg";
+  static const categoryStar = "assets/svg/category-star.svg";
+  static const journeyStars = "assets/svg/journey-stars.svg";
+  static const homeFooter = "assets/svg/home-footer.svg";
 }
 
 class AppLottieAssets {

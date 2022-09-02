@@ -55,9 +55,9 @@ class LiveGridTile extends HookConsumerWidget {
               .push(ConversationScreenRoute(id: conversation.id));
         }
       },
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(0),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(0),
         child: GridTile(
           child: Container(
             color: Theme.of(context).dialogBackgroundColor,
@@ -87,10 +87,10 @@ class LiveGridTile extends HookConsumerWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(0),
                               color: Colors.red,
                             ),
-                            child: const Text('LIVE'),
+                            child: const Text('LIVE '),
                           ),
                       ],
                     ),
