@@ -29,7 +29,7 @@ abstract class Webinar with _$Webinar {
     @JsonKey(name: 'speakers_detail_list')
         List<ConversationUser>? speakersDetailList,
     int? liveCount,
-    bool? rsvp,
+    @JsonKey(name: 'has_rsvp') bool? rsvp,
   }) = _Webinar;
 
   factory Webinar.fromJson(Map<String, dynamic> json) =>

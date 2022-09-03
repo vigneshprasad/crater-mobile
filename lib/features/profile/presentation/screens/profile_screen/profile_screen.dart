@@ -18,7 +18,10 @@ class ProfileScreen extends HookConsumerWidget {
     @PathParam('allowEdit') required this.allowEdit,
   });
 
-  static const tabs = ["About", "Streams"];
+  static const tabs = [
+    "Streams",
+    "About",
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +31,7 @@ class ProfileScreen extends HookConsumerWidget {
         .watch(getProfileNotifierProvider(userId).notifier)
         .retrieveProfile(creatorId: createrId);
 
-    final index = useState(createrId != null ? 1 : 0);
+    final index = useState(0);
 
     return profileState.when(
       data: (state) => Scaffold(
@@ -47,12 +50,12 @@ class ProfileScreen extends HookConsumerWidget {
             ],
             body: TabBarView(
               children: [
+                ProfileStreamsTab(userId),
                 AboutTab(
                   profile: state.profile,
                   meta: state.meta,
                   showLogout: allowEdit,
                 ),
-                ProfileStreamsTab(userId),
               ],
             ),
           ),

@@ -44,6 +44,7 @@ mixin _$Webinar {
   List<ConversationUser>? get speakersDetailList =>
       throw _privateConstructorUsedError;
   int? get liveCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_rsvp')
   bool? get rsvp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -79,7 +80,8 @@ abstract class $WebinarCopyWith<$Res> {
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
       int? liveCount,
-      bool? rsvp});
+      @JsonKey(name: 'has_rsvp')
+          bool? rsvp});
 
   $TopicCopyWith<$Res>? get topicDetail;
   $ConversationUserCopyWith<$Res>? get hostDetail;
@@ -250,7 +252,8 @@ abstract class _$$_WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
       @JsonKey(name: 'speakers_detail_list')
           List<ConversationUser>? speakersDetailList,
       int? liveCount,
-      bool? rsvp});
+      @JsonKey(name: 'has_rsvp')
+          bool? rsvp});
 
   @override
   $TopicCopyWith<$Res>? get topicDetail;
@@ -389,7 +392,8 @@ class _$_Webinar implements _Webinar {
       @JsonKey(name: 'speakers_detail_list')
           final List<ConversationUser>? speakersDetailList,
       this.liveCount,
-      this.rsvp})
+      @JsonKey(name: 'has_rsvp')
+          this.rsvp})
       : _speakersDetailList = speakersDetailList;
 
   factory _$_Webinar.fromJson(Map<String, dynamic> json) =>
@@ -442,6 +446,7 @@ class _$_Webinar implements _Webinar {
   @override
   final int? liveCount;
   @override
+  @JsonKey(name: 'has_rsvp')
   final bool? rsvp;
 
   @override
@@ -536,7 +541,8 @@ abstract class _Webinar implements Webinar {
       @JsonKey(name: 'speakers_detail_list')
           final List<ConversationUser>? speakersDetailList,
       final int? liveCount,
-      final bool? rsvp}) = _$_Webinar;
+      @JsonKey(name: 'has_rsvp')
+          final bool? rsvp}) = _$_Webinar;
 
   factory _Webinar.fromJson(Map<String, dynamic> json) = _$_Webinar.fromJson;
 
@@ -580,6 +586,7 @@ abstract class _Webinar implements Webinar {
   @override
   int? get liveCount;
   @override
+  @JsonKey(name: 'has_rsvp')
   bool? get rsvp;
   @override
   @JsonKey(ignore: true)

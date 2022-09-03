@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/components/home_tab_bar/home_tab_bar.dart';
 import 'package:worknetwork/core/widgets/screens/home_screen/home_tab_controller_provider.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const tabCount = 5;
+    const tabCount = 3;
 
     final user = ref.read(authStateProvider.notifier).getUser();
 
@@ -62,8 +63,8 @@ class HomeScreen extends HookConsumerWidget {
           children: [
             StreamTab(),
             const PastStreamScreen(),
-            ConnectionTab(),
-            const HubScreen(),
+            // ConnectionTab(),
+            // const HubScreen(),
             ProfileScreen(user?.pk ?? '', allowEdit: true)
           ],
         ),

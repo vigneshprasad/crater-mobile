@@ -30,7 +30,7 @@ class _TimerProgressBarState extends State<TimerProgressBar> {
 
   void startTimer() {
     const step = 100;
-    final delta = duration / (1000.0 / step);
+    final delta = duration / (100.0 / step);
     const oneSec = Duration(milliseconds: step);
     _timer = Timer.periodic(oneSec, (Timer timer) {
       if (progress >= 100.0) {

@@ -54,7 +54,7 @@ class DyteMeetingScreen extends HookConsumerWidget {
     // final showChat = useState(true);
     // final showReaction = useState(false);
 
-    final isExpanded = useState(false);
+    final isExpanded = useState(true);
 
     final videoHeight = min(size.width, size.height);
     if (showChat) {
@@ -423,9 +423,11 @@ class DyteMeetingScreen extends HookConsumerWidget {
 
 class CategoryGridView extends HookConsumerWidget {
   final GridItemType type;
+  final int? selectedId;
 
   const CategoryGridView({
     required this.type,
+    this.selectedId,
   });
 
   @override
@@ -443,6 +445,9 @@ class CategoryGridView extends HookConsumerWidget {
             separatorBuilder: (context, index) => const SizedBox(width: 4),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context, index) {
+              final textColor = categoryList[index].pk == selectedId
+                  ? Theme.of(context).backgroundColor
+                  : null;
               return InkWell(
                 onTap: () {
                   if (type == GridItemType.past) {
@@ -470,11 +475,17 @@ class CategoryGridView extends HookConsumerWidget {
                       border: Border.all(
                         color: Theme.of(context).dividerColor,
                       ),
+                      color: categoryList[index].pk == selectedId
+                          ? Colors.white
+                          : null,
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       categoryList[index].name ?? '',
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(color: textColor),
                     ),
                   ),
                 ),

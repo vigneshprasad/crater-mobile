@@ -27,34 +27,36 @@ class PastLiveGridTile extends StatelessWidget {
     }
     final title = user?.name ?? '';
 
-    return InkWell(
-      onTap: () async {
-        // if (kDebugMode) {
-        //   Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) => DyteMeetingScreen(
-        //         conversation: conversation,
-        //       ),
-        //     ),
-        //   );
-        //   return;
-        // }
-        if (item.type == GridItemType.live) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DyteMeetingScreen(
-                conversation: conversation,
-              ),
+    void buttonAction() {
+      // if (kDebugMode) {
+      //   Navigator.of(context).push(
+      //     MaterialPageRoute(
+      //       builder: (context) => DyteMeetingScreen(
+      //         conversation: conversation,
+      //       ),
+      //     ),
+      //   );
+      //   return;
+      // }
+      if (item.type == GridItemType.live) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DyteMeetingScreen(
+              conversation: conversation,
             ),
-          );
-        } else if (item.type == GridItemType.past) {
-          AutoRouter.of(context)
-              .push(PastStreamDetailScreenRoute(id: conversation.id));
-        } else {
-          AutoRouter.of(context)
-              .push(ConversationScreenRoute(id: conversation.id));
-        }
-      },
+          ),
+        );
+      } else if (item.type == GridItemType.past) {
+        AutoRouter.of(context)
+            .push(PastStreamDetailScreenRoute(id: conversation.id));
+      } else {
+        AutoRouter.of(context)
+            .push(ConversationScreenRoute(id: conversation.id));
+      }
+    }
+
+    return InkWell(
+      onTap: buttonAction,
       borderRadius: BorderRadius.circular(0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(0),
@@ -220,7 +222,7 @@ class PastLiveGridTile extends StatelessWidget {
                                 title: (item.type == GridItemType.live)
                                     ? 'Join Stream'
                                     : 'Watch Stream',
-                                onPressed: () {},
+                                onPressed: buttonAction,
                               ),
                             ],
                           ),
