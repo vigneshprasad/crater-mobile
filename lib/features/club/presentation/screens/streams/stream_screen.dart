@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,14 +14,13 @@ import 'package:worknetwork/features/auth/presentation/screens/splash/splash_scr
 import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/going_live_list.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/club/presentation/widgets/past_live_grid_tile.dart';
-import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/club/presentation/widgets/past_stream_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_follow_card.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
-import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
 
 class StreamTab extends HookConsumerWidget {
@@ -136,7 +134,8 @@ class StreamTab extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: 610,
-                      child: _GoingLiveList(
+                      child: GoingLiveList(
+                        title: 'Goint live soon',
                         gridItems: streams.upcomingClubs.take(3).toList(),
                       ),
                     ),
@@ -144,7 +143,8 @@ class StreamTab extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: 610,
-                      child: _PastStreamList(
+                      child: PastStreamList(
+                        title: 'Past streams',
                         gridItems: streams.pastClubs.take(3).toList(),
                       ),
                     ),
@@ -261,312 +261,6 @@ class _YourJourney extends StatelessWidget {
           child: SvgPicture.asset(AppSvgAssets.journeyStars),
         ),
       ],
-    );
-  }
-}
-
-class _GoingLiveList extends HookConsumerWidget {
-  final List<UpcomingGridItem> gridItems;
-  const _GoingLiveList({
-    required this.gridItems,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
-      itemCount: gridItems.length,
-      padding: const EdgeInsets.only(bottom: 100),
-      itemBuilder: (context, index) {
-        final c = gridItems[index];
-        final image = c.conversation?.topicDetail?.image;
-        final title = c.conversation?.topicDetail?.name ?? '';
-        final userImage = c.conversation?.hostDetail?.photo;
-        final userName = c.conversation?.hostDetail?.name ?? '';
-
-        final items = [
-          const SizedBox(
-            height: 16,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Text(
-              'Goint live soon',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          const CategoryGridView(type: GridItemType.upcoming),
-          const SizedBox(
-            height: 20,
-          ),
-        ];
-
-        return Column(
-          children: [
-            if (index == 0)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: items,
-              ),
-            InkWell(
-              onTap: () {
-                AutoRouter.of(context).push(
-                  ConversationScreenRoute(id: c.conversation?.id),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        if (image != null)
-                          Image.network(
-                            image,
-                            height: 68,
-                            width: 114,
-                            fit: BoxFit.cover,
-                          )
-                        else
-                          const SizedBox(
-                            height: 68,
-                            width: 114,
-                          ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Row(
-                                children: [
-                                  if (userImage != null)
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                        userImage,
-                                      ),
-                                    ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    userName,
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        StreamTime(start: c.conversation?.start),
-                        const Spacer(),
-                        PlainButton(
-                          title: 'Remind Me',
-                          icon: Icons.notifications_none,
-                          borderColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-            if (index == gridItems.length - 1)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Divider(),
-                    PlainButton(
-                      title: 'View All',
-                      icon: Icons.arrow_forward_ios,
-                      borderColor: HexColor.fromHex('#373737'),
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(UpcomingStreamScreenRoute());
-                      },
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const Divider(
-          height: 32,
-        );
-      },
-    );
-  }
-}
-
-class _PastStreamList extends HookConsumerWidget {
-  final List<UpcomingGridItem> gridItems;
-  const _PastStreamList({
-    required this.gridItems,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
-      itemCount: gridItems.length,
-      padding: const EdgeInsets.only(bottom: 100),
-      itemBuilder: (context, index) {
-        final c = gridItems[index];
-        final image = c.conversation?.topicDetail?.image;
-        final title = c.conversation?.topicDetail?.name ?? '';
-        final userImage = c.conversation?.hostDetail?.photo;
-        final userName = c.conversation?.hostDetail?.name ?? '';
-
-        final items = [
-          const SizedBox(
-            height: 36,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Past streams',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          const CategoryGridView(type: GridItemType.past),
-          const SizedBox(
-            height: 20,
-          ),
-        ];
-
-        return Column(
-          children: [
-            if (index == 0)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: items,
-              ),
-            InkWell(
-              onTap: () {
-                AutoRouter.of(context).push(
-                  PastStreamDetailScreenRoute(id: c.conversation?.id),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        if (image != null)
-                          Image.network(
-                            image,
-                            height: 68,
-                            width: 114,
-                            fit: BoxFit.cover,
-                          )
-                        else
-                          const SizedBox(
-                            height: 68,
-                            width: 114,
-                          ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Row(
-                                children: [
-                                  if (userImage != null)
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                        userImage,
-                                      ),
-                                    ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    userName,
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    StreamTime(start: c.conversation?.start)
-                  ],
-                ),
-              ),
-            ),
-            if (index == gridItems.length - 1)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Divider(),
-                    PlainButton(
-                      title: 'View All',
-                      icon: Icons.arrow_forward_ios,
-                      borderColor: HexColor.fromHex('#373737'),
-                      onPressed: () {
-                        AutoRouter.of(context).push(PastStreamScreenRoute());
-                      },
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const Divider(
-          height: 32,
-        );
-      },
     );
   }
 }
@@ -718,6 +412,9 @@ class _CategoryWindowView extends HookConsumerWidget {
                                     ),
                                   ),
                                   Positioned(
+                                    top: 180,
+                                    left: 0,
+                                    right: 0,
                                     child: PlainButton(
                                       title: 'Explore',
                                       bgColor: HexColor.fromHex('#FFBF20'),
@@ -726,9 +423,6 @@ class _CategoryWindowView extends HookConsumerWidget {
                                       icon: Icons.arrow_forward,
                                       onPressed: () {},
                                     ),
-                                    top: 180,
-                                    left: 0,
-                                    right: 0,
                                   ),
                                 ],
                               ),
@@ -750,8 +444,8 @@ class _CategoryWindowView extends HookConsumerWidget {
                   child: Row(
                     children: [
                       Image.asset(AppImageAssets.categoryFooter.assetName),
-                      Spacer(),
-                      Text('More categories coming soon!')
+                      const Spacer(),
+                      const Text('More categories coming soon!')
                     ],
                   ),
                 )

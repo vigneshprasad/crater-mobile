@@ -12,17 +12,20 @@ import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 class AboutTab extends HookConsumerWidget {
   final UserProfile profile;
+  final Creator? creator;
   final Map<String, String>? meta;
   final bool showLogout;
   late WidgetRef ref;
 
   AboutTab({
     required this.profile,
+    this.creator,
     this.meta,
     required this.showLogout,
   });
@@ -35,16 +38,16 @@ class AboutTab extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'About Me',
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          const SizedBox(height: AppInsets.l),
           if (profile.introduction != null ||
               profile.generatedIntroduction != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'About ${profile.name}',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                const SizedBox(height: AppInsets.l),
                 if (profile.generatedIntroduction != null)
                   Text(
                     profile.generatedIntroduction!,
@@ -56,51 +59,17 @@ class AboutTab extends HookConsumerWidget {
               ],
             ),
           const SizedBox(height: 40),
-          if (meta?.isNotEmpty ?? false)
+          if (profile.linkedIn != null)
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Snapshot',
+                  'Connect with ${profile.name}',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 const SizedBox(height: AppInsets.l),
-                Column(
-                  children: meta!.entries
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 150,
-                                child: Text(
-                                  e.key,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  e.value,
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
+                _buildLinkedInButton(profile.linkedIn!),
               ],
             ),
-          const SizedBox(height: AppInsets.xxl),
-          Text(
-            'Connect',
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          const SizedBox(height: AppInsets.l),
-          if (profile.linkedIn != null) _buildLinkedInButton(profile.linkedIn!),
           const SizedBox(height: AppInsets.xxl),
           if (showLogout)
             Center(

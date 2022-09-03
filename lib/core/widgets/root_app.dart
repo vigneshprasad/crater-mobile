@@ -47,9 +47,6 @@ class RootApp extends HookConsumerWidget {
     } catch (exception) {
       debugPrint(exception.toString());
     }
-
-    final socketIOManager = ref.watch(userPermissionNotifierProvider.notifier);
-    await socketIOManager.listenPermissions();
   }
 
   @override

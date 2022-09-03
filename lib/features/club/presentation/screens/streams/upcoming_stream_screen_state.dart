@@ -49,7 +49,7 @@ class UpcomingStreamStateNotifier
             .map(
               (e) => UpcomingGridItem(
                 conversation: e,
-                type: GridItemType.past,
+                type: GridItemType.upcoming,
               ),
             )
             .toList();
@@ -89,7 +89,7 @@ class UpcomingStreamStateNotifier
             .map(
               (e) => UpcomingGridItem(
                 conversation: e,
-                type: GridItemType.past,
+                type: GridItemType.upcoming,
               ),
             )
             .toList();

@@ -40,32 +40,32 @@ class HomeTabBar extends StatelessWidget {
           width: 20,
         ),
       ),
-      BottomNavigationBarItem(
-        label: 'Creators',
-        icon: SvgPicture.asset(
-          AppSvgAssets.creators,
-          color: Colors.grey,
-          width: 20,
-        ),
-        activeIcon: SvgPicture.asset(
-          AppSvgAssets.creatorsFilled,
-          color: Theme.of(context).colorScheme.secondary,
-          width: 20,
-        ),
-      ),
-      BottomNavigationBarItem(
-        label: 'Creator Hub',
-        icon: SvgPicture.asset(
-          AppSvgAssets.hub,
-          color: Colors.grey,
-          width: 20,
-        ),
-        activeIcon: SvgPicture.asset(
-          AppSvgAssets.hubFilled,
-          color: Theme.of(context).colorScheme.secondary,
-          width: 20,
-        ),
-      ),
+      // BottomNavigationBarItem(
+      //   label: 'Creators',
+      //   icon: SvgPicture.asset(
+      //     AppSvgAssets.creators,
+      //     color: Colors.grey,
+      //     width: 20,
+      //   ),
+      //   activeIcon: SvgPicture.asset(
+      //     AppSvgAssets.creatorsFilled,
+      //     color: Theme.of(context).colorScheme.secondary,
+      //     width: 20,
+      //   ),
+      // ),
+      // BottomNavigationBarItem(
+      //   label: 'Creator Hub',
+      //   icon: SvgPicture.asset(
+      //     AppSvgAssets.hub,
+      //     color: Colors.grey,
+      //     width: 20,
+      //   ),
+      //   activeIcon: SvgPicture.asset(
+      //     AppSvgAssets.hubFilled,
+      //     color: Theme.of(context).colorScheme.secondary,
+      //     width: 20,
+      //   ),
+      // ),
       BottomNavigationBarItem(
         label: 'Profile',
         icon: SvgPicture.asset(

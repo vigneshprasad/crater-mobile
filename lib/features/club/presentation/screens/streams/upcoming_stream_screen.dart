@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/going_live_list.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
@@ -24,6 +25,7 @@ class UpcomingStreamScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final clubsProvider = ref.watch(upcomingStreamsStateProvider(categoryId));
+    final pastStreamProvider = ref.watch(pastStreamsStateProvider(categoryId));
     final _controller = useScrollController();
     _controller.addListener(() {
       // reached End of scroll
@@ -32,6 +34,9 @@ class UpcomingStreamScreen extends HookConsumerWidget {
         ref
             .read(upcomingStreamsStateProvider(categoryId).notifier)
             .getNextPageList();
+        ref
+            .read(pastStreamsStateProvider(categoryId).notifier)
+            .getNextPageConnectableProfileList();
       }
     });
     return Scaffold(
@@ -49,7 +54,12 @@ class UpcomingStreamScreen extends HookConsumerWidget {
             color: Theme.of(context).colorScheme.secondary,
             onRefresh: () {
               final futures = [
-                ref.read(streamStateProvider.notifier).getUpcomingData(),
+                ref
+                    .read(upcomingStreamsStateProvider(categoryId).notifier)
+                    .getUpcomingData(),
+                ref
+                    .read(pastStreamsStateProvider(categoryId).notifier)
+                    .getPastData(),
               ];
 
               return Future.wait(futures);
@@ -57,130 +67,75 @@ class UpcomingStreamScreen extends HookConsumerWidget {
             child: clubsProvider.when(
               loading: () => Container(),
               error: (e, s) => Container(),
-              data: (gridItems) {
-                if (gridItems.isEmpty) {
-                  return Center(child: Text('Coming soon...'));
-                }
-                return ListView.separated(
-                  itemCount: gridItems.length,
-                  padding: const EdgeInsets.only(bottom: 100),
-                  itemBuilder: (context, index) {
-                    final c = gridItems[index];
-                    final image = c.conversation?.topicDetail?.image;
-                    final title = c.conversation?.topicDetail?.name ?? '';
-                    final userImage = c.conversation?.hostDetail?.photo;
-                    final userName = c.conversation?.hostDetail?.name ?? '';
+              data: (upcomingItems) {
+                return pastStreamProvider.when(
+                  loading: () => Container(),
+                  error: (e, s) => Container(),
+                  data: (pastItems) {
+                    final upcomingTitle = UpcomingGridItem(
+                        type: GridItemType.title, title: 'Upcoming streams');
+                    final title = UpcomingGridItem(
+                        type: GridItemType.title, title: 'Past streams');
+                    final gridItems =
+                        [upcomingTitle] + upcomingItems + [title] + pastItems;
+                    if (gridItems.isEmpty) {
+                      return Center(child: Text('Coming soon...'));
+                    }
+                    return ListView.separated(
+                      itemCount: gridItems.length,
+                      padding: const EdgeInsets.only(bottom: 100),
+                      itemBuilder: (context, index) {
+                        final c = gridItems[index];
 
-                    final items = [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      const CategoryGridView(type: GridItemType.upcoming),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ];
-
-                    return Column(
-                      children: [
-                        if (index == 0)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: items,
-                          ),
-                        InkWell(
-                          onTap: () {
-                            AutoRouter.of(context).push(
-                              ConversationScreenRoute(id: c.conversation?.id),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    if (image != null)
-                                      Image.network(
-                                        image,
-                                        height: 68,
-                                        width: 114,
-                                        fit: BoxFit.cover,
-                                      )
-                                    else
-                                      const SizedBox(
-                                        height: 68,
-                                        width: 114,
-                                      ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            title,
-                                            maxLines: 2,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Row(
-                                            children: [
-                                              if (userImage != null)
-                                                CircleAvatar(
-                                                  radius: 8,
-                                                  backgroundImage:
-                                                      CachedNetworkImageProvider(
-                                                    userImage,
-                                                  ),
-                                                ),
-                                              const SizedBox(
-                                                width: 4,
-                                              ),
-                                              Text(
-                                                userName,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .caption,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                Row(
-                                  children: [
-                                    StreamTime(start: c.conversation?.start),
-                                    const Spacer(),
-                                    PlainButton(
-                                      title: 'Remind Me',
-                                      icon: Icons.notifications_none,
-                                      borderColor: Colors.white,
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                )
-                              ],
+                        if (c.type == GridItemType.title) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 32.0, left: 16),
+                            child: Text(
+                              c.title ?? '',
+                              style: Theme.of(context).textTheme.headline6,
                             ),
+                          );
+                        }
+
+                        final image = c.conversation?.topicDetail?.image;
+                        final title = c.conversation?.topicDetail?.name ?? '';
+                        final userImage = c.conversation?.hostDetail?.photo;
+                        final userName = c.conversation?.hostDetail?.name ?? '';
+
+                        final items = [
+                          const SizedBox(
+                            height: 16,
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider(
-                      height: 32,
+                          CategoryGridView(
+                            type: GridItemType.upcoming,
+                            selectedId: categoryId,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ];
+
+                        return Column(
+                          children: [
+                            if (index == 0)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: items,
+                              ),
+                            LiveListItem(item: c),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        if (gridItems[index].type == GridItemType.title) {
+                          return SizedBox(
+                            height: 20,
+                          );
+                        }
+                        return const Divider(
+                          height: 32,
+                        );
+                      },
                     );
                   },
                 );

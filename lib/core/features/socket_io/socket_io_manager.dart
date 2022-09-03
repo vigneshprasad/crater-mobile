@@ -7,7 +7,7 @@ import 'package:worknetwork/features/conversations/domain/entity/conversation_en
 
 final userPermissionNotifierProvider =
     StateNotifierProvider<SocketIOManager, AsyncValue<UserPermission>>((ref) {
-  return SocketIOManager(ref.read);
+  return SocketIOManager(read: ref.read);
 });
 
 class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
@@ -16,21 +16,12 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
   Socket? permissionSocket;
   final Reader read;
 
-  SocketIOManager(this.read)
-      : super(const AsyncValue<UserPermission>.loading());
-
-  String? getToken() {
-    try {
-      final user = read(authStateProvider.notifier).getUser();
-      return user?.token;
-    } catch (exception) {
-      debugPrint(exception.toString());
-      return null;
-    }
-  }
+  SocketIOManager({
+    required this.read,
+  }) : super(const AsyncValue<UserPermission>.loading());
 
   Future<void> listenPermissions() async {
-    final token = getToken();
+    final token = read(authTokenProvider.notifier).state;
     if (token == null) {
       return;
     }
@@ -74,7 +65,7 @@ class SocketIOManager extends StateNotifier<AsyncValue<UserPermission>> {
   }
 
   Future<void> onJoinStream(int groupId) async {
-    final token = getToken();
+    final token = read(authTokenProvider.notifier).state;
     if (token == null) {
       return;
     }

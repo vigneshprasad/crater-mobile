@@ -75,7 +75,10 @@ class PastStreamScreen extends HookConsumerWidget {
                             const SizedBox(
                               height: 16,
                             ),
-                            const CategoryGridView(type: GridItemType.past),
+                            CategoryGridView(
+                              type: GridItemType.past,
+                              selectedId: categoryId,
+                            ),
                             const SizedBox(
                               height: 20,
                             ),

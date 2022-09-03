@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worknetwork/api/integrations/devices_api_service.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/features/socket_io/socket_io_manager.dart';
 import 'package:worknetwork/core/push_notfications/push_notifications.dart';
 import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
@@ -27,6 +28,8 @@ final splashStateProvider = FutureProvider<SplashState>(
     final isLoggedIn = authState.fold((error) => false, (data) => true);
 
     if (isLoggedIn) {
+      final socketIOManager = ref.read(userPermissionNotifierProvider.notifier);
+      await socketIOManager.listenPermissions();
       return SplashState.home;
     }
 
