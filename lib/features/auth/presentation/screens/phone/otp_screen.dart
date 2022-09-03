@@ -15,12 +15,19 @@ class OTPScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final otpFocusNode = useFocusNode();
-    otpFocusNode.requestFocus();
     final _validOtp = useState(false);
     const verify = 'Submit';
     const heading = 'An OTP has been sent to you';
     const subtitle =
         'Enter the 4 digit OTP sent on your mobile number to continue';
+
+    useEffect(
+      () {
+        otpFocusNode.requestFocus();
+        return () {};
+      },
+      [],
+    );
 
     return Scaffold(
       body: SafeArea(
