@@ -74,6 +74,7 @@ class DyteMeetingScreen extends HookConsumerWidget {
         'participants': false,
         'chat': false,
         'polls': false,
+        'fullscreen': false,
       },
       'dimensions': {
         'height': videoHeight,
