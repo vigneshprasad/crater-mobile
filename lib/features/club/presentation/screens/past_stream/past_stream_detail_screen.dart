@@ -12,9 +12,11 @@ import 'package:worknetwork/core/widgets/base/base_network_image/base_network_im
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/past_stream/past_stream_detail_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/going_live_list.dart';
 import 'package:worknetwork/features/club/presentation/widgets/upcoming_grid_tile.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
 import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
@@ -100,12 +102,7 @@ class _ConversationLoaded extends HookConsumerWidget {
           ),
           if (!isFullScreen.value)
             Padding(
-              padding: isFullScreen.value
-                  ? EdgeInsets.zero
-                  : const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xl,
-                      vertical: AppInsets.l,
-                    ),
+              padding: EdgeInsets.zero,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -114,11 +111,13 @@ class _ConversationLoaded extends HookConsumerWidget {
                     heading ?? '',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       if (start != null)
-                        Text(startDateFormat.format(start), style: dateStyle),
+                        StreamTime(
+                          start: start,
+                        ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -141,7 +140,7 @@ class _ConversationLoaded extends HookConsumerWidget {
                       Column(
                         children: conversation.speakersDetailList
                                 ?.map(
-                                  (speaker) => _SpeakerWithIntro(
+                                  (speaker) => SpeakerWithIntro(
                                     user: speaker,
                                     authUserPk: authUserPK ?? '',
                                   ),
@@ -161,30 +160,10 @@ class _ConversationLoaded extends HookConsumerWidget {
                     data: (conversations) {
                       if (conversations.isEmpty) return Container();
                       return SizedBox(
-                        height: 340,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Similar streams',
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            const SizedBox(height: AppInsets.xxl),
-                            CarouselSlider(
-                              options: CarouselOptions(
-                                height: 280.0,
-                                enlargeCenterPage: true,
-                                enableInfiniteScroll: false,
-                              ),
-                              items: conversations.map((c) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return UpcomingGridTile(c);
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                        height: conversations.length * 144.0 + 40,
+                        child: GoingLiveList(
+                          gridItems: conversations,
+                          title: 'Past Streams',
                         ),
                       );
                     },
@@ -296,15 +275,20 @@ class _StreamVideoPlayerState extends State<StreamVideoPlayer> {
                       isPlaying: _controller.value.isPlaying,
                       isFullScreen: widget.isFullScreen,
                     ),
-                    VideoProgressIndicator(
-                      _controller,
-                      colors: VideoProgressColors(
-                        playedColor: Theme.of(context).colorScheme.secondary,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
                       ),
-                      allowScrubbing: true,
-                      padding: EdgeInsets.only(
-                        bottom: widget.isFullScreen.value ? 40 : 0,
-                        top: 20,
+                      child: VideoProgressIndicator(
+                        _controller,
+                        colors: VideoProgressColors(
+                          playedColor: Theme.of(context).colorScheme.secondary,
+                        ),
+                        allowScrubbing: true,
+                        padding: EdgeInsets.only(
+                          bottom: widget.isFullScreen.value ? 40 : 8,
+                          top: 20,
+                        ),
                       ),
                     ),
                   ],
@@ -341,32 +325,35 @@ class _ControlsOverlay extends StatelessWidget {
                   color: Colors.black26,
                   child: const Center(
                     child: Icon(
-                      Icons.play_circle,
+                      Icons.play_arrow,
                       color: Colors.white,
-                      size: 100.0,
+                      size: 72.0,
                       semanticLabel: 'Play',
                     ),
                   ),
                 ),
         ),
         Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            icon: const Icon(Icons.fullscreen),
-            onPressed: () {
-              isFullScreen.value = !isFullScreen.value;
-              if (isFullScreen.value) {
-                SystemChrome.setEnabledSystemUIMode(
-                  SystemUiMode.manual,
-                  overlays: [SystemUiOverlay.bottom],
-                );
-              } else {
-                SystemChrome.setEnabledSystemUIMode(
-                  SystemUiMode.manual,
-                  overlays: SystemUiOverlay.values,
-                );
-              }
-            },
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: IconButton(
+              icon: const Icon(Icons.fullscreen),
+              onPressed: () {
+                isFullScreen.value = !isFullScreen.value;
+                if (isFullScreen.value) {
+                  SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.manual,
+                    overlays: [SystemUiOverlay.bottom],
+                  );
+                } else {
+                  SystemChrome.setEnabledSystemUIMode(
+                    SystemUiMode.manual,
+                    overlays: SystemUiOverlay.values,
+                  );
+                }
+              },
+            ),
           ),
         ),
       ],

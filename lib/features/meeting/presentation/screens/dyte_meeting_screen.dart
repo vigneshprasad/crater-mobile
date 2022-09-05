@@ -22,8 +22,10 @@ import 'package:worknetwork/features/chat/presentation/screens/chat_screen.dart'
 import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/profile_streams_state.dart';
 import 'package:worknetwork/routes.gr.dart';
@@ -36,7 +38,6 @@ class DyteMeetingScreen extends HookConsumerWidget {
     required this.conversation,
   }) : super(key: key);
 
-  bool showChat = true;
   late Size size;
 
   @override
@@ -44,27 +45,18 @@ class DyteMeetingScreen extends HookConsumerWidget {
     size = MediaQuery.of(context).size;
 
     final meetingId = conversation.id ?? 0;
-    final creator = conversation.hostDetail?.creatorDetail ?? Creator();
+    // final creator = conversation.hostDetail?.creatorDetail ?? Creator();
 
     final profileState = ref.watch(getDyteCredsNotifierProvider(meetingId));
 
     final meetingHandler = useState<DyteMeetingHandler?>(null);
     final participant = useState<DyteSelfParticipant?>(null);
 
-    // final showChat = useState(true);
-    // final showReaction = useState(false);
-
     final isExpanded = useState(true);
+    final isFullscreen = useState(false);
 
     final videoHeight = min(size.width, size.height);
-    if (showChat) {
-      // videoHeight = videoHeight * 260.0 / 375.0;
-    }
     final videoWidth = MediaQuery.of(context).size.width;
-
-    final fullHeight = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
 
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final chatHeight =
@@ -97,7 +89,7 @@ class DyteMeetingScreen extends HookConsumerWidget {
     });
 
     Future<void> toggleChat() async {
-      showChat = !showChat;
+      isFullscreen.value = !isFullscreen.value;
 
       final videoWidth = size.height;
       meetingHandler.value?.updateUIConfig({
@@ -109,7 +101,7 @@ class DyteMeetingScreen extends HookConsumerWidget {
       });
 
       await SystemChrome.setPreferredOrientations([
-        if (showChat == false)
+        if (isFullscreen.value == true)
           DeviceOrientation.landscapeLeft
         else
           DeviceOrientation.portraitUp,
@@ -130,7 +122,6 @@ class DyteMeetingScreen extends HookConsumerWidget {
       meetingHandler.value?.events.removeAllByEvent('meetingJoin');
       meetingHandler.value?.events.removeAllByEvent('meetingDisconnected');
       meetingHandler.value?.events.removeAllByEvent('meetingEnd');
-      // meetingHandler.value = null;
 
       participant.value?.leaveRoom();
 
@@ -185,8 +176,6 @@ class DyteMeetingScreen extends HookConsumerWidget {
                             Future.delayed(
                               const Duration(milliseconds: 500),
                             ).then((value) {
-                              // showChat.value = true;
-
                               final analytics = ref.read(analyticsProvider);
                               analytics.trackEvent(
                                 eventName: AnalyticsEvents.joinStream,
@@ -211,7 +200,6 @@ class DyteMeetingScreen extends HookConsumerWidget {
                           });
 
                           participant.value = await meetingHandler.value?.self;
-                          // showChat.value = false;
                         },
                       ),
                     ),
@@ -237,9 +225,9 @@ class DyteMeetingScreen extends HookConsumerWidget {
                               child: IconButton(
                                 onPressed: toggleChat,
                                 icon: Icon(
-                                  showChat
-                                      ? Icons.fullscreen
-                                      : Icons.fullscreen_exit,
+                                  isFullscreen.value
+                                      ? Icons.fullscreen_exit
+                                      : Icons.fullscreen,
                                   color: Colors.white70,
                                 ),
                               ),
@@ -255,17 +243,17 @@ class DyteMeetingScreen extends HookConsumerWidget {
                     const Expanded(child: SizedBox()),
                     Container(
                       color: Theme.of(context).backgroundColor,
-                      height: showChat ? chatHeight : 0,
+                      height: isFullscreen.value ? 0 : chatHeight,
                       width: videoWidth,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: _SimilarStreamList(
-                        conversation: conversation,
+                        conversation: state.webinar,
                         userId: "",
                       ),
                     ),
                   ],
                 ),
-                if (showChat)
+                if (!isFullscreen.value)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(
@@ -311,8 +299,11 @@ class DyteMeetingScreen extends HookConsumerWidget {
                                 ),
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
-                                  height:
-                                      isExpanded.value ? chatHeight - 45 : 0,
+                                  height: isExpanded.value
+                                      ? (chatHeight - 45 < 0
+                                          ? 0
+                                          : chatHeight - 45)
+                                      : 0,
                                   width: videoWidth,
                                   child: Column(
                                     children: [
@@ -381,7 +372,9 @@ class DyteMeetingScreen extends HookConsumerWidget {
                                           recieverId: '',
                                           groupId: meetingId.toString(),
                                           allowChat: state.allowChat,
-                                          streamCreator: creator,
+                                          streamCreator: state.webinar
+                                                  .hostDetail?.creatorDetail ??
+                                              const Creator(),
                                         ),
                                       ),
                                     ],
@@ -499,7 +492,7 @@ class CategoryGridView extends HookConsumerWidget {
   }
 }
 
-class SpeakerWithIntro extends StatelessWidget {
+class SpeakerWithIntro extends HookConsumerWidget {
   final ConversationUser user;
   final String authUserPk;
   const SpeakerWithIntro({
@@ -509,10 +502,12 @@ class SpeakerWithIntro extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final description = user.introduction ?? user.email;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final subscribers = useState(user.creatorDetail?.subscriberCount ?? 0);
+    final description = '${subscribers.value} Followers';
     final headingStyle = Theme.of(context).textTheme.subtitle2;
     final bodyStyle = Theme.of(context).textTheme.caption;
+    final isFollower = useState(user.creatorDetail?.isSubscriber ?? false);
     return InkWell(
       onTap: () {
         AutoRouter.of(context).push(
@@ -543,12 +538,52 @@ class SpeakerWithIntro extends StatelessWidget {
                 children: [
                   Text(user.name ?? '', style: headingStyle),
                   Text(
-                    description ?? '',
+                    description,
                     overflow: TextOverflow.ellipsis,
                     style: bodyStyle,
                   )
                 ],
               ),
+            ),
+            const SizedBox(width: 8),
+            SizedBox(
+              height: 36,
+              child: isFollower.value
+                  ? PlainButton(
+                      title: 'Following',
+                      icon: Icons.check,
+                      onPressed: () {},
+                    )
+                  : PlainButton(
+                      title: 'Follow',
+                      bgColor: Colors.white,
+                      textColor: Theme.of(context).backgroundColor,
+                      onPressed: () async {
+                        final userPK = user.creatorDetail?.id ?? 0;
+
+                        final response = await ref
+                            .read(creatorStateProvider('').notifier)
+                            .followCreator(userPK, context);
+
+                        response.fold(
+                          (failure) {
+                            // isFollowing.value = !isFollowing.value;
+                            // message.isFollowing = isFollowing.value;
+                            // Fluttertoast.showToast(msg: failure.message.toString());
+                          },
+                          (request) {
+                            isFollower.value = !isFollower.value;
+                            // subscribers.value = subscribers.value + 1;
+
+                            final analytics = ref.read(analyticsProvider);
+                            analytics.trackEvent(
+                              eventName: AnalyticsEvents.followCreator,
+                              properties: {},
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         ),

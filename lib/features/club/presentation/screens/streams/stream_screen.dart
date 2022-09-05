@@ -20,6 +20,7 @@ import 'package:worknetwork/features/club/presentation/widgets/past_live_grid_ti
 import 'package:worknetwork/features/club/presentation/widgets/past_stream_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_follow_card.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/routes.gr.dart';
 
@@ -323,6 +324,35 @@ class _CategoryWindowView extends HookConsumerWidget {
 
   const _CategoryWindowView({required this.type});
 
+  String iconForCategory(CategoriesDetailList category) {
+    switch (category.name?.toLowerCase()) {
+      case 'design':
+        return AppImageAssets.design.assetName;
+      case 'marketing':
+        return AppImageAssets.marketing.assetName;
+      case 'finance':
+        return AppImageAssets.finance.assetName;
+      case 'career':
+        return AppImageAssets.career.assetName;
+      case 'stocks':
+        return AppImageAssets.stock.assetName;
+      case 'entertainment':
+        return AppImageAssets.web3v2.assetName;
+      case 'coding':
+        return AppImageAssets.design.assetName;
+      case 'branding':
+        return AppImageAssets.branding.assetName;
+      case 'content creation':
+        return AppImageAssets.contentCreation.assetName;
+      case 'startups':
+        return AppImageAssets.startups.assetName;
+      case 'web 3.0':
+        return AppImageAssets.web3.assetName;
+      default:
+        return AppImageAssets.design.assetName;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final webinarCategoryProvider = ref.watch(webinarCategoryStateProvider);
@@ -396,14 +426,16 @@ class _CategoryWindowView extends HookConsumerWidget {
                                           height: 40,
                                         ),
                                         Image.asset(
-                                          AppImageAssets.design.assetName,
+                                          iconForCategory(categoryList[index]),
                                           height: 74,
+                                          fit: BoxFit.contain,
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
                                         Text(
                                           categoryList[index].name ?? '',
+                                          textAlign: TextAlign.center,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1,

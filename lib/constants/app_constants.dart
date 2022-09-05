@@ -147,16 +147,16 @@ class AppImageAssets {
   static const categoryFooter = AssetImage("assets/images/category-footer.png");
 
   static const branding = AssetImage("assets/category-icons/branding.png");
-  static const career = AssetImage("assets/category-icons/career.svg");
+  static const career = AssetImage("assets/category-icons/career.png");
   static const contentCreation =
-      AssetImage("assets/category-icons/contentCreation.svg");
+      AssetImage("assets/category-icons/content-creation.png");
   static const design = AssetImage("assets/category-icons/design.png");
   static const finance = AssetImage("assets/category-icons/finance.png");
-  static const marketing = AssetImage("assets/category-icons/marketing.svg");
-  static const startups = AssetImage("assets/category-icons/startups.svg");
-  static const stock = AssetImage("assets/category-icons/stock.svg");
-  static const web3 = AssetImage("assets/category-icons/web3.svg");
-  static const web3v2 = AssetImage("assets/category-icons/web3v2.svg");
+  static const marketing = AssetImage("assets/category-icons/marketing.png");
+  static const startups = AssetImage("assets/category-icons/startups.png");
+  static const stock = AssetImage("assets/category-icons/stock.png");
+  static const web3 = AssetImage("assets/category-icons/web3.png");
+  static const web3v2 = AssetImage("assets/category-icons/web3v2.png");
 }
 
 class AppSvgAssets {

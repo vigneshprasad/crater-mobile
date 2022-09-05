@@ -493,7 +493,9 @@ mixin _$Creator {
   int? get numberOfSubscribers => throw _privateConstructorUsedError;
   bool get certified => throw _privateConstructorUsedError;
   @JsonKey(name: 'follower_count')
-  int? get followerCount =>
+  int? get followerCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'subscriber_count')
+  int? get subscriberCount =>
       throw _privateConstructorUsedError; // @Default(0)dynamic type,
   int get order => throw _privateConstructorUsedError;
   @JsonKey(name: 'default_community')
@@ -503,6 +505,8 @@ mixin _$Creator {
   String? get slug => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_follower')
   bool? get isFollower => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_subscriber')
+  bool? get isSubscriber => throw _privateConstructorUsedError;
   @JsonKey(name: 'show_club_members')
   bool? get showClubMembers => throw _privateConstructorUsedError;
   String? get video => throw _privateConstructorUsedError;
@@ -524,11 +528,13 @@ abstract class $CreatorCopyWith<$Res> {
       @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
       bool certified,
       @JsonKey(name: 'follower_count') int? followerCount,
+      @JsonKey(name: 'subscriber_count') int? subscriberCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
       @JsonKey(name: 'is_follower') bool? isFollower,
+      @JsonKey(name: 'is_subscriber') bool? isSubscriber,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster});
@@ -552,11 +558,13 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
     Object? numberOfSubscribers = freezed,
     Object? certified = freezed,
     Object? followerCount = freezed,
+    Object? subscriberCount = freezed,
     Object? order = freezed,
     Object? defaultCommunity = freezed,
     Object? profileDetail = freezed,
     Object? slug = freezed,
     Object? isFollower = freezed,
+    Object? isSubscriber = freezed,
     Object? showClubMembers = freezed,
     Object? video = freezed,
     Object? videoPoster = freezed,
@@ -582,6 +590,10 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
           ? _value.followerCount
           : followerCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      subscriberCount: subscriberCount == freezed
+          ? _value.subscriberCount
+          : subscriberCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       order: order == freezed
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -601,6 +613,10 @@ class _$CreatorCopyWithImpl<$Res> implements $CreatorCopyWith<$Res> {
       isFollower: isFollower == freezed
           ? _value.isFollower
           : isFollower // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSubscriber: isSubscriber == freezed
+          ? _value.isSubscriber
+          : isSubscriber // ignore: cast_nullable_to_non_nullable
               as bool?,
       showClubMembers: showClubMembers == freezed
           ? _value.showClubMembers
@@ -652,11 +668,13 @@ abstract class _$$_CreatorCopyWith<$Res> implements $CreatorCopyWith<$Res> {
       @JsonKey(name: 'number_of_subscribers') int? numberOfSubscribers,
       bool certified,
       @JsonKey(name: 'follower_count') int? followerCount,
+      @JsonKey(name: 'subscriber_count') int? subscriberCount,
       int order,
       @JsonKey(name: 'default_community') CreatorCommunity? defaultCommunity,
       @JsonKey(name: 'profile_detail') Profile? profileDetail,
       String? slug,
       @JsonKey(name: 'is_follower') bool? isFollower,
+      @JsonKey(name: 'is_subscriber') bool? isSubscriber,
       @JsonKey(name: 'show_club_members') bool? showClubMembers,
       String? video,
       @JsonKey(name: 'video_poster') String? videoPoster});
@@ -683,11 +701,13 @@ class __$$_CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
     Object? numberOfSubscribers = freezed,
     Object? certified = freezed,
     Object? followerCount = freezed,
+    Object? subscriberCount = freezed,
     Object? order = freezed,
     Object? defaultCommunity = freezed,
     Object? profileDetail = freezed,
     Object? slug = freezed,
     Object? isFollower = freezed,
+    Object? isSubscriber = freezed,
     Object? showClubMembers = freezed,
     Object? video = freezed,
     Object? videoPoster = freezed,
@@ -713,6 +733,10 @@ class __$$_CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
           ? _value.followerCount
           : followerCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      subscriberCount: subscriberCount == freezed
+          ? _value.subscriberCount
+          : subscriberCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       order: order == freezed
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -732,6 +756,10 @@ class __$$_CreatorCopyWithImpl<$Res> extends _$CreatorCopyWithImpl<$Res>
       isFollower: isFollower == freezed
           ? _value.isFollower
           : isFollower // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSubscriber: isSubscriber == freezed
+          ? _value.isSubscriber
+          : isSubscriber // ignore: cast_nullable_to_non_nullable
               as bool?,
       showClubMembers: showClubMembers == freezed
           ? _value.showClubMembers
@@ -758,11 +786,13 @@ class _$_Creator implements _Creator {
       @JsonKey(name: 'number_of_subscribers') this.numberOfSubscribers = 0,
       this.certified = false,
       @JsonKey(name: 'follower_count') this.followerCount = 0,
+      @JsonKey(name: 'subscriber_count') this.subscriberCount = 0,
       this.order = 0,
       @JsonKey(name: 'default_community') this.defaultCommunity,
       @JsonKey(name: 'profile_detail') this.profileDetail,
       this.slug,
       @JsonKey(name: 'is_follower') this.isFollower,
+      @JsonKey(name: 'is_subscriber') this.isSubscriber,
       @JsonKey(name: 'show_club_members') this.showClubMembers,
       this.video,
       @JsonKey(name: 'video_poster') this.videoPoster});
@@ -785,6 +815,9 @@ class _$_Creator implements _Creator {
   @override
   @JsonKey(name: 'follower_count')
   final int? followerCount;
+  @override
+  @JsonKey(name: 'subscriber_count')
+  final int? subscriberCount;
 // @Default(0)dynamic type,
   @override
   @JsonKey()
@@ -801,6 +834,9 @@ class _$_Creator implements _Creator {
   @JsonKey(name: 'is_follower')
   final bool? isFollower;
   @override
+  @JsonKey(name: 'is_subscriber')
+  final bool? isSubscriber;
+  @override
   @JsonKey(name: 'show_club_members')
   final bool? showClubMembers;
   @override
@@ -811,7 +847,7 @@ class _$_Creator implements _Creator {
 
   @override
   String toString() {
-    return 'Creator(id: $id, user: $user, numberOfSubscribers: $numberOfSubscribers, certified: $certified, followerCount: $followerCount, order: $order, defaultCommunity: $defaultCommunity, profileDetail: $profileDetail, slug: $slug, isFollower: $isFollower, showClubMembers: $showClubMembers, video: $video, videoPoster: $videoPoster)';
+    return 'Creator(id: $id, user: $user, numberOfSubscribers: $numberOfSubscribers, certified: $certified, followerCount: $followerCount, subscriberCount: $subscriberCount, order: $order, defaultCommunity: $defaultCommunity, profileDetail: $profileDetail, slug: $slug, isFollower: $isFollower, isSubscriber: $isSubscriber, showClubMembers: $showClubMembers, video: $video, videoPoster: $videoPoster)';
   }
 
   @override
@@ -826,6 +862,8 @@ class _$_Creator implements _Creator {
             const DeepCollectionEquality().equals(other.certified, certified) &&
             const DeepCollectionEquality()
                 .equals(other.followerCount, followerCount) &&
+            const DeepCollectionEquality()
+                .equals(other.subscriberCount, subscriberCount) &&
             const DeepCollectionEquality().equals(other.order, order) &&
             const DeepCollectionEquality()
                 .equals(other.defaultCommunity, defaultCommunity) &&
@@ -834,6 +872,8 @@ class _$_Creator implements _Creator {
             const DeepCollectionEquality().equals(other.slug, slug) &&
             const DeepCollectionEquality()
                 .equals(other.isFollower, isFollower) &&
+            const DeepCollectionEquality()
+                .equals(other.isSubscriber, isSubscriber) &&
             const DeepCollectionEquality()
                 .equals(other.showClubMembers, showClubMembers) &&
             const DeepCollectionEquality().equals(other.video, video) &&
@@ -850,11 +890,13 @@ class _$_Creator implements _Creator {
       const DeepCollectionEquality().hash(numberOfSubscribers),
       const DeepCollectionEquality().hash(certified),
       const DeepCollectionEquality().hash(followerCount),
+      const DeepCollectionEquality().hash(subscriberCount),
       const DeepCollectionEquality().hash(order),
       const DeepCollectionEquality().hash(defaultCommunity),
       const DeepCollectionEquality().hash(profileDetail),
       const DeepCollectionEquality().hash(slug),
       const DeepCollectionEquality().hash(isFollower),
+      const DeepCollectionEquality().hash(isSubscriber),
       const DeepCollectionEquality().hash(showClubMembers),
       const DeepCollectionEquality().hash(video),
       const DeepCollectionEquality().hash(videoPoster));
@@ -879,6 +921,8 @@ abstract class _Creator implements Creator {
       final bool certified,
       @JsonKey(name: 'follower_count')
           final int? followerCount,
+      @JsonKey(name: 'subscriber_count')
+          final int? subscriberCount,
       final int order,
       @JsonKey(name: 'default_community')
           final CreatorCommunity? defaultCommunity,
@@ -887,6 +931,8 @@ abstract class _Creator implements Creator {
       final String? slug,
       @JsonKey(name: 'is_follower')
           final bool? isFollower,
+      @JsonKey(name: 'is_subscriber')
+          final bool? isSubscriber,
       @JsonKey(name: 'show_club_members')
           final bool? showClubMembers,
       final String? video,
@@ -907,6 +953,9 @@ abstract class _Creator implements Creator {
   @override
   @JsonKey(name: 'follower_count')
   int? get followerCount;
+  @override
+  @JsonKey(name: 'subscriber_count')
+  int? get subscriberCount;
   @override // @Default(0)dynamic type,
   int get order;
   @override
@@ -920,6 +969,9 @@ abstract class _Creator implements Creator {
   @override
   @JsonKey(name: 'is_follower')
   bool? get isFollower;
+  @override
+  @JsonKey(name: 'is_subscriber')
+  bool? get isSubscriber;
   @override
   @JsonKey(name: 'show_club_members')
   bool? get showClubMembers;

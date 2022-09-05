@@ -17,6 +17,7 @@ import 'package:worknetwork/features/auth/presentation/screens/splash/splash_scr
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen_state.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/user_stream_screen.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
 import 'package:worknetwork/routes.gr.dart';
@@ -108,10 +109,22 @@ class _ConversationLoaded extends HookConsumerWidget {
         now.isBefore(end) &&
         !isClosed;
 
+    final isMoreVisible = useState(true);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Center(child: StreamTime(start: conversation.start)),
+        title: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.circular(4),
+              color: Theme.of(context).dialogBackgroundColor,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: StreamTime(start: conversation.start),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -208,10 +221,54 @@ class _ConversationLoaded extends HookConsumerWidget {
                                 if (conversation
                                         .topicDetail?.description?.isNotEmpty ??
                                     false)
-                                  Text(
-                                    conversation.topicDetail?.description ?? '',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                  Stack(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            conversation
+                                                    .topicDetail?.description ??
+                                                '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                            maxLines:
+                                                isMoreVisible.value ? 3 : 100,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: 24,
+                                          ),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        child: InkWell(
+                                          onTap: () {
+                                            isMoreVisible.value =
+                                                !isMoreVisible.value;
+                                          },
+                                          child: Container(
+                                            color: Theme.of(context)
+                                                .dialogBackgroundColor,
+                                            child: Text(
+                                              isMoreVisible.value
+                                                  ? 'Show More'
+                                                  : 'Show Less',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button
+                                                  ?.copyWith(
+                                                    color: HexColor.fromHex(
+                                                      '#D5BBFF',
+                                                    ),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 const SizedBox(height: AppInsets.xxl),
                                 Text(
@@ -221,12 +278,38 @@ class _ConversationLoaded extends HookConsumerWidget {
                                 Column(
                                   children: conversation.speakersDetailList
                                           ?.map(
-                                            (speaker) => _SpeakerWithIntro(
-                                              user: speaker,
-                                              authUserPk: authUserPK,
-                                            ),
-                                          )
-                                          .toList() ??
+                                        (speaker) {
+                                          final description =
+                                              speaker.introduction ??
+                                                  speaker.email;
+                                          final bodyStyle = Theme.of(context)
+                                              .textTheme
+                                              .caption;
+                                          return Column(
+                                            children: [
+                                              SpeakerWithIntro(
+                                                user: speaker,
+                                                authUserPk: authUserPK ?? '',
+                                              ),
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 40,
+                                                ),
+                                                child: Text(
+                                                  description ?? '',
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: bodyStyle,
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      ).toList() ??
                                       [],
                                 ),
                               ],

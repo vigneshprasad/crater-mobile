@@ -168,12 +168,12 @@ class LiveListItem extends HookConsumerWidget {
               ),
             ),
           );
+        } else if (item.type == GridItemType.past) {
+          AutoRouter.of(context)
+              .push(PastStreamDetailScreenRoute(id: webinar.id));
         } else {
           AutoRouter.of(context).push(ConversationScreenRoute(id: webinar.id));
         }
-        AutoRouter.of(context).push(
-          ConversationScreenRoute(id: webinar.id),
-        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

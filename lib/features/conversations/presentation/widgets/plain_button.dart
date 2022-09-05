@@ -26,6 +26,7 @@ class PlainButton extends StatelessWidget {
       color: bgColor ?? HexColor.fromHex('#1C1C1E'),
       shape: border,
       onPressed: onPressed,
+      splashColor: bgColor ?? HexColor.fromHex('#1C1C1E'),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
