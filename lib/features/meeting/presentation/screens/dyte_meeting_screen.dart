@@ -24,6 +24,7 @@ import 'package:worknetwork/features/club/presentation/screens/streams/past_stre
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen_state.dart';
@@ -432,7 +433,9 @@ class CategoryGridView extends HookConsumerWidget {
       height: 32,
       child: webinarCategoryProvider.when(
         loading: () => Container(),
-        data: (categoryList) {
+        data: (cats) {
+          const allCategory = CategoriesDetailList(name: 'All');
+          final categoryList = [allCategory] + cats;
           return ListView.separated(
             itemCount: categoryList.length,
             scrollDirection: Axis.horizontal,
@@ -447,14 +450,14 @@ class CategoryGridView extends HookConsumerWidget {
                   if (type == GridItemType.past) {
                     AutoRouter.of(context).navigate(
                       PastStreamScreenRoute(
-                        categoryId: categoryList[index].pk ?? 0,
+                        categoryId: categoryList[index].pk,
                         categoryName: categoryList[index].name,
                       ),
                     );
                   } else if (type == GridItemType.upcoming) {
                     AutoRouter.of(context).navigate(
                       UpcomingStreamScreenRoute(
-                        categoryId: categoryList[index].pk ?? 0,
+                        categoryId: categoryList[index].pk,
                         categoryName: categoryList[index].name,
                       ),
                     );
@@ -558,6 +561,7 @@ class SpeakerWithIntro extends HookConsumerWidget {
                   : PlainButton(
                       title: 'Follow',
                       bgColor: Colors.white,
+                      fontSize: 14,
                       textColor: Theme.of(context).backgroundColor,
                       onPressed: () async {
                         final userPK = user.creatorDetail?.id ?? 0;

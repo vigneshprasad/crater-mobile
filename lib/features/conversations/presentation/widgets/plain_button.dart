@@ -8,6 +8,7 @@ class PlainButton extends StatelessWidget {
   final Color? borderColor;
   final Color? bgColor;
   final Color? textColor;
+  final double fontSize;
   const PlainButton({
     Key? key,
     required this.title,
@@ -16,6 +17,7 @@ class PlainButton extends StatelessWidget {
     this.bgColor,
     this.textColor,
     this.onPressed,
+    this.fontSize = 12,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class PlainButton extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .button
-                ?.copyWith(fontSize: 12)
+                ?.copyWith(fontSize: fontSize)
                 .copyWith(color: textColor),
           ),
           if (icon != null)

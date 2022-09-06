@@ -51,10 +51,15 @@ class AboutTab extends HookConsumerWidget {
                 if (profile.generatedIntroduction != null)
                   Text(
                     profile.generatedIntroduction!,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 if (profile.introduction != null)
                   Text(
                     profile.introduction!,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(height: 1.5),
                   )
               ],
             ),

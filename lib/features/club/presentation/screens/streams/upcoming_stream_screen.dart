@@ -46,8 +46,17 @@ class UpcomingStreamScreen extends HookConsumerWidget {
             return [
               HomeAppBar(
                 title: categoryName ?? 'Going live soon',
-                leftPadding: categoryId == null ? null : 50,
-              )
+                leftPadding: categoryName == null ? null : 50,
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 16),
+              ),
+              SliverToBoxAdapter(
+                child: CategoryGridView(
+                  type: GridItemType.past,
+                  selectedId: categoryId,
+                ),
+              ),
             ];
           },
           body: RefreshIndicator(
@@ -72,14 +81,18 @@ class UpcomingStreamScreen extends HookConsumerWidget {
                   loading: () => Container(),
                   error: (e, s) => Container(),
                   data: (pastItems) {
-                    final upcomingTitle = UpcomingGridItem(
-                        type: GridItemType.title, title: 'Upcoming streams');
-                    final title = UpcomingGridItem(
-                        type: GridItemType.title, title: 'Past streams');
+                    const upcomingTitle = UpcomingGridItem(
+                      type: GridItemType.title,
+                      title: 'Upcoming streams',
+                    );
+                    const title = UpcomingGridItem(
+                      type: GridItemType.title,
+                      title: 'Past streams',
+                    );
                     final gridItems =
                         [upcomingTitle] + upcomingItems + [title] + pastItems;
                     if (gridItems.isEmpty) {
-                      return Center(child: Text('Coming soon...'));
+                      return const Center(child: Text('Coming soon...'));
                     }
                     return ListView.separated(
                       itemCount: gridItems.length,

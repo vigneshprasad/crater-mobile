@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/color/color.dart';
 
 class HomeTabBar extends StatelessWidget {
   const HomeTabBar({
@@ -23,12 +24,12 @@ class HomeTabBar extends StatelessWidget {
         ),
         activeIcon: SvgPicture.asset(
           AppSvgAssets.homeFilled,
-          color: Theme.of(context).colorScheme.secondary,
+          color: HexColor.fromHex('#D5BBFF'),
           width: 20,
         ),
       ),
       BottomNavigationBarItem(
-        label: 'Streams',
+        label: 'Videos',
         icon: SvgPicture.asset(
           AppSvgAssets.stream,
           color: Colors.grey,
@@ -36,7 +37,7 @@ class HomeTabBar extends StatelessWidget {
         ),
         activeIcon: SvgPicture.asset(
           AppSvgAssets.streamFilled,
-          color: Theme.of(context).colorScheme.secondary,
+          color: HexColor.fromHex('#D5BBFF'),
           width: 20,
         ),
       ),
@@ -75,20 +76,29 @@ class HomeTabBar extends StatelessWidget {
         ),
         activeIcon: SvgPicture.asset(
           AppSvgAssets.profileFilled,
-          color: Theme.of(context).colorScheme.secondary,
+          color: HexColor.fromHex('#D5BBFF'),
           width: 20,
         ),
       ),
     ];
-    return BottomNavigationBar(
-      currentIndex: _tabController.index,
-      selectedFontSize: 8,
-      unselectedFontSize: 8,
-      type: BottomNavigationBarType.fixed,
-      items: tabs,
-      onTap: (int index) {
-        _tabController.index = index;
-      },
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: HexColor.fromHex('#1C1C1E'),
+          ),
+        ),
+      ),
+      child: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        selectedFontSize: 8,
+        unselectedFontSize: 8,
+        type: BottomNavigationBarType.fixed,
+        items: tabs,
+        onTap: (int index) {
+          _tabController.index = index;
+        },
+      ),
     );
   }
 }

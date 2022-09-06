@@ -205,118 +205,127 @@ class _ConversationLoaded extends HookConsumerWidget {
               body: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppInsets.xl,
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          color: HexColor.fromHex("#121212"),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (conversation
-                                        .topicDetail?.description?.isNotEmpty ??
-                                    false)
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            conversation
-                                                    .topicDetail?.description ??
-                                                '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                            maxLines:
-                                                isMoreVisible.value ? 3 : 100,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(
-                                            height: 24,
-                                          ),
-                                        ],
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: InkWell(
-                                          onTap: () {
-                                            isMoreVisible.value =
-                                                !isMoreVisible.value;
-                                          },
-                                          child: Container(
-                                            color: Theme.of(context)
-                                                .dialogBackgroundColor,
-                                            child: Text(
-                                              isMoreVisible.value
-                                                  ? 'Show More'
-                                                  : 'Show Less',
+                  SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: AppInsets.xl,
+                        right: AppInsets.xl,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            color: HexColor.fromHex("#121212"),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (conversation.topicDetail?.description
+                                          ?.isNotEmpty ??
+                                      false)
+                                    Stack(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              conversation.topicDetail
+                                                      ?.description ??
+                                                  '',
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .button
-                                                  ?.copyWith(
-                                                    color: HexColor.fromHex(
-                                                      '#D5BBFF',
+                                                  .bodyText2
+                                                  ?.copyWith(height: 1.5),
+                                              maxLines:
+                                                  isMoreVisible.value ? 3 : 100,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(
+                                              height: 24,
+                                            ),
+                                          ],
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          left: 0,
+                                          child: InkWell(
+                                            onTap: () {
+                                              isMoreVisible.value =
+                                                  !isMoreVisible.value;
+                                            },
+                                            child: Container(
+                                              color: Theme.of(context)
+                                                  .dialogBackgroundColor,
+                                              child: Text(
+                                                isMoreVisible.value
+                                                    ? 'Show More'
+                                                    : 'Show Less',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .button
+                                                    ?.copyWith(
+                                                      color: HexColor.fromHex(
+                                                        '#D5BBFF',
+                                                      ),
                                                     ),
-                                                  ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
+                                  const SizedBox(height: AppInsets.xxl),
+                                  Text(
+                                    'SPEAKER',
+                                    style: Theme.of(context).textTheme.caption,
                                   ),
-                                const SizedBox(height: AppInsets.xxl),
-                                Text(
-                                  'SPEAKER',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Column(
-                                  children: conversation.speakersDetailList
-                                          ?.map(
-                                        (speaker) {
-                                          final description =
-                                              speaker.introduction ??
-                                                  speaker.email;
-                                          final bodyStyle = Theme.of(context)
-                                              .textTheme
-                                              .caption;
-                                          return Column(
-                                            children: [
-                                              SpeakerWithIntro(
-                                                user: speaker,
-                                                authUserPk: authUserPK ?? '',
-                                              ),
-                                              const SizedBox(
-                                                height: 4,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 40,
+                                  Column(
+                                    children: conversation.speakersDetailList
+                                            ?.map(
+                                          (speaker) {
+                                            final description =
+                                                speaker.introduction ??
+                                                    speaker.email;
+                                            final bodyStyle = Theme.of(context)
+                                                .textTheme
+                                                .caption;
+                                            return Column(
+                                              children: [
+                                                SpeakerWithIntro(
+                                                  user: speaker,
+                                                  authUserPk: authUserPK ?? '',
                                                 ),
-                                                child: Text(
-                                                  description ?? '',
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: bodyStyle,
+                                                const SizedBox(
+                                                  height: 4,
                                                 ),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      ).toList() ??
-                                      [],
-                                ),
-                              ],
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 40,
+                                                  ),
+                                                  child: Text(
+                                                    description ?? '',
+                                                    maxLines: 3,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: bodyStyle,
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        ).toList() ??
+                                        [],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 140,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   UserStreamScreen(

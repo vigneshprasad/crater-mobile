@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/profile/presentation/widget/profile_header.dart';
@@ -32,7 +33,8 @@ class ProfileAppBar extends HookWidget {
     // if (profile?.coverFile == null) {
     //   height = 200;
     // }
-    const tabHeight = 50.0;
+    const tabHeight = 52.0;
+    final showConnect = creator?.isSubscriber ?? true;
     return SliverAppBar(
       backgroundColor: Theme.of(context).dialogBackgroundColor,
       expandedHeight: height,
@@ -41,7 +43,8 @@ class ProfileAppBar extends HookWidget {
           height: imageHeight,
           profile: profile,
           creator: creator,
-          showConnect: !allowEdit,
+          showConnect: showConnect,
+          allowEdit: allowEdit,
         ),
       ),
       pinned: true,
@@ -65,36 +68,79 @@ class ProfileAppBar extends HookWidget {
               ProfileBasicScreenRoute(editMode: true),
             ),
           ),
+        // IconButton(
+        //   icon: Container(
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(40),
+        //       color: Theme.of(context).scaffoldBackgroundColor,
+        //     ),
+        //     padding: const EdgeInsets.all(4),
+        //     child: const Icon(
+        //       Icons.share_outlined,
+        //     ),
+        //   ),
+        //   onPressed: () {
+        //     final slug = creator?.slug;
+        //     if (slug != null) {
+        //       final shareText = profile?.name ?? 'Creator';
+        //       final url = 'https://crater.club/creator/$slug/streams';
+        //       shareApp(context, url, shareText);
+        //     }
+        //   },
+        // ),
       ],
       bottom: PreferredSize(
         preferredSize: const Size(double.infinity, tabHeight),
         child: Container(
-          color: Theme.of(context).dialogBackgroundColor,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+              ),
+            ),
+            color: Theme.of(context).backgroundColor,
+          ),
           height: tabHeight,
           child: Stack(
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.center,
             children: [
               Container(
-                height: tabHeight - 18,
-                alignment: Alignment.bottomLeft,
+                height: 28,
+                alignment: Alignment.center,
                 child: TabBar(
+                  indicatorColor: Colors.transparent,
                   onTap: (i) {
                     index.value = i;
                   },
                   tabs: tabs
+                      .asMap()
+                      .entries
                       .map(
                         (e) => Tab(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(e),
-                            ],
+                          child: Container(
+                            decoration: index.value == e.key
+                                ? BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.white.withOpacity(0.2),
+                                        blurRadius: 17,
+                                        spreadRadius: -3,
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                            child: Text(e.value),
                           ),
                         ),
                       )
                       .toList(),
                 ),
               ),
+              Container(
+                width: 1,
+                height: 28,
+                color: Theme.of(context).dividerColor,
+              )
             ],
           ),
         ),

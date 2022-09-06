@@ -148,7 +148,9 @@ class PastStreamList extends HookConsumerWidget {
                       icon: Icons.arrow_forward_ios,
                       borderColor: HexColor.fromHex('#373737'),
                       onPressed: () {
-                        AutoRouter.of(context).push(PastStreamScreenRoute());
+                        AutoRouter.of(context).push(
+                          PastStreamScreenRoute(categoryName: 'Past Streams'),
+                        );
                       },
                     ),
                   ],

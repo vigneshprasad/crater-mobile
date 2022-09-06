@@ -39,8 +39,17 @@ class PastStreamScreen extends HookConsumerWidget {
                 return [
                   HomeAppBar(
                     title: categoryName ?? 'Past Streams',
-                    leftPadding: categoryId == null ? null : 50,
-                  )
+                    leftPadding: categoryName == null ? null : 50,
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 16),
+                  ),
+                  SliverToBoxAdapter(
+                    child: CategoryGridView(
+                      type: GridItemType.past,
+                      selectedId: categoryId,
+                    ),
+                  ),
                 ];
               },
               body: RefreshIndicator(
@@ -62,7 +71,10 @@ class PastStreamScreen extends HookConsumerWidget {
                       return ListView.separated(
                         controller: _controller,
                         itemCount: gridItems.length,
-                        padding: const EdgeInsets.only(bottom: 100),
+                        padding: const EdgeInsets.only(
+                          bottom: 100,
+                          top: 20,
+                        ),
                         itemBuilder: (context, index) {
                           final c = gridItems[index];
                           final image = c.conversation?.topicDetail?.image;
@@ -71,111 +83,88 @@ class PastStreamScreen extends HookConsumerWidget {
                           final userName =
                               c.conversation?.hostDetail?.name ?? '';
 
-                          final items = [
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            CategoryGridView(
-                              type: GridItemType.past,
-                              selectedId: categoryId,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ];
-
-                          return Column(
-                            children: [
-                              if (index == 0)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: items,
+                          return InkWell(
+                            onTap: () {
+                              AutoRouter.of(context).navigate(
+                                PastStreamDetailScreenRoute(
+                                  id: c.conversation?.id,
                                 ),
-                              InkWell(
-                                onTap: () {
-                                  AutoRouter.of(context).push(
-                                    PastStreamDetailScreenRoute(
-                                      id: c.conversation?.id,
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Column(
+                              );
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          if (image != null)
-                                            Image.network(
-                                              image,
-                                              height: 68,
-                                              width: 114,
-                                              fit: BoxFit.cover,
-                                            )
-                                          else
-                                            const SizedBox(
-                                              height: 68,
-                                              width: 114,
+                                      if (image != null)
+                                        Image.network(
+                                          image,
+                                          height: 68,
+                                          width: 114,
+                                          fit: BoxFit.cover,
+                                        )
+                                      else
+                                        const SizedBox(
+                                          height: 68,
+                                          width: 114,
+                                        ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              title,
+                                              maxLines: 2,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
                                             ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Row(
                                               children: [
+                                                if (userImage != null)
+                                                  CircleAvatar(
+                                                    radius: 8,
+                                                    backgroundImage:
+                                                        CachedNetworkImageProvider(
+                                                      userImage,
+                                                    ),
+                                                  ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
                                                 Text(
-                                                  title,
-                                                  maxLines: 2,
+                                                  userName,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2,
-                                                ),
-                                                const SizedBox(
-                                                  height: 4,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    if (userImage != null)
-                                                      CircleAvatar(
-                                                        radius: 8,
-                                                        backgroundImage:
-                                                            CachedNetworkImageProvider(
-                                                          userImage,
-                                                        ),
-                                                      ),
-                                                    const SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text(
-                                                      userName,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption,
-                                                    ),
-                                                  ],
+                                                      .caption,
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      Row(
-                                        children: [
-                                          StreamTime(
-                                              start: c.conversation?.start),
-                                        ],
-                                      )
                                     ],
                                   ),
-                                ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      StreamTime(start: c.conversation?.start),
+                                    ],
+                                  )
+                                ],
                               ),
-                            ],
+                            ),
                           );
                         },
                         separatorBuilder: (context, index) {

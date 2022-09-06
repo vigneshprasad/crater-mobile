@@ -41,6 +41,53 @@ class ChatAction extends HookConsumerWidget {
       return Container();
     }
 
+    Future<void> followHost(BuildContext context) async {
+      final userPK = creator.id;
+
+      final response = await ref
+          .read(creatorStateProvider('').notifier)
+          .followCreator(userPK, context);
+
+      response.fold(
+        (failure) {
+          // isFollowing.value = !isFollowing.value;
+          // message.isFollowing = isFollowing.value;
+          // Fluttertoast.showToast(msg: failure.message.toString());
+        },
+        (request) {
+          // isFollowing.value = !isFollowing.value;
+          // message.isFollowing = isFollowing.value;
+          isComplete.value = true;
+          final analytics = ref.read(analyticsProvider);
+          analytics.trackEvent(
+            eventName: AnalyticsEvents.followCreator,
+            properties: {},
+          );
+
+          // Fluttertoast.showToast(msg: '');
+        },
+      );
+    }
+
+    Future<void> exploreStreams(BuildContext context) async {
+      await manageRSVPPopup(context, '', slide: 2);
+      isComplete.value = true;
+    }
+
+    Future<void> performAction(BuildContext context) async {
+      switch (message.action) {
+        case 1:
+          await followHost(context);
+          break;
+        case 2:
+          // await inviteFriends(context);
+          break;
+        case 3:
+          await exploreStreams(context);
+          break;
+      }
+    }
+
     if (message.action == 3) {
       final title = message.stream?.topicDetail?.description ??
           message.message ??
@@ -190,51 +237,5 @@ class ChatAction extends HookConsumerWidget {
               const SizedBox(height: 60),
             ],
           );
-  }
-
-  Future<void> followHost(BuildContext context) async {
-    final userPK = creator.id;
-
-    final response = await ref
-        .read(creatorStateProvider('').notifier)
-        .followCreator(userPK, context);
-
-    response.fold(
-      (failure) {
-        // isFollowing.value = !isFollowing.value;
-        // message.isFollowing = isFollowing.value;
-        // Fluttertoast.showToast(msg: failure.message.toString());
-      },
-      (request) {
-        // isFollowing.value = !isFollowing.value;
-        // message.isFollowing = isFollowing.value;
-
-        final analytics = ref.read(analyticsProvider);
-        analytics.trackEvent(
-          eventName: AnalyticsEvents.followCreator,
-          properties: {},
-        );
-
-        // Fluttertoast.showToast(msg: '');
-      },
-    );
-  }
-
-  Future<void> exploreStreams(BuildContext context) async {
-    await manageRSVPPopup(context, '', slide: 2);
-  }
-
-  Future<void> performAction(BuildContext context) async {
-    switch (message.action) {
-      case 1:
-        await followHost(context);
-        break;
-      case 2:
-        // await inviteFriends(context);
-        break;
-      case 3:
-        await exploreStreams(context);
-        break;
-    }
   }
 }

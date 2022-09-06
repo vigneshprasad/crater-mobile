@@ -89,8 +89,11 @@ class GoingLiveList extends HookConsumerWidget {
                       icon: Icons.arrow_forward_ios,
                       borderColor: HexColor.fromHex('#373737'),
                       onPressed: () {
-                        AutoRouter.of(context)
-                            .push(UpcomingStreamScreenRoute());
+                        AutoRouter.of(context).push(
+                          UpcomingStreamScreenRoute(
+                            categoryName: 'Going live soon',
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -158,6 +161,9 @@ class LiveListItem extends HookConsumerWidget {
       );
     }
 
+    final imageWidth = MediaQuery.of(context).size.width * 0.3;
+    final imageHeight = imageWidth * 68 / 114;
+
     return InkWell(
       onTap: () {
         if (item.type == GridItemType.live) {
@@ -184,8 +190,8 @@ class LiveListItem extends HookConsumerWidget {
                 if (image != null)
                   Image.network(
                     image,
-                    height: 68,
-                    width: 114,
+                    height: imageHeight,
+                    width: imageWidth,
                     fit: BoxFit.cover,
                   )
                 else
@@ -203,7 +209,7 @@ class LiveListItem extends HookConsumerWidget {
                       Text(
                         title,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                       const SizedBox(
                         height: 4,

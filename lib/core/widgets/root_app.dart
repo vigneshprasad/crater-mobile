@@ -107,6 +107,7 @@ class RootApp extends HookConsumerWidget {
           final backgroundColor = HexColor.fromHex('#010101');
           final splashColor = HexColor.fromHex('#121212');
           final grey = HexColor.fromHex('#C4C4C4');
+          final lightPurple = HexColor.fromHex('#D5BBFF');
           //HexColor.fromHex("#10141C");
           final buttonColor = HexColor.fromHex('#882EE8');
           return Theme(
@@ -182,7 +183,8 @@ class RootApp extends HookConsumerWidget {
                 ),
               ),
               bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                selectedItemColor: buttonColor,
+                selectedItemColor: lightPurple,
+                backgroundColor: backgroundColor,
               ),
               appBarTheme: AppBarTheme(
                 color: backgroundColor,
@@ -211,8 +213,9 @@ class RootApp extends HookConsumerWidget {
                 style: TextButton.styleFrom(primary: grey),
               ),
               indicatorColor: buttonColor,
-              tabBarTheme: const TabBarTheme(
+              tabBarTheme: TabBarTheme(
                 indicatorSize: TabBarIndicatorSize.label,
+                unselectedLabelColor: HexColor.fromHex('#959595'),
               ),
               buttonColor: buttonColor,
               dividerColor: borderColor,

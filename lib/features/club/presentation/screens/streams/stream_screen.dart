@@ -129,9 +129,10 @@ class StreamTab extends HookConsumerWidget {
                     ),
                   ),
                   const SliverToBoxAdapter(
-                      child: _CategoryWindowView(
-                    type: GridItemType.upcoming,
-                  )),
+                    child: _CategoryWindowView(
+                      type: GridItemType.upcoming,
+                    ),
+                  ),
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: 610,
@@ -159,10 +160,22 @@ class StreamTab extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: SvgPicture.asset(
-                        AppSvgAssets.homeFooter,
-                        fit: BoxFit.contain,
-                        height: 180,
+                      child: Stack(
+                        children: [
+                          SvgPicture.asset(
+                            AppSvgAssets.homeFooter,
+                            height: 180,
+                          ),
+                          Positioned(
+                            top: 64,
+                            left: 20,
+                            right: 20,
+                            child: Image.asset(
+                              AppImageAssets.homeLogo.assetName,
+                              height: 44,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   )
@@ -213,6 +226,7 @@ class _YourJourney extends StatelessWidget {
                         'Become a Creator',
                         style: Theme.of(context).textTheme.headline6?.copyWith(
                               color: Theme.of(context).backgroundColor,
+                              fontWeight: FontWeight.w600,
                             ),
                       ),
                       const SizedBox(
@@ -228,29 +242,27 @@ class _YourJourney extends StatelessWidget {
                       const SizedBox(
                         height: 28,
                       ),
-                      Expanded(
-                        child: NeoPopTiltedButton(
-                          key: const Key("goliveaudience"),
-                          color: Theme.of(context).primaryColor,
-                          onTapUp: () {
-                            launchUrlString(
-                              'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator',
-                              mode: LaunchMode.inAppWebView,
-                            );
-                          },
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 15,
-                              ),
-                              child: Text(
-                                'Start your journey',
-                                style: Theme.of(context).textTheme.button,
-                              ),
+                      NeoPopTiltedButton(
+                        key: const Key("goliveaudience"),
+                        color: Theme.of(context).primaryColor,
+                        onTapUp: () {
+                          launchUrlString(
+                            'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator',
+                            mode: LaunchMode.inAppWebView,
+                          );
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 15,
+                            ),
+                            child: Text(
+                              'Start your journey',
+                              style: Theme.of(context).textTheme.button,
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ]),
               ),
             ],
@@ -391,74 +403,105 @@ class _CategoryWindowView extends HookConsumerWidget {
                             const SizedBox(width: 12),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              if (type == GridItemType.past) {
-                                AutoRouter.of(context).navigate(
-                                  PastStreamScreenRoute(
-                                    categoryId: categoryList[index].pk ?? 0,
-                                    categoryName: categoryList[index].name,
-                                  ),
-                                );
-                              } else if (type == GridItemType.upcoming) {
-                                AutoRouter.of(context).navigate(
-                                  UpcomingStreamScreenRoute(
-                                    categoryId: categoryList[index].pk ?? 0,
-                                    categoryName: categoryList[index].name,
-                                  ),
-                                );
-                              }
-                            },
-                            child: GridTile(
-                              child: Stack(
-                                children: [
-                                  SvgPicture.asset(AppSvgAssets.categoryWindow),
-                                  Container(
-                                    width: 152,
-                                    height: 220,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 40,
+                          void showCategory(CategoriesDetailList category) {
+                            if (type == GridItemType.past) {
+                              AutoRouter.of(context).navigate(
+                                PastStreamScreenRoute(
+                                  categoryId: category.pk,
+                                  categoryName: category.name,
+                                ),
+                              );
+                            } else if (type == GridItemType.upcoming) {
+                              AutoRouter.of(context).navigate(
+                                UpcomingStreamScreenRoute(
+                                  categoryId: category.pk,
+                                  categoryName: category.name,
+                                ),
+                              );
+                            }
+                          }
+
+                          return Row(
+                            children: [
+                              InkWell(
+                                onTap: () => showCategory(categoryList[index]),
+                                child: GridTile(
+                                  child: Stack(
+                                    children: [
+                                      SvgPicture.asset(
+                                          AppSvgAssets.categoryWindow),
+                                      Container(
+                                        width: 152,
+                                        height: 220,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
                                         ),
-                                        Image.asset(
-                                          iconForCategory(categoryList[index]),
-                                          height: 74,
-                                          fit: BoxFit.contain,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 40,
+                                            ),
+                                            Image.asset(
+                                              iconForCategory(
+                                                  categoryList[index]),
+                                              height: 74,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              categoryList[index].name ?? '',
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          height: 8,
+                                      ),
+                                      Positioned(
+                                        top: 180,
+                                        left: 0,
+                                        right: 0,
+                                        child: PlainButton(
+                                          title: 'Explore',
+                                          bgColor: HexColor.fromHex('#FFBF20'),
+                                          textColor:
+                                              Theme.of(context).backgroundColor,
+                                          icon: Icons.arrow_forward,
+                                          onPressed: () =>
+                                              showCategory(categoryList[index]),
                                         ),
-                                        Text(
-                                          categoryList[index].name ?? '',
-                                          textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  Positioned(
-                                    top: 180,
-                                    left: 0,
-                                    right: 0,
-                                    child: PlainButton(
-                                      title: 'Explore',
-                                      bgColor: HexColor.fromHex('#FFBF20'),
-                                      textColor:
-                                          Theme.of(context).backgroundColor,
-                                      icon: Icons.arrow_forward,
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              if (index == categoryList.length - 1)
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(24.0),
+                                    child: SizedBox(
+                                      width: 152,
+                                      child: PlainButton(
+                                        title: 'More',
+                                        fontSize: 14,
+                                        onPressed: () => showCategory(
+                                          const CategoriesDetailList(
+                                            name: 'All',
+                                          ),
+                                        ),
+                                        bgColor: Colors.white,
+                                        icon: Icons.arrow_forward,
+                                        textColor:
+                                            Theme.of(context).backgroundColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           );
                         },
                       );

@@ -157,6 +157,8 @@ class AppImageAssets {
   static const stock = AssetImage("assets/category-icons/stock.png");
   static const web3 = AssetImage("assets/category-icons/web3.png");
   static const web3v2 = AssetImage("assets/category-icons/web3v2.png");
+
+  static const homeLogo = AssetImage("assets/images/home-logo.png");
 }
 
 class AppSvgAssets {
