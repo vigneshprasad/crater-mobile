@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
+import 'package:worknetwork/features/chat/presentation/widgets/chat_action.dart';
 
 final chatStateProvider = StateNotifierProvider.autoDispose
     .family<ChatScreenState, ApiResult<ChatScreenModel>, String>(
@@ -132,7 +134,11 @@ class ChatScreenState extends StateNotifier<ApiResult<ChatScreenModel>> {
     await subscription?.cancel();
   }
 
-  Future<void> sendChatMessages(String message, User sender) async {
+  Future<void> sendChatMessages(
+    String message,
+    User sender, {
+    String? displayName,
+  }) async {
     final firstName = sender.name?.split(' ').first ?? '';
     if (firstName.isEmpty) {
       return;
@@ -141,7 +147,7 @@ class ChatScreenState extends StateNotifier<ApiResult<ChatScreenModel>> {
       'message': message,
       'group': groupKey,
       'sender': sender.pk,
-      'display_name': firstName,
+      'display_name': displayName ?? firstName,
       'sender_details': {
         'email': sender.email,
         'first_name': firstName,

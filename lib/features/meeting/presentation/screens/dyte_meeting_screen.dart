@@ -56,7 +56,8 @@ class DyteMeetingScreen extends HookConsumerWidget {
     final isExpanded = useState(true);
     final isFullscreen = useState(false);
 
-    final videoHeight = min(size.width, size.height);
+    final videoHeight = //size.width * 9.0 / 16.0;
+        min(size.width, size.height);
     final videoWidth = MediaQuery.of(context).size.width;
 
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
@@ -139,7 +140,13 @@ class DyteMeetingScreen extends HookConsumerWidget {
     }
 
     return WillPopScope(
-      onWillPop: () async => endCall(),
+      onWillPop: () async {
+        final value = await endCall();
+        await Future.delayed(
+          const Duration(milliseconds: 500),
+        );
+        return value;
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -163,9 +170,9 @@ class DyteMeetingScreen extends HookConsumerWidget {
               children: [
                 Stack(
                   children: [
-                    SizedBox(
-                      height: videoHeight,
-                      width: videoWidth,
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tight(Size(videoWidth, videoHeight)),
                       child: DyteMeeting(
                         roomName: state.room,
                         authToken: state.token,

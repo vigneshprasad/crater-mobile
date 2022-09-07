@@ -161,8 +161,8 @@ class LiveListItem extends HookConsumerWidget {
       );
     }
 
-    final imageWidth = MediaQuery.of(context).size.width * 0.3;
-    final imageHeight = imageWidth * 68 / 114;
+    final imageWidth = 114.0; //MediaQuery.of(context).size.width * 0.3;
+    final imageHeight = 68.0; //imageWidth * 68 / 114;
 
     return InkWell(
       onTap: () {
@@ -195,9 +195,10 @@ class LiveListItem extends HookConsumerWidget {
                     fit: BoxFit.cover,
                   )
                 else
-                  const SizedBox(
-                    height: 68,
-                    width: 114,
+                  Container(
+                    width: imageWidth,
+                    height: imageHeight,
+                    color: Theme.of(context).dialogBackgroundColor,
                   ),
                 const SizedBox(
                   width: 10,

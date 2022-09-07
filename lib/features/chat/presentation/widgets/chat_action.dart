@@ -8,7 +8,9 @@ import 'package:worknetwork/core/analytics/analytics.dart';
 import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/color/color.dart';
 import 'package:worknetwork/core/widgets/base/base_network_image/base_network_image.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
+import 'package:worknetwork/features/chat/presentation/screens/chat_screen_state.dart';
 import 'package:worknetwork/features/chat/presentation/widgets/timer_progress_bar.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
@@ -19,6 +21,7 @@ class ChatAction extends HookConsumerWidget {
   final ChatMessage message;
   final Creator creator;
   final bool isFollowing;
+  final String webinarId;
 
   late WidgetRef ref;
 
@@ -26,6 +29,7 @@ class ChatAction extends HookConsumerWidget {
     required this.message,
     required this.creator,
     required this.isFollowing,
+    required this.webinarId,
   });
 
   @override
@@ -38,6 +42,12 @@ class ChatAction extends HookConsumerWidget {
     Color bgColor = Colors.purple;
 
     if (message.action != 1 && message.action != 3) {
+      isComplete.value = true;
+      return Container();
+    }
+
+    if (message.action == 1 && (creator.isSubscriber ?? false)) {
+      isComplete.value = true;
       return Container();
     }
 
@@ -54,9 +64,21 @@ class ChatAction extends HookConsumerWidget {
           // message.isFollowing = isFollowing.value;
           // Fluttertoast.showToast(msg: failure.message.toString());
         },
-        (request) {
+        (request) async {
           // isFollowing.value = !isFollowing.value;
           // message.isFollowing = isFollowing.value;
+
+          final user = ref.read(authStateProvider.notifier).getUser();
+          await ref
+              .read(
+                chatStateProvider(webinarId).notifier,
+              )
+              .sendChatMessages(
+                "${user?.name ?? 'Viewer'} just followed ${creator.profileDetail?.name ?? 'Creator'}'s channel.",
+                user!,
+                displayName: 'New Follower',
+              );
+
           isComplete.value = true;
           final analytics = ref.read(analyticsProvider);
           analytics.trackEvent(
@@ -169,13 +191,15 @@ class ChatAction extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(creator.profileDetail?.name ?? '',
-                          style: headingStyle),
                       Text(
-                        '21 Streams',
-                        overflow: TextOverflow.ellipsis,
-                        style: bodyStyle,
-                      )
+                        creator.profileDetail?.name ?? '',
+                        style: headingStyle,
+                      ),
+                      // Text(
+                      //   '21 Streams',
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: bodyStyle,
+                      // )
                     ],
                   ),
                 ),

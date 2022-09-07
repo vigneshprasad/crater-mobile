@@ -110,38 +110,34 @@ class PastLiveGridTile extends StatelessWidget {
                         ]),
                   ),
                 ),
-                Column(
-                  children: [
-                    if (item.type == GridItemType.featured)
-                      LiveTime(date: item.conversation?.start?.toLocal()),
-                    if (item.type == GridItemType.past)
-                      Container(
-                        margin: const EdgeInsets.only(top: 8, left: 12),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(0),
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        child: const Text('Previously LIVE'),
-                      ),
-                    if (item.type == GridItemType.live)
-                      Container(
-                        margin: const EdgeInsets.only(top: 8, left: 12),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(0),
-                          color: Colors.red,
-                        ),
-                        child: const Text('LIVE '),
-                      ),
-                  ],
-                ),
+                if (item.type == GridItemType.featured)
+                  LiveTime(date: item.conversation?.start?.toLocal())
+                else if (item.type == GridItemType.past)
+                  Container(
+                    margin: const EdgeInsets.only(top: 8, left: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(0),
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: const Text('Previously LIVE'),
+                  )
+                else if (item.type == GridItemType.live)
+                  Container(
+                    margin: const EdgeInsets.only(top: 8, left: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(0),
+                      color: HexColor.fromHex('#E53834'),
+                    ),
+                    child: const Text('LIVE '),
+                  ),
                 Positioned(
                   bottom: 0,
                   left: 0,

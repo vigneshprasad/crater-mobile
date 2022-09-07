@@ -14,7 +14,6 @@ import 'package:worknetwork/features/chat/presentation/screens/chat_reactions_sc
 import 'package:worknetwork/features/chat/presentation/screens/chat_screen_state.dart';
 import 'package:worknetwork/features/chat/presentation/widgets/chat_action.dart';
 import 'package:worknetwork/features/chat/presentation/widgets/chat_layout.dart';
-import 'package:worknetwork/features/chat/presentation/widgets/timer_progress_bar.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/conversations/domain/entity/chat_reaction_entity/chat_reaction_entity.dart';
 import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen_state.dart';
@@ -150,11 +149,10 @@ class ChatScreen extends HookConsumerWidget {
             ),
             if (modal.actionQueue.isNotEmpty)
               ChatAction(
-                message: modal.actionQueue.isEmpty
-                    ? ChatMessage(action: 3)
-                    : modal.actionQueue.first,
+                message: modal.actionQueue.first,
                 creator: creator.value,
                 isFollowing: false,
+                webinarId: groupId ?? '',
               ),
             SizedBox(
               height: showReactions.value ? double.infinity : 0,

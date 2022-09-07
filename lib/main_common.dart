@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -35,6 +36,11 @@ Future<void> mainCommon(String configPath, String env) async {
   FlutterError.onError = (details, {bool forceReport = false}) {
     // To check RELEASE mode issue
 
+    if (kDebugMode) {
+      debugPrint(details.toString());
+      return;
+    }
+
     final sentryClient =
         SentryClient(SentryOptions(dsn: ConfigReader.getSentryDsn()));
     final Logger logger = LoggerImpl(sentryClient);
@@ -45,7 +51,10 @@ Future<void> mainCommon(String configPath, String env) async {
   };
 
   SentryFlutter.init(
-    (options) => options.dsn = ConfigReader.getSentryDsn(),
+    (options) {
+      options.dsn = ConfigReader.getSentryDsn();
+      options.debug = kDebugMode;
+    },
     appRunner: () => runApp(
       ProviderScope(
         child: RootApp(),

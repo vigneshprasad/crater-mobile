@@ -396,6 +396,8 @@ class _CategoryWindowView extends HookConsumerWidget {
                   child: webinarCategoryProvider.when(
                     loading: () => Container(),
                     data: (categoryList) {
+                      categoryList
+                          .sort((a, b) => a.name?.compareTo(b.name ?? '') ?? 0);
                       return ListView.separated(
                         itemCount: categoryList.length,
                         scrollDirection: Axis.horizontal,

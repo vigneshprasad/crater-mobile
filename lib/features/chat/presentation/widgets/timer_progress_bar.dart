@@ -19,7 +19,7 @@ class _TimerProgressBarState extends State<TimerProgressBar> {
   late Timer _timer;
   double width = 0.0;
   double progress = 0.0;
-  double duration = 3;
+  double duration = 0.3;
   late double maxWidth;
 
   @override
