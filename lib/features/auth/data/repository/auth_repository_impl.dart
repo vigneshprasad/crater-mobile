@@ -39,6 +39,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> logout(String osId) async {
     try {
       final response = await remoteDataSource.logout(osId);
+      read(authTokenProvider.notifier).state = null;
+      read(authStateProvider.notifier).clear();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));

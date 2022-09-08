@@ -122,6 +122,10 @@ class AuthStateNotifier extends StateNotifier<ApiResult<User>> {
     state = ApiResult.data(user);
   }
 
+  void clear() {
+    state = ApiResult.loading();
+  }
+
   Future<void> registerDevice() async {
     final osId = await read(pushNotificationsProvider).getSubscriptionToken();
 

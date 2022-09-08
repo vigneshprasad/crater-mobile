@@ -118,6 +118,9 @@ class ProfileBasicScreen extends HookConsumerWidget {
                               BaseFormInput(
                                 controller: _firstNameController,
                                 label: 'Your name',
+                                onChanged: (value) {
+                                  _validName.value = value.trim().isNotEmpty;
+                                },
                                 validator: (value) {
                                   _validName.value =
                                       value != null && value.trim().isNotEmpty;

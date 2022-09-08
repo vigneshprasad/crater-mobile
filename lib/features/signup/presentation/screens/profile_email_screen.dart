@@ -6,7 +6,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
-import 'package:worknetwork/constants/theme.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
 import 'package:worknetwork/features/auth/data/models/user_model.dart';
@@ -40,6 +39,8 @@ class ProfileEmailScreen extends HookConsumerWidget {
     if (email != null && email.isNotEmpty) {
       _emailController.text = email;
     }
+
+    final isValidEmail = useState(false);
 
     final heading = popup == true
         ? 'Enter your email'
@@ -93,10 +94,16 @@ class ProfileEmailScreen extends HookConsumerWidget {
                                 controller: _emailController,
                                 autovalidate: false,
                                 label: firstnameLabel,
-                                validator: (value) =>
-                                    value == null || value.isEmpty
-                                        ? "This field is required"
-                                        : null,
+                                onChanged: (value) {
+                                  isValidEmail.value = value.isNotEmpty;
+                                },
+                                validator: (value) {
+                                  isValidEmail.value =
+                                      value != null && value.isNotEmpty;
+                                  return value == null || value.isEmpty
+                                      ? "This field is required"
+                                      : null;
+                                },
                               ),
                             ],
                           ),
@@ -124,6 +131,7 @@ class ProfileEmailScreen extends HookConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: BaseLargeButton(
+                      enabled: isValidEmail.value,
                       style: BaseLargeButtonStyle.secondary,
                       text: 'Submit',
                       onPressed: () => _onPressedSubmit(
