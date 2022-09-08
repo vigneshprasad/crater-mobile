@@ -335,7 +335,7 @@ OverlayEntry buildLoaderOverlay() {
 }
 
 Future<bool> showEmail(BuildContext context, WidgetRef ref) async {
-  var email = ref.read(authStateProvider.notifier).getUser()?.email;
+  var email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
 
   if (email != null && email.isNotEmpty) {
     return true;
@@ -358,7 +358,7 @@ Future<bool> showEmail(BuildContext context, WidgetRef ref) async {
 
   await Future.delayed(const Duration(milliseconds: 500));
 
-  email = ref.read(authStateProvider.notifier).getUser()?.email;
+  email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
 
   if (email != null && email.isNotEmpty) {
     return true;
@@ -368,7 +368,7 @@ Future<bool> showEmail(BuildContext context, WidgetRef ref) async {
 }
 
 Future<bool> showName(BuildContext context, WidgetRef ref) async {
-  var name = ref.read(authStateProvider.notifier).getUser()?.name;
+  var name = ref.read(authStateProvider.notifier).getUser()?.name?.trim();
 
   if (name != null && name.isNotEmpty) {
     return true;
@@ -408,7 +408,7 @@ Future<bool> showName(BuildContext context, WidgetRef ref) async {
 
   await Future.delayed(const Duration(milliseconds: 500));
 
-  name = ref.read(authStateProvider.notifier).getUser()?.name;
+  name = ref.read(authStateProvider.notifier).getUser()?.name?.trim();
 
   if (name != null && name.isNotEmpty) {
     return true;

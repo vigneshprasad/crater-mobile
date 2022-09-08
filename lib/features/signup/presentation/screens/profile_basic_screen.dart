@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
@@ -62,14 +63,14 @@ class ProfileBasicScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor:
           popup == true ? Theme.of(context).dialogBackgroundColor : null,
-      appBar: BaseAppBar(
-        actions: [
-          TextButton(
-            onPressed: () => _goToNextScreen(context),
-            child: const Text('Skip for now'),
-          ),
-        ],
-      ),
+      // appBar: BaseAppBar(
+      //   actions: [
+      //     TextButton(
+      //       onPressed: () => _goToNextScreen(context),
+      //       child: const Text('Skip for now'),
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -182,9 +183,12 @@ class ProfileBasicScreen extends HookConsumerWidget {
                             .patchUser(UserModel(name: name))
                             .then((value) {
                           ref.read(overlayProvider).hide();
-                          if (value.isRight()) {
-                            _goToNextScreen(context);
-                          }
+                          value.fold(
+                            (l) => Fluttertoast.showToast(
+                              msg: 'Something went wrong',
+                            ),
+                            (r) => _goToNextScreen(context),
+                          );
                         });
                       },
                     ),
@@ -211,7 +215,7 @@ class ProfileBasicScreen extends HookConsumerWidget {
       return;
     }
 
-    final email = ref.read(authStateProvider.notifier).getUser()?.email;
+    final email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
 
     if (email != null && email.isNotEmpty) {
       AutoRouter.of(context).pushAndPopUntil(

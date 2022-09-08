@@ -11,24 +11,28 @@ import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/auth/domain/repository/auth_repository.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final remoteDataSource = ref.read(authRemoteDatasourceProvider);
   final localDataSource = ref.read(authLocalDatasourceProvider.future);
   final networkInfo = ref.read(networkInfoProvider);
-  return AuthRepositoryImpl(remoteDataSource, localDataSource, networkInfo);
+  return AuthRepositoryImpl(
+      remoteDataSource, localDataSource, networkInfo, ref.read);
 });
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final Future<AuthLocalDataSource> localDataSource;
   final NetworkInfo networkInfo;
+  final Reader read;
 
   AuthRepositoryImpl(
     this.remoteDataSource,
     this.localDataSource,
     this.networkInfo,
+    this.read,
   );
 
   @override
@@ -56,7 +60,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await remoteDataSource.patchUserModelRemote(user as UserModel);
-      await (await localDataSource).updateUserToCache(response as UserModel);
+      final updatedUser = response as UserModel;
+      await (await localDataSource).updateUserToCache(updatedUser);
+      if (updatedUser.token != null) {
+        read(authTokenProvider.notifier).state = updatedUser.token;
+      }
+      read(authStateProvider.notifier).setUser(updatedUser);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));

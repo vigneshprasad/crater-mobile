@@ -83,10 +83,7 @@ class OtpAPINotifier extends StateNotifier<ApiResult<User?>> {
         debugPrint(response.toString());
       });
 
-      read(authStateProvider.notifier).setUser(user);
       read(authStateProvider.notifier).registerDevice();
-
-      read(authTokenProvider.notifier).state = user.token;
 
       state = ApiResult.data(user);
 

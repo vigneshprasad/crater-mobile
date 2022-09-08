@@ -39,7 +39,7 @@ class BaseFormInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(
-      Radius.circular(AppBorderRadius.textInput),
+      Radius.circular(0),
     );
     return TextFormField(
       enabled: enabled,

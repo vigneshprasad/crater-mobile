@@ -139,7 +139,7 @@ class ChatScreenState extends StateNotifier<ApiResult<ChatScreenModel>> {
     User sender, {
     String? displayName,
   }) async {
-    final firstName = sender.name?.split(' ').first ?? '';
+    final firstName = sender.name?.split(' ').first.trim() ?? '';
     if (firstName.isEmpty) {
       return;
     }

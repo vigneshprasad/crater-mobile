@@ -70,18 +70,18 @@ class ChatMessageItem extends HookConsumerWidget {
 
     const radius = Radius.circular(8);
 
-    var name = message.displayName ?? '';
+    var name = message.displayName?.trim() ?? '';
 
     if (name.isEmpty) {
-      name = message.senderDetails?.displayName ?? '';
+      name = message.senderDetails?.displayName?.trim() ?? '';
     }
 
     if (name.isEmpty) {
-      name = message.senderDetails?.firstName ?? '';
+      name = message.senderDetails?.firstName?.trim() ?? '';
     }
 
     if (name.isEmpty) {
-      name = message.senderDetails?.name ?? '';
+      name = message.senderDetails?.name.trim() ?? '';
     }
 
     final chatBubbleMaxWidth = MediaQuery.of(context).size.width * 0.6;

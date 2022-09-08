@@ -464,7 +464,7 @@ class _SeriesLoaded extends ConsumerWidget {
   }
 
   Future<void> showEmail(BuildContext context, WidgetRef ref) async {
-    final email = ref.read(authStateProvider.notifier).getUser()?.email;
+    final email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
 
     if (email != null && email.isNotEmpty) {
       return;

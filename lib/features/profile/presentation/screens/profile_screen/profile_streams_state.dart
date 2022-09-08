@@ -67,24 +67,20 @@ class ProfileUpcomingStateNotifier
     final response = await read(conversationRepositoryProvider)
         .getUpcomingClubs(userId: userId);
 
-    if (response.isLeft()) {
-      throw response
-          .swap()
-          .getOrElse(() => ServerFailure('Something went wrong'));
-    }
+    response.fold((l) {
+      state = ApiResult.error(l);
+    }, (pageData) {
+      final upcomingClubs = pageData.results
+          .map(
+            (e) => UpcomingGridItem(
+              conversation: e,
+              type: GridItemType.upcoming,
+            ),
+          )
+          .toList();
 
-    final pageData = response.getOrElse(() => const FollowCreatorResponse());
-
-    final upcomingClubs = pageData.results
-        .map(
-          (e) => UpcomingGridItem(
-            conversation: e,
-            type: GridItemType.upcoming,
-          ),
-        )
-        .toList();
-
-    state = ApiResult.data(upcomingClubs);
+      state = ApiResult.data(upcomingClubs);
+    });
   }
 }
 

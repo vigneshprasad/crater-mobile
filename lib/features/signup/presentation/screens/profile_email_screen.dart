@@ -32,12 +32,12 @@ class ProfileEmailScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     this.ref = ref;
-    final email = ref.read(authStateProvider.notifier).getUser()?.email;
+    final email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
 
     final _emailController = useTextEditingController();
     final _formKey = useState(GlobalKey<FormState>());
 
-    if (email != null && email.trim().isNotEmpty) {
+    if (email != null && email.isNotEmpty) {
       _emailController.text = email;
     }
 
@@ -122,7 +122,9 @@ class ProfileEmailScreen extends HookConsumerWidget {
                     height: 20,
                   ),
                   SizedBox(
+                    width: double.infinity,
                     child: BaseLargeButton(
+                      style: BaseLargeButtonStyle.secondary,
                       text: 'Submit',
                       onPressed: () => _onPressedSubmit(
                         context,
@@ -164,10 +166,9 @@ class ProfileEmailScreen extends HookConsumerWidget {
       final data = UserModel(email: email);
       final result = await ref.read(authRepositoryProvider).patchUser(data);
 
-      _overlay.remove();
-
       result.fold(
         (failure) {
+          _overlay.remove();
           try {
             final message = failure as ServerFailure?;
             final map = jsonDecode(message?.message.toString() ?? '')
@@ -182,8 +183,11 @@ class ProfileEmailScreen extends HookConsumerWidget {
             Fluttertoast.showToast(msg: failure.toString());
           }
         },
-        (user) {
-          _goToNextScreen(context);
+        (user) async {
+          Future.delayed(const Duration(milliseconds: 500)).then((value) {
+            _overlay.remove();
+            _goToNextScreen(context);
+          });
         },
       );
     }

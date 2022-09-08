@@ -101,7 +101,8 @@ class OTPScreen extends HookConsumerWidget {
                         return;
                       }
 
-                      final showUsernameScreen = user.name?.isEmpty ?? true;
+                      final showUsernameScreen =
+                          user.name?.trim().isEmpty ?? true;
                       if (showUsernameScreen) {
                         AutoRouter.of(context).pushAndPopUntil(
                           ProfileBasicScreenRoute(editMode: false),
