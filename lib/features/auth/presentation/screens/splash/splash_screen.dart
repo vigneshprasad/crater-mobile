@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +8,8 @@ import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
 import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
 class SplashScreen extends HookConsumerWidget {
   @override
@@ -29,6 +32,10 @@ class SplashScreen extends HookConsumerWidget {
             return PhoneScreen();
           case SplashState.intro:
             return WelcomeScreen();
+          case SplashState.name:
+            return ProfileBasicScreen(editMode: false);
+          case SplashState.email:
+            return ProfileEmailScreen(editMode: false);
           default:
             return Scaffold(
               body: ScaffoldContainer(

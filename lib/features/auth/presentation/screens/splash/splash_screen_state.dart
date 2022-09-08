@@ -14,6 +14,8 @@ enum SplashState {
   home,
   login,
   intro,
+  name,
+  email,
 }
 
 final splashStateProvider = FutureProvider<SplashState>(
@@ -30,6 +32,18 @@ final splashStateProvider = FutureProvider<SplashState>(
     if (isLoggedIn) {
       final socketIOManager = ref.read(userPermissionNotifierProvider.notifier);
       await socketIOManager.listenPermissions();
+
+      await ref.read(authStateProvider.notifier).fetchUser();
+
+      final user = ref.read(authStateProvider.notifier).getUser();
+      if (user?.name == null || user!.name!.trim().isEmpty) {
+        return SplashState.name;
+      }
+
+      if (user.email == null || user.email!.trim().isEmpty) {
+        return SplashState.email;
+      }
+
       return SplashState.home;
     }
 

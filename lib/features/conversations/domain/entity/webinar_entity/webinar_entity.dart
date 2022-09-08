@@ -29,9 +29,14 @@ abstract class Webinar with _$Webinar {
     @JsonKey(name: 'speakers_detail_list')
         List<ConversationUser>? speakersDetailList,
     int? liveCount,
-    @JsonKey(name: 'has_rsvp') bool? rsvp,
+    @JsonKey(name: 'has_rsvp') bool? rsvp1,
+    @JsonKey(name: 'rsvp') bool? rsvp2,
   }) = _Webinar;
 
   factory Webinar.fromJson(Map<String, dynamic> json) =>
       _$WebinarFromJson(json);
+}
+
+bool isWebinarRSVP(Webinar? webinar) {
+  return (webinar?.rsvp1 ?? false) || (webinar?.rsvp2 ?? false);
 }

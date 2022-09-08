@@ -38,9 +38,13 @@ class _TimerProgressBarState extends State<TimerProgressBar> {
         widget.onComplete();
       } else {
         progress += delta;
-        setState(() {
-          width = progress * maxWidth / 100.0;
-        });
+        if (mounted) {
+          setState(() {
+            width = progress * maxWidth / 100.0;
+          });
+        } else {
+          timer.cancel();
+        }
       }
     });
   }

@@ -43,7 +43,7 @@ class UpcomingStreamListStateNotifier
 
     allClubs = webinars
         .map((e) {
-          final isRSVPed = (rsvped.contains(e.id)) ? (true) : (e.rsvp ?? false);
+          final isRSVPed = (rsvped.contains(e.id)) ? (true) : isWebinarRSVP(e);
           return UpcomingGridItem(
             conversation: e,
             type: GridItemType.upcoming,

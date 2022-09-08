@@ -23,6 +23,7 @@ class ChatMessage {
 
   final String? photo;
 
+  @JsonKey(name: "created_at")
   final dynamic created;
 
   @JsonKey(name: "is_read")
@@ -40,11 +41,8 @@ class ChatMessage {
   @JsonKey(name: "sender_details")
   final ChatUser? senderDetails;
 
-  @JsonKey(name: "data.reaction")
-  final ChatReaction? reaction;
-
-  @JsonKey(name: "data.stream")
-  final Webinar? stream;
+  @JsonKey(name: "data")
+  final ChatMessageData? data;
 
   @JsonKey(name: "display_name")
   final String? displayName;
@@ -74,8 +72,7 @@ class ChatMessage {
     this.receiverId,
     this.isSupport,
     this.senderDetails,
-    this.reaction,
-    this.stream,
+    this.data,
     this.displayName,
     this.firebaseId,
     this.type,
@@ -87,4 +84,23 @@ class ChatMessage {
       _$ChatMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatMessageToJson(this);
+}
+
+@JsonSerializable()
+class ChatMessageData {
+  @JsonKey(name: "reaction")
+  final ChatReaction? reaction;
+
+  @JsonKey(name: "stream")
+  final Webinar? stream;
+
+  ChatMessageData({
+    this.reaction,
+    this.stream,
+  });
+
+  factory ChatMessageData.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMessageDataToJson(this);
 }

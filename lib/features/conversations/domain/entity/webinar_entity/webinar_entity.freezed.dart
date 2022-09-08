@@ -45,7 +45,9 @@ mixin _$Webinar {
       throw _privateConstructorUsedError;
   int? get liveCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'has_rsvp')
-  bool? get rsvp => throw _privateConstructorUsedError;
+  bool? get rsvp1 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rsvp')
+  bool? get rsvp2 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -81,7 +83,9 @@ abstract class $WebinarCopyWith<$Res> {
           List<ConversationUser>? speakersDetailList,
       int? liveCount,
       @JsonKey(name: 'has_rsvp')
-          bool? rsvp});
+          bool? rsvp1,
+      @JsonKey(name: 'rsvp')
+          bool? rsvp2});
 
   $TopicCopyWith<$Res>? get topicDetail;
   $ConversationUserCopyWith<$Res>? get hostDetail;
@@ -114,7 +118,8 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
     Object? recordingDetails = freezed,
     Object? speakersDetailList = freezed,
     Object? liveCount = freezed,
-    Object? rsvp = freezed,
+    Object? rsvp1 = freezed,
+    Object? rsvp2 = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -181,9 +186,13 @@ class _$WebinarCopyWithImpl<$Res> implements $WebinarCopyWith<$Res> {
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
               as int?,
-      rsvp: rsvp == freezed
-          ? _value.rsvp
-          : rsvp // ignore: cast_nullable_to_non_nullable
+      rsvp1: rsvp1 == freezed
+          ? _value.rsvp1
+          : rsvp1 // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      rsvp2: rsvp2 == freezed
+          ? _value.rsvp2
+          : rsvp2 // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -253,7 +262,9 @@ abstract class _$$_WebinarCopyWith<$Res> implements $WebinarCopyWith<$Res> {
           List<ConversationUser>? speakersDetailList,
       int? liveCount,
       @JsonKey(name: 'has_rsvp')
-          bool? rsvp});
+          bool? rsvp1,
+      @JsonKey(name: 'rsvp')
+          bool? rsvp2});
 
   @override
   $TopicCopyWith<$Res>? get topicDetail;
@@ -290,7 +301,8 @@ class __$$_WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
     Object? recordingDetails = freezed,
     Object? speakersDetailList = freezed,
     Object? liveCount = freezed,
-    Object? rsvp = freezed,
+    Object? rsvp1 = freezed,
+    Object? rsvp2 = freezed,
   }) {
     return _then(_$_Webinar(
       id: id == freezed
@@ -357,9 +369,13 @@ class __$$_WebinarCopyWithImpl<$Res> extends _$WebinarCopyWithImpl<$Res>
           ? _value.liveCount
           : liveCount // ignore: cast_nullable_to_non_nullable
               as int?,
-      rsvp: rsvp == freezed
-          ? _value.rsvp
-          : rsvp // ignore: cast_nullable_to_non_nullable
+      rsvp1: rsvp1 == freezed
+          ? _value.rsvp1
+          : rsvp1 // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      rsvp2: rsvp2 == freezed
+          ? _value.rsvp2
+          : rsvp2 // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -393,7 +409,9 @@ class _$_Webinar implements _Webinar {
           final List<ConversationUser>? speakersDetailList,
       this.liveCount,
       @JsonKey(name: 'has_rsvp')
-          this.rsvp})
+          this.rsvp1,
+      @JsonKey(name: 'rsvp')
+          this.rsvp2})
       : _speakersDetailList = speakersDetailList;
 
   factory _$_Webinar.fromJson(Map<String, dynamic> json) =>
@@ -447,11 +465,14 @@ class _$_Webinar implements _Webinar {
   final int? liveCount;
   @override
   @JsonKey(name: 'has_rsvp')
-  final bool? rsvp;
+  final bool? rsvp1;
+  @override
+  @JsonKey(name: 'rsvp')
+  final bool? rsvp2;
 
   @override
   String toString() {
-    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, isPast: $isPast, recordingDetails: $recordingDetails, speakersDetailList: $speakersDetailList, liveCount: $liveCount, rsvp: $rsvp)';
+    return 'Webinar(id: $id, host: $host, description: $description, start: $start, privacy: $privacy, medium: $medium, closed: $closed, closedAt: $closedAt, topicDetail: $topicDetail, hostDetail: $hostDetail, type: $type, isLive: $isLive, isPast: $isPast, recordingDetails: $recordingDetails, speakersDetailList: $speakersDetailList, liveCount: $liveCount, rsvp1: $rsvp1, rsvp2: $rsvp2)';
   }
 
   @override
@@ -480,7 +501,8 @@ class _$_Webinar implements _Webinar {
             const DeepCollectionEquality()
                 .equals(other._speakersDetailList, _speakersDetailList) &&
             const DeepCollectionEquality().equals(other.liveCount, liveCount) &&
-            const DeepCollectionEquality().equals(other.rsvp, rsvp));
+            const DeepCollectionEquality().equals(other.rsvp1, rsvp1) &&
+            const DeepCollectionEquality().equals(other.rsvp2, rsvp2));
   }
 
   @JsonKey(ignore: true)
@@ -503,7 +525,8 @@ class _$_Webinar implements _Webinar {
       const DeepCollectionEquality().hash(recordingDetails),
       const DeepCollectionEquality().hash(_speakersDetailList),
       const DeepCollectionEquality().hash(liveCount),
-      const DeepCollectionEquality().hash(rsvp));
+      const DeepCollectionEquality().hash(rsvp1),
+      const DeepCollectionEquality().hash(rsvp2));
 
   @JsonKey(ignore: true)
   @override
@@ -542,7 +565,9 @@ abstract class _Webinar implements Webinar {
           final List<ConversationUser>? speakersDetailList,
       final int? liveCount,
       @JsonKey(name: 'has_rsvp')
-          final bool? rsvp}) = _$_Webinar;
+          final bool? rsvp1,
+      @JsonKey(name: 'rsvp')
+          final bool? rsvp2}) = _$_Webinar;
 
   factory _Webinar.fromJson(Map<String, dynamic> json) = _$_Webinar.fromJson;
 
@@ -587,7 +612,10 @@ abstract class _Webinar implements Webinar {
   int? get liveCount;
   @override
   @JsonKey(name: 'has_rsvp')
-  bool? get rsvp;
+  bool? get rsvp1;
+  @override
+  @JsonKey(name: 'rsvp')
+  bool? get rsvp2;
   @override
   @JsonKey(ignore: true)
   _$$_WebinarCopyWith<_$_Webinar> get copyWith =>

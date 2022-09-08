@@ -9,6 +9,7 @@ import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_list_state.dart';
 import 'package:worknetwork/features/club/presentation/widgets/live_time.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
 class UpcomingStreamList extends HookConsumerWidget {
@@ -103,7 +104,7 @@ class WebinarCard extends HookConsumerWidget {
     }
     final title = user?.name ?? '';
 
-    isRSVPed = useState(item.conversation?.rsvp ?? false);
+    isRSVPed = useState(isWebinarRSVP(item.conversation));
 
     return InkWell(
       onTap: () {},

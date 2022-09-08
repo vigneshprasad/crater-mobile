@@ -15,7 +15,7 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       receiver: json['receiver'] as String?,
       pk: json['pk'] as int?,
       photo: json['photo'] as String?,
-      created: json['created'],
+      created: json['created_at'],
       isRead: json['is_read'] as bool?,
       senderId: json['sender_id'] as String?,
       receiverId: json['receiver_id'] as String?,
@@ -23,13 +23,9 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       senderDetails: json['sender_details'] == null
           ? null
           : ChatUser.fromJson(json['sender_details'] as Map<String, dynamic>),
-      reaction: json['data.reaction'] == null
+      data: json['data'] == null
           ? null
-          : ChatReaction.fromJson(
-              json['data.reaction'] as Map<String, dynamic>),
-      stream: json['data.stream'] == null
-          ? null
-          : Webinar.fromJson(json['data.stream'] as Map<String, dynamic>),
+          : ChatMessageData.fromJson(json['data'] as Map<String, dynamic>),
       displayName: json['display_name'] as String?,
       firebaseId: json['firebaseId'] as String?,
       type: json['type'] as int?,
@@ -47,17 +43,32 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'receiver': instance.receiver,
       'pk': instance.pk,
       'photo': instance.photo,
-      'created': instance.created,
+      'created_at': instance.created,
       'is_read': instance.isRead,
       'sender_id': instance.senderId,
       'receiver_id': instance.receiverId,
       'is_support': instance.isSupport,
       'sender_details': instance.senderDetails,
-      'data.reaction': instance.reaction,
-      'data.stream': instance.stream,
+      'data': instance.data,
       'display_name': instance.displayName,
       'firebaseId': instance.firebaseId,
       'type': instance.type,
       'action': instance.action,
       'isFollowing': instance.isFollowing,
+    };
+
+ChatMessageData _$ChatMessageDataFromJson(Map<String, dynamic> json) =>
+    ChatMessageData(
+      reaction: json['reaction'] == null
+          ? null
+          : ChatReaction.fromJson(json['reaction'] as Map<String, dynamic>),
+      stream: json['stream'] == null
+          ? null
+          : Webinar.fromJson(json['stream'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ChatMessageDataToJson(ChatMessageData instance) =>
+    <String, dynamic>{
+      'reaction': instance.reaction,
+      'stream': instance.stream,
     };

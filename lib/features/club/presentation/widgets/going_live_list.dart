@@ -125,7 +125,7 @@ class LiveListItem extends HookConsumerWidget {
     final userImage = webinar.hostDetail?.photo;
     final userName = webinar.hostDetail?.name ?? '';
 
-    final isRsvped = useState(webinar.rsvp ?? false);
+    final isRsvped = useState(isWebinarRSVP(webinar));
 
     Future<void> _requestJoinGroup() async {
       final analytics = ref.read(analyticsProvider);

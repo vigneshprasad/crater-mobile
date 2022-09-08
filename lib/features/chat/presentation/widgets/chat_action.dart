@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:worknetwork/constants/app_constants.dart';
@@ -14,6 +15,8 @@ import 'package:worknetwork/features/chat/presentation/screens/chat_screen_state
 import 'package:worknetwork/features/chat/presentation/widgets/timer_progress_bar.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/conversation_screen/conversation_screen_state.dart';
 import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
@@ -51,6 +54,11 @@ class ChatAction extends HookConsumerWidget {
       return Container();
     }
 
+    if (message.action == 3 && isWebinarRSVP(message.data?.stream)) {
+      isComplete.value = true;
+      return Container();
+    }
+
     Future<void> followHost(BuildContext context) async {
       final userPK = creator.id;
 
@@ -79,12 +87,15 @@ class ChatAction extends HookConsumerWidget {
                 displayName: 'New Follower',
               );
 
-          isComplete.value = true;
           final analytics = ref.read(analyticsProvider);
           analytics.trackEvent(
             eventName: AnalyticsEvents.followCreator,
             properties: {},
           );
+
+          Future.delayed(const Duration(milliseconds: 500)).then((value) {
+            isComplete.value = true;
+          });
 
           // Fluttertoast.showToast(msg: '');
         },
@@ -96,6 +107,33 @@ class ChatAction extends HookConsumerWidget {
       isComplete.value = true;
     }
 
+    Future<void> rsvpStream(BuildContext context) async {
+      final webinar = message.data?.stream;
+
+      if (webinar == null) {
+        return;
+      }
+
+      final response = await ref
+          .read(conversationStateProvider(webinar.id!).notifier)
+          .postRequestToJoinGroup();
+
+      response.fold(
+        (failure) {
+          Fluttertoast.showToast(msg: failure.message.toString());
+
+          Future.delayed(const Duration(milliseconds: 500)).then((value) {
+            isComplete.value = true;
+          });
+        },
+        (request) {
+          Future.delayed(const Duration(milliseconds: 500)).then((value) {
+            isComplete.value = true;
+          });
+        },
+      );
+    }
+
     Future<void> performAction(BuildContext context) async {
       switch (message.action) {
         case 1:
@@ -105,18 +143,18 @@ class ChatAction extends HookConsumerWidget {
           // await inviteFriends(context);
           break;
         case 3:
-          await exploreStreams(context);
+          await rsvpStream(context);
           break;
       }
     }
 
     if (message.action == 3) {
-      final title = message.stream?.topicDetail?.description ??
+      final title = message.data?.stream?.topicDetail?.name ??
           message.message ??
           'Join the stream';
 
-      final startDateFormat = DateFormat('dd MMMM yyyy hh:mm a');
-      final time = message.stream?.start?.toLocal() ?? DateTime.now();
+      final startDateFormat = DateFormat('d MMMM, yyyy hh:mm a');
+      final time = message.data?.stream?.start?.toLocal() ?? DateTime.now();
       final date = startDateFormat.format(time);
       bgColor = HexColor.fromHex("#134D34");
 

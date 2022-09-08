@@ -186,7 +186,7 @@ class ChatMessageItem extends HookConsumerWidget {
                                     ),
                                   ),
                                 ),
-                              if (message.reaction?.file != null)
+                              if (message.data?.reaction?.file != null)
                                 CachedNetworkImage(
                                   placeholder: (context, url) => Container(
                                     decoration: BoxDecoration(
@@ -202,7 +202,7 @@ class ChatMessageItem extends HookConsumerWidget {
                                       ),
                                     ),
                                   ),
-                                  imageUrl: message.reaction!.file!,
+                                  imageUrl: message.data!.reaction!.file!,
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     width: 100,

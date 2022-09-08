@@ -28,7 +28,6 @@ class ProfileBasicScreen extends HookConsumerWidget {
   }) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
 
   bool allowSkip = false;
 
@@ -37,6 +36,7 @@ class ProfileBasicScreen extends HookConsumerWidget {
     this.ref = ref;
 
     final _validName = useState(false);
+    final _firstNameController = useTextEditingController();
     useEffect(
       () {
         final name = ref.read(authStateProvider.notifier).getUser()?.name;
@@ -119,8 +119,8 @@ class ProfileBasicScreen extends HookConsumerWidget {
                                 label: 'Your name',
                                 validator: (value) {
                                   _validName.value =
-                                      value == null || value.isEmpty;
-                                  return value == null || value.isEmpty
+                                      value != null && value.trim().isNotEmpty;
+                                  return value == null || value.trim().isEmpty
                                       ? "This field is required"
                                       : null;
                                 },
@@ -211,8 +211,18 @@ class ProfileBasicScreen extends HookConsumerWidget {
       return;
     }
 
+    final email = ref.read(authStateProvider.notifier).getUser()?.email;
+
+    if (email != null && email.isNotEmpty) {
+      AutoRouter.of(context).pushAndPopUntil(
+        HomeScreenRoute(),
+        predicate: (route) => false,
+      );
+      return;
+    }
+
     AutoRouter.of(context).pushAndPopUntil(
-      HomeScreenRoute(),
+      ProfileEmailScreenRoute(editMode: false, popup: true),
       predicate: (route) => false,
     );
   }

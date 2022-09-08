@@ -18,7 +18,7 @@ class StreamTime extends StatelessWidget {
       return Container();
     }
 
-    final startDateFormat = DateFormat("dd MMMM yyyy");
+    final startDateFormat = DateFormat("d MMMM, yyyy");
     final startTimeFormat = DateFormat('hh:mm a');
     final localDate = start!.toLocal();
     return Row(
