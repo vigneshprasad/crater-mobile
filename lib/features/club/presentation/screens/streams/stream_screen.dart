@@ -137,7 +137,7 @@ class StreamTab extends HookConsumerWidget {
                     child: SizedBox(
                       height: 610,
                       child: GoingLiveList(
-                        title: 'Goint live soon',
+                        title: 'Going live soon',
                         gridItems: streams.upcomingClubs.take(3).toList(),
                       ),
                     ),
