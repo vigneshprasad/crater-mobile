@@ -4,6 +4,7 @@ import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 enum BaseLargeButtonStyle {
   primary,
   secondary,
+  destructive,
 }
 
 class BaseLargeButton extends StatelessWidget {
@@ -35,6 +36,11 @@ class BaseLargeButton extends StatelessWidget {
 
       case BaseLargeButtonStyle.secondary:
         color = Colors.white;
+        textColor = Colors.black;
+        break;
+
+      case BaseLargeButtonStyle.destructive:
+        color = Colors.redAccent;
         textColor = Colors.black;
     }
     return NeoPopButton(

@@ -189,6 +189,7 @@ class AppSvgAssets {
   static const chat = "assets/svg/chat.svg";
   static const send = "assets/svg/send.svg";
   static const categoryWindow = "assets/svg/category-window.svg";
+  static const categoryBG = "assets/svg/category-bg.svg";
   static const categoryStar = "assets/svg/category-star.svg";
   static const journeyStars = "assets/svg/journey-stars.svg";
   static const homeFooter = "assets/svg/home-footer.svg";

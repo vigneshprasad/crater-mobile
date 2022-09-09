@@ -370,6 +370,7 @@ class _CategoryWindowView extends HookConsumerWidget {
     final webinarCategoryProvider = ref.watch(webinarCategoryStateProvider);
     return Stack(
       children: [
+        Positioned(right: 0, child: SvgPicture.asset(AppSvgAssets.categoryBG)),
         Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Container(
@@ -384,7 +385,7 @@ class _CategoryWindowView extends HookConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Top categories',
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ),
                 const SizedBox(

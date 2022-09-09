@@ -1,5 +1,3 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,10 +6,7 @@ import 'package:worknetwork/features/club/presentation/screens/streams/past_stre
 import 'package:worknetwork/features/club/presentation/screens/streams/upcoming_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/widgets/going_live_list.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
-import 'package:worknetwork/features/conversations/presentation/widgets/stream_time.dart';
 import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
-import 'package:worknetwork/routes.gr.dart';
 
 class UpcomingStreamScreen extends HookConsumerWidget {
   final int? categoryId;
@@ -53,7 +48,7 @@ class UpcomingStreamScreen extends HookConsumerWidget {
               ),
               SliverToBoxAdapter(
                 child: CategoryGridView(
-                  type: GridItemType.past,
+                  type: GridItemType.upcoming,
                   selectedId: categoryId,
                 ),
               ),
