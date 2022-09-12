@@ -276,7 +276,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: ad3f6c68b7c5b63b7cf15b0785d7137f05f32268
   FirebaseCoreInternal: cb966328b6985dbd6f535e1461291063e1c4a00f
   FirebaseDynamicLinks: f576ccfba05f2813e3679d48ccae5bcfff5714fc
-  FirebaseFirestore: a615b6117836f8916058283562575244dbcab6e6
+  FirebaseFirestore: d23b80e662cbf500858c3e6c21400923c980ecad
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_segment: 0bdb477aacb471eed01a2c3cc9b6c3ad54afe8c7
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
