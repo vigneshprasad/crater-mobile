@@ -1,99 +1,46 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/core/network_info/network_info.dart';
+import 'package:worknetwork/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:worknetwork/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
+import 'package:worknetwork/features/auth/domain/repository/auth_repository.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network_info/network_info.dart';
-import '../../domain/entity/user_entity.dart';
-import '../../domain/entity/user_profile_entity.dart';
-import '../../domain/repository/auth_repository.dart';
-import '../datasources/auth_local_datasource.dart';
-import '../datasources/auth_remote_datasource.dart';
-import '../models/user_model.dart';
-import '../models/user_profile_model.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final remoteDataSource = ref.read(authRemoteDatasourceProvider);
-  final localDataSource = ref.read(authLocalDatasourceProvider);
+  final localDataSource = ref.read(authLocalDatasourceProvider.future);
   final networkInfo = ref.read(networkInfoProvider);
-  return AuthRepositoryImpl(remoteDataSource, localDataSource, networkInfo);
+  return AuthRepositoryImpl(
+      remoteDataSource, localDataSource, networkInfo, ref.read);
 });
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
-  final AuthLocalDataSource localDataSource;
+  final Future<AuthLocalDataSource> localDataSource;
   final NetworkInfo networkInfo;
+  final Reader read;
 
   AuthRepositoryImpl(
-      this.remoteDataSource, this.localDataSource, this.networkInfo);
-
-  @override
-  Future<Either<Failure, User>> authWithApple(String token, String osId) async {
-    try {
-      final response = await remoteDataSource.authWithApple(token, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, User>> authWithFacebook(
-      String token, String osId) async {
-    try {
-      final response = await remoteDataSource.authWithFacebook(token, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, User>> authWithGoogle(
-      String token, String osId) async {
-    try {
-      final response = await remoteDataSource.authWithGoogle(token, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, User>> authWithLinkedIn(
-      String token, String osId) async {
-    try {
-      final response = await remoteDataSource.authWithLinkedIn(token, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, User>> loginwithEmail(
-      String email, String password, String osId) async {
-    try {
-      final response =
-          await remoteDataSource.loginWithEmail(email, password, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
+    this.remoteDataSource,
+    this.localDataSource,
+    this.networkInfo,
+    this.read,
+  );
 
   @override
   Future<Either<Failure, User>> logout(String osId) async {
     try {
       final response = await remoteDataSource.logout(osId);
-      localDataSource.setUserToCache(response);
+      read(authTokenProvider.notifier).state = null;
+      read(authStateProvider.notifier).clear();
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -101,22 +48,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> registerwithEmail(
-      String name, String email, String password, String osId) async {
+  Future<Either<Failure, bool>> getAuthenticationState() async {
     try {
-      final response =
-          await remoteDataSource.registerWithEmail(name, email, password, osId);
-      localDataSource.setUserToCache(response);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, bool>> getAuthenticationState() {
-    try {
-      final user = localDataSource.getUserFromCache();
+      final user = (await localDataSource).getUserFromCache();
       return Future.value(Right(user.token != null));
     } on CacheException {
       return Future.value(Left(CacheFailure()));
@@ -128,7 +62,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await remoteDataSource.patchUserModelRemote(user as UserModel);
-      localDataSource.updateUserToCache(response as UserModel);
+      final updatedUser = response as UserModel;
+      await (await localDataSource).updateUserToCache(updatedUser);
+      if (updatedUser.token != null) {
+        read(authTokenProvider.notifier).state = updatedUser.token;
+      }
+      read(authStateProvider.notifier).setUser(updatedUser);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -141,27 +80,29 @@ class AuthRepositoryImpl implements AuthRepository {
     if (isConnected) {
       try {
         final response = await remoteDataSource.getUserFromRemote();
+        await (await localDataSource).updateUserToCache(response as UserModel);
         return Right(response);
       } on ServerException catch (error) {
         return Left(ServerFailure(error.message));
       }
     } else {
       try {
-        final response = localDataSource.getUserFromCache();
-        await localDataSource.updateUserToCache(response);
+        final response = (await localDataSource).getUserFromCache();
         return Right(response);
       } on CacheException catch (error) {
-        return Left(CacheFailure(error.message));
+        return Left(CacheFailure(message: error.message));
       }
     }
   }
 
   @override
   Future<Either<Failure, UserProfile>> postUserProfile(
-      Map<String, dynamic> body) async {
+    Map<String, dynamic> body,
+  ) async {
     try {
       final response = await remoteDataSource.postUserProfileRemote(body);
-      await localDataSource.setUserProfileToCache(response as UserProfileModel);
+      await (await localDataSource)
+          .setUserProfileToCache(response as UserProfileModel);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error.message));
@@ -174,7 +115,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (isConnected) {
       try {
         final response = await remoteDataSource.getUserProfileFromRemote();
-        await localDataSource
+        await (await localDataSource)
             .setUserProfileToCache(response as UserProfileModel);
         return Right(response);
       } on ServerException catch (error) {
@@ -182,32 +123,11 @@ class AuthRepositoryImpl implements AuthRepository {
       }
     } else {
       try {
-        final cached = localDataSource.getUserProfileFromCache();
+        final cached = (await localDataSource).getUserProfileFromCache();
         return Right(cached);
       } on CacheException catch (error) {
-        return Left(CacheFailure(error.message));
+        return Left(CacheFailure(message: error.message));
       }
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> postPasswordReset(String email) async {
-    try {
-      final response = await remoteDataSource.postPasswordResetToRemote(email);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error));
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> postNewPassword(
-      Map<String, String> body) async {
-    try {
-      final response = await remoteDataSource.postNewPasswordToRemote(body);
-      return Right(response);
-    } on ServerException catch (error) {
-      return Left(ServerFailure(error));
     }
   }
 
@@ -223,11 +143,14 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, User>> verifyOtp(
-      String phone, String otp, Map<String, String> attributionData) async {
+    String phone,
+    String otp,
+    Map<String, String> attributionData,
+  ) async {
     try {
       final response =
           await remoteDataSource.verifyOtp(phone, otp, attributionData);
-      localDataSource.setUserToCache(response);
+      await (await localDataSource).setUserToCache(response);
       return Right(response);
     } on ServerException catch (error) {
       return Left(ServerFailure(error));
@@ -246,7 +169,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, ReferralsResponse>> getReferrals(
-      int? page, int? pageSize) async {
+    int? page,
+    int? pageSize,
+  ) async {
     try {
       final response =
           await remoteDataSource.getReferralsFromRemote(page, pageSize);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants/theme.dart';
-
 typedef OnChangeCallback = void Function(String value);
 typedef OnValidCallback = void Function(bool isValid);
 
@@ -12,13 +10,13 @@ class CodeInput extends StatefulWidget {
   final OnValidCallback? onValidChange;
   final FocusNode focusNode;
 
-  const CodeInput(
-      {Key? key,
-      required this.length,
-      this.onChange,
-      this.onValidChange,
-      required this.focusNode})
-      : super(key: key);
+  const CodeInput({
+    Key? key,
+    required this.length,
+    this.onChange,
+    this.onValidChange,
+    required this.focusNode,
+  }) : super(key: key);
 
   @override
   _CodeInputState createState() => _CodeInputState();
@@ -41,7 +39,6 @@ class _CodeInputState extends State<CodeInput> {
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -69,7 +66,7 @@ class _CodeInputState extends State<CodeInput> {
                 ),
                 showCursor: false,
                 decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -86,8 +83,10 @@ class _CodeInputState extends State<CodeInput> {
                 _onFocus();
               },
               child: Row(
-                children: List.generate(widget.length,
-                    (index) => _buildFieldContainer(context, index)),
+                children: List.generate(
+                  widget.length,
+                  (index) => _buildFieldContainer(context, index),
+                ),
               ),
             ),
           ),
@@ -98,48 +97,42 @@ class _CodeInputState extends State<CodeInput> {
 
   void _textChangeListener() {
     final currentText = _controller.text;
-    if (widget.onChange != null) {
-      widget.onChange!(currentText);
-    }
-
-    if (widget.onValidChange != null) {
-      widget.onValidChange!(currentText.length == widget.length);
-    }
+    widget.onChange?.call(currentText);
+    widget.onValidChange?.call(currentText.length == widget.length);
     _setTextToDisplay(currentText);
   }
 
   Widget _buildFieldContainer(BuildContext context, int index) {
     final hasFocus = _focusNode.hasFocus;
-    final border = hasFocus
-        ? Border.all(
-            width: 2,
-            color: _valuesList[index].isEmpty
-                ? Colors.grey[400]!
-                : Theme.of(context).primaryColor,
-          )
-        : null;
+    final borderColor = hasFocus
+        ? _valuesList[index].isEmpty
+            ? Theme.of(context).dividerColor
+            : Theme.of(context).primaryColor
+        : Theme.of(context).dividerColor;
 
-    const textStyle = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-    );
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeIn,
-      width: 48,
-      height: 48,
-      margin: const EdgeInsets.only(right: AppInsets.med, top: AppInsets.med),
-      decoration: BoxDecoration(
-        color: Theme.of(context).dialogBackgroundColor,
-        borderRadius: BorderRadius.circular(AppBorderRadius.textInput),
-        border: border,
-      ),
-      child: Center(
-        child: Text(
-          _valuesList[index],
-          style: textStyle,
-          textAlign: TextAlign.center,
-        ),
+    final textStyle = Theme.of(context).textTheme.bodyText1;
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: Column(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+            width: 36,
+            height: 48,
+            child: Center(
+              child: Text(
+                _valuesList[index],
+                style: textStyle,
+              ),
+            ),
+          ),
+          Container(
+            height: 1,
+            width: 36,
+            color: borderColor,
+          )
+        ],
       ),
     );
   }

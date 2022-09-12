@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 // part 'dyte_meeting_model.freezed.dart';
 part 'dyte_meeting_model.g.dart';

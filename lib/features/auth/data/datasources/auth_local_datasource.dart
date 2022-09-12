@@ -1,13 +1,20 @@
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../constants/app_hive_boxes.dart';
-import '../../../../core/error/exceptions.dart';
-import '../models/user_model.dart';
-import '../models/user_profile_model.dart';
+import 'package:worknetwork/constants/app_hive_boxes.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/core/local_storage/local_storage.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
 
-final authLocalDatasourceProvider = Provider<AuthLocalDataSource>((ref) {
-  return AuthLocalDataSourceImpl();
+final authLocalDatasourceProvider =
+    FutureProvider<AuthLocalDataSource>((ref) async {
+  final _ = await ref.watch(localStorageProvider.future);
+
+  final auth = AuthLocalDataSourceImpl();
+  auth.initStorage();
+
+  return auth;
 });
 
 abstract class AuthLocalDataSource {
@@ -26,14 +33,16 @@ abstract class AuthLocalDataSource {
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  final Box<UserModel> userBox = Hive.box(AppHiveBoxes.userModelBox);
-  final Box<UserProfileModel> profileBox =
-      Hive.box(AppHiveBoxes.userProfileModelBox);
+  late Box<UserModel> userBox;
+  late Box<UserProfileModel> profileBox;
 
   static const rootUserKey = "ROOT_USER_KEY";
   static const rootUserProfileKey = "ROOT_USER_PROFILE_KEY";
 
-  AuthLocalDataSourceImpl();
+  void initStorage() {
+    userBox = Hive.box(AppHiveBoxes.userModelBox);
+    profileBox = Hive.box(AppHiveBoxes.userProfileModelBox);
+  }
 
   @override
   UserModel getUserFromCache() {

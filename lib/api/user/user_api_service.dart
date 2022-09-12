@@ -1,23 +1,23 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../core/config_reader/config_reader.dart';
-import '../interceptors/authorized_interceptor.dart';
+import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'user_api_service.chopper.dart';
 
-final userApiServiceProvider = Provider((_) => UserApiService.create());
+final userApiServiceProvider =
+    Provider((ref) => UserApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/user/auth/')
 abstract class UserApiService extends ChopperService {
-  static UserApiService create() {
+  static UserApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
         _$UserApiService(),
       ],
       interceptors: [
-        AuthorizedInterceptor(),
+        read(authInterceptorProvider),
       ],
       converter: const JsonConverter(),
     );

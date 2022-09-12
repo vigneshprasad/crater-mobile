@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../../ui/base/base_dropdown/base_dropdown.dart';
-import '../../domain/entity/profile_intro_meta.dart';
-import '../../domain/entity/profile_intro_question.dart';
+import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
+import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
+import 'package:worknetwork/ui/base/base_dropdown/base_dropdown.dart';
 
 class AutoSizeDropdown extends StatelessWidget {
   const AutoSizeDropdown({
@@ -33,16 +32,17 @@ class AutoSizeDropdown extends StatelessWidget {
       width: getWidthOfLargestOption(element.options!),
       margin: const EdgeInsets.only(right: 4),
       child: BaseDropdown<ProfileIntroMeta>(
-          key: Key(element.id!),
-          value: value,
-          listItems: element.options!,
-          labelGetter: (lbl) => lbl.name ?? '',
-          validator: (value) {
-            return value == null ? 'Select a value' : null;
-          },
-          onChanged: (value) {
-            onValuesChange(element.id!, value?.value);
-          }),
+        key: Key(element.id!),
+        value: value,
+        listItems: element.options!,
+        labelGetter: (lbl) => lbl.name ?? '',
+        validator: (value) {
+          return value == null ? 'Select a value' : null;
+        },
+        onChanged: (value) {
+          onValuesChange(element.id!, value?.value);
+        },
+      ),
     );
   }
 }

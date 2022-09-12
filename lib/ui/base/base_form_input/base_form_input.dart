@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class BaseFormInput extends StatelessWidget {
   final String label;
@@ -39,7 +39,7 @@ class BaseFormInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const borderRadius = BorderRadius.all(
-      Radius.circular(AppBorderRadius.textInput),
+      Radius.circular(0),
     );
     return TextFormField(
       enabled: enabled,
@@ -56,34 +56,43 @@ class BaseFormInput extends StatelessWidget {
       autofocus: autoFocus,
       onChanged: onChanged,
       decoration: InputDecoration(
-          prefixIcon: icon,
-          enabledBorder: const OutlineInputBorder(
+        prefixIcon: icon,
+        enabledBorder: UnderlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: const BorderSide(
+            color: Colors.grey,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            color: Colors.green[300]!,
+          ),
+        ),
+        border: const UnderlineInputBorder(
             borderRadius: borderRadius,
             borderSide: BorderSide(
-              color: Colors.transparent,
+              color: Colors.grey,
+            )),
+        errorBorder: UnderlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            width: 2,
+            color: Theme.of(context).errorColor,
+          ),
+        ),
+        filled: true,
+        hintText: label,
+        hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+              fontSize: 15,
+              color: Colors.grey,
             ),
-          ),
-          border: const OutlineInputBorder(
-            borderRadius: borderRadius,
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: borderRadius,
-            borderSide: BorderSide(
-              width: 2,
-              color: Theme.of(context).errorColor,
-            ),
-          ),
-          filled: true,
-          hintText: label,
-          hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-          labelStyle: const TextStyle(fontSize: 16),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: AppInsets.med,
-            horizontal: AppInsets.l,
-          )),
+        labelStyle: const TextStyle(fontSize: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: AppInsets.med,
+          horizontal: AppInsets.l,
+        ),
+      ),
     );
   }
 }

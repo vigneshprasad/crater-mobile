@@ -5,18 +5,18 @@ import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
 part 'cover_image_api_service.chopper.dart';
 
 final coverImageApiServiceProvider =
-    Provider((_) => CoverImageApiService.create());
+    Provider((ref) => CoverImageApiService.create(ref.read));
 
 @ChopperApi(baseUrl: "/")
 abstract class CoverImageApiService extends ChopperService {
-  static CoverImageApiService create() {
+  static CoverImageApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: 'https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com',
       services: [
         _$CoverImageApiService(),
       ],
       interceptors: [
-        AuthorizedInterceptor(),
+        read(authInterceptorProvider),
       ],
       converter: const JsonConverter(),
     );

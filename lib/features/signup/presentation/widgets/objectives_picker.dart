@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'objective_cell.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/objective_cell.dart';
 
 class PickerItem {
   final String name;
@@ -38,20 +38,22 @@ class ObjectivesPicker extends StatelessWidget {
 
     return Table(
       children: rows
-          .map((row) => TableRow(
-                children: row
-                    .map(
-                      (col) => col != null
-                          ? ObjectiveCell(
-                              item: col,
-                              onPressedItem: (item, isSelected) {
-                                onPressedItem(item, isSelected);
-                              },
-                            )
-                          : Container(),
-                    )
-                    .toList(),
-              ))
+          .map(
+            (row) => TableRow(
+              children: row
+                  .map(
+                    (col) => col != null
+                        ? ObjectiveCell(
+                            item: col,
+                            onPressedItem: (item, isSelected) {
+                              onPressedItem(item, isSelected);
+                            },
+                          )
+                        : Container(),
+                  )
+                  .toList(),
+            ),
+          )
           .toList(),
     );
   }

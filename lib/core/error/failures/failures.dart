@@ -6,19 +6,17 @@ const networkFailureString =
     "Unable to Connect. Please check your network connection.";
 
 abstract class Failure {
-  String? get message;
+  Object? get message;
 }
 
 @freezed
 abstract class ServerFailure extends Failure with _$ServerFailure {
-  @Implements(Failure)
-  factory ServerFailure({String? message}) = _ServerFailure;
+  factory ServerFailure(Object? message) = _ServerFailure;
 }
 
 @freezed
 abstract class CacheFailure extends Failure with _$CacheFailure {
-  @Implements(Failure)
-  factory CacheFailure({String? message}) = _CacheFailure;
+  factory CacheFailure({Object? message}) = _CacheFailure;
 }
 
 @freezed

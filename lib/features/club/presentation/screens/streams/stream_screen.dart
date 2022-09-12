@@ -2,32 +2,39 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:video_player/video_player.dart';
+import 'package:neopop/widgets/buttons/neopop_tilted_button/neopop_tilted_button.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:worknetwork/constants/app_constants.dart';
+import 'package:worknetwork/core/color/color.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
+import 'package:worknetwork/features/club/presentation/screens/streams/past_stream_screen_state.dart';
 import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen_state.dart';
+import 'package:worknetwork/features/club/presentation/widgets/going_live_list.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
-import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
-import 'package:worknetwork/features/meeting/presentation/screens/dyte_meeting_screen.dart';
+import 'package:worknetwork/features/club/presentation/widgets/past_live_grid_tile.dart';
+import 'package:worknetwork/features/club/presentation/widgets/past_stream_list.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_follow_card.dart';
+import 'package:worknetwork/features/connection/presentation/widget/featured_list/creator_list_state.dart';
+import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/widgets/plain_button.dart';
 import 'package:worknetwork/routes.gr.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
 
-class StreamTab extends HookWidget {
+class StreamTab extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final clubsProvider = useProvider(streamStateProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final clubsProvider = ref.watch(streamStateProvider);
 
     final _controller = useScrollController();
     _controller.addListener(() {
       // reached End of scroll
       if (_controller.offset >= _controller.position.maxScrollExtent &&
           !_controller.position.outOfRange) {
-        context.read(streamStateProvider.notifier).getNextPageSeriesData();
+        ref.read(streamStateProvider.notifier).getNextPageSeriesData();
       }
     });
 
@@ -37,907 +44,499 @@ class StreamTab extends HookWidget {
       if (_featuredScrollController.offset >=
               _featuredScrollController.position.maxScrollExtent &&
           !_featuredScrollController.position.outOfRange) {
-        context.read(streamStateProvider.notifier).getUpcomingNextData();
+        ref.read(streamStateProvider.notifier).getUpcomingNextData();
       }
     });
-
-    // final isMounted = useIsMounted();
-    // final timer = Timer.periodic(const Duration(seconds: 120), (timer) {
-    //   if (isMounted()) {
-    //     context.read(streamStateProvider.notifier).getFeaturedData();
-    //   }
-    // });
-
-    // useEffect(() {
-    //   return () {
-    //     timer.cancel();
-    //   };
-    // }, []);
 
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (context, isexpanded) {
           return const [
             HomeAppBar(
-              title: 'Live Streams',
+              title: 'Discover Streams',
             )
           ];
         },
         body: RefreshIndicator(
-            color: Theme.of(context).accentColor,
-            onRefresh: () {
-              final futures = [
-                context.read(streamStateProvider.notifier).getSeriesData(),
-                context.read(streamStateProvider.notifier).getFeaturedData(),
-                context.read(streamStateProvider.notifier).getUpcomingData(),
-              ];
+          color: Theme.of(context).colorScheme.secondary,
+          onRefresh: () {
+            final futures = [
+              ref.read(streamStateProvider.notifier).getSeriesData(),
+              ref.read(streamStateProvider.notifier).getFeaturedData(),
+              ref.read(streamStateProvider.notifier).getUpcomingData(),
+            ];
 
-              return Future.wait(futures);
-            },
-            child: clubsProvider.when(
-                loading: () => Container(),
-                error: (e, s) => Container(),
-                data: (streams) {
-                  return CustomScrollView(
-                    controller: _featuredScrollController,
-                    slivers: [
-                      if (streams.liveClubs.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                              height: 300,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  CarouselSlider(
-                                    options: CarouselOptions(
-                                      height: 280.0,
-                                      enlargeCenterPage: true,
-                                      enableInfiniteScroll: false,
-                                    ),
-                                    items: streams.liveClubs.map((c) {
-                                      return Builder(
-                                        builder: (BuildContext context) {
-                                          if (c.conversation
-                                                  ?.recordingDetails !=
-                                              null) {
-                                            return PastLiveGridTile(c);
-                                          }
-                                          return LiveGridTile(c);
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      if (streams.series.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 80,
-                            child: UpcomingGridTitleTile(
-                              UpcomingGridItem(
-                                  title: 'Series by our creators',
-                                  color: '#B02A2A',
-                                  type: GridItemType.title,
-                                  icon: const Icon(
-                                    Icons.schedule,
-                                    size: 80,
-                                  )),
-                            ),
-                          ),
-                        ),
-                      if (streams.series.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 250,
-                            child: ListView.separated(
-                              controller: _controller,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(width: 20),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: streams.series.length,
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 80),
-                              itemBuilder: (BuildContext context, int index) =>
-                                  SizedBox(
-                                width: 150,
-                                child: SeriesGridTile(
-                                  streams.series[index],
-                                ),
+            return Future.wait(futures);
+          },
+          child: clubsProvider.when(
+            loading: () => Container(),
+            error: (e, s) => Container(),
+            data: (streams) {
+              return CustomScrollView(
+                controller: _featuredScrollController,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                      ),
+                      child: Text(
+                        'Watch streams, chat with creators and place bids',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            ?.copyWith(fontSize: 14),
+                      ),
+                    ),
+                  ),
+                  if (streams.liveClubs.isNotEmpty)
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 360,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                height: 340.0,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: false,
                               ),
+                              items: streams.liveClubs.map((c) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    // if (c.conversation?.recordingDetails !=
+                                    //     null) {
+                                    //   return PastLiveGridTile(c);
+                                    // }
+                                    return PastLiveGridTile(c);
+                                  },
+                                );
+                              }).toList(),
                             ),
-                          ),
-                        ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 80,
-                          child: UpcomingGridTitleTile(
-                            UpcomingGridItem(
-                                title: 'Going Live Soon',
-                                color: '#B02A2A',
-                                type: GridItemType.title,
-                                icon: const Icon(
-                                  Icons.schedule,
-                                  size: 80,
-                                )),
-                          ),
+                          ],
                         ),
                       ),
-                      SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (streams.upcomingClubs[index].type ==
-                              GridItemType.loader) {
-                            return SizedBox(
-                              height: 100,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context).accentColor,
-                                ),
-                              ),
-                            );
-                          }
-                          return SizedBox(
-                              height: 300,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: UpcomingGridTile(
-                                  streams.upcomingClubs[index],
-                                ),
-                              ));
-                        },
-                        childCount: streams.upcomingClubs.length,
-                      )),
-                    ],
-                  );
-                })),
-      ),
-    );
-  }
-}
-
-class SimilarStream extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final clubsProvider = useProvider(streamStateProvider);
-
-    return clubsProvider.when(
-        loading: () => Container(),
-        error: (e, s) => Container(),
-        data: (streams) {
-          return StaggeredGridView.countBuilder(
-            padding: const EdgeInsets.all(8),
-            crossAxisCount: 2,
-            itemCount: streams.series.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: UpcomingGridTile(streams.series[index]));
-            },
-            staggeredTileBuilder: (int index) {
-              return const StaggeredTile.count(2, 1.5);
-            },
-            mainAxisSpacing: 40.0,
-            crossAxisSpacing: 40.0,
-          );
-        });
-  }
-}
-
-class UpcomingGridTitleTile extends StatelessWidget {
-  final UpcomingGridItem item;
-  const UpcomingGridTitleTile(
-    this.item, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
-        child: Wrap(
-          spacing: 8,
-          children: item.title == 'Going Live Soon'
-              ? [
-                  Text('Going', style: Theme.of(context).textTheme.headline6),
-                  Text('live',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(color: Theme.of(context).accentColor)),
-                  Text('soon', style: Theme.of(context).textTheme.headline6),
-                ]
-              : [
-                  Text('Series',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(color: Theme.of(context).accentColor)),
-                  Text('by our creators',
-                      style: Theme.of(context).textTheme.headline6),
+                    ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 180,
+                      child: _TopCreatorList(
+                        creators: streams.topCreators,
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: _CategoryWindowView(
+                      type: GridItemType.upcoming,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 610,
+                      child: GoingLiveList(
+                        title: 'Going live soon',
+                        gridItems: streams.upcomingClubs.take(3).toList(),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 610,
+                      child: PastStreamList(
+                        title: 'Past streams',
+                        gridItems: streams.pastClubs.take(3).toList(),
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 232,
+                      child: _YourJourney(),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Stack(
+                        children: [
+                          SvgPicture.asset(
+                            AppSvgAssets.homeFooter,
+                            height: 180,
+                          ),
+                          Positioned(
+                            top: 64,
+                            left: 20,
+                            right: 20,
+                            child: Image.asset(
+                              AppImageAssets.homeLogo.assetName,
+                              height: 44,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
 
-enum GridItemType {
-  title,
-  live,
-  upcoming,
-  featured,
-  past,
-  loader,
-  series,
-}
-
-class UpcomingGridItem extends Equatable {
-  final Webinar? conversation;
-  final String? title;
-  final Icon? icon;
-  final String? color;
-  final GridItemType type;
-  final bool? rsvped;
-
-  UpcomingGridItem({
-    this.conversation,
-    this.title,
-    this.icon,
-    this.color,
-    required this.type,
-    this.rsvped,
-  });
-
-  @override
-  List<Object?> get props => [conversation?.id];
-}
-
-class UpcomingGridTile extends StatelessWidget {
-  final UpcomingGridItem item;
-  const UpcomingGridTile(
-    this.item, {
-    Key? key,
-  }) : super(key: key);
+class _YourJourney extends StatelessWidget {
+  const _YourJourney({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final conversation = item.conversation!;
-    final user = conversation.hostDetail;
-    final topic = conversation.topicDetail;
-    final tag = topic?.root;
-    String description = user?.introduction ?? topic?.name ?? ' ';
-    if (description.isEmpty) {
-      description = item.conversation?.description ?? '';
-    }
-    String title = user?.name ?? '';
-
-    if (item.type == GridItemType.upcoming || item.type == GridItemType.past) {
-      title = topic?.name ?? '';
-      description = user?.name ?? '';
-    }
-
-    return InkWell(
-      onTap: () {
-        if (item.type == GridItemType.upcoming) {
-          AutoRouter.of(context)
-              .push(ConversationScreenRoute(id: conversation.id));
-
-          // final link = 'https://crater.club/session/${conversation.id}';
-
-          // launch(link,
-          //     option: const CustomTabsOption(
-          //         enableDefaultShare: false,
-          //         enableInstantApps: false,
-          //         enableUrlBarHiding: true,
-          //         showPageTitle: false,
-          //         toolbarColor: Colors.black));
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => WebinarScreen(
-          //           webUrl: link,
-          //         )));
-        } else if (item.type == GridItemType.past) {
-          AutoRouter.of(context)
-              .push(PastStreamDetailScreenRoute(id: conversation.id));
-        }
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: GridTile(
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
           child: Column(
-        children: [
-          Expanded(
-              child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              color: Theme.of(context).dialogBackgroundColor,
-              width: double.infinity,
-              height: double.infinity,
-              child: Stack(
-                children: [
-                  if (topic?.image != null)
-                    Image.network(
-                      topic?.image ?? '',
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  if (item.type == GridItemType.upcoming)
-                    LiveTime(date: item.conversation?.start?.toLocal()),
-                  if (item.type == GridItemType.past)
-                    const Center(
-                      child: Icon(Icons.play_circle, size: 80),
-                    )
-                ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Your journey',
+                style: Theme.of(context).textTheme.subtitle1,
               ),
-            ),
-          )),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(user?.photo ?? ''),
-                    backgroundColor: Theme.of(context).dialogBackgroundColor,
-                    radius: 28,
-                  ),
+              const SizedBox(
+                height: 12,
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
                 ),
-                Expanded(
-                  child: Column(
+                height: 200,
+                color: Colors.white,
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              style: Theme.of(context).textTheme.subtitle2,
-                              maxLines: 2,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          if (tag?.name?.isNotEmpty ?? false)
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border:
-                                    Border.all(color: Colors.white, width: 0.5),
-                              ),
-                              child: Text(
-                                tag?.name ?? '',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
                       Text(
-                        description,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.caption,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      )),
-    );
-  }
-}
-
-class SeriesGridTile extends StatelessWidget {
-  final UpcomingGridItem item;
-  const SeriesGridTile(
-    this.item, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final conversation = item.conversation!;
-    final user = conversation.hostDetail;
-    final topic = conversation.topicDetail;
-    String description = user?.introduction ?? topic?.name ?? ' ';
-    if (description.isEmpty) {
-      description = item.conversation?.description ?? '';
-    }
-    final title = user?.name ?? '';
-
-    return InkWell(
-      onTap: () {
-        AutoRouter.of(context).push(SeriesScreenRoute(id: conversation.id));
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: GridTile(
-          child: Column(
-        children: [
-          Expanded(
-              child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              color: Theme.of(context).dialogBackgroundColor,
-              width: double.infinity,
-              height: double.infinity,
-              child: Stack(
-                children: [
-                  if (topic?.image != null)
-                    Image.network(
-                      topic?.image ?? '',
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  if (item.type == GridItemType.upcoming)
-                    LiveTime(date: item.conversation?.start?.toLocal()),
-                  if (item.type == GridItemType.past)
-                    const Center(
-                      child: Icon(Icons.play_circle, size: 80),
-                    )
-                ],
-              ),
-            ),
-          )),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
+                        'Become a Creator',
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                              color: Theme.of(context).backgroundColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        'stream, get discovered and launch auctions on Crater for your community',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            ?.copyWith(color: HexColor.fromHex('#959595')),
+                      ),
+                      const SizedBox(
+                        height: 28,
+                      ),
+                      NeoPopTiltedButton(
+                        key: const Key("goliveaudience"),
+                        color: Theme.of(context).primaryColor,
+                        onTapUp: () {
+                          launchUrlString(
+                            'https://calendly.com/craterclub/?utm_source=creator_hub&utm_medium=website&utm_campaign=creator',
+                            mode: LaunchMode.inAppWebView,
+                          );
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 15,
+                            ),
                             child: Text(
-                              title,
-                              style: Theme.of(context).textTheme.subtitle2,
-                              maxLines: 2,
+                              'Start your journey',
+                              style: Theme.of(context).textTheme.button,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      )),
-    );
-  }
-}
-
-class LiveTime extends StatelessWidget {
-  const LiveTime({
-    Key? key,
-    this.date,
-  }) : super(key: key);
-
-  final DateTime? date;
-
-  @override
-  Widget build(BuildContext context) {
-    final format = DateFormat('d MMM @ H:mm');
-    var dateString = '';
-    if (date != null) {
-      dateString = format.format(date!);
-    }
-    return Positioned(
-      left: 10,
-      top: 10,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.circular(4)),
-        child: Row(
-          children: [
-            Text(
-              'Live On',
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  ?.copyWith(color: Theme.of(context).accentColor),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              dateString,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  ?.copyWith(color: Colors.white),
-            ),
-          ],
+                    ]),
+              ),
+            ],
+          ),
         ),
-      ),
+        Positioned(
+          top: 34,
+          right: 8,
+          child: SvgPicture.asset(AppSvgAssets.journeyStars),
+        ),
+      ],
     );
   }
 }
 
-class LiveGridTile extends StatelessWidget {
-  final UpcomingGridItem item;
-  const LiveGridTile(
-    this.item, {
-    Key? key,
-  }) : super(key: key);
+class _TopCreatorList extends HookConsumerWidget {
+  final List<CreatorRow> creators;
+
+  const _TopCreatorList({required this.creators});
 
   @override
-  Widget build(BuildContext context) {
-    final conversation = item.conversation!;
-    final user = conversation.hostDetail;
-    final topic = conversation.topicDetail;
-    final tag = topic?.root;
-    String description = user?.introduction ?? topic?.name ?? ' ';
-    if (description.isEmpty) {
-      description = item.conversation?.description ?? '';
-    }
-    final title = user?.name ?? '';
-
-    return InkWell(
-      onTap: () async {
-        // final link =
-        //     'https://penitence-pre-prod.vercel.app/session/${conversation.id}';
-
-        // launch(link,
-        //     option: const CustomTabsOption(
-        //         enableDefaultShare: false,
-        //         enableInstantApps: false,
-        //         enableUrlBarHiding: true,
-        //         showPageTitle: false,
-        //         toolbarColor: Colors.black));
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => WebinarScreen(
-        //           webUrl: link,
-        //         )));
-
-        if (item.type == GridItemType.live) {
-          final loginStatus = await manageLoginPopup(context);
-          if (loginStatus == false) {
-            return;
-          }
-
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DyteMeetingScreen(
-                    meetingId: conversation.id!,
-                    creatorId: conversation.hostDetail?.creatorDetail?.id ?? 0,
-                  )));
-        } else {
-          AutoRouter.of(context)
-              .push(ConversationScreenRoute(id: conversation.id));
-        }
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: GridTile(
-            child: Container(
-          color: Theme.of(context).dialogBackgroundColor,
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).dialogBackgroundColor,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(
-                    children: [
-                      if (topic?.image != null)
-                        Image.network(
-                          topic?.image ?? '',
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      if (item.type == GridItemType.featured)
-                        LiveTime(date: item.conversation?.start?.toLocal()),
-                      if (item.type == GridItemType.live)
-                        Container(
-                          margin: const EdgeInsets.only(top: 8, left: 12),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: Colors.red,
-                          ),
-                          child: const Text('LIVE'),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user?.photo ?? ''),
-                                  backgroundColor:
-                                      Theme.of(context).dialogBackgroundColor,
-                                  radius: 16,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                  maxLines: 2,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              if (tag?.name?.isNotEmpty ?? false)
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: Colors.white, width: 0.5),
-                                  ),
-                                  child: Text(
-                                    tag?.name ?? '',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            description,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        )),
-      ),
-    );
-  }
-}
-
-class PastLiveGridTile extends StatelessWidget {
-  final UpcomingGridItem item;
-  const PastLiveGridTile(
-    this.item, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final conversation = item.conversation!;
-    final user = conversation.hostDetail;
-    final topic = conversation.topicDetail;
-    final tag = topic?.root;
-    String description = user?.introduction ?? topic?.name ?? ' ';
-    if (description.isEmpty) {
-      description = item.conversation?.description ?? '';
-    }
-    final title = user?.name ?? '';
-
-    return InkWell(
-      onTap: () async {
-        AutoRouter.of(context)
-            .push(PastStreamDetailScreenRoute(id: conversation.id));
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: GridTile(
-            child: Container(
-          color: Theme.of(context).dialogBackgroundColor,
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).dialogBackgroundColor,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(
-                    children: [
-                      if (topic?.image != null)
-                        Image.network(
-                          topic?.image ?? '',
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      const Center(
-                          child: Icon(
-                        Icons.play_circle,
-                        size: 60,
-                      )),
-                      // WebinarVideoPlayer(
-                      //     key: Key(item.conversation!.id.toString()),
-                      //     conversation: item.conversation!),
-                      if (item.type == GridItemType.featured)
-                        LiveTime(date: item.conversation?.start?.toLocal()),
-                      if (item.type == GridItemType.past)
-                        Container(
-                          margin: const EdgeInsets.only(top: 8, left: 12),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 2),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: Theme.of(context).accentColor,
-                          ),
-                          child: const Text('Previously LIVE'),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user?.photo ?? ''),
-                                  backgroundColor:
-                                      Theme.of(context).dialogBackgroundColor,
-                                  radius: 16,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                  maxLines: 2,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              if (tag?.name?.isNotEmpty ?? false)
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: Colors.white, width: 0.5),
-                                  ),
-                                  child: Text(
-                                    tag?.name ?? '',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            description,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        )),
-      ),
-    );
-  }
-}
-
-class WebinarVideoPlayer extends StatefulWidget {
-  const WebinarVideoPlayer({
-    Key? key,
-    required this.conversation,
-  }) : super(key: key);
-
-  final Webinar conversation;
-
-  @override
-  _WebinarVideoPlayerState createState() => _WebinarVideoPlayerState();
-}
-
-class _WebinarVideoPlayerState extends State<WebinarVideoPlayer> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    _controller = VideoPlayerController.network(
-        widget.conversation.recordingDetails?.recording ?? '');
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.read(authStateProvider.notifier).getUser();
+    final _controller = useScrollController();
     _controller.addListener(() {
-      setState(() {});
+      // reached End of scroll
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        ref.read(creatorStateProvider('').notifier).getNextPageProfileList('');
+      }
     });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) {
-      _controller.setVolume(0.0);
-      _controller.seekTo(const Duration(minutes: 10));
-      return setState(() {});
-    });
-    _controller.play();
-    super.initState();
-  }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Theme.of(context).dialogBackgroundColor,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    widget.conversation.topicDetail?.image ?? '',
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+    return creators.isEmpty
+        ? Container()
+        : Wrap(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                child: Text(
+                  'Top Creators',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+              SizedBox(
+                height: 250,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 20,
+                  ),
+                  controller: _controller,
+                  itemCount: creators.length,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.fromLTRB(20, 8, 8, 40),
+                  itemBuilder: (context, index) => CreatorFollowCard(
+                    item: creators[index],
+                    authUserPk: user?.pk,
                   ),
                 ),
-                VideoPlayer(_controller),
-                // _ControlsOverlay(
-                //   isPlaying: _controller.value.isPlaying,
-                //   isFullScreen: widget.isFullScreen,
-                // ),
-                // VideoProgressIndicator(
-                //   _controller,
-                //   colors: VideoProgressColors(playedColor: Theme.of(context).accentColor),
-                //   allowScrubbing: true,
-                //   padding: EdgeInsets.only(
-                //     bottom: 0,
-                //     top: 20,
-                //   ),
-                // ),
+              ),
+            ],
+          );
+  }
+}
+
+class _CategoryWindowView extends HookConsumerWidget {
+  final GridItemType type;
+
+  const _CategoryWindowView({required this.type});
+
+  String iconForCategory(CategoriesDetailList category) {
+    switch (category.name?.toLowerCase()) {
+      case 'design':
+        return AppImageAssets.design.assetName;
+      case 'marketing':
+        return AppImageAssets.marketing.assetName;
+      case 'finance':
+        return AppImageAssets.finance.assetName;
+      case 'career':
+        return AppImageAssets.career.assetName;
+      case 'stocks':
+        return AppImageAssets.stock.assetName;
+      case 'entertainment':
+        return AppImageAssets.web3v2.assetName;
+      case 'coding':
+        return AppImageAssets.design.assetName;
+      case 'branding':
+        return AppImageAssets.branding.assetName;
+      case 'content creation':
+        return AppImageAssets.contentCreation.assetName;
+      case 'startups':
+        return AppImageAssets.startups.assetName;
+      case 'web 3.0':
+        return AppImageAssets.web3.assetName;
+      default:
+        return AppImageAssets.design.assetName;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final webinarCategoryProvider = ref.watch(webinarCategoryStateProvider);
+    return Stack(
+      children: [
+        Positioned(right: 0, child: SvgPicture.asset(AppSvgAssets.categoryBG)),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Container(
+            color: HexColor.fromHex('#882EE8').withOpacity(0.16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Top categories',
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 221,
+                  child: webinarCategoryProvider.when(
+                    loading: () => Container(),
+                    data: (categoryList) {
+                      categoryList
+                          .sort((a, b) => a.name?.compareTo(b.name ?? '') ?? 0);
+                      return ListView.separated(
+                        itemCount: categoryList.length,
+                        scrollDirection: Axis.horizontal,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemBuilder: (context, index) {
+                          void showCategory(CategoriesDetailList category) {
+                            if (type == GridItemType.past) {
+                              AutoRouter.of(context).navigate(
+                                PastStreamScreenRoute(
+                                  categoryId: category.pk,
+                                  categoryName: category.name,
+                                ),
+                              );
+                            } else if (type == GridItemType.upcoming) {
+                              AutoRouter.of(context).navigate(
+                                UpcomingStreamScreenRoute(
+                                  categoryId: category.pk,
+                                  categoryName: category.name,
+                                ),
+                              );
+                            }
+                          }
+
+                          return Row(
+                            children: [
+                              InkWell(
+                                onTap: () => showCategory(categoryList[index]),
+                                child: GridTile(
+                                  child: Stack(
+                                    children: [
+                                      SvgPicture.asset(
+                                          AppSvgAssets.categoryWindow),
+                                      Container(
+                                        width: 152,
+                                        height: 220,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(
+                                              height: 40,
+                                            ),
+                                            Image.asset(
+                                              iconForCategory(
+                                                  categoryList[index]),
+                                              height: 74,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              categoryList[index].name ?? '',
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 180,
+                                        left: 0,
+                                        right: 0,
+                                        child: PlainButton(
+                                          title: 'Explore',
+                                          bgColor: HexColor.fromHex('#FFBF20'),
+                                          textColor:
+                                              Theme.of(context).backgroundColor,
+                                          icon: Icons.arrow_forward,
+                                          onPressed: () =>
+                                              showCategory(categoryList[index]),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (index == categoryList.length - 1)
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(24.0),
+                                    child: SizedBox(
+                                      width: 152,
+                                      child: PlainButton(
+                                        title: 'More',
+                                        fontSize: 14,
+                                        onPressed: () => showCategory(
+                                          const CategoriesDetailList(
+                                            name: 'All',
+                                          ),
+                                        ),
+                                        bgColor: Colors.white,
+                                        icon: Icons.arrow_forward,
+                                        textColor:
+                                            Theme.of(context).backgroundColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    error: (e, s) => Container(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 36,
+                  color: HexColor.fromHex('#5F1DAB').withOpacity(0.24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Image.asset(AppImageAssets.categoryFooter.assetName),
+                      const Spacer(),
+                      const Text('More categories coming soon!')
+                    ],
+                  ),
+                )
               ],
             ),
-          ],
-        ));
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: SvgPicture.asset(AppSvgAssets.categoryStar),
+        ),
+      ],
+    );
   }
 }

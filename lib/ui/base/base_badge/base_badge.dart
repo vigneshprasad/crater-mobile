@@ -15,7 +15,10 @@ class BaseBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final countStyle = Theme.of(context).textTheme.bodyText1?.copyWith(
-        fontSize: 10, color: Colors.white, fontWeight: FontWeight.w700);
+          fontSize: 10,
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        );
     return Stack(
       fit: StackFit.passthrough,
       // overflow: Overflow.visible,

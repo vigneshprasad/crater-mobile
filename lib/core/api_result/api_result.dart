@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../error/failures/failures.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 
 part 'api_result.freezed.dart';
 

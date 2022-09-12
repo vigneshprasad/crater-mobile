@@ -1,19 +1,24 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:kiwi/kiwi.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:worknetwork/api/integrations/devices_api_service.dart';
-
-import '../../features/chat/data/models/chat_message_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../routes.gr.dart';
-import '../config_reader/config_reader.dart';
-import '../widgets/screens/home_screen/home_screen.dart';
-import 'models/push_notification_data/push_notification_data.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
+import 'package:worknetwork/core/push_notfications/models/push_notification_data/push_notification_data.dart';
+import 'package:worknetwork/core/widgets/root_app.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
+import 'package:worknetwork/features/chat/data/models/chat_message_model.dart';
+import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/routes.gr.dart';
+
+final pushNotificationsProvider = Provider(
+  (ref) {
+    return PushNotificationsImpl(ref.read);
+  },
+);
 
 abstract class PushNotifications {
   Future<void> initSdk();
+  void promptForPermission();
   Future<String> getSubscriptionToken();
   Future<String?> getPushToken();
   Future<void> setUserIdentifier(String phone);
@@ -24,6 +29,10 @@ abstract class PushNotifications {
 }
 
 class PushNotificationsImpl implements PushNotifications {
+  final Reader read;
+
+  PushNotificationsImpl(this.read);
+
   @override
   Future<String> getSubscriptionToken() async {
     final Completer<String> _completer = Completer();
@@ -55,7 +64,8 @@ class PushNotificationsImpl implements PushNotifications {
 
   @override
   Future<void> handleNotificationsPressed(
-      OSNotificationOpenedResult result) async {
+    OSNotificationOpenedResult result,
+  ) async {
     if (result.notification.additionalData == null) {
       return;
     }
@@ -64,26 +74,32 @@ class PushNotificationsImpl implements PushNotifications {
     final json = result.notification.additionalData;
 
     final PushType type = enumFromType(objTyp);
-    final _navigatorKey = KiwiContainer().resolve<GlobalKey<NavigatorState>>();
+    final _navigatorKey = read(navigatorKeyProvider);
 
     if (type == PushType.chatMessage) {
-      final message = ChatMessageModel.fromJson(json!);
-      _navigatorKey.currentState?.pushNamed(ChatScreenRoute.name,
-          arguments:
-              ChatScreenRouteArgs(recieverId: message.senderId!, creatorId: 0));
+      final message = ChatMessage.fromJson(json!);
+      _navigatorKey.currentState?.pushNamed(
+        ChatScreenRoute.name,
+        arguments:
+            ChatScreenRouteArgs(recieverId: message.senderId!, streamCreator: const Creator()),
+      );
     } else if (type == PushType.conversation) {
       final ConversationNotificationData data =
           ConversationNotificationData.fromJson(json!);
 
-      _navigatorKey.currentState?.pushNamed(ConversationScreenRoute.name,
-          arguments: ConversationScreenRouteArgs(id: data.groupId as int));
+      _navigatorKey.currentState?.pushNamed(
+        ConversationScreenRoute.name,
+        arguments: ConversationScreenRouteArgs(id: data.groupId as int),
+      );
     } else if (type == PushType.upcomingMeeting) {
       if (_navigatorKey.currentWidget is! HomeScreen) {
         _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name);
       }
     } else if (type == PushType.createConversation) {
-      _navigatorKey.currentState?.pushNamed(HomeScreenRoute.name,
-          arguments: const HomeScreenRouteArgs(tab: 1));
+      _navigatorKey.currentState?.pushNamed(
+        HomeScreenRoute.name,
+        arguments: const HomeScreenRouteArgs(tab: 1),
+      );
     }
   }
 
@@ -111,7 +127,10 @@ class PushNotificationsImpl implements PushNotifications {
 
     // OneSignal.shared
     //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
+  }
 
+  @override
+  Future<void> promptForPermission() async {
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);

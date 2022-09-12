@@ -1,18 +1,17 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/api/auth/auth_api_service.dart';
 import 'package:worknetwork/api/auth/otp_api_service.dart';
+import 'package:worknetwork/api/user/user_api_service.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/features/auth/data/models/api/auth_response_model.dart';
 import 'package:worknetwork/features/auth/data/models/api/referrals_response_model.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/features/auth/data/models/user_profile_model.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_entity.dart';
+import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-
-import '../../../../api/auth/auth_api_service.dart';
-import '../../../../api/user/user_api_service.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../domain/entity/user_entity.dart';
-import '../../domain/entity/user_profile_entity.dart';
-import '../models/api/auth_response_model.dart';
-import '../models/user_model.dart';
-import '../models/user_profile_model.dart';
 
 final authRemoteDatasourceProvider = Provider<AuthRemoteDataSource>((ref) {
   final apiService = ref.read(authApiServiceProvider);
@@ -25,38 +24,7 @@ abstract class AuthRemoteDataSource {
   /// Calls the Email Login Endpoint on backend.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<UserModel> loginWithEmail(String email, String password, String osId);
-
-  /// Calls the Email Login Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
   Future<UserModel> logout(String osId);
-
-  /// Calls the Email Register Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<UserModel> registerWithEmail(
-      String name, String email, String password, String osId);
-
-  /// Calls the Google Auth Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<UserModel> authWithGoogle(String token, String osId);
-
-  /// Calls the Apple Auth Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<UserModel> authWithApple(String token, String osId);
-
-  /// Calls the Linked Auth Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<UserModel> authWithLinkedIn(String token, String osId);
-
-  /// Calls the Facebook Auth Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<UserModel> authWithFacebook(String token, String osId);
 
   /// Calls the Patch User Endpoint on backend.
   ///
@@ -78,16 +46,6 @@ abstract class AuthRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<UserProfile> getUserProfileFromRemote();
 
-  /// Calls the Post Password Reset Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<String> postPasswordResetToRemote(String email);
-
-  /// Calls the Post New Password Endpoint on backend.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<String> postNewPasswordToRemote(Map<String, String> body);
-
   /// Send OTP to phone
   ///
   /// Throws a [ServerException] for all error codes.
@@ -97,7 +55,10 @@ abstract class AuthRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> verifyOtp(
-      String phone, String otp, Map<String, String> attributionData);
+    String phone,
+    String otp,
+    Map<String, String> attributionData,
+  );
 
   Future<UserPermission> getUserPermissionFromRemote();
 
@@ -110,106 +71,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final OtpApiService otpApiService;
 
   AuthRemoteDataSourceImpl(
-      this.apiService, this.userApiService, this.otpApiService);
-
-  @override
-  Future<UserModel> authWithGoogle(String token, String osId) async {
-    final body = {"access_token": token, "role": "user", "os_id": osId};
-    final response = await apiService.authWithGoogle(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<UserModel> authWithApple(String token, String osId) async {
-    final body = {"access_token": token, "role": "user", "os_id": osId};
-    final response = await apiService.authWithApple(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<UserModel> authWithFacebook(String token, String osId) async {
-    final body = {"access_token": token, "role": "user", "os_id": osId};
-    final response = await apiService.authWithFacebook(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<UserModel> authWithLinkedIn(String token, String osId) async {
-    final body = {"access_token": token, "role": "user", "os_id": osId};
-    final response = await apiService.authWithLinkedin(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<UserModel> loginWithEmail(
-      String email, String password, String osId) async {
-    final body = {
-      "email": email,
-      "password": password,
-      "os_id": osId,
-    };
-    final response = await apiService.loginWithEmail(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
+    this.apiService,
+    this.userApiService,
+    this.otpApiService,
+  );
 
   @override
   Future<UserModel> logout(String osId) async {
     final body = {"os_id": osId};
     final response = await apiService.logout(body);
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      final model = AuthResponseModel.fromJson(json);
-      return model.toUserModel();
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<UserModel> registerWithEmail(
-    String name,
-    String email,
-    String password,
-    String osId,
-  ) async {
-    final body = {
-      "name": name,
-      "email": email,
-      "password": password,
-      "os_id": osId,
-    };
-    final response = await apiService.registerWithEmail(body);
-    if (response.statusCode == 201) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
       final model = AuthResponseModel.fromJson(json);
       return model.toUserModel();
@@ -268,29 +139,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> postPasswordResetToRemote(String email) async {
-    final body = {'email': email};
-    final response = await apiService.postPasswordReset(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return json['detail'] as String;
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
-  Future<String> postNewPasswordToRemote(Map<String, String> body) async {
-    final response = await apiService.postNewPassword(body);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.bodyString) as Map<String, dynamic>;
-      return json['detail'] as String;
-    } else {
-      throw ServerException(response.error);
-    }
-  }
-
-  @override
   Future<void> sendOtp(String phone) async {
     final body = {"username": phone};
     final response = await otpApiService.sendOtp(body);
@@ -306,7 +154,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> verifyOtp(
-      String phone, String otp, Map<String, String> attributionData) async {
+    String phone,
+    String otp,
+    Map<String, String> attributionData,
+  ) async {
     final body = {"username": phone, "otp": otp};
     body.addAll(attributionData);
     final response = await otpApiService.verifyOtp(body);
@@ -332,7 +183,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<ReferralsResponse> getReferralsFromRemote(
-      int? page, int? pageSize) async {
+    int? page,
+    int? pageSize,
+  ) async {
     final response = await userApiService.getReferrals(page, pageSize);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.bodyString) as Map<String, dynamic>;

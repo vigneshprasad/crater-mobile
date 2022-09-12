@@ -1,20 +1,20 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../api/interceptors/authorized_interceptor.dart';
-import '../../../../../core/config_reader/config_reader.dart';
+import 'package:worknetwork/api/interceptors/authorized_interceptor.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'conversation_api_service.chopper.dart';
 
 final conversationApiServiceProvider =
-    Provider((_) => ConversationApiService.create());
+    Provider((ref) => ConversationApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/groups/')
 abstract class ConversationApiService extends ChopperService {
-  static ConversationApiService create() {
+  static ConversationApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
-      interceptors: [AuthorizedInterceptor()],
+      interceptors: [read(authInterceptorProvider)],
       services: [_$ConversationApiService()],
       converter: const JsonConverter(),
     );
@@ -24,11 +24,15 @@ abstract class ConversationApiService extends ChopperService {
 
   @Get(path: 'conversation/calendar/')
   Future<Response> getConversationsByDate(
-      @Query() DateTime start, @Query() DateTime end);
+    @Query() DateTime start,
+    @Query() DateTime end,
+  );
 
   @Get(path: 'conversation/calendar/my/')
   Future<Response> getMyConversationsByDate(
-      @Query() DateTime start, @Query() DateTime end);
+    @Query() DateTime start,
+    @Query() DateTime end,
+  );
 
   @Get(path: 'topic/')
   Future<Response> getAllTopics(@Query() int? parent);
@@ -80,7 +84,8 @@ abstract class ConversationApiService extends ChopperService {
 
   @Post(path: 'topic/suggest/')
   Future<Response> postTopicSuggestionRequest(
-      @Body() Map<String, dynamic> body);
+    @Body() Map<String, dynamic> body,
+  );
 
   @Get(path: 'conversations/categories')
   Future<Response> getWebinarCategories();
@@ -96,15 +101,23 @@ abstract class ConversationApiService extends ChopperService {
     @Query() String? host,
     @Query() int? page,
     @Query('page_size') int? pageSize,
+    @Query('categories') int? categoryId,
   );
 
   @Get(path: 'public/conversations/webinars/past')
-  Future<Response> getPastClubs(@Query() String? host, @Query() int? page,
-      @Query('page_size') int? pageSize, @Query('categories') int? categoryId);
+  Future<Response> getPastClubs(
+    @Query() String? host,
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+    @Query('categories') int? categoryId,
+  );
 
   @Get(path: 'public/conversations/webinars/featured')
-  Future<Response> getFeaturedClubs(@Query() String? host, @Query() int? page,
-      @Query('page_size') int? pageSize);
+  Future<Response> getFeaturedClubs(
+    @Query() String? host,
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
 
   @Post(path: 'conversations/webinars/')
   Future<Response> postWebinarRequest(@Body() Map<String, dynamic> body);
@@ -120,7 +133,9 @@ abstract class ConversationApiService extends ChopperService {
 
   @Get(path: 'public/conversations/series/')
   Future<Response> getSeries(
-      @Query() int? page, @Query('page_size') int? pageSize);
+    @Query() int? page,
+    @Query('page_size') int? pageSize,
+  );
 
   @Get(path: 'public/conversations/series/{id}')
   Future<Response> getSeriesDetails(@Path() int id);

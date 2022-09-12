@@ -7,11 +7,10 @@ part of 'api_models.dart';
 // **************************************************************************
 
 PostPhoneNumberResponse _$PostPhoneNumberResponseFromJson(
-    Map<String, dynamic> json) {
-  return PostPhoneNumberResponse(
-    status: json['status'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    PostPhoneNumberResponse(
+      status: json['status'] as String?,
+    );
 
 Map<String, dynamic> _$PostPhoneNumberResponseToJson(
         PostPhoneNumberResponse instance) =>

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/theme.dart';
-import 'home_screen_app_bar/home_screen_app_bar.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/core/widgets/components/home_screen_app_bar/home_screen_app_bar.dart';
 
 class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -20,7 +20,10 @@ class HomeTabPersistentHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final elevation = shrinkOffset / maxExtent > 0.4
         ? kElevationToShadow[1]
         : kElevationToShadow[0];

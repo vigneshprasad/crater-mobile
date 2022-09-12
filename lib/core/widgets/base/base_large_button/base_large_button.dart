@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
-enum ButtonStyle {
+enum LargeButtonStyle {
   fill,
   outline,
 }
@@ -10,7 +10,7 @@ enum ButtonStyle {
 class BaseLargeButton extends MaterialButton {
   final double? width;
   final ButtonThemeData? buttonTheme;
-  final ButtonStyle style;
+  final LargeButtonStyle style;
 
   const BaseLargeButton({
     required Widget child,
@@ -18,7 +18,7 @@ class BaseLargeButton extends MaterialButton {
     Color? textColor,
     this.width,
     this.buttonTheme,
-    this.style = ButtonStyle.fill,
+    this.style = LargeButtonStyle.fill,
   }) : super(
           onPressed: onPressed,
           child: child,
@@ -31,7 +31,7 @@ class BaseLargeButton extends MaterialButton {
     Color? textColor,
     this.width,
     this.buttonTheme,
-    this.style = ButtonStyle.outline,
+    this.style = LargeButtonStyle.outline,
   }) : super(
           onPressed: onPressed,
           child: child,
@@ -44,7 +44,7 @@ class BaseLargeButton extends MaterialButton {
     final buttonThemeData = buttonTheme ?? Theme.of(context).buttonTheme;
     const buttonHeight = 48.00;
 
-    if (style == ButtonStyle.fill) {
+    if (style == LargeButtonStyle.fill) {
       return SizedBox(
         width: width ?? MediaQuery.of(context).size.width,
         height: buttonHeight,
@@ -60,18 +60,26 @@ class BaseLargeButton extends MaterialButton {
           child: child,
         ),
       );
-    } else if (style == ButtonStyle.outline) {
+    } else if (style == LargeButtonStyle.outline) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: buttonHeight,
-        child: OutlineButton(
-          borderSide: BorderSide(color: theme.primaryColor, width: 2),
-          highlightColor: buttonThemeData.getHighlightColor(this),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppBorderRadius.largeButton),
+        child: OutlinedButton(
+          // borderSide: ,
+          // highlightColor: buttonThemeData.getHighlightColor(this),
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(AppBorderRadius.largeButton),
+              ),
+            ),
+            side: MaterialStateProperty.all(
+              BorderSide(color: theme.primaryColor, width: 2),
+            ),
           ),
           onPressed: onPressed,
-          child: child,
+          child: child ?? Container(),
         ),
       );
     }

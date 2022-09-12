@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/auth/domain/entity/user_profile_entity.dart';
-
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
-import '../../domain/entity/profile_entity/profile_entity.dart';
-import '../../domain/repository/profile_repository.dart';
-import '../datasources/profile_remote_datasource.dart';
+import 'package:worknetwork/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
+import 'package:worknetwork/features/profile/domain/repository/profile_repository.dart';
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
   final remoteDataSource = ref.read(profileRemoteDatasourceProvider);
@@ -57,7 +56,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<Failure, List<Profile>>> retrieveConnections(
-      String profileId) async {
+    String profileId,
+  ) async {
     try {
       final response =
           await remoteDatasource.retrieveConnectionsFromRemote(profileId);

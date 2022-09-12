@@ -1,16 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/error/failures.dart' as F;
+import 'package:worknetwork/core/api_result/api_result.dart';
 import 'package:worknetwork/core/error/failures/failures.dart';
-import 'package:worknetwork/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
 import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
-
-import '../../../../../core/api_result/api_result.dart';
 
 final creatorGridStateProvider = StateNotifierProvider.family<
     CreatorGridStateNotifier,
@@ -23,7 +20,7 @@ class CreatorGridRow {
   final Webinar webinar;
   bool isFollowing;
 
-  CreatorGridRow(this.webinar, this.isFollowing);
+  CreatorGridRow({required this.webinar, required this.isFollowing});
 }
 
 class CreatorGridStateNotifier
@@ -45,12 +42,15 @@ class CreatorGridStateNotifier
     getProfileList('');
   }
 
-  Future<Either<Failure, FollowCreatorResponse>> getProfileList(String tags) async {
+  Future<Either<Failure, FollowCreatorResponse>> getProfileList(
+    String tags,
+  ) async {
     page = 1;
     allLoaded = false;
     loadingPage = true;
     state = ApiResult.loading();
-    final response = await read(conversationRepositoryProvider).getCreators(page: page, pageSize: pageSize);
+    final response = await read(conversationRepositoryProvider)
+        .getCreators(page: page, pageSize: pageSize);
 
     state = response.fold(
       (failure) {
@@ -72,13 +72,15 @@ class CreatorGridStateNotifier
   }
 
   Future<Either<Failure, FollowCreatorResponse>?> getNextPageProfileList(
-      String tags) async {
+    String tags,
+  ) async {
     if (loadingPage == true || allLoaded == true) {
       return null;
     }
     loadingPage = true;
     page = page + 1;
-    final response = await read(conversationRepositoryProvider).getCreators(page: page, pageSize: pageSize);
+    final response = await read(conversationRepositoryProvider)
+        .getCreators(page: page, pageSize: pageSize);
 
     state = response.fold(
       (failure) {
@@ -96,18 +98,24 @@ class CreatorGridStateNotifier
     return response;
   }
 
-  Future<Either<F.Failure, Creator>> followCreator(int id, BuildContext context) async {
+  Future<Either<Failure, Creator>> followCreator(
+    int id,
+    BuildContext context,
+  ) async {
+    final authPK = read(authStateProvider.notifier).getUser()?.pk ?? '';
 
-    final authPK = BlocProvider.of<AuthBloc>(context).state.user?.pk ?? '';
-    
-    final response = await read(connectionRepositoryProvider)
-        .followCreator(id, authPK,);
-    
+    final response = await read(connectionRepositoryProvider).followCreator(
+      id,
+      authPK,
+    );
+
     followed.add(id);
 
     final rows = allProfiles.map((e) {
-      final isFollowing = (followed.contains(e.id)) ? (true) : (e.hostDetail?.creatorDetail?.isFollower ?? false);
-      return CreatorGridRow(e, isFollowing);
+      final isFollowing = (followed.contains(e.id))
+          ? (true)
+          : (e.hostDetail?.creatorDetail?.isFollower ?? false);
+      return CreatorGridRow(webinar: e, isFollowing: isFollowing);
     });
     state = ApiResult<List<CreatorGridRow>>.data(rows.toList());
 
@@ -116,8 +124,10 @@ class CreatorGridStateNotifier
 
   ApiResult<List<CreatorGridRow>> mapProfilesToCreatorRow() {
     final rows = allProfiles.map((e) {
-      final isFollowing = (followed.contains(e.id)) ? (true) : (e.hostDetail?.creatorDetail?.isFollower ?? false);
-      return CreatorGridRow(e, isFollowing);
+      final isFollowing = (followed.contains(e.id))
+          ? (true)
+          : (e.hostDetail?.creatorDetail?.isFollower ?? false);
+      return CreatorGridRow(webinar: e, isFollowing: isFollowing);
     });
     return ApiResult<List<CreatorGridRow>>.data(rows.toList());
   }

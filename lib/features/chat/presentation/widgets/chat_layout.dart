@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import '../../../../constants/app_constants.dart';
-import '../../../../constants/theme.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../chat_inbox/domain/entity/chat_user_entity.dart';
 
 class ChatLayout extends StatefulWidget {
   final bool userIsTyping;
-  final ChatUser? user;
   final IndexedWidgetBuilder? listBuilder;
   final Widget? chatBar;
   final int itemCount;
 
   const ChatLayout({
     Key? key,
-    this.user,
     required this.userIsTyping,
     this.listBuilder,
     this.chatBar,
@@ -38,10 +30,8 @@ class _ChatLayoutState extends State<ChatLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).dialogBackgroundColor,
       body: Column(
         children: [
-          const SizedBox(height: 40,),
           Expanded(
             child: Stack(
               fit: StackFit.expand,
@@ -53,8 +43,9 @@ class _ChatLayoutState extends State<ChatLayout> {
                     if (widget.listBuilder != null)
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                            widget.listBuilder!,
-                            childCount: widget.itemCount),
+                          widget.listBuilder!,
+                          childCount: widget.itemCount,
+                        ),
                       ),
                     // SliverPersistentHeader(
                     //   delegate: ChatHeader(
@@ -71,49 +62,6 @@ class _ChatLayoutState extends State<ChatLayout> {
         ],
       ),
     );
-  }
-
-  Widget? _buildLabel(BuildContext context, double opacity) {
-    if (widget.user != null) {
-      final formatDate = DateFormat("h:mm a");
-      final image = widget.user!.photo != null
-          ? NetworkImage(widget.user!.photo!)
-          : AppImageAssets.defaultAvatar as ImageProvider;
-      final name =
-          (widget.user!.name?.isNotEmpty ?? false) ? widget.user!.name : "";
-      // ignore: unused_local_variable
-      final lastSeen = widget.user!.lastSeen != null
-          ? formatDate.format(widget.user!.lastSeen!)
-          : "";
-      final headerStyle = Theme.of(context).textTheme.subtitle2;
-
-      return Opacity(
-        opacity: opacity,
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 16,
-              backgroundImage: image,
-            ),
-            const SizedBox(width: AppInsets.xl),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name ?? '',
-                    style: headerStyle,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    return null;
   }
 
   @override

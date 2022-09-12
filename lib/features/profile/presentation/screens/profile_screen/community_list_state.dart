@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/core/api_result/api_result.dart';
-import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/connection/data/repository/connection_repository.dart';
 import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 
@@ -36,7 +36,8 @@ class CommunityStateNotifier
 
   @override
   Future<Either<Failure, List<Profile>>> getProfileList(
-      String community) async {
+    String community,
+  ) async {
     page = 1;
     allLoaded = false;
     loadingPage = true;
@@ -62,7 +63,8 @@ class CommunityStateNotifier
 
   @override
   Future<Either<Failure, List<Profile>>?> getNextPageProfileList(
-      String tags) async {
+    String tags,
+  ) async {
     if (loadingPage == true || allLoaded == true) {
       return null;
     }

@@ -1,11 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/club/presentation/screens/streams/stream_screen.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/club/domain/entity/upcoming_grid_item.dart';
 import 'package:worknetwork/features/connection/data/models/creator_response.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
-
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
-import '../../../../conversations/data/repository/conversation_repository_impl.dart';
 
 final profileLiveStreamsStateProvider = StateNotifierProvider.family<
     ProfileLiveStreamsStateNotifier,
@@ -27,16 +26,20 @@ class ProfileLiveStreamsStateNotifier
         await read(conversationRepositoryProvider).getLiveClubs(userId: userId);
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      throw response
+          .swap()
+          .getOrElse(() => ServerFailure('Something went wrong'));
     }
 
     final webinars = response.getOrElse(() => List<Webinar>.empty());
 
     final upcomingClubs = webinars
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.live,
-            ))
+        .map(
+          (e) => UpcomingGridItem(
+            conversation: e,
+            type: GridItemType.live,
+          ),
+        )
         .toList();
 
     state = ApiResult.data(upcomingClubs);
@@ -64,20 +67,20 @@ class ProfileUpcomingStateNotifier
     final response = await read(conversationRepositoryProvider)
         .getUpcomingClubs(userId: userId);
 
-    if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
-    }
-
-    final pageData = response.getOrElse(() => const FollowCreatorResponse());
-
-    final upcomingClubs = pageData.results
-        .map((e) => UpcomingGridItem(
+    response.fold((l) {
+      state = ApiResult.error(l);
+    }, (pageData) {
+      final upcomingClubs = pageData.results
+          .map(
+            (e) => UpcomingGridItem(
               conversation: e,
               type: GridItemType.upcoming,
-            ))
-        .toList();
+            ),
+          )
+          .toList();
 
-    state = ApiResult.data(upcomingClubs);
+      state = ApiResult.data(upcomingClubs);
+    });
   }
 }
 
@@ -103,16 +106,20 @@ class ProfilePastStateNotifier
         await read(conversationRepositoryProvider).getPastClubs(userId: userId);
 
     if (response.isLeft()) {
-      throw response.swap().getOrElse(() => ServerFailure());
+      throw response
+          .swap()
+          .getOrElse(() => ServerFailure('Something went wrong'));
     }
 
     final webinars = response.getOrElse(() => List<Webinar>.empty());
 
     final upcomingClubs = webinars
-        .map((e) => UpcomingGridItem(
-              conversation: e,
-              type: GridItemType.past,
-            ))
+        .map(
+          (e) => UpcomingGridItem(
+            conversation: e,
+            type: GridItemType.past,
+          ),
+        )
         .toList();
 
     state = ApiResult.data(upcomingClubs);

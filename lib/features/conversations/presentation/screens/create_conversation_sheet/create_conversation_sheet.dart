@@ -1,15 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../../../../core/error/failures/failures.dart';
-import '../../../../../utils/app_localizations.dart';
-import '../../../domain/entity/topic_entity/topic_entity.dart';
-import 'create_conversation_sheet_state.dart';
+import 'package:worknetwork/features/conversations/domain/entity/topic_entity/topic_entity.dart';
+import 'package:worknetwork/features/conversations/presentation/screens/create_conversation_sheet/create_conversation_sheet_state.dart';
+import 'package:worknetwork/utils/app_localizations.dart';
 
 const kSheetRadius = Radius.circular(32.00);
 
@@ -24,8 +20,11 @@ class CreateConversationSheet extends PopupRoute<Topic> {
   String? get barrierLabel => null;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (notification) {
         if (notification.extent <= notification.minExtent) {
@@ -47,17 +46,23 @@ class CreateConversationSheet extends PopupRoute<Topic> {
   Duration get transitionDuration => const Duration(milliseconds: 200);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     // TODO: implement buildTransitions
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0.0, 1.0),
         end: Offset.zero,
-      ).animate(CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeInOut,
-      )),
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      ),
       child: child,
     );
   }
@@ -129,17 +134,18 @@ class _SheetHeader extends StatelessWidget {
   }
 }
 
-class _SheetContent extends HookWidget {
+class _SheetContent extends HookConsumerWidget {
   final ScrollController controller;
-
-  const _SheetContent({
+  late WidgetRef ref;
+  _SheetContent({
     required this.controller,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
     final _topic = useState<Topic?>(null);
-    final getTopicsProvider = useProvider(getRootTopicsProvider.notifier);
+    final getTopicsProvider = ref.watch(getRootTopicsProvider.notifier);
 
     return Material(
       color: Colors.transparent,
@@ -175,13 +181,13 @@ class _SheetContent extends HookWidget {
   }
 
   Future<void> _onPressTopic(Topic topic, BuildContext context) async {
-    final response = await context
+    final response = await ref
         .read(getRootTopicsProvider.notifier)
         .getTopicsForParentTopic(topic.id!);
 
     response.fold(
       (failure) {
-        Fluttertoast.showToast(msg: failure.message!);
+        Fluttertoast.showToast(msg: failure.message.toString());
         Navigator.pop(context);
       },
       (topics) {
@@ -194,12 +200,7 @@ class _SheetContent extends HookWidget {
 }
 
 class _Loader extends StatelessWidget {
-  final Failure? error;
-
-  const _Loader({
-    Key? key,
-    this.error,
-  }) : super(key: key);
+  const _Loader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +231,7 @@ class _Error extends StatelessWidget {
   }
 }
 
-class _TopicsList extends HookWidget {
+class _TopicsList extends HookConsumerWidget {
   final ValueChanged<Topic>? onPressedItem;
 
   const _TopicsList({
@@ -238,8 +239,8 @@ class _TopicsList extends HookWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final getTopicsState = useProvider(getRootTopicsProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final getTopicsState = ref.watch(getRootTopicsProvider);
 
     return getTopicsState.when(
       loading: () => const _Loader(),

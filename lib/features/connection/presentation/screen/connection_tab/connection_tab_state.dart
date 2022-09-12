@@ -1,22 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/core/error/failures.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:worknetwork/features/profile/domain/entity/profile_entity/profile_entity.dart';
 import 'package:worknetwork/features/profile/presentation/screens/profile_screen/community_list_state.dart';
-
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../auth/domain/entity/user_tag_entity.dart';
-import '../../../../profile/data/repository/profile_repository_impl.dart';
-import '../../../../profile/domain/entity/profile_entity/profile_entity.dart';
-import '../../../../signup/data/repository/signup_repository_impl.dart';
 
 final connectionStateProvider = StateNotifierProvider.family<
     ConnectionStateNotifier, ApiResult<List<Profile>>, String>((ref, userId) {
   return ConnectionStateNotifier(ref.read, userId);
 });
-
-final tagStateProvider =
-    StateNotifierProvider<TagStateNotifier, ApiResult<List<UserTag>>>(
-        (ref) => TagStateNotifier(ref.read));
 
 class ConnectionStateNotifier
     extends ProfileListStateNotifier<ApiResult<List<Profile>>> {
@@ -64,7 +57,8 @@ class ConnectionStateNotifier
 
   @override
   Future<Either<Failure, List<Profile>>?> getNextPageProfileList(
-      String tags) async {
+    String tags,
+  ) async {
     if (loadingPage == true || allLoaded == true) {
       return null;
     }
@@ -85,28 +79,6 @@ class ConnectionStateNotifier
         return ApiResult<List<Profile>>.data(allProfiles);
       },
     );
-    return response;
-  }
-}
-
-class TagStateNotifier extends StateNotifier<ApiResult<List<UserTag>>> {
-  final Reader read;
-
-  TagStateNotifier(
-    this.read,
-  ) : super(ApiResult<List<UserTag>>.loading()) {
-    getTagList();
-  }
-
-  Future<Either<Failure, List<UserTag>>> getTagList() async {
-    state = ApiResult<List<UserTag>>.loading();
-    final response = await read(signupRepositoryProvider).getUserTags();
-
-    state = response.fold(
-      (failure) => ApiResult<List<UserTag>>.error(null),
-      (tags) => ApiResult<List<UserTag>>.data(tags),
-    );
-
     return response;
   }
 }

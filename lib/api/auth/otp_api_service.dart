@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../core/config_reader/config_reader.dart';
+import 'package:worknetwork/core/config_reader/config_reader.dart';
 
 part 'otp_api_service.chopper.dart';
 

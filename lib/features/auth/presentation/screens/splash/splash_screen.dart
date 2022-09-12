@@ -1,102 +1,52 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart' hide ReadContext;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worknetwork/api/integrations/devices_api_service.dart';
-import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:video_player/video_player.dart';
+import 'package:worknetwork/core/widgets/base/base_container/scaffold_container.dart';
+import 'package:worknetwork/core/widgets/screens/home_screen/home_screen.dart';
+import 'package:worknetwork/features/auth/presentation/screens/phone/phone_screen.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/auth/presentation/screens/welcome/welcome_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_basic_screen.dart';
+import 'package:worknetwork/features/signup/presentation/screens/profile_email_screen.dart';
 
-import '../../../../../core/widgets/base/base_container/scaffold_container.dart';
-import '../../../../../routes.gr.dart';
-import '../../../../../ui/base/logo/logo.dart';
-import '../../../../../utils/navigation_helpers/navigate_post_auth.dart';
-import '../../bloc/auth_bloc.dart';
-
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends HookConsumerWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controllerState =
+        useState(VideoPlayerController.asset('assets/video/intro.mp4'));
+    final controller = controllerState.value;
+    controller.setVolume(0);
+    // controller.addListener(() {});
+    controller.initialize().then((value) {});
+    controller.play();
 
-const craterSplashKey = 'crater_splash_shown';
-
-class _SplashScreenState extends State<SplashScreen> {
-  bool isRedirected = false;
-
-  @override
-  void initState() {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
-    authBloc.add(AuthStarted());
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: listenAuthState,
-      child: const Scaffold(
-        body: ScaffoldContainer(
-          child: Center(
-            child: Logo(
-              withText: false,
-            ),
-          ),
-        ),
-      ),
+    return FutureBuilder<SplashState>(
+      future: ref.watch(splashStateProvider.future),
+      builder: (context, snapshot) {
+        switch (snapshot.data) {
+          case SplashState.home:
+            return const HomeScreen();
+          case SplashState.login:
+            return PhoneScreen();
+          case SplashState.intro:
+            return WelcomeScreen();
+          case SplashState.name:
+            return ProfileBasicScreen(editMode: false);
+          case SplashState.email:
+            return ProfileEmailScreen(editMode: false);
+          default:
+            return Scaffold(
+              body: ScaffoldContainer(
+                child: AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: VideoPlayer(controller),
+                ),
+              ),
+            );
+        }
+      },
     );
-  }
-
-  Future<bool> getStatus(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key) ?? false;
-  }
-
-  Future<void> saveStatus(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(key, true);
-  }
-
-  Future<void> listenAuthState(BuildContext context, AuthState state) async {
-    final osId = await KiwiContainer()
-        .resolve<PushNotifications>()
-        .getSubscriptionToken();
-    debugPrint(osId);
-
-    Map<String, String> data = {
-      'os_id': osId,
-    };
-    final user = BlocProvider.of<AuthBloc>(context).state.user?.pk;
-    if (user != null) {
-      data['user'] = user;
-    }
-
-    // 'user': null,
-    final deviceAPI = context.read(devicesApiServiceProvider);
-    deviceAPI.registerDevice(data).then((response) {
-      debugPrint(response.toString());
-    });
-
-    if (state is AuthStateFailure) {
-      isRedirected = true;
-
-      final splashShown = await getStatus(craterSplashKey);
-
-      if (!splashShown) {
-        await saveStatus(craterSplashKey);
-
-        AutoRouter.of(context).root.pushAndPopUntil(const WelcomeScreenRoute(),
-            predicate: (route) => false);
-
-        return;
-      }
-
-      navigatePostAuth(state.user, profile: state.profile);
-    }
-
-    if (state is AuthStateSuccess && !isRedirected) {
-      isRedirected = true;
-      navigatePostAuth(state.user, profile: state.profile);
-    }
   }
 }

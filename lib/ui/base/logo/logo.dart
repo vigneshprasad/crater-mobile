@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../../../constants/theme.dart';
+import 'package:worknetwork/constants/theme.dart';
 
 class Logo extends StatelessWidget {
   static const logoAsset = 'assets/images/logo.png';
@@ -41,7 +40,6 @@ class Logo extends StatelessWidget {
       ),
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: getTextChildren(),
       )
     ];

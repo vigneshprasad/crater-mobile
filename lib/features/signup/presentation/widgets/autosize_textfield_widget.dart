@@ -1,9 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../domain/entity/profile_intro_question.dart';
+import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
 
 class AutoSizeTextField extends StatefulWidget {
   const AutoSizeTextField({
@@ -53,24 +52,25 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
       width: width,
       margin: const EdgeInsets.only(right: 4),
       child: BaseFormInput(
-          initialValue: widget.value ?? '',
-          label: widget.element.placeholder!,
-          key: Key(widget.element.id!),
-          autovalidate: false,
-          minLines: widget.element.lines,
-          validator: (value) {
-            if (widget.element.optional!) {
-              return null;
-            }
-            return value!.isEmpty ? 'Enter ${widget.element.id}' : null;
-          },
-          onChanged: (value) {
-            widget.onValuesChange(widget.element.id!, value);
-            text = value;
-            setState(() {
-              width = getWidth();
-            });
-          }),
+        initialValue: widget.value ?? '',
+        label: widget.element.placeholder!,
+        key: Key(widget.element.id!),
+        autovalidate: false,
+        minLines: widget.element.lines,
+        validator: (value) {
+          if (widget.element.optional!) {
+            return null;
+          }
+          return value!.isEmpty ? 'Enter ${widget.element.id}' : null;
+        },
+        onChanged: (value) {
+          widget.onValuesChange(widget.element.id!, value);
+          text = value;
+          setState(() {
+            width = getWidth();
+          });
+        },
+      ),
     );
   }
 }

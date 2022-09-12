@@ -45,16 +45,16 @@ class _ProfileFormDropDown<T> extends HookWidget {
           ),
           value: state.value,
           items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(labelGetter(item)),
-                  ))
+              .map(
+                (item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(labelGetter(item)),
+                ),
+              )
               .toList(),
           onChanged: (val) {
             state.value = val;
-            if (onChanged != null) {
-              onChanged!(val);
-            }
+            onChanged?.call(val);
           },
         ),
       ),

@@ -32,7 +32,7 @@ class WalletScreenNotifier
         await read(authRepositoryProvider).getReferrals(page, pageSize);
 
     if (response.isLeft()) {
-      state = AsyncValue.error(ServerFailure(message: 'something went wrong'));
+      state = AsyncValue.error(ServerFailure('something went wrong'));
       return;
     }
 

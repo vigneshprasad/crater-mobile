@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:worknetwork/features/club/presentation/widgets/home_app_bar.dart';
-import 'package:worknetwork/features/connection/presentation/widget/connectable_list/connectable_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list.dart';
 import 'package:worknetwork/features/connection/presentation/widget/featured_list/featured_list_state.dart';
 
-import 'connection_tab_state.dart';
-
-class ConnectionTab extends HookWidget {
+class ConnectionTab extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final tagsState = useProvider(tagStateProvider);
     return SafeArea(
       child: NestedScrollView(
@@ -20,10 +16,12 @@ class ConnectionTab extends HookWidget {
           )
         ],
         body: RefreshIndicator(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
           onRefresh: () {
             final futures = [
-              context.read(featuredConnectionStateProvider('').notifier).getProfileList(''),
+              ref
+                  .read(featuredConnectionStateProvider('').notifier)
+                  .getProfileList(''),
             ];
 
             return Future.wait(futures);

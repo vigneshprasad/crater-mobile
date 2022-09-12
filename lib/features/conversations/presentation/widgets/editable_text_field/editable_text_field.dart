@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../../../../constants/theme.dart';
-import '../../../../../ui/base/base_input/base_input.dart';
+import 'package:worknetwork/constants/theme.dart';
+import 'package:worknetwork/ui/base/base_input/base_input.dart';
 
 class EditableTextField extends HookWidget {
   final String text;
@@ -54,9 +54,7 @@ class EditableTextField extends HookWidget {
             enabled: editMode.value,
             onToggle: () {
               if (editMode.value) {
-                if (onValueChanged != null) {
-                  onValueChanged!(_textController.text);
-                }
+                onValueChanged?.call(_textController.text);
               }
               editMode.value = !editMode.value;
               if (editMode.value) {

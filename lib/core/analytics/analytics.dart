@@ -1,13 +1,18 @@
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/analytics/anlytics_events.dart';
 import 'package:worknetwork/core/attribution/attribution_manager.dart';
 import 'package:worknetwork/core/config_reader/config_reader.dart';
+import 'package:worknetwork/core/error/exceptions.dart';
+import 'package:worknetwork/core/network_info/network_info.dart';
+import 'package:worknetwork/core/push_notfications/push_notifications.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
 
-import '../../features/auth/data/datasources/auth_local_datasource.dart';
-import '../error/exceptions.dart';
-import '../network_info/network_info.dart';
-import '../push_notfications/push_notifications.dart';
-import 'anlytics_events.dart';
+final analyticsProvider = Provider(
+  (ref) {
+    return AnalyticsImpl(ref.read);
+  },
+);
 
 abstract class Analytics {
   /// Intialize Sdk and set base properties
@@ -47,21 +52,18 @@ abstract class Analytics {
 }
 
 class AnalyticsImpl implements Analytics {
-  final PushNotifications pushNotifications;
-  final AuthLocalDataSource localDataSource;
-  final NetworkInfo networkInfo;
+  late final NetworkInfo networkInfo;
+  Reader read;
 
-  AnalyticsImpl(
-    this.pushNotifications,
-    this.localDataSource,
-    this.networkInfo,
-  );
+  AnalyticsImpl(this.read) {
+    networkInfo = read(networkInfoProvider);
+  }
 
   @override
   Future<void> initSdk() async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
-      final token = await pushNotifications.getPushToken();
+      final token = await read(pushNotificationsProvider).getPushToken();
       try {
         final isDebug = ConfigReader.getEnv() != "prod";
         final config = SegmentConfig(
@@ -91,10 +93,13 @@ class AnalyticsImpl implements Analytics {
   }) async {
     final isConnected = await networkInfo.isConnected;
     if (isConnected) {
-      final user = localDataSource.getUserFromCache();
+      final user = read(authStateProvider.notifier).getUser();
       try {
         await Segment.identify(
-            userId: user.pk, traits: properties, options: options);
+          userId: user?.pk,
+          traits: properties,
+          options: options,
+        );
       } catch (error) {
         throw AnalyticsException(error);
       }
@@ -113,7 +118,10 @@ class AnalyticsImpl implements Analytics {
     if (isConnected) {
       try {
         await Segment.track(
-            eventName: eventName, properties: properties, options: options);
+          eventName: eventName,
+          properties: properties,
+          options: options,
+        );
         await appsflyer.logEvent(eventName, properties ?? {});
       } catch (error) {
         throw AnalyticsException(error);
@@ -131,7 +139,10 @@ class AnalyticsImpl implements Analytics {
     if (isConnected) {
       try {
         await Segment.screen(
-            screenName: screenName, properties: properties, options: options);
+          screenName: screenName,
+          properties: properties,
+          options: options,
+        );
       } catch (error) {
         throw AnalyticsException(error);
       }

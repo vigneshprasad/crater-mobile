@@ -1,21 +1,17 @@
 import 'package:dartz/dartz.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
+import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_entity/series_entity.dart';
 import 'package:worknetwork/features/conversations/domain/entity/series_request_entity/series_request_entity.dart';
 
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
-import '../../../data/repository/conversation_repository_impl.dart';
-import '../../../domain/entity/conversation_request_entity/conversation_request_entity.dart';
-
 final seriesStateProvider = StateNotifierProvider.autoDispose
     .family<SeriesState, ApiResult<SeriesScreenData>, int>(
-        (ref, id) => SeriesState(ref.read, id));
+  (ref, id) => SeriesState(ref.read, id),
+);
 
-class SeriesScreenData{
-
+class SeriesScreenData {
   final Series series;
   final bool isRSVPed;
 
@@ -26,14 +22,15 @@ class SeriesState extends StateNotifier<ApiResult<SeriesScreenData>> {
   final Reader read;
   final int _groupId;
 
-  SeriesState(this.read, this._groupId)
-      : super(ApiResult.loading()) {
+  SeriesState(this.read, this._groupId) : super(ApiResult.loading()) {
     retrieveSeries();
   }
 
-  Future<Either<Failure, Series>> retrieveSeries({bool justRSVPed = false}) async {
-    final response = await read(conversationRepositoryProvider)
-        .getSeriesDetails(_groupId);
+  Future<Either<Failure, Series>> retrieveSeries({
+    bool justRSVPed = false,
+  }) async {
+    final response =
+        await read(conversationRepositoryProvider).getSeriesDetails(_groupId);
 
     final requestResponse = await read(conversationRepositoryProvider)
         .getWebinarRSVPRequest(_groupId);
@@ -41,7 +38,6 @@ class SeriesState extends StateNotifier<ApiResult<SeriesScreenData>> {
     state = response.fold(
       (failure) => ApiResult.error(failure),
       (series) {
-
         final isRSVPed = justRSVPed || requestResponse.isRight();
         final data = SeriesScreenData(series, isRSVPed);
         return ApiResult.data(data);
@@ -53,12 +49,11 @@ class SeriesState extends StateNotifier<ApiResult<SeriesScreenData>> {
 
   Future<Either<Failure, SeriesRequest>> postRequestToRSVP() async {
     final request = SeriesRequest(
-      seriesId: _groupId.toString()
+      seriesId: _groupId.toString(),
     );
     final response = await read(conversationRepositoryProvider)
         .postRequestToRSVPSeries(request);
 
     return response;
   }
-
 }

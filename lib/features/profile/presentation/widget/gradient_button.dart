@@ -21,24 +21,29 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gradient = LinearGradient(colors: [
-      HexColor.fromHex('#DF3E83'),
-      HexColor.fromHex('#2F80ED'),
-      HexColor.fromHex('#65C7CC'),
-    ]);
-    final gradientDB = LinearGradient(colors: [
-      HexColor.fromHex('#141D1F'),
-      HexColor.fromHex('#29373C'),
-    ]);
+    final gradient = LinearGradient(
+      colors: [
+        HexColor.fromHex('#DF3E83'),
+        HexColor.fromHex('#2F80ED'),
+        HexColor.fromHex('#65C7CC'),
+      ],
+    );
+    final gradientDB = LinearGradient(
+      colors: [
+        HexColor.fromHex('#141D1F'),
+        HexColor.fromHex('#29373C'),
+      ],
+    );
     const thickness = 1.0;
     const radius = 8.0;
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius + 3),
-          border: Border.all(
-            color: HexColor.fromHex('#4F4F4F'),
-          )),
+        borderRadius: BorderRadius.circular(radius + 3),
+        border: Border.all(
+          color: HexColor.fromHex('#4F4F4F'),
+        ),
+      ),
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: gradient,

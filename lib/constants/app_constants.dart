@@ -101,15 +101,6 @@ class AppImageAssets {
       AssetImage("assets/images/img_reward_trophy.png");
   static const emailReset = AssetImage("assets/images/img_email.png");
 
-  static const splashHome = AssetImage("assets/images/img_splash_home.png");
-  static const splashObjective =
-      AssetImage("assets/images/img_splash_objective.png");
-  static const splashVideoCall =
-      AssetImage("assets/images/img_splash_video_call.png");
-  static const splashMeetingCard =
-      AssetImage("assets/images/img_splash_meeting_card.png");
-  static const splashReward = AssetImage("assets/images/img_splash_reward.png");
-
   static const splashDiscover =
       AssetImage("assets/images/splash/meeting-table.png");
   static const splashTopic =
@@ -121,6 +112,11 @@ class AppImageAssets {
       AssetImage("assets/images/splash/conversation-setup.png");
   static const splashVirtual =
       AssetImage("assets/images/splash/converse-virtually.png");
+
+  static const splashChat = AssetImage("assets/images/splash/chat.png");
+  static const splashAuction = AssetImage("assets/images/splash/auction.png");
+  static const splashLearn = AssetImage("assets/images/splash/learn.png");
+
   static const emptyCalendar =
       AssetImage("assets/images/img_empty_state_calendar.png");
 
@@ -143,6 +139,26 @@ class AppImageAssets {
       AssetImage("assets/images/img_group_and_one_on_one.png");
 
   static const feedback = AssetImage("assets/images/feedback.png");
+
+  static const phone = AssetImage("assets/images/phone.png");
+  static const username = AssetImage("assets/images/username.png");
+  static const circles = AssetImage("assets/images/circles.png");
+
+  static const categoryFooter = AssetImage("assets/images/category-footer.png");
+
+  static const branding = AssetImage("assets/category-icons/branding.png");
+  static const career = AssetImage("assets/category-icons/career.png");
+  static const contentCreation =
+      AssetImage("assets/category-icons/content-creation.png");
+  static const design = AssetImage("assets/category-icons/design.png");
+  static const finance = AssetImage("assets/category-icons/finance.png");
+  static const marketing = AssetImage("assets/category-icons/marketing.png");
+  static const startups = AssetImage("assets/category-icons/startups.png");
+  static const stock = AssetImage("assets/category-icons/stock.png");
+  static const web3 = AssetImage("assets/category-icons/web3.png");
+  static const web3v2 = AssetImage("assets/category-icons/web3v2.png");
+
+  static const homeLogo = AssetImage("assets/images/home-logo.png");
 }
 
 class AppSvgAssets {
@@ -155,6 +171,28 @@ class AppSvgAssets {
   static const twitterBlack = "assets/svg/twitter-black.svg";
   static const share = "assets/svg/share.svg";
   static const streams = "assets/svg/streams.svg";
+  static const home = "assets/svg/home.svg";
+  static const homeFilled = "assets/svg/home-filled.svg";
+  static const stream = "assets/svg/stream.svg";
+  static const streamFilled = "assets/svg/stream-filled.svg";
+  static const creators = "assets/svg/creators.svg";
+  static const creatorsFilled = "assets/svg/creators-filled.svg";
+  static const hub = "assets/svg/hub.svg";
+  static const hubFilled = "assets/svg/hub-filled.svg";
+  static const profile = "assets/svg/profile.svg";
+  static const profileFilled = "assets/svg/profile-filled.svg";
+  static const phone = "assets/svg/phone.svg";
+  static const cableTV = "assets/svg/cable-tv.svg";
+  static const collapse = "assets/svg/collapse.svg";
+  static const expand = "assets/svg/expand.svg";
+  static const auction = "assets/svg/auction.svg";
+  static const chat = "assets/svg/chat.svg";
+  static const send = "assets/svg/send.svg";
+  static const categoryWindow = "assets/svg/category-window.svg";
+  static const categoryBG = "assets/svg/category-bg.svg";
+  static const categoryStar = "assets/svg/category-star.svg";
+  static const journeyStars = "assets/svg/journey-stars.svg";
+  static const homeFooter = "assets/svg/home-footer.svg";
 }
 
 class AppLottieAssets {

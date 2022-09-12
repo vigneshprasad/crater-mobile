@@ -1,187 +1,236 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/constants/app_constants.dart';
 import 'package:worknetwork/core/widgets/root_app.dart';
-import 'package:worknetwork/features/social_auth/domain/usecase/get_social_auth_token.dart';
-import 'package:worknetwork/utils/navigation_helpers/navigate_post_auth.dart';
+import 'package:worknetwork/features/auth/data/models/user_model.dart';
+import 'package:worknetwork/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:worknetwork/features/auth/presentation/screens/splash/splash_screen_state.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/profile_header.dart';
+import 'package:worknetwork/routes.gr.dart';
+import 'package:worknetwork/ui/base/base_app_bar/base_app_bar.dart';
+import 'package:worknetwork/ui/base/base_form_input/base_form_input.dart';
+import 'package:worknetwork/ui/base/base_large_button/base_large_button.dart';
 
-import '../../../../constants/theme.dart';
-import '../../../../ui/base/base_app_bar/base_app_bar.dart';
-import '../../../../ui/base/base_form_input/base_form_input.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../bloc/profile_basic/profile_basic_bloc.dart';
-import '../widgets/profile_footer.dart';
-import '../widgets/profile_header.dart';
-
-class ProfileBasicScreen extends StatefulWidget {
+class ProfileBasicScreen extends HookConsumerWidget {
   final bool editMode;
   final VoidCallback? onCompletion;
   final bool? popup;
 
-  const ProfileBasicScreen({
+  late WidgetRef ref;
+
+  ProfileBasicScreen({
     Key? key,
     @PathParam("editMode") required this.editMode,
     this.onCompletion,
     this.popup = false,
   }) : super(key: key);
 
-  @override
-  _ProfileBasicScreenState createState() => _ProfileBasicScreenState();
-}
-
-class _ProfileBasicScreenState extends State<ProfileBasicScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  late ProfileBasicBloc _bloc;
+
   bool allowSkip = false;
-  OverlayEntry? _overlay;
 
   @override
-  void initState() {
-    final name = BlocProvider.of<AuthBloc>(context).state.user?.name;
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
 
-    _bloc = KiwiContainer().resolve<ProfileBasicBloc>();
+    final _validName = useState(false);
+    final _firstNameController = useTextEditingController();
+    useEffect(
+      () {
+        final name = ref.read(authStateProvider.notifier).getUser()?.name;
 
-    if (name != null && name.trim().isNotEmpty) {
-      final parts = name.split(' ');
-      _firstNameController.text = parts.first;
-      if (parts.length > 1) {
-        _lastNameController.text = parts.last;
-      }
-    } else if (widget.editMode == false) {
-      SharedPreferences.getInstance().then((prefs) {
-        final provider = prefs.getString('AuthProvider');
-        if (provider == SocialAuthProviders.apple.toString()) {
-          setState(() {
-            allowSkip = true;
-          });
+        if (name != null && name.trim().isNotEmpty) {
+          _validName.value = true;
+          _firstNameController.text = name;
         }
-      });
-    }
+        return () {
+          _firstNameController.dispose();
+        };
+      },
+      [],
+    );
 
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     String heading;
-    if (widget.editMode) {
-      heading = 'Enter your name';
+    if (editMode) {
+      heading = 'Your name';
     } else {
       heading = 'Lets get started';
     }
 
-    return BlocProvider.value(
-      value: _bloc,
-      child: BlocConsumer<ProfileBasicBloc, ProfileBasicState>(
-        listener: _profileSetupBlocListener,
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: widget.popup == true
-                ? Theme.of(context).dialogBackgroundColor
-                : null,
-            appBar: BaseAppBar(),
-            body: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProfileHeader(title: heading),
-                      _buildProfileForm(context),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                ProfileFooter(
-                  onSave: _onPressedSubmit,
-                  onSkip: allowSkip ? _goToNextScreen : null,
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _lastNameController.dispose();
-    _firstNameController.dispose();
-    _bloc.close();
-    super.dispose();
-  }
-
-  Widget _buildProfileForm(BuildContext context) {
-    const firstnameLabel = 'Your first name';
-    const lastnameLabel = 'Your last name';
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppInsets.xxl, vertical: AppInsets.l),
-      child: Form(
-        key: _formKey,
+    return Scaffold(
+      backgroundColor:
+          popup == true ? Theme.of(context).dialogBackgroundColor : null,
+      // appBar: BaseAppBar(
+      //   actions: [
+      //     TextButton(
+      //       onPressed: () => _goToNextScreen(context),
+      //       child: const Text('Skip for now'),
+      //     ),
+      //   ],
+      // ),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: AppInsets.xxl),
-            BaseFormInput(
-              controller: _firstNameController,
-              autovalidate: false,
-              label: firstnameLabel,
-              validator: (value) => value == null || value.isEmpty
-                  ? "This field is required"
-                  : null,
+            Container(
+              color: Theme.of(context).canvasColor,
+              child: Column(
+                children: [
+                  Stack(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(top: 95, left: 12),
+                        child: Image(
+                          image: AppImageAssets.username,
+                          width: 180,
+                          height: 192,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Image(
+                          image: AppImageAssets.circles,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfileHeader(
+                          title: heading,
+                          subtitle: 'This will also be your username on Crater',
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 50),
+                              BaseFormInput(
+                                controller: _firstNameController,
+                                label: 'Your name',
+                                onChanged: (value) {
+                                  _validName.value = value.trim().isNotEmpty;
+                                },
+                                validator: (value) {
+                                  _validName.value =
+                                      value != null && value.trim().isNotEmpty;
+                                  return value == null || value.trim().isEmpty
+                                      ? "This field is required"
+                                      : null;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 52,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: AppInsets.xxl),
-            BaseFormInput(
-              controller: _lastNameController,
-              autovalidate: false,
-              label: lastnameLabel,
-              validator: (value) => value == null || value.isEmpty
-                  ? "This field is required"
-                  : null,
-            ),
-            const SizedBox(height: AppInsets.xxl),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 56,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Checkbox(
+                  //   checkColor: Colors.black,
+                  //   splashRadius: 0,
+                  //   activeColor: Colors.white,
+                  //   value: true,
+                  //   onChanged: (value) {},
+                  // ),
+                  // Text(
+                  //   'Stay anonymous',
+                  //   style: Theme.of(context).textTheme.titleMedium,
+                  // ),
+                  // const SizedBox(
+                  //   height: 4,
+                  // ),
+                  // Text(
+                  //   'We understand that privacy is important to you. You can talk to creators and other viewers anonymously on stream chats. You can change this in chat settings.',
+                  //   style: Theme.of(context).textTheme.caption,
+                  // )
+                  // ,
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: BaseLargeButton(
+                      text: 'Done',
+                      enabled: _validName.value,
+                      style: BaseLargeButtonStyle.secondary,
+                      onPressed: () {
+                        final name = _firstNameController.text;
+                        ref.read(overlayProvider).show(context);
+                        ref
+                            .read(authRepositoryProvider)
+                            .patchUser(UserModel(name: name))
+                            .then((value) {
+                          ref.read(overlayProvider).hide();
+                          value.fold(
+                            (l) => Fluttertoast.showToast(
+                              msg: 'Something went wrong',
+                            ),
+                            (r) => _goToNextScreen(context),
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-  void _goToNextScreen() {
-    if (widget.onCompletion != null) {
-      widget.onCompletion!();
+  void _goToNextScreen(BuildContext context) {
+    if (onCompletion != null) {
+      onCompletion!();
       return;
     }
-    navigateNextProfileStep(editMode: widget.editMode);
-  }
-
-  void _onPressedSubmit() {
-    final isValid = _formKey.currentState?.validate();
-    if (isValid ?? false) {
-      _overlay = buildLoaderOverlay();
-      Overlay.of(context)?.insert(_overlay!);
-
-      final name = '${_firstNameController.text} ${_lastNameController.text}';
-      _bloc.add(PostProfileBasicRequestStarted(name: name));
+    if (popup == true) {
+      AutoRouter.of(context).pop();
+      return;
     }
-  }
 
-  void _profileSetupBlocListener(
-      BuildContext context, ProfileBasicState state) {
-    if (state is PatchProfileBasicRequestLoaded) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserUpdateRecieved(user: state.user));
-      BlocProvider.of<AuthBloc>(context)
-          .add(AuthUserProfileUpdateRecieved(profile: state.profile));
-      _overlay?.remove();
-      _goToNextScreen();
+    final email = ref.read(authStateProvider.notifier).getUser()?.email?.trim();
+
+    if (email != null && email.isNotEmpty) {
+      AutoRouter.of(context).pushAndPopUntil(
+        HomeScreenRoute(),
+        predicate: (route) => false,
+      );
+      return;
     }
+
+    AutoRouter.of(context).pushAndPopUntil(
+      ProfileEmailScreenRoute(editMode: false, popup: true),
+      predicate: (route) => false,
+    );
   }
 }

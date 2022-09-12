@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'series_entity.dart';
 
@@ -10,55 +12,11 @@ part of 'series_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Series _$SeriesFromJson(Map<String, dynamic> json) {
   return _Series.fromJson(json);
 }
-
-/// @nodoc
-class _$SeriesTearOff {
-  const _$SeriesTearOff();
-
-  _Series call(
-      {int? id,
-      int? topic,
-      @JsonKey(name: "topic_detail")
-          Topic? topicDetail,
-      List<int>? groups,
-      @JsonKey(name: "groups_detail_list")
-          List<GroupsDetailList>? groupsDetailList,
-      List<dynamic>? categories,
-      @JsonKey(name: "categories_detail_list")
-          List<dynamic>? categoriesDetailList,
-      String? host,
-      @JsonKey(name: "host_detail")
-          HostDetail? hostDetail,
-      DateTime? start,
-      @JsonKey(name: "created_at")
-          DateTime? createdAt}) {
-    return _Series(
-      id: id,
-      topic: topic,
-      topicDetail: topicDetail,
-      groups: groups,
-      groupsDetailList: groupsDetailList,
-      categories: categories,
-      categoriesDetailList: categoriesDetailList,
-      host: host,
-      hostDetail: hostDetail,
-      start: start,
-      createdAt: createdAt,
-    );
-  }
-
-  Series fromJson(Map<String, Object> json) {
-    return Series.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Series = _$SeriesTearOff();
 
 /// @nodoc
 mixin _$Series {
@@ -205,9 +163,9 @@ class _$SeriesCopyWithImpl<$Res> implements $SeriesCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$SeriesCopyWith<$Res> implements $SeriesCopyWith<$Res> {
-  factory _$SeriesCopyWith(_Series value, $Res Function(_Series) then) =
-      __$SeriesCopyWithImpl<$Res>;
+abstract class _$$_SeriesCopyWith<$Res> implements $SeriesCopyWith<$Res> {
+  factory _$$_SeriesCopyWith(_$_Series value, $Res Function(_$_Series) then) =
+      __$$_SeriesCopyWithImpl<$Res>;
   @override
   $Res call(
       {int? id,
@@ -234,13 +192,13 @@ abstract class _$SeriesCopyWith<$Res> implements $SeriesCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$SeriesCopyWithImpl<$Res> extends _$SeriesCopyWithImpl<$Res>
-    implements _$SeriesCopyWith<$Res> {
-  __$SeriesCopyWithImpl(_Series _value, $Res Function(_Series) _then)
-      : super(_value, (v) => _then(v as _Series));
+class __$$_SeriesCopyWithImpl<$Res> extends _$SeriesCopyWithImpl<$Res>
+    implements _$$_SeriesCopyWith<$Res> {
+  __$$_SeriesCopyWithImpl(_$_Series _value, $Res Function(_$_Series) _then)
+      : super(_value, (v) => _then(v as _$_Series));
 
   @override
-  _Series get _value => super._value as _Series;
+  _$_Series get _value => super._value as _$_Series;
 
   @override
   $Res call({
@@ -256,7 +214,7 @@ class __$SeriesCopyWithImpl<$Res> extends _$SeriesCopyWithImpl<$Res>
     Object? start = freezed,
     Object? createdAt = freezed,
   }) {
-    return _then(_Series(
+    return _then(_$_Series(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -270,19 +228,19 @@ class __$SeriesCopyWithImpl<$Res> extends _$SeriesCopyWithImpl<$Res>
           : topicDetail // ignore: cast_nullable_to_non_nullable
               as Topic?,
       groups: groups == freezed
-          ? _value.groups
+          ? _value._groups
           : groups // ignore: cast_nullable_to_non_nullable
               as List<int>?,
       groupsDetailList: groupsDetailList == freezed
-          ? _value.groupsDetailList
+          ? _value._groupsDetailList
           : groupsDetailList // ignore: cast_nullable_to_non_nullable
               as List<GroupsDetailList>?,
       categories: categories == freezed
-          ? _value.categories
+          ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<dynamic>?,
       categoriesDetailList: categoriesDetailList == freezed
-          ? _value.categoriesDetailList
+          ? _value._categoriesDetailList
           : categoriesDetailList // ignore: cast_nullable_to_non_nullable
               as List<dynamic>?,
       host: host == freezed
@@ -311,18 +269,27 @@ class _$_Series implements _Series {
   const _$_Series(
       {this.id,
       this.topic,
-      @JsonKey(name: "topic_detail") this.topicDetail,
-      this.groups,
-      @JsonKey(name: "groups_detail_list") this.groupsDetailList,
-      this.categories,
-      @JsonKey(name: "categories_detail_list") this.categoriesDetailList,
+      @JsonKey(name: "topic_detail")
+          this.topicDetail,
+      final List<int>? groups,
+      @JsonKey(name: "groups_detail_list")
+          final List<GroupsDetailList>? groupsDetailList,
+      final List<dynamic>? categories,
+      @JsonKey(name: "categories_detail_list")
+          final List<dynamic>? categoriesDetailList,
       this.host,
-      @JsonKey(name: "host_detail") this.hostDetail,
+      @JsonKey(name: "host_detail")
+          this.hostDetail,
       this.start,
-      @JsonKey(name: "created_at") this.createdAt});
+      @JsonKey(name: "created_at")
+          this.createdAt})
+      : _groups = groups,
+        _groupsDetailList = groupsDetailList,
+        _categories = categories,
+        _categoriesDetailList = categoriesDetailList;
 
   factory _$_Series.fromJson(Map<String, dynamic> json) =>
-      _$_$_SeriesFromJson(json);
+      _$$_SeriesFromJson(json);
 
   @override
   final int? id;
@@ -331,16 +298,44 @@ class _$_Series implements _Series {
   @override
   @JsonKey(name: "topic_detail")
   final Topic? topicDetail;
+  final List<int>? _groups;
   @override
-  final List<int>? groups;
+  List<int>? get groups {
+    final value = _groups;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<GroupsDetailList>? _groupsDetailList;
   @override
   @JsonKey(name: "groups_detail_list")
-  final List<GroupsDetailList>? groupsDetailList;
+  List<GroupsDetailList>? get groupsDetailList {
+    final value = _groupsDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<dynamic>? _categories;
   @override
-  final List<dynamic>? categories;
+  List<dynamic>? get categories {
+    final value = _categories;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<dynamic>? _categoriesDetailList;
   @override
   @JsonKey(name: "categories_detail_list")
-  final List<dynamic>? categoriesDetailList;
+  List<dynamic>? get categoriesDetailList {
+    final value = _categoriesDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? host;
   @override
@@ -360,195 +355,110 @@ class _$_Series implements _Series {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Series &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.topic, topic) ||
-                const DeepCollectionEquality().equals(other.topic, topic)) &&
-            (identical(other.topicDetail, topicDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.topicDetail, topicDetail)) &&
-            (identical(other.groups, groups) ||
-                const DeepCollectionEquality().equals(other.groups, groups)) &&
-            (identical(other.groupsDetailList, groupsDetailList) ||
-                const DeepCollectionEquality()
-                    .equals(other.groupsDetailList, groupsDetailList)) &&
-            (identical(other.categories, categories) ||
-                const DeepCollectionEquality()
-                    .equals(other.categories, categories)) &&
-            (identical(other.categoriesDetailList, categoriesDetailList) ||
-                const DeepCollectionEquality().equals(
-                    other.categoriesDetailList, categoriesDetailList)) &&
-            (identical(other.host, host) ||
-                const DeepCollectionEquality().equals(other.host, host)) &&
-            (identical(other.hostDetail, hostDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.hostDetail, hostDetail)) &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Series &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.topic, topic) &&
+            const DeepCollectionEquality()
+                .equals(other.topicDetail, topicDetail) &&
+            const DeepCollectionEquality().equals(other._groups, _groups) &&
+            const DeepCollectionEquality()
+                .equals(other._groupsDetailList, _groupsDetailList) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality()
+                .equals(other._categoriesDetailList, _categoriesDetailList) &&
+            const DeepCollectionEquality().equals(other.host, host) &&
+            const DeepCollectionEquality()
+                .equals(other.hostDetail, hostDetail) &&
+            const DeepCollectionEquality().equals(other.start, start) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(topic) ^
-      const DeepCollectionEquality().hash(topicDetail) ^
-      const DeepCollectionEquality().hash(groups) ^
-      const DeepCollectionEquality().hash(groupsDetailList) ^
-      const DeepCollectionEquality().hash(categories) ^
-      const DeepCollectionEquality().hash(categoriesDetailList) ^
-      const DeepCollectionEquality().hash(host) ^
-      const DeepCollectionEquality().hash(hostDetail) ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(createdAt);
 
   @JsonKey(ignore: true)
   @override
-  _$SeriesCopyWith<_Series> get copyWith =>
-      __$SeriesCopyWithImpl<_Series>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(topic),
+      const DeepCollectionEquality().hash(topicDetail),
+      const DeepCollectionEquality().hash(_groups),
+      const DeepCollectionEquality().hash(_groupsDetailList),
+      const DeepCollectionEquality().hash(_categories),
+      const DeepCollectionEquality().hash(_categoriesDetailList),
+      const DeepCollectionEquality().hash(host),
+      const DeepCollectionEquality().hash(hostDetail),
+      const DeepCollectionEquality().hash(start),
+      const DeepCollectionEquality().hash(createdAt));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_SeriesCopyWith<_$_Series> get copyWith =>
+      __$$_SeriesCopyWithImpl<_$_Series>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_SeriesToJson(this);
+    return _$$_SeriesToJson(this);
   }
 }
 
 abstract class _Series implements Series {
   const factory _Series(
-      {int? id,
-      int? topic,
+      {final int? id,
+      final int? topic,
       @JsonKey(name: "topic_detail")
-          Topic? topicDetail,
-      List<int>? groups,
+          final Topic? topicDetail,
+      final List<int>? groups,
       @JsonKey(name: "groups_detail_list")
-          List<GroupsDetailList>? groupsDetailList,
-      List<dynamic>? categories,
+          final List<GroupsDetailList>? groupsDetailList,
+      final List<dynamic>? categories,
       @JsonKey(name: "categories_detail_list")
-          List<dynamic>? categoriesDetailList,
-      String? host,
+          final List<dynamic>? categoriesDetailList,
+      final String? host,
       @JsonKey(name: "host_detail")
-          HostDetail? hostDetail,
-      DateTime? start,
+          final HostDetail? hostDetail,
+      final DateTime? start,
       @JsonKey(name: "created_at")
-          DateTime? createdAt}) = _$_Series;
+          final DateTime? createdAt}) = _$_Series;
 
   factory _Series.fromJson(Map<String, dynamic> json) = _$_Series.fromJson;
 
   @override
-  int? get id => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  int? get topic => throw _privateConstructorUsedError;
+  int? get topic;
   @override
   @JsonKey(name: "topic_detail")
-  Topic? get topicDetail => throw _privateConstructorUsedError;
+  Topic? get topicDetail;
   @override
-  List<int>? get groups => throw _privateConstructorUsedError;
+  List<int>? get groups;
   @override
   @JsonKey(name: "groups_detail_list")
-  List<GroupsDetailList>? get groupsDetailList =>
-      throw _privateConstructorUsedError;
+  List<GroupsDetailList>? get groupsDetailList;
   @override
-  List<dynamic>? get categories => throw _privateConstructorUsedError;
+  List<dynamic>? get categories;
   @override
   @JsonKey(name: "categories_detail_list")
-  List<dynamic>? get categoriesDetailList => throw _privateConstructorUsedError;
+  List<dynamic>? get categoriesDetailList;
   @override
-  String? get host => throw _privateConstructorUsedError;
+  String? get host;
   @override
   @JsonKey(name: "host_detail")
-  HostDetail? get hostDetail => throw _privateConstructorUsedError;
+  HostDetail? get hostDetail;
   @override
-  DateTime? get start => throw _privateConstructorUsedError;
+  DateTime? get start;
   @override
   @JsonKey(name: "created_at")
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$SeriesCopyWith<_Series> get copyWith => throw _privateConstructorUsedError;
+  _$$_SeriesCopyWith<_$_Series> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 GroupsDetailList _$GroupsDetailListFromJson(Map<String, dynamic> json) {
   return _GroupsDetailList.fromJson(json);
 }
-
-/// @nodoc
-class _$GroupsDetailListTearOff {
-  const _$GroupsDetailListTearOff();
-
-  _GroupsDetailList call(
-      {int? id,
-      String? host,
-      int? topic,
-      String? description,
-      DateTime? start,
-      int? privacy,
-      int? medium,
-      bool? closed,
-      @JsonKey(name: "closed_at")
-          DateTime? closedAt,
-      @JsonKey(name: "topic_detail")
-          Topic? topicDetail,
-      @JsonKey(name: "host_detail")
-          HostDetail? hostDetail,
-      @JsonKey(name: "host_profile_details")
-          UserProfileModel? hostProfileDetails,
-      int? type,
-      @JsonKey(name: "is_live")
-          bool? isLive,
-      @JsonKey(name: "live_count")
-          int? liveCount,
-      bool? rsvp,
-      bool? isPast,
-      @JsonKey(name: "is_featured")
-          bool? isFeatured,
-      List<int>? categories,
-      @JsonKey(name: "categories_detail_list")
-          List<CategoriesDetailList>? categoriesDetailList,
-      @JsonKey(name: "recording_details")
-          RecordingDetails? recordingDetails,
-      List<String>? speakers,
-      @JsonKey(name: "speakers_detail_list")
-          List<HostDetail>? speakersDetailList,
-      int? series}) {
-    return _GroupsDetailList(
-      id: id,
-      host: host,
-      topic: topic,
-      description: description,
-      start: start,
-      privacy: privacy,
-      medium: medium,
-      closed: closed,
-      closedAt: closedAt,
-      topicDetail: topicDetail,
-      hostDetail: hostDetail,
-      hostProfileDetails: hostProfileDetails,
-      type: type,
-      isLive: isLive,
-      liveCount: liveCount,
-      rsvp: rsvp,
-      isPast: isPast,
-      isFeatured: isFeatured,
-      categories: categories,
-      categoriesDetailList: categoriesDetailList,
-      recordingDetails: recordingDetails,
-      speakers: speakers,
-      speakersDetailList: speakersDetailList,
-      series: series,
-    );
-  }
-
-  GroupsDetailList fromJson(Map<String, Object> json) {
-    return GroupsDetailList.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $GroupsDetailList = _$GroupsDetailListTearOff();
 
 /// @nodoc
 mixin _$GroupsDetailList {
@@ -813,11 +723,11 @@ class _$GroupsDetailListCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$GroupsDetailListCopyWith<$Res>
+abstract class _$$_GroupsDetailListCopyWith<$Res>
     implements $GroupsDetailListCopyWith<$Res> {
-  factory _$GroupsDetailListCopyWith(
-          _GroupsDetailList value, $Res Function(_GroupsDetailList) then) =
-      __$GroupsDetailListCopyWithImpl<$Res>;
+  factory _$$_GroupsDetailListCopyWith(
+          _$_GroupsDetailList value, $Res Function(_$_GroupsDetailList) then) =
+      __$$_GroupsDetailListCopyWithImpl<$Res>;
   @override
   $Res call(
       {int? id,
@@ -864,15 +774,15 @@ abstract class _$GroupsDetailListCopyWith<$Res>
 }
 
 /// @nodoc
-class __$GroupsDetailListCopyWithImpl<$Res>
+class __$$_GroupsDetailListCopyWithImpl<$Res>
     extends _$GroupsDetailListCopyWithImpl<$Res>
-    implements _$GroupsDetailListCopyWith<$Res> {
-  __$GroupsDetailListCopyWithImpl(
-      _GroupsDetailList _value, $Res Function(_GroupsDetailList) _then)
-      : super(_value, (v) => _then(v as _GroupsDetailList));
+    implements _$$_GroupsDetailListCopyWith<$Res> {
+  __$$_GroupsDetailListCopyWithImpl(
+      _$_GroupsDetailList _value, $Res Function(_$_GroupsDetailList) _then)
+      : super(_value, (v) => _then(v as _$_GroupsDetailList));
 
   @override
-  _GroupsDetailList get _value => super._value as _GroupsDetailList;
+  _$_GroupsDetailList get _value => super._value as _$_GroupsDetailList;
 
   @override
   $Res call({
@@ -901,7 +811,7 @@ class __$GroupsDetailListCopyWithImpl<$Res>
     Object? speakersDetailList = freezed,
     Object? series = freezed,
   }) {
-    return _then(_GroupsDetailList(
+    return _then(_$_GroupsDetailList(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -975,11 +885,11 @@ class __$GroupsDetailListCopyWithImpl<$Res>
           : isFeatured // ignore: cast_nullable_to_non_nullable
               as bool?,
       categories: categories == freezed
-          ? _value.categories
+          ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<int>?,
       categoriesDetailList: categoriesDetailList == freezed
-          ? _value.categoriesDetailList
+          ? _value._categoriesDetailList
           : categoriesDetailList // ignore: cast_nullable_to_non_nullable
               as List<CategoriesDetailList>?,
       recordingDetails: recordingDetails == freezed
@@ -987,11 +897,11 @@ class __$GroupsDetailListCopyWithImpl<$Res>
           : recordingDetails // ignore: cast_nullable_to_non_nullable
               as RecordingDetails?,
       speakers: speakers == freezed
-          ? _value.speakers
+          ? _value._speakers
           : speakers // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       speakersDetailList: speakersDetailList == freezed
-          ? _value.speakersDetailList
+          ? _value._speakersDetailList
           : speakersDetailList // ignore: cast_nullable_to_non_nullable
               as List<HostDetail>?,
       series: series == freezed
@@ -1014,25 +924,39 @@ class _$_GroupsDetailList implements _GroupsDetailList {
       this.privacy,
       this.medium,
       this.closed,
-      @JsonKey(name: "closed_at") this.closedAt,
-      @JsonKey(name: "topic_detail") this.topicDetail,
-      @JsonKey(name: "host_detail") this.hostDetail,
-      @JsonKey(name: "host_profile_details") this.hostProfileDetails,
+      @JsonKey(name: "closed_at")
+          this.closedAt,
+      @JsonKey(name: "topic_detail")
+          this.topicDetail,
+      @JsonKey(name: "host_detail")
+          this.hostDetail,
+      @JsonKey(name: "host_profile_details")
+          this.hostProfileDetails,
       this.type,
-      @JsonKey(name: "is_live") this.isLive,
-      @JsonKey(name: "live_count") this.liveCount,
+      @JsonKey(name: "is_live")
+          this.isLive,
+      @JsonKey(name: "live_count")
+          this.liveCount,
       this.rsvp,
       this.isPast,
-      @JsonKey(name: "is_featured") this.isFeatured,
-      this.categories,
-      @JsonKey(name: "categories_detail_list") this.categoriesDetailList,
-      @JsonKey(name: "recording_details") this.recordingDetails,
-      this.speakers,
-      @JsonKey(name: "speakers_detail_list") this.speakersDetailList,
-      this.series});
+      @JsonKey(name: "is_featured")
+          this.isFeatured,
+      final List<int>? categories,
+      @JsonKey(name: "categories_detail_list")
+          final List<CategoriesDetailList>? categoriesDetailList,
+      @JsonKey(name: "recording_details")
+          this.recordingDetails,
+      final List<String>? speakers,
+      @JsonKey(name: "speakers_detail_list")
+          final List<HostDetail>? speakersDetailList,
+      this.series})
+      : _categories = categories,
+        _categoriesDetailList = categoriesDetailList,
+        _speakers = speakers,
+        _speakersDetailList = speakersDetailList;
 
   factory _$_GroupsDetailList.fromJson(Map<String, dynamic> json) =>
-      _$_$_GroupsDetailListFromJson(json);
+      _$$_GroupsDetailListFromJson(json);
 
   @override
   final int? id;
@@ -1077,19 +1001,47 @@ class _$_GroupsDetailList implements _GroupsDetailList {
   @override
   @JsonKey(name: "is_featured")
   final bool? isFeatured;
+  final List<int>? _categories;
   @override
-  final List<int>? categories;
+  List<int>? get categories {
+    final value = _categories;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<CategoriesDetailList>? _categoriesDetailList;
   @override
   @JsonKey(name: "categories_detail_list")
-  final List<CategoriesDetailList>? categoriesDetailList;
+  List<CategoriesDetailList>? get categoriesDetailList {
+    final value = _categoriesDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey(name: "recording_details")
   final RecordingDetails? recordingDetails;
+  final List<String>? _speakers;
   @override
-  final List<String>? speakers;
+  List<String>? get speakers {
+    final value = _speakers;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<HostDetail>? _speakersDetailList;
   @override
   @JsonKey(name: "speakers_detail_list")
-  final List<HostDetail>? speakersDetailList;
+  List<HostDetail>? get speakersDetailList {
+    final value = _speakersDetailList;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final int? series;
 
@@ -1101,242 +1053,191 @@ class _$_GroupsDetailList implements _GroupsDetailList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _GroupsDetailList &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.host, host) ||
-                const DeepCollectionEquality().equals(other.host, host)) &&
-            (identical(other.topic, topic) ||
-                const DeepCollectionEquality().equals(other.topic, topic)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
-            (identical(other.medium, medium) ||
-                const DeepCollectionEquality().equals(other.medium, medium)) &&
-            (identical(other.closed, closed) ||
-                const DeepCollectionEquality().equals(other.closed, closed)) &&
-            (identical(other.closedAt, closedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.closedAt, closedAt)) &&
-            (identical(other.topicDetail, topicDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.topicDetail, topicDetail)) &&
-            (identical(other.hostDetail, hostDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.hostDetail, hostDetail)) &&
-            (identical(other.hostProfileDetails, hostProfileDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.hostProfileDetails, hostProfileDetails)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.isLive, isLive) ||
-                const DeepCollectionEquality().equals(other.isLive, isLive)) &&
-            (identical(other.liveCount, liveCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.liveCount, liveCount)) &&
-            (identical(other.rsvp, rsvp) ||
-                const DeepCollectionEquality().equals(other.rsvp, rsvp)) &&
-            (identical(other.isPast, isPast) ||
-                const DeepCollectionEquality().equals(other.isPast, isPast)) &&
-            (identical(other.isFeatured, isFeatured) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFeatured, isFeatured)) &&
-            (identical(other.categories, categories) ||
-                const DeepCollectionEquality()
-                    .equals(other.categories, categories)) &&
-            (identical(other.categoriesDetailList, categoriesDetailList) ||
-                const DeepCollectionEquality().equals(
-                    other.categoriesDetailList, categoriesDetailList)) &&
-            (identical(other.recordingDetails, recordingDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.recordingDetails, recordingDetails)) &&
-            (identical(other.speakers, speakers) ||
-                const DeepCollectionEquality()
-                    .equals(other.speakers, speakers)) &&
-            (identical(other.speakersDetailList, speakersDetailList) ||
-                const DeepCollectionEquality()
-                    .equals(other.speakersDetailList, speakersDetailList)) &&
-            (identical(other.series, series) ||
-                const DeepCollectionEquality().equals(other.series, series)));
+        (other.runtimeType == runtimeType &&
+            other is _$_GroupsDetailList &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.host, host) &&
+            const DeepCollectionEquality().equals(other.topic, topic) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.start, start) &&
+            const DeepCollectionEquality().equals(other.privacy, privacy) &&
+            const DeepCollectionEquality().equals(other.medium, medium) &&
+            const DeepCollectionEquality().equals(other.closed, closed) &&
+            const DeepCollectionEquality().equals(other.closedAt, closedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.topicDetail, topicDetail) &&
+            const DeepCollectionEquality()
+                .equals(other.hostDetail, hostDetail) &&
+            const DeepCollectionEquality()
+                .equals(other.hostProfileDetails, hostProfileDetails) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.isLive, isLive) &&
+            const DeepCollectionEquality().equals(other.liveCount, liveCount) &&
+            const DeepCollectionEquality().equals(other.rsvp, rsvp) &&
+            const DeepCollectionEquality().equals(other.isPast, isPast) &&
+            const DeepCollectionEquality()
+                .equals(other.isFeatured, isFeatured) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality()
+                .equals(other._categoriesDetailList, _categoriesDetailList) &&
+            const DeepCollectionEquality()
+                .equals(other.recordingDetails, recordingDetails) &&
+            const DeepCollectionEquality().equals(other._speakers, _speakers) &&
+            const DeepCollectionEquality()
+                .equals(other._speakersDetailList, _speakersDetailList) &&
+            const DeepCollectionEquality().equals(other.series, series));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(host) ^
-      const DeepCollectionEquality().hash(topic) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(medium) ^
-      const DeepCollectionEquality().hash(closed) ^
-      const DeepCollectionEquality().hash(closedAt) ^
-      const DeepCollectionEquality().hash(topicDetail) ^
-      const DeepCollectionEquality().hash(hostDetail) ^
-      const DeepCollectionEquality().hash(hostProfileDetails) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(isLive) ^
-      const DeepCollectionEquality().hash(liveCount) ^
-      const DeepCollectionEquality().hash(rsvp) ^
-      const DeepCollectionEquality().hash(isPast) ^
-      const DeepCollectionEquality().hash(isFeatured) ^
-      const DeepCollectionEquality().hash(categories) ^
-      const DeepCollectionEquality().hash(categoriesDetailList) ^
-      const DeepCollectionEquality().hash(recordingDetails) ^
-      const DeepCollectionEquality().hash(speakers) ^
-      const DeepCollectionEquality().hash(speakersDetailList) ^
-      const DeepCollectionEquality().hash(series);
 
   @JsonKey(ignore: true)
   @override
-  _$GroupsDetailListCopyWith<_GroupsDetailList> get copyWith =>
-      __$GroupsDetailListCopyWithImpl<_GroupsDetailList>(this, _$identity);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(host),
+        const DeepCollectionEquality().hash(topic),
+        const DeepCollectionEquality().hash(description),
+        const DeepCollectionEquality().hash(start),
+        const DeepCollectionEquality().hash(privacy),
+        const DeepCollectionEquality().hash(medium),
+        const DeepCollectionEquality().hash(closed),
+        const DeepCollectionEquality().hash(closedAt),
+        const DeepCollectionEquality().hash(topicDetail),
+        const DeepCollectionEquality().hash(hostDetail),
+        const DeepCollectionEquality().hash(hostProfileDetails),
+        const DeepCollectionEquality().hash(type),
+        const DeepCollectionEquality().hash(isLive),
+        const DeepCollectionEquality().hash(liveCount),
+        const DeepCollectionEquality().hash(rsvp),
+        const DeepCollectionEquality().hash(isPast),
+        const DeepCollectionEquality().hash(isFeatured),
+        const DeepCollectionEquality().hash(_categories),
+        const DeepCollectionEquality().hash(_categoriesDetailList),
+        const DeepCollectionEquality().hash(recordingDetails),
+        const DeepCollectionEquality().hash(_speakers),
+        const DeepCollectionEquality().hash(_speakersDetailList),
+        const DeepCollectionEquality().hash(series)
+      ]);
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_GroupsDetailListCopyWith<_$_GroupsDetailList> get copyWith =>
+      __$$_GroupsDetailListCopyWithImpl<_$_GroupsDetailList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_GroupsDetailListToJson(this);
+    return _$$_GroupsDetailListToJson(this);
   }
 }
 
 abstract class _GroupsDetailList implements GroupsDetailList {
   const factory _GroupsDetailList(
-      {int? id,
-      String? host,
-      int? topic,
-      String? description,
-      DateTime? start,
-      int? privacy,
-      int? medium,
-      bool? closed,
+      {final int? id,
+      final String? host,
+      final int? topic,
+      final String? description,
+      final DateTime? start,
+      final int? privacy,
+      final int? medium,
+      final bool? closed,
       @JsonKey(name: "closed_at")
-          DateTime? closedAt,
+          final DateTime? closedAt,
       @JsonKey(name: "topic_detail")
-          Topic? topicDetail,
+          final Topic? topicDetail,
       @JsonKey(name: "host_detail")
-          HostDetail? hostDetail,
+          final HostDetail? hostDetail,
       @JsonKey(name: "host_profile_details")
-          UserProfileModel? hostProfileDetails,
-      int? type,
+          final UserProfileModel? hostProfileDetails,
+      final int? type,
       @JsonKey(name: "is_live")
-          bool? isLive,
+          final bool? isLive,
       @JsonKey(name: "live_count")
-          int? liveCount,
-      bool? rsvp,
-      bool? isPast,
+          final int? liveCount,
+      final bool? rsvp,
+      final bool? isPast,
       @JsonKey(name: "is_featured")
-          bool? isFeatured,
-      List<int>? categories,
+          final bool? isFeatured,
+      final List<int>? categories,
       @JsonKey(name: "categories_detail_list")
-          List<CategoriesDetailList>? categoriesDetailList,
+          final List<CategoriesDetailList>? categoriesDetailList,
       @JsonKey(name: "recording_details")
-          RecordingDetails? recordingDetails,
-      List<String>? speakers,
+          final RecordingDetails? recordingDetails,
+      final List<String>? speakers,
       @JsonKey(name: "speakers_detail_list")
-          List<HostDetail>? speakersDetailList,
-      int? series}) = _$_GroupsDetailList;
+          final List<HostDetail>? speakersDetailList,
+      final int? series}) = _$_GroupsDetailList;
 
   factory _GroupsDetailList.fromJson(Map<String, dynamic> json) =
       _$_GroupsDetailList.fromJson;
 
   @override
-  int? get id => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  String? get host => throw _privateConstructorUsedError;
+  String? get host;
   @override
-  int? get topic => throw _privateConstructorUsedError;
+  int? get topic;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
-  DateTime? get start => throw _privateConstructorUsedError;
+  DateTime? get start;
   @override
-  int? get privacy => throw _privateConstructorUsedError;
+  int? get privacy;
   @override
-  int? get medium => throw _privateConstructorUsedError;
+  int? get medium;
   @override
-  bool? get closed => throw _privateConstructorUsedError;
+  bool? get closed;
   @override
   @JsonKey(name: "closed_at")
-  DateTime? get closedAt => throw _privateConstructorUsedError;
+  DateTime? get closedAt;
   @override
   @JsonKey(name: "topic_detail")
-  Topic? get topicDetail => throw _privateConstructorUsedError;
+  Topic? get topicDetail;
   @override
   @JsonKey(name: "host_detail")
-  HostDetail? get hostDetail => throw _privateConstructorUsedError;
+  HostDetail? get hostDetail;
   @override
   @JsonKey(name: "host_profile_details")
-  UserProfileModel? get hostProfileDetails =>
-      throw _privateConstructorUsedError;
+  UserProfileModel? get hostProfileDetails;
   @override
-  int? get type => throw _privateConstructorUsedError;
+  int? get type;
   @override
   @JsonKey(name: "is_live")
-  bool? get isLive => throw _privateConstructorUsedError;
+  bool? get isLive;
   @override
   @JsonKey(name: "live_count")
-  int? get liveCount => throw _privateConstructorUsedError;
+  int? get liveCount;
   @override
-  bool? get rsvp => throw _privateConstructorUsedError;
+  bool? get rsvp;
   @override
-  bool? get isPast => throw _privateConstructorUsedError;
+  bool? get isPast;
   @override
   @JsonKey(name: "is_featured")
-  bool? get isFeatured => throw _privateConstructorUsedError;
+  bool? get isFeatured;
   @override
-  List<int>? get categories => throw _privateConstructorUsedError;
+  List<int>? get categories;
   @override
   @JsonKey(name: "categories_detail_list")
-  List<CategoriesDetailList>? get categoriesDetailList =>
-      throw _privateConstructorUsedError;
+  List<CategoriesDetailList>? get categoriesDetailList;
   @override
   @JsonKey(name: "recording_details")
-  RecordingDetails? get recordingDetails => throw _privateConstructorUsedError;
+  RecordingDetails? get recordingDetails;
   @override
-  List<String>? get speakers => throw _privateConstructorUsedError;
+  List<String>? get speakers;
   @override
   @JsonKey(name: "speakers_detail_list")
-  List<HostDetail>? get speakersDetailList =>
-      throw _privateConstructorUsedError;
+  List<HostDetail>? get speakersDetailList;
   @override
-  int? get series => throw _privateConstructorUsedError;
+  int? get series;
   @override
   @JsonKey(ignore: true)
-  _$GroupsDetailListCopyWith<_GroupsDetailList> get copyWith =>
+  _$$_GroupsDetailListCopyWith<_$_GroupsDetailList> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 CategoriesDetailList _$CategoriesDetailListFromJson(Map<String, dynamic> json) {
   return _CategoriesDetailList.fromJson(json);
 }
-
-/// @nodoc
-class _$CategoriesDetailListTearOff {
-  const _$CategoriesDetailListTearOff();
-
-  _CategoriesDetailList call(
-      {int? pk, String? name, String? color, String? photo, String? order}) {
-    return _CategoriesDetailList(
-      pk: pk,
-      name: name,
-      color: color,
-      photo: photo,
-      order: order,
-    );
-  }
-
-  CategoriesDetailList fromJson(Map<String, Object> json) {
-    return CategoriesDetailList.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CategoriesDetailList = _$CategoriesDetailListTearOff();
 
 /// @nodoc
 mixin _$CategoriesDetailList {
@@ -1404,26 +1305,26 @@ class _$CategoriesDetailListCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$CategoriesDetailListCopyWith<$Res>
+abstract class _$$_CategoriesDetailListCopyWith<$Res>
     implements $CategoriesDetailListCopyWith<$Res> {
-  factory _$CategoriesDetailListCopyWith(_CategoriesDetailList value,
-          $Res Function(_CategoriesDetailList) then) =
-      __$CategoriesDetailListCopyWithImpl<$Res>;
+  factory _$$_CategoriesDetailListCopyWith(_$_CategoriesDetailList value,
+          $Res Function(_$_CategoriesDetailList) then) =
+      __$$_CategoriesDetailListCopyWithImpl<$Res>;
   @override
   $Res call(
       {int? pk, String? name, String? color, String? photo, String? order});
 }
 
 /// @nodoc
-class __$CategoriesDetailListCopyWithImpl<$Res>
+class __$$_CategoriesDetailListCopyWithImpl<$Res>
     extends _$CategoriesDetailListCopyWithImpl<$Res>
-    implements _$CategoriesDetailListCopyWith<$Res> {
-  __$CategoriesDetailListCopyWithImpl(
-      _CategoriesDetailList _value, $Res Function(_CategoriesDetailList) _then)
-      : super(_value, (v) => _then(v as _CategoriesDetailList));
+    implements _$$_CategoriesDetailListCopyWith<$Res> {
+  __$$_CategoriesDetailListCopyWithImpl(_$_CategoriesDetailList _value,
+      $Res Function(_$_CategoriesDetailList) _then)
+      : super(_value, (v) => _then(v as _$_CategoriesDetailList));
 
   @override
-  _CategoriesDetailList get _value => super._value as _CategoriesDetailList;
+  _$_CategoriesDetailList get _value => super._value as _$_CategoriesDetailList;
 
   @override
   $Res call({
@@ -1433,7 +1334,7 @@ class __$CategoriesDetailListCopyWithImpl<$Res>
     Object? photo = freezed,
     Object? order = freezed,
   }) {
-    return _then(_CategoriesDetailList(
+    return _then(_$_CategoriesDetailList(
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
@@ -1465,7 +1366,7 @@ class _$_CategoriesDetailList implements _CategoriesDetailList {
       {this.pk, this.name, this.color, this.photo, this.order});
 
   factory _$_CategoriesDetailList.fromJson(Map<String, dynamic> json) =>
-      _$_$_CategoriesDetailListFromJson(json);
+      _$$_CategoriesDetailListFromJson(json);
 
   @override
   final int? pk;
@@ -1486,99 +1387,67 @@ class _$_CategoriesDetailList implements _CategoriesDetailList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CategoriesDetailList &&
-            (identical(other.pk, pk) ||
-                const DeepCollectionEquality().equals(other.pk, pk)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.color, color) ||
-                const DeepCollectionEquality().equals(other.color, color)) &&
-            (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)) &&
-            (identical(other.order, order) ||
-                const DeepCollectionEquality().equals(other.order, order)));
+        (other.runtimeType == runtimeType &&
+            other is _$_CategoriesDetailList &&
+            const DeepCollectionEquality().equals(other.pk, pk) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.color, color) &&
+            const DeepCollectionEquality().equals(other.photo, photo) &&
+            const DeepCollectionEquality().equals(other.order, order));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pk) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(color) ^
-      const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(order);
 
   @JsonKey(ignore: true)
   @override
-  _$CategoriesDetailListCopyWith<_CategoriesDetailList> get copyWith =>
-      __$CategoriesDetailListCopyWithImpl<_CategoriesDetailList>(
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(pk),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(color),
+      const DeepCollectionEquality().hash(photo),
+      const DeepCollectionEquality().hash(order));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_CategoriesDetailListCopyWith<_$_CategoriesDetailList> get copyWith =>
+      __$$_CategoriesDetailListCopyWithImpl<_$_CategoriesDetailList>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_CategoriesDetailListToJson(this);
+    return _$$_CategoriesDetailListToJson(this);
   }
 }
 
 abstract class _CategoriesDetailList implements CategoriesDetailList {
   const factory _CategoriesDetailList(
-      {int? pk,
-      String? name,
-      String? color,
-      String? photo,
-      String? order}) = _$_CategoriesDetailList;
+      {final int? pk,
+      final String? name,
+      final String? color,
+      final String? photo,
+      final String? order}) = _$_CategoriesDetailList;
 
   factory _CategoriesDetailList.fromJson(Map<String, dynamic> json) =
       _$_CategoriesDetailList.fromJson;
 
   @override
-  int? get pk => throw _privateConstructorUsedError;
+  int? get pk;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get color => throw _privateConstructorUsedError;
+  String? get color;
   @override
-  String? get photo => throw _privateConstructorUsedError;
+  String? get photo;
   @override
-  String? get order => throw _privateConstructorUsedError;
+  String? get order;
   @override
   @JsonKey(ignore: true)
-  _$CategoriesDetailListCopyWith<_CategoriesDetailList> get copyWith =>
+  _$$_CategoriesDetailListCopyWith<_$_CategoriesDetailList> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 HostDetail _$HostDetailFromJson(Map<String, dynamic> json) {
   return _HostDetail.fromJson(json);
 }
-
-/// @nodoc
-class _$HostDetailTearOff {
-  const _$HostDetailTearOff();
-
-  _HostDetail call(
-      {String? pk,
-      String? email,
-      String? name,
-      String? photo,
-      String? introduction,
-      @JsonKey(name: "creator_detail") Creator? creatorDetail}) {
-    return _HostDetail(
-      pk: pk,
-      email: email,
-      name: name,
-      photo: photo,
-      introduction: introduction,
-      creatorDetail: creatorDetail,
-    );
-  }
-
-  HostDetail fromJson(Map<String, Object> json) {
-    return HostDetail.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $HostDetail = _$HostDetailTearOff();
 
 /// @nodoc
 mixin _$HostDetail {
@@ -1670,10 +1539,11 @@ class _$HostDetailCopyWithImpl<$Res> implements $HostDetailCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$HostDetailCopyWith<$Res> implements $HostDetailCopyWith<$Res> {
-  factory _$HostDetailCopyWith(
-          _HostDetail value, $Res Function(_HostDetail) then) =
-      __$HostDetailCopyWithImpl<$Res>;
+abstract class _$$_HostDetailCopyWith<$Res>
+    implements $HostDetailCopyWith<$Res> {
+  factory _$$_HostDetailCopyWith(
+          _$_HostDetail value, $Res Function(_$_HostDetail) then) =
+      __$$_HostDetailCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? pk,
@@ -1688,14 +1558,14 @@ abstract class _$HostDetailCopyWith<$Res> implements $HostDetailCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$HostDetailCopyWithImpl<$Res> extends _$HostDetailCopyWithImpl<$Res>
-    implements _$HostDetailCopyWith<$Res> {
-  __$HostDetailCopyWithImpl(
-      _HostDetail _value, $Res Function(_HostDetail) _then)
-      : super(_value, (v) => _then(v as _HostDetail));
+class __$$_HostDetailCopyWithImpl<$Res> extends _$HostDetailCopyWithImpl<$Res>
+    implements _$$_HostDetailCopyWith<$Res> {
+  __$$_HostDetailCopyWithImpl(
+      _$_HostDetail _value, $Res Function(_$_HostDetail) _then)
+      : super(_value, (v) => _then(v as _$_HostDetail));
 
   @override
-  _HostDetail get _value => super._value as _HostDetail;
+  _$_HostDetail get _value => super._value as _$_HostDetail;
 
   @override
   $Res call({
@@ -1706,7 +1576,7 @@ class __$HostDetailCopyWithImpl<$Res> extends _$HostDetailCopyWithImpl<$Res>
     Object? introduction = freezed,
     Object? creatorDetail = freezed,
   }) {
-    return _then(_HostDetail(
+    return _then(_$_HostDetail(
       pk: pk == freezed
           ? _value.pk
           : pk // ignore: cast_nullable_to_non_nullable
@@ -1747,7 +1617,7 @@ class _$_HostDetail implements _HostDetail {
       @JsonKey(name: "creator_detail") this.creatorDetail});
 
   factory _$_HostDetail.fromJson(Map<String, dynamic> json) =>
-      _$_$_HostDetailFromJson(json);
+      _$$_HostDetailFromJson(json);
 
   @override
   final String? pk;
@@ -1771,97 +1641,75 @@ class _$_HostDetail implements _HostDetail {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HostDetail &&
-            (identical(other.pk, pk) ||
-                const DeepCollectionEquality().equals(other.pk, pk)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)) &&
-            (identical(other.introduction, introduction) ||
-                const DeepCollectionEquality()
-                    .equals(other.introduction, introduction)) &&
-            (identical(other.creatorDetail, creatorDetail) ||
-                const DeepCollectionEquality()
-                    .equals(other.creatorDetail, creatorDetail)));
+        (other.runtimeType == runtimeType &&
+            other is _$_HostDetail &&
+            const DeepCollectionEquality().equals(other.pk, pk) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.photo, photo) &&
+            const DeepCollectionEquality()
+                .equals(other.introduction, introduction) &&
+            const DeepCollectionEquality()
+                .equals(other.creatorDetail, creatorDetail));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pk) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(introduction) ^
-      const DeepCollectionEquality().hash(creatorDetail);
 
   @JsonKey(ignore: true)
   @override
-  _$HostDetailCopyWith<_HostDetail> get copyWith =>
-      __$HostDetailCopyWithImpl<_HostDetail>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(pk),
+      const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(photo),
+      const DeepCollectionEquality().hash(introduction),
+      const DeepCollectionEquality().hash(creatorDetail));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_HostDetailCopyWith<_$_HostDetail> get copyWith =>
+      __$$_HostDetailCopyWithImpl<_$_HostDetail>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_HostDetailToJson(this);
+    return _$$_HostDetailToJson(this);
   }
 }
 
 abstract class _HostDetail implements HostDetail {
   const factory _HostDetail(
-      {String? pk,
-      String? email,
-      String? name,
-      String? photo,
-      String? introduction,
-      @JsonKey(name: "creator_detail") Creator? creatorDetail}) = _$_HostDetail;
+          {final String? pk,
+          final String? email,
+          final String? name,
+          final String? photo,
+          final String? introduction,
+          @JsonKey(name: "creator_detail") final Creator? creatorDetail}) =
+      _$_HostDetail;
 
   factory _HostDetail.fromJson(Map<String, dynamic> json) =
       _$_HostDetail.fromJson;
 
   @override
-  String? get pk => throw _privateConstructorUsedError;
+  String? get pk;
   @override
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get photo => throw _privateConstructorUsedError;
+  String? get photo;
   @override
-  String? get introduction => throw _privateConstructorUsedError;
+  String? get introduction;
   @override
   @JsonKey(name: "creator_detail")
-  Creator? get creatorDetail => throw _privateConstructorUsedError;
+  Creator? get creatorDetail;
   @override
   @JsonKey(ignore: true)
-  _$HostDetailCopyWith<_HostDetail> get copyWith =>
+  _$$_HostDetailCopyWith<_$_HostDetail> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 Group _$GroupFromJson(Map<String, dynamic> json) {
   return _Group.fromJson(json);
 }
-
-/// @nodoc
-class _$GroupTearOff {
-  const _$GroupTearOff();
-
-  _Group call({String? name, int? pk}) {
-    return _Group(
-      name: name,
-      pk: pk,
-    );
-  }
-
-  Group fromJson(Map<String, Object> json) {
-    return Group.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Group = _$GroupTearOff();
 
 /// @nodoc
 mixin _$Group {
@@ -1907,28 +1755,28 @@ class _$GroupCopyWithImpl<$Res> implements $GroupCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$GroupCopyWith<$Res> implements $GroupCopyWith<$Res> {
-  factory _$GroupCopyWith(_Group value, $Res Function(_Group) then) =
-      __$GroupCopyWithImpl<$Res>;
+abstract class _$$_GroupCopyWith<$Res> implements $GroupCopyWith<$Res> {
+  factory _$$_GroupCopyWith(_$_Group value, $Res Function(_$_Group) then) =
+      __$$_GroupCopyWithImpl<$Res>;
   @override
   $Res call({String? name, int? pk});
 }
 
 /// @nodoc
-class __$GroupCopyWithImpl<$Res> extends _$GroupCopyWithImpl<$Res>
-    implements _$GroupCopyWith<$Res> {
-  __$GroupCopyWithImpl(_Group _value, $Res Function(_Group) _then)
-      : super(_value, (v) => _then(v as _Group));
+class __$$_GroupCopyWithImpl<$Res> extends _$GroupCopyWithImpl<$Res>
+    implements _$$_GroupCopyWith<$Res> {
+  __$$_GroupCopyWithImpl(_$_Group _value, $Res Function(_$_Group) _then)
+      : super(_value, (v) => _then(v as _$_Group));
 
   @override
-  _Group get _value => super._value as _Group;
+  _$_Group get _value => super._value as _$_Group;
 
   @override
   $Res call({
     Object? name = freezed,
     Object? pk = freezed,
   }) {
-    return _then(_Group(
+    return _then(_$_Group(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1947,7 +1795,7 @@ class _$_Group implements _Group {
   const _$_Group({this.name, this.pk});
 
   factory _$_Group.fromJson(Map<String, dynamic> json) =>
-      _$_$_GroupFromJson(json);
+      _$$_GroupFromJson(json);
 
   @override
   final String? name;
@@ -1962,40 +1810,41 @@ class _$_Group implements _Group {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Group &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.pk, pk) ||
-                const DeepCollectionEquality().equals(other.pk, pk)));
+        (other.runtimeType == runtimeType &&
+            other is _$_Group &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.pk, pk));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(pk);
 
   @JsonKey(ignore: true)
   @override
-  _$GroupCopyWith<_Group> get copyWith =>
-      __$GroupCopyWithImpl<_Group>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(pk));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_GroupCopyWith<_$_Group> get copyWith =>
+      __$$_GroupCopyWithImpl<_$_Group>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_GroupToJson(this);
+    return _$$_GroupToJson(this);
   }
 }
 
 abstract class _Group implements Group {
-  const factory _Group({String? name, int? pk}) = _$_Group;
+  const factory _Group({final String? name, final int? pk}) = _$_Group;
 
   factory _Group.fromJson(Map<String, dynamic> json) = _$_Group.fromJson;
 
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  int? get pk => throw _privateConstructorUsedError;
+  int? get pk;
   @override
   @JsonKey(ignore: true)
-  _$GroupCopyWith<_Group> get copyWith => throw _privateConstructorUsedError;
+  _$$_GroupCopyWith<_$_Group> get copyWith =>
+      throw _privateConstructorUsedError;
 }

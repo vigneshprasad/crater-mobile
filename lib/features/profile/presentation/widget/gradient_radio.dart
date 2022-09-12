@@ -24,29 +24,34 @@ class GradientRadio extends StatefulWidget {
 class _GradientRadioState extends State<GradientRadio> {
   @override
   Widget build(BuildContext context) {
-    final gradient = LinearGradient(colors: [
-      HexColor.fromHex('#DF3E83'),
-      HexColor.fromHex('#2F80ED'),
-      HexColor.fromHex('#65C7CC'),
-    ]);
-    final gradientDB = LinearGradient(colors: [
-      HexColor.fromHex('#141D1F'),
-      HexColor.fromHex('#29373C'),
-    ]);
-    final thickness = 4.0;
-    final radius = 16.0;
-    final style = TextStyle(fontWeight: FontWeight.bold);
+    final gradient = LinearGradient(
+      colors: [
+        HexColor.fromHex('#DF3E83'),
+        HexColor.fromHex('#2F80ED'),
+        HexColor.fromHex('#65C7CC'),
+      ],
+    );
+    final gradientDB = LinearGradient(
+      colors: [
+        HexColor.fromHex('#141D1F'),
+        HexColor.fromHex('#29373C'),
+      ],
+    );
+    const thickness = 4.0;
+    const radius = 16.0;
+    const style = TextStyle(fontWeight: FontWeight.bold);
     return Row(
       children: [
-        Text('NO', style: style),
+        const Text('NO', style: style),
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius + 3),
-              border: Border.all(
-                color: HexColor.fromHex('#4F4F4F'),
-              )),
+            borderRadius: BorderRadius.circular(radius + 3),
+            border: Border.all(
+              color: HexColor.fromHex('#4F4F4F'),
+            ),
+          ),
           child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: gradient,
@@ -59,7 +64,7 @@ class _GradientRadioState extends State<GradientRadio> {
               ),
               height: 24,
               // width: 100,
-              margin: EdgeInsets.all(thickness),
+              margin: const EdgeInsets.all(thickness),
               child: Switch(
                 value: widget.isEnabled,
                 onChanged: (value) {
@@ -76,7 +81,7 @@ class _GradientRadioState extends State<GradientRadio> {
           ),
         ),
         const SizedBox(width: 8),
-        Text('YES', style: style),
+        const Text('YES', style: style),
       ],
     );
   }

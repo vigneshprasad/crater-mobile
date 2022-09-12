@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'webinar_request_entity.dart';
 
@@ -10,40 +12,11 @@ part of 'webinar_request_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 WebinarRequest _$WebinarRequestFromJson(Map<String, dynamic> json) {
   return _WebinarRequest.fromJson(json);
 }
-
-/// @nodoc
-class _$WebinarRequestTearOff {
-  const _$WebinarRequestTearOff();
-
-  _WebinarRequest call(
-      {String? description,
-      required String start,
-      required List<int> categories,
-      @JsonKey(name: 'topic_title') required String title,
-      @JsonKey(name: 'topic_image') required String coverImage,
-      @JsonKey(name: 'rtmp_link') String? rtmpLink}) {
-    return _WebinarRequest(
-      description: description,
-      start: start,
-      categories: categories,
-      title: title,
-      coverImage: coverImage,
-      rtmpLink: rtmpLink,
-    );
-  }
-
-  WebinarRequest fromJson(Map<String, Object> json) {
-    return WebinarRequest.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $WebinarRequest = _$WebinarRequestTearOff();
 
 /// @nodoc
 mixin _$WebinarRequest {
@@ -125,11 +98,11 @@ class _$WebinarRequestCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$WebinarRequestCopyWith<$Res>
+abstract class _$$_WebinarRequestCopyWith<$Res>
     implements $WebinarRequestCopyWith<$Res> {
-  factory _$WebinarRequestCopyWith(
-          _WebinarRequest value, $Res Function(_WebinarRequest) then) =
-      __$WebinarRequestCopyWithImpl<$Res>;
+  factory _$$_WebinarRequestCopyWith(
+          _$_WebinarRequest value, $Res Function(_$_WebinarRequest) then) =
+      __$$_WebinarRequestCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? description,
@@ -141,15 +114,15 @@ abstract class _$WebinarRequestCopyWith<$Res>
 }
 
 /// @nodoc
-class __$WebinarRequestCopyWithImpl<$Res>
+class __$$_WebinarRequestCopyWithImpl<$Res>
     extends _$WebinarRequestCopyWithImpl<$Res>
-    implements _$WebinarRequestCopyWith<$Res> {
-  __$WebinarRequestCopyWithImpl(
-      _WebinarRequest _value, $Res Function(_WebinarRequest) _then)
-      : super(_value, (v) => _then(v as _WebinarRequest));
+    implements _$$_WebinarRequestCopyWith<$Res> {
+  __$$_WebinarRequestCopyWithImpl(
+      _$_WebinarRequest _value, $Res Function(_$_WebinarRequest) _then)
+      : super(_value, (v) => _then(v as _$_WebinarRequest));
 
   @override
-  _WebinarRequest get _value => super._value as _WebinarRequest;
+  _$_WebinarRequest get _value => super._value as _$_WebinarRequest;
 
   @override
   $Res call({
@@ -160,7 +133,7 @@ class __$WebinarRequestCopyWithImpl<$Res>
     Object? coverImage = freezed,
     Object? rtmpLink = freezed,
   }) {
-    return _then(_WebinarRequest(
+    return _then(_$_WebinarRequest(
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -170,7 +143,7 @@ class __$WebinarRequestCopyWithImpl<$Res>
           : start // ignore: cast_nullable_to_non_nullable
               as String,
       categories: categories == freezed
-          ? _value.categories
+          ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<int>,
       title: title == freezed
@@ -195,20 +168,26 @@ class _$_WebinarRequest implements _WebinarRequest {
   const _$_WebinarRequest(
       {this.description,
       required this.start,
-      required this.categories,
+      required final List<int> categories,
       @JsonKey(name: 'topic_title') required this.title,
       @JsonKey(name: 'topic_image') required this.coverImage,
-      @JsonKey(name: 'rtmp_link') this.rtmpLink});
+      @JsonKey(name: 'rtmp_link') this.rtmpLink})
+      : _categories = categories;
 
   factory _$_WebinarRequest.fromJson(Map<String, dynamic> json) =>
-      _$_$_WebinarRequestFromJson(json);
+      _$$_WebinarRequestFromJson(json);
 
   @override
   final String? description;
   @override
   final String start;
+  final List<int> _categories;
   @override
-  final List<int> categories;
+  List<int> get categories {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
+
   @override
   @JsonKey(name: 'topic_title')
   final String title;
@@ -227,75 +206,70 @@ class _$_WebinarRequest implements _WebinarRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _WebinarRequest &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.categories, categories) ||
-                const DeepCollectionEquality()
-                    .equals(other.categories, categories)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.coverImage, coverImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.coverImage, coverImage)) &&
-            (identical(other.rtmpLink, rtmpLink) ||
-                const DeepCollectionEquality()
-                    .equals(other.rtmpLink, rtmpLink)));
+        (other.runtimeType == runtimeType &&
+            other is _$_WebinarRequest &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.start, start) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality()
+                .equals(other.coverImage, coverImage) &&
+            const DeepCollectionEquality().equals(other.rtmpLink, rtmpLink));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(categories) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(coverImage) ^
-      const DeepCollectionEquality().hash(rtmpLink);
 
   @JsonKey(ignore: true)
   @override
-  _$WebinarRequestCopyWith<_WebinarRequest> get copyWith =>
-      __$WebinarRequestCopyWithImpl<_WebinarRequest>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(start),
+      const DeepCollectionEquality().hash(_categories),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(coverImage),
+      const DeepCollectionEquality().hash(rtmpLink));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_WebinarRequestCopyWith<_$_WebinarRequest> get copyWith =>
+      __$$_WebinarRequestCopyWithImpl<_$_WebinarRequest>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_WebinarRequestToJson(this);
+    return _$$_WebinarRequestToJson(this);
   }
 }
 
 abstract class _WebinarRequest implements WebinarRequest {
   const factory _WebinarRequest(
-      {String? description,
-      required String start,
-      required List<int> categories,
-      @JsonKey(name: 'topic_title') required String title,
-      @JsonKey(name: 'topic_image') required String coverImage,
-      @JsonKey(name: 'rtmp_link') String? rtmpLink}) = _$_WebinarRequest;
+      {final String? description,
+      required final String start,
+      required final List<int> categories,
+      @JsonKey(name: 'topic_title') required final String title,
+      @JsonKey(name: 'topic_image') required final String coverImage,
+      @JsonKey(name: 'rtmp_link') final String? rtmpLink}) = _$_WebinarRequest;
 
   factory _WebinarRequest.fromJson(Map<String, dynamic> json) =
       _$_WebinarRequest.fromJson;
 
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
-  String get start => throw _privateConstructorUsedError;
+  String get start;
   @override
-  List<int> get categories => throw _privateConstructorUsedError;
+  List<int> get categories;
   @override
   @JsonKey(name: 'topic_title')
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(name: 'topic_image')
-  String get coverImage => throw _privateConstructorUsedError;
+  String get coverImage;
   @override
   @JsonKey(name: 'rtmp_link')
-  String? get rtmpLink => throw _privateConstructorUsedError;
+  String? get rtmpLink;
   @override
   @JsonKey(ignore: true)
-  _$WebinarRequestCopyWith<_WebinarRequest> get copyWith =>
+  _$$_WebinarRequestCopyWith<_$_WebinarRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }

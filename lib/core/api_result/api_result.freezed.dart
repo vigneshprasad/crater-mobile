@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'api_result.dart';
 
@@ -10,32 +12,7 @@ part of 'api_result.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$ApiResultTearOff {
-  const _$ApiResultTearOff();
-
-  _ApiResultLoading<T> loading<T>() {
-    return _ApiResultLoading<T>();
-  }
-
-  _ApiResultData<T> data<T>(T data) {
-    return _ApiResultData<T>(
-      data,
-    );
-  }
-
-  _ApiResultError<T> error<T>(Failure? error, [StackTrace? stackTrace]) {
-    return _ApiResultError<T>(
-      error,
-      stackTrace,
-    );
-  }
-}
-
-/// @nodoc
-const $ApiResult = _$ApiResultTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$ApiResult<T> {
@@ -44,6 +21,13 @@ mixin _$ApiResult<T> {
     required TResult Function() loading,
     required TResult Function(T data) data,
     required TResult Function(Failure? error, StackTrace? stackTrace) error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -59,6 +43,13 @@ mixin _$ApiResult<T> {
     required TResult Function(_ApiResultLoading<T> value) loading,
     required TResult Function(_ApiResultData<T> value) data,
     required TResult Function(_ApiResultError<T> value) error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -88,22 +79,22 @@ class _$ApiResultCopyWithImpl<T, $Res> implements $ApiResultCopyWith<T, $Res> {
 }
 
 /// @nodoc
-abstract class _$ApiResultLoadingCopyWith<T, $Res> {
-  factory _$ApiResultLoadingCopyWith(_ApiResultLoading<T> value,
-          $Res Function(_ApiResultLoading<T>) then) =
-      __$ApiResultLoadingCopyWithImpl<T, $Res>;
+abstract class _$$_ApiResultLoadingCopyWith<T, $Res> {
+  factory _$$_ApiResultLoadingCopyWith(_$_ApiResultLoading<T> value,
+          $Res Function(_$_ApiResultLoading<T>) then) =
+      __$$_ApiResultLoadingCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$ApiResultLoadingCopyWithImpl<T, $Res>
+class __$$_ApiResultLoadingCopyWithImpl<T, $Res>
     extends _$ApiResultCopyWithImpl<T, $Res>
-    implements _$ApiResultLoadingCopyWith<T, $Res> {
-  __$ApiResultLoadingCopyWithImpl(
-      _ApiResultLoading<T> _value, $Res Function(_ApiResultLoading<T>) _then)
-      : super(_value, (v) => _then(v as _ApiResultLoading<T>));
+    implements _$$_ApiResultLoadingCopyWith<T, $Res> {
+  __$$_ApiResultLoadingCopyWithImpl(_$_ApiResultLoading<T> _value,
+      $Res Function(_$_ApiResultLoading<T>) _then)
+      : super(_value, (v) => _then(v as _$_ApiResultLoading<T>));
 
   @override
-  _ApiResultLoading<T> get _value => super._value as _ApiResultLoading<T>;
+  _$_ApiResultLoading<T> get _value => super._value as _$_ApiResultLoading<T>;
 }
 
 /// @nodoc
@@ -118,7 +109,8 @@ class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _ApiResultLoading<T>);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_ApiResultLoading<T>);
   }
 
   @override
@@ -132,6 +124,16 @@ class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
     required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
     return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+  }) {
+    return loading?.call();
   }
 
   @override
@@ -160,6 +162,16 @@ class _$_ApiResultLoading<T> implements _ApiResultLoading<T> {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+  }) {
+    return loading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ApiResultLoading<T> value)? loading,
     TResult Function(_ApiResultData<T> value)? data,
@@ -178,29 +190,29 @@ abstract class _ApiResultLoading<T> implements ApiResult<T> {
 }
 
 /// @nodoc
-abstract class _$ApiResultDataCopyWith<T, $Res> {
-  factory _$ApiResultDataCopyWith(
-          _ApiResultData<T> value, $Res Function(_ApiResultData<T>) then) =
-      __$ApiResultDataCopyWithImpl<T, $Res>;
+abstract class _$$_ApiResultDataCopyWith<T, $Res> {
+  factory _$$_ApiResultDataCopyWith(
+          _$_ApiResultData<T> value, $Res Function(_$_ApiResultData<T>) then) =
+      __$$_ApiResultDataCopyWithImpl<T, $Res>;
   $Res call({T data});
 }
 
 /// @nodoc
-class __$ApiResultDataCopyWithImpl<T, $Res>
+class __$$_ApiResultDataCopyWithImpl<T, $Res>
     extends _$ApiResultCopyWithImpl<T, $Res>
-    implements _$ApiResultDataCopyWith<T, $Res> {
-  __$ApiResultDataCopyWithImpl(
-      _ApiResultData<T> _value, $Res Function(_ApiResultData<T>) _then)
-      : super(_value, (v) => _then(v as _ApiResultData<T>));
+    implements _$$_ApiResultDataCopyWith<T, $Res> {
+  __$$_ApiResultDataCopyWithImpl(
+      _$_ApiResultData<T> _value, $Res Function(_$_ApiResultData<T>) _then)
+      : super(_value, (v) => _then(v as _$_ApiResultData<T>));
 
   @override
-  _ApiResultData<T> get _value => super._value as _ApiResultData<T>;
+  _$_ApiResultData<T> get _value => super._value as _$_ApiResultData<T>;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_ApiResultData<T>(
+    return _then(_$_ApiResultData<T>(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -225,19 +237,19 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ApiResultData<T> &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)));
+        (other.runtimeType == runtimeType &&
+            other is _$_ApiResultData<T> &&
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(data);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
-  _$ApiResultDataCopyWith<T, _ApiResultData<T>> get copyWith =>
-      __$ApiResultDataCopyWithImpl<T, _ApiResultData<T>>(this, _$identity);
+  _$$_ApiResultDataCopyWith<T, _$_ApiResultData<T>> get copyWith =>
+      __$$_ApiResultDataCopyWithImpl<T, _$_ApiResultData<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -247,6 +259,16 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
     required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
     return data(this.data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+  }) {
+    return data?.call(this.data);
   }
 
   @override
@@ -275,6 +297,16 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+  }) {
+    return data?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ApiResultLoading<T> value)? loading,
     TResult Function(_ApiResultData<T> value)? data,
@@ -289,39 +321,39 @@ class _$_ApiResultData<T> implements _ApiResultData<T> {
 }
 
 abstract class _ApiResultData<T> implements ApiResult<T> {
-  factory _ApiResultData(T data) = _$_ApiResultData<T>;
+  factory _ApiResultData(final T data) = _$_ApiResultData<T>;
 
-  T get data => throw _privateConstructorUsedError;
+  T get data;
   @JsonKey(ignore: true)
-  _$ApiResultDataCopyWith<T, _ApiResultData<T>> get copyWith =>
+  _$$_ApiResultDataCopyWith<T, _$_ApiResultData<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ApiResultErrorCopyWith<T, $Res> {
-  factory _$ApiResultErrorCopyWith(
-          _ApiResultError<T> value, $Res Function(_ApiResultError<T>) then) =
-      __$ApiResultErrorCopyWithImpl<T, $Res>;
+abstract class _$$_ApiResultErrorCopyWith<T, $Res> {
+  factory _$$_ApiResultErrorCopyWith(_$_ApiResultError<T> value,
+          $Res Function(_$_ApiResultError<T>) then) =
+      __$$_ApiResultErrorCopyWithImpl<T, $Res>;
   $Res call({Failure? error, StackTrace? stackTrace});
 }
 
 /// @nodoc
-class __$ApiResultErrorCopyWithImpl<T, $Res>
+class __$$_ApiResultErrorCopyWithImpl<T, $Res>
     extends _$ApiResultCopyWithImpl<T, $Res>
-    implements _$ApiResultErrorCopyWith<T, $Res> {
-  __$ApiResultErrorCopyWithImpl(
-      _ApiResultError<T> _value, $Res Function(_ApiResultError<T>) _then)
-      : super(_value, (v) => _then(v as _ApiResultError<T>));
+    implements _$$_ApiResultErrorCopyWith<T, $Res> {
+  __$$_ApiResultErrorCopyWithImpl(
+      _$_ApiResultError<T> _value, $Res Function(_$_ApiResultError<T>) _then)
+      : super(_value, (v) => _then(v as _$_ApiResultError<T>));
 
   @override
-  _ApiResultError<T> get _value => super._value as _ApiResultError<T>;
+  _$_ApiResultError<T> get _value => super._value as _$_ApiResultError<T>;
 
   @override
   $Res call({
     Object? error = freezed,
     Object? stackTrace = freezed,
   }) {
-    return _then(_ApiResultError<T>(
+    return _then(_$_ApiResultError<T>(
       error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -352,24 +384,24 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ApiResultError<T> &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
-            (identical(other.stackTrace, stackTrace) ||
-                const DeepCollectionEquality()
-                    .equals(other.stackTrace, stackTrace)));
+        (other.runtimeType == runtimeType &&
+            other is _$_ApiResultError<T> &&
+            const DeepCollectionEquality().equals(other.error, error) &&
+            const DeepCollectionEquality()
+                .equals(other.stackTrace, stackTrace));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(stackTrace);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(error),
+      const DeepCollectionEquality().hash(stackTrace));
 
   @JsonKey(ignore: true)
   @override
-  _$ApiResultErrorCopyWith<T, _ApiResultError<T>> get copyWith =>
-      __$ApiResultErrorCopyWithImpl<T, _ApiResultError<T>>(this, _$identity);
+  _$$_ApiResultErrorCopyWith<T, _$_ApiResultError<T>> get copyWith =>
+      __$$_ApiResultErrorCopyWithImpl<T, _$_ApiResultError<T>>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -379,6 +411,16 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
     required TResult Function(Failure? error, StackTrace? stackTrace) error,
   }) {
     return error(this.error, stackTrace);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(T data)? data,
+    TResult Function(Failure? error, StackTrace? stackTrace)? error,
+  }) {
+    return error?.call(this.error, stackTrace);
   }
 
   @override
@@ -407,6 +449,16 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
 
   @override
   @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ApiResultLoading<T> value)? loading,
+    TResult Function(_ApiResultData<T> value)? data,
+    TResult Function(_ApiResultError<T> value)? error,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ApiResultLoading<T> value)? loading,
     TResult Function(_ApiResultData<T> value)? data,
@@ -421,12 +473,12 @@ class _$_ApiResultError<T> implements _ApiResultError<T> {
 }
 
 abstract class _ApiResultError<T> implements ApiResult<T> {
-  factory _ApiResultError(Failure? error, [StackTrace? stackTrace]) =
-      _$_ApiResultError<T>;
+  factory _ApiResultError(final Failure? error,
+      [final StackTrace? stackTrace]) = _$_ApiResultError<T>;
 
-  Failure? get error => throw _privateConstructorUsedError;
-  StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  Failure? get error;
+  StackTrace? get stackTrace;
   @JsonKey(ignore: true)
-  _$ApiResultErrorCopyWith<T, _ApiResultError<T>> get copyWith =>
+  _$$_ApiResultErrorCopyWith<T, _$_ApiResultError<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

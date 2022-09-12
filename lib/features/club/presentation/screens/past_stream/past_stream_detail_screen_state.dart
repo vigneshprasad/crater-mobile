@@ -1,49 +1,34 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:worknetwork/core/api_result/api_result.dart';
+import 'package:worknetwork/core/error/failures/failures.dart';
 import 'package:worknetwork/features/conversations/data/repository/conversation_repository_impl.dart';
-import 'package:worknetwork/features/conversations/domain/entity/conversation_entity/conversation_entity.dart';
-
-import '../../../../../core/api_result/api_result.dart';
-import '../../../../../core/error/failures/failures.dart';
+import 'package:worknetwork/features/conversations/domain/entity/webinar_entity/webinar_entity.dart';
 
 enum RtcConnection { connected, connecting, disconnected }
 
 final pastStreamStateProvider = StateNotifierProvider.autoDispose
-    .family<PastStreamState, ApiResult<Conversation>, int>(
-        (ref, id) => PastStreamState(ref.read, id));
+    .family<PastStreamState, ApiResult<Webinar>, int>(
+  (ref, id) => PastStreamState(ref.read, id),
+);
 
-class RtcConnectionState extends ChangeNotifier {
-  RtcConnection _connection;
-
-  RtcConnectionState() : _connection = RtcConnection.disconnected;
-
-  RtcConnection get connection => _connection;
-
-  set connection(RtcConnection connection) {
-    _connection = connection;
-    notifyListeners();
-  }
-}
-
-class PastStreamState extends StateNotifier<ApiResult<Conversation>> {
+class PastStreamState extends StateNotifier<ApiResult<Webinar>> {
   final Reader read;
   final int _groupId;
 
   PastStreamState(this.read, this._groupId)
-      : super(ApiResult<Conversation>.loading()) {
+      : super(ApiResult<Webinar>.loading()) {
     retrieveConversation();
   }
 
-  Future<Either<Failure, Conversation>> retrieveConversation() async {
+  Future<Either<Failure, Webinar>> retrieveConversation() async {
     final response = await read(conversationRepositoryProvider)
         .retreiveConversation(_groupId);
 
     state = response.fold(
-      (failure) => ApiResult<Conversation>.error(failure),
+      (failure) => ApiResult.error(failure),
       (group) {
-        return ApiResult<Conversation>.data(group);
+        return ApiResult.data(group);
       },
     );
 

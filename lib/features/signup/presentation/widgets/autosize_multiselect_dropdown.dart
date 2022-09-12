@@ -2,17 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../domain/entity/profile_intro_meta.dart';
-import '../../domain/entity/profile_intro_question.dart';
-import 'multiselect_dropdown.dart';
+import 'package:worknetwork/features/signup/domain/entity/profile_intro_meta.dart';
+import 'package:worknetwork/features/signup/domain/entity/profile_intro_question.dart';
+import 'package:worknetwork/features/signup/presentation/widgets/multiselect_dropdown.dart';
 
 class AutoSizeMultiSelectDropdown extends StatelessWidget {
-  const AutoSizeMultiSelectDropdown(
-      {Key? key,
-      required this.element,
-      required this.onValuesChange,
-      required this.initialValue})
-      : super(key: key);
+  const AutoSizeMultiSelectDropdown({
+    Key? key,
+    required this.element,
+    required this.onValuesChange,
+    required this.initialValue,
+  }) : super(key: key);
 
   static const charWidth = 8;
   static const padding = 52;
@@ -43,17 +43,18 @@ class AutoSizeMultiSelectDropdown extends StatelessWidget {
       width: getWidthOfLargestOption(element.options!),
       margin: const EdgeInsets.only(right: 4),
       child: MultiSelectDropdown<ProfileIntroMeta>(
-          key: Key(element.id!),
-          initialValue: initialValue,
-          items: element.options!,
-          labelGetter: (lbl) => lbl.name ?? '',
-          label: '',
-          // validator: (value) {
-          //   return value == null ? 'Select a value' : null;
-          // },
-          onChangeItems: (value) {
-            onValuesChange(element.id!, value);
-          }),
+        key: Key(element.id!),
+        initialValue: initialValue,
+        items: element.options!,
+        labelGetter: (lbl) => lbl.name ?? '',
+        label: '',
+        // validator: (value) {
+        //   return value == null ? 'Select a value' : null;
+        // },
+        onChangeItems: (value) {
+          onValuesChange(element.id!, value);
+        },
+      ),
     );
   }
 }

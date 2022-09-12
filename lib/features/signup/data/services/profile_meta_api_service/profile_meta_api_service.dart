@@ -6,11 +6,11 @@ import 'package:worknetwork/core/config_reader/config_reader.dart';
 part 'profile_meta_api_service.chopper.dart';
 
 final profileMetaApiServiceProvider =
-    Provider((_) => ProfileMetaApiService.create());
+    Provider((ref) => ProfileMetaApiService.create(ref.read));
 
 @ChopperApi(baseUrl: '/user/meta/')
 abstract class ProfileMetaApiService extends ChopperService {
-  static ProfileMetaApiService create() {
+  static ProfileMetaApiService create(Reader read) {
     final client = ChopperClient(
       baseUrl: ConfigReader.getApiBaseUrl(),
       services: [
@@ -18,7 +18,7 @@ abstract class ProfileMetaApiService extends ChopperService {
       ],
       converter: const JsonConverter(),
       interceptors: [
-        AuthorizedInterceptor(),
+        read(authInterceptorProvider),
         HttpLoggingInterceptor(),
       ],
     );
